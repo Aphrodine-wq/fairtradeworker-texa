@@ -25,7 +25,7 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
         <div className="flex h-16 items-center justify-between">
           <button 
             onClick={() => onNavigate('home')}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity min-h-[44px]"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-150 min-h-[44px]"
           >
             <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg shadow-sm">
               <Wrench className="text-primary-foreground" size={24} weight="bold" />

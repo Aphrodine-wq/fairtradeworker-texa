@@ -53,6 +53,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
           onClick={handleBackdropClick}
         >
@@ -94,10 +95,10 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
                 src={images[currentIndex]}
                 alt={`Photo ${currentIndex + 1}`}
                 className="max-w-full max-h-full object-contain rounded-lg"
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.2 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
               />
             </AnimatePresence>
           </div>
@@ -116,7 +117,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-all duration-150 ${
                     idx === currentIndex
                       ? 'w-8 bg-primary'
                       : 'w-2 bg-white/40 hover:bg-white/60'
