@@ -70,7 +70,7 @@ export interface Invoice {
   taxRate: number
   taxAmount: number
   total: number
-  status: 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue'
+  status: 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue' | 'partially-paid'
   dueDate: string
   sentDate?: string
   paidDate?: string
@@ -80,7 +80,17 @@ export interface Invoice {
   isRecurring?: boolean
   recurringInterval?: 'monthly' | 'quarterly' | 'yearly'
   nextRecurringDate?: string
+  partialPayments?: PartialPayment[]
+  amountPaid?: number
+  amountRemaining?: number
   createdAt: string
+}
+
+export interface PartialPayment {
+  id: string
+  amount: number
+  paidAt: string
+  method?: string
 }
 
 export interface CompanyInvoice {

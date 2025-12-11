@@ -15,6 +15,7 @@ import { InvoiceManager } from "@/components/contractor/InvoiceManager"
 import { ProUpgrade } from "@/components/contractor/ProUpgrade"
 import { TerritoryMap } from "@/components/territory/TerritoryMap"
 import { CompanyRevenueDashboard } from "@/components/contractor/CompanyRevenueDashboard"
+import { AutomationRunner } from "@/components/contractor/AutomationRunner"
 import { useKV } from "@github/spark/hooks"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
@@ -125,6 +126,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <AutomationRunner user={currentUser ?? null} />
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
       {isDemoMode && currentUser && (
         <DemoModeBanner 

@@ -9,9 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise } from "@phosphor-icons/react"
-import type { User, Invoice, InvoiceLineItem, Job } from "@/lib/types"
+import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar } from "@phosphor-icons/react"
+import type { User, Invoice, InvoiceLineItem, Job, PartialPayment } from "@/lib/types"
 import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
+import { PartialPaymentDialog } from "./PartialPaymentDialog"
 
 interface InvoiceManagerProps {
   user: User
@@ -22,6 +23,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [jobs] = useKV<Job[]>("jobs", [])
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
   const [selectedJobId, setSelectedJobId] = useState("")
   const [lineItems, setLineItems] = useState<InvoiceLineItem[]>([
     { description: '', quantity: 1, rate: 0, total: 0 }
@@ -130,10 +133,45 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
     setRecurringInterval('monthly')
   }
 
+  const handleOpenPaymentDialog = (invoice: Invoice) => {
+    setSelectedInvoice(invoice)
+    setPaymentDialogOpen(true)
+  }
+
+  const handlePaymentAdded = (invoiceId: string, payment: PartialPayment) => {
+    setInvoices((current) =>
+      (current || []).map((inv) => {
+        if (inv.id === invoiceId) {
+          const partialPayments = [...(inv.partialPayments || []), payment]
+          const amountPaid = partialPayments.reduce((sum, p) => sum + p.amount, 0)
+          const amountRemaining = inv.total - amountPaid
+          
+          const newStatus = amountRemaining <= 0 
+            ? 'paid' 
+            : amountPaid > 0 
+              ? 'partially-paid' 
+              : inv.status
+
+          return {
+            ...inv,
+            partialPayments,
+            amountPaid,
+            amountRemaining,
+            status: newStatus,
+            paidDate: amountRemaining <= 0 ? new Date().toISOString() : inv.paidDate
+          }
+        }
+        return inv
+      })
+    )
+  }
+
   const getStatusColor = (status: Invoice['status']) => {
     switch (status) {
       case 'paid':
         return 'default'
+      case 'partially-paid':
+        return 'secondary'
       case 'sent':
       case 'viewed':
         return 'secondary'
@@ -286,10 +324,32 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                             <span>Total</span>
                             <span>{formatCurrency(invoice.total)}</span>
                           </div>
+                          {invoice.amountPaid && invoice.amountPaid > 0 && (
+                            <>
+                              <div className="flex justify-between text-sm text-green-600">
+                                <span>Amount Paid</span>
+                                <span>{formatCurrency(invoice.amountPaid)}</span>
+                              </div>
+                              <div className="flex justify-between text-sm font-semibold text-primary">
+                                <span>Remaining</span>
+                                <span>{formatCurrency(invoice.amountRemaining || 0)}</span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
-                      <div className="mt-4">
+                      <div className="mt-4 flex gap-2">
                         <InvoicePDFGenerator invoice={invoice} contractor={user} />
+                        {user.isPro && invoice.status !== 'paid' && invoice.status !== 'draft' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleOpenPaymentDialog(invoice)}
+                          >
+                            <CurrencyDollar className="mr-2" weight="bold" />
+                            Record Payment
+                          </Button>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -497,6 +557,15 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {selectedInvoice && (
+        <PartialPaymentDialog
+          invoice={selectedInvoice}
+          open={paymentDialogOpen}
+          onOpenChange={setPaymentDialogOpen}
+          onPaymentAdded={handlePaymentAdded}
+        />
+      )}
     </div>
   )
 }
