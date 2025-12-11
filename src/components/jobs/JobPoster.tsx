@@ -9,6 +9,7 @@ import { Video, Microphone, FileText, Upload } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import type { Job, User } from "@/lib/types"
+import { calculateJobSize } from "@/lib/types"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 
@@ -73,6 +74,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       description: description || aiResult.scope,
       mediaType: inputMethod === 'text' || inputMethod === null ? undefined : inputMethod,
       aiScope: aiResult,
+      size: calculateJobSize(aiResult.priceHigh),
       status: 'open',
       createdAt: new Date().toISOString(),
       bids: []

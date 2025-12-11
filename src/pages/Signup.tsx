@@ -47,6 +47,9 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
       fullName,
       role: role as UserRole,
       isPro: false,
+      performanceScore: 0,
+      bidAccuracy: 0,
+      isOperator: false,
       createdAt: new Date().toISOString()
     }
 

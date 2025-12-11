@@ -8,8 +8,13 @@ export interface User {
   territoryId?: number
   isPro: boolean
   proSince?: string
+  performanceScore: number
+  bidAccuracy: number
+  isOperator: boolean
   createdAt: string
 }
+
+export type JobSize = 'small' | 'medium' | 'large'
 
 export interface Job {
   id: string
@@ -25,6 +30,7 @@ export interface Job {
     priceHigh: number
     materials: string[]
   }
+  size: JobSize
   status: 'open' | 'in-progress' | 'completed' | 'cancelled'
   territoryId?: number
   createdAt: string
@@ -61,4 +67,26 @@ export interface Territory {
   operatorId?: string
   operatorName?: string
   status: 'available' | 'claimed'
+}
+
+export function calculateJobSize(priceHigh: number): JobSize {
+  if (priceHigh <= 300) return 'small'
+  if (priceHigh <= 1500) return 'medium'
+  return 'large'
+}
+
+export function getJobSizeEmoji(size: JobSize): string {
+  switch (size) {
+    case 'small': return '🟢'
+    case 'medium': return '🟡'
+    case 'large': return '🔴'
+  }
+}
+
+export function getJobSizeLabel(size: JobSize): string {
+  switch (size) {
+    case 'small': return 'Small'
+    case 'medium': return 'Medium'
+    case 'large': return 'Large'
+  }
 }

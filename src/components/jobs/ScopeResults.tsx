@@ -74,9 +74,12 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
               Back
             </Button>
             <Button onClick={onPost} className="flex-1 text-lg h-12">
-              Post This Job
+              Post Job – $0
             </Button>
           </div>
+          <p className="text-center text-xs text-muted-foreground">
+            Zero fees • Keep 100% of your money
+          </p>
         </CardContent>
       </Card>
     </div>

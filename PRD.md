@@ -2,6 +2,16 @@
 
 A zero-fee Texas home repairs marketplace where AI scopes jobs in seconds, homeowners post work effortlessly, and contractors keep 100% of their earnings.
 
+## Core Values
+1. **Free Job Posting** - Homeowners never pay to post
+2. **Free Job Bidding** - Contractors never pay to bid  
+3. **Open Marketplace** - No paywalls or hidden fees
+4. **Performance = Priority** - Best contractors ranked first
+5. **In-Person CRM Sign-Up** - Contractors invite homeowners instantly
+6. **One-Page Job Post** - Racehorse fast, under 100ms
+7. **AI Scope** - Multimodal analysis (video, voice, text, photos, files)
+8. **Clean, Seamless, Familiar** - iOS-quality interactions
+
 **Experience Qualities**:
 1. **Empowering** - Makes posting and bidding on home repair jobs feel effortless and transparent
 2. **Trustworthy** - Clear pricing, AI-powered scoping, and fair transactions build confidence
@@ -34,18 +44,25 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Job is created with AI-generated details visible to contractors
 
 ### Job Browsing & Bidding
-- **Functionality**: Contractors view open jobs with photos, materials list, and AI scope, then submit bids
-- **Purpose**: Connect contractors with relevant work opportunities and detailed job information
+- **Functionality**: Contractors view open jobs with size badges (🟢 Small ≤$300, 🟡 Medium ≤$1,500, 🔴 Large >$1,500), photos, materials list, and AI scope, then submit free bids
+- **Purpose**: Connect contractors with relevant work opportunities and detailed job information while emphasizing zero fees
 - **Trigger**: Contractor navigates to "Browse Jobs" or dashboard
-- **Progression**: View filtered job list → See job photos in grid → Click photo to open full-screen lightbox → Navigate between photos with arrow keys/buttons → Close lightbox → Review AI scope and materials → Enter bid amount and message → Submit bid → Toast confirmation
-- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer
+- **Progression**: View filtered job list → See job size badge → See job photos in grid → Click photo to open full-screen lightbox → Navigate between photos with arrow keys/buttons → Close lightbox → Review AI scope and materials → Enter bid amount and message → See "$0 fee" label → Submit bid → Toast confirmation
+- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer; free bidding message is clear
 
-### Photo Lightbox Viewer
-- **Functionality**: Full-screen photo viewer with keyboard navigation and smooth transitions
-- **Purpose**: Allow contractors to examine job details closely before bidding
-- **Trigger**: Clicking any job photo thumbnail in browse view or job details
-- **Progression**: Click photo thumbnail → Lightbox opens with smooth animation → View full-resolution image → Use arrow keys or buttons to navigate → See photo counter (e.g., "2 / 5") → Press Escape or X to close → Return to job listing
-- **Success criteria**: Photos display at full resolution, navigation is smooth, keyboard shortcuts work, mobile touch gestures supported
+### Performance-Based Bid Sorting
+- **Functionality**: Bids are automatically sorted by contractor quality score (performance + accuracy + operator status)
+- **Purpose**: Prioritize the most reliable contractors for homeowners
+- **Trigger**: When homeowner views bids on their job
+- **Progression**: View job → See bids sorted by score → Top performers appear first → Operator-contractors get 0.2 boost
+- **Success criteria**: Bids display in correct priority order; formula: `score = performanceScore + bidAccuracy + (isOperator ? 0.2 : 0)`
+
+### Job Size Classification
+- **Functionality**: Jobs automatically categorized as Small (🟢 ≤$300), Medium (🟡 ≤$1,500), or Large (🔴 >$1,500)
+- **Purpose**: Help contractors quickly identify jobs that match their capacity
+- **Trigger**: AI generates price estimate
+- **Progression**: AI calculates priceHigh → System assigns size → Badge displays on job card
+- **Success criteria**: Size badge appears on all jobs; correct categorization based on priceHigh value
 
 ### Contractor Dashboard & CRM
 - **Functionality**: View active jobs, open bids, earnings, and manage customer relationships

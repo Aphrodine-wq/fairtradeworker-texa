@@ -11,6 +11,7 @@ import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images } from "@phosphor-icons/react"
 import type { Job, Bid, User } from "@/lib/types"
+import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
 interface BrowseJobsProps {
   user: User
@@ -107,7 +108,15 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <CardTitle className="text-xl mb-2">{job.title}</CardTitle>
+                    <div className="flex items-center gap-2 mb-2">
+                      <CardTitle className="text-xl">{job.title}</CardTitle>
+                      <Badge 
+                        variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
+                        className="text-xs font-semibold"
+                      >
+                        {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
+                      </Badge>
+                    </div>
                     <CardDescription className="text-base">
                       {job.aiScope.scope}
                     </CardDescription>
@@ -221,12 +230,15 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <div className="flex items-center text-xs text-muted-foreground mr-auto">
+              Free bidding • $0 fee
+            </div>
             <Button variant="outline" onClick={() => setDialogOpen(false)}>
               Cancel
             </Button>
             <Button onClick={handleSubmitBid}>
-              Submit Bid
+              Submit Bid – $0
             </Button>
           </DialogFooter>
         </DialogContent>
