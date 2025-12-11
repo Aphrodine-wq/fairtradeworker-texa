@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { Info, X } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
@@ -7,7 +8,7 @@ interface DemoModeBannerProps {
   userRole: string
 }
 
-export function DemoModeBanner({ userName, userRole }: DemoModeBannerProps) {
+export const DemoModeBanner = memo(function DemoModeBanner({ userName, userRole }: DemoModeBannerProps) {
   const [isVisible, setIsVisible] = useState(true)
 
   if (!isVisible) return null
@@ -41,4 +42,4 @@ export function DemoModeBanner({ userName, userRole }: DemoModeBannerProps) {
       </div>
     </div>
   )
-}
+})

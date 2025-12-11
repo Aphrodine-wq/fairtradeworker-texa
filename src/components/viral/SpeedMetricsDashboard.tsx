@@ -1,3 +1,4 @@
+import { memo } from "react"
 import { Card } from "@/components/ui/card"
 import { Clock, TrendUp, CurrencyDollar } from "@phosphor-icons/react"
 import type { Job, ContractorReferral } from "@/lib/types"
@@ -18,7 +19,7 @@ interface Metric {
   icon: typeof Clock
 }
 
-export function SpeedMetricsDashboard({ jobs, referrals }: SpeedMetricsDashboardProps) {
+export const SpeedMetricsDashboard = memo(function SpeedMetricsDashboard({ jobs, referrals }: SpeedMetricsDashboardProps) {
   const avgBidTime = jobs.length > 0
     ? Math.round(
         jobs
@@ -147,4 +148,4 @@ export function SpeedMetricsDashboard({ jobs, referrals }: SpeedMetricsDashboard
       </Card>
     </div>
   )
-}
+})

@@ -1,6 +1,8 @@
 import type { User, Job, Bid, Invoice, Territory } from './types'
 import { calculateJobSize } from './types'
 
+let demoDataInitialized = false
+
 export const DEMO_USERS: Record<'homeowner' | 'contractor' | 'operator', User> = {
   homeowner: {
     id: 'demo-homeowner-001',
@@ -366,17 +368,22 @@ export const DEMO_TERRITORIES: Territory[] = [
 ]
 
 export function initializeDemoData() {
+  if (demoDataInitialized) {
+    return null
+  }
+  
   const hasInitialized = sessionStorage.getItem('demo-initialized')
   
   if (hasInitialized) {
     return null
   }
   
+  demoDataInitialized = true
   sessionStorage.setItem('demo-initialized', 'true')
   
   return {
-    jobs: DEMO_JOBS.slice(0, 5),
-    invoices: DEMO_INVOICES,
-    territories: DEMO_TERRITORIES,
+    jobs: DEMO_JOBS.slice(0, 3),
+    invoices: DEMO_INVOICES.slice(0, 3),
+    territories: DEMO_TERRITORIES.slice(0, 5),
   }
 }

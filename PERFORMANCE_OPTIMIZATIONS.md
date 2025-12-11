@@ -4,8 +4,8 @@
 
 ### 1. Automation Runner - Reduced Polling Frequency
 **Before:** Running every 60 seconds (60,000ms)
-**After:** Running every 5 minutes (300,000ms)
-- Reduced CPU usage by 80%
+**After:** Running every 10 minutes (600,000ms)
+- Reduced CPU usage by 90%
 - Removed dependencies array causing infinite loops
 - Changed from `[user, customers, sequences, scheduledFollowUps, invoices]` to `[user?.id, user?.isPro]`
 
@@ -16,12 +16,15 @@
 - Limited rendering to first 50 territories
 - Grid changed from 4 columns to 3 columns for better spacing
 
-### 3. Demo Data Initialization - Lazy Loading
+### 3. Demo Data Initialization - Aggressive Pruning
 **Before:** Loading all demo data on every page load
-**After:** Using sessionStorage to prevent re-initialization
-- Reduced demo jobs from 8 to 5
+**After:** Using sessionStorage + module flag to prevent re-initialization
+- Reduced demo jobs from 8 to 3
+- Reduced demo invoices from 8 to 3
+- Reduced demo territories from 20 to 5
 - Only initializes once per session
 - Prevents localStorage bloat
+- 60-70% reduction in demo data size
 
 ### 4. Memoization Throughout App
 Added `useMemo` to prevent unnecessary recalculations:

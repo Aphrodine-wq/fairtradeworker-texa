@@ -31,7 +31,7 @@ export function AutomationRunner({ user }: AutomationRunnerProps) {
 
     const interval = setInterval(async () => {
       await runAutomations()
-    }, 300000)
+    }, 600000)
 
     return () => clearInterval(interval)
   }, [user?.id, user?.isPro])
