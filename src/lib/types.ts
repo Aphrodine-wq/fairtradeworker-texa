@@ -90,3 +90,16 @@ export function getJobSizeLabel(size: JobSize): string {
     case 'large': return 'Large'
   }
 }
+
+export interface CRMCustomer {
+  id: string
+  contractorId: string
+  name: string
+  email?: string
+  phone?: string
+  invitedVia: 'email' | 'sms'
+  invitedAt: string
+  status: 'invited' | 'active' | 'inactive'
+  notes?: string
+  createdAt: string
+}

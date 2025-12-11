@@ -6,6 +6,7 @@ import { useKV } from "@github/spark/hooks"
 import { Briefcase, CurrencyDollar, CheckCircle, Crown } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
+import { CRMDashboard } from "./CRMDashboard"
 import type { User, Job, Invoice } from "@/lib/types"
 
 interface ContractorDashboardProps {
@@ -107,12 +108,16 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
+            <TabsTrigger value="crm">CRM</TabsTrigger>
             <TabsTrigger value="invoices">Invoices</TabsTrigger>
           </TabsList>
           <TabsContent value="browse" className="mt-6">
             <BrowseJobs user={user} />
+          </TabsContent>
+          <TabsContent value="crm" className="mt-6">
+            <CRMDashboard user={user} />
           </TabsContent>
           <TabsContent value="invoices" className="mt-6">
             <Invoices user={user} onNavigate={onNavigate} />

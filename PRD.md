@@ -65,11 +65,11 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Size badge appears on all jobs; correct categorization based on priceHigh value
 
 ### Contractor Dashboard & CRM
-- **Functionality**: View active jobs, open bids, earnings, and manage customer relationships
-- **Purpose**: Centralize contractor business operations
+- **Functionality**: View active jobs, open bids, earnings, manage customer relationships, and send instant invites for in-person sign-ups
+- **Purpose**: Centralize contractor business operations and enable contractors to quickly onboard homeowners via email or SMS
 - **Trigger**: Contractor logs in or clicks "Dashboard"
-- **Progression**: Land on dashboard → See stats cards → Browse jobs table → Click actions (bid, view, contact)
-- **Success criteria**: Contractor can track all job activity and financials in one place
+- **Progression**: Land on dashboard → See stats cards → Browse tabs (Jobs, CRM, Invoices) → In CRM tab: Use instant invite widget → Enter customer name and email/phone → Click send → Invite sent instantly → Customer added to CRM → View customer list → Click customer card → See details and add notes
+- **Success criteria**: Contractor can track all job activity, financials, and customer relationships in one place; instant invites are sent successfully with clear feedback; customers are stored and manageable in CRM
 
 ### Invoice Management
 - **Functionality**: Create, send, and track invoices with auto-reminders (Pro feature)
@@ -109,6 +109,9 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Invalid Bid Amounts** - Validation requiring bid to be within reasonable range
 - **Network Errors** - Toast notifications with retry options
 - **Multiple Role Switches** - Prevent role changes after initial selection
+- **Invalid Email/Phone in CRM Invite** - Real-time validation with clear error messages before allowing send
+- **Duplicate Customer Entries** - Allow duplicates for flexibility (contractor may re-invite same person)
+- **Empty CRM** - Show friendly empty state with instructions to use invite widget
 
 ## Design Direction
 
@@ -151,14 +154,15 @@ Animations should feel snappy and purposeful—like the satisfying click of a qu
   - Button (primary, secondary, ghost variants with orange/blue theming)
   - Card (for job listings, bids, stats, white bg with subtle shadows)
   - Input, Textarea (for forms with focus states)
-  - Dialog (for bid submission, payment flows, confirmations)
-  - Tabs (for contractor dashboard sections)
-  - Badge (for Pro status, job status, county status)
+  - Dialog (for bid submission, payment flows, confirmations, customer details)
+  - Tabs (for contractor dashboard sections: Browse Jobs, CRM, Invoices)
+  - Badge (for Pro status, job status, county status, customer status)
   - Avatar (for user profiles)
   - Table (for job listings, invoice lists)
   - Progress (for AI scoping loading state)
-  - Toaster (sonner for notifications)
+  - Toaster (sonner for notifications, especially invite confirmations)
   - Lightbox (full-screen photo viewer with keyboard navigation)
+  - Label (for form fields in instant invite widget)
   
 - **Customizations**: 
   - Custom territory map component using SVG for Texas counties (no external map library in demo)
@@ -166,6 +170,7 @@ Animations should feel snappy and purposeful—like the satisfying click of a qu
   - Custom job scope result card with price slider
   - Custom file upload zones with drag-and-drop states
   - Custom lightbox with smooth animations, keyboard controls (Escape, Arrow keys), and photo counter
+  - Custom instant invite widget with email/SMS tabs and real-time validation
 
 - **States**: 
   - Buttons: default, hover (scale-105 + brightness), active (scale-95), disabled (opacity-50)
@@ -173,7 +178,7 @@ Animations should feel snappy and purposeful—like the satisfying click of a qu
   - Cards: default (shadow-sm), hover (shadow-md + translate-y-[-2px])
   
 - **Icon Selection**: 
-  - Phosphor icons throughout (Wrench for jobs, House for homeowner, Hammer for contractor, MapPin for territory, CurrencyDollar for invoices, Crown for Pro)
+  - Phosphor icons throughout (Wrench for jobs, House for homeowner, Hammer for contractor, MapPin for territory, CurrencyDollar for invoices, Crown for Pro, Users for CRM, EnvelopeSimple for email invites, DeviceMobile for SMS invites, PaperPlaneRight for sending invites, Note for customer notes)
 
 - **Spacing**: 
   - Container padding: px-4 md:px-8
