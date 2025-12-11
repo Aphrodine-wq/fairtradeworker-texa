@@ -3,11 +3,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
+import { CompanySettings } from "./CompanySettings"
 import type { User, Job, Invoice } from "@/lib/types"
 
 interface ContractorDashboardProps {
@@ -18,6 +19,13 @@ interface ContractorDashboardProps {
 export function ContractorDashboard({ user, onNavigate }: ContractorDashboardProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [invoices] = useKV<Invoice[]>("invoices", [])
+  const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
+
+  const handleUserUpdate = (updates: Partial<User>) => {
+    if (currentUser) {
+      setCurrentUser({ ...currentUser, ...updates })
+    }
+  }
 
   const myBids = (jobs || []).flatMap(job =>
     job.bids.filter(bid => bid.contractorId === user.id)
@@ -131,11 +139,15 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
             <TabsTrigger value="crm">CRM</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="invoices">Invoices</TabsTrigger>
+            <TabsTrigger value="settings">
+              <Buildings className="mr-2" size={16} weight="duotone" />
+              Company
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="browse" className="mt-6">
             <BrowseJobs user={user} />
@@ -148,6 +160,9 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsContent>
           <TabsContent value="invoices" className="mt-6">
             <Invoices user={user} onNavigate={onNavigate} />
+          </TabsContent>
+          <TabsContent value="settings" className="mt-6">
+            <CompanySettings user={user} onUpdate={handleUserUpdate} />
           </TabsContent>
         </Tabs>
       </div>

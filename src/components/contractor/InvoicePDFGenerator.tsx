@@ -17,6 +17,10 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
     const formatDate = (date: string) => 
       new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
 
+    const useCompanyLogo = invoice.useCompanyLogo !== false && contractor.companyLogo
+    
+    const genericLogoSVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80' fill='none'%3E%3Cg%3E%3Cpath d='M20 15 L35 30 L50 15 L65 30 L50 45 L35 30 L20 45 Z' fill='%230066FF' stroke='%230066FF' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M35 55 L50 40 L65 55' fill='none' stroke='%230066FF' stroke-width='2' stroke-linecap='round'/%3E%3Ctext x='75' y='38' font-family='system-ui, -apple-system, sans-serif' font-size='20' font-weight='700' fill='%230066FF'%3EFairTradeWorker%3C/text%3E%3Ctext x='75' y='55' font-family='system-ui, -apple-system, sans-serif' font-size='13' font-weight='500' fill='%236B7280'%3ETexas Platform%3C/text%3E%3C/g%3E%3C/svg%3E`
+
     return `
 <!DOCTYPE html>
 <html>
@@ -41,6 +45,12 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
       padding-bottom: 20px;
       border-bottom: 3px solid #0066FF;
     }
+    .company-logo {
+      max-width: 200px;
+      max-height: 80px;
+      object-fit: contain;
+      margin-bottom: 12px;
+    }
     .company-info h1 {
       font-size: 28px;
       font-weight: 700;
@@ -50,6 +60,12 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
     .company-info p {
       color: #6B7280;
       font-size: 14px;
+      margin: 2px 0;
+    }
+    .company-info .tax-id {
+      color: #9CA3AF;
+      font-size: 12px;
+      margin-top: 8px;
     }
     .invoice-meta {
       text-align: right;
@@ -209,9 +225,15 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
   
   <div class="header">
     <div class="company-info">
-      <h1>${contractor.fullName}</h1>
-      <p>Professional Home Services</p>
-      <p>FairTradeWorker Texas Platform</p>
+      ${useCompanyLogo 
+        ? `<img src="${contractor.companyLogo}" alt="Company Logo" class="company-logo" />`
+        : `<img src="${genericLogoSVG}" alt="FairTradeWorker Texas" class="company-logo" />`
+      }
+      <h1>${contractor.companyName || contractor.fullName}</h1>
+      ${contractor.companyAddress ? `<p>${contractor.companyAddress.replace(/\n/g, '<br>')}</p>` : '<p>Professional Home Services</p>'}
+      ${contractor.companyPhone ? `<p>Phone: ${contractor.companyPhone}</p>` : ''}
+      ${contractor.companyEmail ? `<p>Email: ${contractor.companyEmail}</p>` : ''}
+      ${contractor.taxId ? `<p class="tax-id">Tax ID: ${contractor.taxId}</p>` : ''}
     </div>
     <div class="invoice-meta">
       <h2>${invoice.isProForma ? 'PRO FORMA' : 'INVOICE'}</h2>
@@ -283,6 +305,7 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
       'This is a Pro Forma Invoice (estimate) and is not a demand for payment.' :
       'Late payments are subject to a 1.5% late fee after 30 days.'
     }</p>
+    ${invoice.customNotes ? `<p style="margin-top: 12px;"><strong>Notes:</strong> ${invoice.customNotes}</p>` : ''}
     <p style="margin-top: 12px;"><strong>Thank you for your business!</strong></p>
   </div>
 

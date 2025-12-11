@@ -16,6 +16,12 @@ export interface User {
   referredBy?: string
   referralEarnings: number
   contractorInviteCount: number
+  companyLogo?: string
+  companyName?: string
+  companyAddress?: string
+  companyPhone?: string
+  companyEmail?: string
+  taxId?: string
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
@@ -84,6 +90,8 @@ export interface Invoice {
   amountPaid?: number
   amountRemaining?: number
   createdAt: string
+  useCompanyLogo?: boolean
+  customNotes?: string
 }
 
 export interface PartialPayment {

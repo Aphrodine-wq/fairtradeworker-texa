@@ -5,11 +5,12 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar } from "@phosphor-icons/react"
+import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon } from "@phosphor-icons/react"
 import type { User, Invoice, InvoiceLineItem, Job, PartialPayment } from "@/lib/types"
 import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
 import { PartialPaymentDialog } from "./PartialPaymentDialog"
@@ -34,6 +35,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [isProForma, setIsProForma] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
   const [recurringInterval, setRecurringInterval] = useState<'monthly' | 'quarterly'>('monthly')
+  const [useCompanyLogo, setUseCompanyLogo] = useState(true)
+  const [customNotes, setCustomNotes] = useState("")
 
   const myInvoices = (invoices || []).filter(inv => inv.contractorId === user.id)
   
@@ -114,6 +117,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
       lateFeeApplied: false,
       isRecurring: isRecurring,
       recurringInterval: isRecurring ? recurringInterval : undefined,
+      useCompanyLogo: useCompanyLogo,
+      customNotes: customNotes.trim() || undefined,
       createdAt: new Date().toISOString()
     }
 
@@ -131,6 +136,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
     setIsProForma(false)
     setIsRecurring(false)
     setRecurringInterval('monthly')
+    setUseCompanyLogo(true)
+    setCustomNotes("")
   }
 
   const handleOpenPaymentDialog = (invoice: Invoice) => {
@@ -338,18 +345,31 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                           )}
                         </div>
                       </div>
-                      <div className="mt-4 flex gap-2">
-                        <InvoicePDFGenerator invoice={invoice} contractor={user} />
-                        {user.isPro && invoice.status !== 'paid' && invoice.status !== 'draft' && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleOpenPaymentDialog(invoice)}
-                          >
-                            <CurrencyDollar className="mr-2" weight="bold" />
-                            Record Payment
-                          </Button>
+                      <div className="mt-4 space-y-2">
+                        {invoice.useCompanyLogo === false && (
+                          <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded flex items-center gap-2">
+                            <ImageIcon size={14} weight="duotone" />
+                            Using FairTradeWorker Texas generic logo
+                          </div>
                         )}
+                        {invoice.customNotes && (
+                          <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+                            <strong>Notes:</strong> {invoice.customNotes}
+                          </div>
+                        )}
+                        <div className="flex gap-2">
+                          <InvoicePDFGenerator invoice={invoice} contractor={user} />
+                          {user.isPro && invoice.status !== 'paid' && invoice.status !== 'draft' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleOpenPaymentDialog(invoice)}
+                            >
+                              <CurrencyDollar className="mr-2" weight="bold" />
+                              Record Payment
+                            </Button>
+                          )}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -441,6 +461,41 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                 </Select>
               </div>
             )}
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="useCompanyLogo"
+                checked={useCompanyLogo}
+                onChange={(e) => setUseCompanyLogo(e.target.checked)}
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <Label htmlFor="useCompanyLogo" className="text-sm flex items-center gap-2">
+                <ImageIcon weight="duotone" size={16} />
+                {user.companyLogo 
+                  ? "Use my company logo on this invoice"
+                  : "Use FairTradeWorker Texas generic logo (tax-compliant)"
+                }
+              </Label>
+            </div>
+
+            {!user.companyLogo && (
+              <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                💡 <strong>Tip:</strong> Add your company logo in settings to brand your invoices professionally.
+                For now, invoices will use the FairTradeWorker Texas logo to ensure tax compliance.
+              </div>
+            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="customNotes">Custom Notes (Optional)</Label>
+              <Textarea
+                id="customNotes"
+                placeholder="Payment instructions, warranty info, or special terms..."
+                value={customNotes}
+                onChange={(e) => setCustomNotes(e.target.value)}
+                rows={3}
+              />
+            </div>
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">

@@ -27,6 +27,11 @@ export const DEMO_USERS: Record<'homeowner' | 'contractor' | 'operator', User> =
     isOperator: false,
     referralEarnings: 50,
     contractorInviteCount: 3,
+    companyName: 'Rodriguez Home Services',
+    companyAddress: '456 Commerce St\nAustin, TX 78701',
+    companyPhone: '(512) 555-0142',
+    companyEmail: 'contact@rodriguezhome.com',
+    taxId: '74-1234567',
     createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
   },
   operator: {
