@@ -54,10 +54,12 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
     switch (status) {
       case 'active':
         return 'bg-green-500/10 text-green-700 border-green-500/20'
-      case 'invited':
+      case 'lead':
         return 'bg-blue-500/10 text-blue-700 border-blue-500/20'
-      case 'inactive':
-        return 'bg-gray-500/10 text-gray-700 border-gray-500/20'
+      case 'completed':
+        return 'bg-purple-500/10 text-purple-700 border-purple-500/20'
+      case 'advocate':
+        return 'bg-amber-500/10 text-amber-700 border-amber-500/20'
     }
   }
 

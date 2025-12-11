@@ -52,16 +52,46 @@ export interface Bid {
   createdAt: string
 }
 
+export interface InvoiceLineItem {
+  description: string
+  quantity: number
+  rate: number
+  total: number
+}
+
 export interface Invoice {
   id: string
   contractorId: string
+  homeownerId?: string
   jobId: string
   jobTitle: string
-  amount: number
-  status: 'draft' | 'sent' | 'paid' | 'overdue'
+  lineItems: InvoiceLineItem[]
+  subtotal: number
+  taxRate: number
+  taxAmount: number
+  total: number
+  status: 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue'
   dueDate: string
+  sentDate?: string
+  paidDate?: string
   reminderSentAt?: string
   lateFeeApplied: boolean
+  isProForma: boolean
+  createdAt: string
+}
+
+export interface CompanyInvoice {
+  id: string
+  contractorId: string
+  period: string
+  lineItems: {
+    description: string
+    amount: number
+  }[]
+  total: number
+  status: 'pending' | 'paid' | 'failed'
+  autoCharge: boolean
+  chargeDate: string
   createdAt: string
 }
 
@@ -95,6 +125,9 @@ export function getJobSizeLabel(size: JobSize): string {
   }
 }
 
+export type CRMCustomerStatus = 'lead' | 'active' | 'completed' | 'advocate'
+export type CRMCustomerSource = 'bid' | 'manual_invite' | 'referral'
+
 export interface CRMCustomer {
   id: string
   contractorId: string
@@ -103,8 +136,39 @@ export interface CRMCustomer {
   phone?: string
   invitedVia: 'email' | 'sms'
   invitedAt: string
-  status: 'invited' | 'active' | 'inactive'
+  status: CRMCustomerStatus
+  source: CRMCustomerSource
+  lifetimeValue: number
+  lastContact: string
+  tags: string[]
   notes?: string
+  createdAt: string
+}
+
+export interface FollowUpSequence {
+  id: string
+  contractorId: string
+  name: string
+  steps: FollowUpStep[]
+  active: boolean
+  createdAt: string
+}
+
+export interface FollowUpStep {
+  id: string
+  day: number
+  action: 'sms' | 'email'
+  message: string
+  delay: string
+}
+
+export interface ScheduledFollowUp {
+  id: string
+  customerId: string
+  sequenceId: string
+  stepId: string
+  scheduledFor: string
+  status: 'pending' | 'sent' | 'paused' | 'completed'
   createdAt: string
 }
 

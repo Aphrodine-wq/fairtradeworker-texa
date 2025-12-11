@@ -1,4 +1,4 @@
-import { Wrench, House, Hammer, MapPin, User, SignOut } from "@phosphor-icons/react"
+import { Wrench, House, Hammer, MapPin, User, SignOut, Users, Receipt } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -108,10 +108,20 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                       </DropdownMenuItem>
                     )}
                     {user.role === 'contractor' && (
-                      <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
-                        <Hammer className="mr-2" size={16} />
-                        Dashboard
-                      </DropdownMenuItem>
+                      <>
+                        <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
+                          <Hammer className="mr-2" size={16} />
+                          Dashboard
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onNavigate('crm')}>
+                          <Users className="mr-2" size={16} />
+                          CRM
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => onNavigate('invoices')}>
+                          <Receipt className="mr-2" size={16} />
+                          Invoices
+                        </DropdownMenuItem>
+                      </>
                     )}
                     {user.role === 'operator' && (
                       <DropdownMenuItem onClick={() => onNavigate('territory-map')}>

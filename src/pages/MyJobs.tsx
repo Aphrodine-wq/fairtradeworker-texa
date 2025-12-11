@@ -92,9 +92,18 @@ export function MyJobs({ user }: MyJobsProps) {
       contractorId: selectedBid.contractorId,
       jobId: selectedJob.id,
       jobTitle: selectedJob.title,
-      amount: selectedBid.amount,
+      lineItems: [
+        { description: selectedJob.title, quantity: 1, rate: selectedBid.amount, total: selectedBid.amount }
+      ],
+      subtotal: selectedBid.amount,
+      taxRate: 0,
+      taxAmount: 0,
+      total: selectedBid.amount,
       status: 'paid',
       dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+      sentDate: new Date().toISOString(),
+      paidDate: new Date().toISOString(),
+      isProForma: false,
       lateFeeApplied: false,
       createdAt: new Date().toISOString()
     }

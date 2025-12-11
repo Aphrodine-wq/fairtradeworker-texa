@@ -136,18 +136,18 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Size badge appears on all jobs; correct categorization based on priceHigh value
 
 ### Contractor Dashboard & CRM
-- **Functionality**: View active jobs, open bids, earnings, manage customer relationships, and send instant invites for in-person sign-ups
-- **Purpose**: Centralize contractor business operations and enable contractors to quickly onboard homeowners via email or SMS
-- **Trigger**: Contractor logs in or clicks "Dashboard"
-- **Progression**: Land on dashboard → See stats cards → Browse tabs (Jobs, CRM, Invoices) → In CRM tab: Use instant invite widget → Enter customer name and email/phone → Click send → Invite sent instantly → Customer added to CRM → View customer list → Click customer card → See details and add notes
-- **Success criteria**: Contractor can track all job activity, financials, and customer relationships in one place; instant invites are sent successfully with clear feedback; customers are stored and manageable in CRM
+- **Functionality**: View active jobs, open bids, earnings, manage customer relationships with smart tags, Kanban board, automated follow-ups, and instant in-person sign-ups
+- **Purpose**: Centralize contractor business operations with CRM that becomes their entire business hub
+- **Trigger**: Contractor logs in or clicks "Dashboard" or "CRM"
+- **Progression**: Land on dashboard → See stats cards (Total Customers, Active, LTV, Repeat Rate) → Browse tabs (Customer List, Kanban Board, Follow-Ups) → **Customer List**: Use instant invite widget → Enter customer name and email/phone → Click send → Invite sent instantly → Customer added to CRM → View customer grid → Click customer card → See details and add notes → **Kanban Board**: View customers in 4 columns (Lead, Active, Completed, Advocate) → Drag customers between columns to update status → See auto-tags (High Value >$1K, Frequent 3+ jobs, Referrer) → View LTV and last contact date → **Follow-Ups (Pro)**: Create automated sequences → Add steps with day, action (SMS/email), message → Activate sequence → System auto-sends follow-ups → Pauses when customer replies
+- **Success criteria**: Contractor can track all job activity, financials, and customer relationships in one place; CRM becomes daily habit with 40% of time spent in CRM tab; instant invites sent successfully; Kanban board updates customer status; automated follow-ups achieve 25% reply rate; customers organized by lifecycle stage
 
 ### Invoice Management
-- **Functionality**: Create, send, and track invoices with auto-reminders (Pro feature)
-- **Purpose**: Streamline contractor payment collection
-- **Trigger**: Contractor clicks "Invoices" tab or "+ New Invoice"
-- **Progression**: Select completed job → Auto-fill amount → Set due date → Send → Track status → Auto-reminder (Pro only)
-- **Success criteria**: Invoices are created, stored, and reminder dates tracked
+- **Functionality**: Create professional invoices with line items, tax calculation, track status, auto-reminders (Pro), pro forma invoices, and partial payments
+- **Purpose**: Streamline contractor payment collection with powerful invoice tools that scale
+- **Trigger**: Contractor clicks "Invoices" in menu or "+ New Invoice"
+- **Progression**: Navigate to Invoice Manager → View tabs (All, Draft, Sent, Paid, Overdue) → Click new invoice → Select completed job → Add line items (description, quantity, rate) → System auto-calculates totals → Set tax rate (auto-applies) → Choose due date → Mark as pro forma (estimate) if needed → Create & send → Invoice appears in list with status badge → View invoice details (all line items, subtotal, tax, total) → (Pro) Auto-reminders sent at 3, 7, 14 days → Track when viewed by homeowner → Mark as paid → Export tax CSV
+- **Success criteria**: Invoices created in <90 seconds; line items calculate correctly; tax auto-applies; Pro contractors get auto-reminders; status pipeline shows waiting payments; invoices professional and detailed; collection rate 78% within 7 days
 
 ### Pro Upgrade
 - **Functionality**: Contractors upgrade to Pro ($39/mo) for instant payouts, auto-reminders, no-show protection

@@ -33,7 +33,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
       return invDate.getMonth() === now.getMonth() && invDate.getFullYear() === now.getFullYear()
     })
     .filter(inv => inv.status === 'paid')
-    .reduce((sum, inv) => sum + inv.amount, 0)
+    .reduce((sum, inv) => sum + inv.total, 0)
   
   const totalEarnings = thisMonthEarnings + (user.referralEarnings || 0)
 

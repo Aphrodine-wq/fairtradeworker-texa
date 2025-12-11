@@ -39,14 +39,23 @@ export function Invoices({ user, onNavigate }: InvoicesProps) {
     const job = completedJobs.find(j => j.id === selectedJobId)
     if (!job) return
 
+    const invoiceAmount = parseInt(amount)
     const newInvoice: Invoice = {
       id: `inv-${Date.now()}`,
       contractorId: user.id,
       jobId: selectedJobId,
       jobTitle: job.title,
-      amount: parseInt(amount),
+      lineItems: [
+        { description: job.title, quantity: 1, rate: invoiceAmount, total: invoiceAmount }
+      ],
+      subtotal: invoiceAmount,
+      taxRate: 0,
+      taxAmount: 0,
+      total: invoiceAmount,
       status: 'sent',
       dueDate,
+      sentDate: new Date().toISOString(),
+      isProForma: false,
       lateFeeApplied: false,
       createdAt: new Date().toISOString()
     }
@@ -125,7 +134,7 @@ export function Invoices({ user, onNavigate }: InvoicesProps) {
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
-                    <p className="text-2xl font-bold">${invoice.amount}</p>
+                    <p className="text-2xl font-bold">${invoice.total}</p>
                     <Badge variant={getStatusColor(invoice.status)} className="flex items-center gap-1">
                       {getStatusIcon(invoice.status)}
                       {invoice.status.toUpperCase()}

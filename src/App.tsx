@@ -10,6 +10,8 @@ import { MyJobs } from "@/pages/MyJobs"
 import { JobPoster } from "@/components/jobs/JobPoster"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { ContractorDashboard } from "@/components/contractor/ContractorDashboard"
+import { EnhancedCRM } from "@/components/contractor/EnhancedCRM"
+import { InvoiceManager } from "@/components/contractor/InvoiceManager"
 import { ProUpgrade } from "@/components/contractor/ProUpgrade"
 import { TerritoryMap } from "@/components/territory/TerritoryMap"
 import { useKV } from "@github/spark/hooks"
@@ -17,7 +19,7 @@ import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'pro-upgrade' | 'territory-map'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -98,6 +100,14 @@ function App() {
       case 'dashboard':
         return currentUser?.role === 'contractor' 
           ? <ContractorDashboard user={currentUser} onNavigate={handleNavigate} />
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'crm':
+        return currentUser?.role === 'contractor'
+          ? <EnhancedCRM user={currentUser} />
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'invoices':
+        return currentUser?.role === 'contractor'
+          ? <InvoiceManager user={currentUser} onNavigate={handleNavigate} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
         return currentUser ? <ProUpgrade user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />

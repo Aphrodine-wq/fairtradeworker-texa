@@ -51,7 +51,11 @@ export function InstantInvite({ user }: InstantInviteProps) {
       email: email.trim(),
       invitedVia: 'email',
       invitedAt: new Date().toISOString(),
-      status: 'invited',
+      status: 'lead',
+      source: 'manual_invite',
+      lifetimeValue: 0,
+      lastContact: new Date().toISOString(),
+      tags: [],
       createdAt: new Date().toISOString()
     }
 
@@ -88,7 +92,11 @@ export function InstantInvite({ user }: InstantInviteProps) {
       phone: phone.trim(),
       invitedVia: 'sms',
       invitedAt: new Date().toISOString(),
-      status: 'invited',
+      status: 'lead',
+      source: 'manual_invite',
+      lifetimeValue: 0,
+      lastContact: new Date().toISOString(),
+      tags: [],
       createdAt: new Date().toISOString()
     }
 
