@@ -10,10 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon } from "@phosphor-icons/react"
-import type { User, Invoice, InvoiceLineItem, Job, PartialPayment } from "@/lib/types"
+import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon, FloppyDisk } from "@phosphor-icons/react"
+import type { User, Invoice, InvoiceLineItem, Job, PartialPayment, InvoiceTemplate } from "@/lib/types"
 import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
 import { PartialPaymentDialog } from "./PartialPaymentDialog"
+import { InvoiceTemplateManager } from "./InvoiceTemplateManager"
 
 interface InvoiceManagerProps {
   user: User
@@ -25,6 +26,7 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [dialogOpen, setDialogOpen] = useState(false)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null)
   const [selectedJobId, setSelectedJobId] = useState("")
   const [lineItems, setLineItems] = useState<InvoiceLineItem[]>([
@@ -43,6 +45,22 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const completedJobs = (jobs || []).filter(job =>
     job.bids.some(bid => bid.contractorId === user.id && bid.status === 'accepted')
   )
+
+  const handleApplyTemplate = (template: InvoiceTemplate) => {
+    setLineItems(template.lineItems.map(item => ({ ...item })))
+    setTaxRate(template.taxRate)
+    setCustomNotes(template.customNotes || "")
+    setDialogOpen(true)
+    toast.success(`Applied "${template.name}" template`)
+  }
+
+  const handleSaveAsTemplate = () => {
+    if (lineItems.some(item => !item.description.trim())) {
+      toast.error("All line items must have a description to save as template")
+      return
+    }
+    setTemplateDialogOpen(true)
+  }
 
   const handleAddLineItem = () => {
     setLineItems([...lineItems, { description: '', quantity: 1, rate: 0, total: 0 }])
@@ -239,6 +257,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
           </CardContent>
         </Card>
       )}
+
+      <InvoiceTemplateManager user={user} onApplyTemplate={handleApplyTemplate} />
 
       <Tabs defaultValue="all" className="w-full">
         <TabsList>
@@ -602,13 +622,25 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog}>
-              Cancel
-            </Button>
-            <Button onClick={handleCreateInvoice}>
-              <Receipt className="mr-2" weight="bold" />
-              {isProForma ? 'Create Pro Forma' : 'Create & Send'}
-            </Button>
+            <div className="flex items-center justify-between w-full">
+              <Button 
+                variant="outline" 
+                onClick={handleSaveAsTemplate}
+                className="mr-auto"
+              >
+                <FloppyDisk className="mr-2" weight="bold" size={16} />
+                Save as Template
+              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={handleCloseDialog}>
+                  Cancel
+                </Button>
+                <Button onClick={handleCreateInvoice}>
+                  <Receipt className="mr-2" weight="bold" />
+                  {isProForma ? 'Create Pro Forma' : 'Create & Send'}
+                </Button>
+              </div>
+            </div>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -621,6 +653,119 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
           onPaymentAdded={handlePaymentAdded}
         />
       )}
+
+      <SaveTemplateDialog
+        open={templateDialogOpen}
+        onOpenChange={setTemplateDialogOpen}
+        lineItems={lineItems}
+        taxRate={taxRate}
+        customNotes={customNotes}
+        user={user}
+      />
     </div>
+  )
+}
+
+function SaveTemplateDialog({ 
+  open, 
+  onOpenChange, 
+  lineItems, 
+  taxRate, 
+  customNotes,
+  user 
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  lineItems: InvoiceLineItem[]
+  taxRate: number
+  customNotes: string
+  user: User
+}) {
+  const [templates, setTemplates] = useKV<InvoiceTemplate[]>("invoice-templates", [])
+  const [templateName, setTemplateName] = useState("")
+  const [templateDescription, setTemplateDescription] = useState("")
+
+  const handleSave = () => {
+    if (!templateName.trim()) {
+      toast.error("Please enter a template name")
+      return
+    }
+
+    const newTemplate: InvoiceTemplate = {
+      id: `tpl-${Date.now()}`,
+      contractorId: user.id,
+      name: templateName.trim(),
+      description: templateDescription.trim() || undefined,
+      lineItems: lineItems.map(item => ({ ...item })),
+      taxRate,
+      customNotes: customNotes.trim() || undefined,
+      useCount: 0,
+      createdAt: new Date().toISOString()
+    }
+
+    setTemplates((current) => [...(current || []), newTemplate])
+    toast.success(`Template "${templateName}" saved!`)
+    
+    setTemplateName("")
+    setTemplateDescription("")
+    onOpenChange(false)
+  }
+
+  const handleClose = () => {
+    setTemplateName("")
+    setTemplateDescription("")
+    onOpenChange(false)
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Save as Template</DialogTitle>
+          <DialogDescription>
+            Save these line items as a reusable template
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="save-template-name">Template Name *</Label>
+            <Input
+              id="save-template-name"
+              placeholder="e.g., Standard Plumbing Service"
+              value={templateName}
+              onChange={(e) => setTemplateName(e.target.value)}
+              autoFocus
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="save-template-description">Description (Optional)</Label>
+            <Textarea
+              id="save-template-description"
+              placeholder="Brief description..."
+              value={templateDescription}
+              onChange={(e) => setTemplateDescription(e.target.value)}
+              rows={2}
+            />
+          </div>
+
+          <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+            <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
+            {customNotes && ', custom notes'}
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>
+            <FloppyDisk className="mr-2" weight="bold" />
+            Save Template
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }

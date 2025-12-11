@@ -215,3 +215,16 @@ export interface ContractorReferral {
   reward: number
   createdAt: string
 }
+
+export interface InvoiceTemplate {
+  id: string
+  contractorId: string
+  name: string
+  description?: string
+  lineItems: InvoiceLineItem[]
+  taxRate: number
+  customNotes?: string
+  useCount: number
+  lastUsed?: string
+  createdAt: string
+}
