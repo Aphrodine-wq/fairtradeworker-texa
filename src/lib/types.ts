@@ -12,6 +12,10 @@ export interface User {
   bidAccuracy: number
   isOperator: boolean
   createdAt: string
+  referralCode?: string
+  referredBy?: string
+  referralEarnings: number
+  contractorInviteCount: number
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
@@ -101,5 +105,28 @@ export interface CRMCustomer {
   invitedAt: string
   status: 'invited' | 'active' | 'inactive'
   notes?: string
+  createdAt: string
+}
+
+export interface ReferralCode {
+  id: string
+  code: string
+  ownerId: string
+  ownerName: string
+  discount: number
+  earnings: number
+  usedBy: string[]
+  createdAt: string
+}
+
+export interface ContractorReferral {
+  id: string
+  referrerId: string
+  referrerName: string
+  refereeId?: string
+  refereeName: string
+  phone: string
+  status: 'sent' | 'signed-up' | 'completed-first-job'
+  reward: number
   createdAt: string
 }

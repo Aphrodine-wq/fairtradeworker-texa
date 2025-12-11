@@ -7,6 +7,7 @@ import { Briefcase, CurrencyDollar, CheckCircle, Crown } from "@phosphor-icons/r
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
+import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import type { User, Job, Invoice } from "@/lib/types"
 
 interface ContractorDashboardProps {
@@ -33,6 +34,8 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     })
     .filter(inv => inv.status === 'paid')
     .reduce((sum, inv) => sum + inv.amount, 0)
+  
+  const totalEarnings = thisMonthEarnings + (user.referralEarnings || 0)
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
@@ -80,12 +83,17 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Earnings This Month
+                Total Earnings This Month
               </CardTitle>
               <CurrencyDollar className="text-accent" size={24} weight="duotone" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">${thisMonthEarnings}</div>
+              <div className="text-3xl font-bold">${totalEarnings}</div>
+              {user.referralEarnings > 0 && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Includes ${user.referralEarnings} from referrals
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -108,9 +116,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
             <TabsTrigger value="crm">CRM</TabsTrigger>
+            <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="invoices">Invoices</TabsTrigger>
           </TabsList>
           <TabsContent value="browse" className="mt-6">
@@ -118,6 +127,9 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsContent>
           <TabsContent value="crm" className="mt-6">
             <CRMDashboard user={user} />
+          </TabsContent>
+          <TabsContent value="referrals" className="mt-6">
+            <ContractorReferralSystem user={user} />
           </TabsContent>
           <TabsContent value="invoices" className="mt-6">
             <Invoices user={user} onNavigate={onNavigate} />

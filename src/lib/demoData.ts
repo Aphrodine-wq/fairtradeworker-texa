@@ -11,6 +11,8 @@ export const DEMO_USERS: Record<'homeowner' | 'contractor' | 'operator', User> =
     performanceScore: 0,
     bidAccuracy: 0,
     isOperator: false,
+    referralEarnings: 0,
+    contractorInviteCount: 0,
     createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
   },
   contractor: {
@@ -23,6 +25,8 @@ export const DEMO_USERS: Record<'homeowner' | 'contractor' | 'operator', User> =
     performanceScore: 0.85,
     bidAccuracy: 0.92,
     isOperator: false,
+    referralEarnings: 50,
+    contractorInviteCount: 3,
     createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
   },
   operator: {
@@ -36,6 +40,8 @@ export const DEMO_USERS: Record<'homeowner' | 'contractor' | 'operator', User> =
     performanceScore: 0.95,
     bidAccuracy: 0.88,
     isOperator: true,
+    referralEarnings: 0,
+    contractorInviteCount: 0,
     createdAt: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
   },
 }

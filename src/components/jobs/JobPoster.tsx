@@ -8,8 +8,10 @@ import { Progress } from "@/components/ui/progress"
 import { Video, Microphone, FileText, Upload } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
-import type { Job, User } from "@/lib/types"
+import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
+import type { Job, User, ReferralCode } from "@/lib/types"
 import { calculateJobSize } from "@/lib/types"
+import { generateReferralCode } from "@/lib/viral"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 
@@ -19,7 +21,7 @@ interface JobPosterProps {
 }
 
 type InputMethod = 'video' | 'audio' | 'text' | null
-type Step = 'select' | 'input' | 'processing' | 'results'
+type Step = 'select' | 'input' | 'processing' | 'results' | 'posted'
 
 export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [step, setStep] = useState<Step>('select')
@@ -29,6 +31,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [file, setFile] = useState<File | null>(null)
   const [aiResult, setAiResult] = useState<any>(null)
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
+  const [referralCodes, setReferralCodes] = useKV<ReferralCode[]>("referral-codes", [])
+  const [currentReferralCode, setCurrentReferralCode] = useState<ReferralCode | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleMethodSelect = (method: InputMethod) => {
@@ -81,8 +85,62 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     }
 
     setJobs((currentJobs) => [...(currentJobs || []), newJob])
-    toast.success("Job posted! Contractors can now bid.")
-    onNavigate('home')
+    
+    const code = generateReferralCode(user.fullName, user.id)
+    const newReferralCode: ReferralCode = {
+      id: `ref-${Date.now()}`,
+      code,
+      ownerId: user.id,
+      ownerName: user.fullName,
+      discount: 20,
+      earnings: 0,
+      usedBy: [],
+      createdAt: new Date().toISOString(),
+    }
+    
+    setReferralCodes((current) => [...(current || []), newReferralCode])
+    setCurrentReferralCode(newReferralCode)
+    setStep('posted')
+    toast.success("Job posted! Share your code to earn $20.")
+  }
+
+  if (step === 'posted' && currentReferralCode) {
+    return (
+      <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
+        <div className="space-y-6">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-heading font-bold text-primary">Job Posted Successfully! 🎉</h1>
+            <p className="text-muted-foreground text-lg">
+              Contractors can now bid on your job. Share your referral code below to earn $20!
+            </p>
+          </div>
+          
+          <ReferralCodeCard
+            code={currentReferralCode.code}
+            userName={user.fullName}
+            earnings={currentReferralCode.earnings}
+            usedCount={currentReferralCode.usedBy.length}
+          />
+          
+          <div className="flex gap-4 justify-center pt-4">
+            <Button variant="outline" onClick={() => onNavigate('home')}>
+              Back to Home
+            </Button>
+            <Button onClick={() => {
+              setStep('select')
+              setTitle("")
+              setDescription("")
+              setFile(null)
+              setAiResult(null)
+              setInputMethod(null)
+              setCurrentReferralCode(null)
+            }}>
+              Post Another Job
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (step === 'results' && aiResult) {

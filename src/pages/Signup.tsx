@@ -50,6 +50,8 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
       performanceScore: 0,
       bidAccuracy: 0,
       isOperator: false,
+      referralEarnings: 0,
+      contractorInviteCount: 0,
       createdAt: new Date().toISOString()
     }
 

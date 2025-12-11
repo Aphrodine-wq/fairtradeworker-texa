@@ -1,6 +1,21 @@
-# 🟢 FairTradeWorker Texas – README (Core-Values Edition)
+# 🟢 FairTradeWorker Texas – Scale-Faster Edition
 
-Zero-fee marketplace for Texas home services.
+Zero-fee marketplace for Texas home services with viral growth mechanics built in.
+
+## 🚀 Scale-Faster Playbook Features
+
+This platform implements 10 growth acceleration strategies:
+
+1. **Post-&-Win Viral Loop** – Every job posted generates a unique $20-off referral code
+2. **Contractor Referral Goldmine** – Invite up to 10 tradesmen/month; both earn $50 on first job
+3. **Speed-Based Job Visibility** – Small jobs get blinking green "FRESH" badges for 15 minutes
+4. **Speed Metrics Dashboard** – Real-time tracking of key velocity metrics with traffic-light indicators
+5. **Live Stats Bar** – Homepage displays jobs posted today, avg bid time, and weekly completions
+6. **Same-Day Payout Tracking** – Metrics show same-day payout count (target: 100/day)
+7. **Performance-First Sorting** – Bids ranked by score: performance + accuracy + operator boost
+8. **Contractor Invite System** – 10 SMS invites per month with $50 rewards
+9. **In-Person CRM Sign-Up** – Instant email/SMS invites for homeowners (2-click signup)
+10. **Territory Speed Metrics** – Operators track job-to-bid time and conversion rates
 
 ## Core Values baked into code:
 
@@ -42,79 +57,129 @@ Zero-fee marketplace for Texas home services.
 fairtradeworker/
 ├── src/
 │   ├── components/
-│   │   ├── jobpost/
-│   │   │   └── UniversalJobPoster.tsx   <-- the golden page
-│   │   ├── marketplace/
-│   │   │   ├── Marketplace.tsx
-│   │   │   └── JobCard.tsx              <-- Small/Medium/Large badge
-│   │   ├── crm/
-│   │   │   ├── CRMDashboard.tsx
-│   │   │   └── InstantInvite.tsx        <-- email/SMS widget
+│   │   ├── viral/
+│   │   │   ├── ReferralCodeCard.tsx         <-- Post-&-Win referral display
+│   │   │   ├── ContractorReferralSystem.tsx <-- Invite tradesmen feature
+│   │   │   ├── SpeedMetricsDashboard.tsx    <-- Real-time metrics with lights
+│   │   │   └── LiveStatsBar.tsx             <-- Homepage velocity display
 │   │   ├── jobs/
-│   │   │   ├── BrowseJobs.tsx           <-- contractor job browsing
-│   │   │   └── JobPoster.tsx
+│   │   │   ├── JobPoster.tsx                <-- Shows referral code after posting
+│   │   │   ├── BrowseJobs.tsx               <-- Fresh job indicators
+│   │   │   └── ScopeResults.tsx
 │   │   ├── contractor/
-│   │   │   └── ContractorDashboard.tsx
+│   │   │   ├── ContractorDashboard.tsx      <-- 4 tabs: Jobs, CRM, Referrals, Invoices
+│   │   │   ├── CRMDashboard.tsx
+│   │   │   ├── InstantInvite.tsx            <-- email/SMS widget
+│   │   │   └── ProUpgrade.tsx
 │   │   ├── territory/
-│   │   │   └── TerritoryMap.tsx
-│   │   └── ui/                          <-- 40+ shadcn components
+│   │   │   └── TerritoryMap.tsx             <-- 2 tabs: Territories, Speed Metrics
+│   │   └── ui/                              <-- 40+ shadcn components
 │   └── lib/
-│       ├── ai/
-│       │   ├── multimodalScope.ts       <-- video + voice + text + photos + file
-│       │   └── learnFromPast.ts         <-- stores embeddings for future scopes
-│       └── sorting/
-│           └── leadPriority.ts          <-- performance + accuracy + operator
+│       ├── viral.ts                          <-- Referral code generation
+│       ├── ai.ts                             <-- multimodal AI scope (simulated)
+│       ├── sorting/
+│       │   └── leadPriority.ts              <-- performance + accuracy + operator
+│       └── types.ts                          <-- ReferralCode, ContractorReferral types
 └── public/
-    └── racehorse.svg                     <-- orange wrench inside Texas shape, lightning tail
 ```
 
 ---
 
 ## 🟩 CORE FEATURES
 
-### 1. Free Job Posting
+### 1. Post-&-Win Viral Loop
+- Homeowners receive unique referral code after posting
+- Share via SMS or copy/paste
+- Neighbor uses code → both get $20
+- Track earnings and usage in dashboard
+
+### 2. Contractor Referral Goldmine
+- Orange "Invite a Tradesman" button in CRM
+- 10 invites per month max
+- SMS sent with personal message
+- Both earn $50 when buddy completes first job
+- Track referral status: sent → signed-up → completed-first-job
+
+### 3. Speed-Based Fresh Jobs
+- Small jobs (<$300) show blinking green "FRESH" badge
+- Active for first 15 minutes
+- Border highlighted in primary color
+- Creates urgency for contractors to bid fast
+
+### 4. Speed Metrics Dashboard
+- Job-to-First-Bid Time (target: <15 min)
+- Invite-to-Signup Conversion (target: >35%)
+- Same-Day Payout Count (target: >100/day)
+- Traffic light system: Green/Yellow/Red indicators
+- Operators track metrics in Territory Map
+
+### 5. Live Stats Bar
+- Jobs Posted Today counter
+- Average Bid Time display
+- Completed This Week tracker
+- Displayed prominently on homepage
+- Updates in real-time
+
+### 6. Free Job Posting
 - No fees, ever
 - Button text: "Post Job – $0" (orange, always)
-- No Stripe integration in job posting flow
+- Referral code appears immediately after posting
 
-### 2. Free Job Bidding
+### 7. Free Job Bidding
 - Contractors bid without paying a cent
 - Bid modal has $0 fee label
 
-### 3. Open Marketplace
+### 8. Open Marketplace
 - No paywall banners
 - All jobs visible to relevant contractors
 
-### 4. Performance = Priority
+### 9. Performance = Priority
 Bids are sorted by:
 ```typescript
 score = performance_score + bid_accuracy + (is_operator ? 0.2 : 0)
 ```
 
-### 5. In-Person CRM Sign-Up
+### 10. In-Person CRM Sign-Up
 - Contractor enters homeowner's email or phone
 - Instant invite link sent via email or SMS
 - Homeowner joins in 2 clicks
 
-### 6. One-Page Job Post (Racehorse)
+### 11. One-Page Job Post (Racehorse)
 - All inputs on single scroll page
 - Media recorder with pause/resume
 - File drop zone for Excel, PDF, txt
 - Parallel uploads with progress bars
 - Sub-100ms interactions
 
-### 7. AI Scope (multimodal)
+### 12. AI Scope (multimodal)
 - Video → GPT-4-Vision description
 - Audio → Whisper transcript
 - Photos → analyzed and stored
 - Files → parsed and added to scope
 - Learning system improves over time
 
-### 8. Clean, Seamless, Familiar
+### 13. Clean, Seamless, Familiar
 - Inter font throughout
 - 8px spacing grid
 - Orange = action, Blue = info, Gray = idle
 - iOS-style button feedback (hover:scale-105, active:scale-95)
+
+---
+
+## 🎯 GROWTH TARGETS
+
+With Scale-Faster mechanics in place:
+
+- **0 → 1,000 jobs/day** in 120 days
+- **Contractor wait-list** in 6 months
+- **Operator counties sold out** in 9 months
+
+### Key Metrics to Track:
+- Job-to-first-bid time (target: <15 min)
+- Referral code usage rate (target: 0.7 new jobs per posted job)
+- Contractor invite conversion (target: >35%)
+- Same-day payouts (target: >100/day)
+- Monthly contractor referral completions (target: 50+ per month)
 
 ---
 
@@ -201,8 +266,10 @@ MIT – keep core values free forever.
 
 ### Data Persistence
 All data uses Spark's `useKV` hook:
-- User accounts
+- User accounts with referral earnings and invite counts
 - Jobs and bids
+- Referral codes and contractor referrals
+- CRM customers
 - Invoices
 - Territory claims
 - Demo mode state
@@ -222,3 +289,5 @@ Currently uses a 2-second simulation. Future integration will connect to:
 ---
 
 Built with ❤️ for Texas contractors and homeowners.
+
+**Scale-Faster Playbook Implementation**: This platform includes 10 viral growth mechanics designed to achieve 0→1,000 jobs/day in 120 days through referral loops, contractor invites, speed metrics, and fresh job urgency.

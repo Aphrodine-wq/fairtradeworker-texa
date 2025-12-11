@@ -2,6 +2,7 @@ import { House, Hammer, MapTrifold, Play } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useKV } from "@github/spark/hooks"
+import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 
@@ -107,6 +108,8 @@ export function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
           )}
         </div>
       </section>
+
+      <LiveStatsBar jobs={jobs || []} />
 
       <section className="bg-muted py-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">

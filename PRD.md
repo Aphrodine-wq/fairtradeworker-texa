@@ -2,6 +2,21 @@
 
 A zero-fee Texas home repairs marketplace where AI scopes jobs in seconds, homeowners post work effortlessly, and contractors keep 100% of their earnings.
 
+## 🚀 Scale-Faster Playbook Implementation
+
+This platform includes 10 growth acceleration features designed to achieve viral growth:
+
+1. **Post-&-Win Viral Loop** - Homeowners get unique $20-off referral codes after posting jobs
+2. **Contractor Referral Goldmine** - Contractors can invite up to 10 tradesmen per month; both earn $50 on first job completion
+3. **Speed-Based Job Visibility** - Small jobs show blinking green "FRESH" badges for 15 minutes
+4. **Speed Metrics Dashboard** - Real-time tracking of job-to-bid time, conversion rates, and payout velocity
+5. **Live Stats Bar** - Homepage displays real-time platform activity and velocity
+6. **Referral Earnings Tracking** - Contractors see referral income integrated into dashboard earnings
+7. **Zero-Fee Messaging** - All job posting and bidding emphasizes "$0 fee" throughout the platform
+8. **Performance-First Sorting** - Bids are sorted by contractor quality score (performance + accuracy + operator status)
+9. **In-Person CRM Sign-ups** - Contractors can instantly invite homeowners via email or SMS
+10. **Territory Operator System** - Operators claim counties and track their territory metrics
+
 ## Core Values
 1. **Free Job Posting** - Homeowners never pay to post
 2. **Free Job Bidding** - Contractors never pay to bid  
@@ -28,6 +43,41 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Trigger**: Clicking one of three "Demo as [Role]" buttons on the homepage
 - **Progression**: Click demo button → Auto-login as demo user → Show demo mode banner → Navigate to role-appropriate page → Explore pre-populated jobs, bids, invoices, and territories
 - **Success criteria**: Users can instantly experience all platform features with realistic data; demo banner clearly indicates demo mode status
+
+### Post-&-Win Viral Loop
+- **Functionality**: Every homeowner who posts a job receives a unique $20-off referral code to share with neighbors
+- **Purpose**: Create viral growth through neighbor-to-neighbor referrals with financial incentives
+- **Trigger**: Immediately after job is posted successfully
+- **Progression**: Post job → System generates unique referral code → Show referral card with code and share buttons → User shares via SMS or copy/paste → Neighbor uses code when posting → Original poster gets $20 → Referral earnings tracked in dashboard
+- **Success criteria**: Referral codes are generated and displayed; sharing mechanisms work; earnings are tracked; 0.7 new jobs per posted job is the target metric
+
+### Contractor Referral Goldmine
+- **Functionality**: Contractors can invite up to 10 tradesmen per month via SMS; both earn $50 when invited contractor completes first job
+- **Purpose**: Rapidly expand contractor network through trusted peer referrals
+- **Trigger**: Contractor clicks "Invite a Tradesman" button in CRM dashboard
+- **Progression**: Click invite button → Enter buddy's name and phone → System sends SMS with personalized message → Buddy signs up → Buddy completes first job → Both earn $50 → Track referral status and earnings
+- **Success criteria**: SMS invites are sent; monthly limit of 10 enforced; referrals tracked through completion; both parties receive $50 upon first job completion
+
+### Speed-Based Job Visibility
+- **Functionality**: Small jobs (<$300) display with blinking green "FRESH" tag for first 15 minutes; first bid within 15 min gets sticky top slot for 2 hours
+- **Purpose**: Create urgency and encourage contractors to monitor feed actively
+- **Trigger**: Job is posted with AI price estimate under $300
+- **Progression**: Job posted → Job appears with green blinking badge and highlighted border → Contractors see "FRESH" indicator → First to bid within 15 min → Bid gets priority position for 2 hours → Creates camping behavior on feed
+- **Success criteria**: Fresh indicator appears on qualifying jobs; contractors bid within 15 minutes; sticky positioning works correctly
+
+### Speed Metrics Dashboard
+- **Functionality**: Real-time tracking of key growth metrics with visual status indicators (green/yellow/red lights)
+- **Purpose**: Keep the team focused on speed and conversion metrics instead of vanity metrics
+- **Trigger**: Operator views the Speed Metrics tab in Territory Map
+- **Progression**: Navigate to metrics tab → View three key metrics (Job-to-First-Bid Time, Invite-to-Signup Conversion, Same-Day Payout Count) → See color-coded status lights → Rally team around improvements
+- **Success criteria**: Metrics calculate correctly; status lights update based on targets; operators can track performance trends
+
+### Live Stats Bar
+- **Functionality**: Prominent display of real-time platform activity on homepage
+- **Purpose**: Build trust and demonstrate platform velocity to new visitors
+- **Trigger**: User visits homepage
+- **Progression**: View homepage → See live stats bar with jobs posted today, average bid time, and completed jobs this week → Understand platform is active and fast
+- **Success criteria**: Stats update in real-time; numbers are accurate; bar is visually prominent but not overwhelming
 
 ### User Authentication & Role Selection
 - **Functionality**: Email-based signup/login with role selection (homeowner, contractor, operator)

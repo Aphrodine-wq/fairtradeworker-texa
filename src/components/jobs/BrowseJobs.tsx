@@ -28,6 +28,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
   const openJobs = (jobs || []).filter(job => job.status === 'open')
+  
+  const isJobFresh = (job: Job) => {
+    const jobAge = Date.now() - new Date(job.createdAt).getTime()
+    const fifteenMinutes = 15 * 60 * 1000
+    return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
+  }
 
   const handleBidClick = (job: Job) => {
     setSelectedJob(job)
@@ -103,12 +109,20 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
         </div>
 
         <div className="space-y-6">
-          {openJobs.map(job => (
-            <Card key={job.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+          {openJobs.map(job => {
+            const isFresh = isJobFresh(job)
+            return (
+            <Card key={job.id} className={`hover:shadow-lg transition-shadow overflow-hidden ${isFresh ? 'border-primary border-2' : ''}`}>
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
+                      {isFresh && (
+                        <div className="flex items-center gap-2 px-2 py-1 bg-primary text-primary-foreground rounded-md text-xs font-bold animate-pulse">
+                          <div className="h-2 w-2 rounded-full bg-primary-foreground" />
+                          FRESH
+                        </div>
+                      )}
                       <CardTitle className="text-xl">{job.title}</CardTitle>
                       <Badge 
                         variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
@@ -191,7 +205,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )})}
         </div>
       </div>
 
