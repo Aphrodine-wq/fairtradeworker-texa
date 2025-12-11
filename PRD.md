@@ -44,6 +44,13 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Progression**: Click demo button → Auto-login as demo user → Show demo mode banner → Navigate to role-appropriate page → Explore pre-populated jobs, bids, invoices, and territories
 - **Success criteria**: Users can instantly experience all platform features with realistic data; demo banner clearly indicates demo mode status
 
+### 3D Theme Toggle
+- **Functionality**: Animated theme switcher with a 3D rotating sphere that flips between sun (☀️) and moon (🌙) icons
+- **Purpose**: Provide delightful, accessible way to switch between light and dark modes while saving user preference
+- **Trigger**: User clicks theme toggle button in top-right corner of header
+- **Progression**: Click toggle → Sphere rotates 180° on Y-axis with spring animation (0.8s) → Icon flips from sun to moon (or vice versa) → Entire page fades to new theme (0.4s transition) → Preference saved to localStorage → Theme persists across sessions
+- **Success criteria**: Animation is smooth with natural spring physics; theme applies immediately; preference persists after page refresh; respects system preference on first visit
+
 ### Post-&-Win Viral Loop
 - **Functionality**: Every homeowner who posts a job receives a unique $20-off referral code to share with neighbors
 - **Purpose**: Create viral growth through neighbor-to-neighbor referrals with financial incentives
@@ -179,20 +186,21 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 
 ## Design Direction
 
-The design should feel professional yet approachable, like a blend of a modern construction site office and a friendly Texas Main Street business. Orange (trade work, warmth, action) paired with trustworthy blue creates confidence. The interface should feel fast, transparent, and empowering—no hidden fees, no confusion. Everything is upfront and honest, just like a handshake deal, but with modern technology backing it up.
+The design features a clean, modern white and blue aesthetic that feels professional, trustworthy, and accessible. The interface prioritizes clarity and functionality with a contemporary color palette centered on blue tones that communicate reliability and professionalism. The design includes a delightful 3D theme toggle that smoothly transitions between light and dark modes, with all interface elements fading gracefully during the transition. Every interaction feels polished and responsive, with subtle hover effects and smooth animations that enhance usability without being distracting.
 
 ## Color Selection
 
-A bold, energetic palette centered on construction orange with supporting blues and neutrals for a professional marketplace feel.
+A fresh, clean palette centered on professional blue with crisp whites and subtle grays for a modern marketplace feel.
 
-- **Primary Color**: oklch(0.68 0.19 35) - Vibrant construction orange communicating action, energy, and fair trade
-- **Secondary Colors**: oklch(0.45 0.15 255) - Deep trustworthy blue for stability and professionalism
-- **Accent Color**: oklch(0.75 0.20 85) - Bright yellow-orange for CTAs and important actions
+- **Primary Color**: oklch(0.45 0.20 264) - Professional blue communicating trust, stability, and reliability
+- **Secondary Colors**: oklch(0.50 0.12 264) - Lighter blue for supporting elements and secondary actions
+- **Accent Color**: oklch(0.40 0.22 264) - Deeper blue for CTAs and important actions
+- **Background**: Pure white oklch(1 0 0) in light mode, deep dark oklch(0.12 0 0) in dark mode
 - **Foreground/Background Pairings**: 
-  - Background (Light Gray oklch(0.98 0 0)): Dark text oklch(0.25 0 0) - Ratio 13.2:1 ✓
-  - Primary (Orange oklch(0.68 0.19 35)): White text oklch(1 0 0) - Ratio 4.9:1 ✓
-  - Secondary (Blue oklch(0.45 0.15 255)): White text oklch(1 0 0) - Ratio 8.1:1 ✓
-  - Accent (Yellow-Orange oklch(0.75 0.20 85)): Black text oklch(0.25 0 0) - Ratio 7.2:1 ✓
+  - Background (White oklch(1 0 0)): Dark text oklch(0.15 0 0) - Ratio 17.8:1 ✓
+  - Primary (Blue oklch(0.45 0.20 264)): White text oklch(1 0 0) - Ratio 8.4:1 ✓
+  - Card (White oklch(1 0 0)): Dark text oklch(0.15 0 0) - Ratio 17.8:1 ✓
+  - Muted (Light Gray oklch(0.96 0 0)): Medium text oklch(0.45 0 0) - Ratio 7.1:1 ✓
 
 ## Font Selection
 
@@ -210,23 +218,24 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
 
 ## Animations
 
-Animations should feel snappy and purposeful—like the satisfying click of a quality power tool. Use motion to guide attention during the AI scoping process (progressive reveal), provide satisfying feedback on bid submissions and territory claims (scale + fade), and smooth transitions between dashboard views. Avoid anything that feels sluggish or decorative. Every animation should make the interface feel more responsive and delightful.
+Animations feel snappy and purposeful with a spring-based physics model that creates natural, delightful interactions. The 3D theme toggle rotates smoothly with a spring transition (0.8s) when switching between light and dark modes, while the entire page fades gracefully (0.4s) during theme changes. Motion guides attention during the AI scoping process with progressive reveals, provides satisfying feedback on bid submissions with scale and fade effects, and creates smooth transitions between dashboard views. Buttons respond with subtle lift (2px translate-y) and enhanced shadows on hover, then scale down slightly (scale-95) on click for tactile feedback. Every animation makes the interface feel more responsive and delightful without feeling sluggish or decorative.
 
 ## Component Selection
 
 - **Components**: 
-  - Button (primary, secondary, ghost variants with orange/blue theming)
-  - Card (for job listings, bids, stats, white bg with subtle shadows)
-  - Input, Textarea (for forms with focus states)
+  - Button (primary, secondary, ghost variants with blue theming, improved hover effects)
+  - Card (for job listings, bids, stats, white bg with subtle shadows and hover lift)
+  - Input, Textarea (for forms with focus states, 16px minimum text size)
   - Dialog (for bid submission, payment flows, confirmations, customer details)
   - Tabs (for contractor dashboard sections: Browse Jobs, CRM, Invoices)
   - Badge (for Pro status, job status, county status, customer status)
   - Avatar (for user profiles)
-  - Table (for job listings, invoice lists)
+  - Table (for job listings, invoice lists, transforms to cards on mobile)
   - Progress (for AI scoping loading state)
   - Toaster (sonner for notifications, especially invite confirmations)
-  - Lightbox (full-screen photo viewer with keyboard navigation)
+  - Lightbox (full-screen photo viewer with keyboard navigation and pinch-to-zoom)
   - Label (for form fields in instant invite widget)
+  - ThemeToggle (3D animated sun/moon toggle with spring physics)
   
 - **Customizations**: 
   - Custom territory map component using SVG for Texas counties (no external map library in demo)
@@ -235,24 +244,30 @@ Animations should feel snappy and purposeful—like the satisfying click of a qu
   - Custom file upload zones with drag-and-drop states
   - Custom lightbox with smooth animations, keyboard controls (Escape, Arrow keys), and photo counter
   - Custom instant invite widget with email/SMS tabs and real-time validation
+  - Custom 3D theme toggle with rotateY animation and spring transition
 
 - **States**: 
-  - Buttons: default, hover (scale-105 + brightness), active (scale-95), disabled (opacity-50)
-  - Inputs: default (border-gray-300), focus (border-primary + ring), error (border-destructive)
-  - Cards: default (shadow-sm), hover (shadow-md + translate-y-[-2px])
+  - Buttons: default, hover (scale-105 + brightness + shadow-md + translate-y-[-2px]), active (scale-95), disabled (opacity-50)
+  - Inputs: default (border-input), focus (border-primary + ring), error (border-destructive), minimum 44px height
+  - Cards: default (shadow-sm + rounded-lg), hover (shadow-md + translate-y-[-2px])
+  - Theme: light (white background) and dark (deep dark background) with smooth 0.4s fade transition
   
 - **Icon Selection**: 
-  - Phosphor icons throughout (Wrench for jobs, House for homeowner, Hammer for contractor, MapPin for territory, CurrencyDollar for invoices, Crown for Pro, Users for CRM, EnvelopeSimple for email invites, DeviceMobile for SMS invites, PaperPlaneRight for sending invites, Note for customer notes)
+  - Phosphor icons throughout (Wrench for jobs, House for homeowner, Hammer for contractor, MapPin for territory, CurrencyDollar for invoices, Crown for Pro, Users for CRM, EnvelopeSimple for email invites, DeviceMobile for SMS invites, PaperPlaneRight for sending invites, Note for customer notes, Sun for light mode, Moon for dark mode)
 
 - **Spacing**: 
   - Container padding: px-4 md:px-8
   - Section gaps: gap-6 md:gap-8
   - Card padding: p-4 md:p-6
   - Button padding: px-6 py-3
+  - All spacing uses 4px increments (4, 8, 12, 16, 24px)
 
 - **Mobile**: 
-  - Stack navigation horizontally on desktop, collapse to hamburger on mobile
+  - Stack navigation horizontally on desktop, collapse items on mobile with responsive breakpoints
   - Single column layouts below md breakpoint
-  - Touch-friendly 44px minimum tap targets
+  - Touch-friendly 44px minimum tap targets on all interactive elements
   - Full-width cards and buttons on mobile
-  - Simplified table → card list transformation on mobile
+  - Simplified table → card list transformation on mobile with stacked layouts
+  - Text minimum 16px for readability
+  - Lightbox photos support pinch-to-zoom gesture
+  - No horizontal scrolling at any breakpoint

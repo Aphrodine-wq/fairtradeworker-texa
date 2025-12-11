@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ThemeToggle } from "@/components/layout/ThemeToggle"
 import type { User as UserType } from "@/lib/types"
 
 interface HeaderProps {
@@ -19,17 +20,17 @@ interface HeaderProps {
 
 export function Header({ user, onNavigate, onLogout }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
+    <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 shadow-sm">
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex h-16 items-center justify-between">
           <button 
             onClick={() => onNavigate('home')}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity min-h-[44px]"
           >
-            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-xl">
+            <div className="flex items-center justify-center w-10 h-10 bg-primary rounded-lg shadow-sm">
               <Wrench className="text-primary-foreground" size={24} weight="bold" />
             </div>
-            <div className="flex flex-col items-start">
+            <div className="hidden sm:flex flex-col items-start">
               <span className="font-bold text-lg leading-none">FairTradeWorker</span>
               <span className="text-xs text-muted-foreground leading-none">Texas</span>
             </div>
@@ -38,10 +39,11 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
           <nav className="flex items-center gap-2">
             {!user ? (
               <>
-                <Button variant="ghost" onClick={() => onNavigate('login')}>
+                <ThemeToggle />
+                <Button variant="ghost" onClick={() => onNavigate('login')} className="min-h-[44px]">
                   Log In
                 </Button>
-                <Button onClick={() => onNavigate('signup')}>
+                <Button onClick={() => onNavigate('signup')} className="min-h-[44px]">
                   Sign Up
                 </Button>
               </>
@@ -49,10 +51,10 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
               <>
                 {user.role === 'homeowner' && (
                   <>
-                    <Button variant="ghost" onClick={() => onNavigate('my-jobs')}>
+                    <Button variant="ghost" onClick={() => onNavigate('my-jobs')} className="hidden sm:flex min-h-[44px]">
                       My Jobs
                     </Button>
-                    <Button onClick={() => onNavigate('post-job')} className="hidden md:flex">
+                    <Button onClick={() => onNavigate('post-job')} className="hidden md:flex min-h-[44px]">
                       <House weight="fill" className="mr-2" />
                       Post Job
                     </Button>
@@ -60,25 +62,27 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                 )}
                 {user.role === 'contractor' && (
                   <>
-                    <Button variant="ghost" onClick={() => onNavigate('browse-jobs')}>
+                    <Button variant="ghost" onClick={() => onNavigate('browse-jobs')} className="hidden sm:flex min-h-[44px]">
                       Browse Jobs
                     </Button>
-                    <Button variant="ghost" onClick={() => onNavigate('dashboard')}>
+                    <Button variant="ghost" onClick={() => onNavigate('dashboard')} className="hidden md:flex min-h-[44px]">
                       <Hammer weight="fill" className="mr-2" />
                       Dashboard
                     </Button>
                   </>
                 )}
                 {user.role === 'operator' && (
-                  <Button variant="ghost" onClick={() => onNavigate('territory-map')}>
+                  <Button variant="ghost" onClick={() => onNavigate('territory-map')} className="hidden sm:flex min-h-[44px]">
                     <MapPin weight="fill" className="mr-2" />
                     Territory Map
                   </Button>
                 )}
                 
+                <ThemeToggle />
+                
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="rounded-full">
+                    <Button variant="ghost" size="icon" className="rounded-full min-w-[44px] min-h-[44px]">
                       <Avatar>
                         <AvatarFallback className="bg-primary text-primary-foreground">
                           {user.fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
@@ -92,7 +96,7 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                         <p className="font-medium">{user.fullName}</p>
                         <p className="text-xs text-muted-foreground">{user.email}</p>
                         {user.isPro && (
-                          <span className="text-xs font-semibold text-accent">PRO MEMBER</span>
+                          <span className="text-xs font-semibold text-primary">PRO MEMBER</span>
                         )}
                       </div>
                     </DropdownMenuLabel>
