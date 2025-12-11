@@ -5,19 +5,21 @@ import { useKV } from "@github/spark/hooks"
 import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
+import { memo, useMemo } from "react"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
   onDemoLogin?: (user: User) => void
 }
 
-export function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
+export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
-  const todayJobs = (jobs || []).filter(job => {
-    const jobDate = new Date(job.createdAt)
-    const today = new Date()
-    return jobDate.toDateString() === today.toDateString()
-  })
+  
+  const todayJobs = useMemo(() => {
+    if (!jobs || jobs.length === 0) return []
+    const today = new Date().toDateString()
+    return jobs.filter(job => new Date(job.createdAt).toDateString() === today)
+  }, [jobs])
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
@@ -149,4 +151,4 @@ export function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
       </section>
     </div>
   )
-}
+})

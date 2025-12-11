@@ -1,19 +1,20 @@
-import { useState, useEffect, lazy, Suspense } from "react"
+import { useState, useEffect, lazy, Suspense, memo } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
-import { HomePage } from "@/pages/Home"
-import { LoginPage } from "@/pages/Login"
-import { SignupPage } from "@/pages/Signup"
-import { MyJobs } from "@/pages/MyJobs"
-import { JobPoster } from "@/components/jobs/JobPoster"
-import { BrowseJobs } from "@/components/jobs/BrowseJobs"
-import { AutomationRunner } from "@/components/contractor/AutomationRunner"
 import { useKV } from "@github/spark/hooks"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
+
+const HomePage = lazy(() => import("@/pages/Home").then(m => ({ default: m.HomePage })))
+const LoginPage = lazy(() => import("@/pages/Login").then(m => ({ default: m.LoginPage })))
+const SignupPage = lazy(() => import("@/pages/Signup").then(m => ({ default: m.SignupPage })))
+const MyJobs = lazy(() => import("@/pages/MyJobs").then(m => ({ default: m.MyJobs })))
+const JobPoster = lazy(() => import("@/components/jobs/JobPoster").then(m => ({ default: m.JobPoster })))
+const BrowseJobs = lazy(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs })))
+const AutomationRunner = lazy(() => import("@/components/contractor/AutomationRunner").then(m => ({ default: m.AutomationRunner })))
 
 const ContractorDashboard = lazy(() => 
   import("@/components/contractor/ContractorDashboard")
@@ -87,13 +88,18 @@ function App() {
   const [territories, setTerritories] = useKV<Territory[]>("territories", [])
 
   useEffect(() => {
-    const demoData = initializeDemoData()
-    if (demoData) {
-      const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
-      setJobs(demoJobs)
-      setInvoices(demoInvoices)
-      setTerritories(demoTerritories)
+    let mounted = true
+    const initData = async () => {
+      const demoData = initializeDemoData()
+      if (demoData && mounted) {
+        const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
+        setJobs(demoJobs)
+        setInvoices(demoInvoices)
+        setTerritories(demoTerritories)
+      }
     }
+    initData()
+    return () => { mounted = false }
   }, [])
 
   const handleNavigate = (page: string, role?: string) => {
@@ -181,7 +187,9 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <AutomationRunner user={currentUser ?? null} />
+      <Suspense fallback={null}>
+        <AutomationRunner user={currentUser ?? null} />
+      </Suspense>
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
       {isDemoMode && currentUser && (
         <DemoModeBanner 
@@ -190,7 +198,9 @@ function App() {
         />
       )}
       <main className="flex-1">
-        {renderPage()}
+        <Suspense fallback={<LoadingFallback />}>
+          {renderPage()}
+        </Suspense>
       </main>
       <Footer />
       <Toaster position="top-center" />
