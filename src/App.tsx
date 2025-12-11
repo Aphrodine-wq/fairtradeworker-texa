@@ -15,12 +15,54 @@ import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 
-const ContractorDashboard = lazy(() => import("@/components/contractor/ContractorDashboard").then(m => ({ default: m.ContractorDashboard })))
-const EnhancedCRM = lazy(() => import("@/components/contractor/EnhancedCRM").then(m => ({ default: m.EnhancedCRM })))
-const InvoiceManager = lazy(() => import("@/components/contractor/InvoiceManager").then(m => ({ default: m.InvoiceManager })))
-const ProUpgrade = lazy(() => import("@/components/contractor/ProUpgrade").then(m => ({ default: m.ProUpgrade })))
-const TerritoryMap = lazy(() => import("@/components/territory/TerritoryMap").then(m => ({ default: m.TerritoryMap })))
-const CompanyRevenueDashboard = lazy(() => import("@/components/contractor/CompanyRevenueDashboard").then(m => ({ default: m.CompanyRevenueDashboard })))
+const ContractorDashboard = lazy(() => 
+  import("@/components/contractor/ContractorDashboard")
+    .then(m => ({ default: m.ContractorDashboard }))
+    .catch(err => {
+      console.error("Failed to load ContractorDashboard:", err)
+      throw err
+    })
+)
+const EnhancedCRM = lazy(() => 
+  import("@/components/contractor/EnhancedCRM")
+    .then(m => ({ default: m.EnhancedCRM }))
+    .catch(err => {
+      console.error("Failed to load EnhancedCRM:", err)
+      throw err
+    })
+)
+const InvoiceManager = lazy(() => 
+  import("@/components/contractor/InvoiceManager")
+    .then(m => ({ default: m.InvoiceManager }))
+    .catch(err => {
+      console.error("Failed to load InvoiceManager:", err)
+      throw err
+    })
+)
+const ProUpgrade = lazy(() => 
+  import("@/components/contractor/ProUpgrade")
+    .then(m => ({ default: m.ProUpgrade }))
+    .catch(err => {
+      console.error("Failed to load ProUpgrade:", err)
+      throw err
+    })
+)
+const TerritoryMap = lazy(() => 
+  import("@/components/territory/TerritoryMap")
+    .then(m => ({ default: m.TerritoryMap }))
+    .catch(err => {
+      console.error("Failed to load TerritoryMap:", err)
+      throw err
+    })
+)
+const CompanyRevenueDashboard = lazy(() => 
+  import("@/components/contractor/CompanyRevenueDashboard")
+    .then(m => ({ default: m.CompanyRevenueDashboard }))
+    .catch(err => {
+      console.error("Failed to load CompanyRevenueDashboard:", err)
+      throw err
+    })
+)
 
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard'
 
