@@ -77,6 +77,9 @@ export interface Invoice {
   reminderSentAt?: string
   lateFeeApplied: boolean
   isProForma: boolean
+  isRecurring?: boolean
+  recurringInterval?: 'monthly' | 'quarterly' | 'yearly'
+  nextRecurringDate?: string
   createdAt: string
 }
 

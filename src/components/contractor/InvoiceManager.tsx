@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator } from "@phosphor-icons/react"
+import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise } from "@phosphor-icons/react"
 import type { User, Invoice, InvoiceLineItem, Job } from "@/lib/types"
+import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
 
 interface InvoiceManagerProps {
   user: User
@@ -28,6 +29,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [taxRate, setTaxRate] = useState(8.25)
   const [dueDate, setDueDate] = useState("")
   const [isProForma, setIsProForma] = useState(false)
+  const [isRecurring, setIsRecurring] = useState(false)
+  const [recurringInterval, setRecurringInterval] = useState<'monthly' | 'quarterly'>('monthly')
 
   const myInvoices = (invoices || []).filter(inv => inv.contractorId === user.id)
   
@@ -106,6 +109,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
       sentDate: new Date().toISOString(),
       isProForma: isProForma,
       lateFeeApplied: false,
+      isRecurring: isRecurring,
+      recurringInterval: isRecurring ? recurringInterval : undefined,
       createdAt: new Date().toISOString()
     }
 
@@ -121,6 +126,8 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
     setTaxRate(8.25)
     setDueDate("")
     setIsProForma(false)
+    setIsRecurring(false)
+    setRecurringInterval('monthly')
   }
 
   const getStatusColor = (status: Invoice['status']) => {
@@ -230,10 +237,16 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-lg mb-1 flex items-center gap-2">
+                          <CardTitle className="text-lg mb-1 flex items-center gap-2 flex-wrap">
                             {invoice.jobTitle}
                             {invoice.isProForma && (
                               <Badge variant="outline">Pro Forma</Badge>
+                            )}
+                            {invoice.isRecurring && (
+                              <Badge variant="secondary" className="flex items-center gap-1">
+                                <ArrowClockwise weight="fill" size={12} />
+                                Recurring
+                              </Badge>
                             )}
                           </CardTitle>
                           <p className="text-sm text-muted-foreground">
@@ -274,6 +287,9 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                             <span>{formatCurrency(invoice.total)}</span>
                           </div>
                         </div>
+                      </div>
+                      <div className="mt-4">
+                        <InvoicePDFGenerator invoice={invoice} contractor={user} />
                       </div>
                     </CardContent>
                   </Card>
@@ -334,6 +350,37 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                 This is a Pro Forma (estimate) invoice
               </Label>
             </div>
+
+            {user.isPro && (
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="recurring"
+                  checked={isRecurring}
+                  onChange={(e) => setIsRecurring(e.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300"
+                />
+                <Label htmlFor="recurring" className="text-sm flex items-center gap-2">
+                  <ArrowClockwise weight="duotone" size={16} />
+                  Recurring invoice (Pro feature)
+                </Label>
+              </div>
+            )}
+
+            {isRecurring && user.isPro && (
+              <div className="space-y-2">
+                <Label htmlFor="recurringInterval">Recurring Interval</Label>
+                <Select value={recurringInterval} onValueChange={(value: 'monthly' | 'quarterly') => setRecurringInterval(value)}>
+                  <SelectTrigger id="recurringInterval">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="monthly">Monthly</SelectItem>
+                    <SelectItem value="quarterly">Every 3 Months</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">

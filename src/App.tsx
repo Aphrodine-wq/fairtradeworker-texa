@@ -14,12 +14,13 @@ import { EnhancedCRM } from "@/components/contractor/EnhancedCRM"
 import { InvoiceManager } from "@/components/contractor/InvoiceManager"
 import { ProUpgrade } from "@/components/contractor/ProUpgrade"
 import { TerritoryMap } from "@/components/territory/TerritoryMap"
+import { CompanyRevenueDashboard } from "@/components/contractor/CompanyRevenueDashboard"
 import { useKV } from "@github/spark/hooks"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -115,6 +116,8 @@ function App() {
         return currentUser?.role === 'operator'
           ? <TerritoryMap user={currentUser} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'revenue-dashboard':
+        return currentUser ? <CompanyRevenueDashboard user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
