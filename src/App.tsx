@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/Footer"
 import { HomePage } from "@/pages/Home"
 import { LoginPage } from "@/pages/Login"
 import { SignupPage } from "@/pages/Signup"
+import { MyJobs } from "@/pages/MyJobs"
 import { JobPoster } from "@/components/jobs/JobPoster"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { ContractorDashboard } from "@/components/contractor/ContractorDashboard"
@@ -16,7 +17,7 @@ import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'browse-jobs' | 'dashboard' | 'pro-upgrade' | 'territory-map'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'pro-upgrade' | 'territory-map'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -67,6 +68,8 @@ function App() {
       setCurrentPage('dashboard')
     } else if (demoUser.role === 'operator') {
       setCurrentPage('territory-map')
+    } else if (demoUser.role === 'homeowner') {
+      setCurrentPage('my-jobs')
     } else {
       setCurrentPage('home')
     }
@@ -86,6 +89,10 @@ function App() {
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
         return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'my-jobs':
+        return currentUser?.role === 'homeowner'
+          ? <MyJobs user={currentUser} />
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
         return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':

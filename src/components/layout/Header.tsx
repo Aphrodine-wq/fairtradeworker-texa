@@ -48,10 +48,15 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
             ) : (
               <>
                 {user.role === 'homeowner' && (
-                  <Button onClick={() => onNavigate('post-job')} className="hidden md:flex">
-                    <House weight="fill" className="mr-2" />
-                    Post Job
-                  </Button>
+                  <>
+                    <Button variant="ghost" onClick={() => onNavigate('my-jobs')}>
+                      My Jobs
+                    </Button>
+                    <Button onClick={() => onNavigate('post-job')} className="hidden md:flex">
+                      <House weight="fill" className="mr-2" />
+                      Post Job
+                    </Button>
+                  </>
                 )}
                 {user.role === 'contractor' && (
                   <>
@@ -92,10 +97,24 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
-                      <User className="mr-2" size={16} />
-                      Dashboard
-                    </DropdownMenuItem>
+                    {user.role === 'homeowner' && (
+                      <DropdownMenuItem onClick={() => onNavigate('my-jobs')}>
+                        <House className="mr-2" size={16} />
+                        My Jobs
+                      </DropdownMenuItem>
+                    )}
+                    {user.role === 'contractor' && (
+                      <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
+                        <Hammer className="mr-2" size={16} />
+                        Dashboard
+                      </DropdownMenuItem>
+                    )}
+                    {user.role === 'operator' && (
+                      <DropdownMenuItem onClick={() => onNavigate('territory-map')}>
+                        <MapPin className="mr-2" size={16} />
+                        Territory Map
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem onClick={onLogout}>
                       <SignOut className="mr-2" size={16} />
                       Log Out
