@@ -9,7 +9,9 @@ import { Video, Microphone, FileText, Upload } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
+import { VideoUploader } from "./VideoUploader"
 import type { Job, User, ReferralCode } from "@/lib/types"
+import type { VideoAnalysis } from "@/lib/video/types"
 import { calculateJobSize } from "@/lib/types"
 import { generateReferralCode } from "@/lib/viral"
 import { useKV } from "@github/spark/hooks"
@@ -29,6 +31,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [videoAnalysis, setVideoAnalysis] = useState<VideoAnalysis | null>(null)
   const [aiResult, setAiResult] = useState<any>(null)
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [referralCodes, setReferralCodes] = useKV<ReferralCode[]>("referral-codes", [])
@@ -44,6 +47,30 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0])
     }
+  }
+
+  const handleVideoUploadComplete = async (uploadedFile: File, analysis: VideoAnalysis) => {
+    setFile(uploadedFile)
+    setVideoAnalysis(analysis)
+    setStep('results')
+    
+    const enhancedPrompt = `
+Video Analysis:
+- Duration: ${analysis.duration.toFixed(0)}s
+- Scene cuts: ${analysis.sceneCuts.length}
+- Objects detected: ${analysis.objects.map(o => `${o.label} (${(o.confidence * 100).toFixed(0)}%)`).join(', ')}
+- Sound events: ${analysis.soundEvents.map(e => e.type).join(', ')}
+- Transcript: "${analysis.transcript.map(w => w.word).join(' ')}"
+- Location: ${analysis.metadata.gpsCoordinates ? `${analysis.metadata.gpsCoordinates.lat}, ${analysis.metadata.gpsCoordinates.lon}` : 'Unknown'}
+- Device: ${analysis.metadata.deviceMake} ${analysis.metadata.deviceModel}
+- Audio quality: ${analysis.audioQuality}
+
+Job title: ${title || 'Untitled job'}
+    `.trim()
+    
+    const mockFile = new File([enhancedPrompt], "enhanced-scope.txt")
+    const result = await fakeAIScope(mockFile)
+    setAiResult(result)
   }
 
   const handleProcess = async () => {
@@ -240,41 +267,63 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
             )}
 
             {(inputMethod === 'video' || inputMethod === 'audio') && (
-              <div className="space-y-2">
-                <Label htmlFor="file">Upload {inputMethod === 'video' ? 'Video' : 'Audio'}</Label>
-                <div className="flex gap-2">
-                  <Input
-                    ref={fileInputRef}
-                    id="file"
-                    type="file"
-                    accept={inputMethod === 'video' ? 'video/*' : 'audio/*'}
-                    onChange={handleFileChange}
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    <Upload size={20} />
-                  </Button>
+              <>
+                <div className="space-y-2">
+                  <Label>Upload {inputMethod === 'video' ? 'Video' : 'Audio'}</Label>
+                  {inputMethod === 'video' ? (
+                    <VideoUploader 
+                      onUploadComplete={handleVideoUploadComplete}
+                      onCancel={() => setStep('select')}
+                    />
+                  ) : (
+                    <div className="flex gap-2">
+                      <Input
+                        ref={fileInputRef}
+                        id="file"
+                        type="file"
+                        accept="audio/*"
+                        onChange={handleFileChange}
+                        className="flex-1"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload size={20} />
+                      </Button>
+                    </div>
+                  )}
+                  {file && inputMethod !== 'video' && (
+                    <p className="text-sm text-muted-foreground">
+                      Selected: {file.name}
+                    </p>
+                  )}
                 </div>
-                {file && (
-                  <p className="text-sm text-muted-foreground">
-                    Selected: {file.name}
-                  </p>
+
+                {inputMethod !== 'video' && (
+                  <div className="flex gap-3 pt-4">
+                    <Button variant="outline" onClick={() => setStep('select')}>
+                      Back
+                    </Button>
+                    <Button onClick={handleProcess} className="flex-1">
+                      Generate AI Scope
+                    </Button>
+                  </div>
                 )}
-              </div>
+              </>
             )}
 
-            <div className="flex gap-3 pt-4">
-              <Button variant="outline" onClick={() => setStep('select')}>
-                Back
-              </Button>
-              <Button onClick={handleProcess} className="flex-1">
-                Generate AI Scope
-              </Button>
-            </div>
+            {inputMethod === 'text' && (
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setStep('select')}>
+                  Back
+                </Button>
+                <Button onClick={handleProcess} className="flex-1">
+                  Generate AI Scope
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}

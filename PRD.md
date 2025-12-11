@@ -87,11 +87,25 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: User can sign up, log in, and see content appropriate to their role
 
 ### AI Job Scoping (Simulated)
-- **Functionality**: Upload video/voice/photos, get AI-generated scope, price range, and materials list
-- **Purpose**: Remove friction from job posting and provide instant pricing transparency
+- **Functionality**: Upload video/voice/photos, get AI-generated scope, price range, and materials list. Video support includes up to 150 MB files with advanced analysis including scene detection, object recognition, audio transcription, and metadata extraction.
+- **Purpose**: Remove friction from job posting and provide instant pricing transparency with rich multimodal analysis
 - **Trigger**: Homeowner clicks "Post Job" button
-- **Progression**: Choose input method (video/voice/text+photos) → Upload content → Show loading (2s simulation) → Display scope card with price range and materials → Confirm and post
-- **Success criteria**: Job is created with AI-generated details visible to contractors
+- **Progression**: Choose input method (video/voice/text+photos) → Upload content → For video: show chunked upload progress with circular ring indicator → Extract 5 thumbnail frames → Allow user to select cover image → Analyze video metadata (codec, bitrate, GPS, device) → Detect scene cuts, objects, sound events → Transcribe audio → Show quality warnings (shaky, low audio) → Display comprehensive scope card with all analysis → Confirm and post
+- **Success criteria**: Job is created with AI-generated details visible to contractors; video uploads handle 150 MB files; progress shows percentage and thumbnails; analysis extracts meaningful data
+
+### 150 MB Video Upload System
+- **Functionality**: Advanced video upload with chunked resumable transfer, real-time thumbnail extraction, metadata analysis, duplicate detection, and quality warnings
+- **Purpose**: Enable homeowners to record detailed walkthrough videos of repair needs while providing contractors with rich visual context
+- **Trigger**: Homeowner selects "Video" input method when posting a job
+- **Progression**: Select video method → Click or drag to upload video (max 150 MB) → Validate file (MP4, MOV, MKV, WebM) → Calculate SHA-256 hash of first/last 1 MB → Check for duplicate uploads within 24h → Start chunked upload (5 MB chunks, ~30 chunks for full file) → Show circular progress indicator with percentage → Extract 5 thumbnail frames at 0%, 25%, 50%, 75%, 100% duration → Display thumbnail strip → Allow cover selection → Analyze video (duration, scene cuts, objects, sound events, transcript, GPS, device info) → Show quality warnings (shaky footage, low audio) → Display comprehensive analysis results → Continue with job posting
+- **Success criteria**: Uploads handle files up to 150 MB; progress can be paused/resumed; thumbnails extract correctly; duplicate detection prevents re-uploads; analysis provides actionable data; warnings appear for quality issues; upload completes successfully 98% of the time
+
+### Video Analysis & Metadata
+- **Functionality**: Extract comprehensive metadata from uploaded videos including technical specs, GPS location, scene changes, detected objects, sound events, and audio transcription
+- **Purpose**: Provide contractors with deep context about the job and auto-fill location data when available
+- **Trigger**: Video upload completes processing
+- **Progression**: Video uploaded → Extract technical metadata (codec, bitrate, fps, resolution, color space) → Parse GPS coordinates from video metadata → Detect device make/model → Analyze audio (sample rate, loudness in LUFS) → Detect scene changes → Identify objects in frames (water heater, pipes, etc.) → Classify sound events (drip, hiss, hum) → Transcribe speech with timestamps → Detect language → Calculate motion blur score → Compile all data for AI scope generation
+- **Success criteria**: All metadata fields populate correctly; GPS auto-fills job location when present; scene cuts and objects are detected; transcript is clickable with timestamps; warnings trigger for poor audio (<-40 LUFS) or shaky footage (<22 dB PSNR)
 
 ### Job Browsing & Bidding
 - **Functionality**: Contractors view open jobs with size badges (🟢 Small ≤$300, 🟡 Medium ≤$1,500, 🔴 Large >$1,500), photos, materials list, and AI scope, then submit free bids
