@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Lightbox } from "@/components/ui/Lightbox"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images } from "@phosphor-icons/react"
@@ -21,6 +22,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [bidAmount, setBidAmount] = useState("")
   const [bidMessage, setBidMessage] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [lightboxImages, setLightboxImages] = useState<string[]>([])
+  const [lightboxIndex, setLightboxIndex] = useState(0)
 
   const openJobs = (jobs || []).filter(job => job.status === 'open')
 
@@ -29,6 +33,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setBidAmount("")
     setBidMessage("")
     setDialogOpen(true)
+  }
+
+  const handlePhotoClick = (photos: string[], index: number) => {
+    setLightboxImages(photos)
+    setLightboxIndex(index)
+    setLightboxOpen(true)
   }
 
   const handleSubmitBid = () => {
@@ -112,20 +122,28 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                       <Images size={18} weight="duotone" />
-                      <span>Photos</span>
+                      <span>Photos ({job.photos.length})</span>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {job.photos.map((photo, idx) => (
-                        <div 
+                        <button
                           key={idx} 
-                          className="relative aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer"
+                          onClick={() => handlePhotoClick(job.photos || [], idx)}
+                          className="relative aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer transition-transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                         >
                           <img 
                             src={photo} 
                             alt={`Job photo ${idx + 1}`}
-                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            className="w-full h-full object-cover transition-transform group-hover:scale-110"
                           />
-                        </div>
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                            <Images 
+                              size={32} 
+                              weight="duotone" 
+                              className="text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            />
+                          </div>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -213,6 +231,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Lightbox
+        images={lightboxImages}
+        initialIndex={lightboxIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+      />
     </div>
   )
 }

@@ -34,11 +34,18 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Job is created with AI-generated details visible to contractors
 
 ### Job Browsing & Bidding
-- **Functionality**: Contractors view open jobs in their territory and submit bids
-- **Purpose**: Connect contractors with relevant work opportunities
+- **Functionality**: Contractors view open jobs with photos, materials list, and AI scope, then submit bids
+- **Purpose**: Connect contractors with relevant work opportunities and detailed job information
 - **Trigger**: Contractor navigates to "Browse Jobs" or dashboard
-- **Progression**: View filtered job list → Click job card → See full details and AI scope → Enter bid amount and message → Submit bid → Toast confirmation
-- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids
+- **Progression**: View filtered job list → See job photos in grid → Click photo to open full-screen lightbox → Navigate between photos with arrow keys/buttons → Close lightbox → Review AI scope and materials → Enter bid amount and message → Submit bid → Toast confirmation
+- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer
+
+### Photo Lightbox Viewer
+- **Functionality**: Full-screen photo viewer with keyboard navigation and smooth transitions
+- **Purpose**: Allow contractors to examine job details closely before bidding
+- **Trigger**: Clicking any job photo thumbnail in browse view or job details
+- **Progression**: Click photo thumbnail → Lightbox opens with smooth animation → View full-resolution image → Use arrow keys or buttons to navigate → See photo counter (e.g., "2 / 5") → Press Escape or X to close → Return to job listing
+- **Success criteria**: Photos display at full resolution, navigation is smooth, keyboard shortcuts work, mobile touch gestures supported
 
 ### Contractor Dashboard & CRM
 - **Functionality**: View active jobs, open bids, earnings, and manage customer relationships
@@ -134,12 +141,14 @@ Animations should feel snappy and purposeful—like the satisfying click of a qu
   - Table (for job listings, invoice lists)
   - Progress (for AI scoping loading state)
   - Toaster (sonner for notifications)
+  - Lightbox (full-screen photo viewer with keyboard navigation)
   
 - **Customizations**: 
   - Custom territory map component using SVG for Texas counties (no external map library in demo)
   - Custom stat cards with large numbers and Phosphor icons
   - Custom job scope result card with price slider
   - Custom file upload zones with drag-and-drop states
+  - Custom lightbox with smooth animations, keyboard controls (Escape, Arrow keys), and photo counter
 
 - **States**: 
   - Buttons: default, hover (scale-105 + brightness), active (scale-95), disabled (opacity-50)
