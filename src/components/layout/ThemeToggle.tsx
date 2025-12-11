@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Sun, Moon } from "@phosphor-icons/react"
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
@@ -22,34 +21,29 @@ export function ThemeToggle() {
   }
 
   return (
-    <motion.button
+    <button
       onClick={toggleTheme}
-      className="relative w-12 h-12 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-      whileTap={{ scale: 0.9 }}
+      className="relative w-20 h-10 rounded-full bg-muted hover:bg-muted/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <motion.div
-        animate={{ rotateY: isDark ? 180 : 0 }}
-        transition={{ duration: 0.8, type: 'spring', stiffness: 200, damping: 20 }}
-        className="preserve-3d relative w-full h-full"
-        style={{ transformStyle: 'preserve-3d' }}
+        animate={{ x: isDark ? 40 : 0 }}
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        className="absolute top-1 left-1 w-8 h-8 rounded-full bg-primary shadow-md flex items-center justify-center"
       >
-        <div 
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <Sun size={24} weight="fill" className="text-white" />
-        </div>
-        <div 
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center shadow-lg"
-          style={{ 
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
-          }}
-        >
-          <Moon size={24} weight="fill" className="text-yellow-200" />
-        </div>
+        <span className="text-lg leading-none" role="img" aria-hidden="true">
+          {isDark ? '🌙' : '☀️'}
+        </span>
       </motion.div>
-    </motion.button>
+      
+      <div className="absolute inset-0 flex justify-between items-center px-2 z-0 pointer-events-none select-none">
+        <span className={`text-lg transition-opacity ${isDark ? 'opacity-40' : 'opacity-100'}`} role="img" aria-hidden="true">
+          ☀️
+        </span>
+        <span className={`text-lg transition-opacity ${isDark ? 'opacity-100' : 'opacity-40'}`} role="img" aria-hidden="true">
+          🌙
+        </span>
+      </div>
+    </button>
   )
 }
