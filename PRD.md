@@ -114,12 +114,12 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Progression**: Video uploaded → Extract technical metadata (codec, bitrate, fps, resolution, color space) → Parse GPS coordinates from video metadata → Detect device make/model → Analyze audio (sample rate, loudness in LUFS) → Detect scene changes → Identify objects in frames (water heater, pipes, etc.) → Classify sound events (drip, hiss, hum) → Transcribe speech with timestamps → Detect language → Calculate motion blur score → Compile all data for AI scope generation
 - **Success criteria**: All metadata fields populate correctly; GPS auto-fills job location when present; scene cuts and objects are detected; transcript is clickable with timestamps; warnings trigger for poor audio (<-40 LUFS) or shaky footage (<22 dB PSNR)
 
-### Job Browsing & Bidding
-- **Functionality**: Contractors view open jobs with size badges (🟢 Small ≤$300, 🟡 Medium ≤$1,500, 🔴 Large >$1,500), photos, materials list, and AI scope, then submit free bids
-- **Purpose**: Connect contractors with relevant work opportunities and detailed job information while emphasizing zero fees
-- **Trigger**: Contractor navigates to "Browse Jobs" or dashboard
-- **Progression**: View filtered job list → See job size badge → See job photos in grid → Click photo to open full-screen lightbox → Navigate between photos with arrow keys/buttons → Close lightbox → Review AI scope and materials → Enter bid amount and message → See "$0 fee" label → Submit bid → Toast confirmation
-- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer; free bidding message is clear
+### Job Browsing & Bidding with Smart Communication
+- **Functionality**: Contractors view open jobs with size badges (🟢 Small ≤$300, 🟡 Medium ≤$1,500, 🔴 Large >$1,500), photos, materials list, and AI scope, then submit free bids with context-aware Smart Reply suggestions and job-stage-specific message templates
+- **Purpose**: Connect contractors with relevant work opportunities while eliminating typing friction through intelligent message suggestions that speed up communication from 2 minutes to 2 seconds
+- **Trigger**: Contractor navigates to "Browse Jobs" or dashboard, or receives message from homeowner
+- **Progression**: View filtered job list → See job size badge → See job photos in grid → Click photo to open full-screen lightbox → Navigate between photos with arrow keys/buttons → Close lightbox → Review AI scope and materials → **Weather-Smart Job Browsing**: On rainy days, de-prioritize outdoor work → Surface indoor jobs (plumbing, electrical, appliance repair) first → Badge on outdoor jobs: "Weather alert for this job's area" → Enter bid amount and message → **Smart Reply Suggestions (Bidding Stage)**: System analyzes job context and surfaces 3 relevant quick-reply buttons → "Thanks for considering me. I can come take a look [tomorrow/this week]" → "My estimate is based on [photos/description]. Final price may vary after inspection" → "I specialize in this type of work and can usually complete it in [X hours/days]" → Contractor taps once, message sent in 2 seconds instead of 2 minutes → Or type custom message → **"Similar Jobs" Pricing Guide Integration**: Show "Similar jobs in your area typically bid $400-600" based on completed jobs of same type, size, and location → **Drive Time Warning Integration**: If bid creates inefficient route with existing schedule, show warning: "This job is 28 miles from your other Wednesday jobs. You'd spend ~55 minutes driving. Still want to bid?" → Not blocking—just informing → See "$0 fee" label → Submit bid → Toast confirmation → **Auto-Suggest Nearby Jobs**: When bid accepted: "Want to see other open jobs near this address?" → **Smart Reply During Job Lifecycle**: **Scheduled stage**: "I'll be there between [time window]", "Running about [15/30] minutes behind, sorry for the delay", "Just finished my previous job, heading your way now", "Quick question before I arrive: [customizable]" → **In-progress stage**: "Making good progress. Here's an update photo", "Found something I need to discuss with you. Call when you can?", "Finishing up now, should be done within the hour" → **Completed stage**: "All done! Please let me know if you have any questions", "Thanks for choosing me! A review would really help my business", "Invoice sent. Let me know if anything looks off" → **Custom Quick Reply Library**: "Add to Quick Replies" button on any message contractor types → Build personal library of frequently-used responses over time → Organize by category (scheduling, pricing, completion, follow-up) → Import/export so they don't lose them if switching devices
+- **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer; free bidding message is clear; weather-smart sorting increases indoor job bids on bad weather days 30%; contractor no-shows due to weather drop 60%; smart replies used on 60% of contractor messages; average response time drops 70%; custom library averages 15 saved replies per active contractor; message quality (measured by homeowner satisfaction) maintains or improves; drive time warnings help contractors make informed routing decisions
 
 ### Performance-Based Bid Sorting
 - **Functionality**: Bids are automatically sorted by contractor quality score (performance + accuracy + operator status)
@@ -135,19 +135,19 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Progression**: AI calculates priceHigh → System assigns size → Badge displays on job card
 - **Success criteria**: Size badge appears on all jobs; correct categorization based on priceHigh value
 
-### Contractor CRM - Business Command Center
-- **Functionality**: Complete business management hub with Smart Scheduler showing optimal job sequences based on location/travel time, Repeat Customer Engine auto-identifying customers for seasonal outreach, templated follow-up sequences, Customer Health Scores, automation rules (auto-send review requests, follow-up reminders), Win/Loss tracking by job type/size/time, profit calculator per job, and working radius settings.
-- **Purpose**: Transform CRM from contact tracking into complete business operation system that runs contractor's entire workflow
+### Contractor CRM - Business Command Center with Integrated Efficiency Machine
+- **Functionality**: Complete business management hub combining existing Smart Scheduler, Repeat Customer Engine, and automation with deep-integrated efficiency tools: Route Builder intelligence, Customer Memory Bank, Smart Replies, Daily Briefing, Bid Insights Engine, Truck Inventory Tracker, Certification Wallet, and Weather-Smart scheduling. Every efficiency feature lives naturally inside the CRM as part of the contractor's daily workflow.
+- **Purpose**: Transform CRM into the complete contractor efficiency platform where business intelligence, daily operations, and workflow optimization merge into one cohesive system that runs their entire business
 - **Trigger**: Contractor logs in or clicks "Dashboard" or "CRM"
-- **Progression**: Land on dashboard → See enhanced stats cards (Total Customers, Active, LTV, Repeat Rate, Win Rate, Avg Margin) → **Smart Scheduler Tab**: View calendar with available time slots → Set working radius (miles) and hours → System auto-suggests optimal daily job sequences based on location clustering and travel time → Drag jobs to schedule → See travel time between jobs → Simple profit calculator shows (estimated time × hourly rate - materials cost = projected margin) → **Customer List Tab**: Use instant invite widget → Auto-capture every bid interaction as CRM entry → View customer grid with Health Score (0-100 based on job frequency, payment speed, referral activity) → Click customer card → See full timeline of touchpoints → Add color tags (VIP, High Value >$1K, Frequent 3+ jobs, Referrer) → Voice memo notes with transcription → **Kanban Board Tab**: View 4 columns (Lead, Active, Completed, Advocate) → Drag to update status → Automation: Completed → auto-send review request after 3 days → Lead sitting 14 days → trigger follow-up reminder → **Repeat Customer Engine Tab**: System auto-identifies customers 6+ months since last work → Shows seasonal maintenance suggestions (HVAC customers: filter changes, Plumbing: winterization) → One-click send templated outreach → Track engagement → **Follow-Up Sequences (Pro)**: Create multi-step sequences → Add SMS/email at days 1, 3, 7, 30 → Templates for different job types → Auto-pause when customer replies → **Win/Loss Tracking**: Log lost bids with reason → View conversion rate dashboard by job type, size, time of day submitted → Identify patterns to improve bid strategy
-- **Success criteria**: Contractor spends 40% of platform time in CRM; Smart Scheduler suggests jobs saving 2+ hours travel time per week; Repeat Customer Engine identifies opportunities with 30% reactivation rate; Health Scores calculate correctly; automation rules trigger on schedule; Win/Loss tracking shows insights; profit calculator accurate; follow-up sequences achieve 25%+ reply rate; contractors report CRM runs their entire business
+- **Progression**: Land on dashboard → See enhanced stats cards (Total Customers, Active, LTV, Repeat Rate, Win Rate, Avg Margin) → **Daily Briefing Tab (NEW)**: First screen of the day shows everything contractor needs → Today's schedule at a glance with job addresses, times, homeowner names → Estimated drive time between each job (from Route Builder) → Today's expected earnings (sum of scheduled job values) → Weather alerts if outdoor work scheduled and rain/extreme heat expected → Messages needing response with unread count and preview → Smart contextual reminders pulled from job notes and past visits ("homeowner said gate code is 4521", "requires permit", "dog is anxious around strangers") → End-of-day summary triggered when last job complete or at 6pm showing jobs completed, total earnings, reviews received, tomorrow's preview with encouraging message based on day type → **Smart Scheduler Tab (ENHANCED)**: View calendar with available time slots → Set working radius (miles) and hours → **Route Builder Sub-View**: Show jobs grouped by geographic proximity ("These 4 jobs are all within 8 miles and could be done Tuesday") → Display estimated drive time between each stop using Trueway API → Calculate "Route Efficiency Score" (0-100) for each potential day with color coding (red <40, yellow 40-70, green >70) → **Anchor Job System**: Let contractors mark any scheduled job as "anchor" (big job that locks location for chunk of day) → System auto-surfaces smaller jobs nearby that fit before/after ("You have a 4-hour kitchen job in 75001 Wednesday. Here are 3 small jobs within 10 minutes you could knock out before or after") → When contractor wins any bid, auto-suggest: "Want to see other open jobs near this address?" → Let contractors bid on clusters with one tap instead of individually → **Drive Time Warnings**: If contractor bids on job creating inefficient route, show gentle warning ("This job is 28 miles from your other Wednesday jobs. You'd spend ~55 minutes driving. Still want to bid?") → Not blocking—just informing → Drag jobs to schedule → See travel time between jobs → Simple profit calculator shows (estimated time × hourly rate - materials cost = projected margin) → **Weather-Smart Scheduling**: For outdoor jobs (roofing, fencing, concrete, painting, landscaping) show weather forecast for scheduled day → If rain predicted >50%: "70% chance of rain Thursday. Consider rescheduling?" → For temp-sensitive work: "Thursday high is 98°F—hot for roof work. Start early?" → Link to reschedule flow → Automatic reschedule suggestions: "Thursday's forecast is rainy. Message homeowner about rescheduling?" → One tap opens pre-written message with auto-suggested alternative times → **Customer List Tab (ENHANCED with Customer Memory Bank)**: Use instant invite widget → Auto-capture every bid interaction as CRM entry → **Automatic Customer Timeline**: Every job automatically saves complete history (work done, photos, messages, duration, scope changes, payment details) → When contractor gets new job from past customer, surface banner: "You worked for Sarah before—replaced her water heater March 2024. She paid on time and left 5-star review" → Timeline view shows all touchpoints chronologically → **Quick-Add Context Notes**: After any interaction, prompt for personal notes with voice transcription option ("Has a great dane named Bruno, very friendly", "Prefers morning appointments", "Husband handles payments, wife schedules", "Mentioned wanting to redo bathroom next year") → Notes auto-surface on future jobs in prominent banner → **Smart Follow-Up Reminders**: If homeowner mentioned future work, let contractor set reminder ("Sarah mentioned bathroom remodel—remind me in 6 months") → Platform pings in November: "Time to reach out to Sarah about that bathroom remodel?" → Integrates with existing Follow-Up Sequences (Pro feature) or works standalone for free tier → View customer grid with Health Score (0-100 based on job frequency, payment speed, referral activity) → Click customer card → See full timeline → Add color tags (VIP, High Value >$1K, Frequent 3+ jobs, Referrer) → Voice memo notes with transcription → **Kanban Board Tab**: View 4 columns (Lead, Active, Completed, Advocate) → Drag to update status → Automation: Completed → auto-send review request after 3 days → Lead sitting 14 days → trigger follow-up reminder → **Repeat Customer Engine Tab (ENHANCED)**: System auto-identifies customers 6+ months since last work → **Job-Type Specific Timing**: HVAC prompt at 11 months for annual service, October for winterization, March for AC prep → Plumbing prompt before winter freeze season, after 5 years for water heater check → Electrical prompt before holidays (outdoor lighting), annually for panel inspection → Roofing prompt after major storms, every 3 years for inspection → General track individual customer patterns and suggest based on their history → **One-Click Outreach Templates**: Pre-written messages for each job type and timing ("Hi [Name], it's been a year since we serviced your AC. Texas summers are brutal—want me to swing by for a tune-up before the heat hits?") → Contractor taps once to send or customize → Track open rates and responses per template → **Bid Insights Tab (NEW - Enhanced Win/Loss Tracking)**: **Personal Win Rate Analytics Dashboard**: Overall win rate with trend arrow (you win 34% of jobs, up 3% this month) → Win rate by job category (plumbing 52%, electrical 18%—focus here) → Win rate by job size (better on small jobs—consider avoiding large) → Win rate by time of day (bids before 9am win 40% more—wake up earlier) → Win rate by response speed (under 15 min = 2.3x better—enable notifications) → All visualized with simple charts, not spreadsheets → **Bid Amount Feedback**: After lost bid, show anonymized feedback (with homeowner permission or aggregate): "The winning bid was 15% lower than yours", "Your bid was competitive—homeowner chose based on reviews", "You were second choice—winner had faster response" → Helps contractors calibrate without revealing competitor details → **"Similar Jobs" Pricing Guide**: When creating bid, show: "Similar jobs in your area typically bid $400-600" based on completed jobs of same type, size, and location → Contractor can price within range or outside—but they're informed → **Response Time Awareness**: Show contractor their average time from job-posted to bid-submitted → Compare to platform average and top performers ("Your average response time is 47 minutes. Top contractors respond in under 15 minutes") → Link to notification settings to improve → **Truck Inventory Tab (NEW)**: **"What's On My Truck" Checklist**: Simple inventory of common items contractor carries (not warehouse management—just quick reference list) → Add items with quantities: "PEX fittings (50)", "Copper elbows (12)", "Shutoff valves (6)" → Check/uncheck as items used → Restock reminder when below threshold → **Job-Based Parts Checklist**: When viewing job details, show: "Common parts for this job type:" based on AI scope analysis and historical data → Contractor cross-references with truck inventory → If something missing, knows to stop at supply house → **Restock Reminders**: When inventory drops below set threshold, surface reminder: "You're low on PEX fittings—down to 8. Restock soon?" → Tap to dismiss or add to shopping list → Shopping list exportable/shareable → **Supply Run Optimizer**: If contractor needs to restock, show supply houses near day's route ("Ferguson is 4 minutes off your route between Job 1 and Job 2") → Uses existing Trueway API for routing → **Certification Tracker Tab (NEW - Enhanced Compliance Tracking)**: **Certification Wallet**: Single upload location for all credentials (trade licenses, insurance certificates, background check results, manufacturer certifications, safety training completions) → Store securely, display on profile, track expiration dates → **Automatic Expiration Alerts**: 60 days before expiration: "Your plumbing license expires in 60 days. Renew now to keep your profile verified" → 30 days: Another reminder with renewal link if available → 7 days: Urgent alert with warning badge on profile → Day of expiration: Badge temporarily hidden until renewed → Contractor never accidentally lets credentials lapse → **Skills-Based Job Matching**: Tag certifications to job types they qualify for → If job requires specific credentials (gas line, electrical panel, refrigerant handling), only show job to contractors with matching certifications → Contractors don't waste time bidding on jobs they can't legally do → Homeowners only see qualified bidders → Integrates with existing intelligent job matching system → **Follow-Up Sequences (Pro)**: Create multi-step sequences → Add SMS/email at days 1, 3, 7, 30 → Templates for different job types → Auto-pause when customer replies
+- **Success criteria**: Contractor spends 40% of platform time in CRM; Daily Briefing checked by 70% of contractors each morning; Route Builder reduces average weekly drive time by 2+ hours; 60% of contractors use anchor job feature; drive time warnings shown on 15% of bids; cluster bidding increases jobs-per-contractor 20%; Smart Scheduler suggests jobs saving 2+ hours travel time per week; 80% of return customers have auto-populated history; contractors add notes on 40% of completed jobs; follow-up reminders set on 25% of jobs mentioning future work; repeat customer recognition increases rebooking 30%; Repeat Customer Engine seasonal outreach achieves 35% response rate; job-type-specific timing increases relevance; contractors reactivate 30% of dormant customers; Bid Insights users improve win rate 15% over 3 months; pricing guide reduces bid outliers 40%; response time awareness decreases average response by 20 minutes; 70% of contractors check insights weekly; 40% of contractors use truck inventory; parts checklist referenced on 30% of jobs; restock reminders prevent 50% of "forgot the part" delays; supply run optimizer saves average 15 minutes per restock trip; 80% of contractors complete certification wallet; expiration alerts prevent 90% of lapses; skills matching reduces unqualified bids 50%; Health Scores calculate correctly; automation rules trigger on schedule; profit calculator accurate; follow-up sequences achieve 25%+ reply rate; contractors report CRM runs their entire business and acts as their business partner
 
-### Invoice Management - Delightful & Bulletproof
-- **Functionality**: Smart line item suggestions based on AI scope and job type, materials markup calculator with industry standards, Payment Plans for jobs over $1K (2-4 payments, no interest, contractor paid in full immediately), optional Tip Jar (5-15% one-click), Invoice Insights dashboard (avg time-to-payment by customer, most profitable job types, seasonal trends, YoY comparisons), quarterly tax summaries with categorized expenses, company logo upload for branded invoices or use platform generic template, invoice templates to save/reuse common configurations, recurring invoices, partial payments, late fees.
-- **Purpose**: Make invoicing fast, professional, and a revenue optimization tool while providing contractors business intelligence
-- **Trigger**: Contractor clicks "Invoices" in menu or "+ New Invoice"
-- **Progression**: Navigate to Invoice Manager → View tabs (All, Draft, Sent, Paid, Overdue, Templates) → **Create Invoice**: Click new invoice → Select completed job → System pre-populates smart line items based on original AI scope (e.g., "replace water heater" suggests: water heater unit, installation labor, haul-away fee, permits) → Materials markup calculator suggests industry-standard margins (plumbing: 25-35%, electrical: 30-40%, HVAC: 20-30%) → Add/edit line items with drag-to-reorder → Set tax rate (auto-applies to all items) → Choose due date → **Payment Plans (Pro)**: For jobs >$1K, toggle "Enable Payment Plan" → Select 2, 3, or 4 payments → Homeowner sees split amounts, contractor receives full payment immediately (platform fronts difference) → **Tip Jar**: Toggle "Enable Tip" → Homeowner sees 5%, 10%, 15% buttons and custom amount → **Logo Settings**: Upload company logo (PNG/JPG, max 2MB) OR use platform generic template with FTW branding → **Save as Template**: Click "Save Template" → Name configuration → Reuse for similar jobs → Mark as pro forma (estimate before work) if needed → Set as recurring (monthly/quarterly) if applicable → Create & send → **Invoice Insights (Pro)**: View dashboard with charts → Avg time-to-payment by customer (identify slow payers) → Most profitable job types (HVAC nets 40% vs plumbing 28%) → Seasonal revenue trends (summer peak for AC) → YoY comparison → **Tax Export (Pro)**: Click "Export Q4 2024 Tax Summary" → CSV downloads with categorized line items (Labor, Materials, Permits, Travel) → Imports directly to QuickBooks → (Pro) Auto-reminders sent at 3, 7, 14 days → Late fees auto-add 1.5% after 30 days → Track viewed status → Mark as paid → Invoice PDF generates with logo/branding
-- **Success criteria**: Invoices created in <90 seconds; smart suggestions appear for recognized job types; materials markup calculator shows recommendations; payment plans work with platform float; tip jar increases contractor earnings 8-12%; logo uploads successfully and appears on PDF; platform template looks professional; invoice templates save/load correctly; recurring invoices auto-generate on schedule; Invoice Insights dashboard shows accurate metrics; tax export includes all necessary categories; collection rate 78% within 7 days (Pro: 85%); late fees calculate correctly; average invoice value increases 15% with smart features
+### Invoice Management - Delightful, Bulletproof & Lightning Fast
+- **Functionality**: Smart line item suggestions based on AI scope and job type, materials markup calculator with industry standards, Payment Plans for jobs over $1K (2-4 payments, no interest, contractor paid in full immediately), optional Tip Jar (5-15% one-click), Invoice Insights dashboard (avg time-to-payment by customer, most profitable job types, seasonal trends, YoY comparisons, job profitability analysis with effective hourly rate), quarterly tax summaries with categorized expenses, company logo upload for branded invoices or use platform generic template, invoice templates to save/reuse common configurations, recurring invoices, partial payments, late fees, one-tap invoice creation from job completion, payment status visibility with view tracking, cash/check marking
+- **Purpose**: Make invoicing fast (under 30 seconds), professional, and a revenue optimization tool while providing contractors business intelligence on profitability and payment patterns
+- **Trigger**: Contractor clicks "Invoices" in menu or "+ New Invoice" or "Create Invoice" button after job completion
+- **Progression**: Navigate to Invoice Manager → View tabs (All, Draft, Sent, Paid, Overdue, Templates) → **One-Tap Invoice from Job Completion**: When job marked complete, show prominent "Create Invoice" button → Pre-populate everything (job description from original scope, line items from AI scope suggestions, final amount including any approved change orders from Scope Creep Documenter, homeowner contact info, payment instructions) → Contractor reviews, taps send → Done in 15 seconds → **Create Invoice Manually**: Click new invoice → Select completed job → System pre-populates smart line items based on original AI scope (e.g., "replace water heater" suggests: water heater unit, installation labor, haul-away fee, permits) → Materials markup calculator suggests industry-standard margins (plumbing: 25-35%, electrical: 30-40%, HVAC: 20-30%) → Add/edit line items with drag-to-reorder → Set tax rate (auto-applies to all items) → Choose due date → **Payment Plans (Pro)**: For jobs >$1K, toggle "Enable Payment Plan" → Select 2, 3, or 4 payments → Homeowner sees split amounts, contractor receives full payment immediately (platform fronts difference) → **Tip Jar**: Toggle "Enable Tip" → Homeowner sees 5%, 10%, 15% buttons and custom amount → **Logo Settings**: Upload company logo (PNG/JPG, max 2MB) OR use platform generic template with FTW branding → **Save as Template**: Click "Save Template" → Name configuration → Reuse for similar jobs → Mark as pro forma (estimate before work) if needed → Set as recurring (monthly/quarterly) if applicable → Create & send → **Payment Status Visibility Enhancement**: Add "Viewed" status tracking (invoice opened but not paid) → If Viewed but not Paid for 48+ hours, surface prompt: "Sarah viewed your invoice 2 days ago but hasn't paid. Want to send a follow-up?" → Pre-written follow-up message ready to send → Contractor decides—no automatic chasing → **"Mark as Paid" for Cash/Check**: Some homeowners pay on-site with cash or check → One button: "Mark as Paid (Cash/Check)" → Invoice moves to Paid status → Earnings dashboard updates → Easy record-keeping for offline payments → **Invoice Insights (Pro)**: View dashboard with charts → **Simple Earnings View**: This week: $2,340, This month: $8,720, This year: $94,500 → Big numbers, easy to understand → Tap any number for breakdown by job → **Job Profitability Analysis**: For completed jobs with tracked materials (from Invoice line items) → Show: Revenue: $650, Materials: $180, Estimated time: 3 hours, Effective hourly rate: $156/hr → Help contractors see which job types are worth their time → Maybe those $150 small jobs taking 2 hours aren't worth it → Maybe big kitchen jobs are gold mines → Now they know → **Trend Visualization**: Simple weekly/monthly earnings chart → Is business growing? Seasonal patterns visible? → Compare this month to same month last year → Visual answers without spreadsheets → Avg time-to-payment by customer (identify slow payers) → Most profitable job types (HVAC nets 40% vs plumbing 28%) → Seasonal revenue trends (summer peak for AC) → YoY comparison → **Tax-Ready Export (Pro)**: One button: "Export for Taxes" → Generates clean CSV with all completed jobs, amounts and dates, categories (labor, materials, travel if tracked), expenses if logged → Imports directly to QuickBooks, TurboTax, or accountant's system → Available quarterly or annually → (Pro) Auto-reminders sent at 3, 7, 14 days → Late fees auto-add 1.5% after 30 days → Track viewed status → Mark as paid → Invoice PDF generates with logo/branding
+- **Success criteria**: Invoices created in <90 seconds manually, <30 seconds with one-tap from job completion; invoice creation time drops to <30 seconds for pre-populated invoices; smart suggestions appear for recognized job types; materials markup calculator shows recommendations; payment plans work with platform float; tip jar increases contractor earnings 8-12%; logo uploads successfully and appears on PDF; platform template looks professional; invoice templates save/load correctly; recurring invoices auto-generate on schedule; "Viewed" tracking surfaces 20% of stalled invoices; follow-up prompts increase payment rate 15%; cash/check marking used on 25% of invoices; overall time-to-payment drops 2 days; profitability analysis shown on 60% of jobs with material tracking; contractors identify most profitable job types; trend charts viewed weekly by 50% of contractors; Invoice Insights dashboard shows accurate metrics including effective hourly rates; tax export includes all necessary categories with clean formatting; tax export used by 70% of contractors at tax time; collection rate 78% within 7 days (Pro: 85%); late fees calculate correctly; average invoice value increases 15% with smart features
 
 ### Pro Upgrade
 - **Functionality**: Contractors upgrade to Pro ($39/mo) for instant payouts, auto-reminders, no-show protection, Invoice Insights dashboard, Smart Scheduler, Repeat Customer Engine, unlimited CRM contacts, advanced analytics
@@ -177,6 +177,13 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Progression**: Click accept → Show payment modal → Enter card details (simulated) → Process payment → Update job status → Notify contractor
 - **Success criteria**: Job status updates and contractor sees payment in dashboard
 
+### Active Job Management - Scope Creep Protection & Photo Intelligence
+- **Functionality**: Comprehensive job-site tools integrating Scope Creep Documenter for professional change order handling and Job Photo Auto-Organize for effortless documentation, all accessible during active work
+- **Purpose**: Protect contractors from scope disputes, create professional paper trails, and automatically organize job photos without manual effort
+- **Trigger**: Contractor starts working on accepted job or takes photos during work
+- **Progression**: **Job Photo Auto-Organize**: Photos automatically sorted by job stage → Photos taken before "Start Job" button → Auto-tagged "Before" → Photos taken between Start and Complete → Auto-tagged "Progress" → Photos taken after "Complete Job" → Auto-tagged "After" → No manual sorting required—just shoot and photos land in right folder → **Smart Photo Prompts**: Job start: "Take a quick 'before' photo for your records?" (dismissible) → Mid-job (if job is 3+ hours): "Capture progress for the homeowner?" → Job complete: "Before/after comparison will help your reviews!" → Not nagging—helpful nudges with one-tap dismiss → **Photo Quality Checks**: If photo is blurry, too dark, or clearly a mistake (photo of ground, finger over lens) → Show quick "This photo looks unclear—retake?" prompt → Not blocking—just helping get shots they'll actually use → Learn from dismissals to reduce unnecessary prompts → **Auto-Generate Before/After Comparisons**: When job completes, auto-create side-by-side comparison image → Use best Before and After photos (based on clarity, framing) → Contractor can share to profile, send to homeowner, or post on social → One tap to generate, one tap to share → Watermarked with contractor business name and FTW logo → **Scope Creep Documenter**: When contractor discovers extra work during job, tap "Document Scope Change" button on active job → Phone camera opens immediately → Take photos of discovered issue → Record voice note explaining what was found (transcribed automatically) → System timestamps everything: "Discovered during original scope: water damage behind wall, approximately 4 sq ft. Homeowner notified 2:34 PM" → **Auto-Generated Change Order**: System creates professional change order with original scope summary, discovered issue description (from voice transcription), photos attached with timestamps, additional cost estimate field for contractor to fill, homeowner approval checkbox → Send to homeowner for approval before work proceeds → Paper trail protects both parties → **Scope Comparison View**: Side-by-side view of "Original Scope" vs "Current Scope" with all documented changes → Becomes defense documentation if disputes arise → Helps contractors identify patterns in scope creep by job type → **"I Found More" Message Templates**: Pre-built professional messages for common discoveries → "Water damage found—here's what I see" → "Electrical not up to code—requires upgrade before I can proceed" → "Structural issue discovered—may need engineer opinion" → "Previous work done incorrectly—needs correction first" → "Materials different than expected—here's the adjustment" → Contractor picks template, adds their photos/notes, sends to homeowner → Professional communication in 30 seconds instead of 10 minutes
+- **Success criteria**: 90% of completed jobs have organized Before/After photos; photo prompts accepted 50% of time; before/after comparisons generated on 70% of photo-documented jobs; contractors share comparisons 30% of time; photo quality improves 25% with prompts; scope changes documented on 25% of jobs (reflecting reality); 95% of documented changes approved by homeowner; disputes drop 60% due to documentation; contractors report feeling protected; homeowners report appreciating transparency; change order system saves contractors average 8 minutes per scope change; photo organization eliminates all manual sorting time
+
 ### Enhanced Demo Mode - Conversion Machine
 - **Functionality**: Demo mode transformed into persuasive sales tool with guided walkthroughs highlighting pain points solved, sample notifications showing real-time bid arrivals, realistic metrics dashboards, competitor fee calculator, and clear conversion CTAs.
 - **Purpose**: Turn demo experience into primary conversion funnel that sells platform benefits viscerally
@@ -196,21 +203,38 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Purpose**: Enable seamless mobile experience since most homeowners post from phones after discovering problems, and contractors need instant job notifications
 - **Trigger**: User accesses platform from mobile device or areas with spotty coverage
 - **Progression**: **Quick Capture for Homeowners**: Open app on mobile → Large "Quick Post" button fills bottom third of screen → Tap once to start video recording → UI shows only essential controls: record timer, pause, stop → Tap again to stop → AI handles everything else (no forms) → Review captured video → Add voice description if needed → AI generates scope automatically → One tap to post → Target: 47-second posting time → **Contractor Mobile Dashboard**: Open app → Prioritized view shows most urgent actions first → "3 new jobs to bid on" at top with orange badges → "2 invoices awaiting payment" below → "Today's scheduled jobs" with nav button → Large tap targets (minimum 44×44px) → Swipe gestures to mark jobs complete → Pull to refresh for new jobs → **Smart Watch Notifications**: FRESH job posts trigger instant notification → Apple Watch/Wear OS displays: "New plumbing job $200-$300 - 2 miles away - Bid now" → Tap to open quick bid view → Dictate bid amount and message → Submit from wrist → Target: Enable contractors to bid within 2 minutes of job posting from anywhere → **Offline Mode**: Detect spotty connectivity → Cache job list and details locally → Allow contractor to view jobs, draft bids, prepare invoices → Queue actions to send when connectivity returns → Show "Offline" indicator → Sync automatically when back online → Critical for rural Texas areas → **One-Thumb Operation**: All buttons positioned in bottom third of screen for thumb reach → Large text (minimum 16px) → No tiny tap targets → Horizontal scrolling eliminated → Forms auto-advance after input → Minimal typing required
-- **Success criteria**: Quick Capture mode reduces job posting time to <60 seconds on mobile; contractor mobile dashboard loads <1.5 seconds; watch notifications send within 15 seconds of job posting; offline mode caches essential data; queued actions sync successfully; all interactive elements meet 44×44px minimum; text remains readable at 16px+; one-thumb operation tested on devices from iPhone SE to iPhone 15 Pro Max; 70% of homeowner jobs posted from mobile; 85% of contractor bids submitted from mobile; mobile conversion rate matches desktop
+- **Success criteria**: Quick Capture mode reduces job posting time to <60 seconds on mobile; contractor mobile dashboard loads <1.5 seconds; watch notifications send within 15 seconds of job posting; offline mode caches essential data; queued actions sync successfully; all interactive elements meet 44×44px minimum; text remains readable at 16px+; one-thumb operation tested on devices from iPhone SE to iPhone 15 Pro Max; 70% of homeowner jobs posted from mobile; 85% of contractor bids submitted from mobile; mobile conversion rate matches desktop; Smart Reply buttons sized for thumb tapping; Scope Creep Documenter camera opens instantly; Photo capture works offline and uploads when connected; Truck Inventory checkboxes sized for gloved hands; all efficiency features usable with one thumb; voice commands work in 80% of attempts for Dirty Hands Mode
 
-## Edge Case Handling
+### Review Optimization - Effortless Collection & Response
+- **Functionality**: Automatic review requests sent 3 days after job completion, one-tap star rating for homeowners, context-aware response templates for contractors (5-star, 4-star, 3-star or below), review insights analyzing patterns and strengths
+- **Purpose**: Increase review collection rate without contractors having to ask, enable professional responses in seconds, and provide actionable feedback from customer words
+- **Trigger**: Job marked complete (for automatic request) or contractor receives new review (for response prompt)
+- **Progression**: **Automatic Review Requests**: 3 days after job completion (enough time to verify work is good) → System sends homeowner message: "How was your experience with [Contractor]? Leave a review to help them grow their business" → One-tap star rating in message → Optional text review → Submitted reviews appear on profile automatically → Contractor doesn't have to ask—platform handles it → **Review Response Templates**: When review comes in, prompt contractor to respond → Show templates based on rating → **5-star**: "Thanks so much, [Name]! It was a pleasure working with you" / "Appreciate the kind words! Let me know if you ever need anything" → **4-star**: "Thank you for the feedback! Always looking to improve" / "Glad you're happy with the work. Let me know if anything else comes up" → **3-star or below**: "I appreciate your honest feedback. I'd love to make this right—can we talk?" / "Sorry to hear you weren't fully satisfied. Please reach out so I can address your concerns" → Tap to customize or send as-is → Professional engagement without typing from scratch → **Review Insights**: Analyze review text for patterns → "Your reviews mention 'on time' 8 times—punctuality is a strength!" → "Two reviews mention pricing concerns—consider showing cost breakdowns" → "Your average rating this month: 4.8 (up from 4.6 last month)" → Actionable feedback from real customer words → Surface in Dashboard or CRM insights tab
+- **Success criteria**: Automatic review requests achieve 35% completion rate; contractor response rate increases to 70%; response templates used on 80% of reviews; review insights surface actionable patterns; insights identify top 3 strengths and 2 improvement areas; average contractor rating improves 0.2 points over 6 months; contractors report review system feels professional and effortless
+
+## Edge Case Handling - Intelligent Empty States & Never a Dead End
 
 - **No AI Input Provided** - Show friendly error message and allow re-upload
 - **Zero Bids on Job** - Display "No bids yet" state with tips for improving job description
 - **Territory Already Claimed** - Disable claim button and show owner information
 - **Non-Pro Accessing Pro Features** - Show upgrade prompt modal
-- **Empty Dashboard States** - Friendly illustrations with CTAs to get started
 - **Invalid Bid Amounts** - Validation requiring bid to be within reasonable range
 - **Network Errors** - Toast notifications with retry options
 - **Multiple Role Switches** - Prevent role changes after initial selection
 - **Invalid Email/Phone in CRM Invite** - Real-time validation with clear error messages before allowing send
 - **Duplicate Customer Entries** - Allow duplicates for flexibility (contractor may re-invite same person)
-- **Empty CRM** - Show friendly empty state with instructions to use invite widget
+- **Empty CRM** - Instead of "Your CRM is empty", show: "Every completed job auto-adds to your CRM. Or invite past customers to get started:" with invite widget → Simple form: "Enter a customer's email to send them an invite"
+- **No Jobs Scheduled Today** - Instead of "Nothing scheduled", show: "Your schedule is open today. There are 12 FRESH jobs near you that could fill your day" → Display 3 nearest FRESH jobs with "Bid Now" buttons → Link to Route Builder: "Build a profitable day"
+- **No Bids Won This Week** - Instead of "No wins yet", show: "Tough week for bids. Your response time averaged 52 minutes—top bidders respond in under 15" → "Want to set up instant notifications?" with toggle → Link to Bid Insights: "See what's working for others"
+- **No Reviews Yet** - Instead of "No reviews", show: "Reviews help you win more bids. Complete your first job to start collecting feedback" → "In the meantime, here are tips for getting great reviews:" with expandable guide → Link to profile completion: "A complete profile also builds trust"
+- **Empty Truck Inventory** - Instead of blank list, show: "Track what's on your truck to never forget a part again" → "Common items to add:" with one-tap add buttons for trade-specific items → Get started in 30 seconds
+- **Empty Dashboard States** - Friendly illustrations with CTAs and actionable next steps that drive engagement
+- **No Certifications Added** - Show: "Verified credentials help you win bids. Add your licenses and insurance" → One-tap to start uploading credentials
+- **No Photos on Job** - Show: "Photos help contractors understand the work. Add at least 2 photos for better bids" → Large photo upload zone
+- **Scope Creep with No Change Orders** - If contractor completes job with obvious extra work but didn't document: Show reminder "Document scope changes to protect yourself and get paid for extra work"
+- **Low Route Efficiency Score** - If daily schedule has <40 efficiency score: "Your Wednesday route has a lot of driving. Try the Route Builder to find nearby jobs"
+- **Expired Certification** - Badge temporarily hidden until renewed; prominent alert in Certification Tracker with renewal link
+- **Offline Actions Queued** - Show persistent indicator "3 actions will sync when you're back online" with list of queued items
 
 ## Design Direction
 
@@ -305,3 +329,315 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
   - Text minimum 16px for readability
   - Lightbox photos support pinch-to-zoom gesture
   - No horizontal scrolling at any breakpoint
+  - All efficiency features (Daily Briefing, Smart Replies, Scope Creep Documenter, Truck Inventory, Photo System) optimized for one-thumb operation
+  - Smart Reply buttons sized for easy tapping (minimum 44×44px)
+  - Photo capture and voice recording prominent and thumb-reachable
+  - Truck Inventory checkboxes sized for gloved hands
+  - Daily Briefing uses swipe cards for each section
+  - Voice-first interactions for job site use (Dirty Hands Mode)
+  - All critical job-site tasks work offline with automatic sync when connected
+
+## Contractor Efficiency Machine - Integration Summary
+
+The complete efficiency framework is woven into existing platform features, creating one cohesive system:
+
+### Daily Contractor Workflow Example
+
+**Morning (7:00 AM)**:
+- Contractor opens app → **Daily Briefing** shows today's 4 jobs with travel times, weather alert for afternoon outdoor job, and 2 unread messages
+- Smart contextual reminders: "Don't forget: homeowner said gate code is 4521"
+- Expected earnings: $1,240 for the day
+
+**Driving to First Job (7:30 AM)**:
+- **Smart Reply** lets them respond to messages at red lights with one tap
+- "I'll be there in 15 minutes" sent in 2 seconds
+
+**Arriving at Job (8:00 AM)**:
+- **Customer Memory** banner shows: "You installed their water heater last year. They mentioned wanting to redo the bathroom"
+- Professional appearance with zero manual effort
+
+**Starting Job (8:15 AM)**:
+- **Photo Prompt** reminds them to capture "before" shot
+- One tap, photo auto-tagged "Before"
+
+**Mid-Job Discovery (9:30 AM)**:
+- Discovers water damage behind wall
+- **Scope Creep Documenter**: Tap button → Camera opens → Take photos → Voice note: "Found water damage, about 4 square feet" → Auto-generated change order sent to homeowner in 30 seconds
+- Homeowner approves via phone, work continues with full documentation
+
+**Completing Job (11:00 AM)**:
+- **Photo System** auto-organizes all shots, prompts for "after" comparison
+- **One-Tap Invoice**: Pre-fills everything including the approved scope change
+- Invoice sent in 15 seconds
+
+**Checking Schedule (11:15 AM)**:
+- **Route Builder** suggests: "There's a small plumbing job 6 minutes away that needs a bid. Add it before your 1 PM job?"
+- Efficient routing maximizes earnings
+
+**End of Day (6:00 PM)**:
+- **Daily Summary**: "Great day! You earned $1,240 across 4 jobs"
+- One new 5-star review received
+- Tomorrow's preview: 3 jobs scheduled, first at 9 AM
+
+**Evening (7:00 PM)**:
+- **Review Response** template: Tap once to thank customer
+- Professional engagement in seconds
+
+**Everything connects. Nothing orphaned. One cohesive system that acts as the contractor's business partner.**
+
+## Efficiency Features Success Metrics
+
+### Time Saved (Primary Goal: 10+ hours per week per contractor)
+- Average drive time per job: **Reduce 20%** (Route Builder + Anchor Jobs)
+- Message response time: **Reduce 70%** (Smart Replies)
+- Invoice creation time: **Under 30 seconds** (One-Tap Invoice)
+- Photo organization time: **Zero manual effort** (Auto-Organize)
+- Scope change documentation: **30 seconds vs 10 minutes** (Scope Creep Documenter)
+- Customer context recall: **Instant vs manual lookup** (Customer Memory Bank)
+- Review responses: **10 seconds vs 5 minutes** (Response Templates)
+
+### Money Earned (Primary Goal: 20%+ revenue increase per contractor)
+- Jobs per contractor per week: **Increase 15%** (Route Builder + Daily Briefing)
+- Win rate improvement: **Increase 15%** for engaged users (Bid Insights)
+- Scope creep revenue captured: **95%** of documented changes paid
+- Repeat customer rate: **30% reactivation** from dormant (Customer Memory + Follow-Up)
+- Average job value: **Increase 12%** (Better scope documentation + markup calculator)
+- Profitable job identification: **Contractors eliminate low-margin work** (Profitability Analysis)
+
+### Stress Reduced (Primary Goal: Platform becomes indispensable)
+- Contractor satisfaction score: **4.5+ out of 5**
+- "Platform helps me run my business" agreement: **80%+**
+- Daily Briefing usage: **70% of contractors daily**
+- Feature adoption across efficiency suite: **60% using 5+ features regularly**
+- Dispute rate: **Drop 60%** (Scope Creep documentation)
+- Missed parts trips: **Reduce 50%** (Truck Inventory)
+- Expired credential incidents: **Reduce 90%** (Certification Alerts)
+
+### Engagement & Adoption (Prove value through usage)
+- Smart Replies used on: **60% of contractor messages**
+- Daily Briefing daily check rate: **70% of active contractors**
+- Route Builder weekly usage: **60% of contractors**
+- Customer Memory notes added: **40% of completed jobs**
+- Bid Insights weekly review: **70% of contractors**
+- Photo system automatic organization: **90% of jobs with photos**
+- Truck Inventory active users: **40% of contractors**
+- Certification Wallet completion: **80% of contractors**
+- Weather alerts viewed: **100% of outdoor jobs with adverse forecast**
+- Review automation response rate: **70% of contractors respond to reviews**
+
+## Implementation Priority Roadmap
+
+### Phase 1: Core Efficiency (Months 1-2) - Immediate Value
+**Goal**: Prove time-saving value and sticky engagement
+
+1. **Smart Replies System**
+   - Message analysis and context-aware suggestions
+   - Job-stage contextual replies (bidding, scheduled, in-progress, completed)
+   - Custom Quick Reply Library with categories
+   - Target: 60% usage rate on contractor messages
+
+2. **Job Photo Auto-Organize**
+   - Automatic tagging by job stage (Before/Progress/After)
+   - Smart photo prompts at key moments (dismissible)
+   - Auto-generate before/after comparisons with watermark
+   - Photo quality checks with retake suggestions
+   - Target: 90% of jobs have organized photos
+
+3. **Daily Briefing Tab**
+   - Today's schedule with drive times and earnings
+   - Weather alerts for outdoor work
+   - Smart contextual reminders from job notes
+   - Unread messages preview
+   - End-of-day summary with encouraging messages
+   - Target: 70% daily check rate
+
+4. **One-Tap Invoice Enhancement**
+   - Pre-populate from job completion
+   - Include scope changes automatically
+   - "Mark as Paid" for cash/check
+   - "Viewed" status tracking with follow-up prompts
+   - Target: <30 second invoice creation
+
+5. **Customer Memory Integration**
+   - Automatic customer timeline for all jobs
+   - Quick-add context notes with voice transcription
+   - Auto-surface past work on new jobs
+   - Target: 80% of return customers have populated history
+
+**Phase 1 Success Criteria**: Contractors save 4+ hours per week; 50% use 3+ efficiency features; satisfaction score 4.3+
+
+### Phase 2: Business Intelligence (Months 3-4) - Optimize Performance
+**Goal**: Help contractors win more and earn more through data-driven insights
+
+1. **Bid Insights Engine Enhancement**
+   - Personal win rate analytics dashboard with visualizations
+   - Bid amount feedback after losses (anonymized)
+   - "Similar Jobs" pricing guide when creating bids
+   - Response time awareness with comparison to top performers
+   - Target: 15% win rate improvement over 3 months
+
+2. **Earnings Profitability Analysis**
+   - Simple earnings view (week/month/year)
+   - Job profitability with effective hourly rate
+   - Trend visualization (weekly/monthly charts)
+   - Identify most profitable job types
+   - Target: Contractors identify and focus on profitable work
+
+3. **Route Builder Full Implementation**
+   - Geographic job clustering with proximity groups
+   - Route Efficiency Score (0-100) with color coding
+   - Anchor Job System for location-locked big jobs
+   - Drive time warnings for inefficient routes
+   - One-tap cluster bidding
+   - Auto-suggest nearby jobs when bid accepted
+   - Target: 2+ hours weekly drive time savings
+
+4. **Review Automation**
+   - Automatic requests 3 days after job completion
+   - One-tap star rating for homeowners
+   - Context-aware response templates by rating
+   - Review insights analyzing patterns
+   - Target: 35% review completion rate, 70% contractor response rate
+
+**Phase 2 Success Criteria**: Win rate increases 15%; drive time reduces 20%; review collection doubles; contractors report feeling "smarter" about their business
+
+### Phase 3: Protection & Optimization (Months 5-6) - Professional Tools
+**Goal**: Protect contractors legally and operationally while optimizing daily workflow
+
+1. **Scope Creep Documenter**
+   - One-tap documentation flow with instant camera
+   - Voice note transcription with timestamps
+   - Auto-generated professional change orders
+   - Scope comparison view (original vs current)
+   - "I Found More" message templates
+   - Target: 95% of documented changes approved; 60% dispute reduction
+
+2. **Weather Integration**
+   - Weather warnings on scheduled outdoor jobs
+   - Automatic reschedule suggestions with pre-written messages
+   - Weather-smart job browsing (prioritize indoor on bad days)
+   - Target: 60% weather-related no-shows eliminated
+
+3. **Truck Inventory Tracker**
+   - "What's On My Truck" checklist with quantities
+   - Job-based parts checklist from AI scope
+   - Restock reminders at thresholds
+   - Supply Run Optimizer using Trueway API
+   - Target: 50% reduction in "forgot the part" delays
+
+4. **Certification Auto-Management Enhancement**
+   - Certification Wallet for all credentials
+   - Automatic expiration alerts (60/30/7 days)
+   - Skills-based job matching integration
+   - Badge display/hiding based on expiration
+   - Target: 90% prevention of credential lapses
+
+**Phase 3 Success Criteria**: Disputes drop 60%; contractors feel protected; operational efficiency increases; zero expired credentials shown to homeowners
+
+### Phase 4: Polish & Delight (Months 7-8) - Perfection
+**Goal**: Eliminate all remaining friction and create magical experiences
+
+1. **Intelligent Empty States**
+   - Action-driving messages for all empty states
+   - Contextual suggestions and CTAs
+   - Trade-specific quick-start templates
+   - Target: 40% action rate from empty states
+
+2. **Dirty Hands Mode**
+   - Voice command detection for hands-free operation
+   - "Say 'Take photo' or 'Document scope change'"
+   - Works with existing voice transcription
+   - Target: 80% voice command success rate
+
+3. **Offline Enhancements**
+   - Daily Briefing cached at start of day
+   - Truck Inventory stored locally with sync
+   - Photo capture works offline with queued upload
+   - Smart Reply suggestions cached for common scenarios
+   - Scope documentation queued offline
+   - Target: 100% critical job-site tasks work offline
+
+4. **Voice Command Expansion**
+   - "Add [item] to truck inventory"
+   - "Schedule follow-up with [customer] in [timeframe]"
+   - "Mark invoice paid"
+   - "Send smart reply option 2"
+   - Target: 50% of contractors use voice commands weekly
+
+**Phase 4 Success Criteria**: Platform works flawlessly in any condition; contractors describe it as "indispensable"; NPS score 70+; organic contractor referrals accelerate
+
+## Feature Integration Matrix
+
+| Efficiency Feature | Primary Integration Point | Secondary Touchpoints | Data Dependencies |
+|-------------------|---------------------------|----------------------|-------------------|
+| **Daily Briefing** | CRM Dashboard (new tab) | Mobile home screen | Jobs, Messages, Weather, Customer Notes |
+| **Smart Replies** | Messaging system | Job Browsing, CRM | Job stage, Message history, Templates |
+| **Route Builder** | Smart Scheduler (sub-view) | Browse Jobs, Daily Briefing | Job locations, Trueway API, Schedule |
+| **Customer Memory** | Customer List (enhancements) | Daily Briefing, Job Detail | Job history, Notes, Reviews, Payments |
+| **Bid Insights** | CRM (new tab) | Browse Jobs (pricing guide) | Win/Loss history, Response times, Pricing |
+| **Photo Auto-Organize** | Job Detail, Mobile Camera | Active Job Management | Job stage, Timestamps, AI clarity check |
+| **Scope Creep Doc** | Active Job Management | Invoice (change orders) | Photos, Voice notes, Original scope |
+| **One-Tap Invoice** | Job Completion, Invoice Manager | Active Jobs | Job data, Scope changes, Contact info |
+| **Truck Inventory** | CRM (new tab) | Job Detail (parts needed) | Items, Quantities, Job scopes |
+| **Certification Tracker** | CRM (enhanced compliance tab) | Profile, Job Matching | Credentials, Expiration dates, Job requirements |
+| **Review Automation** | Background system | Dashboard, Profile | Job completion dates, Reviews, Templates |
+| **Weather Integration** | Smart Scheduler, Daily Briefing | Browse Jobs | Job dates, Outdoor classification, Weather API |
+
+## Technical Considerations for Efficiency Features
+
+### Performance Targets
+- Daily Briefing load time: <800ms (all data pre-aggregated)
+- Smart Reply suggestions: <200ms (pre-computed common scenarios)
+- Photo auto-organize: Instant (timestamp-based, no processing delay)
+- Route Builder calculations: <1.5s (Trueway API cached, scores pre-calculated)
+- Voice transcription: <3s for 30-second clip (streaming API)
+
+### Data Storage Strategy
+- Customer notes: Encrypted in `useKV` with customer ID key
+- Quick Reply library: User-specific `useKV` array
+- Truck inventory: Local-first with sync (offline support)
+- Photo tags: Metadata in job record, not separate table
+- Route efficiency scores: Calculated on-demand, cached for day
+
+### Mobile Optimization
+- All efficiency features designed mobile-first
+- Offline support for job-site critical features
+- One-thumb operation for all interactions
+- Voice input alternative for hands-free scenarios
+- Large tap targets (44×44px minimum) throughout
+
+### Privacy & Security
+- Customer notes: Private to contractor, never shared
+- Bid insights: All competitor data anonymized
+- Review insights: Aggregated pattern analysis only
+- Voice transcriptions: Processed server-side, not stored raw
+- Certification docs: Encrypted storage, displayed securely
+
+## Why This Integration Works
+
+**For Contractors**: Platform becomes their complete business operating system—not just a lead source, but the tool that runs their entire day, maximizes their earnings, and minimizes their stress. They can't imagine working without it.
+
+**For Platform**: Sticky engagement through daily-use tools creates lock-in. Contractors who use 5+ efficiency features have 8x higher retention and become organic evangelists. Their success stories become the platform's best marketing.
+
+**For Homeowners**: They get more responsive, professional, and reliable contractors who show up prepared, communicate clearly, document thoroughly, and deliver quality work. Better contractors = better platform reputation.
+
+**Network Effects**: As contractors get more efficient and earn more, they recruit their peers. As homeowners see faster responses and better service, they refer neighbors. The efficiency machine powers the viral loop.
+
+## Final Integration Checklist
+
+Before shipping, validate these integration points:
+
+✅ Daily Briefing pulls from: scheduled jobs, messages, weather API, customer notes, tomorrow's schedule
+✅ Smart Replies aware of: job stage, message context, custom library, past conversations
+✅ Route Builder integrates with: job locations, Trueway API, bid submission, weather alerts
+✅ Customer Memory surfaces on: new jobs from past customers, daily briefing, CRM timeline
+✅ Bid Insights feeds into: pricing guide on bid form, response time awareness, dashboard analytics
+✅ Photo System tags based on: job stage (before start, in-progress, after complete), timestamps
+✅ Scope Creep Doc feeds into: invoice line items, change order approvals, dispute documentation
+✅ One-Tap Invoice pulls from: job data, scope changes, AI scope, contact info
+✅ Truck Inventory surfaces in: job detail (parts needed), supply run optimizer, restock alerts
+✅ Certification Tracker affects: job matching, profile badges, compliance warnings
+✅ Review Automation triggers on: job completion +3 days, review received events
+✅ Weather Integration shows in: daily briefing, smart scheduler, browse jobs (outdoor work)
+
+**The Efficiency Machine is not a feature list—it's a philosophy. Every tool serves the contractor's daily reality, every integration eliminates friction, every empty state drives action. Ship it and watch contractors choose this platform not because they have to, but because it makes them better at their job.**
