@@ -35,6 +35,32 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
   }
 
+  const hasFirstBidSticky = (job: Job) => {
+    if (job.bids.length === 0) return false
+    const firstBid = job.bids.sort((a, b) => 
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    )[0]
+    const bidAge = Date.now() - new Date(firstBid.createdAt).getTime()
+    const jobAge = Date.now() - new Date(job.createdAt).getTime()
+    const firstBidWindow = 15 * 60 * 1000
+    const stickyDuration = 2 * 60 * 60 * 1000
+    return jobAge <= firstBidWindow && bidAge <= stickyDuration
+  }
+
+  const sortedOpenJobs = [...openJobs].sort((a, b) => {
+    const aFresh = isJobFresh(a)
+    const bFresh = isJobFresh(b)
+    const aSticky = hasFirstBidSticky(a)
+    const bSticky = hasFirstBidSticky(b)
+    
+    if (aFresh && !bFresh) return -1
+    if (!aFresh && bFresh) return 1
+    if (aSticky && !bSticky) return -1
+    if (!aSticky && bSticky) return 1
+    
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  })
+
   const handleBidClick = (job: Job) => {
     setSelectedJob(job)
     setBidAmount("")
@@ -105,22 +131,29 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       <div className="max-w-4xl mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold mb-2">Browse Jobs</h1>
-          <p className="text-muted-foreground">Find your next project</p>
+          <p className="text-muted-foreground">Find your next project – bid free, keep 100%</p>
         </div>
 
         <div className="space-y-6">
-          {openJobs.map(job => {
+          {sortedOpenJobs.map(job => {
             const isFresh = isJobFresh(job)
+            const isSticky = hasFirstBidSticky(job)
             return (
-            <Card key={job.id} className={`hover:shadow-lg transition-shadow overflow-hidden ${isFresh ? 'border-primary border-2' : ''}`}>
+            <Card key={job.id} className={`hover:shadow-lg transition-all overflow-hidden ${isFresh ? 'border-primary border-2 animate-pulse' : isSticky ? 'border-accent border-2' : ''}`}>
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
                       {isFresh && (
-                        <div className="flex items-center gap-2 px-2 py-1 bg-primary text-primary-foreground rounded-md text-xs font-bold animate-pulse">
-                          <div className="h-2 w-2 rounded-full bg-primary-foreground" />
-                          FRESH
+                        <div className="flex items-center gap-2 px-3 py-1 bg-primary text-primary-foreground rounded-md text-xs font-bold shadow-lg">
+                          <div className="h-2 w-2 rounded-full bg-primary-foreground animate-ping" />
+                          <span>FRESH</span>
+                        </div>
+                      )}
+                      {isSticky && !isFresh && (
+                        <div className="flex items-center gap-2 px-3 py-1 bg-accent text-accent-foreground rounded-md text-xs font-bold">
+                          <div className="h-2 w-2 rounded-full bg-accent-foreground" />
+                          <span>TOP BID</span>
                         </div>
                       )}
                       <CardTitle className="text-xl">{job.title}</CardTitle>

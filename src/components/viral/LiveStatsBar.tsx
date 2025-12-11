@@ -1,6 +1,8 @@
 import { Card } from "@/components/ui/card"
 import { Lightning, TrendUp, Clock } from "@phosphor-icons/react"
 import type { Job } from "@/lib/types"
+import { motion } from "framer-motion"
+import { useEffect, useState } from "react"
 
 interface LiveStatsBarProps {
   jobs: Job[]
@@ -9,6 +11,9 @@ interface LiveStatsBarProps {
 export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   const now = new Date()
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  
+  const [displayJobsToday, setDisplayJobsToday] = useState(0)
+  const [displayCompleted, setDisplayCompleted] = useState(0)
   
   const jobsPostedToday = jobs.filter(j => new Date(j.createdAt) >= todayStart).length
   
@@ -33,24 +38,61 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
     return j.status === 'completed' && jobDate >= weekAgo
   }).length
 
+  useEffect(() => {
+    const duration = 500
+    const steps = 20
+    const increment = jobsPostedToday / steps
+    let current = 0
+    const interval = setInterval(() => {
+      current += increment
+      if (current >= jobsPostedToday) {
+        setDisplayJobsToday(jobsPostedToday)
+        clearInterval(interval)
+      } else {
+        setDisplayJobsToday(Math.floor(current))
+      }
+    }, duration / steps)
+    return () => clearInterval(interval)
+  }, [jobsPostedToday])
+
+  useEffect(() => {
+    const duration = 500
+    const steps = 20
+    const increment = completedThisWeek / steps
+    let current = 0
+    const interval = setInterval(() => {
+      current += increment
+      if (current >= completedThisWeek) {
+        setDisplayCompleted(completedThisWeek)
+        clearInterval(interval)
+      } else {
+        setDisplayCompleted(Math.floor(current))
+      }
+    }, duration / steps)
+    return () => clearInterval(interval)
+  }, [completedThisWeek])
+
   const stats = [
     {
       label: "Jobs Posted Today",
-      value: jobsPostedToday,
+      value: displayJobsToday,
       icon: Lightning,
-      color: "text-primary"
+      color: "text-primary",
+      bgColor: "bg-primary/10"
     },
     {
       label: "Avg Bid Time",
       value: `${avgBidTime}m`,
       icon: Clock,
-      color: "text-accent"
+      color: "text-accent",
+      bgColor: "bg-accent/10"
     },
     {
       label: "Completed This Week",
-      value: completedThisWeek,
+      value: displayCompleted,
       icon: TrendUp,
-      color: "text-secondary"
+      color: "text-secondary",
+      bgColor: "bg-secondary/10"
     }
   ]
 
@@ -58,18 +100,32 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
     <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 border-y border-border">
       <div className="container mx-auto px-4 md:px-8 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat) => {
+          {stats.map((stat, idx) => {
             const Icon = stat.icon
             return (
-              <div key={stat.label} className="flex items-center gap-4">
-                <div className={`p-3 rounded-lg bg-background ${stat.color}`}>
+              <motion.div 
+                key={stat.label} 
+                className="flex items-center gap-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.4 }}
+              >
+                <div className={`p-3 rounded-lg ${stat.bgColor} ${stat.color}`}>
                   <Icon size={28} weight="bold" />
                 </div>
                 <div>
-                  <div className="text-2xl font-heading font-bold">{stat.value}</div>
+                  <motion.div 
+                    className="text-2xl font-heading font-bold"
+                    key={stat.value}
+                    initial={{ scale: 1.2 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {stat.value}
+                  </motion.div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </div>
-              </div>
+              </motion.div>
             )
           })}
         </div>

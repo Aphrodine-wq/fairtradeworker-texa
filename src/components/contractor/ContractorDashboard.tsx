@@ -53,7 +53,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           )}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -80,18 +80,33 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             </CardContent>
           </Card>
 
+          <Card className={user.referralEarnings > 0 ? "border-2 border-accent/30" : ""}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Referral Earnings
+              </CardTitle>
+              <CurrencyDollar className="text-accent" size={24} weight="fill" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-accent">${user.referralEarnings || 0}</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {user.contractorInviteCount || 0} successful invites
+              </p>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Total Earnings This Month
+                Total This Month
               </CardTitle>
-              <CurrencyDollar className="text-accent" size={24} weight="duotone" />
+              <CurrencyDollar className="text-primary" size={24} weight="duotone" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">${totalEarnings}</div>
               {user.referralEarnings > 0 && (
-                <p className="text-xs text-muted-foreground mt-1">
-                  Includes ${user.referralEarnings} from referrals
+                <p className="text-xs text-accent mt-1">
+                  +${user.referralEarnings} referrals
                 </p>
               )}
             </CardContent>
