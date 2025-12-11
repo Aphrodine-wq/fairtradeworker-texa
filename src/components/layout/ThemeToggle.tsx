@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { Moon, Sun } from "@phosphor-icons/react"
+import { Sun, Moon } from "@phosphor-icons/react"
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme')
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    const shouldBeDark = stored === 'dark' || (!stored && prefersDark)
+    const saved = localStorage.getItem('theme')
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const shouldBeDark = saved ? saved === 'dark' : systemPrefersDark
     
     setIsDark(shouldBeDark)
     document.documentElement.classList.toggle('dark', shouldBeDark)
@@ -17,43 +17,39 @@ export function ThemeToggle() {
   const toggleTheme = () => {
     const newTheme = !isDark
     setIsDark(newTheme)
-    document.documentElement.classList.toggle('dark', newTheme)
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
+    document.documentElement.classList.toggle('dark', newTheme)
   }
 
   return (
-    <button
+    <motion.button
       onClick={toggleTheme}
-      className="relative w-11 h-11 rounded-lg bg-muted hover:bg-muted/80 transition-colors flex items-center justify-center overflow-hidden"
-      aria-label="Toggle theme"
+      className="relative w-12 h-12 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      whileTap={{ scale: 0.9 }}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <motion.div
         animate={{ rotateY: isDark ? 180 : 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 200,
-          damping: 20,
-          duration: 0.8
-        }}
-        style={{ transformStyle: "preserve-3d" }}
-        className="relative w-6 h-6"
+        transition={{ duration: 0.8, type: 'spring', stiffness: 200, damping: 20 }}
+        className="preserve-3d relative w-full h-full"
+        style={{ transformStyle: 'preserve-3d' }}
       >
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ backfaceVisibility: "hidden" }}
+        <div 
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-lg"
+          style={{ backfaceVisibility: 'hidden' }}
         >
-          <Sun size={24} weight="fill" className="text-yellow-500" />
+          <Sun size={24} weight="fill" className="text-white" />
         </div>
-        <div
-          className="absolute inset-0 flex items-center justify-center"
+        <div 
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center shadow-lg"
           style={{ 
-            backfaceVisibility: "hidden",
-            transform: "rotateY(180deg)"
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
           }}
         >
-          <Moon size={24} weight="fill" className="text-blue-400" />
+          <Moon size={24} weight="fill" className="text-yellow-200" />
         </div>
       </motion.div>
-    </button>
+    </motion.button>
   )
 }

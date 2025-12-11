@@ -186,21 +186,22 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 
 ## Design Direction
 
-The design features a clean, modern white and blue aesthetic that feels professional, trustworthy, and accessible. The interface prioritizes clarity and functionality with a contemporary color palette centered on blue tones that communicate reliability and professionalism. The design includes a delightful 3D theme toggle that smoothly transitions between light and dark modes, with all interface elements fading gracefully during the transition. Every interaction feels polished and responsive, with subtle hover effects and smooth animations that enhance usability without being distracting.
+**DuoTone Glass Morphism**: A premium, magazine-editorial aesthetic featuring pristine glass-like surfaces with subtle blur effects and a strictly enforced two-color system (Electric Blue + Charcoal). No gradients except for the 3D theme toggle. Every UI element is either blue (action/trust) or charcoal/gray (structure/text), creating instant visual hierarchy and a professional, trustworthy appearance. The design includes a delightful 3D magnetic theme toggle that rotates like a luxury car switch with spring physics. All surfaces have a museum-glass quality with 12px backdrop blur, floating on subtle noise texture. Micro-interactions are purposeful: buttons lift on hover, cards float with enhanced shadows, links grow animated underlines, and pages fade in with gentle upward motion. Zero fluff—just diamonds.
 
 ## Color Selection
 
-A fresh, clean palette centered on professional blue with crisp whites and subtle grays for a modern marketplace feel.
+**DuoTone System**: Two colors. No exceptions. This constraint creates editorial simplicity with surgical precision.
 
-- **Primary Color**: oklch(0.45 0.20 264) - Professional blue communicating trust, stability, and reliability
-- **Secondary Colors**: oklch(0.50 0.12 264) - Lighter blue for supporting elements and secondary actions
-- **Accent Color**: oklch(0.40 0.22 264) - Deeper blue for CTAs and important actions
-- **Background**: Pure white oklch(1 0 0) in light mode, deep dark oklch(0.12 0 0) in dark mode
+- **Primary Color**: oklch(0.506 0.213 264) - Electric Blue for buttons, links, and active states
+- **Secondary Colors**: oklch(0.706 0.12 264) - Light Blue for supporting elements
+- **Accent Color**: oklch(0.456 0.243 264) - Deep Blue for CTAs and highlights
+- **Background**: Warm light gray oklch(0.988 0.002 264) in light mode, deep charcoal oklch(0.165 0.01 264) in dark mode
+- **Glass Surfaces**: White @ 85% opacity in light mode, Charcoal @ 75% opacity in dark mode (with 12px backdrop-blur)
 - **Foreground/Background Pairings**: 
-  - Background (White oklch(1 0 0)): Dark text oklch(0.15 0 0) - Ratio 17.8:1 ✓
-  - Primary (Blue oklch(0.45 0.20 264)): White text oklch(1 0 0) - Ratio 8.4:1 ✓
-  - Card (White oklch(1 0 0)): Dark text oklch(0.15 0 0) - Ratio 17.8:1 ✓
-  - Muted (Light Gray oklch(0.96 0 0)): Medium text oklch(0.45 0 0) - Ratio 7.1:1 ✓
+  - Background (Light) → Foreground (Charcoal): Ratio 17.8:1 ✓
+  - Primary (Electric Blue) → White text: Ratio 8.4:1 ✓
+  - Card (Glass White) → Text: Ratio 17.8:1 ✓
+  - Muted → Muted-foreground: Ratio 7.1:1 ✓
 
 ## Font Selection
 
@@ -218,33 +219,38 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
 
 ## Animations
 
-Animations feel snappy and purposeful with a spring-based physics model that creates natural, delightful interactions. The 3D theme toggle rotates smoothly with a spring transition (0.8s) when switching between light and dark modes, while the entire page fades gracefully (0.4s) during theme changes. Motion guides attention during the AI scoping process with progressive reveals, provides satisfying feedback on bid submissions with scale and fade effects, and creates smooth transitions between dashboard views. Buttons respond with subtle lift (2px translate-y) and enhanced shadows on hover, then scale down slightly (scale-95) on click for tactile feedback. Every animation makes the interface feel more responsive and delightful without feeling sluggish or decorative.
+**Spring Physics & Purposeful Motion**: Every animation serves a function—orienting during navigation, establishing relationships, providing feedback, or guiding attention. The centerpiece is the 3D magnetic theme toggle with luxury-car-switch spring physics (0.8s, stiffness: 200, damping: 20) that rotates 180° on the Y-axis. Theme changes trigger a 0.4s page-wide color transition. All buttons respond with lift (2px translate-y, scale-105) and enhanced shadows on hover, then scale-95 on click for tactile feedback. Cards float on hover with shadow-xl and 4px lift. Links grow animated blue underlines from left to right. Pages fade in with gentle 10px upward motion (0.6s ease-out). Loading states use subtle blue shimmer instead of spinners. No decoration—only natural physics creating delightful responsiveness.
 
 ## Component Selection
 
 - **Components**: 
-  - Button (primary, secondary, ghost variants with blue theming, improved hover effects)
-  - Card (for job listings, bids, stats, white bg with subtle shadows and hover lift)
-  - Input, Textarea (for forms with focus states, 16px minimum text size)
-  - Dialog (for bid submission, payment flows, confirmations, customer details)
-  - Tabs (for contractor dashboard sections: Browse Jobs, CRM, Invoices)
-  - Badge (for Pro status, job status, county status, customer status)
-  - Avatar (for user profiles)
-  - Table (for job listings, invoice lists, transforms to cards on mobile)
-  - Progress (for AI scoping loading state)
-  - Toaster (sonner for notifications, especially invite confirmations)
-  - Lightbox (full-screen photo viewer with keyboard navigation and pinch-to-zoom)
-  - Label (for form fields in instant invite widget)
-  - ThemeToggle (3D animated sun/moon toggle with spring physics)
+  - Button (primary/secondary/ghost with electric blue theming, hover lift effects, 44px minimum)
+  - Card (glass morphism with 85%/75% opacity, 12px backdrop-blur, rounded-2xl, hover float)
+  - GlassCard (specialized card with museum-glass aesthetic and shadow-xl hover)
+  - Input, Textarea (border-bottom focus states, 16px minimum text, 44px height)
+  - Dialog (glass background with blur, smooth open/close)
+  - Tabs (for contractor dashboard: Browse Jobs, CRM, Invoices)
+  - Badge (job status, Pro status, county status with blue variants)
+  - Avatar (user profiles with blue primary background)
+  - Table (transforms to cards on mobile)
+  - Progress (for AI scoping with blue accent)
+  - Toaster (sonner with blue theme for notifications)
+  - Lightbox (full-screen photo viewer with glass overlay)
+  - Label (form fields with blue focus)
+  - ThemeToggle (3D animated sun/moon with spring physics and gradient spheres)
   
 - **Customizations**: 
-  - Custom territory map component using SVG for Texas counties (no external map library in demo)
+  - GlassCard component with backdrop-blur-12 and semi-transparent backgrounds
+  - 3D ThemeToggle with rotateY animation and luxury spring physics
+  - Custom noise texture overlay on body (0.5% opacity for depth)
+  - Animated link underlines that grow from left to right
+  - Page fade-in animation with upward motion
+  - Territory map using SVG for Texas counties
   - Custom stat cards with large numbers and Phosphor icons
   - Custom job scope result card with price slider
-  - Custom file upload zones with drag-and-drop states
-  - Custom lightbox with smooth animations, keyboard controls (Escape, Arrow keys), and photo counter
-  - Custom instant invite widget with email/SMS tabs and real-time validation
-  - Custom 3D theme toggle with rotateY animation and spring transition
+  - Custom file upload zones with drag-and-drop
+  - Custom lightbox with smooth scale animations
+  - Custom instant invite widget with real-time validation
 
 - **States**: 
   - Buttons: default, hover (scale-105 + brightness + shadow-md + translate-y-[-2px]), active (scale-95), disabled (opacity-50)
