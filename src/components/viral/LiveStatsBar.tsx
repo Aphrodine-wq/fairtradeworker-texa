@@ -39,8 +39,8 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   }).length
 
   useEffect(() => {
-    const duration = 500
-    const steps = 20
+    const duration = 300
+    const steps = 15
     const increment = jobsPostedToday / steps
     let current = 0
     const interval = setInterval(() => {
@@ -56,8 +56,8 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   }, [jobsPostedToday])
 
   useEffect(() => {
-    const duration = 500
-    const steps = 20
+    const duration = 300
+    const steps = 15
     const increment = completedThisWeek / steps
     let current = 0
     const interval = setInterval(() => {
@@ -106,9 +106,9 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
               <motion.div 
                 key={stat.label} 
                 className="flex items-center gap-4"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1, duration: 0.4 }}
+                transition={{ delay: idx * 0.05, duration: 0.2 }}
               >
                 <div className={`p-3 rounded-lg ${stat.bgColor} ${stat.color}`}>
                   <Icon size={28} weight="bold" />
@@ -117,9 +117,9 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
                   <motion.div 
                     className="text-2xl font-heading font-bold"
                     key={stat.value}
-                    initial={{ scale: 1.2 }}
+                    initial={{ scale: 1.1 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.15 }}
                   >
                     {stat.value}
                   </motion.div>
