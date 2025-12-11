@@ -18,6 +18,7 @@ export interface Job {
   description: string
   mediaUrl?: string
   mediaType?: 'video' | 'audio' | 'photo'
+  photos?: string[]
   aiScope: {
     scope: string
     priceLow: number

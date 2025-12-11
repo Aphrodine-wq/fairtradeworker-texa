@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images } from "@phosphor-icons/react"
 import type { Job, Bid, User } from "@/lib/types"
 
 interface BrowseJobsProps {
@@ -91,9 +91,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           <p className="text-muted-foreground">Find your next project</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {openJobs.map(job => (
-            <Card key={job.id} className="hover:shadow-lg transition-shadow">
+            <Card key={job.id} className="hover:shadow-lg transition-shadow overflow-hidden">
               <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -107,8 +107,51 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between gap-4">
+              <CardContent className="space-y-4">
+                {job.photos && job.photos.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      <Images size={18} weight="duotone" />
+                      <span>Photos</span>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {job.photos.map((photo, idx) => (
+                        <div 
+                          key={idx} 
+                          className="relative aspect-video rounded-lg overflow-hidden bg-muted group cursor-pointer"
+                        >
+                          <img 
+                            src={photo} 
+                            alt={`Job photo ${idx + 1}`}
+                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {job.aiScope.materials && job.aiScope.materials.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                      <Package size={18} weight="duotone" />
+                      <span>Materials Needed</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {job.aiScope.materials.map((material, idx) => (
+                        <Badge 
+                          key={idx} 
+                          variant="secondary"
+                          className="text-xs px-3 py-1"
+                        >
+                          {material}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between gap-4 pt-2">
                   <div className="flex items-center gap-2 text-lg font-semibold">
                     <CurrencyDollar weight="fill" className="text-accent" size={24} />
                     <span className="text-secondary">${job.aiScope.priceLow}</span>

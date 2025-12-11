@@ -37,6 +37,10 @@ export const DEMO_JOBS: Job[] = [
     title: 'Kitchen Faucet Replacement',
     description: 'My kitchen faucet is leaking from the base and needs to be replaced. It\'s a standard single-handle faucet.',
     mediaType: 'photo',
+    photos: [
+      'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=800&q=80',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
+    ],
     aiScope: {
       scope: 'Replace leaking kitchen faucet cartridge and install new single-handle faucet. Includes shutoff valve inspection and water line check.',
       priceLow: 120,
@@ -65,6 +69,9 @@ export const DEMO_JOBS: Job[] = [
     title: 'Drywall Repair in Living Room',
     description: 'Hole in drywall from moving furniture. About 4 inches diameter.',
     mediaType: 'photo',
+    photos: [
+      'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&q=80',
+    ],
     aiScope: {
       scope: 'Patch 4-inch drywall hole with mesh tape, joint compound, sand smooth, prime and paint to match existing wall.',
       priceLow: 80,
@@ -82,6 +89,10 @@ export const DEMO_JOBS: Job[] = [
     title: 'Ceiling Fan Installation',
     description: 'Need to install a new ceiling fan in master bedroom. Existing light fixture to be removed.',
     mediaType: 'video',
+    photos: [
+      'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&q=80',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=800&q=80',
+    ],
     aiScope: {
       scope: 'Remove existing light fixture, install ceiling fan support bracket, wire and mount 52-inch ceiling fan with light kit, test all functions.',
       priceLow: 150,
@@ -99,6 +110,11 @@ export const DEMO_JOBS: Job[] = [
     title: 'Outdoor Deck Staining',
     description: 'Need my 12x16 deck cleaned, sanded, and re-stained. Wood is weathered but structurally sound.',
     mediaType: 'photo',
+    photos: [
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80',
+      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80',
+    ],
     aiScope: {
       scope: 'Power wash 192 sq ft deck, sand surface, apply wood conditioner, and two coats of semi-transparent deck stain.',
       priceLow: 450,
