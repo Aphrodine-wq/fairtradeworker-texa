@@ -23,27 +23,50 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-20 h-10 rounded-full bg-muted hover:bg-muted/80 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      className="relative w-12 h-12 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all hover:scale-105 active:scale-95"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <motion.div
-        animate={{ x: isDark ? 40 : 0 }}
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        className="absolute top-1 left-1 w-8 h-8 rounded-full bg-primary shadow-md flex items-center justify-center"
-      >
-        <span className="text-lg leading-none" role="img" aria-hidden="true">
-          {isDark ? '🌙' : '☀️'}
-        </span>
-      </motion.div>
+        className="absolute inset-0 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-800 dark:to-gray-900"
+        initial={false}
+        animate={{
+          scale: isDark ? 1 : 0.85,
+          opacity: isDark ? 1 : 0.4,
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      />
       
-      <div className="absolute inset-0 flex justify-between items-center px-2 z-0 pointer-events-none select-none">
-        <span className={`text-lg transition-opacity ${isDark ? 'opacity-40' : 'opacity-100'}`} role="img" aria-hidden="true">
-          ☀️
-        </span>
-        <span className={`text-lg transition-opacity ${isDark ? 'opacity-100' : 'opacity-40'}`} role="img" aria-hidden="true">
-          🌙
-        </span>
-      </div>
+      <motion.div
+        className="absolute inset-0 rounded-full flex items-center justify-center overflow-hidden"
+        initial={false}
+        animate={{
+          backgroundColor: isDark ? "rgba(10, 10, 10, 0.95)" : "rgba(255, 255, 255, 0.95)",
+        }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black"
+          initial={false}
+          animate={{
+            clipPath: isDark 
+              ? "circle(100% at 50% 50%)" 
+              : "circle(0% at 50% 50%)",
+          }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        />
+        
+        <motion.span
+          className="relative z-10 text-xl"
+          initial={false}
+          animate={{
+            rotate: isDark ? 180 : 0,
+            scale: isDark ? 0.9 : 1,
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          {isDark ? '🌙' : '☀️'}
+        </motion.span>
+      </motion.div>
     </button>
   )
 }
