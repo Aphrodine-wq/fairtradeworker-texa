@@ -12,6 +12,13 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 
 ## Essential Features
 
+### Demo Mode
+- **Functionality**: Instant access to three pre-configured user accounts (homeowner, contractor, operator) with sample data
+- **Purpose**: Allow potential users to explore the platform's features without signing up
+- **Trigger**: Clicking one of three "Demo as [Role]" buttons on the homepage
+- **Progression**: Click demo button → Auto-login as demo user → Show demo mode banner → Navigate to role-appropriate page → Explore pre-populated jobs, bids, invoices, and territories
+- **Success criteria**: Users can instantly experience all platform features with realistic data; demo banner clearly indicates demo mode status
+
 ### User Authentication & Role Selection
 - **Functionality**: Email-based signup/login with role selection (homeowner, contractor, operator)
 - **Purpose**: Segregate user experiences and permissions based on their role in the marketplace

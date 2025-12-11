@@ -1,14 +1,16 @@
-import { House, Hammer, MapTrifold } from "@phosphor-icons/react"
+import { House, Hammer, MapTrifold, Play } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useKV } from "@github/spark/hooks"
-import type { Job } from "@/lib/types"
+import type { Job, User } from "@/lib/types"
+import { DEMO_USERS } from "@/lib/demoData"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
+  onDemoLogin?: (user: User) => void
 }
 
-export function HomePage({ onNavigate }: HomePageProps) {
+export function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const todayJobs = (jobs || []).filter(job => {
     const jobDate = new Date(job.createdAt)
@@ -63,6 +65,46 @@ export function HomePage({ onNavigate }: HomePageProps) {
               Jobs posted today: <span className="text-accent">{todayJobs.length}</span>
             </p>
           </Card>
+
+          {onDemoLogin && (
+            <Card className="mt-8 p-6 border-2 border-primary/20 bg-primary/5">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2">
+                  <Play weight="fill" className="text-primary" size={24} />
+                  <h3 className="text-xl font-bold">Try Demo Mode</h3>
+                </div>
+                <p className="text-muted-foreground">
+                  Explore the platform instantly with pre-populated demo accounts for each user type.
+                </p>
+                <div className="flex flex-col md:flex-row gap-3">
+                  <Button 
+                    variant="outline"
+                    className="flex-1 border-primary/30 hover:bg-primary/10"
+                    onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
+                  >
+                    <House weight="fill" className="mr-2" size={20} />
+                    Demo as Homeowner
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    className="flex-1 border-secondary/30 hover:bg-secondary/10"
+                    onClick={() => onDemoLogin(DEMO_USERS.contractor)}
+                  >
+                    <Hammer weight="fill" className="mr-2" size={20} />
+                    Demo as Contractor
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    className="flex-1 border-accent/30 hover:bg-accent/10"
+                    onClick={() => onDemoLogin(DEMO_USERS.operator)}
+                  >
+                    <MapTrifold weight="fill" className="mr-2" size={20} />
+                    Demo as Operator
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          )}
         </div>
       </section>
 

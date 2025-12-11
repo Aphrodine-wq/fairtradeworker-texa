@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
+import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { HomePage } from "@/pages/Home"
 import { LoginPage } from "@/pages/Login"
@@ -11,14 +12,29 @@ import { ContractorDashboard } from "@/components/contractor/ContractorDashboard
 import { ProUpgrade } from "@/components/contractor/ProUpgrade"
 import { TerritoryMap } from "@/components/territory/TerritoryMap"
 import { useKV } from "@github/spark/hooks"
-import type { User, UserRole } from "@/lib/types"
+import { initializeDemoData } from "@/lib/demoData"
+import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
+import { toast } from "sonner"
 
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'browse-jobs' | 'dashboard' | 'pro-upgrade' | 'territory-map'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
+  const [isDemoMode, setIsDemoMode] = useKV<boolean>("is-demo-mode", false)
   const [preselectedRole, setPreselectedRole] = useState<UserRole | undefined>()
+  const [jobs, setJobs] = useKV<Job[]>("jobs", [])
+  const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
+  const [territories, setTerritories] = useKV<Territory[]>("territories", [])
+
+  useEffect(() => {
+    const demoData = initializeDemoData()
+    if (demoData) {
+      setJobs(demoData.jobs)
+      setInvoices(demoData.invoices)
+      setTerritories(demoData.territories)
+    }
+  }, [])
 
   const handleNavigate = (page: string, role?: string) => {
     if (role) {
@@ -30,10 +46,35 @@ function App() {
 
   const handleLogin = (user: User) => {
     setCurrentUser(user)
+    setIsDemoMode(false)
+  }
+
+  const handleDemoLogin = (demoUser: User) => {
+    setCurrentUser(demoUser)
+    setIsDemoMode(true)
+    
+    const roleMessages = {
+      homeowner: 'You can post jobs and receive bids from contractors.',
+      contractor: 'You can browse jobs and submit bids. Check out your dashboard!',
+      operator: 'You can view and claim territories on the map.',
+    }
+    
+    toast.success(`Demo mode activated as ${demoUser.fullName}`, {
+      description: roleMessages[demoUser.role],
+    })
+    
+    if (demoUser.role === 'contractor') {
+      setCurrentPage('dashboard')
+    } else if (demoUser.role === 'operator') {
+      setCurrentPage('territory-map')
+    } else {
+      setCurrentPage('home')
+    }
   }
 
   const handleLogout = () => {
     setCurrentUser(null)
+    setIsDemoMode(false)
     setCurrentPage('home')
   }
 
@@ -44,27 +85,33 @@ function App() {
       case 'signup':
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
-        return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} />
+        return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
-        return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} />
+        return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         return currentUser?.role === 'contractor' 
           ? <ContractorDashboard user={currentUser} onNavigate={handleNavigate} />
-          : <HomePage onNavigate={handleNavigate} />
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
-        return currentUser ? <ProUpgrade user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} />
+        return currentUser ? <ProUpgrade user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'territory-map':
         return currentUser?.role === 'operator'
           ? <TerritoryMap user={currentUser} />
-          : <HomePage onNavigate={handleNavigate} />
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
-        return <HomePage onNavigate={handleNavigate} />
+        return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
   }
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
+      {isDemoMode && currentUser && (
+        <DemoModeBanner 
+          userName={currentUser.fullName} 
+          userRole={currentUser.role}
+        />
+      )}
       <main className="flex-1">
         {renderPage()}
       </main>
