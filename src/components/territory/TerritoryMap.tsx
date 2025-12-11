@@ -1,0 +1,164 @@
+import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { useKV } from "@github/spark/hooks"
+import { toast } from "sonner"
+import { MapPin } from "@phosphor-icons/react"
+import type { Territory, User } from "@/lib/types"
+
+interface TerritoryMapProps {
+  user: User
+}
+
+const TEXAS_COUNTIES = [
+  "Anderson", "Andrews", "Angelina", "Aransas", "Archer", "Armstrong", "Atascosa", "Austin",
+  "Bailey", "Bandera", "Bastrop", "Baylor", "Bee", "Bell", "Bexar", "Blanco",
+  "Borden", "Bosque", "Bowie", "Brazoria", "Brazos", "Brewster", "Briscoe", "Brooks",
+  "Brown", "Burleson", "Burnet", "Caldwell", "Calhoun", "Callahan", "Cameron", "Camp",
+  "Carson", "Cass", "Castro", "Chambers", "Cherokee", "Childress", "Clay", "Cochran",
+  "Coke", "Coleman", "Collin", "Collingsworth", "Colorado", "Comal", "Comanche", "Concho",
+  "Cooke", "Coryell", "Cottle", "Crane", "Crockett", "Crosby", "Culberson", "Dallam",
+  "Dallas", "Dawson", "Deaf Smith", "Delta", "Denton", "DeWitt", "Dickens", "Dimmit",
+  "Donley", "Duval", "Eastland", "Ector", "Edwards", "Ellis", "El Paso", "Erath",
+  "Falls", "Fannin", "Fayette", "Fisher", "Floyd", "Foard", "Fort Bend", "Franklin",
+  "Freestone", "Frio", "Gaines", "Galveston", "Garza", "Gillespie", "Glasscock", "Goliad"
+]
+
+export function TerritoryMap({ user }: TerritoryMapProps) {
+  const [territories, setTerritories] = useKV<Territory[]>("territories", [])
+  const [users] = useKV<User[]>("users", [])
+
+  const initializeTerritories = () => {
+    if (!territories || territories.length === 0) {
+      const initialTerritories: Territory[] = TEXAS_COUNTIES.map((county, idx) => ({
+        id: idx + 1,
+        countyName: `${county} County`,
+        status: 'available' as const
+      }))
+      setTerritories(initialTerritories)
+      return initialTerritories
+    }
+    return territories
+  }
+
+  const currentTerritories = initializeTerritories()
+
+  const handleClaimTerritory = (territory: Territory) => {
+    if (territory.status === 'claimed') {
+      toast.error("This territory is already claimed")
+      return
+    }
+
+    setTerritories((current) =>
+      (current || []).map(t =>
+        t.id === territory.id
+          ? { ...t, status: 'claimed' as const, operatorId: user.id, operatorName: user.fullName }
+          : t
+      )
+    )
+
+    toast.success(`${territory.countyName} claimed successfully!`)
+  }
+
+  const myTerritories = (currentTerritories || []).filter(t => t.operatorId === user.id)
+  const availableTerritories = (currentTerritories || []).filter(t => t.status === 'available')
+
+  return (
+    <div className="container mx-auto px-4 md:px-8 py-12">
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Territory Map</h1>
+          <p className="text-muted-foreground">Claim counties to manage jobs in your area</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                My Territories
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-primary">{myTerritories.length}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Available
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-accent">{availableTerritories.length}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Total Counties
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold">{TEXAS_COUNTIES.length}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Texas Counties</CardTitle>
+            <CardDescription>Click on an available county to claim it</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-h-[600px] overflow-y-auto">
+              {(currentTerritories || []).map(territory => {
+                const isMine = territory.operatorId === user.id
+                const isAvailable = territory.status === 'available'
+                
+                return (
+                  <button
+                    key={territory.id}
+                    onClick={() => isAvailable && handleClaimTerritory(territory)}
+                    disabled={!isAvailable}
+                    className={`
+                      p-4 rounded-lg border-2 text-left transition-all
+                      ${isMine ? 'bg-primary/10 border-primary hover:bg-primary/20' : ''}
+                      ${isAvailable && !isMine ? 'border-accent/30 hover:border-accent hover:bg-accent/5' : ''}
+                      ${!isAvailable && !isMine ? 'border-muted bg-muted/30 opacity-60 cursor-not-allowed' : ''}
+                      ${isAvailable ? 'hover:shadow-md' : ''}
+                    `}
+                  >
+                    <div className="flex items-start gap-2 mb-2">
+                      <MapPin
+                        weight="fill"
+                        className={`
+                          shrink-0
+                          ${isMine ? 'text-primary' : ''}
+                          ${isAvailable && !isMine ? 'text-accent' : ''}
+                          ${!isAvailable && !isMine ? 'text-muted-foreground' : ''}
+                        `}
+                        size={20}
+                      />
+                      <span className="font-medium text-sm leading-tight">
+                        {territory.countyName}
+                      </span>
+                    </div>
+                    <Badge
+                      variant={isMine ? 'default' : isAvailable ? 'secondary' : 'outline'}
+                      className="text-xs"
+                    >
+                      {isMine ? 'My Territory' : isAvailable ? 'Available' : 'Claimed'}
+                    </Badge>
+                  </button>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  )
+}
