@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -27,39 +27,41 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
 
-  const openJobs = (jobs || []).filter(job => job.status === 'open')
-  
-  const isJobFresh = (job: Job) => {
-    const jobAge = Date.now() - new Date(job.createdAt).getTime()
-    const fifteenMinutes = 15 * 60 * 1000
-    return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
-  }
-
-  const hasFirstBidSticky = (job: Job) => {
-    if (job.bids.length === 0) return false
-    const firstBid = job.bids.sort((a, b) => 
-      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-    )[0]
-    const bidAge = Date.now() - new Date(firstBid.createdAt).getTime()
-    const jobAge = Date.now() - new Date(job.createdAt).getTime()
-    const firstBidWindow = 15 * 60 * 1000
-    const stickyDuration = 2 * 60 * 60 * 1000
-    return jobAge <= firstBidWindow && bidAge <= stickyDuration
-  }
-
-  const sortedOpenJobs = [...openJobs].sort((a, b) => {
-    const aFresh = isJobFresh(a)
-    const bFresh = isJobFresh(b)
-    const aSticky = hasFirstBidSticky(a)
-    const bSticky = hasFirstBidSticky(b)
+  const sortedOpenJobs = useMemo(() => {
+    const openJobs = (jobs || []).filter(job => job.status === 'open')
     
-    if (aFresh && !bFresh) return -1
-    if (!aFresh && bFresh) return 1
-    if (aSticky && !bSticky) return -1
-    if (!aSticky && bSticky) return 1
-    
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  })
+    const isJobFresh = (job: Job) => {
+      const jobAge = Date.now() - new Date(job.createdAt).getTime()
+      const fifteenMinutes = 15 * 60 * 1000
+      return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
+    }
+
+    const hasFirstBidSticky = (job: Job) => {
+      if (job.bids.length === 0) return false
+      const firstBid = job.bids.sort((a, b) => 
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      )[0]
+      const bidAge = Date.now() - new Date(firstBid.createdAt).getTime()
+      const jobAge = Date.now() - new Date(job.createdAt).getTime()
+      const firstBidWindow = 15 * 60 * 1000
+      const stickyDuration = 2 * 60 * 60 * 1000
+      return jobAge <= firstBidWindow && bidAge <= stickyDuration
+    }
+
+    return [...openJobs].sort((a, b) => {
+      const aFresh = isJobFresh(a)
+      const bFresh = isJobFresh(b)
+      const aSticky = hasFirstBidSticky(a)
+      const bSticky = hasFirstBidSticky(b)
+      
+      if (aFresh && !bFresh) return -1
+      if (!aFresh && bFresh) return 1
+      if (aSticky && !bSticky) return -1
+      if (!aSticky && bSticky) return 1
+      
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+  }, [jobs])
 
   const handleBidClick = (job: Job) => {
     setSelectedJob(job)
@@ -112,7 +114,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setSelectedJob(null)
   }
 
-  if (openJobs.length === 0) {
+  if (sortedOpenJobs.length === 0) {
     return (
       <div className="container mx-auto px-4 md:px-8 py-12">
         <div className="max-w-4xl mx-auto">
@@ -136,8 +138,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
         <div className="space-y-6">
           {sortedOpenJobs.map(job => {
-            const isFresh = isJobFresh(job)
-            const isSticky = hasFirstBidSticky(job)
+            const jobAge = Date.now() - new Date(job.createdAt).getTime()
+            const isFresh = jobAge <= (15 * 60 * 1000) && job.size === 'small' && job.bids.length === 0
+            const isSticky = job.bids.length > 0
             return (
             <Card key={job.id} className={`hover:shadow-lg transition-all overflow-hidden ${isFresh ? 'border-primary border-2 animate-pulse' : isSticky ? 'border-accent border-2' : ''}`}>
               <CardHeader>

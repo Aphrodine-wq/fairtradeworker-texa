@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -14,17 +14,9 @@ interface TerritoryMapProps {
 }
 
 const TEXAS_COUNTIES = [
-  "Anderson", "Andrews", "Angelina", "Aransas", "Archer", "Armstrong", "Atascosa", "Austin",
-  "Bailey", "Bandera", "Bastrop", "Baylor", "Bee", "Bell", "Bexar", "Blanco",
-  "Borden", "Bosque", "Bowie", "Brazoria", "Brazos", "Brewster", "Briscoe", "Brooks",
-  "Brown", "Burleson", "Burnet", "Caldwell", "Calhoun", "Callahan", "Cameron", "Camp",
-  "Carson", "Cass", "Castro", "Chambers", "Cherokee", "Childress", "Clay", "Cochran",
-  "Coke", "Coleman", "Collin", "Collingsworth", "Colorado", "Comal", "Comanche", "Concho",
-  "Cooke", "Coryell", "Cottle", "Crane", "Crockett", "Crosby", "Culberson", "Dallam",
-  "Dallas", "Dawson", "Deaf Smith", "Delta", "Denton", "DeWitt", "Dickens", "Dimmit",
-  "Donley", "Duval", "Eastland", "Ector", "Edwards", "Ellis", "El Paso", "Erath",
-  "Falls", "Fannin", "Fayette", "Fisher", "Floyd", "Foard", "Fort Bend", "Franklin",
-  "Freestone", "Frio", "Gaines", "Galveston", "Garza", "Gillespie", "Glasscock", "Goliad"
+  "Anderson", "Andrews", "Angelina", "Aransas", "Archer", "Bastrop", "Bell", "Bexar",
+  "Brazoria", "Brazos", "Collin", "Dallas", "Denton", "El Paso", "Fort Bend",
+  "Galveston", "Harris", "Tarrant", "Travis", "Williamson"
 ]
 
 export function TerritoryMap({ user }: TerritoryMapProps) {
@@ -46,7 +38,7 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
     return territories
   }
 
-  const currentTerritories = initializeTerritories()
+  const currentTerritories = useMemo(() => initializeTerritories(), [territories])
 
   const handleClaimTerritory = (territory: Territory) => {
     if (territory.status === 'claimed') {
@@ -65,8 +57,10 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
     toast.success(`${territory.countyName} claimed successfully!`)
   }
 
-  const myTerritories = (currentTerritories || []).filter(t => t.operatorId === user.id)
-  const availableTerritories = (currentTerritories || []).filter(t => t.status === 'available')
+  const { myTerritories, availableTerritories } = useMemo(() => ({
+    myTerritories: (currentTerritories || []).filter(t => t.operatorId === user.id),
+    availableTerritories: (currentTerritories || []).filter(t => t.status === 'available')
+  }), [currentTerritories, user.id])
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
@@ -124,8 +118,8 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
                 <CardDescription>Click on an available county to claim it</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-h-[600px] overflow-y-auto">
-                  {(currentTerritories || []).map(territory => {
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-[500px] overflow-y-auto">
+                  {(currentTerritories || []).slice(0, 50).map(territory => {
                     const isMine = territory.operatorId === user.id
                     const isAvailable = territory.status === 'available'
                     

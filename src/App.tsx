@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, lazy, Suspense } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
@@ -9,19 +9,31 @@ import { SignupPage } from "@/pages/Signup"
 import { MyJobs } from "@/pages/MyJobs"
 import { JobPoster } from "@/components/jobs/JobPoster"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
-import { ContractorDashboard } from "@/components/contractor/ContractorDashboard"
-import { EnhancedCRM } from "@/components/contractor/EnhancedCRM"
-import { InvoiceManager } from "@/components/contractor/InvoiceManager"
-import { ProUpgrade } from "@/components/contractor/ProUpgrade"
-import { TerritoryMap } from "@/components/territory/TerritoryMap"
-import { CompanyRevenueDashboard } from "@/components/contractor/CompanyRevenueDashboard"
 import { AutomationRunner } from "@/components/contractor/AutomationRunner"
 import { useKV } from "@github/spark/hooks"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 
+const ContractorDashboard = lazy(() => import("@/components/contractor/ContractorDashboard").then(m => ({ default: m.ContractorDashboard })))
+const EnhancedCRM = lazy(() => import("@/components/contractor/EnhancedCRM").then(m => ({ default: m.EnhancedCRM })))
+const InvoiceManager = lazy(() => import("@/components/contractor/InvoiceManager").then(m => ({ default: m.InvoiceManager })))
+const ProUpgrade = lazy(() => import("@/components/contractor/ProUpgrade").then(m => ({ default: m.ProUpgrade })))
+const TerritoryMap = lazy(() => import("@/components/territory/TerritoryMap").then(m => ({ default: m.TerritoryMap })))
+const CompanyRevenueDashboard = lazy(() => import("@/components/contractor/CompanyRevenueDashboard").then(m => ({ default: m.CompanyRevenueDashboard })))
+
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard'
+
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-center">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+        <p className="mt-4 text-muted-foreground">Loading...</p>
+      </div>
+    </div>
+  )
+}
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
@@ -35,9 +47,10 @@ function App() {
   useEffect(() => {
     const demoData = initializeDemoData()
     if (demoData) {
-      setJobs(demoData.jobs)
-      setInvoices(demoData.invoices)
-      setTerritories(demoData.territories)
+      const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
+      setJobs(demoJobs)
+      setInvoices(demoInvoices)
+      setTerritories(demoTerritories)
     }
   }, [])
 
@@ -101,24 +114,24 @@ function App() {
         return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         return currentUser?.role === 'contractor' 
-          ? <ContractorDashboard user={currentUser} onNavigate={handleNavigate} />
+          ? <Suspense fallback={<LoadingFallback />}><ContractorDashboard user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
         return currentUser?.role === 'contractor'
-          ? <EnhancedCRM user={currentUser} />
+          ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'invoices':
         return currentUser?.role === 'contractor'
-          ? <InvoiceManager user={currentUser} onNavigate={handleNavigate} />
+          ? <Suspense fallback={<LoadingFallback />}><InvoiceManager user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
-        return currentUser ? <ProUpgrade user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return currentUser ? <Suspense fallback={<LoadingFallback />}><ProUpgrade user={currentUser} onNavigate={handleNavigate} /></Suspense> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'territory-map':
         return currentUser?.role === 'operator'
-          ? <TerritoryMap user={currentUser} />
+          ? <Suspense fallback={<LoadingFallback />}><TerritoryMap user={currentUser} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'revenue-dashboard':
-        return currentUser ? <CompanyRevenueDashboard user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return currentUser ? <Suspense fallback={<LoadingFallback />}><CompanyRevenueDashboard user={currentUser} /></Suspense> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }

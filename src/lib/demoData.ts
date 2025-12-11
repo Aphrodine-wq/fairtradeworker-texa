@@ -366,18 +366,17 @@ export const DEMO_TERRITORIES: Territory[] = [
 ]
 
 export function initializeDemoData() {
-  const demoJobsKey = 'demo-jobs-initialized'
-  const demoInvoicesKey = 'demo-invoices-initialized'
-  const demoTerritoriesKey = 'demo-territories-initialized'
-
-  if (!localStorage.getItem(demoJobsKey)) {
-    localStorage.setItem(demoJobsKey, 'true')
-    return {
-      jobs: DEMO_JOBS,
-      invoices: DEMO_INVOICES,
-      territories: DEMO_TERRITORIES,
-    }
+  const hasInitialized = sessionStorage.getItem('demo-initialized')
+  
+  if (hasInitialized) {
+    return null
   }
-
-  return null
+  
+  sessionStorage.setItem('demo-initialized', 'true')
+  
+  return {
+    jobs: DEMO_JOBS.slice(0, 5),
+    invoices: DEMO_INVOICES,
+    territories: DEMO_TERRITORIES,
+  }
 }

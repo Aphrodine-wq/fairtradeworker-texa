@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -27,23 +28,32 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     }
   }
 
-  const myBids = (jobs || []).flatMap(job =>
-    job.bids.filter(bid => bid.contractorId === user.id)
-  )
-  
-  const acceptedBids = myBids.filter(bid => bid.status === 'accepted')
-  
-  const myInvoices = (invoices || []).filter(invoice => invoice.contractorId === user.id)
-  const thisMonthEarnings = myInvoices
-    .filter(inv => {
-      const invDate = new Date(inv.createdAt)
-      const now = new Date()
-      return invDate.getMonth() === now.getMonth() && invDate.getFullYear() === now.getFullYear()
-    })
-    .filter(inv => inv.status === 'paid')
-    .reduce((sum, inv) => sum + inv.total, 0)
-  
-  const totalEarnings = thisMonthEarnings + (user.referralEarnings || 0)
+  const { myBids, acceptedBids, thisMonthEarnings, totalEarnings } = useMemo(() => {
+    const bids = (jobs || []).flatMap(job =>
+      job.bids.filter(bid => bid.contractorId === user.id)
+    )
+    
+    const accepted = bids.filter(bid => bid.status === 'accepted')
+    
+    const myInvoices = (invoices || []).filter(invoice => invoice.contractorId === user.id)
+    const monthEarnings = myInvoices
+      .filter(inv => {
+        const invDate = new Date(inv.createdAt)
+        const now = new Date()
+        return invDate.getMonth() === now.getMonth() && invDate.getFullYear() === now.getFullYear()
+      })
+      .filter(inv => inv.status === 'paid')
+      .reduce((sum, inv) => sum + inv.total, 0)
+    
+    const total = monthEarnings + (user.referralEarnings || 0)
+    
+    return {
+      myBids: bids,
+      acceptedBids: accepted,
+      thisMonthEarnings: monthEarnings,
+      totalEarnings: total
+    }
+  }, [jobs, invoices, user.id, user.referralEarnings])
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">

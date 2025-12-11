@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Calendar, Kanban, TrendUp } from "@phosphor-icons/react"
@@ -14,10 +15,19 @@ interface EnhancedCRMProps {
 export function EnhancedCRM({ user }: EnhancedCRMProps) {
   const [customers] = useKV<CRMCustomer[]>("crm-customers", [])
   
-  const myCustomers = (customers || []).filter(c => c.contractorId === user.id)
-  const activeCustomers = myCustomers.filter(c => c.status === 'active')
-  const totalLTV = myCustomers.reduce((sum, c) => sum + c.lifetimeValue, 0)
-  const repeatRate = myCustomers.filter(c => c.status === 'completed' || c.status === 'advocate').length / Math.max(myCustomers.length, 1) * 100
+  const { myCustomers, activeCustomers, totalLTV, repeatRate } = useMemo(() => {
+    const mine = (customers || []).filter(c => c.contractorId === user.id)
+    const active = mine.filter(c => c.status === 'active')
+    const ltv = mine.reduce((sum, c) => sum + c.lifetimeValue, 0)
+    const rate = mine.filter(c => c.status === 'completed' || c.status === 'advocate').length / Math.max(mine.length, 1) * 100
+    
+    return {
+      myCustomers: mine,
+      activeCustomers: active,
+      totalLTV: ltv,
+      repeatRate: rate
+    }
+  }, [customers, user.id])
 
   return (
     <div className="space-y-6 p-6">
