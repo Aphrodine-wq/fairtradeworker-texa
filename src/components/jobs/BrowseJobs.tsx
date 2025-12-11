@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Lightbox } from "@/components/ui/Lightbox"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images } from "@phosphor-icons/react"
-import type { Job, Bid, User } from "@/lib/types"
+import { Wrench, CurrencyDollar, Package, Images, Funnel } from "@phosphor-icons/react"
+import type { Job, Bid, User, JobSize } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
 interface BrowseJobsProps {
@@ -36,61 +37,70 @@ const JobCard = memo(function JobCard({
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
   return (
-    <Card className={isFresh ? "border-green-500 border-2 shadow-md" : ""}>
-      <CardHeader>
-        <div className="flex items-start justify-between">
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""}`}>
+      {isFresh && (
+        <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 flex items-center gap-2">
+          <span className="animate-pulse text-lg">⚡</span>
+          <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
+        </div>
+      )}
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-2">
-              <Badge variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}>
-                {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
+            <div className="flex items-center gap-2 mb-3">
+              <Badge 
+                variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
+                className="text-sm font-semibold"
+              >
+                {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
               </Badge>
-              {isFresh && (
-                <Badge variant="outline" className="border-green-500 text-green-700 animate-pulse">
-                  🟢 FRESH
-                </Badge>
-              )}
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <span>{job.bids.length}</span>
+                <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
+              </div>
             </div>
-            <CardTitle className="text-xl">{job.title}</CardTitle>
-            <CardDescription className="mt-2">{job.description}</CardDescription>
+            <CardTitle className="text-xl leading-tight mb-2">{job.title}</CardTitle>
+            <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
           </div>
+          {photos.length > 0 && (
+            <button
+              onClick={() => onViewPhotos(photos)}
+              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all flex-shrink-0 group"
+            >
+              <img
+                src={photos[0]}
+                alt="Job preview"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
+              {photos.length > 1 && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Images weight="bold" size={24} className="text-white" />
+                  <span className="text-white text-xs ml-1">+{photos.length - 1}</span>
+                </div>
+              )}
+            </button>
+          )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {photos.length > 0 && (
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Images weight="duotone" size={20} className="text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Photos ({photos.length})</span>
-            </div>
-            <div className="grid grid-cols-4 gap-2">
-              {photos.slice(0, 4).map((photo, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => onViewPhotos(photos)}
-                  className="relative aspect-square rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all"
-                >
-                  <img
-                    src={photo}
-                    alt={`Job photo ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
+      <CardContent className="space-y-4 pt-0">
         {job.aiScope && (
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Wrench weight="duotone" size={18} />
+          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold">
+              <Wrench weight="duotone" size={18} className="text-primary" />
               <span>AI Scope</span>
             </div>
-            <p className="text-sm">{job.aiScope.scope}</p>
-            <div className="flex items-center gap-2 text-primary font-semibold">
-              <CurrencyDollar weight="duotone" size={20} />
-              <span>${job.aiScope.priceLow} - ${job.aiScope.priceHigh}</span>
+            <p className="text-sm leading-relaxed">{job.aiScope.scope}</p>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <CurrencyDollar weight="duotone" size={24} className="text-primary" />
+                <div>
+                  <div className="text-xs text-muted-foreground">Estimated</div>
+                  <div className="text-lg font-bold text-primary">
+                    ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -99,22 +109,59 @@ const JobCard = memo(function JobCard({
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Package weight="duotone" size={18} className="text-muted-foreground" />
-              <span className="text-sm text-muted-foreground">Materials</span>
+              <span className="text-sm font-semibold text-muted-foreground">Required Materials</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {materials.map((material, idx) => (
-                <Badge key={idx} variant="outline">{material}</Badge>
+                <Badge key={idx} variant="outline" className="text-xs">
+                  {material}
+                </Badge>
               ))}
             </div>
           </div>
         )}
 
+        {photos.length > 1 && (
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Images weight="duotone" size={18} className="text-muted-foreground" />
+              <span className="text-sm font-semibold text-muted-foreground">
+                {photos.length} Photos Available
+              </span>
+            </div>
+            <div className="grid grid-cols-5 gap-2">
+              {photos.slice(0, 5).map((photo, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => onViewPhotos(photos)}
+                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
+                >
+                  <img
+                    src={photo}
+                    alt={`Photo ${idx + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+            {photos.length > 5 && (
+              <button
+                onClick={() => onViewPhotos(photos)}
+                className="text-xs text-primary hover:underline mt-2"
+              >
+                + {photos.length - 5} more photos
+              </button>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center justify-between pt-4 border-t">
           <div className="text-sm text-muted-foreground">
-            {job.bids.length} {job.bids.length === 1 ? 'bid' : 'bids'}
+            Posted {new Date(job.createdAt).toLocaleDateString()}
           </div>
-          <Button onClick={() => onPlaceBid(job)}>
-            Place Bid - $0 fee
+          <Button onClick={() => onPlaceBid(job)} size="lg" className="font-semibold">
+            Place Bid • $0 Fee
           </Button>
         </div>
       </CardContent>
@@ -131,11 +178,16 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
 
   const sortedOpenJobs = useMemo(() => {
     if (!jobs || jobs.length === 0) return []
     
-    const openJobs = jobs.filter(job => job.status === 'open')
+    let openJobs = jobs.filter(job => job.status === 'open')
+    
+    if (sizeFilter !== 'all') {
+      openJobs = openJobs.filter(job => job.size === sizeFilter)
+    }
     
     const isJobFresh = (job: Job) => {
       const jobAge = Date.now() - new Date(job.createdAt).getTime()
@@ -168,7 +220,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
-  }, [jobs])
+  }, [jobs, sizeFilter])
 
   const handleBidClick = useCallback((job: Job) => {
     setSelectedJob(job)
@@ -238,9 +290,33 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
       <div className="max-w-4xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">Browse Jobs</h1>
-          <p className="text-muted-foreground">Find your next project – bid free, keep 100%</p>
+        <div className="space-y-4">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">Browse Jobs</h1>
+            <p className="text-muted-foreground text-lg">Find your next project – bid free, keep 100%</p>
+          </div>
+
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <Funnel weight="duotone" size={20} className="text-muted-foreground" />
+              <span className="text-sm font-medium">Filter by size:</span>
+            </div>
+            <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')}>
+              <TabsList>
+                <TabsTrigger value="all">All Jobs</TabsTrigger>
+                <TabsTrigger value="small">🟢 Small</TabsTrigger>
+                <TabsTrigger value="medium">🟡 Medium</TabsTrigger>
+                <TabsTrigger value="large">🔴 Large</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span>{sortedOpenJobs.length} active {sortedOpenJobs.length === 1 ? 'job' : 'jobs'}</span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-6">
