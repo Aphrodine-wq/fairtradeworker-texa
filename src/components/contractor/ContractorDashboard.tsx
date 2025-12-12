@@ -5,13 +5,15 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FeeComparison } from "./FeeComparison"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import { CompanySettings } from "./CompanySettings"
 import { RouteBuilder } from "./RouteBuilder"
+import { EnhancedDailyBriefing } from "./EnhancedDailyBriefing"
+import { SmartReplies } from "./SmartReplies"
 import { calculateTotalFeesSaved } from "@/lib/competitiveAdvantage"
 import type { User, Job, Invoice } from "@/lib/types"
 
@@ -177,35 +179,66 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
-            <TabsTrigger value="routes">
-              <MapTrifold className="mr-2" size={16} weight="duotone" />
-              Route Builder
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 gap-1">
+            <TabsTrigger value="briefing" className="text-xs md:text-sm">
+              <Sun className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Briefing</span>
             </TabsTrigger>
-            <TabsTrigger value="crm">CRM</TabsTrigger>
-            <TabsTrigger value="referrals">Referrals</TabsTrigger>
-            <TabsTrigger value="invoices">Invoices</TabsTrigger>
-            <TabsTrigger value="settings">
-              <Buildings className="mr-2" size={16} weight="duotone" />
-              Company
+            <TabsTrigger value="browse" className="text-xs md:text-sm">Browse</TabsTrigger>
+            <TabsTrigger value="routes" className="text-xs md:text-sm">
+              <MapTrifold className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Routes</span>
+            </TabsTrigger>
+            <TabsTrigger value="crm" className="text-xs md:text-sm">CRM</TabsTrigger>
+            <TabsTrigger value="replies" className="text-xs md:text-sm">
+              <Sparkle className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Replies</span>
+            </TabsTrigger>
+            <TabsTrigger value="referrals" className="text-xs md:text-sm">Referrals</TabsTrigger>
+            <TabsTrigger value="invoices" className="text-xs md:text-sm">Invoices</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs md:text-sm">
+              <Buildings className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Company</span>
             </TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="briefing" className="mt-6">
+            <EnhancedDailyBriefing
+              user={user}
+              scheduledJobs={acceptedBids.map(bid => jobs?.find(j => j.id === bid.jobId)).filter(Boolean) as Job[]}
+              onNavigate={onNavigate}
+            />
+          </TabsContent>
+          
           <TabsContent value="browse" className="mt-6">
             <BrowseJobs user={user} />
           </TabsContent>
+          
           <TabsContent value="routes" className="mt-6">
             <RouteBuilder user={user} />
           </TabsContent>
+          
           <TabsContent value="crm" className="mt-6">
             <CRMDashboard user={user} />
           </TabsContent>
+          
+          <TabsContent value="replies" className="mt-6">
+            <SmartReplies
+              contractorId={user.id}
+              onSelectReply={(reply) => {
+                console.log('Reply selected:', reply)
+              }}
+            />
+          </TabsContent>
+          
           <TabsContent value="referrals" className="mt-6">
             <ContractorReferralSystem user={user} />
           </TabsContent>
+          
           <TabsContent value="invoices" className="mt-6">
             <Invoices user={user} onNavigate={onNavigate} />
           </TabsContent>
+          
           <TabsContent value="settings" className="mt-6">
             <CompanySettings user={user} onUpdate={handleUserUpdate} />
           </TabsContent>
