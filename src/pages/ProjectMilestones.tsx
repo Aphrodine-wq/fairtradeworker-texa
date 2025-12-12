@@ -24,12 +24,17 @@ import {
   FileText,
   Pencil,
   Plus,
-  Trash
+  Trash,
+  Users,
+  ChartLine
 } from '@phosphor-icons/react'
-import type { Job, Milestone, User } from '@/lib/types'
+import type { Job, Milestone, User, TradeContractor, ProjectUpdate } from '@/lib/types'
 import { getMilestoneProgress } from '@/lib/milestones'
 import { toast } from 'sonner'
 import { useKV } from '@github/spark/hooks'
+import { TradeCoordination } from '@/components/projects/TradeCoordination'
+import { ProjectUpdates } from '@/components/projects/ProjectUpdates'
+import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
 
 interface ProjectMilestonesProps {
   job: Job
@@ -92,6 +97,26 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       (currentJobs || []).map(j => 
         j.id === job.id 
           ? { ...j, milestones: updatedMilestones } 
+          : j
+      )
+    )
+  }
+
+  const updateJobTrades = (updatedTrades: TradeContractor[]) => {
+    setJobs((currentJobs) => 
+      (currentJobs || []).map(j => 
+        j.id === job.id 
+          ? { ...j, tradeContractors: updatedTrades } 
+          : j
+      )
+    )
+  }
+
+  const updateJobProjectUpdates = (updatedUpdates: ProjectUpdate[]) => {
+    setJobs((currentJobs) => 
+      (currentJobs || []).map(j => 
+        j.id === job.id 
+          ? { ...j, projectUpdates: updatedUpdates } 
           : j
       )
     )
@@ -344,7 +369,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">
               Overview
               {milestones.length > 0 && (
@@ -374,6 +399,14 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               {disputedMilestones.length > 0 && (
                 <Badge variant="destructive" className="ml-2">{disputedMilestones.length}</Badge>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="trades">
+              <Users size={16} className="mr-1" />
+              Trades
+            </TabsTrigger>
+            <TabsTrigger value="schedule">
+              <ChartLine size={16} className="mr-1" />
+              Schedule
             </TabsTrigger>
           </TabsList>
           
@@ -450,6 +483,23 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               getStatusIcon={getStatusIcon}
               getStatusBadge={getStatusBadge}
             />
+          </TabsContent>
+
+          <TabsContent value="trades" className="space-y-4">
+            <TradeCoordination 
+              job={job}
+              onUpdate={updateJobTrades}
+              isHomeowner={isHomeowner}
+            />
+            <ProjectUpdates 
+              job={job}
+              user={user}
+              onUpdate={updateJobProjectUpdates}
+            />
+          </TabsContent>
+
+          <TabsContent value="schedule" className="space-y-4">
+            <ProjectScheduleView job={job} />
           </TabsContent>
         </Tabs>
       </div>

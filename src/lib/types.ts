@@ -62,6 +62,10 @@ export interface Job {
   milestones?: Milestone[]
   preferredStartDate?: string
   depositPercentage?: number
+  tradeContractors?: TradeContractor[]
+  projectUpdates?: ProjectUpdate[]
+  projectSchedule?: ProjectSchedule
+  multiTrade?: boolean
 }
 
 export interface Bid {
@@ -105,6 +109,65 @@ export interface Milestone {
   approvedAt?: string
   paidAt?: string
   disputeReason?: string
+  tradeId?: string
+  dependencies?: string[]
+  estimatedStartDate?: string
+  estimatedEndDate?: string
+  actualStartDate?: string
+  actualEndDate?: string
+}
+
+export interface TradeContractor {
+  id: string
+  jobId: string
+  contractorId: string
+  contractorName: string
+  trade: string
+  role: 'lead' | 'sub'
+  status: 'invited' | 'accepted' | 'active' | 'completed'
+  assignedMilestones: string[]
+  totalAmount: number
+  amountPaid: number
+  contactPhone?: string
+  contactEmail?: string
+  notes?: string
+  invitedAt: string
+  acceptedAt?: string
+  completedAt?: string
+}
+
+export interface ProjectUpdate {
+  id: string
+  jobId: string
+  contractorId: string
+  contractorName: string
+  tradeId?: string
+  type: 'progress' | 'issue' | 'milestone' | 'general'
+  title: string
+  description: string
+  photos?: string[]
+  createdAt: string
+  visibility: 'all' | 'homeowner' | 'contractors'
+}
+
+export interface TradeSequence {
+  id: string
+  name: string
+  order: number
+  estimatedDays: number
+  dependencies: string[]
+  criticalPath: boolean
+}
+
+export interface ProjectSchedule {
+  jobId: string
+  projectStartDate: string
+  projectEndDate: string
+  tradeSequences: TradeSequence[]
+  currentPhase: string
+  daysElapsed: number
+  daysRemaining: number
+  onTrack: boolean
 }
 
 export interface InvoiceLineItem {
