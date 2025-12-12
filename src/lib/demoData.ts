@@ -1,4 +1,4 @@
-import type { User, Job, Bid, Invoice, Territory } from './types'
+import type { User, Job, Bid, Invoice, Territory, BidTemplate } from './types'
 import { calculateJobSize } from './types'
 
 let demoDataInitialized = false
@@ -514,6 +514,33 @@ export const DEMO_TERRITORIES: Territory[] = [
   },
 ]
 
+export const DEMO_BID_TEMPLATES: BidTemplate[] = [
+  {
+    id: 'template-001',
+    contractorId: 'demo-contractor-001',
+    name: 'Standard Professional Bid',
+    message: 'Thank you for considering my services. I have [X years] of experience in [trade type] and am fully licensed and insured. I can complete this project efficiently and to the highest standards. I\'m available to start [timeline] and will ensure all work meets or exceeds your expectations.',
+    useCount: 0,
+    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'template-002',
+    contractorId: 'demo-contractor-001',
+    name: 'Quick Response Template',
+    message: 'I can start immediately and complete this project within [timeline]. My team is experienced, licensed, and insured. I provide a satisfaction guarantee on all work. Let\'s discuss the details!',
+    useCount: 0,
+    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: 'template-003',
+    contractorId: 'demo-contractor-001',
+    name: 'Detailed Professional Bid',
+    message: 'I\'ve reviewed your project requirements and I\'m confident I can deliver excellent results. My approach includes: [detailed steps]. I\'m fully licensed, insured, and have [X] years of experience. I\'m available to discuss the project in detail and answer any questions you may have.',
+    useCount: 0,
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+]
+
 export function initializeDemoData() {
   if (demoDataInitialized) {
     return null
@@ -532,5 +559,6 @@ export function initializeDemoData() {
     jobs: DEMO_JOBS.slice(0, 3),
     invoices: DEMO_INVOICES.slice(0, 3),
     territories: DEMO_TERRITORIES.slice(0, 5),
+    bidTemplates: DEMO_BID_TEMPLATES,
   }
 }

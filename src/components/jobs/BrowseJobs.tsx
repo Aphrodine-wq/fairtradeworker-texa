@@ -17,7 +17,7 @@ import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users } from "@phosphor-icons/react"
-import type { Job, Bid, User, JobSize } from "@/lib/types"
+import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
 interface BrowseJobsProps {
@@ -241,9 +241,12 @@ const JobCard = memo(function JobCard({
 
 export function BrowseJobs({ user }: BrowseJobsProps) {
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
+  const [bidTemplates, setBidTemplates] = useKV<BidTemplate[]>("bidTemplates", [])
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const [bidAmount, setBidAmount] = useState("")
   const [bidMessage, setBidMessage] = useState("")
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false)
+  const [templateName, setTemplateName] = useState("")
   const [dialogOpen, setDialogOpen] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImages, setLightboxImages] = useState<string[]>([])

@@ -1,19 +1,21 @@
-import { useState } from "react"
+import { useState, lazy, Suspense, memo } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { FreeToolsHub } from "@/components/shared/FreeToolsHub"
-import { JobCostCalculator } from "@/components/contractor/JobCostCalculator"
-import { WarrantyTracker } from "@/components/contractor/WarrantyTracker"
-import { SavedContractors } from "@/components/homeowner/SavedContractors"
-import { QuickNotes } from "@/components/shared/QuickNotes"
+
+// Lazy load heavy components
+const JobCostCalculator = lazy(() => import("@/components/contractor/JobCostCalculator").then(m => ({ default: m.JobCostCalculator })))
+const WarrantyTracker = lazy(() => import("@/components/contractor/WarrantyTracker").then(m => ({ default: m.WarrantyTracker })))
+const SavedContractors = lazy(() => import("@/components/homeowner/SavedContractors").then(m => ({ default: m.SavedContractors })))
+const QuickNotes = lazy(() => import("@/components/shared/QuickNotes").then(m => ({ default: m.QuickNotes })))
 
 interface FreeToolsPageProps {
   user: User
   onNavigate: (page: string) => void
 }
 
-export function FreeToolsPage({ user, onNavigate }: FreeToolsPageProps) {
+function FreeToolsPageComponent({ user, onNavigate }: FreeToolsPageProps) {
   const [activeTool, setActiveTool] = useState<string | null>(null)
 
   const handleToolSelect = (toolId: string) => {
@@ -27,13 +29,29 @@ export function FreeToolsPage({ user, onNavigate }: FreeToolsPageProps) {
   const renderTool = () => {
     switch (activeTool) {
       case "cost-calculator":
-        return <JobCostCalculator />
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+            <JobCostCalculator />
+          </Suspense>
+        )
       case "warranty-tracker":
-        return <WarrantyTracker user={user} />
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+            <WarrantyTracker user={user} />
+          </Suspense>
+        )
       case "saved-contractors":
-        return <SavedContractors user={user} onNavigate={onNavigate} />
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+            <SavedContractors user={user} onNavigate={onNavigate} />
+          </Suspense>
+        )
       case "quick-notes":
-        return <QuickNotes user={user} />
+        return (
+          <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>}>
+            <QuickNotes user={user} />
+          </Suspense>
+        )
       default:
         return <FreeToolsHub user={user} onToolSelect={handleToolSelect} />
     }
@@ -58,3 +76,5 @@ export function FreeToolsPage({ user, onNavigate }: FreeToolsPageProps) {
     </div>
   )
 }
+
+export const FreeToolsPage = memo(FreeToolsPageComponent)

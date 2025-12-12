@@ -37,7 +37,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           <div className="flex flex-col md:flex-row gap-4 justify-center pt-8">
             <Button 
               size="lg" 
-              className="text-lg px-8 py-6 h-auto"
+              className="text-lg px-8 py-6 h-auto bg-white text-black hover:bg-gray-100 border-2 border-black dark:bg-white dark:text-black dark:hover:bg-gray-100"
               onClick={() => onNavigate('signup', 'homeowner')}
             >
               <House weight="fill" className="mr-3" size={24} />
@@ -46,7 +46,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="outline"
-              className="text-lg px-8 py-6 h-auto border-2"
+              className="text-lg px-8 py-6 h-auto border-2 border-black bg-white text-black hover:bg-gray-100 dark:bg-white dark:text-black dark:hover:bg-gray-100"
               onClick={() => onNavigate('signup', 'contractor')}
             >
               <Hammer weight="fill" className="mr-3" size={24} />
@@ -55,7 +55,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="outline"
-              className="text-lg px-8 py-6 h-auto border-2"
+              className="text-lg px-8 py-6 h-auto border-2 border-black bg-white text-black hover:bg-gray-100 dark:bg-white dark:text-black dark:hover:bg-gray-100"
               onClick={() => onNavigate('signup', 'operator')}
             >
               <MapTrifold weight="fill" className="mr-3" size={24} />

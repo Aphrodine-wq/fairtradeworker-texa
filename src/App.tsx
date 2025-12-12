@@ -151,6 +151,7 @@ function App() {
   const [jobs, setJobs] = useLocalKV<Job[]>("jobs", [])
   const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
   const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
+  const [bidTemplates, setBidTemplates] = useLocalKV<import("@/lib/types").BidTemplate[]>("bidTemplates", [])
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
@@ -165,10 +166,13 @@ function App() {
       if (jobs.length === 0) {
         const demoData = initializeDemoData()
         if (demoData && mounted) {
-          const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
+          const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories, bidTemplates: demoTemplates } = demoData
           setJobs(demoJobs)
           setInvoices(demoInvoices)
           setTerritories(demoTerritories)
+          if (demoTemplates && bidTemplates.length === 0) {
+            setBidTemplates(demoTemplates)
+          }
         }
       }
     }
