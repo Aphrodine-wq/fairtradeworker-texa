@@ -1,12 +1,14 @@
 import { useState, useCallback } from 'react'
 import { toast } from 'sonner'
+import { compressImage, getCompressionStats } from '@/lib/imageCompression'
 
 export interface UploadedPhoto {
   id: string
   file: File
+  originalFile?: File
   preview: string
   progress: number
-  status: 'pending' | 'uploading' | 'processing' | 'complete' | 'error'
+  status: 'pending' | 'compressing' | 'uploading' | 'processing' | 'complete' | 'error'
   error?: string
   url?: string
   metadata?: {
@@ -14,6 +16,8 @@ export interface UploadedPhoto {
     height: number
     size: number
     type: string
+    originalSize?: number
+    compressionRatio?: number
   }
 }
 
@@ -22,6 +26,10 @@ interface UploadOptions {
   maxFiles?: number
   acceptedTypes?: string[]
   autoUpload?: boolean
+  enableCompression?: boolean
+  compressionQuality?: number
+  maxWidth?: number
+  maxHeight?: number
   onComplete?: (photo: UploadedPhoto) => void
   onError?: (photo: UploadedPhoto, error: string) => void
 }
@@ -31,6 +39,10 @@ const DEFAULT_OPTIONS: Required<UploadOptions> = {
   maxFiles: 20,
   acceptedTypes: ['image/jpeg', 'image/png', 'image/webp', 'image/heic'],
   autoUpload: true,
+  enableCompression: true,
+  compressionQuality: 0.85,
+  maxWidth: 1920,
+  maxHeight: 1920,
   onComplete: () => {},
   onError: () => {},
 }
@@ -50,7 +62,7 @@ export function usePhotoUpload(options: UploadOptions = {}) {
     return null
   }, [opts.maxSize, opts.acceptedTypes])
 
-  const extractMetadata = useCallback((file: File): Promise<UploadedPhoto['metadata']> => {
+  const extractMetadata = useCallback(async (file: File, originalFile?: File): Promise<UploadedPhoto['metadata']> => {
     return new Promise((resolve) => {
       const img = new Image()
       const url = URL.createObjectURL(file)
@@ -62,6 +74,8 @@ export function usePhotoUpload(options: UploadOptions = {}) {
           height: img.height,
           size: file.size,
           type: file.type,
+          originalSize: originalFile?.size,
+          compressionRatio: originalFile ? file.size / originalFile.size : undefined,
         })
       }
       
@@ -72,12 +86,43 @@ export function usePhotoUpload(options: UploadOptions = {}) {
           height: 0,
           size: file.size,
           type: file.type,
+          originalSize: originalFile?.size,
         })
       }
       
       img.src = url
     })
   }, [])
+
+  const compressPhoto = useCallback(async (file: File, photoId: string): Promise<File> => {
+    if (!opts.enableCompression) {
+      return file
+    }
+
+    try {
+      setPhotos(prev => prev.map(p => 
+        p.id === photoId ? { ...p, status: 'compressing' as const } : p
+      ))
+
+      const compressed = await compressImage(file, {
+        quality: opts.compressionQuality,
+        maxWidth: opts.maxWidth,
+        maxHeight: opts.maxHeight,
+        maxSizeMB: opts.maxSize / 1024 / 1024,
+      })
+
+      if (compressed.size < file.size) {
+        const stats = getCompressionStats(file, compressed)
+        console.log(`Compressed ${file.name}: ${stats.originalSize}MB → ${stats.compressedSize}MB (${stats.savings}% savings)`)
+        return compressed
+      }
+
+      return file
+    } catch (error) {
+      console.error('Compression failed, using original:', error)
+      return file
+    }
+  }, [opts.enableCompression, opts.compressionQuality, opts.maxWidth, opts.maxHeight, opts.maxSize])
 
   const simulateUpload = useCallback((photoId: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -118,8 +163,21 @@ export function usePhotoUpload(options: UploadOptions = {}) {
 
   const uploadPhoto = useCallback(async (photo: UploadedPhoto) => {
     try {
+      const compressedFile = await compressPhoto(photo.file, photo.id)
+      
+      const finalMetadata = await extractMetadata(compressedFile, photo.file !== compressedFile ? photo.file : undefined)
+      
       setPhotos(prev => prev.map(p => 
-        p.id === photo.id ? { ...p, status: 'uploading' as const, progress: 0 } : p
+        p.id === photo.id 
+          ? { 
+              ...p, 
+              file: compressedFile, 
+              originalFile: photo.file !== compressedFile ? photo.file : undefined,
+              status: 'uploading' as const, 
+              progress: 0,
+              metadata: finalMetadata 
+            } 
+          : p
       ))
 
       await simulateUpload(photo.id)
@@ -128,7 +186,10 @@ export function usePhotoUpload(options: UploadOptions = {}) {
         p.id === photo.id ? { ...p, status: 'complete' as const, progress: 100 } : p
       ))
 
-      opts.onComplete(photo)
+      const completedPhoto = photos.find(p => p.id === photo.id)
+      if (completedPhoto) {
+        opts.onComplete(completedPhoto)
+      }
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Upload failed'
@@ -142,7 +203,7 @@ export function usePhotoUpload(options: UploadOptions = {}) {
       opts.onError(photo, errorMessage)
       toast.error(`Failed to upload ${photo.file.name}`)
     }
-  }, [simulateUpload, opts])
+  }, [compressPhoto, extractMetadata, simulateUpload, photos, opts])
 
   const addPhotos = useCallback(async (files: File[]) => {
     if (photos.length + files.length > opts.maxFiles) {

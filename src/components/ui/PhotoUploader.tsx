@@ -63,6 +63,8 @@ export function PhotoUploader({
 
   const getStatusIcon = (photo: UploadedPhoto) => {
     switch (photo.status) {
+      case 'compressing':
+        return <CircleNotch className="w-4 h-4 animate-spin text-blue-600" />
       case 'uploading':
         return <CircleNotch className="w-4 h-4 animate-spin text-primary" />
       case 'complete':
@@ -71,6 +73,21 @@ export function PhotoUploader({
         return <Warning className="w-4 h-4 text-destructive" />
       default:
         return null
+    }
+  }
+
+  const getStatusLabel = (photo: UploadedPhoto) => {
+    switch (photo.status) {
+      case 'compressing':
+        return 'Optimizing...'
+      case 'uploading':
+        return `${Math.round(photo.progress)}%`
+      case 'complete':
+        return 'Done'
+      case 'error':
+        return 'Failed'
+      default:
+        return 'Pending'
     }
   }
 
@@ -129,6 +146,15 @@ export function PhotoUploader({
                     <X className="w-4 h-4" />
                   </Button>
                 </div>
+
+                {photo.status === 'compressing' && (
+                  <div className="absolute inset-0 bg-blue-600/80 rounded-lg flex items-center justify-center">
+                    <div className="text-center text-white">
+                      <CircleNotch className="w-6 h-6 animate-spin mx-auto mb-1" />
+                      <div className="text-xs font-medium">Optimizing...</div>
+                    </div>
+                  </div>
+                )}
 
                 {photo.status === 'uploading' && (
                   <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center">
@@ -245,6 +271,13 @@ export function PhotoUploader({
                   </Button>
                 </div>
 
+                {photo.status === 'compressing' && (
+                  <div className="absolute inset-0 bg-blue-600/90 rounded-lg flex flex-col items-center justify-center text-white">
+                    <CircleNotch className="w-6 h-6 animate-spin mb-2" />
+                    <div className="text-sm font-medium">Optimizing...</div>
+                  </div>
+                )}
+
                 {photo.status === 'uploading' && (
                   <div className="absolute inset-0 bg-black/60 rounded-lg flex flex-col items-center justify-center text-white">
                     <CircleNotch className="w-6 h-6 animate-spin mb-2" />
@@ -274,10 +307,15 @@ export function PhotoUploader({
 
                 {photo.metadata && (
                   <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-center">
                       <span>{photo.metadata.width}×{photo.metadata.height}</span>
                       <span>{(photo.metadata.size / 1024).toFixed(0)}KB</span>
                     </div>
+                    {photo.metadata.originalSize && photo.metadata.compressionRatio && (
+                      <div className="text-center text-green-300 text-[10px] mt-0.5">
+                        Saved {((1 - photo.metadata.compressionRatio) * 100).toFixed(0)}%
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
