@@ -17,10 +17,11 @@ import {
   Warning,
   CheckCircle,
   Info,
-  Sparkle
+  Sparkle,
+  Shield
 } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
-import type { Job, Invoice, User } from '@/lib/types'
+import type { Job, Invoice, User, Certification } from '@/lib/types'
 
 interface EnhancedDailyBriefingProps {
   user: User
@@ -31,6 +32,7 @@ interface EnhancedDailyBriefingProps {
 export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: EnhancedDailyBriefingProps) {
   const [jobs] = useKV<Job[]>('jobs', [])
   const [invoices] = useKV<Invoice[]>('invoices', [])
+  const [certifications] = useKV<Certification[]>(`certifications-${user.id}`, [])
   
   const currentHour = new Date().getHours()
   const greeting =
@@ -153,6 +155,42 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
       })
     }
 
+    (certifications || []).forEach(cert => {
+      if (cert.neverExpires || !cert.expirationDate) return
+      
+      const expDate = new Date(cert.expirationDate)
+      const daysUntil = Math.ceil((expDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+      
+      if (daysUntil < 0) {
+        alerts.push({
+          priority: 'critical',
+          message: `${cert.name} expired ${Math.abs(daysUntil)} days ago`,
+          action: 'Update Cert',
+          icon: <Shield size={20} weight="fill" className="text-red-500" />
+        })
+      } else if (daysUntil <= 7) {
+        alerts.push({
+          priority: 'critical',
+          message: `${cert.name} expires in ${daysUntil} days`,
+          action: 'Renew Now',
+          icon: <Shield size={20} weight="fill" className="text-red-500" />
+        })
+      } else if (daysUntil <= 30) {
+        alerts.push({
+          priority: 'important',
+          message: `${cert.name} expires in ${daysUntil} days`,
+          action: 'View Certs',
+          icon: <Shield size={20} weight="fill" className="text-orange-500" />
+        })
+      } else if (daysUntil <= 60) {
+        alerts.push({
+          priority: 'info',
+          message: `${cert.name} expires in ${daysUntil} days`,
+          icon: <Shield size={20} weight="duotone" className="text-blue-500" />
+        })
+      }
+    })
+
     const recentReviews = 3
     if (recentReviews > 0) {
       alerts.push({
@@ -165,8 +203,11 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
     const sixMonthsAgo = new Date()
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6)
     
-    return alerts
-  }, [invoices, user.id])
+    return alerts.sort((a, b) => {
+      const priorityOrder = { critical: 0, important: 1, info: 2, positive: 3 }
+      return priorityOrder[a.priority] - priorityOrder[b.priority]
+    })
+  }, [invoices, certifications, user.id])
 
   const personalBests = useMemo(() => {
     const myInvoices = (invoices || []).filter(inv => inv.contractorId === user.id && inv.status === 'paid')

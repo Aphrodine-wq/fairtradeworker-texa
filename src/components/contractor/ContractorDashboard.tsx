@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FeeComparison } from "./FeeComparison"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
@@ -14,6 +14,7 @@ import { CompanySettings } from "./CompanySettings"
 import { RouteBuilder } from "./RouteBuilder"
 import { EnhancedDailyBriefing } from "./EnhancedDailyBriefing"
 import { SmartReplies } from "./SmartReplies"
+import { CertificationWallet } from "./CertificationWallet"
 import { calculateTotalFeesSaved } from "@/lib/competitiveAdvantage"
 import type { User, Job, Invoice } from "@/lib/types"
 
@@ -179,7 +180,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-8 gap-1">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-9 gap-1">
             <TabsTrigger value="briefing" className="text-xs md:text-sm">
               <Sun className="mr-1 md:mr-2" size={14} weight="duotone" />
               <span className="hidden sm:inline">Briefing</span>
@@ -193,6 +194,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             <TabsTrigger value="replies" className="text-xs md:text-sm">
               <Sparkle className="mr-1 md:mr-2" size={14} weight="duotone" />
               <span className="hidden sm:inline">Replies</span>
+            </TabsTrigger>
+            <TabsTrigger value="certifications" className="text-xs md:text-sm">
+              <Shield className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Certs</span>
             </TabsTrigger>
             <TabsTrigger value="referrals" className="text-xs md:text-sm">Referrals</TabsTrigger>
             <TabsTrigger value="invoices" className="text-xs md:text-sm">Invoices</TabsTrigger>
@@ -229,6 +234,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
                 console.log('Reply selected:', reply)
               }}
             />
+          </TabsContent>
+          
+          <TabsContent value="certifications" className="mt-6">
+            <CertificationWallet user={user} />
           </TabsContent>
           
           <TabsContent value="referrals" className="mt-6">

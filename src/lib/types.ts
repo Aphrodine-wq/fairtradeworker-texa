@@ -251,3 +251,40 @@ export interface InvoiceTemplate {
   lastUsed?: string
   createdAt: string
 }
+
+export type CertificationType = 
+  | 'trade-license' 
+  | 'insurance' 
+  | 'background-check' 
+  | 'manufacturer-cert' 
+  | 'safety-training'
+  | 'other'
+
+export type CertificationStatus = 'active' | 'expiring-soon' | 'expired'
+
+export interface Certification {
+  id: string
+  contractorId: string
+  type: CertificationType
+  name: string
+  issuingOrganization: string
+  licenseNumber?: string
+  issueDate: string
+  expirationDate?: string
+  neverExpires: boolean
+  fileUrl?: string
+  fileName?: string
+  coverageAmount?: number
+  status: CertificationStatus
+  notes?: string
+  jobTypesQualified?: string[]
+  verifiedByPlatform: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CertificationAlert {
+  certificationId: string
+  daysUntilExpiration: number
+  urgency: 'info' | 'warning' | 'urgent' | 'critical'
+}
