@@ -103,6 +103,10 @@ export function useOfflineQueue() {
     timestamp: number;
   }>>([]);
   const queueRef = useRef(queue);
+  const updateQueueState = (nextQueue: typeof queue) => {
+    queueRef.current = nextQueue;
+    setQueue(nextQueue);
+  };
 
   useEffect(() => {
     queueRef.current = queue;
@@ -120,8 +124,7 @@ export function useOfflineQueue() {
         if (trimmed.length !== stored.length) {
           await window.spark.kv.set('offline-queue', trimmed);
         }
-        queueRef.current = trimmed;
-        setQueue(trimmed);
+        updateQueueState(trimmed);
       }
     } catch (error) {
       console.error('Failed to load offline queue:', error);
@@ -129,12 +132,21 @@ export function useOfflineQueue() {
   };
 
   const addToQueue = async (item: Omit<typeof queue[0], 'id' | 'timestamp'>) => {
+    const generateId = () => {
+      try {
+        if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+          return crypto.randomUUID();
+        }
+      } catch {
+        // Ignore and fall back
+      }
+      return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    };
+
     const newItem = {
       ...item,
       body: trimBody(item.body),
-      id: typeof crypto !== 'undefined' && 'randomUUID' in crypto
-        ? crypto.randomUUID()
-        : `${Date.now()}-${Math.random()}`,
+      id: generateId(),
       timestamp: Date.now()
     };
 
@@ -143,8 +155,7 @@ export function useOfflineQueue() {
       ? merged.slice(-MAX_QUEUE_ITEMS)
       : merged;
     const dropped = merged.length - trimmed.length;
-    queueRef.current = trimmed;
-    setQueue(trimmed);
+    updateQueueState(trimmed);
 
     if (dropped > 0) {
       console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
@@ -155,14 +166,12 @@ export function useOfflineQueue() {
 
   const removeFromQueue = async (id: string) => {
     const newQueue = (queueRef.current || []).filter(item => item.id !== id);
-    queueRef.current = newQueue;
-    setQueue(newQueue);
+    updateQueueState(newQueue);
     await window.spark.kv.set('offline-queue', newQueue);
   };
 
   const clearQueue = async () => {
-    queueRef.current = [];
-    setQueue([]);
+    updateQueueState([]);
     await window.spark.kv.delete('offline-queue');
   };
 
