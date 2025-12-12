@@ -10,6 +10,7 @@ import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { LightningBadge } from "./LightningBadge"
+import { DriveTimeWarning } from "./DriveTimeWarning"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images, Funnel } from "@phosphor-icons/react"
@@ -181,6 +182,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
+
+  const myScheduledJobs = useMemo(() => {
+    return (jobs || []).filter(job =>
+      job.bids.some(bid => bid.contractorId === user.id && bid.status === 'accepted')
+    )
+  }, [jobs, user.id])
 
   const sortedOpenJobs = useMemo(() => {
     if (!jobs || jobs.length === 0) return []
@@ -361,6 +368,16 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               jobPriceHigh={selectedJob.aiScope.priceHigh}
               contractorWinRate={user.winRate}
             />
+          )}
+
+          {selectedJob && myScheduledJobs.length > 0 && (
+            <div className="py-2">
+              <DriveTimeWarning
+                targetJob={selectedJob}
+                scheduledJobs={myScheduledJobs}
+                user={user}
+              />
+            </div>
           )}
           
           <div className="space-y-4 py-4">
