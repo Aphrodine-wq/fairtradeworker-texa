@@ -99,7 +99,7 @@ export function AutoPortfolio({ user }: AutoPortfolioProps) {
         return
       }
 
-      const prompt = window.spark.llmPrompt`You are a professional contractor writing a compelling portfolio story.
+      const promptText = `You are a professional contractor writing a compelling portfolio story.
 
 Job Title: ${project.title}
 Scope: ${job.aiScope.scope}
@@ -114,7 +114,7 @@ Write a brief, engaging 2-3 sentence story about this project that:
 
 Keep it professional but conversational. Focus on value delivered.`
 
-      const story = await window.spark.llm(prompt, 'gpt-4o-mini')
+      const story = await window.spark.llm(promptText, 'gpt-4o-mini')
       
       const updatedProject = {
         ...project,
