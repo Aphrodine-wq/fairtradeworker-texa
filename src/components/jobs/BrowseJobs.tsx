@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
@@ -71,6 +72,20 @@ const JobCard = memo(function JobCard({
   const photos = useMemo(() => job.photos || [], [job.photos])
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
+  // Calculate recent bids (last 5 minutes)
+  const recentBidsCount = useMemo(() => {
+    const fiveMinutesAgo = Date.now() - (5 * 60 * 1000)
+    return job.bids.filter(bid => {
+      const bidTime = new Date(bid.createdAt).getTime()
+      return bidTime >= fiveMinutesAgo
+    }).length
+  }, [job.bids])
+
+  // Get viewing contractors count
+  const viewingCount = useMemo(() => {
+    return job.viewingContractors?.length || 0
+  }, [job.viewingContractors])
+
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""} ${isUrgent && !isExpired ? "border-orange-500 border-2" : ""}`}>
       {isUrgent && !isExpired && (
@@ -94,7 +109,7 @@ const JobCard = memo(function JobCard({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge 
                 variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
                 className="text-sm font-semibold"
@@ -105,47 +120,62 @@ const JobCard = memo(function JobCard({
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
-            </div>
-            <CardTitle className="text-xl leading-tight mb-2">{job.title}</CardTitle>
-            <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
-          </div>
-          {photos.length > 0 && (
-            <button
-              onClick={() => onViewPhotos(photos)}
-              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all flex-shrink-0 group"
-            >
-              <img
-                src={photos[0]}
-                alt="Job preview"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                loading="lazy"
-              />
-              {photos.length > 1 && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Images weight="bold" size={24} className="text-white" />
-                  <span className="text-white text-xs ml-1">+{photos.length - 1}</span>
-                </div>
+              
+              {/* Social Proof Indicators */}
+              {viewingCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 animate-pulse">
+                  <Eye size={12} className="mr-1" weight="duotone" />
+                  {viewingCount} viewing
+                </Badge>
               )}
-            </button>
+              {recentBidsCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800 animate-pulse">
+                  <Users size={12} className="mr-1" weight="duotone" />
+                  {recentBidsCount} {recentBidsCount === 1 ? 'bid' : 'bids'} in 5 min
+                </Badge>
+              )}
+            </div>
           )}
+          <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
+            <Images weight="bold" size={14} className="inline mr-1" />
+            {photos.length}
+          </div>
+        </button>
+      )}
+
+      <CardHeader className="pb-3 flex-grow">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
+            <Badge 
+              variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
+              className="text-sm font-semibold"
+            >
+              {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
+            </Badge>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <span>{job.bids.length}</span>
+              <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
+            </div>
+          </div>
+          <CardTitle className="text-lg leading-tight">{job.title}</CardTitle>
+          <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4 pt-0">
+      
+      <CardContent className="space-y-3 pt-0 flex-grow">
         {job.aiScope && (
-          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+          <div className="bg-muted/50 rounded-lg p-3 space-y-2">
             <div className="flex items-center gap-2 text-sm font-semibold">
-              <Wrench weight="duotone" size={18} className="text-primary" />
+              <Wrench weight="duotone" size={16} className="text-primary" />
               <span>AI Scope</span>
             </div>
-            <p className="text-sm leading-relaxed">{job.aiScope.scope}</p>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <CurrencyDollar weight="duotone" size={24} className="text-primary" />
-                <div>
-                  <div className="text-xs text-muted-foreground">Estimated</div>
-                  <div className="text-lg font-bold text-primary">
-                    ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
-                  </div>
+            <p className="text-xs leading-relaxed line-clamp-2">{job.aiScope.scope}</p>
+            <div className="flex items-center gap-2">
+              <CurrencyDollar weight="duotone" size={20} className="text-primary" />
+              <div>
+                <div className="text-xs text-muted-foreground">Estimated</div>
+                <div className="text-base font-bold text-primary">
+                  ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
                 </div>
               </div>
             </div>
@@ -154,62 +184,33 @@ const JobCard = memo(function JobCard({
 
         {materials.length > 0 && (
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Package weight="duotone" size={18} className="text-muted-foreground" />
-              <span className="text-sm font-semibold text-muted-foreground">Required Materials</span>
+            <div className="flex items-center gap-2 mb-1">
+              <Package weight="duotone" size={14} className="text-muted-foreground" />
+              <span className="text-xs font-semibold text-muted-foreground">Materials</span>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {materials.map((material, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
+            <div className="flex flex-wrap gap-1">
+              {materials.slice(0, 3).map((material, idx) => (
+                <Badge key={idx} variant="outline" className="text-xs py-0">
                   {material}
                 </Badge>
               ))}
+              {materials.length > 3 && (
+                <Badge variant="outline" className="text-xs py-0">
+                  +{materials.length - 3}
+                </Badge>
+              )}
             </div>
           </div>
         )}
+      </CardContent>
 
-        {photos.length > 1 && (
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Images weight="duotone" size={18} className="text-muted-foreground" />
-              <span className="text-sm font-semibold text-muted-foreground">
-                {photos.length} Photos Available
-              </span>
-            </div>
-            <div className="grid grid-cols-5 gap-2">
-              {photos.slice(0, 5).map((photo, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => onViewPhotos(photos)}
-                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
-                >
-                  <img
-                    src={photo}
-                    alt={`Photo ${idx + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
-                    loading="lazy"
-                  />
-                </button>
-              ))}
-            </div>
-            {photos.length > 5 && (
-              <button
-                onClick={() => onViewPhotos(photos)}
-                className="text-xs text-primary hover:underline mt-2"
-              >
-                + {photos.length - 5} more photos
-              </button>
-            )}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between pt-4 border-t">
-          <div className="text-sm text-muted-foreground">
-            Posted {new Date(job.createdAt).toLocaleDateString()}
-          </div>
-          <Button onClick={() => onPlaceBid(job)} size="lg" className="font-semibold">
-            Place Bid • $0 Fee
-          </Button>
+      {/* Bid Now button at bottom */}
+      <CardContent className="pt-0 pb-4">
+        <Button onClick={() => onPlaceBid(job)} className="w-full font-semibold" size="lg">
+          Bid Now • $0 Fee
+        </Button>
+        <div className="text-xs text-center text-muted-foreground mt-2">
+          Posted {new Date(job.createdAt).toLocaleDateString()}
         </div>
       </CardContent>
     </Card>
@@ -280,6 +281,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setSelectedJob(job)
     setBidAmount("")
     setBidMessage("")
+    setSaveAsTemplate(false)
+    setTemplateName("")
     setDialogOpen(true)
   }, [])
 
@@ -288,6 +291,14 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setLightboxIndex(0)
     setLightboxOpen(true)
   }, [])
+
+  const handleTemplateSelect = useCallback((templateId: string) => {
+    const template = bidTemplates.find(t => t.id === templateId)
+    if (template) {
+      setBidMessage(template.message)
+      toast.success(`Template "${template.name}" loaded`)
+    }
+  }, [bidTemplates])
 
   const handleSubmitBid = () => {
     if (!selectedJob) return
@@ -301,6 +312,20 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     if (!bidMessage.trim()) {
       toast.error("Please add a message with your bid")
       return
+    }
+
+    // Save as template if requested
+    if (saveAsTemplate && templateName.trim()) {
+      const newTemplate: BidTemplate = {
+        id: `template-${Date.now()}`,
+        contractorId: user.id,
+        name: templateName.trim(),
+        message: bidMessage,
+        useCount: 0,
+        createdAt: new Date().toISOString()
+      }
+      setBidTemplates((current) => [...(current || []), newTemplate])
+      toast.success(`Template "${templateName}" saved!`)
     }
 
     const jobTime = new Date(selectedJob.createdAt).getTime()
@@ -342,7 +367,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   if (sortedOpenJobs.length === 0) {
     return (
       <div className="container mx-auto px-4 md:px-8 py-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center py-16">
             <Wrench className="mx-auto mb-4 text-muted-foreground" size={64} weight="duotone" />
             <h2 className="text-2xl font-bold mb-2">No Jobs Available</h2>
@@ -355,7 +380,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         <div className="space-y-4">
           <div>
             <h1 className="text-4xl font-bold mb-2">Browse Jobs</h1>
@@ -451,6 +476,27 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           )}
           
           <div className="space-y-4 py-4">
+            {/* Bid Templates Dropdown */}
+            {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
+              <div className="space-y-2">
+                <Label>Load Template (Optional)</Label>
+                <Select onValueChange={handleTemplateSelect}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose a saved template..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {bidTemplates
+                      .filter(t => t.contractorId === user.id)
+                      .map((template) => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="bidAmount">Bid Amount ($)</Label>
               <Input
@@ -476,6 +522,33 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 rows={4}
               />
             </div>
+
+            {/* Save as Template Option */}
+            {user.role === 'contractor' && bidMessage.trim() && (
+              <div className="space-y-3 p-3 rounded-lg border bg-muted/30">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="saveTemplate"
+                    checked={saveAsTemplate}
+                    onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                    className="rounded"
+                  />
+                  <Label htmlFor="saveTemplate" className="text-sm font-normal cursor-pointer">
+                    Save this message as a template
+                  </Label>
+                </div>
+                {saveAsTemplate && (
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Template name (e.g., 'My standard intro')"
+                      value={templateName}
+                      onChange={(e) => setTemplateName(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <DialogFooter className="flex-col sm:flex-row gap-2">
             <div className="flex items-center text-xs text-muted-foreground mr-auto">

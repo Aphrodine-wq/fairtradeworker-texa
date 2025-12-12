@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Switch } from "@/components/ui/switch"
 import { FeeComparison } from "./FeeComparison"
 import { FeeSavingsDashboard } from "./FeeSavingsDashboard"
 import { AvailabilityCalendar } from "./AvailabilityCalendar"
@@ -33,6 +34,16 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
   const handleUserUpdate = (updates: Partial<User>) => {
     if (currentUser) {
       setCurrentUser({ ...currentUser, ...updates })
+    }
+  }
+
+  const handleAvailableNowToggle = (checked: boolean) => {
+    if (currentUser) {
+      setCurrentUser({
+        ...currentUser,
+        availableNow: checked,
+        availableNowSince: checked ? new Date().toISOString() : undefined
+      })
     }
   }
 
@@ -85,17 +96,33 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
       <div className="max-w-6xl mx-auto space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Contractor Dashboard</h1>
+            <h1 className="text-3xl font-bold">Contractor/Subcontractor Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, {user.fullName}!</p>
           </div>
-          {user.isPro && (
-            <Badge className="bg-accent text-accent-foreground px-4 py-2 text-base">
-              <Crown weight="fill" className="mr-2" />
-              PRO Member
-            </Badge>
-          )}
+          <div className="flex items-center gap-4 flex-wrap">
+            {/* Available Now Toggle */}
+            <div className="flex items-center gap-3 px-4 py-2 rounded-lg border bg-card">
+              <div className="flex items-center gap-2">
+                {user.availableNow && (
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                )}
+                <Lightning size={20} weight={user.availableNow ? "fill" : "regular"} className={user.availableNow ? "text-green-600" : "text-muted-foreground"} />
+                <span className="text-sm font-medium">Available Now</span>
+              </div>
+              <Switch
+                checked={user.availableNow || false}
+                onCheckedChange={handleAvailableNowToggle}
+              />
+            </div>
+            {user.isPro && (
+              <Badge className="bg-accent text-accent-foreground px-4 py-2 text-base">
+                <Crown weight="fill" className="mr-2" />
+                PRO Member
+              </Badge>
+            )}
+          </div>
         </div>
 
         <div className="grid md:grid-cols-4 gap-6">
