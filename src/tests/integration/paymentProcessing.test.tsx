@@ -512,6 +512,22 @@ describe('Payment Processing Integration Tests', () => {
     })
 
     it('should process payment for change order', async () => {
+      // First create a scope change
+      const jobs = await window.spark.kv.get<Job[]>('jobs')
+      const job = jobs?.[0]
+      const scopeChange: any = {
+        id: 'change-2',
+        jobId: job?.id,
+        discoveredAt: new Date().toISOString(),
+        description: 'Additional electrical work needed',
+        photos: ['electrical1.jpg'],
+        additionalCost: 650,
+        status: 'approved',
+        approvedAt: new Date().toISOString(),
+      }
+      
+      await window.spark.kv.set('scope-changes', [scopeChange])
+
       const additionalAmount = 650
       const breakdown = calculatePaymentBreakdown(additionalAmount, 'MAJOR_PROJECT')
 
