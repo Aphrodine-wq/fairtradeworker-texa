@@ -3,7 +3,9 @@ import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
+import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { useKV } from "@github/spark/hooks"
+import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
@@ -73,6 +75,9 @@ function App() {
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [territories, setTerritories] = useKV<Territory[]>("territories", [])
+  
+  const { isOnline } = useServiceWorker()
+  const { processQueue, queue } = useOfflineQueue()
 
   useEffect(() => {
     let mounted = true
@@ -91,6 +96,13 @@ function App() {
     initData()
     return () => { mounted = false }
   }, [])
+
+  useEffect(() => {
+    if (isOnline && queue.length > 0) {
+      processQueue()
+      toast.success('Syncing offline changes...')
+    }
+  }, [isOnline, queue.length])
 
   const handleNavigate = useCallback((page: string, role?: string, jobId?: string) => {
     if (role) {
@@ -212,6 +224,7 @@ function App() {
           userRole={currentUser.role}
         />
       )}
+      <OfflineIndicator />
       <main className="flex-1">
         <Suspense fallback={<LoadingFallback />}>
           {renderPage()}

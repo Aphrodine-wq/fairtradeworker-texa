@@ -1,5 +1,37 @@
 import { useEffect, useState, useCallback } from 'react'
-import { cachedFetch, measureAsync } from '@/lib/performance'
+import { measureAsync } from '@/lib/performance'
+
+async function cachedFetch<T>(
+  key: string,
+  fetcher: () => Promise<T>,
+  cacheDuration: number = 5 * 60 * 1000
+): Promise<T> {
+  const cached = sessionStorage.getItem(key)
+  
+  if (cached) {
+    try {
+      const { data, timestamp } = JSON.parse(cached)
+      if (Date.now() - timestamp < cacheDuration) {
+        return data
+      }
+    } catch (error) {
+      console.error('Cache parse error:', error)
+    }
+  }
+  
+  const data = await fetcher()
+  
+  try {
+    sessionStorage.setItem(key, JSON.stringify({
+      data,
+      timestamp: Date.now()
+    }))
+  } catch (error) {
+    console.error('Cache store error:', error)
+  }
+  
+  return data
+}
 
 export function useOptimizedData<T>(
   key: string,
