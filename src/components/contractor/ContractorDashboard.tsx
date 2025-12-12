@@ -5,12 +5,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FeeComparison } from "./FeeComparison"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import { CompanySettings } from "./CompanySettings"
+import { RouteBuilder } from "./RouteBuilder"
 import { calculateTotalFeesSaved } from "@/lib/competitiveAdvantage"
 import type { User, Job, Invoice } from "@/lib/types"
 
@@ -176,8 +177,12 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="browse">Browse Jobs</TabsTrigger>
+            <TabsTrigger value="routes">
+              <MapTrifold className="mr-2" size={16} weight="duotone" />
+              Route Builder
+            </TabsTrigger>
             <TabsTrigger value="crm">CRM</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="invoices">Invoices</TabsTrigger>
@@ -188,6 +193,9 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsList>
           <TabsContent value="browse" className="mt-6">
             <BrowseJobs user={user} />
+          </TabsContent>
+          <TabsContent value="routes" className="mt-6">
+            <RouteBuilder user={user} />
           </TabsContent>
           <TabsContent value="crm" className="mt-6">
             <CRMDashboard user={user} />
