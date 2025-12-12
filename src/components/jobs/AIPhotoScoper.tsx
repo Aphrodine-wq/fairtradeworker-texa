@@ -77,29 +77,28 @@ export function AIPhotoScoper() {
 
     setLoading(true)
     setError('')
-    toast.info('Analyzing photos... this may take 15-30 seconds')
+    toast.info('Analyzing photos with AI vision... this may take 20-40 seconds')
 
     try {
       const base64Images = await Promise.all(
         photos.map(photo => convertToBase64(photo.file))
       )
 
-      const imageDescriptions = base64Images.map((base64, i) => 
-        `[Image ${i + 1}: data:${photos[i].file.type};base64,${base64.substring(0, 50)}...]`
-      ).join('\n')
+      const imageContent = base64Images.map((base64, i) => ({
+        type: 'image_url',
+        image_url: {
+          url: `data:${photos[i].file.type};base64,${base64}`,
+          detail: 'high'
+        }
+      }))
 
-      const prompt = `You are analyzing construction project photos to create a detailed Scope of Services document.
+      const textPrompt = `You are analyzing construction project photos to create a detailed Scope of Services document.
 
 Project Information:
 - Project Name: ${projectInfo.name}
 - Address: ${projectInfo.address}, ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
 
-I am providing ${photos.length} photo(s) for this project:
-${imageDescriptions}
-
-IMPORTANT: While you cannot actually see these images in this text-based format, please create a comprehensive Scope of Services document template that follows construction industry standards. Base your output on typical construction projects of the type indicated by the project name.
-
-Please create a comprehensive Scope of Services document following this EXACT format:
+Analyze the ${photos.length} photo(s) provided and create a comprehensive Scope of Services document following this EXACT format:
 
 Scope of Services
 ${projectInfo.name}
@@ -108,71 +107,72 @@ ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
 __________________________________________________________________
 
 Project Overview:
-[Provide a detailed 2-4 sentence overview of what the project entails based on the photos. Describe the type of structure, its purpose, key features, and overall scope.]
+Provide a detailed 2-4 sentence overview based on what you see in the photos. Describe the type of structure, its purpose, key features, and overall scope.
 
 Divisions of Work
 
-[Work Category 1 - e.g., Site Preparation, Foundation, Structural Construction, etc.]
-[Subsection Name]
-[Detailed description of work to be performed. Be very specific about materials (e.g., "6x6x12 posts", "treated 4x6 timbers"), dimensions (e.g., "30' x 40' layout", "12' side walls"), and construction methods. Include specific measurements, materials, and techniques visible in the photos.]
+For each visible work area, create sections like:
 
-[Work Category 2]
+[Work Category - e.g., Site Preparation, Foundation, Structural Construction, Exterior Finish, etc.]
 [Subsection Name]
-[Detailed description with specifics]
+Detailed description of work visible in photos. Be VERY specific about:
+- Materials you can identify (e.g., "6x6x12 posts", "treated 4x6 timbers", specific finishes)
+- Dimensions and measurements you can estimate
+- Construction methods visible
+- Specific components (doors, windows, fixtures, etc.)
 
-[Continue for all work areas visible in photos - common categories include: Site Preparation, Foundation, Structural Construction, Exterior Finish, Windows and Doors, Electrical, Plumbing, Interior Finishing, Landscaping, etc.]
+Continue for ALL work areas visible in the photos. Common categories: Site Preparation, Foundation, Structural Construction, Exterior Finish, Windows and Doors, Electrical, Plumbing, Interior Finishing, Landscaping, HVAC, Roofing, etc.
 
 Additional Notes
-[Include 2-4 detailed notes about: future expansion possibilities, drainage considerations, material efficiency choices, HOA compliance needs, permitting requirements, design considerations, or other relevant project-specific information]
+Include 2-4 detailed notes about future expansion, drainage, material choices, permitting needs, design considerations, or other relevant observations from the photos.
 __________________________________________________________________
 ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
 
-CRITICAL FORMATTING AND CONTENT GUIDELINES:
+CRITICAL INSTRUCTIONS:
 
-1. NO COMPANY OR PERSONAL NAMES: Do not include any company names, CEO names, contractor names, or personal names anywhere in the document. Only include the date at the bottom.
+1. ACTUALLY ANALYZE THE PHOTOS: Look carefully at what's visible and describe ONLY what you can see
+2. BE SPECIFIC: Use measurements, materials, and professional terminology for everything visible
+3. NO GENERIC CONTENT: Every detail should be based on the actual photos provided
+4. PROFESSIONAL TONE: Write as a construction professional would document a site
+5. COMPREHENSIVE: Cover all visible work areas, materials, and construction details
 
-2. BE EXTREMELY SPECIFIC WITH MATERIALS AND DIMENSIONS:
-   - Use exact measurements: "6x6x12 posts", "30' x 40' pole barn", "12' side walls"
-   - Name specific materials: "R-7 temp seal insulation", "treated 4x6 timbers", "galvalume finish"
-   - Include door/window specs: "3/0 x 6/8 exterior door", "36" x 36" windows", "12' wide x 10' tall roll-up garage door"
-   - Mention finishes: "Architecture shingles", "Hardie board lap siding", "brick (2 ½" x 7 ¾")"
-
-3. ORGANIZE INTO CLEAR DIVISIONS:
-   - Use major category headers (Site Preparation, Foundation, Structural Construction, etc.)
-   - Include subsections under each category
-   - Common categories: Site Preparation, Foundation/Concrete, Structural Construction, Exterior Finish, Windows and Doors, Electrical, Plumbing, Interior Finishing, Additional Features
-
-4. USE PROFESSIONAL CONSTRUCTION TERMINOLOGY:
-   - "Form and pour" for concrete work
-   - "Rough in" for plumbing/electrical prep
-   - "Erect posts", "install trusses", "wrap exterior"
-   - "Level the site", "excavation", "backfill"
-
-5. INCLUDE LOCATION SPECIFICS:
-   - When exact location matters: "centered on the front of the building"
-   - When flexible: "at customer-preferred locations" or "per client specification"
-
-6. ADDITIONAL NOTES SHOULD COVER:
-   - Future expansion considerations
-   - Drainage and water management
-   - Material choices and efficiency
-   - Compliance needs (HOA, permits, codes)
-   - Design integration with existing structures
-
-7. WRITING STYLE:
-   - Professional and detailed
-   - Use complete sentences in paragraph form under each subsection
-   - Be thorough but concise
-   - Match the tone of formal construction documentation
-
-8. ONLY DESCRIBE WHAT YOU SEE:
-   - Base all descriptions on visible elements in photos
-   - Use "customer-preferred" or "per specification" for unclear details
-   - Don't make assumptions about work not visible
-
-Now analyze the project based on typical construction standards for this type of work and generate the complete, professionally formatted scope of services document.`
+Now analyze the photos carefully and generate the scope based on what you actually see.`
       
-      const generatedScope = await window.spark.llm(prompt, "gpt-4o")
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY || ''}`
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o',
+          messages: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'text',
+                  text: textPrompt
+                },
+                ...imageContent
+              ]
+            }
+          ],
+          max_tokens: 4000
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      
+      if (data.error) {
+        throw new Error(data.error.message || 'API request failed')
+      }
+
+      const generatedScope = data.choices[0]?.message?.content || 'No scope generated'
 
       setScope(generatedScope)
       toast.success('Scope generated successfully!')
