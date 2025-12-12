@@ -10,6 +10,24 @@ const trimBody = (body?: string) => {
   return body.slice(0, MAX_BODY_LENGTH);
 };
 
+const generateQueueId = () => {
+  try {
+    if (typeof crypto !== 'undefined') {
+      if (typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+      }
+      if (typeof crypto.getRandomValues === 'function') {
+        const buffer = new Uint32Array(2);
+        crypto.getRandomValues(buffer);
+        return `${Date.now()}-${buffer[0].toString(16)}-${buffer[1].toString(16)}`;
+      }
+    }
+  } catch {
+    // Ignore and fall back
+  }
+  return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
+};
+
 export function useServiceWorker() {
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -128,28 +146,10 @@ export function useOfflineQueue() {
   };
 
   const addToQueue = async (item: Omit<typeof queue[0], 'id' | 'timestamp'>) => {
-    const generateId = () => {
-      try {
-        if (typeof crypto !== 'undefined') {
-          if (typeof crypto.randomUUID === 'function') {
-            return crypto.randomUUID();
-          }
-          if (typeof crypto.getRandomValues === 'function') {
-            const buffer = new Uint32Array(2);
-            crypto.getRandomValues(buffer);
-            return `${Date.now()}-${buffer[0].toString(16)}-${buffer[1].toString(16)}`;
-          }
-        }
-      } catch {
-        // Ignore and fall back
-      }
-      return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
-    };
-
     const newItem = {
       ...item,
       body: trimBody(item.body),
-      id: generateId(),
+      id: generateQueueId(),
       timestamp: Date.now()
     };
 
