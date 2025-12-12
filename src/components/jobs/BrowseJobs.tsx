@@ -190,9 +190,7 @@ const JobCard = memo(function JobCard({
             </div>
           </div>
         )}
-      </CardContent>
 
-      <CardContent className="pt-0 space-y-3">
         {photos.length > 1 && (
           <div>
             <div className="flex items-center gap-2 mb-2">
