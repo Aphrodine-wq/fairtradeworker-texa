@@ -248,8 +248,18 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   useEffect(() => {
     const interval = setInterval(() => {
       const twoMinutesAgo = Date.now() - (2 * 60 * 1000)
-      setJobs((currentJobs) =>
-        (currentJobs || []).map(job => {
+      setJobs((currentJobs) => {
+        // Early exit if no jobs
+        if (!currentJobs || currentJobs.length === 0) return currentJobs
+        
+        // Check if any jobs have viewing contractors before processing
+        const hasViewingContractors = currentJobs.some(job => 
+          job.viewingContractors && job.viewingContractors.length > 0
+        )
+        
+        if (!hasViewingContractors) return currentJobs
+        
+        return currentJobs.map(job => {
           if (job.viewingContractors && job.viewingContractors.length > 0) {
             const lastUpdate = job.lastViewUpdate ? new Date(job.lastViewUpdate).getTime() : 0
             if (lastUpdate < twoMinutesAgo) {
@@ -262,7 +272,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           }
           return job
         })
-      )
+      })
     }, 30000) // Check every 30 seconds
 
     return () => clearInterval(interval)

@@ -39,11 +39,17 @@ export function CompletionCard({
     toast.success("Download feature coming soon! Screenshot this card for now.")
   }
 
-  const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  })
+  const formattedDate = (() => {
+    try {
+      return new Date(createdAt).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    } catch (error) {
+      return 'Recently'
+    }
+  })()
 
   return (
     <div className="space-y-4">

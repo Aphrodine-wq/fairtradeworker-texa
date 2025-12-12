@@ -126,7 +126,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     
     // If title is too short or generic, use AI scope
     if (originalTitle.length < 10 || ['fix', 'help', 'repair', 'need'].some(word => titleLower === word)) {
-      return aiResult.scope.split('.')[0] || originalTitle
+      const scopeSentence = aiResult.scope?.split('.')[0]
+      return scopeSentence || originalTitle
     }
     
     return originalTitle // Return original if no improvement found

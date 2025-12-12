@@ -533,17 +533,20 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             </DialogDescription>
           </DialogHeader>
           
-          {completedJob && (
-            <CompletionCard
-              jobTitle={completedJob.title}
-              contractorName={completedJob.bids.find(b => b.status === 'accepted')?.contractorName || 'Contractor'}
-              amount={completedJob.bids.find(b => b.status === 'accepted')?.amount || 0}
-              rating={completedJob.rating || 5}
-              beforePhoto={completedJob.beforePhotos?.[0]}
-              afterPhoto={completedJob.afterPhotos?.[0]}
-              createdAt={completedJob.createdAt}
-            />
-          )}
+          {completedJob && (() => {
+            const acceptedBid = completedJob.bids.find(b => b.status === 'accepted')
+            return (
+              <CompletionCard
+                jobTitle={completedJob.title}
+                contractorName={acceptedBid?.contractorName || 'Contractor'}
+                amount={acceptedBid?.amount || 0}
+                rating={completedJob.rating || 5}
+                beforePhoto={completedJob.beforePhotos?.[0]}
+                afterPhoto={completedJob.afterPhotos?.[0]}
+                createdAt={completedJob.createdAt}
+              />
+            )
+          })()}
         </DialogContent>
       </Dialog>
     </div>
