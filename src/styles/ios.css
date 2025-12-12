@@ -1,0 +1,230 @@
+/* iOS-specific styles and optimizations */
+
+/* Safe area insets for iPhone X and later with notch/Dynamic Island */
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
+}
+
+/* Apply safe areas to body for PWA mode */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+  }
+}
+
+/* iOS device class styles */
+body.ios-device {
+  /* Prevent text size adjustment on orientation change */
+  -webkit-text-size-adjust: 100%;
+  /* Enable smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* PWA mode on iOS */
+body.ios-pwa {
+  /* Prevent selection of elements */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Allow selection on inputs */
+}
+
+body.ios-pwa input,
+body.ios-pwa textarea,
+body.ios-pwa [contenteditable] {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+/* iOS notch handling */
+body.ios-notch header,
+body.ios-notch .header {
+  padding-top: calc(var(--safe-area-inset-top) + 0.5rem);
+}
+
+body.ios-notch footer,
+body.ios-notch .footer,
+body.ios-notch .bottom-bar {
+  padding-bottom: calc(var(--safe-area-inset-bottom) + 0.5rem);
+}
+
+/* Touch optimizations */
+@media (pointer: coarse) {
+  /* Increase tap target sizes on touch devices */
+  button,
+  [role="button"],
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+
+  /* Better touch feedback */
+  button:active,
+  [role="button"]:active,
+  a:active {
+    opacity: 0.7;
+    transition: opacity 0.1s ease;
+  }
+}
+
+/* PWA standalone mode */
+@media (display-mode: standalone) {
+  /* Hide browser UI elements in standalone mode */
+  .browser-only {
+    display: none !important;
+  }
+
+  /* Show PWA-only elements */
+  .pwa-only {
+    display: block !important;
+  }
+
+  /* Adjust header for standalone mode */
+  header,
+  .header {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+
+  /* Bottom navigation safe area */
+  nav.bottom-nav,
+  .bottom-nav {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+}
+
+/* iOS-specific scrolling improvements */
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+/* Prevent iOS rubber-band scrolling on non-scrollable areas */
+.no-bounce {
+  overscroll-behavior: none;
+}
+
+/* iOS input styling fixes */
+input,
+textarea,
+select {
+  /* Remove iOS default styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Remove inner shadow on iOS */
+  border-radius: 0;
+}
+
+/* Fix for iOS date/time inputs */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: 44px;
+}
+
+/* iOS keyboard handling */
+.keyboard-open {
+  /* Adjust for keyboard on iOS */
+  --keyboard-height: 0px;
+}
+
+@supports (-webkit-touch-callout: none) {
+  /* Safari-only styles */
+  .keyboard-open {
+    padding-bottom: var(--keyboard-height);
+  }
+}
+
+/* Prevent zoom on input focus for iOS (ensure font-size >= 16px) */
+input,
+select,
+textarea {
+  font-size: max(16px, 1em);
+}
+
+/* iOS button fixes */
+button {
+  /* Remove default button styling */
+  -webkit-appearance: none;
+  appearance: none;
+  /* Prevent callout on long press */
+  -webkit-touch-callout: none;
+}
+
+/* iOS link fixes */
+a {
+  /* Prevent callout on long press */
+  -webkit-touch-callout: none;
+  /* Remove highlight */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth animations optimized for iOS */
+.animate-ios {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* iOS modal/dialog safe area */
+.modal,
+.dialog,
+[role="dialog"] {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* Fixed bottom elements (FAB, bottom sheets) */
+.fixed-bottom {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Pull-to-refresh area for iOS */
+.pull-to-refresh {
+  overscroll-behavior-y: contain;
+}
+
+/* iOS status bar placeholder for PWA */
+.status-bar-placeholder {
+  height: env(safe-area-inset-top, 20px);
+  background: inherit;
+}
+
+/* Landscape mode adjustments */
+@media screen and (orientation: landscape) {
+  body.ios-device {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* iOS-specific focus styles */
+@supports (-webkit-touch-callout: none) {
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-focus-ring, #6648DC);
+  }
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Enable text selection for content */
+.selectable {
+  -webkit-user-select: text;
+  user-select: text;
+}

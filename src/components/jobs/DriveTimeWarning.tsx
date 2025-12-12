@@ -1,0 +1,184 @@
+import { useMemo } from "react"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { Warning, Clock, MapPin, TrendDown } from "@phosphor-icons/react"
+import { calculateDriveTime, findNearbyJobs } from "@/lib/routing"
+import type { Job, User } from "@/lib/types"
+
+interface DriveTimeWarningProps {
+  targetJob: Job
+  scheduledJobs: Job[]
+  user: User
+}
+
+interface RouteAnalysis {
+  hasInefficientRoute: boolean
+  nearestJobDistance: number
+  nearestJobDriveTime: number
+  totalWeeklyDriveTime: number
+  inefficiencyScore: number
+  warnings: string[]
+  suggestions: string[]
+}
+
+function analyzeRoute(targetJob: Job, scheduledJobs: Job[]): RouteAnalysis {
+  if (scheduledJobs.length === 0) {
+    return {
+      hasInefficientRoute: false,
+      nearestJobDistance: 0,
+      nearestJobDriveTime: 0,
+      totalWeeklyDriveTime: 0,
+      inefficiencyScore: 0,
+      warnings: [],
+      suggestions: []
+    }
+  }
+
+  const driveTimes = scheduledJobs.map(job => calculateDriveTime(targetJob, job))
+  const minDriveTime = Math.min(...driveTimes)
+  const nearestJobIndex = driveTimes.indexOf(minDriveTime)
+  
+  let totalWeeklyDriveTime = 0
+  for (let i = 1; i < scheduledJobs.length; i++) {
+    totalWeeklyDriveTime += calculateDriveTime(scheduledJobs[i - 1], scheduledJobs[i])
+  }
+  if (scheduledJobs.length > 0) {
+    totalWeeklyDriveTime += minDriveTime
+  }
+
+  const warnings: string[] = []
+  const suggestions: string[] = []
+  let hasInefficientRoute = false
+  let inefficiencyScore = 0
+
+  if (minDriveTime >= 45) {
+    hasInefficientRoute = true
+    inefficiencyScore = 90
+    warnings.push(`This job is ${minDriveTime} minutes from your nearest scheduled work`)
+    warnings.push(`You'd spend nearly an hour driving for this job`)
+    suggestions.push('Consider focusing on jobs closer to your existing schedule')
+  } else if (minDriveTime >= 30) {
+    hasInefficientRoute = true
+    inefficiencyScore = 70
+    warnings.push(`This job is ${minDriveTime} minutes from your other work`)
+    suggestions.push('Look for jobs between your current schedule to fill the gap')
+  } else if (minDriveTime >= 20) {
+    hasInefficientRoute = true
+    inefficiencyScore = 50
+    warnings.push(`${minDriveTime} minute drive from your nearest job`)
+    suggestions.push('This adds extra drive time to your day')
+  }
+
+  const avgDriveTime = totalWeeklyDriveTime / (scheduledJobs.length + 1)
+  if (avgDriveTime > 20) {
+    suggestions.push('Your weekly route is becoming scattered - consider geographic focus')
+  }
+
+  return {
+    hasInefficientRoute,
+    nearestJobDistance: minDriveTime,
+    nearestJobDriveTime: minDriveTime,
+    totalWeeklyDriveTime,
+    inefficiencyScore,
+    warnings,
+    suggestions
+  }
+}
+
+export function DriveTimeWarning({ targetJob, scheduledJobs, user }: DriveTimeWarningProps) {
+  const analysis = useMemo(() => {
+    return analyzeRoute(targetJob, scheduledJobs)
+  }, [targetJob, scheduledJobs])
+
+  if (!analysis.hasInefficientRoute) {
+    return null
+  }
+
+  const getSeverityColor = (score: number): 'destructive' | 'default' => {
+    if (score >= 80) return 'destructive'
+    return 'default'
+  }
+
+  const getSeverityIcon = (score: number) => {
+    if (score >= 80) return <Warning weight="fill" size={20} className="text-destructive" />
+    if (score >= 60) return <Warning weight="duotone" size={20} className="text-orange-500" />
+    return <Warning weight="duotone" size={20} className="text-yellow-500" />
+  }
+
+  const severityColor = getSeverityColor(analysis.inefficiencyScore)
+  const severityIcon = getSeverityIcon(analysis.inefficiencyScore)
+
+  return (
+    <Alert variant={severityColor} className="border-2">
+      <div className="flex gap-3">
+        <div className="flex-shrink-0 mt-0.5">
+          {severityIcon}
+        </div>
+        <div className="flex-1 space-y-3">
+          <div>
+            <AlertTitle className="text-base font-semibold mb-2 flex items-center gap-2">
+              Drive Time Warning
+              <Badge 
+                variant={severityColor} 
+                className="text-xs font-normal"
+              >
+                {analysis.inefficiencyScore >= 80 ? 'High Impact' : 
+                 analysis.inefficiencyScore >= 60 ? 'Moderate Impact' : 
+                 'Low Impact'}
+              </Badge>
+            </AlertTitle>
+            <AlertDescription className="space-y-3">
+              <div className="space-y-2">
+                {analysis.warnings.map((warning, idx) => (
+                  <div key={idx} className="flex items-start gap-2 text-sm">
+                    <MapPin weight="duotone" size={16} className="mt-0.5 flex-shrink-0" />
+                    <span>{warning}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 py-2 px-3 bg-background/50 rounded-md border">
+                <div className="space-y-1">
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Clock weight="duotone" size={14} />
+                    Drive Time
+                  </div>
+                  <div className="text-lg font-bold">
+                    ~{analysis.nearestJobDriveTime} min
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-xs text-muted-foreground flex items-center gap-1">
+                    <TrendDown weight="duotone" size={14} />
+                    Efficiency Impact
+                  </div>
+                  <div className="text-lg font-bold text-destructive">
+                    -{analysis.inefficiencyScore}%
+                  </div>
+                </div>
+              </div>
+
+              {analysis.suggestions.length > 0 && (
+                <div className="space-y-2 pt-2 border-t">
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                    Suggestions
+                  </div>
+                  {analysis.suggestions.map((suggestion, idx) => (
+                    <div key={idx} className="flex items-start gap-2 text-sm">
+                      <div className="w-1 h-1 rounded-full bg-current mt-2 flex-shrink-0" />
+                      <span className="text-muted-foreground">{suggestion}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="text-xs text-muted-foreground pt-2 border-t">
+                💡 This warning helps you maintain efficient routes. You can still bid if you choose.
+              </div>
+            </AlertDescription>
+          </div>
+        </div>
+      </div>
+    </Alert>
+  )
+}
