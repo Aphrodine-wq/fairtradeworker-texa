@@ -518,7 +518,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: Spacing.sm,
-    backgroundColor: `${Colors.success}15`,
+    backgroundColor: 'rgba(34, 197, 94, 0.15)',
   },
   alreadyBidText: {
     fontSize: Typography.fontSize.md,
@@ -548,7 +548,7 @@ const styles = StyleSheet.create({
   },
   modalInfoCard: {
     marginBottom: Spacing.xl,
-    backgroundColor: `${Colors.primary}10`,
+    backgroundColor: 'rgba(249, 115, 22, 0.1)',
   },
   modalJobTitle: {
     fontSize: Typography.fontSize.lg,

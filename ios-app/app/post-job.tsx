@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   },
   infoCard: {
     marginBottom: Spacing.xl,
-    backgroundColor: `${Colors.primary}10`,
+    backgroundColor: 'rgba(249, 115, 22, 0.1)',
   },
   infoHeader: {
     flexDirection: 'row',

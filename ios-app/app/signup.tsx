@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   roleOptionSelected: {
     borderColor: Colors.primary,
-    backgroundColor: `${Colors.primary}10`,
+    backgroundColor: 'rgba(249, 115, 22, 0.1)',
   },
   roleOptionLabel: {
     fontSize: Typography.fontSize.base,

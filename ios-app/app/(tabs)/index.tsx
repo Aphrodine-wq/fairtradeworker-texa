@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
   },
   statsCard: {
     alignItems: 'center',
-    backgroundColor: `${Colors.accent}20`,
-    borderColor: `${Colors.accent}40`,
+    backgroundColor: 'rgba(251, 191, 36, 0.2)',
+    borderColor: 'rgba(251, 191, 36, 0.4)',
   },
   statsLabel: {
     fontSize: Typography.fontSize.lg,
