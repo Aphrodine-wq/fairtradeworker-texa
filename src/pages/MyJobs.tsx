@@ -21,6 +21,7 @@ import {
   ChartBar
 } from "@phosphor-icons/react"
 import { Lightbox } from "@/components/ui/Lightbox"
+import { CompletionCard } from "@/components/jobs/CompletionCard"
 import type { Job, Bid, User as UserType, Invoice } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { getMilestoneProgress } from "@/lib/milestones"
@@ -41,6 +42,8 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
+  const [completionCardOpen, setCompletionCardOpen] = useState(false)
+  const [completedJob, setCompletedJob] = useState<Job | null>(null)
 
   const myJobs = (jobs || []).filter(job => job.homeownerId === user.id)
   const openJobs = myJobs.filter(job => job.status === 'open')
@@ -130,6 +133,11 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         j.id === job.id ? { ...j, status: 'completed' as const } : j
       )
     )
+    
+    // Show completion card
+    setCompletedJob(job)
+    setCompletionCardOpen(true)
+    
     toast.success("Job marked as complete! Thank you for using FairTradeWorker.")
   }
 
@@ -514,6 +522,30 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         onClose={() => setLightboxOpen(false)}
         initialIndex={lightboxIndex}
       />
+
+      {/* Completion Card Dialog */}
+      <Dialog open={completionCardOpen} onOpenChange={setCompletionCardOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>🎉 Job Complete!</DialogTitle>
+            <DialogDescription>
+              Share your success story on social media
+            </DialogDescription>
+          </DialogHeader>
+          
+          {completedJob && (
+            <CompletionCard
+              jobTitle={completedJob.title}
+              contractorName={completedJob.bids.find(b => b.status === 'accepted')?.contractorName || 'Contractor'}
+              amount={completedJob.bids.find(b => b.status === 'accepted')?.amount || 0}
+              rating={completedJob.rating || 5}
+              beforePhoto={completedJob.beforePhotos?.[0]}
+              afterPhoto={completedJob.afterPhotos?.[0]}
+              createdAt={completedJob.createdAt}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
