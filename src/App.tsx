@@ -81,8 +81,11 @@ const PrivacyPage = lazy(() => retryImport(() =>
 const TermsPage = lazy(() => retryImport(() =>
   import("@/pages/Terms").then(m => ({ default: m.TermsPage }))
 ))
+const FreeToolsPage = lazy(() => retryImport(() =>
+  import("@/pages/FreeToolsPage").then(m => ({ default: m.FreeToolsPage }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -321,6 +324,12 @@ function App() {
             <TermsPage />
           </Suspense>
         )
+      case 'free-tools':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <FreeToolsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }

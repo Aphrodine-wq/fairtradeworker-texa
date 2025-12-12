@@ -168,6 +168,13 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               My Jobs
             </NavButton>
             <NavButton 
+              onClick={() => handleNav('free-tools', 'tools')} 
+              isActive={activeTab === 'tools'}
+              icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
+            >
+              Free Tools
+            </NavButton>
+            <NavButton 
               onClick={() => handleNav('photo-scoper', 'scoper')} 
               isActive={activeTab === 'scoper'}
               icon={<Camera size={16} weight={activeTab === 'scoper' ? 'fill' : 'regular'} />}
@@ -205,6 +212,13 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               icon={<Users size={16} weight={activeTab === 'crm' ? 'fill' : 'regular'} />}
             >
               CRM
+            </NavButton>
+            <NavButton 
+              onClick={() => handleNav('free-tools', 'tools')} 
+              isActive={activeTab === 'tools'}
+              icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
+            >
+              Free Tools
             </NavButton>
             <NavButton 
               onClick={() => handleNav('photo-scoper', 'scoper')} 
@@ -347,6 +361,14 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   My Jobs
                 </Button>
                 <Button 
+                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
+                  onClick={() => handleNav('free-tools', 'tools')}
+                  className="justify-start min-h-[44px]"
+                >
+                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
+                  Free Tools
+                </Button>
+                <Button 
                   variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 
                   onClick={() => handleNav('photo-scoper', 'scoper')}
                   className="justify-start min-h-[44px]"
@@ -389,6 +411,14 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 >
                   <Users size={20} className="mr-3" weight={activeTab === 'crm' ? 'fill' : 'regular'} />
                   CRM
+                </Button>
+                <Button 
+                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
+                  onClick={() => handleNav('free-tools', 'tools')}
+                  className="justify-start min-h-[44px]"
+                >
+                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
+                  Free Tools
                 </Button>
                 <Button 
                   variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 
