@@ -7,6 +7,7 @@ import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
 import { useKV } from "@github/spark/hooks"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
+import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
@@ -137,6 +138,9 @@ function App() {
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
+  
+  // Initialize iOS optimizations
+  useIOSOptimizations()
 
   useEffect(() => {
     let mounted = true
