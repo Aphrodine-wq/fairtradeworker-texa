@@ -140,3 +140,5 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
     </div>
   )
 }
+
+export default SignupPage

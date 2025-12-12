@@ -488,3 +488,5 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     </div>
   )
 }
+
+export default MyJobs
