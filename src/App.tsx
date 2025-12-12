@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
+import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
 import { useKV } from "@github/spark/hooks"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { initializeDemoData } from "@/lib/demoData"
@@ -158,6 +159,12 @@ function App() {
     return selectedJobId ? (jobs || []).find(j => j.id === selectedJobId) : null
   }, [selectedJobId, jobs])
 
+  const breadcrumbs = useMemo(() => {
+    return getBreadcrumbs(currentPage, currentUser ?? null, {
+      jobTitle: selectedJob?.title
+    })
+  }, [currentPage, currentUser, selectedJob?.title])
+
   const renderPage = useCallback(() => {
     switch (currentPage) {
       case 'login':
@@ -235,6 +242,11 @@ function App() {
       )}
       <OfflineIndicator />
       <main className="flex-1 pt-16">
+        {currentPage !== 'home' && breadcrumbs.length > 0 && (
+          <div className="container mx-auto px-4 md:px-8 pt-6">
+            <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
+          </div>
+        )}
         <Suspense fallback={<LoadingFallback />}>
           {renderPage()}
         </Suspense>
