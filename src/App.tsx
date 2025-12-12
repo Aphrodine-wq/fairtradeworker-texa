@@ -5,6 +5,7 @@ import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
+import { BackgroundBlobs } from "@/components/ui/BackgroundBlobs"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
@@ -289,6 +290,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <BackgroundBlobs />
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>

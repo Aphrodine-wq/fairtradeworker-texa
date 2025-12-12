@@ -67,17 +67,17 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             aria-label="Go to home"
           >
             <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity"
+              className="absolute inset-0 bg-gradient-to-r from-blue-50 to-blue-100/50 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity"
             />
             <motion.div 
-              className="relative flex items-center justify-center w-9 h-9 bg-gradient-to-br from-primary via-primary to-accent rounded-lg shadow-sm group-hover:shadow-md transition-all"
+              className="relative flex items-center justify-center w-9 h-9 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-lg shadow-sm group-hover:shadow-md transition-all"
               whileHover={{ rotate: [0, -8, 8, 0] }}
               transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              <Wrench className="text-primary-foreground" size={20} weight="bold" />
+              <Wrench className="text-white" size={20} weight="bold" />
             </motion.div>
             <div className="hidden sm:flex flex-col items-start relative">
-              <span className="font-heading font-bold text-base leading-none bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-transparent">
+              <span className="font-heading font-bold text-base leading-none bg-gradient-to-r from-blue-600 via-gray-900 to-blue-600 bg-clip-text text-transparent">
                 FairTradeWorker
               </span>
               <span className="text-[10px] text-muted-foreground/80 leading-none font-semibold tracking-wide mt-0.5">
@@ -100,10 +100,10 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button 
                     onClick={() => onNavigate('signup')} 
-                    className="min-h-[44px] bg-gradient-to-r from-primary via-primary to-accent hover:shadow-md hover:shadow-primary/30 transition-all font-bold relative overflow-hidden group"
+                    className="min-h-[44px] bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:shadow-md hover:shadow-blue-500/30 transition-all font-bold relative overflow-hidden group"
                   >
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     />
                     <Sparkle weight="fill" className="mr-2 relative z-10" size={16} />
                     <span className="relative z-10">Sign Up</span>
@@ -136,16 +136,16 @@ const NavButton = memo(({ onClick, children, variant = "ghost", className = "", 
     <Button 
       variant={variant}
       onClick={onClick} 
-      className={cn(
+      className={
         "min-h-[44px] relative overflow-hidden group transition-all font-semibold px-3",
-        isActive && "bg-primary/10 text-primary",
+        isActive && "bg-blue-50 text-blue-600",
         className
       )}
     >
       {isActive && (
         <motion.div
           layoutId="activeTab"
-          className="absolute inset-0 bg-primary/10 rounded-md"
+          className="absolute inset-0 bg-blue-50 rounded-md"
           transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
         />
       )}
@@ -194,10 +194,10 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="ml-1">
               <Button 
                 onClick={() => handleNav('post-job', 'post')} 
-                className="min-h-[44px] bg-gradient-to-r from-primary to-accent hover:shadow-md transition-all font-bold relative overflow-hidden group px-4"
+                className="min-h-[44px] bg-gradient-to-r from-blue-500 to-blue-700 hover:shadow-md transition-all font-bold relative overflow-hidden group px-4"
               >
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 />
                 <Lightning weight="fill" className="mr-1.5 relative z-10" size={16} />
                 <span className="relative z-10">Post Job</span>
@@ -265,18 +265,18 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
         <DropdownMenuTrigger asChild>
           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
             <Button variant="ghost" size="icon" className="rounded-full min-w-[44px] min-h-[44px] relative hover:bg-muted/60">
-              <Avatar className="ring-2 ring-primary/20 ring-offset-1 ring-offset-background transition-all hover:ring-primary/40">
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-sm">
+              <Avatar className="ring-2 ring-blue-500/20 ring-offset-1 ring-offset-background transition-all hover:ring-blue-500/40">
+                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold text-sm">
                   {user!.fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               {user!.isPro && (
                 <motion.div 
-                  className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-accent rounded-full border-2 border-background flex items-center justify-center"
+                  className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-blue-500 rounded-full border-2 border-background flex items-center justify-center"
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
-                  <Sparkle size={8} weight="fill" className="text-primary-foreground" />
+                  <Sparkle size={8} weight="fill" className="text-white" />
                 </motion.div>
               )}
             </Button>
@@ -291,7 +291,7 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-md w-fit"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md w-fit"
                 >
                   <Sparkle size={12} weight="fill" />
                   PRO MEMBER
@@ -408,8 +408,8 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 transition={{ delay: 0.1 }}
                 className="flex items-center gap-3 p-1"
               >
-                <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background w-14 h-14">
-                  <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-lg">
+                <Avatar className="ring-2 ring-blue-500/20 ring-offset-2 ring-offset-background w-14 h-14">
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-700 text-white font-bold text-lg">
                     {user!.fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
@@ -421,7 +421,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.2 }}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-md mt-1"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md mt-1"
                     >
                       <Sparkle size={12} weight="fill" />
                       PRO
@@ -441,7 +441,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
               <Button 
                 variant="outline" 
                 onClick={() => handleNavigation('dashboard', 'dashboard')} 
-                className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
               >
                 <ChartLine className="mr-3" size={20} />
                 Dashboard
@@ -454,7 +454,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('my-jobs', 'jobs')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Briefcase className="mr-3" size={20} />
                     My Jobs
@@ -464,7 +464,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('photo-scoper', 'scoper')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Camera className="mr-3" size={20} />
                     Scope Generator
@@ -473,7 +473,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     onClick={() => handleNavigation('post-job', 'post')} 
-                    className="w-full justify-start h-12 text-base bg-gradient-to-r from-primary to-accent hover:shadow-lg"
+                    className="w-full justify-start h-12 text-base bg-gradient-to-r from-blue-500 to-blue-700 hover:shadow-lg"
                   >
                     <Lightning weight="fill" className="mr-3" size={20} />
                     Post Job
@@ -488,7 +488,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('browse-jobs', 'browse')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Hammer className="mr-3" size={20} />
                     Browse Jobs
@@ -498,7 +498,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('crm', 'crm')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Users className="mr-3" size={20} />
                     CRM
@@ -508,7 +508,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('invoices', 'invoices')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Receipt className="mr-3" size={20} />
                     Invoices
@@ -518,7 +518,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <Button 
                     variant="outline" 
                     onClick={() => handleNavigation('photo-scoper', 'scoper')} 
-                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                    className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                   >
                     <Camera className="mr-3" size={20} />
                     Scope Generator
@@ -532,7 +532,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 <Button 
                   variant="outline" 
                   onClick={() => handleNavigation('territory-map', 'territory')} 
-                  className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                 >
                   <MapPin weight="fill" className="mr-3" size={20} />
                   Territory Map
@@ -545,7 +545,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 <Button 
                   variant="outline" 
                   onClick={() => handleNavigation('revenue-dashboard', 'revenue')} 
-                  className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  className="w-full justify-start h-12 text-base hover:bg-blue-50 hover:border-blue-200"
                 >
                   <ChartLine className="mr-3" size={20} />
                   Revenue Dashboard

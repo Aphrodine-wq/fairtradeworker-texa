@@ -40,9 +40,12 @@ const JobCard = memo(function JobCard({
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""}`}>
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
+      {/* Blue accent line on hover */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
       {isFresh && (
-        <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 flex items-center gap-2">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
         </div>
@@ -52,23 +55,23 @@ const JobCard = memo(function JobCard({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3">
               <Badge 
-                variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
+                variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
                 className="text-sm font-semibold"
               >
                 {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
               </Badge>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 text-xs text-gray-500">
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
             </div>
-            <CardTitle className="text-xl leading-tight mb-2">{job.title}</CardTitle>
-            <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
+            <CardTitle className="text-xl leading-tight mb-2 text-gray-900">{job.title}</CardTitle>
+            <CardDescription className="text-sm line-clamp-2 text-gray-600">{job.description}</CardDescription>
           </div>
           {photos.length > 0 && (
             <button
               onClick={() => onViewPhotos(photos)}
-              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all flex-shrink-0 group"
+              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
             >
               <img
                 src={photos[0]}
@@ -88,18 +91,18 @@ const JobCard = memo(function JobCard({
       </CardHeader>
       <CardContent className="space-y-4 pt-0">
         {job.aiScope && (
-          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <Wrench weight="duotone" size={18} className="text-primary" />
+          <div className="glass-subtle rounded-xl p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold text-blue-600">
+              <Wrench weight="duotone" size={18} />
               <span>AI Scope</span>
             </div>
-            <p className="text-sm leading-relaxed">{job.aiScope.scope}</p>
+            <p className="text-sm leading-relaxed text-gray-700">{job.aiScope.scope}</p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <CurrencyDollar weight="duotone" size={24} className="text-primary" />
+                <CurrencyDollar weight="duotone" size={24} className="text-blue-600" />
                 <div>
-                  <div className="text-xs text-muted-foreground">Estimated</div>
-                  <div className="text-lg font-bold text-primary">
+                  <div className="text-xs text-gray-500">Estimated</div>
+                  <div className="text-lg font-bold bg-gradient-to-br from-blue-500 to-blue-600 bg-clip-text text-transparent">
                     ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
                   </div>
                 </div>
@@ -137,7 +140,7 @@ const JobCard = memo(function JobCard({
                 <button
                   key={idx}
                   onClick={() => onViewPhotos(photos)}
-                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
+                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all group"
                 >
                   <img
                     src={photo}
