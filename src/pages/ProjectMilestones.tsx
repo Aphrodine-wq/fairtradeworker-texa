@@ -26,7 +26,8 @@ import {
   Plus,
   Trash,
   Users,
-  ChartLine
+  ChartLine,
+  Receipt
 } from '@phosphor-icons/react'
 import type { Job, Milestone, User, TradeContractor, ProjectUpdate } from '@/lib/types'
 import { getMilestoneProgress } from '@/lib/milestones'
@@ -36,6 +37,7 @@ import { TradeCoordination } from '@/components/projects/TradeCoordination'
 import { ProjectUpdates } from '@/components/projects/ProjectUpdates'
 import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
 import { BudgetTracking } from '@/components/projects/BudgetTracking'
+import { ExpenseTracking } from '@/components/projects/ExpenseTracking'
 
 interface ProjectMilestonesProps {
   job: Job
@@ -46,6 +48,7 @@ interface ProjectMilestonesProps {
 export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps) {
   const [jobs, setJobs] = useKV<Job[]>('jobs', [])
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null)
+  const [selectedExpenseMilestone, setSelectedExpenseMilestone] = useState<Milestone | null>(null)
   const [notes, setNotes] = useState('')
   const [photos, setPhotos] = useState<string[]>([])
   const [disputeReason, setDisputeReason] = useState('')
@@ -121,6 +124,13 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           : j
       )
     )
+  }
+
+  const handleUpdateMilestone = (updatedMilestone: Milestone) => {
+    const updatedMilestones = milestones.map(m => 
+      m.id === updatedMilestone.id ? updatedMilestone : m
+    )
+    updateJobMilestones(updatedMilestones)
   }
   
   const getStatusIcon = (status: Milestone['status'], size = 24) => {
@@ -433,6 +443,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   onEdit={openEditDialog}
                   onDelete={handleDeleteMilestone}
                   onResolveDispute={handleResolveDispute}
+                  onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
                   userRole={user.role as 'contractor' | 'homeowner'}
                   getStatusIcon={getStatusIcon}
                   getStatusBadge={getStatusBadge}
@@ -452,6 +463,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               onRequestPayment={(m) => setSelectedMilestone(m)}
               onEdit={openEditDialog}
               onDelete={handleDeleteMilestone}
+              onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
               userRole={user.role as 'contractor' | 'homeowner'}
               getStatusIcon={getStatusIcon}
               getStatusBadge={getStatusBadge}
@@ -467,6 +479,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                 setSelectedMilestone(m)
                 setShowDisputeDialog(true)
               }}
+              onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
               userRole={user.role as 'contractor' | 'homeowner'}
               getStatusIcon={getStatusIcon}
               getStatusBadge={getStatusBadge}
@@ -477,6 +490,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
             <MilestoneList 
               milestones={paidMilestones}
               emptyMessage="No milestones paid yet"
+              onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
               userRole={user.role as 'contractor' | 'homeowner'}
               getStatusIcon={getStatusIcon}
               getStatusBadge={getStatusBadge}
@@ -488,6 +502,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               milestones={disputedMilestones}
               emptyMessage="No disputed milestones"
               onResolveDispute={handleResolveDispute}
+              onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
               userRole={user.role as 'contractor' | 'homeowner'}
               getStatusIcon={getStatusIcon}
               getStatusBadge={getStatusBadge}
@@ -773,6 +788,27 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           </div>
         </DialogContent>
       </Dialog>
+      
+      <Dialog open={!!selectedExpenseMilestone} onOpenChange={(open) => !open && setSelectedExpenseMilestone(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Expense Tracking - {selectedExpenseMilestone?.name}</DialogTitle>
+            <DialogDescription>
+              Track materials, labor, and other costs for this milestone
+            </DialogDescription>
+          </DialogHeader>
+          {selectedExpenseMilestone && (
+            <ExpenseTracking
+              milestone={selectedExpenseMilestone}
+              onUpdateMilestone={(updated) => {
+                handleUpdateMilestone(updated)
+                setSelectedExpenseMilestone(updated)
+              }}
+              canEdit={isContractor}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -785,6 +821,7 @@ interface MilestoneTimelineProps {
   onEdit?: (milestone: Milestone) => void
   onDelete?: (milestoneId: string) => void
   onResolveDispute?: (milestone: Milestone) => void
+  onViewExpenses?: (milestone: Milestone) => void
   userRole: 'contractor' | 'homeowner'
   getStatusIcon: (status: Milestone['status'], size?: number) => React.ReactElement
   getStatusBadge: (status: Milestone['status']) => React.ReactElement
@@ -798,6 +835,7 @@ function MilestoneTimeline({
   onEdit,
   onDelete,
   onResolveDispute,
+  onViewExpenses,
   userRole,
   getStatusIcon,
   getStatusBadge
@@ -887,8 +925,38 @@ function MilestoneTimeline({
                 </div>
               )}
               
+              {milestone.expenses && milestone.expenses.length > 0 && (
+                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                  <p className="text-sm font-medium text-blue-700 mb-2 flex items-center gap-2">
+                    <Receipt size={16} />
+                    Expenses Logged
+                  </p>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Total Expenses:</span>
+                      <span className="font-semibold ml-2">
+                        ${milestone.expenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Items:</span>
+                      <span className="font-semibold ml-2">{milestone.expenses.length}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex items-center justify-between gap-2 pt-4 border-t">
                 <div className="flex gap-2">
+                  <Button 
+                    size="sm"
+                    variant="outline"
+                    onClick={() => onViewExpenses?.(milestone)}
+                  >
+                    <Receipt className="mr-1" size={16} />
+                    {milestone.expenses && milestone.expenses.length > 0 ? 'View Expenses' : 'Track Expenses'}
+                  </Button>
+                  
                   {userRole === 'contractor' && milestone.status === 'pending' && (
                     <>
                       <Button 
@@ -974,6 +1042,7 @@ interface MilestoneListProps {
   onEdit?: (milestone: Milestone) => void
   onDelete?: (milestoneId: string) => void
   onResolveDispute?: (milestone: Milestone) => void
+  onViewExpenses?: (milestone: Milestone) => void
   userRole: 'contractor' | 'homeowner'
   getStatusIcon: (status: Milestone['status'], size?: number) => React.ReactElement
   getStatusBadge: (status: Milestone['status']) => React.ReactElement
@@ -988,6 +1057,7 @@ function MilestoneList({
   onEdit,
   onDelete,
   onResolveDispute,
+  onViewExpenses,
   userRole,
   getStatusIcon,
   getStatusBadge
@@ -1061,8 +1131,38 @@ function MilestoneList({
               </div>
             )}
             
+            {milestone.expenses && milestone.expenses.length > 0 && (
+              <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                <p className="text-sm font-medium text-blue-700 mb-2 flex items-center gap-2">
+                  <Receipt size={16} />
+                  Expenses Logged
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Total Expenses:</span>
+                    <span className="font-semibold ml-2">
+                      ${milestone.expenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Items:</span>
+                    <span className="font-semibold ml-2">{milestone.expenses.length}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
             <div className="flex items-center justify-between gap-2 pt-4 border-t">
               <div className="flex gap-2">
+                <Button 
+                  size="sm"
+                  variant="outline"
+                  onClick={() => onViewExpenses?.(milestone)}
+                >
+                  <Receipt className="mr-1" size={16} />
+                  {milestone.expenses && milestone.expenses.length > 0 ? 'View Expenses' : 'Track Expenses'}
+                </Button>
+                
                 {userRole === 'contractor' && milestone.status === 'pending' && (
                   <>
                     <Button 

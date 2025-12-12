@@ -93,6 +93,21 @@ export interface ScopeChange {
   approvedAt?: string
 }
 
+export interface MilestoneExpense {
+  id: string
+  milestoneId: string
+  category: 'materials' | 'labor' | 'equipment' | 'permits' | 'travel' | 'other'
+  description: string
+  amount: number
+  quantity?: number
+  unitCost?: number
+  vendor?: string
+  receiptPhoto?: string
+  date: string
+  paidBy?: string
+  notes?: string
+}
+
 export interface Milestone {
   id: string
   jobId: string
@@ -115,6 +130,7 @@ export interface Milestone {
   estimatedEndDate?: string
   actualStartDate?: string
   actualEndDate?: string
+  expenses?: MilestoneExpense[]
 }
 
 export interface TradeContractor {
