@@ -3,6 +3,7 @@ import { Lightning, TrendUp, Clock } from "@phosphor-icons/react"
 import type { Job } from "@/lib/types"
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface LiveStatsBarProps {
   jobs: Job[]
@@ -77,58 +78,64 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
       label: "Jobs Posted Today",
       value: displayJobsToday,
       icon: Lightning,
-      color: "text-primary",
-      bgColor: "bg-primary/10"
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-200"
     },
     {
       label: "Avg Bid Time",
       value: `${avgBidTime}m`,
       icon: Clock,
-      color: "text-accent",
-      bgColor: "bg-accent/10"
+      color: "text-blue-500",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-100"
     },
     {
       label: "Completed This Week",
       value: displayCompleted,
       icon: TrendUp,
-      color: "text-secondary",
-      bgColor: "bg-secondary/10"
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-200"
     }
   ]
 
   return (
-    <div className="bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 border-y border-border">
-      <div className="container mx-auto px-4 md:px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stats.map((stat, idx) => {
-            const Icon = stat.icon
-            return (
-              <motion.div 
-                key={stat.label} 
-                className="flex items-center gap-4"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05, duration: 0.2 }}
-              >
-                <div className={`p-3 rounded-lg ${stat.bgColor} ${stat.color}`}>
-                  <Icon size={28} weight="bold" />
-                </div>
-                <div>
-                  <motion.div 
-                    className="text-2xl font-heading font-bold"
-                    key={stat.value}
-                    initial={{ scale: 1.1 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    {stat.value}
-                  </motion.div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </div>
-              </motion.div>
-            )
-          })}
-        </div>
+    <div className="glass-subtle rounded-2xl mx-auto max-w-2xl my-8">
+      <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
+        {stats.map((stat, idx) => {
+          const Icon = stat.icon
+          return (
+            <motion.div 
+              key={stat.label} 
+              className={cn(
+                "flex-1 px-6 py-3 rounded-xl bg-white/50 border flex items-center gap-3",
+                stat.borderColor
+              )}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.08, duration: 0.3 }}
+            >
+              <div className={cn("p-2 rounded-lg", stat.bgColor, stat.color)}>
+                <Icon size={24} weight="bold" />
+              </div>
+              <div>
+                <motion.div 
+                  className={cn(
+                    "text-2xl font-bold bg-gradient-to-br from-blue-500 to-blue-600 bg-clip-text text-transparent"
+                  )}
+                  key={stat.value}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  {stat.value}
+                </motion.div>
+                <div className="text-sm text-gray-500">{stat.label}</div>
+              </div>
+            </motion.div>
+          )
+        })}
       </div>
     </div>
   )

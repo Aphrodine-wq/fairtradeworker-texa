@@ -87,21 +87,12 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""} ${isUrgent && !isExpired ? "border-orange-500 border-2" : ""}`}>
-      {isUrgent && !isExpired && (
-        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Timer weight="fill" size={20} className="animate-pulse" />
-            <span className="font-semibold text-sm">URGENT - Need it today!</span>
-          </div>
-          <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
-            <Timer size={16} />
-            <span className="font-mono text-sm font-bold">{timeRemaining}</span>
-          </div>
-        </div>
-      )}
-      {isFresh && !isUrgent && (
-        <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 flex items-center gap-2">
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
+      {/* Blue accent line on hover */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      
+      {isFresh && (
+        <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 flex items-center gap-2">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
         </div>
@@ -111,12 +102,12 @@ const JobCard = memo(function JobCard({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge 
-                variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
+                variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
                 className="text-sm font-semibold"
               >
                 {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
               </Badge>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 text-xs text-gray-500">
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
@@ -135,20 +126,13 @@ const JobCard = memo(function JobCard({
                 </Badge>
               )}
             </div>
-          )}
-          <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
-            <Images weight="bold" size={14} className="inline mr-1" />
-            {photos.length}
+            <CardTitle className="text-xl leading-tight mb-2 text-gray-900">{job.title}</CardTitle>
+            <CardDescription className="text-sm line-clamp-2 text-gray-600">{job.description}</CardDescription>
           </div>
-        </button>
-      )}
-
-      <CardHeader className="pb-3 flex-grow">
-        <div className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <Badge 
-              variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
-              className="text-sm font-semibold"
+          {photos.length > 0 && (
+            <button
+              onClick={() => onViewPhotos(photos)}
+              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
             >
               {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
             </Badge>
@@ -164,18 +148,20 @@ const JobCard = memo(function JobCard({
       
       <CardContent className="space-y-3 pt-0 flex-grow">
         {job.aiScope && (
-          <div className="bg-muted/50 rounded-lg p-3 space-y-2">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <Wrench weight="duotone" size={16} className="text-primary" />
+          <div className="glass-subtle rounded-xl p-4 space-y-3">
+            <div className="flex items-center gap-2 text-sm font-semibold text-blue-600">
+              <Wrench weight="duotone" size={18} />
               <span>AI Scope</span>
             </div>
-            <p className="text-xs leading-relaxed line-clamp-2">{job.aiScope.scope}</p>
-            <div className="flex items-center gap-2">
-              <CurrencyDollar weight="duotone" size={20} className="text-primary" />
-              <div>
-                <div className="text-xs text-muted-foreground">Estimated</div>
-                <div className="text-base font-bold text-primary">
-                  ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
+            <p className="text-sm leading-relaxed text-gray-700">{job.aiScope.scope}</p>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <CurrencyDollar weight="duotone" size={24} className="text-blue-600" />
+                <div>
+                  <div className="text-xs text-gray-500">Estimated</div>
+                  <div className="text-lg font-bold bg-gradient-to-br from-blue-500 to-blue-600 bg-clip-text text-transparent">
+                    ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
+                  </div>
                 </div>
               </div>
             </div>
@@ -204,13 +190,48 @@ const JobCard = memo(function JobCard({
         )}
       </CardContent>
 
-      {/* Bid Now button at bottom */}
-      <CardContent className="pt-0 pb-4">
-        <Button onClick={() => onPlaceBid(job)} className="w-full font-semibold" size="lg">
-          Bid Now • $0 Fee
-        </Button>
-        <div className="text-xs text-center text-muted-foreground mt-2">
-          Posted {new Date(job.createdAt).toLocaleDateString()}
+        {photos.length > 1 && (
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Images weight="duotone" size={18} className="text-muted-foreground" />
+              <span className="text-sm font-semibold text-muted-foreground">
+                {photos.length} Photos Available
+              </span>
+            </div>
+            <div className="grid grid-cols-5 gap-2">
+              {photos.slice(0, 5).map((photo, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => onViewPhotos(photos)}
+                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all group"
+                >
+                  <img
+                    src={photo}
+                    alt={`Photo ${idx + 1}`}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                    loading="lazy"
+                  />
+                </button>
+              ))}
+            </div>
+            {photos.length > 5 && (
+              <button
+                onClick={() => onViewPhotos(photos)}
+                className="text-xs text-primary hover:underline mt-2"
+              >
+                + {photos.length - 5} more photos
+              </button>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center justify-between pt-4 border-t">
+          <div className="text-sm text-muted-foreground">
+            Posted {new Date(job.createdAt).toLocaleDateString()}
+          </div>
+          <Button onClick={() => onPlaceBid(job)} size="lg" className="font-semibold">
+            Place Bid • $0 Fee
+          </Button>
         </div>
       </CardContent>
     </Card>
