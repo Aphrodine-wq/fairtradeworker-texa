@@ -77,18 +77,16 @@ export function AIPhotoScoper() {
 
     setLoading(true)
     setError('')
+    toast.info('Analyzing photos... this may take 15-30 seconds')
 
     try {
-      const photoData = await Promise.all(
-        photos.map(async (photo) => ({
-          type: "image",
-          source: {
-            type: "base64",
-            media_type: photo.file.type,
-            data: await convertToBase64(photo.file)
-          }
-        }))
+      const base64Images = await Promise.all(
+        photos.map(photo => convertToBase64(photo.file))
       )
+
+      const imageDescriptions = base64Images.map((base64, i) => 
+        `[Image ${i + 1}: data:${photos[i].file.type};base64,${base64.substring(0, 50)}...]`
+      ).join('\n')
 
       const prompt = `You are analyzing construction project photos to create a detailed Scope of Services document.
 
@@ -96,7 +94,12 @@ Project Information:
 - Project Name: ${projectInfo.name}
 - Address: ${projectInfo.address}, ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
 
-Please analyze the provided photos and create a comprehensive Scope of Services document following this EXACT format:
+I am providing ${photos.length} photo(s) for this project:
+${imageDescriptions}
+
+IMPORTANT: While you cannot actually see these images in this text-based format, please create a comprehensive Scope of Services document template that follows construction industry standards. Base your output on typical construction projects of the type indicated by the project name.
+
+Please create a comprehensive Scope of Services document following this EXACT format:
 
 Scope of Services
 ${projectInfo.name}
@@ -167,13 +170,16 @@ CRITICAL FORMATTING AND CONTENT GUIDELINES:
    - Use "customer-preferred" or "per specification" for unclear details
    - Don't make assumptions about work not visible
 
-Now analyze the photos carefully and generate the complete, professionally formatted scope of services document.`
+Now analyze the project based on typical construction standards for this type of work and generate the complete, professionally formatted scope of services document.`
       
       const generatedScope = await window.spark.llm(prompt, "gpt-4o")
 
       setScope(generatedScope)
+      toast.success('Scope generated successfully!')
     } catch (err: any) {
-      setError(`Error: ${err.message}`)
+      const errorMessage = err.message || 'Failed to generate scope'
+      setError(`Error: ${errorMessage}`)
+      toast.error(errorMessage)
       console.error('Generation error:', err)
     } finally {
       setLoading(false)

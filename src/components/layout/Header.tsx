@@ -1,5 +1,5 @@
 import { memo, useState, useEffect } from "react"
-import { Wrench, House, Hammer, MapPin, SignOut, Users, Receipt, ChartLine, Camera, List, Briefcase, Lightning, Sparkle, X } from "@phosphor-icons/react"
+import { Wrench, House, Hammer, MapPin, SignOut, Users, Receipt, ChartLine, Camera, List, Briefcase, Lightning, Sparkle, X, CaretDown } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -32,6 +32,7 @@ interface HeaderProps {
 const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
   const isMobile = useIsMobile()
   const [scrolled, setScrolled] = useState(false)
+  const [activeTab, setActiveTab] = useState<string>('home')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,70 +48,74 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300",
+        "fixed top-0 z-50 w-full transition-all duration-200",
         scrolled 
-          ? "bg-background/95 backdrop-blur-xl border-b border-border/50 shadow-lg" 
-          : "bg-background/80 backdrop-blur-md border-b border-border/30"
+          ? "bg-background/98 backdrop-blur-2xl border-b border-border/60 shadow-2xl shadow-primary/5" 
+          : "bg-background/85 backdrop-blur-xl border-b border-border/40"
       )}
     >
       <div className="container mx-auto px-4 md:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between">
           <motion.button 
-            onClick={() => onNavigate('home')}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-3 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg group"
+            onClick={() => {
+              onNavigate('home')
+              setActiveTab('home')
+            }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xl group relative overflow-hidden px-2 py-1"
             aria-label="Go to home"
           >
             <motion.div 
-              className="relative flex items-center justify-center w-11 h-11 bg-gradient-to-br from-primary to-accent rounded-xl shadow-md group-hover:shadow-xl transition-shadow duration-200"
-              whileHover={{ rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.3 }}
+              className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity"
+            />
+            <motion.div 
+              className="relative flex items-center justify-center w-9 h-9 bg-gradient-to-br from-primary via-primary to-accent rounded-lg shadow-sm group-hover:shadow-md transition-all"
+              whileHover={{ rotate: [0, -8, 8, 0] }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
             >
-              <Wrench className="text-primary-foreground" size={26} weight="bold" />
-              <motion.div
-                className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-              />
+              <Wrench className="text-primary-foreground" size={20} weight="bold" />
             </motion.div>
-            <div className="hidden sm:flex flex-col items-start">
-              <span className="font-bold text-lg leading-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            <div className="hidden sm:flex flex-col items-start relative">
+              <span className="font-heading font-bold text-base leading-none bg-gradient-to-r from-primary via-foreground to-primary bg-clip-text text-transparent">
                 FairTradeWorker
               </span>
-              <span className="text-xs text-muted-foreground leading-tight font-medium">
-                Texas
+              <span className="text-[10px] text-muted-foreground/80 leading-none font-semibold tracking-wide mt-0.5">
+                TEXAS
               </span>
             </div>
           </motion.button>
 
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-1.5">
             {!user ? (
               <>
                 <ThemeToggle />
                 <Button 
                   variant="ghost" 
                   onClick={() => onNavigate('login')} 
-                  className="min-h-[44px] hover:bg-accent/10"
+                  className="min-h-[44px] hover:bg-muted/60 font-semibold"
                 >
                   Log In
                 </Button>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button 
                     onClick={() => onNavigate('signup')} 
-                    className="min-h-[44px] bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-shadow"
+                    className="min-h-[44px] bg-gradient-to-r from-primary via-primary to-accent hover:shadow-md hover:shadow-primary/30 transition-all font-bold relative overflow-hidden group"
                   >
-                    <Sparkle weight="fill" className="mr-2" size={18} />
-                    Sign Up
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    />
+                    <Sparkle weight="fill" className="mr-2 relative z-10" size={16} />
+                    <span className="relative z-10">Sign Up</span>
                   </Button>
                 </motion.div>
               </>
             ) : (
               <>
                 {isMobile ? (
-                  <MobileNav user={user} onNavigate={onNavigate} onLogout={onLogout} />
+                  <MobileNav user={user} onNavigate={onNavigate} onLogout={onLogout} activeTab={activeTab} setActiveTab={setActiveTab} />
                 ) : (
-                  <DesktopNav user={user} onNavigate={onNavigate} onLogout={onLogout} />
+                  <DesktopNav user={user} onNavigate={onNavigate} onLogout={onLogout} activeTab={activeTab} setActiveTab={setActiveTab} />
                 )}
               </>
             )}
@@ -121,18 +126,30 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
   )
 }
 
-const NavButton = memo(({ onClick, children, variant = "ghost", className = "", icon }: any) => (
-  <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }}>
+interface NavProps extends HeaderProps {
+  activeTab: string
+  setActiveTab: (tab: string) => void
+}
+
+const NavButton = memo(({ onClick, children, variant = "ghost", className = "", icon, isActive = false }: any) => (
+  <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.96 }}>
     <Button 
       variant={variant}
       onClick={onClick} 
-      className={cn("min-h-[44px] relative overflow-hidden group", className)}
+      className={cn(
+        "min-h-[44px] relative overflow-hidden group transition-all font-semibold px-3",
+        isActive && "bg-primary/10 text-primary",
+        className
+      )}
     >
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity"
-        layoutId="navHover"
-      />
-      <span className="relative flex items-center gap-2">
+      {isActive && (
+        <motion.div
+          layoutId="activeTab"
+          className="absolute inset-0 bg-primary/10 rounded-md"
+          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+        />
+      )}
+      <span className="relative flex items-center gap-1.5">
         {icon && icon}
         {children}
       </span>
@@ -142,118 +159,124 @@ const NavButton = memo(({ onClick, children, variant = "ghost", className = "", 
 
 NavButton.displayName = 'NavButton'
 
-const DesktopNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }: NavProps) => {
+  const handleNav = (page: string, tab: string) => {
+    setActiveTab(tab)
+    onNavigate(page)
+  }
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-0.5">
         {user!.role === 'homeowner' && (
           <>
-            <NavButton onClick={() => onNavigate('dashboard')}>
-              <ChartLine size={18} weight={hoveredItem === 'dashboard' ? 'fill' : 'regular'} 
-                onMouseEnter={() => setHoveredItem('dashboard')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('dashboard', 'dashboard')} 
+              isActive={activeTab === 'dashboard'}
+              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
+            >
               Dashboard
             </NavButton>
-            <NavButton onClick={() => onNavigate('my-jobs')}>
-              <Briefcase size={18} weight={hoveredItem === 'jobs' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('jobs')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('my-jobs', 'jobs')} 
+              isActive={activeTab === 'jobs'}
+              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
+            >
               My Jobs
             </NavButton>
-            <NavButton onClick={() => onNavigate('photo-scoper')}>
-              <Camera size={18} weight={hoveredItem === 'scoper' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('scoper')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('photo-scoper', 'scoper')} 
+              isActive={activeTab === 'scoper'}
+              icon={<Camera size={16} weight={activeTab === 'scoper' ? 'fill' : 'regular'} />}
+            >
               Scoper
             </NavButton>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="ml-1">
               <Button 
-                onClick={() => onNavigate('post-job')} 
-                className="min-h-[44px] bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all"
+                onClick={() => handleNav('post-job', 'post')} 
+                className="min-h-[44px] bg-gradient-to-r from-primary to-accent hover:shadow-md transition-all font-bold relative overflow-hidden group px-4"
               >
-                <Lightning weight="fill" className="mr-2" size={18} />
-                Post Job
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-accent to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
+                <Lightning weight="fill" className="mr-1.5 relative z-10" size={16} />
+                <span className="relative z-10">Post Job</span>
               </Button>
             </motion.div>
           </>
         )}
         {user!.role === 'contractor' && (
           <>
-            <NavButton onClick={() => onNavigate('browse-jobs')}>
-              <Hammer size={18} weight={hoveredItem === 'browse' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('browse')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
-              Browse Jobs
+            <NavButton 
+              onClick={() => handleNav('browse-jobs', 'browse')} 
+              isActive={activeTab === 'browse'}
+              icon={<Hammer size={16} weight={activeTab === 'browse' ? 'fill' : 'regular'} />}
+            >
+              Browse
             </NavButton>
-            <NavButton onClick={() => onNavigate('dashboard')}>
-              <ChartLine size={18} weight={hoveredItem === 'dashboard' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('dashboard')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('dashboard', 'dashboard')} 
+              isActive={activeTab === 'dashboard'}
+              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
+            >
               Dashboard
             </NavButton>
-            <NavButton onClick={() => onNavigate('crm')}>
-              <Users size={18} weight={hoveredItem === 'crm' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('crm')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('crm', 'crm')} 
+              isActive={activeTab === 'crm'}
+              icon={<Users size={16} weight={activeTab === 'crm' ? 'fill' : 'regular'} />}
+            >
               CRM
             </NavButton>
-            <NavButton onClick={() => onNavigate('photo-scoper')}>
-              <Camera size={18} weight={hoveredItem === 'scoper' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('scoper')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('photo-scoper', 'scoper')} 
+              isActive={activeTab === 'scoper'}
+              icon={<Camera size={16} weight={activeTab === 'scoper' ? 'fill' : 'regular'} />}
+            >
               Scoper
             </NavButton>
           </>
         )}
         {user!.role === 'operator' && (
           <>
-            <NavButton onClick={() => onNavigate('dashboard')}>
-              <ChartLine size={18} weight={hoveredItem === 'dashboard' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('dashboard')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('dashboard', 'dashboard')} 
+              isActive={activeTab === 'dashboard'}
+              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
+            >
               Dashboard
             </NavButton>
-            <NavButton onClick={() => onNavigate('territory-map')}>
-              <MapPin size={18} weight={hoveredItem === 'territory' ? 'fill' : 'regular'}
-                onMouseEnter={() => setHoveredItem('territory')}
-                onMouseLeave={() => setHoveredItem(null)}
-              />
+            <NavButton 
+              onClick={() => handleNav('territory-map', 'territory')} 
+              isActive={activeTab === 'territory'}
+              icon={<MapPin size={16} weight={activeTab === 'territory' ? 'fill' : 'regular'} />}
+            >
               Territories
             </NavButton>
           </>
         )}
       </div>
       
-      <div className="h-6 w-px bg-border/50 mx-2" />
+      <div className="h-5 w-px bg-border/50 mx-1.5" />
       
       <ThemeToggle />
       
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button variant="ghost" size="icon" className="rounded-full min-w-[44px] min-h-[44px] relative">
-              <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-all hover:ring-primary/40">
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold">
+          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <Button variant="ghost" size="icon" className="rounded-full min-w-[44px] min-h-[44px] relative hover:bg-muted/60">
+              <Avatar className="ring-2 ring-primary/20 ring-offset-1 ring-offset-background transition-all hover:ring-primary/40">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold text-sm">
                   {user!.fullName.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               {user!.isPro && (
                 <motion.div 
-                  className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full border-2 border-background flex items-center justify-center"
+                  className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-accent rounded-full border-2 border-background flex items-center justify-center"
                   animate={{ rotate: [0, 360] }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
-                  <Sparkle size={10} weight="fill" className="text-primary-foreground" />
+                  <Sparkle size={8} weight="fill" className="text-primary-foreground" />
                 </motion.div>
               )}
             </Button>
@@ -334,11 +357,12 @@ const DesktopNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
 
 DesktopNav.displayName = 'DesktopNav'
 
-const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
+const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }: NavProps) => {
   const [open, setOpen] = useState(false)
 
-  const handleNavigation = (page: string) => {
+  const handleNavigation = (page: string, tab: string) => {
     setOpen(false)
+    setActiveTab(tab)
     onNavigate(page)
   }
 
@@ -416,7 +440,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
             <motion.div whileTap={{ scale: 0.97 }}>
               <Button 
                 variant="outline" 
-                onClick={() => handleNavigation('dashboard')} 
+                onClick={() => handleNavigation('dashboard', 'dashboard')} 
                 className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
               >
                 <ChartLine className="mr-3" size={20} />
@@ -429,7 +453,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('my-jobs')} 
+                    onClick={() => handleNavigation('my-jobs', 'jobs')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Briefcase className="mr-3" size={20} />
@@ -439,7 +463,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('photo-scoper')} 
+                    onClick={() => handleNavigation('photo-scoper', 'scoper')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Camera className="mr-3" size={20} />
@@ -448,7 +472,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 </motion.div>
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
-                    onClick={() => handleNavigation('post-job')} 
+                    onClick={() => handleNavigation('post-job', 'post')} 
                     className="w-full justify-start h-12 text-base bg-gradient-to-r from-primary to-accent hover:shadow-lg"
                   >
                     <Lightning weight="fill" className="mr-3" size={20} />
@@ -463,7 +487,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('browse-jobs')} 
+                    onClick={() => handleNavigation('browse-jobs', 'browse')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Hammer className="mr-3" size={20} />
@@ -473,7 +497,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('crm')} 
+                    onClick={() => handleNavigation('crm', 'crm')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Users className="mr-3" size={20} />
@@ -483,7 +507,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('invoices')} 
+                    onClick={() => handleNavigation('invoices', 'invoices')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Receipt className="mr-3" size={20} />
@@ -493,7 +517,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
                 <motion.div whileTap={{ scale: 0.97 }}>
                   <Button 
                     variant="outline" 
-                    onClick={() => handleNavigation('photo-scoper')} 
+                    onClick={() => handleNavigation('photo-scoper', 'scoper')} 
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Camera className="mr-3" size={20} />
@@ -507,7 +531,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
               <motion.div whileTap={{ scale: 0.97 }}>
                 <Button 
                   variant="outline" 
-                  onClick={() => handleNavigation('territory-map')} 
+                  onClick={() => handleNavigation('territory-map', 'territory')} 
                   className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                 >
                   <MapPin weight="fill" className="mr-3" size={20} />
@@ -520,7 +544,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout }: HeaderProps) => {
               <motion.div whileTap={{ scale: 0.97 }}>
                 <Button 
                   variant="outline" 
-                  onClick={() => handleNavigation('revenue-dashboard')} 
+                  onClick={() => handleNavigation('revenue-dashboard', 'revenue')} 
                   className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                 >
                   <ChartLine className="mr-3" size={20} />
