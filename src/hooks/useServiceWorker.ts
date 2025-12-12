@@ -109,10 +109,6 @@ export function useOfflineQueue() {
   };
 
   useEffect(() => {
-    queueRef.current = queue;
-  }, [queue]);
-
-  useEffect(() => {
     loadQueue();
   }, []);
 
@@ -134,13 +130,20 @@ export function useOfflineQueue() {
   const addToQueue = async (item: Omit<typeof queue[0], 'id' | 'timestamp'>) => {
     const generateId = () => {
       try {
-        if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-          return crypto.randomUUID();
+        if (typeof crypto !== 'undefined') {
+          if (typeof crypto.randomUUID === 'function') {
+            return crypto.randomUUID();
+          }
+          if (typeof crypto.getRandomValues === 'function') {
+            const buffer = new Uint32Array(2);
+            crypto.getRandomValues(buffer);
+            return `${Date.now()}-${buffer[0].toString(16)}-${buffer[1].toString(16)}`;
+          }
         }
       } catch {
         // Ignore and fall back
       }
-      return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
     };
 
     const newItem = {
