@@ -168,7 +168,7 @@ CRITICAL FORMATTING AND CONTENT GUIDELINES:
    - Don't make assumptions about work not visible
 
 Now analyze the photos carefully and generate the complete, professionally formatted scope of services document.`
-
+      
       const generatedScope = await window.spark.llm(prompt, "gpt-4o")
 
       setScope(generatedScope)
