@@ -22,6 +22,7 @@ import { generateReferralCode } from "@/lib/viral"
 import { generateMilestonesFromTemplate } from "@/lib/milestones"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
+import { v4 as uuidv4 } from "uuid"
 
 interface JobPosterProps {
   user: User
@@ -155,8 +156,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
         : undefined,
       isUrgent,
       urgentDeadline: isUrgent ? new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() : undefined,
-      bundledTasks: bundledTasks.length > 0 ? bundledTasks.map((task, idx) => ({
-        id: `task-${Date.now()}-${idx}`,
+      bundledTasks: bundledTasks.length > 0 ? bundledTasks.map((task) => ({
+        id: uuidv4(),
         ...task
       })) : undefined,
       questions: []

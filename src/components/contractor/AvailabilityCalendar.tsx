@@ -33,7 +33,11 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
     }
 
     const slotDate = new Date(newSlot.date)
-    if (slotDate < new Date()) {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    slotDate.setHours(0, 0, 0, 0)
+    
+    if (slotDate < today) {
       toast.error("Cannot add slots in the past")
       return
     }
