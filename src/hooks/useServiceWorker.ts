@@ -123,7 +123,6 @@ export function useOfflineQueue() {
   };
 
   const addToQueue = async (item: Omit<typeof queue[0], 'id' | 'timestamp'>) => {
-    let dropped = 0;
     const newItem = {
       ...item,
       body: trimBody(item.body),
@@ -131,22 +130,22 @@ export function useOfflineQueue() {
       timestamp: Date.now()
     };
 
-    let nextQueue: typeof queue = [];
+    const update = { nextQueue: [] as typeof queue, dropped: 0 };
     setQueue((current) => {
       const merged = [...current, newItem];
       const trimmed = merged.length > MAX_QUEUE_ITEMS
-        ? merged.slice(merged.length - MAX_QUEUE_ITEMS)
+        ? merged.slice(-MAX_QUEUE_ITEMS)
         : merged;
-      dropped = merged.length - trimmed.length;
-      nextQueue = trimmed;
+      update.dropped = merged.length - trimmed.length;
+      update.nextQueue = trimmed;
       return trimmed;
     });
 
-    if (dropped > 0) {
-      console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
+    if (update.dropped > 0) {
+      console.warn(`[OfflineQueue] Dropped ${update.dropped} queued request(s) to stay within memory limits`);
     }
 
-    await window.spark.kv.set('offline-queue', nextQueue);
+    await window.spark.kv.set('offline-queue', update.nextQueue);
   };
 
   const removeFromQueue = async (id: string) => {
