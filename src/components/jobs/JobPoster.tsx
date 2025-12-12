@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
+import { PhotoUploader } from "@/components/ui/PhotoUploader"
 import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
@@ -14,6 +15,7 @@ import { JobPostingTimer } from "./JobPostingTimer"
 import { MajorProjectScopeBuilder, type ProjectScope } from "./MajorProjectScopeBuilder"
 import { TierBadge } from "./TierBadge"
 import type { Job, User, ReferralCode, JobTier } from "@/lib/types"
+import type { UploadedPhoto } from "@/hooks/usePhotoUpload"
 import { calculateJobSize } from "@/lib/types"
 import { generateReferralCode } from "@/lib/viral"
 import { generateMilestonesFromTemplate } from "@/lib/milestones"
@@ -38,6 +40,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [uploadedPhotos, setUploadedPhotos] = useState<UploadedPhoto[]>([])
   const [aiResult, setAiResult] = useState<any>(null)
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [referralCodes, setReferralCodes] = useKV<ReferralCode[]>("referral-codes", [])
@@ -72,6 +75,14 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     if (inputMethod === 'text' && !description) {
       toast.error("Please enter a job description")
       return
+    }
+
+    if (inputMethod === 'photos') {
+      const completedPhotos = uploadedPhotos.filter(p => p.status === 'complete')
+      if (completedPhotos.length === 0) {
+        toast.error("Please upload at least one photo")
+        return
+      }
     }
 
     if (inputMethod === 'audio' && !file) {
@@ -559,17 +570,42 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
               </div>
             )}
 
-            {(inputMethod === 'photos' || inputMethod === 'audio') && (
+            {inputMethod === 'photos' && (
               <>
                 <div className="space-y-2">
-                  <Label>Upload {inputMethod === 'photos' ? 'Photos' : 'Audio'}</Label>
+                  <Label>Upload Photos</Label>
+                  <PhotoUploader
+                    maxPhotos={10}
+                    maxSize={10 * 1024 * 1024}
+                    onPhotosChange={setUploadedPhotos}
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <Button variant="outline" onClick={() => setStep('select')}>
+                    Back
+                  </Button>
+                  <Button 
+                    onClick={handleProcess} 
+                    className="flex-1"
+                    disabled={uploadedPhotos.filter(p => p.status === 'complete').length === 0}
+                  >
+                    Generate AI Scope
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {inputMethod === 'audio' && (
+              <>
+                <div className="space-y-2">
+                  <Label>Upload Audio</Label>
                   <div className="flex gap-2">
                     <Input
                       ref={fileInputRef}
                       id="file"
                       type="file"
-                      accept={inputMethod === 'photos' ? 'image/*' : 'audio/*'}
-                      multiple={inputMethod === 'photos'}
+                      accept="audio/*"
                       onChange={handleFileChange}
                       className="flex-1"
                     />
