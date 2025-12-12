@@ -1,4 +1,5 @@
 import { beforeEach, afterEach, vi } from 'vitest'
+import '@testing-library/jest-dom'
 
 const kvStore = new Map<string, any>()
 

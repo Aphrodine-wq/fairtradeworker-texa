@@ -190,7 +190,6 @@ const JobCard = memo(function JobCard({
             </div>
           </div>
         )}
-      </CardContent>
 
         {photos.length > 1 && (
           <div>
