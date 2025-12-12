@@ -64,8 +64,17 @@ const CompanyRevenueDashboard = lazy(() =>
       throw err
     })
 )
+const ProjectMilestones = lazy(() => 
+  import("@/pages/ProjectMilestones")
+    .then(m => ({ default: m.ProjectMilestones }))
+    .catch(err => {
+      console.error("Failed to load ProjectMilestones:", err)
+      throw err
+    })
+)
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones'
+type NavigationState = { page: Page; jobId?: string }
 
 function LoadingFallback() {
   return (
@@ -80,6 +89,7 @@ function LoadingFallback() {
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
+  const [selectedJobId, setSelectedJobId] = useState<string | undefined>()
   const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
   const [isDemoMode, setIsDemoMode] = useKV<boolean>("is-demo-mode", false)
   const [preselectedRole, setPreselectedRole] = useState<UserRole | undefined>()
@@ -102,9 +112,12 @@ function App() {
     return () => { mounted = false }
   }, [])
 
-  const handleNavigate = (page: string, role?: string) => {
+  const handleNavigate = (page: string, role?: string, jobId?: string) => {
     if (role) {
       setPreselectedRole(role as UserRole)
+    }
+    if (jobId) {
+      setSelectedJobId(jobId)
     }
     setCurrentPage(page as Page)
     window.scrollTo(0, 0)
@@ -156,7 +169,7 @@ function App() {
         return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'my-jobs':
         return currentUser?.role === 'homeowner'
-          ? <MyJobs user={currentUser} />
+          ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
         return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
@@ -180,6 +193,19 @@ function App() {
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'revenue-dashboard':
         return currentUser ? <Suspense fallback={<LoadingFallback />}><CompanyRevenueDashboard user={currentUser} /></Suspense> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'project-milestones':
+        if (!currentUser || !selectedJobId) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        const selectedJob = (jobs || []).find(j => j.id === selectedJobId)
+        if (!selectedJob) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProjectMilestones 
+              job={selectedJob} 
+              user={currentUser} 
+              onBack={() => setCurrentPage('my-jobs')}
+            />
+          </Suspense>
+        )
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }

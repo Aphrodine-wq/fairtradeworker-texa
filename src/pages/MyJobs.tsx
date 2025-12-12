@@ -17,17 +17,21 @@ import {
   Clock,
   X,
   CreditCard,
-  Package
+  Package,
+  ChartBar
 } from "@phosphor-icons/react"
 import { Lightbox } from "@/components/ui/Lightbox"
 import type { Job, Bid, User as UserType, Invoice } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
+import { getMilestoneProgress } from "@/lib/milestones"
+import { Progress } from "@/components/ui/progress"
 
 interface MyJobsProps {
   user: UserType
+  onNavigate?: (page: string, role?: string, jobId?: string) => void
 }
 
-export function MyJobs({ user }: MyJobsProps) {
+export function MyJobs({ user, onNavigate }: MyJobsProps) {
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
@@ -208,23 +212,54 @@ export function MyJobs({ user }: MyJobsProps) {
             </div>
           </div>
         )}
+        
+        {job.milestones && job.milestones.length > 0 && (
+          <div className="p-3 bg-muted/50 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <Label className="text-sm text-muted-foreground flex items-center gap-1">
+                <ChartBar size={14} weight="fill" />
+                Project Progress
+              </Label>
+              <span className="text-xs font-medium">
+                {getMilestoneProgress(job.milestones).percentage}%
+              </span>
+            </div>
+            <Progress value={getMilestoneProgress(job.milestones).percentage} className="h-2 mb-2" />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{getMilestoneProgress(job.milestones).completed} of {job.milestones.length} milestones</span>
+              <span>${getMilestoneProgress(job.milestones).amountPaid.toLocaleString()} paid</span>
+            </div>
+          </div>
+        )}
 
-        <div className="flex items-center justify-between pt-2 border-t">
+        <div className="flex items-center justify-between pt-2 border-t gap-2">
           <div className="flex items-center gap-2">
             <ChatCircle weight="fill" className="text-primary" size={18} />
             <span className="text-sm font-medium">{job.bids.length} bid{job.bids.length !== 1 ? 's' : ''}</span>
           </div>
-          {job.status === 'open' && (
-            <Button onClick={() => handleViewBids(job)} size="sm">
-              View Bids
-            </Button>
-          )}
-          {job.status === 'in-progress' && (
-            <Button onClick={() => handleMarkComplete(job)} size="sm">
-              <CheckCircle weight="fill" className="mr-2" size={16} />
-              Mark Complete
-            </Button>
-          )}
+          <div className="flex gap-2">
+            {job.tier === 'MAJOR_PROJECT' && job.milestones && job.milestones.length > 0 && onNavigate && (
+              <Button 
+                onClick={() => onNavigate('project-milestones', undefined, job.id)} 
+                size="sm"
+                variant="outline"
+              >
+                <ChartBar weight="fill" className="mr-2" size={16} />
+                Milestones
+              </Button>
+            )}
+            {job.status === 'open' && (
+              <Button onClick={() => handleViewBids(job)} size="sm">
+                View Bids
+              </Button>
+            )}
+            {job.status === 'in-progress' && (
+              <Button onClick={() => handleMarkComplete(job)} size="sm">
+                <CheckCircle weight="fill" className="mr-2" size={16} />
+                Mark Complete
+              </Button>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
