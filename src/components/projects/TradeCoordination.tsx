@@ -232,8 +232,8 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
               <h3 className="text-lg font-semibold mb-2">No Contractors/Subcontractors Yet</h3>
               <p className="text-muted-foreground mb-4">
                 {isHomeowner
-                  ? 'Trade contractors will appear here once assigned'
-                  : 'Add trade contractors to coordinate multiple specialists on this project'}
+                  ? 'Contractors/Subcontractors will appear here once assigned'
+                  : 'Add contractors/subcontractors to coordinate multiple specialists on this project'}
               </p>
               {!isHomeowner && (
                 <Button onClick={() => setShowAddDialog(true)}>
@@ -351,7 +351,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
           <DialogHeader>
             <DialogTitle>{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
             <DialogDescription>
-              {editingTrade ? 'Update trade contractor details' : 'Add a new trade contractor to this project'}
+              {editingTrade ? 'Update contractor/subcontractor details' : 'Add a new contractor/subcontractor to this project'}
             </DialogDescription>
           </DialogHeader>
 
