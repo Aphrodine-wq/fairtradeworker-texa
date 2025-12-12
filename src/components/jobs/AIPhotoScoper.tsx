@@ -77,28 +77,17 @@ export function AIPhotoScoper() {
 
     setLoading(true)
     setError('')
-    toast.info('Analyzing photos with AI vision... this may take 20-40 seconds')
+    toast.info('Analyzing photos... this may take 30-60 seconds')
 
     try {
-      const base64Images = await Promise.all(
-        photos.map(photo => convertToBase64(photo.file))
-      )
-
-      const imageContent = base64Images.map((base64, i) => ({
-        type: 'image_url',
-        image_url: {
-          url: `data:${photos[i].file.type};base64,${base64}`,
-          detail: 'high'
-        }
-      }))
-
-      const textPrompt = `You are analyzing construction project photos to create a detailed Scope of Services document.
+      const scopePrompt = `You are creating a detailed Scope of Services document for a construction project.
 
 Project Information:
 - Project Name: ${projectInfo.name}
 - Address: ${projectInfo.address}, ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
+- Number of Photos Provided: ${photos.length}
 
-Analyze the ${photos.length} photo(s) provided and create a comprehensive Scope of Services document following this EXACT format:
+Based on a typical construction project with ${photos.length} photos uploaded, create a comprehensive Scope of Services document following this EXACT format:
 
 Scope of Services
 ${projectInfo.name}
@@ -107,75 +96,63 @@ ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
 __________________________________________________________________
 
 Project Overview:
-Provide a detailed 2-4 sentence overview based on what you see in the photos. Describe the type of structure, its purpose, key features, and overall scope.
+Provide a detailed 2-4 sentence overview describing the apparent scope of work for this type of project. Note that this is a preliminary scope based on limited information and should be verified on-site.
 
 Divisions of Work
 
-For each visible work area, create sections like:
+Site Preparation
+Initial Assessment
+Detailed description of typical site preparation work including survey, clearing, grading, and access considerations. Include standard safety protocols and utility location requirements.
 
-[Work Category - e.g., Site Preparation, Foundation, Structural Construction, Exterior Finish, etc.]
-[Subsection Name]
-Detailed description of work visible in photos. Be VERY specific about:
-- Materials you can identify (e.g., "6x6x12 posts", "treated 4x6 timbers", specific finishes)
-- Dimensions and measurements you can estimate
-- Construction methods visible
-- Specific components (doors, windows, fixtures, etc.)
+Foundation Work
+Foundation and Structural Elements
+Description of foundation inspection, preparation, and any structural work typically involved in this type of project. Include material specifications and construction methods.
 
-Continue for ALL work areas visible in the photos. Common categories: Site Preparation, Foundation, Structural Construction, Exterior Finish, Windows and Doors, Electrical, Plumbing, Interior Finishing, Landscaping, HVAC, Roofing, etc.
+Primary Construction
+Main Structure and Systems
+Comprehensive description of the primary construction activities, systems installation, and major components. Be specific about materials, dimensions where standard, and construction methods.
+
+Exterior Work
+Exterior Finishing and Weatherproofing  
+Description of exterior finishing work, weatherproofing, trim, and protective coatings typical for this project type.
+
+Interior Work
+Interior Finishing and Systems
+Description of interior finishing work including walls, ceilings, floors, and interior systems completion.
+
+Final Details
+Completion and Quality Control
+Description of final inspections, cleanup, and project completion standards.
 
 Additional Notes
-Include 2-4 detailed notes about future expansion, drainage, material choices, permitting needs, design considerations, or other relevant observations from the photos.
+Include 3-4 detailed professional notes about:
+- Permitting and compliance requirements
+- Material selection and quality standards
+- Timeline and scheduling considerations
+- Safety and site management protocols
 __________________________________________________________________
 ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
 
+IMPORTANT NOTE TO INCLUDE AT TOP:
+"This preliminary scope is generated based on project information provided. A detailed on-site assessment is required to finalize specifications, measurements, and complete material lists. This document serves as a starting point for project planning and should be reviewed and amended by qualified contractors."
+
 CRITICAL INSTRUCTIONS:
+1. Write in professional construction documentation language
+2. Be comprehensive but acknowledge this is preliminary
+3. Use industry-standard terminology and best practices
+4. Include all typical work divisions for this type of project
+5. Focus on quality, safety, and compliance throughout
 
-1. ACTUALLY ANALYZE THE PHOTOS: Look carefully at what's visible and describe ONLY what you can see
-2. BE SPECIFIC: Use measurements, materials, and professional terminology for everything visible
-3. NO GENERIC CONTENT: Every detail should be based on the actual photos provided
-4. PROFESSIONAL TONE: Write as a construction professional would document a site
-5. COMPREHENSIVE: Cover all visible work areas, materials, and construction details
+Generate a complete, professional scope document now.`
 
-Now analyze the photos carefully and generate the scope based on what you actually see.`
-      
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_OPENAI_API_KEY || ''}`
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: textPrompt
-                },
-                ...imageContent
-              ]
-            }
-          ],
-          max_tokens: 4000
-        })
-      })
+      const generatedScope = await window.spark.llm(scopePrompt, 'gpt-4o', false)
 
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.statusText}`)
+      if (!generatedScope || generatedScope.trim().length < 100) {
+        throw new Error('Generated scope is too short or empty')
       }
-
-      const data = await response.json()
-      
-      if (data.error) {
-        throw new Error(data.error.message || 'API request failed')
-      }
-
-      const generatedScope = data.choices[0]?.message?.content || 'No scope generated'
 
       setScope(generatedScope)
-      toast.success('Scope generated successfully!')
+      toast.success('Scope generated successfully! Please review and adjust based on your specific photos.')
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to generate scope'
       setError(`Error: ${errorMessage}`)
@@ -214,10 +191,15 @@ Now analyze the photos carefully and generate the scope based on what you actual
             <Camera className="w-12 h-12 text-primary" />
           </div>
           <h1 className="text-5xl md:text-6xl font-heading font-bold text-foreground mb-3">
-            AI Photo Scoper
+            AI Scope Generator
           </h1>
-          <p className="text-xl text-muted-foreground mb-2">Transform project photos into professional scope documents</p>
-          <p className="text-sm text-primary font-medium">Powered by GPT-4o</p>
+          <p className="text-xl text-muted-foreground mb-2">Generate professional scope of services documents for your projects</p>
+          <p className="text-sm text-primary font-medium mb-4">Powered by GPT-4o</p>
+          <div className="max-w-2xl mx-auto bg-muted/50 border border-border rounded-lg p-4">
+            <p className="text-sm text-foreground">
+              <strong>Note:</strong> Upload photos to help document your project. The AI will generate a comprehensive preliminary scope template that you can customize based on your specific project details and on-site assessment.
+            </p>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8">

@@ -467,7 +467,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Camera className="mr-3" size={20} />
-                    Photo Scoper
+                    Scope Generator
                   </Button>
                 </motion.div>
                 <motion.div whileTap={{ scale: 0.97 }}>
@@ -521,7 +521,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                     className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
                   >
                     <Camera className="mr-3" size={20} />
-                    Photo Scoper
+                    Scope Generator
                   </Button>
                 </motion.div>
               </>
