@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 const MAX_QUEUE_ITEMS = 50;
 const MAX_BODY_LENGTH = 50_000;
 const HEX_RADIX = 16;
+let queueIdCounter = 0;
 
 const trimBody = (body?: string) => {
   if (!body) return undefined;
@@ -23,10 +24,11 @@ const generateQueueId = () => {
           return `${Date.now()}-${buffer[0].toString(HEX_RADIX)}-${buffer[1].toString(HEX_RADIX)}`;
         }
       }
-    } catch {
-      // Ignore and fall back
-    }
-  return `${Date.now()}-${Math.random().toString(HEX_RADIX).slice(2)}-${Math.random().toString(HEX_RADIX).slice(2)}`;
+  } catch {
+    // Ignore and fall back
+  }
+  queueIdCounter = (queueIdCounter + 1) % Number.MAX_SAFE_INTEGER;
+  return `${Date.now()}-${queueIdCounter}-${Math.random().toString(HEX_RADIX).slice(2)}-${Math.random().toString(HEX_RADIX).slice(2)}`;
 };
 
 export function useServiceWorker() {
