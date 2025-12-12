@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, memo, useMemo, useCallback } from "react"
+import { useState, useEffect, lazy, Suspense, memo, useMemo, useCallback, Component, ReactNode } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
@@ -10,54 +10,109 @@ import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 
-const HomePage = lazy(() => import("@/pages/Home").then(m => ({ default: m.HomePage })))
-const LoginPage = lazy(() => import("@/pages/Login").then(m => ({ default: m.LoginPage })))
-const SignupPage = lazy(() => import("@/pages/Signup").then(m => ({ default: m.SignupPage })))
-const MyJobs = lazy(() => import("@/pages/MyJobs").then(m => ({ default: m.MyJobs })))
-const JobPoster = lazy(() => import("@/components/jobs/JobPoster").then(m => ({ default: m.JobPoster })))
-const BrowseJobs = lazy(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs })))
+const retryImport = <T,>(importFn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
+  return importFn().catch((error) => {
+    if (retries === 0) throw error
+    return new Promise<T>((resolve) => {
+      setTimeout(() => {
+        resolve(retryImport(importFn, retries - 1, delay))
+      }, delay)
+    })
+  })
+}
 
-const AutomationRunner = lazy(() => 
+const HomePage = lazy(() => retryImport(() => import("@/pages/Home").then(m => ({ default: m.HomePage }))))
+const LoginPage = lazy(() => retryImport(() => import("@/pages/Login").then(m => ({ default: m.LoginPage }))))
+const SignupPage = lazy(() => retryImport(() => import("@/pages/Signup").then(m => ({ default: m.SignupPage }))))
+const MyJobs = lazy(() => retryImport(() => import("@/pages/MyJobs").then(m => ({ default: m.MyJobs }))))
+const JobPoster = lazy(() => retryImport(() => import("@/components/jobs/JobPoster").then(m => ({ default: m.JobPoster }))))
+const BrowseJobs = lazy(() => retryImport(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs }))))
+
+const AutomationRunner = lazy(() => retryImport(() =>
   import("@/components/contractor/AutomationRunner")
     .then(m => ({ default: m.AutomationRunner }))
-)
-const HomeownerDashboard = lazy(() => 
+))
+const HomeownerDashboard = lazy(() => retryImport(() =>
   import("@/pages/HomeownerDashboard").then(m => ({ default: m.HomeownerDashboard }))
-)
-const ContractorDashboardNew = lazy(() => 
+))
+const ContractorDashboardNew = lazy(() => retryImport(() =>
   import("@/pages/ContractorDashboardNew").then(m => ({ default: m.ContractorDashboardNew }))
-)
-const OperatorDashboard = lazy(() => 
+))
+const OperatorDashboard = lazy(() => retryImport(() =>
   import("@/pages/OperatorDashboard").then(m => ({ default: m.OperatorDashboard }))
-)
-const ContractorDashboard = lazy(() => 
+))
+const ContractorDashboard = lazy(() => retryImport(() =>
   import("@/components/contractor/ContractorDashboard").then(m => ({ default: m.ContractorDashboard }))
-)
-const EnhancedCRM = lazy(() => 
+))
+const EnhancedCRM = lazy(() => retryImport(() =>
   import("@/components/contractor/EnhancedCRM").then(m => ({ default: m.EnhancedCRM }))
-)
-const InvoiceManager = lazy(() => 
+))
+const InvoiceManager = lazy(() => retryImport(() =>
   import("@/components/contractor/InvoiceManager").then(m => ({ default: m.InvoiceManager }))
-)
-const ProUpgrade = lazy(() => 
+))
+const ProUpgrade = lazy(() => retryImport(() =>
   import("@/components/contractor/ProUpgrade").then(m => ({ default: m.ProUpgrade }))
-)
-const TerritoryMap = lazy(() => 
+))
+const TerritoryMap = lazy(() => retryImport(() =>
   import("@/components/territory/TerritoryMap").then(m => ({ default: m.TerritoryMap }))
-)
-const CompanyRevenueDashboard = lazy(() => 
+))
+const CompanyRevenueDashboard = lazy(() => retryImport(() =>
   import("@/components/contractor/CompanyRevenueDashboard").then(m => ({ default: m.CompanyRevenueDashboard }))
-)
-const ProjectMilestones = lazy(() => 
+))
+const ProjectMilestones = lazy(() => retryImport(() =>
   import("@/pages/ProjectMilestones").then(m => ({ default: m.ProjectMilestones }))
-)
-const PhotoScoperPage = lazy(() => 
+))
+const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
-)
+))
 
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper'
 type NavigationState = { page: Page; jobId?: string }
+
+class ErrorBoundary extends Component<
+  { children: ReactNode; onReset: () => void },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: ReactNode; onReset: () => void }) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error }
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('ErrorBoundary caught error:', error, errorInfo)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
+          <div className="text-center max-w-md">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Something went wrong</h2>
+            <p className="text-muted-foreground mb-6">
+              {this.state.error?.message || 'An error occurred while loading this page'}
+            </p>
+            <Button 
+              onClick={() => {
+                this.setState({ hasError: false, error: null })
+                this.props.onReset()
+              }}
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      )
+    }
+
+    return this.props.children
+  }
+}
 
 function LoadingFallback() {
   return (
@@ -230,9 +285,11 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Suspense fallback={null}>
-        <AutomationRunner user={currentUser ?? null} />
-      </Suspense>
+      <ErrorBoundary onReset={() => setCurrentPage('home')}>
+        <Suspense fallback={null}>
+          <AutomationRunner user={currentUser ?? null} />
+        </Suspense>
+      </ErrorBoundary>
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
       {isDemoMode && currentUser && (
         <DemoModeBanner 
@@ -247,9 +304,11 @@ function App() {
             <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
           </div>
         )}
-        <Suspense fallback={<LoadingFallback />}>
-          {renderPage()}
-        </Suspense>
+        <ErrorBoundary onReset={() => setCurrentPage('home')}>
+          <Suspense fallback={<LoadingFallback />}>
+            {renderPage()}
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
       <Toaster position="top-center" />
