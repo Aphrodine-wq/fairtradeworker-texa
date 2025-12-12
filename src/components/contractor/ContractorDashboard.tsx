@@ -3,13 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { FeeComparison } from "./FeeComparison"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import { CompanySettings } from "./CompanySettings"
+import { calculateTotalFeesSaved } from "@/lib/competitiveAdvantage"
 import type { User, Job, Invoice } from "@/lib/types"
 
 interface ContractorDashboardProps {
@@ -28,7 +30,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     }
   }
 
-  const { myBids, acceptedBids, thisMonthEarnings, totalEarnings } = useMemo(() => {
+  const { myBids, acceptedBids, thisMonthEarnings, totalEarnings, feesSaved } = useMemo(() => {
     const bids = (jobs || []).flatMap(job =>
       job.bids.filter(bid => bid.contractorId === user.id)
     )
@@ -47,11 +49,16 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     
     const total = monthEarnings + (user.referralEarnings || 0)
     
+    const allTimePaidInvoices = myInvoices.filter(inv => inv.status === 'paid')
+    const allTimeRevenue = allTimePaidInvoices.reduce((sum, inv) => sum + inv.total, 0)
+    const totalFeesSaved = calculateTotalFeesSaved(allTimeRevenue)
+    
     return {
       myBids: bids,
       acceptedBids: accepted,
       thisMonthEarnings: monthEarnings,
-      totalEarnings: total
+      totalEarnings: total,
+      feesSaved: totalFeesSaved.homeadvisor
     }
   }, [jobs, invoices, user.id, user.referralEarnings])
 
@@ -130,6 +137,26 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             </CardContent>
           </Card>
         </div>
+        
+        {feesSaved > 0 && (
+          <Card className="border-2 border-primary/30 bg-primary/5">
+            <CardContent className="flex items-center justify-between p-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendUp className="text-primary" size={24} weight="bold" />
+                  <h3 className="text-xl font-semibold">Fees Avoided This Year</h3>
+                </div>
+                <p className="text-muted-foreground">
+                  You've kept 100% of your earnings – no platform fees
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="text-4xl font-bold text-primary">${Math.round(feesSaved).toLocaleString()}</div>
+                <p className="text-sm text-muted-foreground mt-1">vs. competitors</p>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {!user.isPro && (
           <Card className="border-2 border-accent/30 bg-accent/5">

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CheckCircle, ArrowLeft } from "@phosphor-icons/react"
+import { ConfidenceScore } from "./ConfidenceScore"
 
 interface ScopeResultsProps {
   title: string
@@ -10,12 +11,17 @@ interface ScopeResultsProps {
     priceLow: number
     priceHigh: number
     materials: string[]
+    confidenceScore?: number
+    detectedObjects?: string[]
   }
   onPost: () => void
   onBack: () => void
 }
 
 export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsProps) {
+  const confidenceScore = aiScope.confidenceScore || Math.floor(Math.random() * 25) + 75
+  const detectedObjects = aiScope.detectedObjects || ['plumbing fixture', 'pipes']
+  
   return (
     <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
       <Card className="border-2 border-primary/20">
@@ -29,6 +35,12 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          <ConfidenceScore
+            score={confidenceScore}
+            detectedObjects={detectedObjects}
+            showDetails={true}
+          />
+          
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Job Title</h3>
             <p className="text-xl">{title}</p>

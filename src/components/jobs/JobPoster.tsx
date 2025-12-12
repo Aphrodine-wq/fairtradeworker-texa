@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -10,6 +10,7 @@ import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
 import { VideoUploader } from "./VideoUploader"
+import { JobPostingTimer } from "./JobPostingTimer"
 import type { Job, User, ReferralCode } from "@/lib/types"
 import type { VideoAnalysis } from "@/lib/video/types"
 import { calculateJobSize } from "@/lib/types"
@@ -36,7 +37,15 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [referralCodes, setReferralCodes] = useKV<ReferralCode[]>("referral-codes", [])
   const [currentReferralCode, setCurrentReferralCode] = useState<ReferralCode | null>(null)
+  const [postingStartTime, setPostingStartTime] = useState<number>(0)
+  const [postingEndTime, setPostingEndTime] = useState<number>(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (step === 'select' && postingStartTime === 0) {
+      setPostingStartTime(Date.now())
+    }
+  }, [step, postingStartTime])
 
   const handleMethodSelect = (method: InputMethod) => {
     setInputMethod(method)
@@ -98,16 +107,30 @@ Job title: ${title || 'Untitled job'}
   }
 
   const handlePostJob = () => {
+    const endTime = Date.now()
+    setPostingEndTime(endTime)
+    const postedInSeconds = Math.round((endTime - postingStartTime) / 1000)
+    
+    const confidenceScore = Math.floor(Math.random() * 25) + 75
+    const detectedObjects = videoAnalysis
+      ? videoAnalysis.objects.slice(0, 4).map(o => o.label)
+      : ['plumbing fixture', 'pipes']
+    
     const newJob: Job = {
       id: `job-${Date.now()}`,
       homeownerId: user.id,
       title,
       description: description || aiResult.scope,
       mediaType: inputMethod === 'text' || inputMethod === null ? undefined : inputMethod,
-      aiScope: aiResult,
+      aiScope: {
+        ...aiResult,
+        confidenceScore,
+        detectedObjects,
+      },
       size: calculateJobSize(aiResult.priceHigh),
       status: 'open',
       createdAt: new Date().toISOString(),
+      postedInSeconds,
       bids: []
     }
 
@@ -142,6 +165,14 @@ Job title: ${title || 'Untitled job'}
             </p>
           </div>
           
+          {postingEndTime > 0 && (
+            <JobPostingTimer
+              startTime={postingStartTime}
+              isComplete={true}
+              finalTime={Math.round((postingEndTime - postingStartTime) / 1000)}
+            />
+          )}
+          
           <ReferralCodeCard
             code={currentReferralCode.code}
             userName={user.fullName}
@@ -161,6 +192,8 @@ Job title: ${title || 'Untitled job'}
               setAiResult(null)
               setInputMethod(null)
               setCurrentReferralCode(null)
+              setPostingStartTime(Date.now())
+              setPostingEndTime(0)
             }}>
               Post Another Job
             </Button>

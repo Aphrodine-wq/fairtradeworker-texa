@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { BidIntelligence } from "@/components/contractor/BidIntelligence"
+import { LightningBadge } from "./LightningBadge"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images, Funnel } from "@phosphor-icons/react"
@@ -249,6 +251,11 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       return
     }
 
+    const jobTime = new Date(selectedJob.createdAt).getTime()
+    const bidTime = Date.now()
+    const responseTimeMinutes = Math.round((bidTime - jobTime) / 1000 / 60)
+    const isLightning = responseTimeMinutes <= 10
+    
     const newBid: Bid = {
       id: `bid-${Date.now()}`,
       jobId: selectedJob.id,
@@ -257,7 +264,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       amount,
       message: bidMessage,
       status: 'pending',
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      responseTimeMinutes,
+      isLightningBid: isLightning
     }
 
     setJobs((currentJobs) => 
@@ -268,7 +277,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       )
     )
 
-    toast.success("Bid submitted successfully!")
+    if (isLightning && selectedJob.bids.length < 3) {
+      toast.success(`⚡ Lightning bid! You responded in ${responseTimeMinutes} minutes!`)
+    } else {
+      toast.success("Bid submitted successfully!")
+    }
+    
     setDialogOpen(false)
     setSelectedJob(null)
   }
@@ -332,13 +346,23 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Submit Your Bid</DialogTitle>
             <DialogDescription>
               {selectedJob?.title}
             </DialogDescription>
           </DialogHeader>
+          
+          {selectedJob && (
+            <BidIntelligence
+              jobCategory={selectedJob.title}
+              jobPriceLow={selectedJob.aiScope.priceLow}
+              jobPriceHigh={selectedJob.aiScope.priceHigh}
+              contractorWinRate={user.winRate}
+            />
+          )}
+          
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="bidAmount">Bid Amount ($)</Label>

@@ -22,6 +22,9 @@ export interface User {
   companyPhone?: string
   companyEmail?: string
   taxId?: string
+  averageResponseTimeMinutes?: number
+  winRate?: number
+  feesAvoided?: number
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
@@ -39,12 +42,18 @@ export interface Job {
     priceLow: number
     priceHigh: number
     materials: string[]
+    confidenceScore?: number
+    detectedObjects?: string[]
   }
   size: JobSize
   status: 'open' | 'in-progress' | 'completed' | 'cancelled'
   territoryId?: number
   createdAt: string
+  postedInSeconds?: number
   bids: Bid[]
+  scopeChanges?: ScopeChange[]
+  beforePhotos?: string[]
+  afterPhotos?: string[]
 }
 
 export interface Bid {
@@ -56,6 +65,20 @@ export interface Bid {
   message: string
   status: 'pending' | 'accepted' | 'rejected'
   createdAt: string
+  responseTimeMinutes?: number
+  isLightningBid?: boolean
+}
+
+export interface ScopeChange {
+  id: string
+  jobId: string
+  discoveredAt: string
+  description: string
+  photos: string[]
+  voiceNote?: string
+  additionalCost: number
+  status: 'pending' | 'approved' | 'rejected'
+  approvedAt?: string
 }
 
 export interface InvoiceLineItem {

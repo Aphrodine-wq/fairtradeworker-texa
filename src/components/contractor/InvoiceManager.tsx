@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { FeeComparison } from "./FeeComparison"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon, FloppyDisk } from "@phosphor-icons/react"
@@ -365,6 +366,13 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                           )}
                         </div>
                       </div>
+                      
+                      {invoice.status === 'paid' && (
+                        <div className="mt-4">
+                          <FeeComparison amount={invoice.total} variant="compact" />
+                        </div>
+                      )}
+                      
                       <div className="mt-4 space-y-2">
                         {invoice.useCompanyLogo === false && (
                           <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded flex items-center gap-2">
