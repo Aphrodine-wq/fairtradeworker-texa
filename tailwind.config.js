@@ -16,12 +16,24 @@ const defaultTheme = {
   container: {
     center: true,
     padding: "2rem",
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1400px",
+    },
   },
   extend: {
     screens: {
-      coarse: { raw: "(pointer: coarse)" },
-      fine: { raw: "(pointer: fine)" },
-      pwa: { raw: "(display-mode: standalone)" },
+      // Standard breakpoints only - raw media queries moved to CSS for iOS compatibility
+      xs: "475px",
+      // iOS device-specific breakpoints
+      "iphone-se": "375px",
+      "iphone": "390px",
+      "iphone-plus": "428px",
+      "ipad": "768px",
+      "ipad-pro": "1024px",
     },
     colors: {
       neutral: {

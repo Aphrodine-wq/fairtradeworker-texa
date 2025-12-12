@@ -7,6 +7,7 @@ import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
 import { useKV } from "@github/spark/hooks"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
+import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
@@ -137,6 +138,9 @@ function App() {
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
+  
+  // Initialize iOS optimizations
+  useIOSOptimizations()
 
   useEffect(() => {
     let mounted = true
@@ -285,11 +289,13 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ErrorBoundary onReset={() => setCurrentPage('home')}>
-        <Suspense fallback={null}>
-          <AutomationRunner user={currentUser ?? null} />
-        </Suspense>
-      </ErrorBoundary>
+      {currentUser?.isPro && (
+        <ErrorBoundary onReset={() => setCurrentPage('home')}>
+          <Suspense fallback={null}>
+            <AutomationRunner user={currentUser} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
       {isDemoMode && currentUser && (
         <DemoModeBanner 

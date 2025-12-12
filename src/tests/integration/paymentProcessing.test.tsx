@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { waitFor } from '@testing-library/react'
-import type { Job, Milestone, User, Bid } from '@/lib/types'
+import type { Job, Milestone, User, Bid, ScopeChange } from '@/lib/types'
 import { calculatePaymentBreakdown, calculatePlatformFee } from '@/lib/stripe'
 
 const mockStripe = {
@@ -521,6 +521,22 @@ describe('Payment Processing Integration Tests', () => {
     })
 
     it('should process payment for change order', async () => {
+      // First create a scope change
+      const jobs = await window.spark.kv.get<Job[]>('jobs')
+      const job = jobs?.[0]
+      const scopeChange: ScopeChange & { paidAt?: string; paymentIntentId?: string } = {
+        id: 'change-2',
+        jobId: job?.id || 'job-test-1',
+        discoveredAt: new Date().toISOString(),
+        description: 'Additional electrical work needed',
+        photos: ['electrical1.jpg'],
+        additionalCost: 650,
+        status: 'approved',
+        approvedAt: new Date().toISOString(),
+      }
+      
+      await window.spark.kv.set('scope-changes', [scopeChange])
+
       const additionalAmount = 650
       const breakdown = calculatePaymentBreakdown(additionalAmount, 'MAJOR_PROJECT')
 
