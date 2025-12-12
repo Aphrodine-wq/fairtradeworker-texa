@@ -136,7 +136,7 @@ const NavButton = memo(({ onClick, children, variant = "ghost", className = "", 
     <Button 
       variant={variant}
       onClick={onClick} 
-      className={
+      className={cn(
         "min-h-[44px] relative overflow-hidden group transition-all font-semibold px-3",
         isActive && "bg-blue-50 text-blue-600",
         className
