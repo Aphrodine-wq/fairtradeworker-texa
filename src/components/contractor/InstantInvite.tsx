@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { EnvelopeSimple, DeviceMobile, PaperPlaneRight } from "@phosphor-icons/react"
 import { toast } from "sonner"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
 interface InstantInviteProps {

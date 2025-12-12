@@ -5,7 +5,7 @@ import { Users, Calendar, Kanban, TrendUp } from "@phosphor-icons/react"
 import { CRMDashboard } from "./CRMDashboard"
 import { CRMKanban } from "./CRMKanban"
 import { FollowUpSequences } from "./FollowUpSequences"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
 interface EnhancedCRMProps {

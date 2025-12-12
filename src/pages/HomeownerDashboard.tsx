@@ -1,4 +1,4 @@
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"

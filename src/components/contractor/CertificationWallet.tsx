@@ -1,5 +1,5 @@
 import { useState, useEffect, memo } from "react"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"

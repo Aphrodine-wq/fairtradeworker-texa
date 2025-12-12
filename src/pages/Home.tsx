@@ -1,7 +1,7 @@
 import { House, Hammer, MapTrifold, Play } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"

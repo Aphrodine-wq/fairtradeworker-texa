@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Plus, Calendar, EnvelopeSimple, DeviceMobile, Trash, Play, Pause } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import type { User, FollowUpSequence, FollowUpStep } from "@/lib/types"

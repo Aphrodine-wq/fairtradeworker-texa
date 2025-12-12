@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { 
   checkAndSendFollowUps, 
