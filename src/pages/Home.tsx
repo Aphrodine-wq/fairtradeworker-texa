@@ -27,7 +27,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
-              Zero-fee Texas home repairs.
+              Zero-fee home services marketplace.
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
               AI scopes in 60 seconds. Contractors keep 100%.

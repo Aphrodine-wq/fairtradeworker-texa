@@ -1,6 +1,6 @@
 {
-  "name": "FairTradeWorker Texas",
-  "short_name": "FTW Texas",
+  "name": "FairTradeWorker",
+  "short_name": "FTW",
   "description": "Professional Home Services Marketplace - Zero fees for contractors",
   "start_url": "/",
   "display": "standalone",

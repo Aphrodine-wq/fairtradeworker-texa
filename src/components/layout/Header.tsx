@@ -81,7 +81,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
                 FairTradeWorker
               </span>
               <span className="text-[10px] text-muted-foreground/80 leading-none font-semibold tracking-wide mt-0.5">
-                TEXAS
+                HOME SERVICES
               </span>
             </div>
           </motion.button>

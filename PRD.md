@@ -1,6 +1,6 @@
-# FairTradeWorker Texas - Product Requirements Document
+# FairTradeWorker - Product Requirements Document
 
-A zero-fee Texas home repairs marketplace where AI scopes jobs in seconds, homeowners post work effortlessly, and contractors keep 100% of their earnings.
+A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners post work effortlessly, and contractors keep 100% of their earnings.
 
 ## 🚀 Scale-Faster Playbook Implementation
 

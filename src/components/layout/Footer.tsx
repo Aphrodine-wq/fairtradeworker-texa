@@ -10,7 +10,7 @@ export function Footer() {
             <a href="#" className="hover:text-foreground transition-colors">Terms</a>
           </div>
           <p className="text-sm text-muted-foreground text-center md:text-right">
-            © 2025 FairTradeWorker – Texas Beta
+            © 2025 FairTradeWorker
           </p>
         </div>
       </div>

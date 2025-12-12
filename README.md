@@ -1,6 +1,6 @@
-# 🟢 FairTradeWorker Texas – Scale-Faster Edition
+# 🟢 FairTradeWorker – Scale-Faster Edition
 
-Zero-fee marketplace for Texas home services with viral growth mechanics built in.
+Zero-fee marketplace for home services with viral growth mechanics built in.
 
 ## 🚀 Scale-Faster Playbook Features
 
@@ -239,7 +239,7 @@ Demo data includes:
 - 12 sample jobs across all size categories
 - 25+ bids from various contractors
 - 8 invoices in different states
-- 254 Texas counties (6 pre-claimed)
+- Sample territories available for claiming
 
 ---
 
@@ -288,6 +288,6 @@ Currently uses a 2-second simulation. Future integration will connect to:
 
 ---
 
-Built with ❤️ for Texas contractors and homeowners.
+Built with ❤️ for contractors and homeowners everywhere.
 
 **Scale-Faster Playbook Implementation**: This platform includes 10 viral growth mechanics designed to achieve 0→1,000 jobs/day in 120 days through referral loops, contractor invites, speed metrics, and fresh job urgency.
