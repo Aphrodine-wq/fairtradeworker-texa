@@ -141,7 +141,11 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     })
   }
 
-  const JobCard = ({ job }: { job: Job }) => (
+  const JobCard = ({ job }: { job: Job }) => {
+    // Find the accepted contractor for completed jobs
+    const acceptedBid = job.bids.find(bid => bid.status === 'accepted')
+    
+    return (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader>
         <div className="flex items-start justify-between">
@@ -164,6 +168,31 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Re-Hire Prompt for Completed Jobs */}
+        {job.status === 'completed' && acceptedBid && (
+          <Card className="border-2 border-accent/30 bg-accent/5">
+            <CardContent className="pt-6">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h4 className="font-semibold text-sm mb-1">Need {acceptedBid.contractorName} again?</h4>
+                  <p className="text-xs text-muted-foreground">
+                    Tap to request another quote from the same contractor
+                  </p>
+                </div>
+                <Button 
+                  size="sm"
+                  onClick={() => {
+                    toast.success(`Request sent to ${acceptedBid.contractorName}!`)
+                    // In a real app, this would create a direct quote request
+                  }}
+                >
+                  Re-Hire
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+        
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">Estimated Price:</span>
           <span className="font-semibold">
@@ -263,7 +292,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         </div>
       </CardContent>
     </Card>
-  )
+  )}
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">

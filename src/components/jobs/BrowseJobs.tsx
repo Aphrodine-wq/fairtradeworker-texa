@@ -1,4 +1,4 @@
-import { useState, useMemo, memo, useCallback } from "react"
+import { useState, useMemo, memo, useCallback, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
@@ -13,8 +14,8 @@ import { LightningBadge } from "./LightningBadge"
 import { DriveTimeWarning } from "./DriveTimeWarning"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel } from "@phosphor-icons/react"
-import type { Job, Bid, User, JobSize } from "@/lib/types"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, Eye, Users } from "@phosphor-icons/react"
+import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
 interface BrowseJobsProps {
@@ -39,6 +40,20 @@ const JobCard = memo(function JobCard({
   const photos = useMemo(() => job.photos || [], [job.photos])
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
+  // Calculate recent bids (last 5 minutes)
+  const recentBidsCount = useMemo(() => {
+    const fiveMinutesAgo = Date.now() - (5 * 60 * 1000)
+    return job.bids.filter(bid => {
+      const bidTime = new Date(bid.createdAt).getTime()
+      return bidTime >= fiveMinutesAgo
+    }).length
+  }, [job.bids])
+
+  // Get viewing contractors count
+  const viewingCount = useMemo(() => {
+    return job.viewingContractors?.length || 0
+  }, [job.viewingContractors])
+
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""}`}>
       {isFresh && (
@@ -50,7 +65,7 @@ const JobCard = memo(function JobCard({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge 
                 variant={job.size === 'small' ? 'default' : job.size === 'medium' ? 'secondary' : 'destructive'}
                 className="text-sm font-semibold"
@@ -61,6 +76,20 @@ const JobCard = memo(function JobCard({
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
+              
+              {/* Social Proof Indicators */}
+              {viewingCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 animate-pulse">
+                  <Eye size={12} className="mr-1" weight="duotone" />
+                  {viewingCount} viewing
+                </Badge>
+              )}
+              {recentBidsCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800 animate-pulse">
+                  <Users size={12} className="mr-1" weight="duotone" />
+                  {recentBidsCount} {recentBidsCount === 1 ? 'bid' : 'bids'} in 5 min
+                </Badge>
+              )}
             </div>
             <CardTitle className="text-xl leading-tight mb-2">{job.title}</CardTitle>
             <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
@@ -182,6 +211,62 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
+  const [bidTemplates, setBidTemplates] = useKV<BidTemplate[]>('bid-templates', [])
+  const [saveAsTemplate, setSaveAsTemplate] = useState(false)
+  const [templateName, setTemplateName] = useState("")
+
+  // Track contractor viewing jobs
+  useEffect(() => {
+    if (user.role === 'contractor' && jobs && jobs.length > 0) {
+      const timeout = setTimeout(() => {
+        setJobs((currentJobs) => 
+          (currentJobs || []).map(job => {
+            if (job.status === 'open') {
+              const viewers = job.viewingContractors || []
+              const now = new Date().toISOString()
+              
+              // Remove this contractor if already viewing
+              const filteredViewers = viewers.filter(id => id !== user.id)
+              
+              // Add them back (this refreshes their presence)
+              return {
+                ...job,
+                viewingContractors: [...filteredViewers, user.id],
+                lastViewUpdate: now
+              }
+            }
+            return job
+          })
+        )
+      }, 2000) // Delay to avoid tracking on quick page loads
+
+      return () => clearTimeout(timeout)
+    }
+  }, [user.id, user.role, setJobs, jobs?.length])
+
+  // Clean up old viewing contractors (remove those who haven't updated in 2 minutes)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const twoMinutesAgo = Date.now() - (2 * 60 * 1000)
+      setJobs((currentJobs) =>
+        (currentJobs || []).map(job => {
+          if (job.viewingContractors && job.viewingContractors.length > 0) {
+            const lastUpdate = job.lastViewUpdate ? new Date(job.lastViewUpdate).getTime() : 0
+            if (lastUpdate < twoMinutesAgo) {
+              return {
+                ...job,
+                viewingContractors: [],
+                lastViewUpdate: undefined
+              }
+            }
+          }
+          return job
+        })
+      )
+    }, 30000) // Check every 30 seconds
+
+    return () => clearInterval(interval)
+  }, [setJobs])
 
   const myScheduledJobs = useMemo(() => {
     return (jobs || []).filter(job =>
@@ -235,6 +320,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setSelectedJob(job)
     setBidAmount("")
     setBidMessage("")
+    setSaveAsTemplate(false)
+    setTemplateName("")
     setDialogOpen(true)
   }, [])
 
@@ -243,6 +330,14 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setLightboxIndex(0)
     setLightboxOpen(true)
   }, [])
+
+  const handleTemplateSelect = useCallback((templateId: string) => {
+    const template = bidTemplates.find(t => t.id === templateId)
+    if (template) {
+      setBidMessage(template.message)
+      toast.success(`Template "${template.name}" loaded`)
+    }
+  }, [bidTemplates])
 
   const handleSubmitBid = () => {
     if (!selectedJob) return
@@ -256,6 +351,20 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     if (!bidMessage.trim()) {
       toast.error("Please add a message with your bid")
       return
+    }
+
+    // Save as template if requested
+    if (saveAsTemplate && templateName.trim()) {
+      const newTemplate: BidTemplate = {
+        id: `template-${Date.now()}`,
+        contractorId: user.id,
+        name: templateName.trim(),
+        message: bidMessage,
+        useCount: 0,
+        createdAt: new Date().toISOString()
+      }
+      setBidTemplates((current) => [...(current || []), newTemplate])
+      toast.success(`Template "${templateName}" saved!`)
     }
 
     const jobTime = new Date(selectedJob.createdAt).getTime()
@@ -381,6 +490,27 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           )}
           
           <div className="space-y-4 py-4">
+            {/* Bid Templates Dropdown */}
+            {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
+              <div className="space-y-2">
+                <Label>Load Template (Optional)</Label>
+                <Select onValueChange={handleTemplateSelect}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose a saved template..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {bidTemplates
+                      .filter(t => t.contractorId === user.id)
+                      .map((template) => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="bidAmount">Bid Amount ($)</Label>
               <Input
@@ -406,6 +536,33 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 rows={4}
               />
             </div>
+
+            {/* Save as Template Option */}
+            {user.role === 'contractor' && bidMessage.trim() && (
+              <div className="space-y-3 p-3 rounded-lg border bg-muted/30">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="saveTemplate"
+                    checked={saveAsTemplate}
+                    onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                    className="rounded"
+                  />
+                  <Label htmlFor="saveTemplate" className="text-sm font-normal cursor-pointer">
+                    Save this message as a template
+                  </Label>
+                </div>
+                {saveAsTemplate && (
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Template name (e.g., 'My standard intro')"
+                      value={templateName}
+                      onChange={(e) => setTemplateName(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <DialogFooter className="flex-col sm:flex-row gap-2">
             <div className="flex items-center text-xs text-muted-foreground mr-auto">

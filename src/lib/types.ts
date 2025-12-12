@@ -25,6 +25,8 @@ export interface User {
   averageResponseTimeMinutes?: number
   winRate?: number
   feesAvoided?: number
+  availableNow?: boolean
+  availableNowSince?: string
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
@@ -45,6 +47,7 @@ export interface Job {
     materials: string[]
     confidenceScore?: number
     detectedObjects?: string[]
+    suggestedTitle?: string
   }
   size: JobSize
   tier?: JobTier
@@ -66,6 +69,10 @@ export interface Job {
   projectUpdates?: ProjectUpdate[]
   projectSchedule?: ProjectSchedule
   multiTrade?: boolean
+  viewingContractors?: string[]
+  lastViewUpdate?: string
+  completedContractorId?: string
+  rating?: number
 }
 
 export interface Bid {
@@ -522,4 +529,14 @@ export function getContractorTierRequirements(tier: JobTier): {
         minReferences: 3
       }
   }
+}
+
+export interface BidTemplate {
+  id: string
+  contractorId: string
+  name: string
+  message: string
+  useCount: number
+  lastUsed?: string
+  createdAt: string
 }
