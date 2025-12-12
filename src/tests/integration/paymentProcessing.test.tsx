@@ -162,6 +162,15 @@ describe('Payment Processing Integration Tests', () => {
     await window.spark.kv.set('jobs', [testJob])
     await window.spark.kv.set('milestones', testJob.milestones)
     await window.spark.kv.set('invoices', [])
+    await window.spark.kv.set('scope-changes', [{
+      id: 'change-1',
+      jobId: testJob.id,
+      discoveredAt: new Date().toISOString(),
+      description: 'Pending scope change',
+      photos: [],
+      additionalCost: 650,
+      status: 'pending',
+    }])
 
     mockStripe.confirmCardPayment.mockReset()
     mockStripe.createPaymentMethod.mockReset()
