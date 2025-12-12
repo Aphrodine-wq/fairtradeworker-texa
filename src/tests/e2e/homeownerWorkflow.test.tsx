@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { describe, it, expect, beforeEach } from 'vitest'
 import type { User, Job, Bid } from '@/lib/types'
+import { generateReferralCode } from '../helpers/testData'
 
 describe('Homeowner Workflow E2E', () => {
   let testHomeowner: User
@@ -75,8 +75,8 @@ describe('Homeowner Workflow E2E', () => {
 
       await window.spark.kv.set('jobs', [job])
 
-      // Generate referral code
-      const referralCode = `${testHomeowner.fullName.split(' ').map(n => n[0]).join('')}${testHomeowner.id.slice(0, 4).toUpperCase()}${Math.random().toString(36).slice(2, 6).toUpperCase()}`
+      // Generate referral code using utility function
+      const referralCode = generateReferralCode(testHomeowner.fullName, testHomeowner.id)
       
       const updatedHomeowner = {
         ...testHomeowner,

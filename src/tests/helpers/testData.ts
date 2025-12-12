@@ -61,3 +61,29 @@ export const mockMilestones = [
     verificationRequired: true
   }
 ]
+
+/**
+ * Generates a unique referral code for a user
+ * Format: Initials + UserID slice + Random characters
+ * Example: JD1234ABCD
+ */
+export function generateReferralCode(fullName: string, userId: string): string {
+  const initials = fullName.split(' ').map(n => n[0]).join('')
+  const userIdPart = userId.slice(0, 4).toUpperCase()
+  const randomPart = Math.random().toString(36).slice(2, 6).toUpperCase()
+  return `${initials}${userIdPart}${randomPart}`
+}
+
+/**
+ * Calculate tax amount for a given subtotal and tax rate
+ */
+export function calculateTax(subtotal: number, taxRate: number): number {
+  return Math.round(subtotal * taxRate * 100) / 100
+}
+
+/**
+ * Calculate total from subtotal and tax rate
+ */
+export function calculateTotal(subtotal: number, taxRate: number): number {
+  return subtotal + calculateTax(subtotal, taxRate)
+}

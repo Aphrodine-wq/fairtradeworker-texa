@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { User, Job, Bid, Invoice, Milestone } from '@/lib/types'
+import { generateReferralCode, calculateTax, calculateTotal } from '../helpers/testData'
 
 describe('Integration & Cross-Feature Workflows', () => {
   beforeEach(async () => {
@@ -48,7 +49,7 @@ describe('Integration & Cross-Feature Workflows', () => {
       await window.spark.kv.set('jobs', [job])
 
       // 2. Homeowner gets referral code
-      homeowner.referralCode = 'LH1234CODE'
+      homeowner.referralCode = generateReferralCode(homeowner.fullName, homeowner.id)
       await window.spark.kv.set('users', [homeowner])
 
       // 3. Contractor submits Lightning Bid
@@ -96,6 +97,8 @@ describe('Integration & Cross-Feature Workflows', () => {
       await window.spark.kv.set('jobs', [job])
 
       // 6. Create invoice
+      const taxRate = 0.0825
+      const subtotal = 200
       const invoice: Invoice = {
         id: 'invoice-lifecycle',
         contractorId: contractor.id,
@@ -105,10 +108,10 @@ describe('Integration & Cross-Feature Workflows', () => {
         lineItems: [
           { description: 'Ceiling fan installation', quantity: 1, rate: 200, total: 200 },
         ],
-        subtotal: 200,
-        taxRate: 0.0825,
-        taxAmount: 16.50,
-        total: 216.50,
+        subtotal,
+        taxRate,
+        taxAmount: calculateTax(subtotal, taxRate),
+        total: calculateTotal(subtotal, taxRate),
         status: 'sent',
         dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
         sentDate: new Date().toISOString(),
@@ -180,7 +183,7 @@ describe('Integration & Cross-Feature Workflows', () => {
         bidAccuracy: 0,
         isOperator: false,
         createdAt: new Date().toISOString(),
-        referralCode: 'UA1234ABCD',
+        referralCode: generateReferralCode('User A', 'user-a'),
         referralEarnings: 0,
         contractorInviteCount: 0,
       }
@@ -196,8 +199,8 @@ describe('Integration & Cross-Feature Workflows', () => {
         bidAccuracy: 0,
         isOperator: false,
         createdAt: new Date().toISOString(),
-        referredBy: 'UA1234ABCD',
-        referralCode: 'UB5678WXYZ',
+        referredBy: userA.referralCode,
+        referralCode: generateReferralCode('User B', 'user-b'),
         referralEarnings: 20, // Gets $20 for using code
         contractorInviteCount: 0,
       }
@@ -216,7 +219,7 @@ describe('Integration & Cross-Feature Workflows', () => {
         bidAccuracy: 0,
         isOperator: false,
         createdAt: new Date().toISOString(),
-        referredBy: 'UB5678WXYZ',
+        referredBy: userB.referralCode,
         referralEarnings: 20, // Gets $20 for using code
         contractorInviteCount: 0,
       }
@@ -560,6 +563,8 @@ describe('Integration & Cross-Feature Workflows', () => {
         ],
       }
 
+      const taxRate = 0.0825
+      const subtotal = 10000
       const invoice: Invoice = {
         id: 'invoice-consistency',
         contractorId: contractor.id,
@@ -570,10 +575,10 @@ describe('Integration & Cross-Feature Workflows', () => {
           { description: 'Labor', quantity: 1, rate: 6000, total: 6000 },
           { description: 'Materials', quantity: 1, rate: 4000, total: 4000 },
         ],
-        subtotal: 10000,
-        taxRate: 0.0825,
-        taxAmount: 825,
-        total: 10825,
+        subtotal,
+        taxRate,
+        taxAmount: calculateTax(subtotal, taxRate),
+        total: calculateTotal(subtotal, taxRate),
         status: 'paid',
         dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
         sentDate: new Date().toISOString(),
