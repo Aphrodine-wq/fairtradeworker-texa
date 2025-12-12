@@ -35,6 +35,7 @@ import { useKV } from '@github/spark/hooks'
 import { TradeCoordination } from '@/components/projects/TradeCoordination'
 import { ProjectUpdates } from '@/components/projects/ProjectUpdates'
 import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
+import { BudgetTracking } from '@/components/projects/BudgetTracking'
 
 interface ProjectMilestonesProps {
   job: Job
@@ -369,12 +370,16 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview">
               Overview
               {milestones.length > 0 && (
                 <Badge variant="secondary" className="ml-2">{milestones.length}</Badge>
               )}
+            </TabsTrigger>
+            <TabsTrigger value="budget">
+              <CurrencyDollar size={16} className="mr-1" />
+              Budget
             </TabsTrigger>
             <TabsTrigger value="pending">
               Pending
@@ -434,6 +439,10 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                 />
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="budget" className="space-y-4">
+            <BudgetTracking job={job} />
           </TabsContent>
           
           <TabsContent value="pending" className="space-y-4">
