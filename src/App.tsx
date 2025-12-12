@@ -289,11 +289,13 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <ErrorBoundary onReset={() => setCurrentPage('home')}>
-        <Suspense fallback={null}>
-          <AutomationRunner user={currentUser ?? null} />
-        </Suspense>
-      </ErrorBoundary>
+      {currentUser?.isPro && (
+        <ErrorBoundary onReset={() => setCurrentPage('home')}>
+          <Suspense fallback={null}>
+            <AutomationRunner user={currentUser} />
+          </Suspense>
+        </ErrorBoundary>
+      )}
       <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
       {isDemoMode && currentUser && (
         <DemoModeBanner 

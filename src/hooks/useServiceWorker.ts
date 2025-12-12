@@ -1,4 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+const MAX_QUEUE_ITEMS = 50;
+const MAX_BODY_LENGTH = 50_000;
+const HEX_RADIX = 16;
+let queueIdCounter = 0;
+
+const trimBody = (body?: string) => {
+  if (!body) return undefined;
+  if (body.length <= MAX_BODY_LENGTH) return body;
+  console.warn(`[OfflineQueue] Trimming large body from ${body.length} to ${MAX_BODY_LENGTH} characters`);
+  return body.slice(0, MAX_BODY_LENGTH);
+};
+
+const generateQueueId = () => {
+  try {
+    if (typeof crypto !== 'undefined') {
+        if (typeof crypto.randomUUID === 'function') {
+          return crypto.randomUUID();
+        }
+        if (typeof crypto.getRandomValues === 'function') {
+          const buffer = new Uint32Array(2);
+          crypto.getRandomValues(buffer);
+          return `${Date.now()}-${buffer[0].toString(HEX_RADIX)}-${buffer[1].toString(HEX_RADIX)}`;
+        }
+      }
+  } catch {
+    // Ignore and fall back
+  }
+  queueIdCounter = (queueIdCounter + 1) % Number.MAX_SAFE_INTEGER;
+  return `${Date.now()}-${queueIdCounter}-${Math.random().toString(HEX_RADIX).slice(2)}-${Math.random().toString(HEX_RADIX).slice(2)}`;
+};
 
 export function useServiceWorker() {
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
@@ -92,6 +123,11 @@ export function useOfflineQueue() {
     body?: string;
     timestamp: number;
   }>>([]);
+  const queueRef = useRef(queue);
+  const updateQueueState = (nextQueue: typeof queue) => {
+    queueRef.current = nextQueue;
+    setQueue(nextQueue);
+  };
 
   useEffect(() => {
     loadQueue();
@@ -100,8 +136,12 @@ export function useOfflineQueue() {
   const loadQueue = async () => {
     try {
       const stored = await window.spark.kv.get<typeof queue>('offline-queue');
-      if (stored) {
-        setQueue(stored);
+      if (stored?.length) {
+        const trimmed = stored.slice(-MAX_QUEUE_ITEMS);
+        if (trimmed.length !== stored.length) {
+          await window.spark.kv.set('offline-queue', trimmed);
+        }
+        updateQueueState(trimmed);
       }
     } catch (error) {
       console.error('Failed to load offline queue:', error);
@@ -111,28 +151,40 @@ export function useOfflineQueue() {
   const addToQueue = async (item: Omit<typeof queue[0], 'id' | 'timestamp'>) => {
     const newItem = {
       ...item,
-      id: `${Date.now()}-${Math.random()}`,
+      body: trimBody(item.body),
+      id: generateQueueId(),
       timestamp: Date.now()
     };
 
-    const newQueue = [...queue, newItem];
-    setQueue(newQueue);
-    await window.spark.kv.set('offline-queue', newQueue);
+    const currentQueue = queueRef.current || [];
+    const needsTrim = currentQueue.length >= MAX_QUEUE_ITEMS;
+    const baseQueue = needsTrim
+      ? currentQueue.slice(-(MAX_QUEUE_ITEMS - 1))
+      : currentQueue;
+    const merged = [...baseQueue, newItem];
+    const dropped = needsTrim ? currentQueue.length - baseQueue.length : 0;
+    updateQueueState(merged);
+
+    if (dropped > 0) {
+      console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
+    }
+
+    await window.spark.kv.set('offline-queue', merged);
   };
 
   const removeFromQueue = async (id: string) => {
-    const newQueue = queue.filter(item => item.id !== id);
-    setQueue(newQueue);
+    const newQueue = (queueRef.current || []).filter(item => item.id !== id);
+    updateQueueState(newQueue);
     await window.spark.kv.set('offline-queue', newQueue);
   };
 
   const clearQueue = async () => {
-    setQueue([]);
+    updateQueueState([]);
     await window.spark.kv.delete('offline-queue');
   };
 
   const processQueue = async () => {
-    for (const item of queue) {
+    for (const item of queueRef.current || []) {
       try {
         await fetch(item.url, {
           method: item.method,
