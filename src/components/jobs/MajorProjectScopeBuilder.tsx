@@ -127,6 +127,57 @@ const PROJECT_CONFIGS = {
     permits: ['Building Permit'],
     basePrice: { low: 8000, high: 35000 },
     timeline: '1-3 weeks'
+  },
+  'fence-installation': {
+    title: '🚧 Fence Installation',
+    items: [
+      'Posts',
+      'Rails',
+      'Pickets/Panels',
+      'Gates',
+      'Staining/Sealing'
+    ],
+    selections: {
+      'Material': ['Wood', 'Vinyl', 'Metal', 'Composite'],
+      'Style': ['Privacy', 'Picket', 'Split rail', 'Chain link']
+    },
+    sizes: {
+      label: 'Fence length',
+      options: ['<100 linear ft', '100-200 linear ft', '200-300 linear ft', '300+ linear ft']
+    },
+    trades: ['Fence contractor'],
+    permits: ['Building Permit (sometimes)', 'HOA Approval (if applicable)'],
+    basePrice: { low: 3000, high: 15000 },
+    timeline: '2-5 days'
+  },
+  'room-addition': {
+    title: '🏗️ Room Addition',
+    items: [
+      'Foundation',
+      'Framing',
+      'Roofing',
+      'Windows and doors',
+      'Electrical',
+      'HVAC extension',
+      'Plumbing (if bathroom)',
+      'Insulation',
+      'Drywall',
+      'Flooring',
+      'Painting',
+      'Trim and finish'
+    ],
+    selections: {
+      'Room type': ['Bedroom', 'Bathroom', 'Family room', 'Home office', 'Master suite'],
+      'HVAC': ['Extend existing', 'New system', 'Mini-split']
+    },
+    sizes: {
+      label: 'Addition size',
+      options: ['<200sqft', '200-400sqft', '400-600sqft', '600+sqft']
+    },
+    trades: ['General contractor', 'Foundation specialist', 'Framer', 'Roofer', 'Electrician', 'HVAC', 'Plumber', 'Drywall', 'Flooring', 'Painter'],
+    permits: ['Building Permit', 'Electrical Permit', 'Mechanical Permit', 'Plumbing Permit (if applicable)'],
+    basePrice: { low: 25000, high: 100000 },
+    timeline: '6-12 weeks'
   }
 }
 

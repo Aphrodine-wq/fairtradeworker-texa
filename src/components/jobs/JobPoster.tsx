@@ -5,16 +5,20 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import { Video, Microphone, FileText, Upload } from "@phosphor-icons/react"
+import { Badge } from "@/components/ui/badge"
+import { Video, Microphone, FileText, Upload, Wrench, House, CirclesThree } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
 import { VideoUploader } from "./VideoUploader"
 import { JobPostingTimer } from "./JobPostingTimer"
-import type { Job, User, ReferralCode } from "@/lib/types"
+import { MajorProjectScopeBuilder, type ProjectScope } from "./MajorProjectScopeBuilder"
+import { TierBadge } from "./TierBadge"
+import type { Job, User, ReferralCode, JobTier } from "@/lib/types"
 import type { VideoAnalysis } from "@/lib/video/types"
 import { calculateJobSize } from "@/lib/types"
 import { generateReferralCode } from "@/lib/viral"
+import { generateMilestonesFromTemplate } from "@/lib/milestones"
 import { useKV } from "@github/spark/hooks"
 import { toast } from "sonner"
 
@@ -24,10 +28,14 @@ interface JobPosterProps {
 }
 
 type InputMethod = 'video' | 'audio' | 'text' | null
-type Step = 'select' | 'input' | 'processing' | 'results' | 'posted'
+type ProjectType = 'kitchen-remodel' | 'bathroom-remodel' | 'roof-replacement' | 'deck-build' | 'fence-installation' | 'room-addition' | 'custom' | null
+type Step = 'tier-select' | 'project-select' | 'scope-builder' | 'select' | 'input' | 'processing' | 'results' | 'posted'
 
 export function JobPoster({ user, onNavigate }: JobPosterProps) {
-  const [step, setStep] = useState<Step>('select')
+  const [step, setStep] = useState<Step>('tier-select')
+  const [selectedTier, setSelectedTier] = useState<JobTier | null>(null)
+  const [selectedProjectType, setSelectedProjectType] = useState<ProjectType>(null)
+  const [projectScope, setProjectScope] = useState<ProjectScope | null>(null)
   const [inputMethod, setInputMethod] = useState<InputMethod>(null)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -42,7 +50,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (step === 'select' && postingStartTime === 0) {
+    if (step === 'tier-select' && postingStartTime === 0) {
       setPostingStartTime(Date.now())
     }
   }, [step, postingStartTime])
@@ -116,22 +124,50 @@ Job title: ${title || 'Untitled job'}
       ? videoAnalysis.objects.slice(0, 4).map(o => o.label)
       : ['plumbing fixture', 'pipes']
     
+    const estimatedDays = projectScope 
+      ? parseInt(projectScope.estimatedTimeline.split('-')[1]?.match(/\d+/)?.[0] || '5')
+      : Math.ceil((aiResult.priceHigh || 500) / 500)
+    
+    const tradesRequired = projectScope?.requiredTrades || []
+    const permitRequired = projectScope?.permitsNeeded && projectScope.permitsNeeded.length > 0
+    
+    let tier: JobTier = 'QUICK_FIX'
+    const estimatedCost = aiResult?.priceHigh || projectScope?.estimatedPrice.high || 500
+    
+    if (estimatedCost > 5000) {
+      tier = 'MAJOR_PROJECT'
+    } else if (estimatedCost > 500) {
+      tier = 'STANDARD'
+    }
+    
     const newJob: Job = {
       id: `job-${Date.now()}`,
       homeownerId: user.id,
-      title,
-      description: description || aiResult.scope,
+      title: title || (projectScope ? `${selectedProjectType?.replace(/-/g, ' ')} Project` : 'Untitled Job'),
+      description: description || projectScope?.customDescription || aiResult.scope,
       mediaType: inputMethod === 'text' || inputMethod === null ? undefined : inputMethod,
       aiScope: {
         ...aiResult,
         confidenceScore,
         detectedObjects,
       },
-      size: calculateJobSize(aiResult.priceHigh),
+      size: calculateJobSize(estimatedCost),
+      tier,
+      estimatedDays,
+      tradesRequired,
+      permitRequired,
       status: 'open',
       createdAt: new Date().toISOString(),
       postedInSeconds,
-      bids: []
+      bids: [],
+      milestones: tier === 'MAJOR_PROJECT' && projectScope && selectedProjectType
+        ? generateMilestonesFromTemplate(
+            `job-${Date.now()}`,
+            selectedProjectType,
+            estimatedCost,
+            estimatedCost >= 15000
+          )
+        : undefined
     }
 
     setJobs((currentJobs) => [...(currentJobs || []), newJob])
@@ -185,7 +221,10 @@ Job title: ${title || 'Untitled job'}
               Back to Home
             </Button>
             <Button onClick={() => {
-              setStep('select')
+              setStep('tier-select')
+              setSelectedTier(null)
+              setSelectedProjectType(null)
+              setProjectScope(null)
               setTitle("")
               setDescription("")
               setFile(null)
@@ -215,10 +254,260 @@ Job title: ${title || 'Untitled job'}
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
+    <div className="container mx-auto px-4 md:px-8 py-12 max-w-5xl">
+      {step === 'tier-select' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl">What size project do you have?</CardTitle>
+            <CardDescription className="text-base">
+              Choose the category that best matches your project
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-3 gap-6">
+            <button
+              onClick={() => {
+                setSelectedTier('QUICK_FIX')
+                setStep('select')
+              }}
+              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Wrench weight="fill" className="text-green-600 dark:text-green-400" size={28} />
+                </div>
+                <TierBadge tier="QUICK_FIX" />
+              </div>
+              <div className="text-left space-y-2">
+                <h3 className="font-semibold text-xl">Quick Fix</h3>
+                <p className="text-sm text-muted-foreground">$50 - $500</p>
+                <p className="text-sm text-muted-foreground">
+                  Leaky faucet, clogged drain, outlet repair, running toilet
+                </p>
+                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                  <div>⚡ Same-day service</div>
+                  <div>👤 One contractor</div>
+                  <div>🕐 1-4 hours</div>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedTier('STANDARD')
+                setStep('select')
+              }}
+              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-14 h-14 rounded-lg bg-amber-100 dark:bg-amber-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <House weight="fill" className="text-amber-600 dark:text-amber-400" size={28} />
+                </div>
+                <TierBadge tier="STANDARD" />
+              </div>
+              <div className="text-left space-y-2">
+                <h3 className="font-semibold text-xl">Standard Job</h3>
+                <p className="text-sm text-muted-foreground">$500 - $5,000</p>
+                <p className="text-sm text-muted-foreground">
+                  Water heater, AC repair, fence section, deck repair
+                </p>
+                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                  <div>📅 1-5 days</div>
+                  <div>👤 One contractor</div>
+                  <div>💵 Simple payment</div>
+                </div>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedTier('MAJOR_PROJECT')
+                setStep('project-select')
+              }}
+              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="w-14 h-14 rounded-lg bg-blue-100 dark:bg-blue-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={28} />
+                </div>
+                <TierBadge tier="MAJOR_PROJECT" />
+              </div>
+              <div className="text-left space-y-2">
+                <h3 className="font-semibold text-xl">Major Project</h3>
+                <p className="text-sm text-muted-foreground">$5,000 - $50,000</p>
+                <p className="text-sm text-muted-foreground">
+                  Kitchen remodel, bathroom reno, roof, room addition
+                </p>
+                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                  <div>📆 1-8 weeks</div>
+                  <div>👥 Multiple trades</div>
+                  <div>📋 Milestone payments</div>
+                </div>
+              </div>
+            </button>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 'project-select' && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setStep('tier-select')}
+              >
+                ← Back
+              </Button>
+            </div>
+            <CardTitle className="text-3xl">Select Your Project Type</CardTitle>
+            <CardDescription className="text-base">
+              Choose a template or describe a custom project
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-2 gap-4">
+            <button
+              onClick={() => {
+                setSelectedProjectType('kitchen-remodel')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🍳</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Kitchen Remodel</h4>
+                <p className="text-sm text-muted-foreground">$15K-$50K · 4-8 weeks</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('bathroom-remodel')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🚿</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Bathroom Remodel</h4>
+                <p className="text-sm text-muted-foreground">$8K-$35K · 2-5 weeks</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('roof-replacement')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🏠</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Roof Replacement</h4>
+                <p className="text-sm text-muted-foreground">$8K-$25K · 2-5 days</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('deck-build')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🪵</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Deck Build</h4>
+                <p className="text-sm text-muted-foreground">$8K-$35K · 1-3 weeks</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('fence-installation')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🚧</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Fence Installation</h4>
+                <p className="text-sm text-muted-foreground">$3K-$15K · 2-5 days</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('room-addition')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">🏗️</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Room Addition</h4>
+                <p className="text-sm text-muted-foreground">$25K-$100K · 6-12 weeks</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setSelectedProjectType('custom')
+                setStep('scope-builder')
+              }}
+              className="flex items-center gap-4 p-5 rounded-xl border-2 border-dashed border-border hover:border-primary hover:shadow-md transition-all text-left"
+            >
+              <div className="text-4xl">✏️</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-lg">Custom Project</h4>
+                <p className="text-sm text-muted-foreground">Describe your own project</p>
+              </div>
+            </button>
+          </CardContent>
+        </Card>
+      )}
+
+      {step === 'scope-builder' && selectedProjectType && (
+        <div>
+          <div className="mb-6">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setStep('project-select')}
+            >
+              ← Back to Projects
+            </Button>
+          </div>
+          <MajorProjectScopeBuilder
+            projectType={selectedProjectType}
+            onComplete={(scope) => {
+              setProjectScope(scope)
+              const mockResult = {
+                scope: `${selectedProjectType?.replace(/-/g, ' ')} project with selected items: ${scope.itemsChanging.join(', ')}`,
+                priceLow: scope.estimatedPrice.low,
+                priceHigh: scope.estimatedPrice.high,
+                materials: scope.itemsChanging,
+                timeline: scope.estimatedTimeline
+              }
+              setAiResult(mockResult)
+              setStep('results')
+            }}
+          />
+        </div>
+      )}
+
       {step === 'select' && (
         <Card>
           <CardHeader>
+            <div className="flex items-center gap-2 mb-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setStep('tier-select')}
+              >
+                ← Back
+              </Button>
+            </div>
             <CardTitle className="text-3xl">Post a Job</CardTitle>
             <CardDescription className="text-base">
               Choose how you'd like to describe your project
