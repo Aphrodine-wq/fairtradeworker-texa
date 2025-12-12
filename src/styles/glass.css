@@ -40,10 +40,10 @@
 }
 
 .dark .glass {
-  background: var(--card, rgb(255, 255, 255));
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-subtle {
@@ -54,10 +54,10 @@
 }
 
 .dark .glass-subtle {
-  background: var(--card, rgb(255, 255, 255));
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-bold {
@@ -68,10 +68,10 @@
 }
 
 .dark .glass-bold {
-  background: var(--card, rgb(255, 255, 255));
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-dark {
@@ -82,10 +82,10 @@
 }
 
 .dark .glass-dark {
-  background: var(--card, rgb(255, 255, 255));
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Blue tinted glass */
@@ -101,10 +101,10 @@
 }
 
 .dark .glass-blue {
-  background: var(--card, rgb(255, 255, 255));
+  background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-success {
