@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, memo } from "react"
+import { useState, useEffect, lazy, Suspense, memo, useMemo, useCallback } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
@@ -14,87 +14,40 @@ const SignupPage = lazy(() => import("@/pages/Signup").then(m => ({ default: m.S
 const MyJobs = lazy(() => import("@/pages/MyJobs").then(m => ({ default: m.MyJobs })))
 const JobPoster = lazy(() => import("@/components/jobs/JobPoster").then(m => ({ default: m.JobPoster })))
 const BrowseJobs = lazy(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs })))
-const AutomationRunner = lazy(() => import("@/components/contractor/AutomationRunner").then(m => ({ default: m.AutomationRunner })))
 
+const AutomationRunner = lazy(() => 
+  import("@/components/contractor/AutomationRunner")
+    .then(m => ({ default: m.AutomationRunner }))
+)
 const HomeownerDashboard = lazy(() => 
-  import("@/pages/HomeownerDashboard")
-    .then(m => ({ default: m.HomeownerDashboard }))
-    .catch(err => {
-      console.error("Failed to load HomeownerDashboard:", err)
-      throw err
-    })
+  import("@/pages/HomeownerDashboard").then(m => ({ default: m.HomeownerDashboard }))
 )
 const ContractorDashboardNew = lazy(() => 
-  import("@/pages/ContractorDashboardNew")
-    .then(m => ({ default: m.ContractorDashboardNew }))
-    .catch(err => {
-      console.error("Failed to load ContractorDashboardNew:", err)
-      throw err
-    })
+  import("@/pages/ContractorDashboardNew").then(m => ({ default: m.ContractorDashboardNew }))
 )
 const OperatorDashboard = lazy(() => 
-  import("@/pages/OperatorDashboard")
-    .then(m => ({ default: m.OperatorDashboard }))
-    .catch(err => {
-      console.error("Failed to load OperatorDashboard:", err)
-      throw err
-    })
+  import("@/pages/OperatorDashboard").then(m => ({ default: m.OperatorDashboard }))
 )
 const ContractorDashboard = lazy(() => 
-  import("@/components/contractor/ContractorDashboard")
-    .then(m => ({ default: m.ContractorDashboard }))
-    .catch(err => {
-      console.error("Failed to load ContractorDashboard:", err)
-      throw err
-    })
+  import("@/components/contractor/ContractorDashboard").then(m => ({ default: m.ContractorDashboard }))
 )
 const EnhancedCRM = lazy(() => 
-  import("@/components/contractor/EnhancedCRM")
-    .then(m => ({ default: m.EnhancedCRM }))
-    .catch(err => {
-      console.error("Failed to load EnhancedCRM:", err)
-      throw err
-    })
+  import("@/components/contractor/EnhancedCRM").then(m => ({ default: m.EnhancedCRM }))
 )
 const InvoiceManager = lazy(() => 
-  import("@/components/contractor/InvoiceManager")
-    .then(m => ({ default: m.InvoiceManager }))
-    .catch(err => {
-      console.error("Failed to load InvoiceManager:", err)
-      throw err
-    })
+  import("@/components/contractor/InvoiceManager").then(m => ({ default: m.InvoiceManager }))
 )
 const ProUpgrade = lazy(() => 
-  import("@/components/contractor/ProUpgrade")
-    .then(m => ({ default: m.ProUpgrade }))
-    .catch(err => {
-      console.error("Failed to load ProUpgrade:", err)
-      throw err
-    })
+  import("@/components/contractor/ProUpgrade").then(m => ({ default: m.ProUpgrade }))
 )
 const TerritoryMap = lazy(() => 
-  import("@/components/territory/TerritoryMap")
-    .then(m => ({ default: m.TerritoryMap }))
-    .catch(err => {
-      console.error("Failed to load TerritoryMap:", err)
-      throw err
-    })
+  import("@/components/territory/TerritoryMap").then(m => ({ default: m.TerritoryMap }))
 )
 const CompanyRevenueDashboard = lazy(() => 
-  import("@/components/contractor/CompanyRevenueDashboard")
-    .then(m => ({ default: m.CompanyRevenueDashboard }))
-    .catch(err => {
-      console.error("Failed to load CompanyRevenueDashboard:", err)
-      throw err
-    })
+  import("@/components/contractor/CompanyRevenueDashboard").then(m => ({ default: m.CompanyRevenueDashboard }))
 )
 const ProjectMilestones = lazy(() => 
-  import("@/pages/ProjectMilestones")
-    .then(m => ({ default: m.ProjectMilestones }))
-    .catch(err => {
-      console.error("Failed to load ProjectMilestones:", err)
-      throw err
-    })
+  import("@/pages/ProjectMilestones").then(m => ({ default: m.ProjectMilestones }))
 )
 
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones'
@@ -124,19 +77,22 @@ function App() {
   useEffect(() => {
     let mounted = true
     const initData = async () => {
-      const demoData = initializeDemoData()
-      if (demoData && mounted) {
-        const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
-        setJobs(demoJobs)
-        setInvoices(demoInvoices)
-        setTerritories(demoTerritories)
+      const existingJobs = await window.spark.kv.get<Job[]>("jobs")
+      if (!existingJobs || existingJobs.length === 0) {
+        const demoData = initializeDemoData()
+        if (demoData && mounted) {
+          const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
+          setJobs(demoJobs)
+          setInvoices(demoInvoices)
+          setTerritories(demoTerritories)
+        }
       }
     }
     initData()
     return () => { mounted = false }
   }, [])
 
-  const handleNavigate = (page: string, role?: string, jobId?: string) => {
+  const handleNavigate = useCallback((page: string, role?: string, jobId?: string) => {
     if (role) {
       setPreselectedRole(role as UserRole)
     }
@@ -144,15 +100,15 @@ function App() {
       setSelectedJobId(jobId)
     }
     setCurrentPage(page as Page)
-    window.scrollTo(0, 0)
-  }
+    window.scrollTo({ top: 0, behavior: 'instant' } as ScrollToOptions)
+  }, [])
 
-  const handleLogin = (user: User) => {
+  const handleLogin = useCallback((user: User) => {
     setCurrentUser(user)
     setIsDemoMode(false)
-  }
+  }, [setCurrentUser, setIsDemoMode])
 
-  const handleDemoLogin = (demoUser: User) => {
+  const handleDemoLogin = useCallback((demoUser: User) => {
     setCurrentUser(demoUser)
     setIsDemoMode(true)
     
@@ -175,15 +131,19 @@ function App() {
     } else {
       setCurrentPage('home')
     }
-  }
+  }, [setCurrentUser, setIsDemoMode])
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     setCurrentUser(null)
     setIsDemoMode(false)
     setCurrentPage('home')
-  }
+  }, [setCurrentUser, setIsDemoMode])
 
-  const renderPage = () => {
+  const selectedJob = useMemo(() => {
+    return selectedJobId ? (jobs || []).find(j => j.id === selectedJobId) : null
+  }, [selectedJobId, jobs])
+
+  const renderPage = useCallback(() => {
     switch (currentPage) {
       case 'login':
         return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} />
@@ -225,9 +185,7 @@ function App() {
       case 'revenue-dashboard':
         return currentUser ? <Suspense fallback={<LoadingFallback />}><CompanyRevenueDashboard user={currentUser} /></Suspense> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'project-milestones':
-        if (!currentUser || !selectedJobId) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
-        const selectedJob = (jobs || []).find(j => j.id === selectedJobId)
-        if (!selectedJob) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        if (!currentUser || !selectedJob) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
         return (
           <Suspense fallback={<LoadingFallback />}>
             <ProjectMilestones 
@@ -240,7 +198,7 @@ function App() {
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
-  }
+  }, [currentPage, currentUser, preselectedRole, selectedJob, handleNavigate, handleLogin, handleDemoLogin])
 
   return (
     <div className="flex flex-col min-h-screen">
