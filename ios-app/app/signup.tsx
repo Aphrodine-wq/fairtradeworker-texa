@@ -81,7 +81,7 @@ export default function SignupScreen() {
     },
     {
       value: 'contractor',
-      label: 'Contractor',
+      label: 'Contractor/Subcontractor',
       icon: 'hammer',
       description: 'Browse jobs and submit bids',
     },

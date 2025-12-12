@@ -74,8 +74,8 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getRoleBadge = (role: TradeContractor['role']) => {
     return role === 'lead' 
-      ? <Badge className="bg-primary text-primary-foreground">Lead</Badge>
-      : <Badge variant="outline">Sub</Badge>
+      ? <Badge className="bg-primary text-primary-foreground">Contractor</Badge>
+      : <Badge variant="outline">Subcontractor</Badge>
   }
 
   const handleAdd = () => {
@@ -229,11 +229,11 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
           {trades.length === 0 ? (
             <div className="text-center py-12">
               <Users size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
-              <h3 className="text-lg font-semibold mb-2">No Trade Contractors Yet</h3>
+              <h3 className="text-lg font-semibold mb-2">No Contractors/Subcontractors Yet</h3>
               <p className="text-muted-foreground mb-4">
                 {isHomeowner
-                  ? 'Trade contractors will appear here once assigned'
-                  : 'Add trade contractors to coordinate multiple specialists on this project'}
+                  ? 'Contractors/Subcontractors will appear here once assigned'
+                  : 'Add contractors/subcontractors to coordinate multiple specialists on this project'}
               </p>
               {!isHomeowner && (
                 <Button onClick={() => setShowAddDialog(true)}>
@@ -349,9 +349,9 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
       }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editingTrade ? 'Edit Trade Contractor' : 'Add Trade Contractor'}</DialogTitle>
+            <DialogTitle>{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
             <DialogDescription>
-              {editingTrade ? 'Update trade contractor details' : 'Add a new trade contractor to this project'}
+              {editingTrade ? 'Update contractor/subcontractor details' : 'Add a new contractor/subcontractor to this project'}
             </DialogDescription>
           </DialogHeader>
 
@@ -387,8 +387,8 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="lead">Lead Contractor (manages project)</SelectItem>
-                  <SelectItem value="sub">Sub Contractor (specialty work)</SelectItem>
+                  <SelectItem value="lead">Lead Contractor (manages project and subcontractors)</SelectItem>
+                  <SelectItem value="sub">Subcontractor (specialty work)</SelectItem>
                 </SelectContent>
               </Select>
             </div>

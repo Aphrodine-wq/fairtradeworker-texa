@@ -36,7 +36,7 @@ export default function HomeScreen() {
             Zero-fee home services marketplace.
           </Text>
           <Text style={styles.heroSubtitle}>
-            AI scopes in 60 seconds. Contractors keep 100%.
+            AI scopes in 60 seconds. Contractors/Subcontractors keep 100%.
           </Text>
 
           {/* Quick Actions */}
@@ -49,7 +49,7 @@ export default function HomeScreen() {
               style={styles.actionButton}
             />
             <Button
-              title="I'm a Contractor"
+              title="I'm a Contractor/Subcontractor"
               variant="outline"
               size="lg"
               icon={<Ionicons name="hammer" size={24} color={Colors.primary} />}
@@ -98,7 +98,7 @@ export default function HomeScreen() {
             >
               <Ionicons name="hammer" size={20} color={Colors.secondary} />
               <Text style={[styles.demoButtonText, { color: Colors.secondary }]}>
-                Contractor
+                Contractor/Subcontractor
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -143,7 +143,7 @@ export default function HomeScreen() {
             </View>
             <Text style={styles.stepTitle}>Zero Fees</Text>
             <Text style={styles.stepDescription}>
-              Contractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
+              Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
             </Text>
           </Card>
         </View>
