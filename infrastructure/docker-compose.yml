@@ -1,5 +1,9 @@
 version: '3.8'
 
+# Environment variables:
+# - POSTGRES_PASSWORD: Set this to override the default password (default: changeme)
+# Example: POSTGRES_PASSWORD=your_secure_password docker-compose up
+
 services:
   # Application Server
   app:
@@ -11,7 +15,7 @@ services:
     environment:
       - NODE_ENV=production
       - REDIS_URL=redis://redis:6379
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/ftw
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-changeme}@postgres:5432/ftw
     depends_on:
       - redis
       - postgres
@@ -51,7 +55,7 @@ services:
     environment:
       - POSTGRES_DB=ftw
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
     ports:
       - "5432:5432"
     volumes:

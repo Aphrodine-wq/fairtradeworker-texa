@@ -21,16 +21,16 @@ groups:
           description: "P95 response time is {{ $value }}s (threshold: 2s)"
       
       - alert: HighCPUUsage
-        expr: node_cpu_usage > 0.90
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
         for: 5m
         labels:
           severity: critical
         annotations:
           summary: "High CPU usage"
-          description: "CPU usage is {{ $value | humanizePercentage }}"
+          description: "CPU usage is {{ $value }}%"
       
       - alert: DatabaseConnectionPoolExhausted
-        expr: database_connections_active / database_connections_max > 0.95
+        expr: (pg_stat_database_numbackends / pg_settings_max_connections) > 0.95
         for: 2m
         labels:
           severity: critical
@@ -51,7 +51,7 @@ groups:
           description: "Error rate is {{ $value | humanizePercentage }}"
       
       - alert: CacheHitRatioLow
-        expr: cache_hit_ratio < 0.70
+        expr: (redis_keyspace_hits / (redis_keyspace_hits + redis_keyspace_misses)) < 0.70
         for: 15m
         labels:
           severity: warning
@@ -60,7 +60,7 @@ groups:
           description: "Hit ratio is {{ $value | humanizePercentage }} (target: >70%)"
       
       - alert: DiskSpaceRunningLow
-        expr: disk_usage_percent > 0.80
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) > 0.80
         for: 10m
         labels:
           severity: warning
