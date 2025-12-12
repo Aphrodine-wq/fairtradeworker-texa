@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { Sun, Moon } from "@phosphor-icons/react"
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
@@ -23,52 +24,78 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-10 h-10 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-100 hover:scale-105 active:scale-95 min-w-[40px] min-h-[40px]"
+      className="relative w-12 h-12 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-100 hover:scale-105 active:scale-95 min-w-[44px] min-h-[44px]"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      style={{ perspective: '1000px' }}
     >
+      {/* Magnetic 3D sphere container with spring physics */}
       <motion.div
-        className="absolute inset-0 rounded-full border-2 overflow-hidden"
+        className="absolute inset-0 rounded-full overflow-hidden"
         initial={false}
         animate={{
-          backgroundColor: isDark ? "oklch(0.2 0.01 264)" : "oklch(0.98 0.002 50)",
-          borderColor: isDark ? "oklch(0.3 0.01 264)" : "oklch(0.85 0.005 264)",
+          rotateY: isDark ? 180 : 0,
         }}
-        transition={{ duration: 0.15, ease: [0.4, 0, 0.2, 1] }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 20,
+          duration: 0.8
+        }}
+        style={{
+          transformStyle: 'preserve-3d',
+        }}
       >
+        {/* Front face (Sun - Light mode) */}
         <motion.div
-          className="absolute inset-0 rounded-full"
+          className="absolute inset-0 rounded-full border-2 flex items-center justify-center"
           style={{
-            background: "radial-gradient(circle at 30% 30%, oklch(0.25 0.01 264), oklch(0.15 0.01 264))",
+            backfaceVisibility: 'hidden',
+            background: 'linear-gradient(135deg, oklch(0.98 0.05 85) 0%, oklch(0.95 0.08 85) 100%)',
+            borderColor: 'oklch(0.85 0.1 85)',
           }}
-          initial={false}
-          animate={{
-            scale: isDark ? 1 : 0,
-            opacity: isDark ? 1 : 0,
+        >
+          <Sun 
+            weight="fill" 
+            size={24} 
+            className="text-[oklch(0.75_0.15_85)]"
+            style={{ 
+              filter: 'drop-shadow(0 0 8px oklch(0.8 0.2 85))' 
+            }}
+          />
+        </motion.div>
+
+        {/* Back face (Moon - Dark mode) */}
+        <motion.div
+          className="absolute inset-0 rounded-full border-2 flex items-center justify-center"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            background: 'linear-gradient(135deg, oklch(0.25 0.02 264) 0%, oklch(0.15 0.01 264) 100%)',
+            borderColor: 'oklch(0.3 0.02 264)',
           }}
-          transition={{ duration: 0.12, ease: [0.4, 0, 0.2, 1] }}
-        />
+        >
+          <Moon 
+            weight="fill" 
+            size={24} 
+            className="text-[oklch(0.8_0.01_264)]"
+            style={{ 
+              filter: 'drop-shadow(0 0 8px oklch(0.7 0.05 264))' 
+            }}
+          />
+        </motion.div>
       </motion.div>
-      
+
+      {/* Subtle glow effect */}
       <motion.div
-        className="absolute z-10"
+        className="absolute inset-0 rounded-full pointer-events-none"
         initial={false}
         animate={{
-          scale: isDark ? [1, 0.8, 1] : [1, 1.05, 1],
-          opacity: isDark ? 0.9 : 1,
+          boxShadow: isDark
+            ? '0 0 20px oklch(0.4 0.05 264), inset 0 0 10px oklch(0.2 0.02 264)'
+            : '0 0 20px oklch(0.9 0.15 85), inset 0 0 10px oklch(0.98 0.05 85)',
         }}
-        transition={{ duration: 0.12 }}
-      >
-        <motion.div
-          className="w-3 h-3 rounded-full"
-          animate={{
-            backgroundColor: isDark ? "oklch(0.8 0.01 264)" : "oklch(0.75 0.15 85)",
-            boxShadow: isDark 
-              ? "0 0 8px oklch(0.7 0.05 264)" 
-              : "0 0 12px oklch(0.8 0.2 85), 0 0 20px oklch(0.85 0.15 85)",
-          }}
-          transition={{ duration: 0.12 }}
-        />
-      </motion.div>
+        transition={{ duration: 0.4 }}
+      />
     </button>
   )
 }
