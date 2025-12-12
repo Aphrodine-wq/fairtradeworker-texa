@@ -1,7 +1,8 @@
 import { beforeEach, afterEach, vi } from 'vitest'
 
-// Create an in-memory store for testing
-const kvStore = new Map<string, any>()
+// Create an in-memory store for testing with proper typing
+type KVStoreValue = unknown
+const kvStore = new Map<string, KVStoreValue>()
 
 beforeEach(() => {
   localStorage.clear()
@@ -15,18 +16,18 @@ afterEach(() => {
 
 export const mockSpark = {
   kv: {
-    get: vi.fn(async (key: string) => {
-      return kvStore.get(key)
+    get: vi.fn(async <T = KVStoreValue>(key: string): Promise<T | undefined> => {
+      return kvStore.get(key) as T | undefined
     }),
-    set: vi.fn(async (key: string, value: any) => {
+    set: vi.fn(async <T = KVStoreValue>(key: string, value: T): Promise<boolean> => {
       kvStore.set(key, value)
       return true
     }),
-    delete: vi.fn(async (key: string) => {
+    delete: vi.fn(async (key: string): Promise<boolean> => {
       kvStore.delete(key)
       return true
     }),
-    keys: vi.fn(async () => {
+    keys: vi.fn(async (): Promise<string[]> => {
       return Array.from(kvStore.keys())
     })
   },
