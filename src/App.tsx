@@ -16,6 +16,30 @@ const JobPoster = lazy(() => import("@/components/jobs/JobPoster").then(m => ({ 
 const BrowseJobs = lazy(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs })))
 const AutomationRunner = lazy(() => import("@/components/contractor/AutomationRunner").then(m => ({ default: m.AutomationRunner })))
 
+const HomeownerDashboard = lazy(() => 
+  import("@/pages/HomeownerDashboard")
+    .then(m => ({ default: m.HomeownerDashboard }))
+    .catch(err => {
+      console.error("Failed to load HomeownerDashboard:", err)
+      throw err
+    })
+)
+const ContractorDashboardNew = lazy(() => 
+  import("@/pages/ContractorDashboardNew")
+    .then(m => ({ default: m.ContractorDashboardNew }))
+    .catch(err => {
+      console.error("Failed to load ContractorDashboardNew:", err)
+      throw err
+    })
+)
+const OperatorDashboard = lazy(() => 
+  import("@/pages/OperatorDashboard")
+    .then(m => ({ default: m.OperatorDashboard }))
+    .catch(err => {
+      console.error("Failed to load OperatorDashboard:", err)
+      throw err
+    })
+)
 const ContractorDashboard = lazy(() => 
   import("@/components/contractor/ContractorDashboard")
     .then(m => ({ default: m.ContractorDashboard }))
@@ -145,9 +169,9 @@ function App() {
     if (demoUser.role === 'contractor') {
       setCurrentPage('dashboard')
     } else if (demoUser.role === 'operator') {
-      setCurrentPage('territory-map')
+      setCurrentPage('dashboard')
     } else if (demoUser.role === 'homeowner') {
-      setCurrentPage('my-jobs')
+      setCurrentPage('dashboard')
     } else {
       setCurrentPage('home')
     }
@@ -174,9 +198,16 @@ function App() {
       case 'browse-jobs':
         return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
-        return currentUser?.role === 'contractor' 
-          ? <Suspense fallback={<LoadingFallback />}><ContractorDashboard user={currentUser} onNavigate={handleNavigate} /></Suspense>
-          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        if (!currentUser) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        
+        if (currentUser.role === 'homeowner') {
+          return <Suspense fallback={<LoadingFallback />}><HomeownerDashboard user={currentUser} onNavigate={handleNavigate} /></Suspense>
+        } else if (currentUser.role === 'contractor') {
+          return <Suspense fallback={<LoadingFallback />}><ContractorDashboardNew user={currentUser} onNavigate={handleNavigate} /></Suspense>
+        } else if (currentUser.role === 'operator') {
+          return <Suspense fallback={<LoadingFallback />}><OperatorDashboard user={currentUser} onNavigate={handleNavigate} /></Suspense>
+        }
+        return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
         return currentUser?.role === 'contractor'
           ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>

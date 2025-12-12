@@ -51,6 +51,9 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
               <>
                 {user.role === 'homeowner' && (
                   <>
+                    <Button variant="ghost" onClick={() => onNavigate('dashboard')} className="hidden sm:flex min-h-[44px]">
+                      Dashboard
+                    </Button>
                     <Button variant="ghost" onClick={() => onNavigate('my-jobs')} className="hidden sm:flex min-h-[44px]">
                       My Jobs
                     </Button>
@@ -72,10 +75,15 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                   </>
                 )}
                 {user.role === 'operator' && (
-                  <Button variant="ghost" onClick={() => onNavigate('territory-map')} className="hidden sm:flex min-h-[44px]">
-                    <MapPin weight="fill" className="mr-2" />
-                    Territory Map
-                  </Button>
+                  <>
+                    <Button variant="ghost" onClick={() => onNavigate('dashboard')} className="hidden sm:flex min-h-[44px]">
+                      Dashboard
+                    </Button>
+                    <Button variant="ghost" onClick={() => onNavigate('territory-map')} className="hidden sm:flex min-h-[44px]">
+                      <MapPin weight="fill" className="mr-2" />
+                      Territory Map
+                    </Button>
+                  </>
                 )}
                 
                 <ThemeToggle />
@@ -101,6 +109,10 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
+                      <ChartLine className="mr-2" size={16} />
+                      Dashboard
+                    </DropdownMenuItem>
                     {user.role === 'homeowner' && (
                       <DropdownMenuItem onClick={() => onNavigate('my-jobs')}>
                         <House className="mr-2" size={16} />
@@ -109,10 +121,6 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                     )}
                     {user.role === 'contractor' && (
                       <>
-                        <DropdownMenuItem onClick={() => onNavigate('dashboard')}>
-                          <Hammer className="mr-2" size={16} />
-                          Dashboard
-                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => onNavigate('crm')}>
                           <Users className="mr-2" size={16} />
                           CRM
@@ -128,10 +136,6 @@ export function Header({ user, onNavigate, onLogout }: HeaderProps) {
                         <DropdownMenuItem onClick={() => onNavigate('territory-map')}>
                           <MapPin className="mr-2" size={16} />
                           Territory Map
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => onNavigate('revenue-dashboard')}>
-                          <ChartLine className="mr-2" size={16} />
-                          Revenue Dashboard
                         </DropdownMenuItem>
                       </>
                     )}
