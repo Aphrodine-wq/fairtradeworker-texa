@@ -4,8 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FeeComparison } from "./FeeComparison"
+import { FeeSavingsDashboard } from "./FeeSavingsDashboard"
 import { useKV } from "@github/spark/hooks"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
@@ -34,7 +35,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     }
   }
 
-  const { myBids, acceptedBids, thisMonthEarnings, totalEarnings, feesSaved } = useMemo(() => {
+  const { myBids, acceptedBids, thisMonthEarnings, totalEarnings, feesSaved, yearlyStats } = useMemo(() => {
     const bids = (jobs || []).flatMap(job =>
       job.bids.filter(bid => bid.contractorId === user.id)
     )
@@ -57,12 +58,26 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     const allTimeRevenue = allTimePaidInvoices.reduce((sum, inv) => sum + inv.total, 0)
     const totalFeesSaved = calculateTotalFeesSaved(allTimeRevenue)
     
+    const thisYear = new Date().getFullYear()
+    const thisYearInvoices = myInvoices.filter(inv => {
+      const invDate = new Date(inv.createdAt)
+      return invDate.getFullYear() === thisYear && inv.status === 'paid'
+    })
+    const thisYearEarnings = thisYearInvoices.reduce((sum, inv) => sum + inv.total, 0)
+    const thisYearJobsCount = thisYearInvoices.length
+    const averageJobValue = thisYearJobsCount > 0 ? thisYearEarnings / thisYearJobsCount : 0
+    
     return {
       myBids: bids,
       acceptedBids: accepted,
       thisMonthEarnings: monthEarnings,
       totalEarnings: total,
-      feesSaved: totalFeesSaved.homeadvisor
+      feesSaved: totalFeesSaved.homeadvisor,
+      yearlyStats: {
+        totalEarningsThisYear: thisYearEarnings,
+        jobsCompletedThisYear: thisYearJobsCount,
+        averageJobValue
+      }
     }
   }, [jobs, invoices, user.id, user.referralEarnings])
 
@@ -180,12 +195,16 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         <Tabs defaultValue="browse" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-9 gap-1">
+          <TabsList className="grid w-full grid-cols-5 md:grid-cols-10 gap-1">
             <TabsTrigger value="briefing" className="text-xs md:text-sm">
               <Sun className="mr-1 md:mr-2" size={14} weight="duotone" />
               <span className="hidden sm:inline">Briefing</span>
             </TabsTrigger>
             <TabsTrigger value="browse" className="text-xs md:text-sm">Browse</TabsTrigger>
+            <TabsTrigger value="savings" className="text-xs md:text-sm">
+              <Percent className="mr-1 md:mr-2" size={14} weight="bold" />
+              <span className="hidden sm:inline">Savings</span>
+            </TabsTrigger>
             <TabsTrigger value="routes" className="text-xs md:text-sm">
               <MapTrifold className="mr-1 md:mr-2" size={14} weight="duotone" />
               <span className="hidden sm:inline">Routes</span>
@@ -217,6 +236,14 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           
           <TabsContent value="browse" className="mt-6">
             <BrowseJobs user={user} />
+          </TabsContent>
+          
+          <TabsContent value="savings" className="mt-6">
+            <FeeSavingsDashboard
+              totalEarningsThisYear={yearlyStats.totalEarningsThisYear}
+              jobsCompletedThisYear={yearlyStats.jobsCompletedThisYear}
+              averageJobValue={yearlyStats.averageJobValue}
+            />
           </TabsContent>
           
           <TabsContent value="routes" className="mt-6">
