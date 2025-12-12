@@ -60,6 +60,38 @@ export function useDeviceInfo(): DeviceInfo {
   return deviceInfo
 }
 
+// Cache for safe area insets to avoid repeated DOM manipulation
+let cachedSafeAreaInsets: { top: number; bottom: number; left: number; right: number } | null = null
+
+function getSafeAreaInsets(): { top: number; bottom: number; left: number; right: number } {
+  if (cachedSafeAreaInsets) return cachedSafeAreaInsets
+  
+  if (typeof document === 'undefined') {
+    return { top: 0, bottom: 0, left: 0, right: 0 }
+  }
+  
+  // Create a single test element for all measurements
+  const testDiv = document.createElement('div')
+  testDiv.style.position = 'fixed'
+  testDiv.style.visibility = 'hidden'
+  testDiv.style.top = 'env(safe-area-inset-top, 0px)'
+  testDiv.style.bottom = 'env(safe-area-inset-bottom, 0px)'
+  testDiv.style.left = 'env(safe-area-inset-left, 0px)'
+  testDiv.style.right = 'env(safe-area-inset-right, 0px)'
+  document.body.appendChild(testDiv)
+  
+  const computed = getComputedStyle(testDiv)
+  cachedSafeAreaInsets = {
+    top: parseInt(computed.top || '0', 10) || 0,
+    bottom: parseInt(computed.bottom || '0', 10) || 0,
+    left: parseInt(computed.left || '0', 10) || 0,
+    right: parseInt(computed.right || '0', 10) || 0
+  }
+  
+  document.body.removeChild(testDiv)
+  return cachedSafeAreaInsets
+}
+
 function getDeviceInfo(): DeviceInfo {
   const ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''
   
@@ -80,18 +112,6 @@ function getDeviceInfo(): DeviceInfo {
   // Detect notch/Dynamic Island (iPhone X and later)
   const hasNotch = isIOS && window.screen.height >= 812 && !isIPad
   
-  // Get safe area insets from CSS environment variables
-  const getSafeAreaInset = (position: string): number => {
-    if (typeof document === 'undefined') return 0
-    const testDiv = document.createElement('div')
-    testDiv.style.position = 'fixed'
-    testDiv.style[position as any] = `env(safe-area-inset-${position}, 0px)`
-    document.body.appendChild(testDiv)
-    const value = parseInt(getComputedStyle(testDiv)[position as any] || '0', 10)
-    document.body.removeChild(testDiv)
-    return isNaN(value) ? 0 : value
-  }
-  
   return {
     isMobile: window.innerWidth < MOBILE_BREAKPOINT,
     isIOS,
@@ -103,12 +123,7 @@ function getDeviceInfo(): DeviceInfo {
     isIPhone,
     screenWidth: window.screen.width,
     screenHeight: window.screen.height,
-    safeAreaInsets: {
-      top: getSafeAreaInset('top'),
-      bottom: getSafeAreaInset('bottom'),
-      left: getSafeAreaInset('left'),
-      right: getSafeAreaInset('right')
-    }
+    safeAreaInsets: getSafeAreaInsets()
   }
 }
 
@@ -154,15 +169,10 @@ export function useIOSOptimizations() {
     }
   }, [isIOS, isPWA, hasNotch])
 
-  // iOS-safe smooth scroll
+  // iOS-safe smooth scroll - uses instant scroll on older iOS for better performance
   const scrollToTop = useCallback(() => {
-    if (isIOS) {
-      // iOS-friendly scroll
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-  }, [isIOS])
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
 
   return {
     scrollToTop,

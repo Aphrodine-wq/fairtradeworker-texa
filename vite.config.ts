@@ -75,8 +75,6 @@ export default defineConfig({
       'date-fns',
       'clsx',
     ],
-    // Exclude heavy packages from pre-bundling if needed
-    exclude: ['@github/spark'],
   },
   // Performance optimizations
   esbuild: {
