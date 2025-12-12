@@ -227,6 +227,7 @@ export interface PartialPayment {
   amount: number
   paidAt: string
   method?: string
+  stripePaymentIntentId?: string
 }
 
 export interface CompanyInvoice {
@@ -242,6 +243,70 @@ export interface CompanyInvoice {
   autoCharge: boolean
   chargeDate: string
   createdAt: string
+}
+
+export interface PaymentMethod {
+  id: string
+  type: 'card' | 'bank_account' | 'ach'
+  isDefault: boolean
+  card?: {
+    brand: string
+    last4: string
+    expMonth: number
+    expYear: number
+  }
+  bankAccount?: {
+    bankName: string
+    last4: string
+    accountType: 'checking' | 'savings'
+  }
+  createdAt: string
+}
+
+export interface StripePayment {
+  id: string
+  stripePaymentIntentId: string
+  amount: number
+  platformFee: number
+  stripeFee: number
+  netAmount: number
+  status: 'pending' | 'processing' | 'succeeded' | 'failed' | 'canceled'
+  paymentMethodId: string
+  jobId: string
+  milestoneId?: string
+  homeownerId: string
+  contractorId: string
+  createdAt: string
+  processedAt?: string
+  failureReason?: string
+}
+
+export interface ContractorPayout {
+  id: string
+  contractorId: string
+  amount: number
+  fee: number
+  netAmount: number
+  type: 'instant' | 'standard'
+  status: 'pending' | 'processing' | 'paid' | 'failed'
+  bankAccountId: string
+  initiatedAt: string
+  processedAt?: string
+  expectedArrival?: string
+  failureReason?: string
+}
+
+export interface BankAccount {
+  id: string
+  userId: string
+  accountType: 'checking' | 'savings'
+  last4: string
+  routingNumberLast4: string
+  bankName?: string
+  verified: boolean
+  isDefault: boolean
+  createdAt: string
+  verifiedAt?: string
 }
 
 export interface Territory {
