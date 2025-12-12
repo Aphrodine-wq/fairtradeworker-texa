@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image } from '@phosphor-icons/react'
+import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Slider } from '@/components/ui/slider'
 import { toast } from 'sonner'
 
 interface ProjectInfo {
@@ -18,6 +19,9 @@ interface Photo {
   file: File
   preview: string
   name: string
+  originalSize: number
+  compressedSize?: number
+  isCompressed?: boolean
 }
 
 export function AIPhotoScoper() {
@@ -33,16 +37,21 @@ export function AIPhotoScoper() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
+  const [compressionQuality, setCompressionQuality] = useState(80)
+  const [compressing, setCompressing] = useState(false)
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     const newPhotos = files.map(file => ({
       file,
       preview: URL.createObjectURL(file),
-      name: file.name
+      name: file.name,
+      originalSize: file.size,
+      isCompressed: false
     }))
     setPhotos([...photos, ...newPhotos])
     setError('')
+    toast.success(`${files.length} photo${files.length > 1 ? 's' : ''} added`)
   }
 
   const removePhoto = (index: number) => {
@@ -50,6 +59,135 @@ export function AIPhotoScoper() {
     URL.revokeObjectURL(newPhotos[index].preview)
     newPhotos.splice(index, 1)
     setPhotos(newPhotos)
+  }
+
+  const compressImage = async (file: File, quality: number): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const img = new window.Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          let width = img.width
+          let height = img.height
+          
+          const maxDimension = 2048
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = (height / width) * maxDimension
+              width = maxDimension
+            } else {
+              width = (width / height) * maxDimension
+              height = maxDimension
+            }
+          }
+          
+          canvas.width = width
+          canvas.height = height
+          
+          const ctx = canvas.getContext('2d')
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'))
+            return
+          }
+          
+          ctx.drawImage(img, 0, 0, width, height)
+          
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error('Failed to compress image'))
+                return
+              }
+              const compressedFile = new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              })
+              resolve(compressedFile)
+            },
+            'image/jpeg',
+            quality / 100
+          )
+        }
+        img.onerror = () => reject(new Error('Failed to load image'))
+        img.src = e.target?.result as string
+      }
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
+  }
+
+  const compressBatch = async () => {
+    if (photos.length === 0) {
+      toast.error('No photos to compress')
+      return
+    }
+
+    setCompressing(true)
+    let successCount = 0
+    let totalSaved = 0
+
+    try {
+      const compressedPhotos = await Promise.all(
+        photos.map(async (photo) => {
+          try {
+            if (photo.isCompressed) {
+              return photo
+            }
+
+            const compressed = await compressImage(photo.file, compressionQuality)
+            const saved = photo.originalSize - compressed.size
+            totalSaved += saved
+            successCount++
+
+            URL.revokeObjectURL(photo.preview)
+            return {
+              ...photo,
+              file: compressed,
+              preview: URL.createObjectURL(compressed),
+              compressedSize: compressed.size,
+              isCompressed: true
+            }
+          } catch (err) {
+            console.error(`Failed to compress ${photo.name}:`, err)
+            return photo
+          }
+        })
+      )
+
+      setPhotos(compressedPhotos)
+      
+      const savedMB = (totalSaved / (1024 * 1024)).toFixed(2)
+      toast.success(
+        `Compressed ${successCount} photo${successCount !== 1 ? 's' : ''} • Saved ${savedMB} MB`,
+        { duration: 4000 }
+      )
+    } catch (err) {
+      console.error('Batch compression error:', err)
+      toast.error('Failed to compress some photos')
+    } finally {
+      setCompressing(false)
+    }
+  }
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
+  }
+
+  const getTotalSize = () => {
+    return photos.reduce((sum, photo) => {
+      return sum + (photo.compressedSize || photo.originalSize)
+    }, 0)
+  }
+
+  const getCompressionStats = () => {
+    const original = photos.reduce((sum, p) => sum + p.originalSize, 0)
+    const current = getTotalSize()
+    const saved = original - current
+    const percent = original > 0 ? ((saved / original) * 100).toFixed(1) : '0'
+    return { original, current, saved, percent }
   }
 
   const convertToBase64 = (file: File): Promise<string> => {
@@ -296,10 +434,16 @@ Generate a complete, professional scope document now.`
                 </label>
 
                 {photos.length > 0 && (
-                  <div className="mt-5">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-medium text-foreground">{photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded</span>
+                  <div className="mt-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-foreground">
+                        {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        Total: {formatFileSize(getTotalSize())}
+                      </span>
                     </div>
+                    
                     <div className="grid grid-cols-3 gap-3">
                       {photos.map((photo, index) => (
                         <div key={index} className="relative group">
@@ -308,6 +452,15 @@ Generate a complete, professional scope document now.`
                             alt={`Upload ${index + 1}`}
                             className="w-full h-28 object-cover rounded-lg border-2 border-border group-hover:border-primary transition-all"
                           />
+                          {photo.isCompressed && (
+                            <div className="absolute top-1 left-1 bg-green-500 text-white text-xs px-1.5 py-0.5 rounded flex items-center gap-1">
+                              <CheckCircle weight="fill" className="w-3 h-3" />
+                              Compressed
+                            </div>
+                          )}
+                          <div className="absolute bottom-1 left-1 right-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded truncate">
+                            {formatFileSize(photo.compressedSize || photo.originalSize)}
+                          </div>
                           <button
                             onClick={() => removePhoto(index)}
                             className="absolute -top-2 -right-2 bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-full w-7 h-7 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-lg font-bold"
@@ -321,6 +474,101 @@ Generate a complete, professional scope document now.`
                 )}
               </CardContent>
             </Card>
+
+            {photos.length > 0 && (
+              <Card className="border-2 border-primary/20 bg-muted/30">
+                <CardHeader>
+                  <div className="flex items-center gap-3 pb-3 border-b border-border">
+                    <ArrowsClockwise className="w-6 h-6 text-primary" />
+                    <CardTitle className="text-2xl">Batch Compression</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <Label className="text-sm font-semibold">
+                        Compression Quality: {compressionQuality}%
+                      </Label>
+                      <span className="text-xs text-muted-foreground">
+                        {compressionQuality >= 90 ? 'Maximum' : compressionQuality >= 70 ? 'High' : compressionQuality >= 50 ? 'Medium' : 'Low'}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[compressionQuality]}
+                      onValueChange={(value) => setCompressionQuality(value[0])}
+                      min={30}
+                      max={95}
+                      step={5}
+                      className="w-full"
+                      disabled={compressing}
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
+                      <span>Smaller size</span>
+                      <span>Better quality</span>
+                    </div>
+                  </div>
+
+                  {(() => {
+                    const stats = getCompressionStats()
+                    const hasCompressed = photos.some(p => p.isCompressed)
+                    
+                    return hasCompressed ? (
+                      <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-3 space-y-1">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-green-900 dark:text-green-100 font-medium">Compression Results:</span>
+                          <CheckCircle weight="fill" className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        </div>
+                        <div className="text-xs text-green-800 dark:text-green-200 space-y-0.5">
+                          <div className="flex justify-between">
+                            <span>Original:</span>
+                            <span className="font-mono">{formatFileSize(stats.original)}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Compressed:</span>
+                            <span className="font-mono">{formatFileSize(stats.current)}</span>
+                          </div>
+                          <div className="flex justify-between font-semibold pt-1 border-t border-green-200 dark:border-green-800">
+                            <span>Saved:</span>
+                            <span className="font-mono">{formatFileSize(stats.saved)} ({stats.percent}%)</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                        <p className="text-xs text-blue-900 dark:text-blue-100">
+                          <strong>Tip:</strong> Compressing photos reduces upload time and improves processing speed. 
+                          Recommended quality: 80% for best balance.
+                        </p>
+                      </div>
+                    )
+                  })()}
+
+                  <Button
+                    onClick={compressBatch}
+                    disabled={compressing || photos.every(p => p.isCompressed)}
+                    className="w-full"
+                    variant={photos.every(p => p.isCompressed) ? "outline" : "default"}
+                  >
+                    {compressing ? (
+                      <>
+                        <CircleNotch className="w-4 h-4 animate-spin mr-2" />
+                        Compressing {photos.length} Photo{photos.length !== 1 ? 's' : ''}...
+                      </>
+                    ) : photos.every(p => p.isCompressed) ? (
+                      <>
+                        <CheckCircle weight="fill" className="w-4 h-4 mr-2" />
+                        All Photos Compressed
+                      </>
+                    ) : (
+                      <>
+                        <ArrowsClockwise className="w-4 h-4 mr-2" />
+                        Compress {photos.filter(p => !p.isCompressed).length} Photo{photos.filter(p => !p.isCompressed).length !== 1 ? 's' : ''}
+                      </>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
 
             <Button
               onClick={generateScope}
