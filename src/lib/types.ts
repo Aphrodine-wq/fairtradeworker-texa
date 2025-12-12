@@ -66,6 +66,10 @@ export interface Job {
   projectUpdates?: ProjectUpdate[]
   projectSchedule?: ProjectSchedule
   multiTrade?: boolean
+  isUrgent?: boolean
+  urgentDeadline?: string
+  bundledTasks?: BundledTask[]
+  questions?: Question[]
 }
 
 export interface Bid {
@@ -79,6 +83,36 @@ export interface Bid {
   createdAt: string
   responseTimeMinutes?: number
   isLightningBid?: boolean
+  selectedTimeSlot?: string
+}
+
+export interface BundledTask {
+  id: string
+  title: string
+  description: string
+  estimatedCost: number
+}
+
+export interface Question {
+  id: string
+  jobId: string
+  contractorId: string
+  contractorName: string
+  question: string
+  answer?: string
+  answeredAt?: string
+  createdAt: string
+}
+
+export interface TimeSlot {
+  id: string
+  contractorId: string
+  date: string
+  startTime: string
+  endTime: string
+  isBooked: boolean
+  jobId?: string
+  createdAt: string
 }
 
 export interface ScopeChange {
