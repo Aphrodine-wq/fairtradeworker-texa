@@ -262,6 +262,34 @@ MIT – keep core values free forever.
 
 ---
 
+## 🧪 TESTING
+
+### End-to-End Test Suite
+
+Comprehensive test coverage for all user types and features:
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Coverage
+- **130+ test cases** across 7 test files
+- **All 3 user types**: Homeowner, Contractor, Operator
+- **All major features**: Jobs, Bids, Payments, Referrals, CRM, Invoicing
+- **Integration tests**: Payment processing, milestone management
+- **Viral features**: FRESH jobs, Lightning bids, referral system
+
+See `E2E_TESTING_IMPLEMENTATION_COMPLETE.md` for detailed test documentation.
+
+---
+
 ## 🔧 DEVELOPMENT NOTES
 
 ### Data Persistence
