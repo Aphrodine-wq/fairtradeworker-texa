@@ -16,7 +16,7 @@ import { JobMap } from "./JobMap"
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
@@ -134,15 +134,17 @@ const JobCard = memo(function JobCard({
               onClick={() => onViewPhotos(photos)}
               className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
             >
-              {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
-            </Badge>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-              <span>{job.bids.length}</span>
-              <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
-            </div>
-          </div>
-          <CardTitle className="text-lg leading-tight">{job.title}</CardTitle>
-          <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
+              <img
+                src={photos[0]}
+                alt="Job preview"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Images size={32} className="text-white" weight="duotone" />
+              </div>
+            </button>
+          )}
         </div>
       </CardHeader>
       
