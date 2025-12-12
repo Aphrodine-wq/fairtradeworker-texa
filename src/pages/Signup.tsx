@@ -114,7 +114,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="homeowner">Homeowner</SelectItem>
-                  <SelectItem value="contractor">Contractor</SelectItem>
+                  <SelectItem value="contractor">Contractor/Subcontractor</SelectItem>
                   <SelectItem value="operator">Operator</SelectItem>
                 </SelectContent>
               </Select>

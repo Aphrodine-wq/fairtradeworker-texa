@@ -465,7 +465,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
           <DialogHeader>
             <DialogTitle>Complete Payment</DialogTitle>
             <DialogDescription>
-              Pay contractor and $20 platform fee. Contractor keeps 100% of their bid.
+              Pay contractor/subcontractor and $20 platform fee. Contractor/Subcontractor keeps 100% of their bid.
             </DialogDescription>
           </DialogHeader>
 
@@ -474,7 +474,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               <Card className="bg-muted/50">
                 <CardContent className="pt-6 space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Contractor bid:</span>
+                    <span className="text-muted-foreground">Contractor/Subcontractor bid:</span>
                     <span className="font-semibold">${selectedBid.amount}</span>
                   </div>
                   <div className="flex justify-between">

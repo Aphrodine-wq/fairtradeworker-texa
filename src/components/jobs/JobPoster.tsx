@@ -214,7 +214,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
           <div className="text-center space-y-2">
             <h1 className="text-3xl font-heading font-bold text-primary">Job Posted Successfully! 🎉</h1>
             <p className="text-muted-foreground text-lg">
-              Contractors can now bid on your job. Share your referral code below to earn $20!
+              Contractors/Subcontractors can now bid on your job. Share your referral code below to earn $20!
             </p>
           </div>
           

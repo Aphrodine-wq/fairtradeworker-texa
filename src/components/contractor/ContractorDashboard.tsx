@@ -97,7 +97,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Contractor Dashboard</h1>
+            <h1 className="text-3xl font-bold">Contractor/Subcontractor Dashboard</h1>
             <p className="text-muted-foreground">Welcome back, {user.fullName}!</p>
           </div>
           <div className="flex items-center gap-4 flex-wrap">

@@ -273,7 +273,7 @@ export default function PostJobScreen() {
             </View>
             <Text style={styles.infoText}>
               Our AI will analyze your project and provide an instant price estimate. 
-              Contractors will review this scope when submitting their bids.
+              Contractors/Subcontractors will review this scope when submitting their bids.
             </Text>
           </Card>
 

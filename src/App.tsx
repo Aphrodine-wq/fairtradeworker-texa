@@ -68,8 +68,20 @@ const ProjectMilestones = lazy(() => retryImport(() =>
 const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
 ))
+const AboutPage = lazy(() => retryImport(() =>
+  import("@/pages/About").then(m => ({ default: m.AboutPage }))
+))
+const ContactPage = lazy(() => retryImport(() =>
+  import("@/pages/Contact").then(m => ({ default: m.ContactPage }))
+))
+const PrivacyPage = lazy(() => retryImport(() =>
+  import("@/pages/Privacy").then(m => ({ default: m.PrivacyPage }))
+))
+const TermsPage = lazy(() => retryImport(() =>
+  import("@/pages/Terms").then(m => ({ default: m.TermsPage }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -237,7 +249,9 @@ function App() {
           ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
-        return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') 
+          ? <BrowseJobs user={currentUser} /> 
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         if (!currentUser) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
         
@@ -250,11 +264,11 @@ function App() {
         }
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'invoices':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><InvoiceManager user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
@@ -280,6 +294,30 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <PhotoScoperPage />
+          </Suspense>
+        )
+      case 'about':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <AboutPage />
+          </Suspense>
+        )
+      case 'contact':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ContactPage />
+          </Suspense>
+        )
+      case 'privacy':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <PrivacyPage />
+          </Suspense>
+        )
+      case 'terms':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <TermsPage />
           </Suspense>
         )
       default:
@@ -316,7 +354,7 @@ function App() {
           </Suspense>
         </ErrorBoundary>
       </main>
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
       <Toaster position="top-center" />
     </div>
   )
