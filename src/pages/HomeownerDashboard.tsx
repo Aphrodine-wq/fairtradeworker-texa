@@ -356,3 +356,5 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
     </div>
   )
 }
+
+export default HomeownerDashboard

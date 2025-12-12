@@ -491,3 +491,5 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
     </div>
   )
 }
+
+export default OperatorDashboard

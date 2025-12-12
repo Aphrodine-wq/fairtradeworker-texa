@@ -499,3 +499,5 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
     </div>
   )
 }
+
+export default ContractorDashboardNew

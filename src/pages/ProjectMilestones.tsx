@@ -813,6 +813,8 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
   )
 }
 
+export default ProjectMilestones
+
 interface MilestoneTimelineProps {
   milestones: Milestone[]
   onRequestPayment?: (milestone: Milestone) => void
