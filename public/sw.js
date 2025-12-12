@@ -223,30 +223,48 @@ async function clearOfflineQueue() {
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
   
+  const title = data.title || 'FairTradeWorker Texas';
   const options = {
     body: data.body || 'New notification',
     icon: '/icon-192.png',
-    badge: '/badge-72.png',
-    vibrate: [200, 100, 200],
-    data: data.data || {},
-    actions: data.actions || []
+    badge: '/icon-192.png',
+    data: {
+      url: data.url || '/',
+      jobId: data.jobId,
+      ...data.data
+    },
+    actions: data.actions || [
+      { action: 'view', title: 'View' },
+      { action: 'dismiss', title: 'Dismiss' }
+    ],
+    tag: data.tag || 'default',
+    requireInteraction: data.requireInteraction || false,
+    timestamp: Date.now()
   };
   
   event.waitUntil(
-    self.registration.showNotification(data.title || 'FairTradeWorker', options)
+    self.registration.showNotification(title, options)
   );
 });
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true })
-      .then(clientList => {
-        if (clientList.length > 0) {
-          return clientList[0].focus();
-        }
-        return clients.openWindow('/');
-      })
-  );
+  const urlToOpen = event.notification.data?.url || '/';
+  
+  if (event.action === 'view' || !event.action) {
+    event.waitUntil(
+      clients.matchAll({ type: 'window', includeUncontrolled: true })
+        .then(clientList => {
+          for (const client of clientList) {
+            if (client.url === urlToOpen && 'focus' in client) {
+              return client.focus();
+            }
+          }
+          if (clients.openWindow) {
+            return clients.openWindow(urlToOpen);
+          }
+        })
+    );
+  }
 });
