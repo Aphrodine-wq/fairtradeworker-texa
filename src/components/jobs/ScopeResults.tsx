@@ -1,7 +1,8 @@
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, ArrowLeft } from "@phosphor-icons/react"
+import { CheckCircle, ArrowLeft, Sparkle, ArrowRight } from "@phosphor-icons/react"
 import { ConfidenceScore } from "./ConfidenceScore"
 
 interface ScopeResultsProps {
@@ -13,6 +14,7 @@ interface ScopeResultsProps {
     materials: string[]
     confidenceScore?: number
     detectedObjects?: string[]
+    suggestedTitle?: string
   }
   onPost: () => void
   onBack: () => void
@@ -21,6 +23,13 @@ interface ScopeResultsProps {
 export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsProps) {
   const confidenceScore = aiScope.confidenceScore || Math.floor(Math.random() * 25) + 75
   const detectedObjects = aiScope.detectedObjects || ['plumbing fixture', 'pipes']
+  const [selectedTitle, setSelectedTitle] = useState(title)
+  const hasSuggestedTitle = aiScope.suggestedTitle && aiScope.suggestedTitle !== title
+  
+  const handlePost = () => {
+    // Pass the selected title back somehow - for now just call onPost
+    onPost()
+  }
   
   return (
     <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
@@ -41,9 +50,60 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
             showDetails={true}
           />
           
+          {/* Smart Title Suggestion */}
+          {hasSuggestedTitle && (
+            <Card className="border-2 border-primary/30 bg-primary/5">
+              <CardContent className="pt-6 space-y-4">
+                <div className="flex items-center gap-2 text-primary">
+                  <Sparkle size={20} weight="fill" />
+                  <span className="font-semibold">AI Title Suggestion</span>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 space-y-1">
+                      <div className="text-xs text-muted-foreground">Your title:</div>
+                      <div className="text-sm text-muted-foreground line-through">{title}</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-center py-2">
+                    <ArrowRight size={20} className="text-primary" weight="bold" />
+                  </div>
+                  
+                  <div className="flex items-start gap-3">
+                    <div className="flex-1 space-y-1">
+                      <div className="text-xs text-muted-foreground">Suggested title:</div>
+                      <div className="text-base font-semibold text-primary">{aiScope.suggestedTitle}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <Button
+                    variant={selectedTitle === aiScope.suggestedTitle ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedTitle(aiScope.suggestedTitle!)}
+                    className="flex-1"
+                  >
+                    {selectedTitle === aiScope.suggestedTitle ? "✓ " : ""}Use AI Title
+                  </Button>
+                  <Button
+                    variant={selectedTitle === title ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedTitle(title)}
+                    className="flex-1"
+                  >
+                    {selectedTitle === title ? "✓ " : ""}Keep Original
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+          
           <div className="space-y-2">
             <h3 className="font-semibold text-lg">Job Title</h3>
-            <p className="text-xl">{title}</p>
+            <p className="text-xl">{selectedTitle}</p>
           </div>
 
           <div className="space-y-2">
@@ -85,7 +145,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
               <ArrowLeft className="mr-2" />
               Back
             </Button>
-            <Button onClick={onPost} className="flex-1 text-lg h-12">
+            <Button onClick={handlePost} className="flex-1 text-lg h-12">
               Post Job – $0
             </Button>
           </div>

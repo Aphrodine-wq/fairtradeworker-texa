@@ -94,8 +94,43 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
 
     const mockFile = new File(["mock"], "mock.txt")
     const result = await fakeAIScope(mockFile)
+    
+    // Generate smart title suggestion
+    const suggestedTitle = generateSmartTitle(title, description, result)
+    result.suggestedTitle = suggestedTitle
+    
     setAiResult(result)
     setStep('results')
+  }
+
+  // Helper function to generate smart titles
+  const generateSmartTitle = (originalTitle: string, desc: string, aiResult: any): string => {
+    // Simple smart title generation based on keywords
+    const titleLower = originalTitle.toLowerCase()
+    const descLower = (desc || '').toLowerCase()
+    const combined = titleLower + ' ' + descLower
+    
+    // Check for common patterns and improve them
+    if (combined.includes('help') || combined.includes('need') || combined.includes('fix')) {
+      // Try to extract specific items
+      if (combined.includes('faucet')) return 'Kitchen Faucet Repair'
+      if (combined.includes('toilet')) return 'Toilet Repair'
+      if (combined.includes('drain')) return 'Drain Cleaning'
+      if (combined.includes('outlet')) return 'Electrical Outlet Repair'
+      if (combined.includes('door')) return 'Door Repair/Installation'
+      if (combined.includes('window')) return 'Window Repair'
+      if (combined.includes('leak')) return 'Leak Repair'
+      if (combined.includes('paint')) return 'Interior Painting'
+      if (combined.includes('drywall')) return 'Drywall Repair'
+    }
+    
+    // If title is too short or generic, use AI scope
+    if (originalTitle.length < 10 || ['fix', 'help', 'repair', 'need'].some(word => titleLower === word)) {
+      const scopeSentence = aiResult.scope?.split('.')[0]
+      return scopeSentence || originalTitle
+    }
+    
+    return originalTitle // Return original if no improvement found
   }
 
   const handlePostJob = () => {
