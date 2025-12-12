@@ -65,7 +65,7 @@ export default function ProfileScreen() {
 
   const roleLabels = {
     homeowner: 'Homeowner',
-    contractor: 'Contractor',
+    contractor: 'Contractor/Subcontractor',
     operator: 'Operator',
   };
 
