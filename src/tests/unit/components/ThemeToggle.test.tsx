@@ -6,6 +6,21 @@ describe('ThemeToggle', () => {
   beforeEach(() => {
     localStorage.clear()
     document.documentElement.classList.remove('dark')
+    
+    // Mock matchMedia
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation(query => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    })
   })
 
   it('renders the theme toggle button', () => {
@@ -65,7 +80,8 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />)
     const button = screen.getByRole('button')
     
-    expect(button).toHaveClass('min-w-[40px]')
-    expect(button).toHaveClass('min-h-[40px]')
+    // Check if button has minimum size classes
+    expect(button.className).toContain('min-w-[44px]')
+    expect(button.className).toContain('min-h-[44px]')
   })
 })
