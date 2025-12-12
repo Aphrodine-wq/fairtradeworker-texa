@@ -21,7 +21,7 @@ export const BackgroundBlobs = memo(() => {
       
       {/* Center wash */}
       <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-blue-50/30 to-transparent rounded-full blur-3xl"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl"
         style={{
           background: 'radial-gradient(circle, rgba(239, 246, 255, 0.3) 0%, transparent 70%)'
         }}
