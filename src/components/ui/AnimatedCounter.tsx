@@ -26,7 +26,7 @@ export function AnimatedCounter({
       setDisplayValue(latest)
     })
     return () => unsubscribe()
-  }, [value, spring, display])
+  }, [value])
 
   return (
     <motion.span
