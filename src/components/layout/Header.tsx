@@ -247,6 +247,13 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               Dashboard
             </NavButton>
             <NavButton 
+              onClick={() => handleNav('browse-jobs', 'jobs')} 
+              isActive={activeTab === 'jobs'}
+              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
+            >
+              Browse Jobs
+            </NavButton>
+            <NavButton 
               onClick={() => handleNav('territory-map', 'territory')} 
               isActive={activeTab === 'territory'}
               icon={<MapPin size={16} weight={activeTab === 'territory' ? 'fill' : 'regular'} />}
@@ -333,10 +340,24 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
             </>
           )}
           {user!.role === 'operator' && (
-            <DropdownMenuItem onClick={() => onNavigate('territory-map')} className="cursor-pointer py-2.5 rounded-md">
-              <MapPin className="mr-3" size={18} />
-              <span className="font-medium">Territory Map</span>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem onClick={() => onNavigate('territory-map')} className="cursor-pointer py-2.5 rounded-md">
+                <MapPin className="mr-3" size={18} />
+                <span className="font-medium">Territory Map</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('crm')} className="cursor-pointer py-2.5 rounded-md">
+                <Users className="mr-3" size={18} />
+                <span className="font-medium">CRM</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('invoices')} className="cursor-pointer py-2.5 rounded-md">
+                <Receipt className="mr-3" size={18} />
+                <span className="font-medium">Invoices</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('photo-scoper')} className="cursor-pointer py-2.5 rounded-md">
+                <Camera className="mr-3" size={18} />
+                <span className="font-medium">Photo Scoper</span>
+              </DropdownMenuItem>
+            </>
           )}
           {user!.isOperator && user!.role !== 'operator' && (
             <DropdownMenuItem onClick={() => onNavigate('revenue-dashboard')} className="cursor-pointer py-2.5 rounded-md">

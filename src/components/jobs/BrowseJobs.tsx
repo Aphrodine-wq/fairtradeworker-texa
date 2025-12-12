@@ -1,4 +1,4 @@
-import { useState, useMemo, memo, useCallback } from "react"
+import { useState, useMemo, memo, useCallback, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -6,14 +6,17 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { LightningBadge } from "./LightningBadge"
 import { DriveTimeWarning } from "./DriveTimeWarning"
+import { JobMap } from "./JobMap"
+import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
@@ -30,14 +33,58 @@ const JobCard = memo(function JobCard({
   onViewPhotos: (photos: string[]) => void
   onPlaceBid: (job: Job) => void
 }) {
+  const [timeRemaining, setTimeRemaining] = useState<string>("")
+  
   const isFresh = useMemo(() => {
     const jobAge = Date.now() - new Date(job.createdAt).getTime()
     const fifteenMinutes = 15 * 60 * 1000
     return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
   }, [job.createdAt, job.size, job.bids.length])
 
+  const isUrgent = job.isUrgent && job.urgentDeadline
+  const isExpired = isUrgent && new Date(job.urgentDeadline!) < new Date()
+
+  useEffect(() => {
+    if (!isUrgent || isExpired) return
+
+    const updateTimer = () => {
+      const now = Date.now()
+      const deadline = new Date(job.urgentDeadline!).getTime()
+      const diff = deadline - now
+
+      if (diff <= 0) {
+        setTimeRemaining("EXPIRED")
+        return
+      }
+
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+      setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`)
+    }
+
+    updateTimer()
+    const interval = setInterval(updateTimer, 1000)
+    return () => clearInterval(interval)
+  }, [isUrgent, isExpired, job.urgentDeadline])
+
   const photos = useMemo(() => job.photos || [], [job.photos])
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
+
+  // Calculate recent bids (last 5 minutes)
+  const recentBidsCount = useMemo(() => {
+    const fiveMinutesAgo = Date.now() - (5 * 60 * 1000)
+    return job.bids.filter(bid => {
+      const bidTime = new Date(bid.createdAt).getTime()
+      return bidTime >= fiveMinutesAgo
+    }).length
+  }, [job.bids])
+
+  // Get viewing contractors count
+  const viewingCount = useMemo(() => {
+    return job.viewingContractors?.length || 0
+  }, [job.viewingContractors])
 
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
@@ -53,7 +100,7 @@ const JobCard = memo(function JobCard({
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge 
                 variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
                 className="text-sm font-semibold"
@@ -64,6 +111,20 @@ const JobCard = memo(function JobCard({
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
+              
+              {/* Social Proof Indicators */}
+              {viewingCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 animate-pulse">
+                  <Eye size={12} className="mr-1" weight="duotone" />
+                  {viewingCount} viewing
+                </Badge>
+              )}
+              {recentBidsCount > 0 && (
+                <Badge variant="outline" className="text-xs bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800 animate-pulse">
+                  <Users size={12} className="mr-1" weight="duotone" />
+                  {recentBidsCount} {recentBidsCount === 1 ? 'bid' : 'bids'} in 5 min
+                </Badge>
+              )}
             </div>
             <CardTitle className="text-xl leading-tight mb-2 text-gray-900">{job.title}</CardTitle>
             <CardDescription className="text-sm line-clamp-2 text-gray-600">{job.description}</CardDescription>
@@ -73,23 +134,19 @@ const JobCard = memo(function JobCard({
               onClick={() => onViewPhotos(photos)}
               className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
             >
-              <img
-                src={photos[0]}
-                alt="Job preview"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                loading="lazy"
-              />
-              {photos.length > 1 && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Images weight="bold" size={24} className="text-white" />
-                  <span className="text-white text-xs ml-1">+{photos.length - 1}</span>
-                </div>
-              )}
-            </button>
-          )}
+              {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
+            </Badge>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <span>{job.bids.length}</span>
+              <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
+            </div>
+          </div>
+          <CardTitle className="text-lg leading-tight">{job.title}</CardTitle>
+          <CardDescription className="text-sm line-clamp-2">{job.description}</CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4 pt-0">
+      
+      <CardContent className="space-y-3 pt-0 flex-grow">
         {job.aiScope && (
           <div className="glass-subtle rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-2 text-sm font-semibold text-blue-600">
@@ -113,19 +170,25 @@ const JobCard = memo(function JobCard({
 
         {materials.length > 0 && (
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Package weight="duotone" size={18} className="text-muted-foreground" />
-              <span className="text-sm font-semibold text-muted-foreground">Required Materials</span>
+            <div className="flex items-center gap-2 mb-1">
+              <Package weight="duotone" size={14} className="text-muted-foreground" />
+              <span className="text-xs font-semibold text-muted-foreground">Materials</span>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {materials.map((material, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
+            <div className="flex flex-wrap gap-1">
+              {materials.slice(0, 3).map((material, idx) => (
+                <Badge key={idx} variant="outline" className="text-xs py-0">
                   {material}
                 </Badge>
               ))}
+              {materials.length > 3 && (
+                <Badge variant="outline" className="text-xs py-0">
+                  +{materials.length - 3}
+                </Badge>
+              )}
             </div>
           </div>
         )}
+      </CardContent>
 
         {photos.length > 1 && (
           <div>
@@ -185,6 +248,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
 
   const myScheduledJobs = useMemo(() => {
     return (jobs || []).filter(job =>
@@ -238,6 +302,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setSelectedJob(job)
     setBidAmount("")
     setBidMessage("")
+    setSaveAsTemplate(false)
+    setTemplateName("")
     setDialogOpen(true)
   }, [])
 
@@ -246,6 +312,14 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     setLightboxIndex(0)
     setLightboxOpen(true)
   }, [])
+
+  const handleTemplateSelect = useCallback((templateId: string) => {
+    const template = bidTemplates.find(t => t.id === templateId)
+    if (template) {
+      setBidMessage(template.message)
+      toast.success(`Template "${template.name}" loaded`)
+    }
+  }, [bidTemplates])
 
   const handleSubmitBid = () => {
     if (!selectedJob) return
@@ -259,6 +333,20 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     if (!bidMessage.trim()) {
       toast.error("Please add a message with your bid")
       return
+    }
+
+    // Save as template if requested
+    if (saveAsTemplate && templateName.trim()) {
+      const newTemplate: BidTemplate = {
+        id: `template-${Date.now()}`,
+        contractorId: user.id,
+        name: templateName.trim(),
+        message: bidMessage,
+        useCount: 0,
+        createdAt: new Date().toISOString()
+      }
+      setBidTemplates((current) => [...(current || []), newTemplate])
+      toast.success(`Template "${templateName}" saved!`)
     }
 
     const jobTime = new Date(selectedJob.createdAt).getTime()
@@ -300,7 +388,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   if (sortedOpenJobs.length === 0) {
     return (
       <div className="container mx-auto px-4 md:px-8 py-12">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center py-16">
             <Wrench className="mx-auto mb-4 text-muted-foreground" size={64} weight="duotone" />
             <h2 className="text-2xl font-bold mb-2">No Jobs Available</h2>
@@ -313,7 +401,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto space-y-6">
         <div className="space-y-4">
           <div>
             <h1 className="text-4xl font-bold mb-2">Browse Jobs</h1>
@@ -333,6 +421,21 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <TabsTrigger value="large">🔴 Large</TabsTrigger>
               </TabsList>
             </Tabs>
+            
+            <div className="flex-1" />
+            
+            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
+              <TabsList>
+                <TabsTrigger value="list">
+                  <List weight="duotone" size={18} className="mr-2" />
+                  List
+                </TabsTrigger>
+                <TabsTrigger value="map">
+                  <MapTrifold weight="duotone" size={18} className="mr-2" />
+                  Map
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -344,14 +447,18 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
         </div>
 
         <div className="space-y-6">
-          {sortedOpenJobs.map(job => (
-            <JobCard
-              key={job.id}
-              job={job}
-              onViewPhotos={handlePhotoClick}
-              onPlaceBid={handleBidClick}
-            />
-          ))}
+          {viewMode === 'map' ? (
+            <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+          ) : (
+            sortedOpenJobs.map(job => (
+              <JobCard
+                key={job.id}
+                job={job}
+                onViewPhotos={handlePhotoClick}
+                onPlaceBid={handleBidClick}
+              />
+            ))
+          )}
         </div>
       </div>
 
@@ -382,8 +489,35 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               />
             </div>
           )}
+
+          {selectedJob && (
+            <div className="py-2 max-h-[300px] overflow-y-auto">
+              <JobQA job={selectedJob} currentUser={user} isContractor={true} />
+            </div>
+          )}
           
           <div className="space-y-4 py-4">
+            {/* Bid Templates Dropdown */}
+            {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
+              <div className="space-y-2">
+                <Label>Load Template (Optional)</Label>
+                <Select onValueChange={handleTemplateSelect}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Choose a saved template..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {bidTemplates
+                      .filter(t => t.contractorId === user.id)
+                      .map((template) => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="bidAmount">Bid Amount ($)</Label>
               <Input
@@ -409,6 +543,33 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 rows={4}
               />
             </div>
+
+            {/* Save as Template Option */}
+            {user.role === 'contractor' && bidMessage.trim() && (
+              <div className="space-y-3 p-3 rounded-lg border bg-muted/30">
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id="saveTemplate"
+                    checked={saveAsTemplate}
+                    onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                    className="rounded"
+                  />
+                  <Label htmlFor="saveTemplate" className="text-sm font-normal cursor-pointer">
+                    Save this message as a template
+                  </Label>
+                </div>
+                {saveAsTemplate && (
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Template name (e.g., 'My standard intro')"
+                      value={templateName}
+                      onChange={(e) => setTemplateName(e.target.value)}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <DialogFooter className="flex-col sm:flex-row gap-2">
             <div className="flex items-center text-xs text-muted-foreground mr-auto">
