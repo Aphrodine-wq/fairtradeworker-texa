@@ -113,7 +113,7 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-001',
     title: 'Ceiling Fan Installation',
     description: 'Need to install a new ceiling fan in master bedroom. Existing light fixture to be removed.',
-    mediaType: 'video',
+    mediaType: 'photo',
     photos: [
       'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&q=80',
       'https://images.unsplash.com/photo-1505691723518-36a5ac3be353?w=800&q=80',

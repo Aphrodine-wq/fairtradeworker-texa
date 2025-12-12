@@ -36,7 +36,7 @@ export interface Job {
   title: string
   description: string
   mediaUrl?: string
-  mediaType?: 'video' | 'audio' | 'photo'
+  mediaType?: 'audio' | 'photo'
   photos?: string[]
   aiScope: {
     scope: string

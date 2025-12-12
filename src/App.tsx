@@ -51,8 +51,11 @@ const CompanyRevenueDashboard = lazy(() =>
 const ProjectMilestones = lazy(() => 
   import("@/pages/ProjectMilestones").then(m => ({ default: m.ProjectMilestones }))
 )
+const PhotoScoperPage = lazy(() => 
+  import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
+)
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper'
 type NavigationState = { page: Page; jobId?: string }
 
 function LoadingFallback() {
@@ -205,6 +208,12 @@ function App() {
               user={currentUser} 
               onBack={() => setCurrentPage('my-jobs')}
             />
+          </Suspense>
+        )
+      case 'photo-scoper':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <PhotoScoperPage />
           </Suspense>
         )
       default:
