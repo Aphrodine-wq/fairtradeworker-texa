@@ -28,6 +28,7 @@ export interface User {
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
+export type JobTier = 'QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT'
 
 export interface Job {
   id: string
@@ -46,6 +47,10 @@ export interface Job {
     detectedObjects?: string[]
   }
   size: JobSize
+  tier?: JobTier
+  estimatedDays?: number
+  tradesRequired?: string[]
+  permitRequired?: boolean
   status: 'open' | 'in-progress' | 'completed' | 'cancelled'
   territoryId?: number
   createdAt: string
@@ -54,6 +59,9 @@ export interface Job {
   scopeChanges?: ScopeChange[]
   beforePhotos?: string[]
   afterPhotos?: string[]
+  milestones?: Milestone[]
+  preferredStartDate?: string
+  depositPercentage?: number
 }
 
 export interface Bid {
@@ -79,6 +87,24 @@ export interface ScopeChange {
   additionalCost: number
   status: 'pending' | 'approved' | 'rejected'
   approvedAt?: string
+}
+
+export interface Milestone {
+  id: string
+  jobId: string
+  name: string
+  description: string
+  amount: number
+  percentage: number
+  sequence: number
+  status: 'pending' | 'in-progress' | 'completed' | 'paid' | 'disputed'
+  verificationRequired: 'photos' | 'inspection' | 'walkthrough'
+  photos?: string[]
+  notes?: string
+  requestedAt?: string
+  approvedAt?: string
+  paidAt?: string
+  disputeReason?: string
 }
 
 export interface InvoiceLineItem {
@@ -287,4 +313,69 @@ export interface CertificationAlert {
   certificationId: string
   daysUntilExpiration: number
   urgency: 'info' | 'warning' | 'urgent' | 'critical'
+}
+
+export function classifyJobTier(estimatedCost: number, estimatedDays: number, tradeCount: number = 1): JobTier {
+  if (estimatedCost <= 500 && estimatedDays <= 1) {
+    return 'QUICK_FIX'
+  } else if (estimatedCost <= 5000 && tradeCount === 1) {
+    return 'STANDARD'
+  } else if (estimatedCost <= 50000) {
+    return 'MAJOR_PROJECT'
+  }
+  return 'MAJOR_PROJECT'
+}
+
+export function getTierBadge(tier: JobTier): { emoji: string; label: string; range: string; color: string } {
+  switch (tier) {
+    case 'QUICK_FIX':
+      return { emoji: '🟢', label: 'Quick Fix', range: 'Under $500', color: 'text-green-600' }
+    case 'STANDARD':
+      return { emoji: '🟡', label: 'Standard', range: '$500-$5K', color: 'text-yellow-600' }
+    case 'MAJOR_PROJECT':
+      return { emoji: '🔵', label: 'Major Project', range: '$5K-$50K', color: 'text-blue-600' }
+  }
+}
+
+export function getContractorTierRequirements(tier: JobTier): {
+  minJobs: number
+  minRating: number
+  insuranceRequired: number
+  licensesRequired: boolean
+  workersCompRequired: boolean
+  minPortfolioPhotos: number
+  minReferences: number
+} {
+  switch (tier) {
+    case 'QUICK_FIX':
+      return {
+        minJobs: 0,
+        minRating: 0,
+        insuranceRequired: 0,
+        licensesRequired: false,
+        workersCompRequired: false,
+        minPortfolioPhotos: 0,
+        minReferences: 0
+      }
+    case 'STANDARD':
+      return {
+        minJobs: 10,
+        minRating: 4.0,
+        insuranceRequired: 300000,
+        licensesRequired: true,
+        workersCompRequired: false,
+        minPortfolioPhotos: 0,
+        minReferences: 0
+      }
+    case 'MAJOR_PROJECT':
+      return {
+        minJobs: 25,
+        minRating: 4.5,
+        insuranceRequired: 500000,
+        licensesRequired: true,
+        workersCompRequired: true,
+        minPortfolioPhotos: 10,
+        minReferences: 3
+      }
+  }
 }
