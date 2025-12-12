@@ -7,13 +7,13 @@ Zero-fee marketplace for home services with viral growth mechanics built in.
 This platform implements 10 growth acceleration strategies:
 
 1. **Post-&-Win Viral Loop** – Every job posted generates a unique $20-off referral code
-2. **Contractor Referral Goldmine** – Invite up to 10 tradesmen/month; both earn $50 on first job
+2. **Contractor/Subcontractor Referral Goldmine** – Invite up to 10 tradesmen/month; both earn $50 on first job
 3. **Speed-Based Job Visibility** – Small jobs get blinking green "FRESH" badges for 15 minutes
 4. **Speed Metrics Dashboard** – Real-time tracking of key velocity metrics with traffic-light indicators
 5. **Live Stats Bar** – Homepage displays jobs posted today, avg bid time, and weekly completions
 6. **Same-Day Payout Tracking** – Metrics show same-day payout count (target: 100/day)
 7. **Performance-First Sorting** – Bids ranked by score: performance + accuracy + operator boost
-8. **Contractor Invite System** – 10 SMS invites per month with $50 rewards
+8. **Contractor/Subcontractor Invite System** – 10 SMS invites per month with $50 rewards
 9. **In-Person CRM Sign-Up** – Instant email/SMS invites for homeowners (2-click signup)
 10. **Territory Speed Metrics** – Operators track job-to-bid time and conversion rates
 
@@ -36,17 +36,17 @@ This platform implements 10 growth acceleration strategies:
 - One golden page: "Post Job" – accepts video, mic (with pause/add), text, photos, OR a file (Excel, PDF, txt).
 - AI reads everything, stores it, learns for next time.
 - Job lands in marketplace split into 3 buckets:
-  - **Small (🟢)** – subs + contractors (≤ $300)
-  - **Medium (🟡)** – subs + contractors (≤ $1,500)
-  - **Large (🔴)** – contractors only (> $1,500)
+  - **Small (🟢)** – subs + contractors/subcontractors (≤ $300)
+  - **Medium (🟡)** – subs + contractors/subcontractors (≤ $1,500)
+  - **Large (🔴)** – contractors/subcontractors only (> $1,500)
 - Bids are free.
 - Leads are sorted by:
   1. Performance score (accepted bids / total bids)
   2. Bid accuracy (AI price vs final price)
   3. Operator status (yes = boost)
-- Contractors get a FREE CRM.
+- Contractors/Subcontractors get a FREE CRM.
 - Homeowners do NOT get CRM.
-- In-person sign-up: contractor types homeowner's email or phone → instant invite link sent (email or SMS) → homeowner joins in 2 clicks.
+- In-person sign-up: contractor/subcontractor types homeowner's email or phone → instant invite link sent (email or SMS) → homeowner joins in 2 clicks.
 - Every click is < 100 ms. Racehorse fast.
 
 ---
@@ -93,7 +93,7 @@ fairtradeworker/
 - Neighbor uses code → both get $20
 - Track earnings and usage in dashboard
 
-### 2. Contractor Referral Goldmine
+### 2. Contractor/Subcontractor Referral Goldmine
 - Orange "Invite a Tradesman" button in CRM
 - 10 invites per month max
 - SMS sent with personal message
@@ -104,7 +104,7 @@ fairtradeworker/
 - Small jobs (<$300) show blinking green "FRESH" badge
 - Active for first 15 minutes
 - Border highlighted in primary color
-- Creates urgency for contractors to bid fast
+- Creates urgency for contractors/subcontractors to bid fast
 
 ### 4. Speed Metrics Dashboard
 - Job-to-First-Bid Time (target: <15 min)
@@ -126,12 +126,12 @@ fairtradeworker/
 - Referral code appears immediately after posting
 
 ### 7. Free Job Bidding
-- Contractors bid without paying a cent
+- Contractors/Subcontractors bid without paying a cent
 - Bid modal has $0 fee label
 
 ### 8. Open Marketplace
 - No paywall banners
-- All jobs visible to relevant contractors
+- All jobs visible to relevant contractors/subcontractors
 
 ### 9. Performance = Priority
 Bids are sorted by:
@@ -140,7 +140,7 @@ score = performance_score + bid_accuracy + (is_operator ? 0.2 : 0)
 ```
 
 ### 10. In-Person CRM Sign-Up
-- Contractor enters homeowner's email or phone
+- Contractor/Subcontractor enters homeowner's email or phone
 - Instant invite link sent via email or SMS
 - Homeowner joins in 2 clicks
 
@@ -171,15 +171,15 @@ score = performance_score + bid_accuracy + (is_operator ? 0.2 : 0)
 With Scale-Faster mechanics in place:
 
 - **0 → 1,000 jobs/day** in 120 days
-- **Contractor wait-list** in 6 months
+- **Contractor/Subcontractor wait-list** in 6 months
 - **Operator counties sold out** in 9 months
 
 ### Key Metrics to Track:
 - Job-to-first-bid time (target: <15 min)
 - Referral code usage rate (target: 0.7 new jobs per posted job)
-- Contractor invite conversion (target: >35%)
+- Contractor/Subcontractor invite conversion (target: >35%)
 - Same-day payouts (target: >100/day)
-- Monthly contractor referral completions (target: 50+ per month)
+- Monthly contractor/subcontractor referral completions (target: 50+ per month)
 
 ---
 
@@ -193,7 +193,7 @@ npm run dev
 Open `localhost:5173`:
 1. Land on Home
 2. Click "Demo as Homeowner" to try posting a job
-3. Click "Demo as Contractor" to browse and bid
+3. Click "Demo as Contractor/Subcontractor" to browse and bid
 4. Click "Demo as Operator" to claim territories
 
 ---
@@ -221,9 +221,9 @@ Jobs are automatically categorized by AI price estimate:
 
 | Size | Max Price | Eligible Bidders | Badge |
 |------|-----------|------------------|-------|
-| Small | $300 | Subs + Contractors | 🟢 |
-| Medium | $1,500 | Subs + Contractors | 🟡 |
-| Large | $1,500+ | Contractors only | 🔴 |
+| Small | $300 | Subs + Contractors/Subcontractors | 🟢 |
+| Medium | $1,500 | Subs + Contractors/Subcontractors | 🟡 |
+| Large | $1,500+ | Contractors/Subcontractors only | 🔴 |
 
 ---
 
@@ -232,12 +232,12 @@ Jobs are automatically categorized by AI price estimate:
 Try all three user types instantly:
 
 - **Demo Homeowner**: Post jobs, review bids, accept work
-- **Demo Contractor**: Browse jobs, submit bids, manage invoices
+- **Demo Contractor/Subcontractor**: Browse jobs, submit bids, manage invoices
 - **Demo Operator**: Claim territories, view analytics
 
 Demo data includes:
 - 12 sample jobs across all size categories
-- 25+ bids from various contractors
+- 25+ bids from various contractors/subcontractors
 - 8 invoices in different states
 - Sample territories available for claiming
 
@@ -259,6 +259,34 @@ Demo data includes:
 ## 📝 LICENSE
 
 MIT – keep core values free forever.
+
+---
+
+## 🧪 TESTING
+
+### End-to-End Test Suite
+
+Comprehensive test coverage for all user types and features:
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests with UI
+npm run test:ui
+
+# Generate coverage report
+npm run test:coverage
+```
+
+### Test Coverage
+- **130+ test cases** across 7 test files
+- **All 3 user types**: Homeowner, Contractor, Operator
+- **All major features**: Jobs, Bids, Payments, Referrals, CRM, Invoicing
+- **Integration tests**: Payment processing, milestone management
+- **Viral features**: FRESH jobs, Lightning bids, referral system
+
+See `E2E_TESTING_IMPLEMENTATION_COMPLETE.md` for detailed test documentation.
 
 ---
 

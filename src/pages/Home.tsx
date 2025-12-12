@@ -1,7 +1,7 @@
 import { House, Hammer, MapTrifold, Play } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
@@ -50,7 +50,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
               onClick={() => onNavigate('signup', 'contractor')}
             >
               <Hammer weight="fill" className="mr-3" size={24} />
-              I'm a Contractor
+              I'm a Contractor/Subcontractor
             </Button>
             <Button 
               size="lg" 
@@ -94,7 +94,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                     onClick={() => onDemoLogin(DEMO_USERS.contractor)}
                   >
                     <Hammer weight="fill" className="mr-2" size={20} />
-                    Demo as Contractor
+                    Demo as Contractor/Subcontractor
                   </Button>
                   <Button 
                     variant="outline"
@@ -143,7 +143,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
               </div>
               <h3 className="text-xl font-semibold">Zero Fees</h3>
               <p className="text-muted-foreground">
-                Contractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
+                Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
               </p>
             </Card>
           </div>

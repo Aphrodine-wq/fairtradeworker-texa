@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import type { User, UserRole } from "@/lib/types"
 
@@ -114,7 +114,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="homeowner">Homeowner</SelectItem>
-                  <SelectItem value="contractor">Contractor</SelectItem>
+                  <SelectItem value="contractor">Contractor/Subcontractor</SelectItem>
                   <SelectItem value="operator">Operator</SelectItem>
                 </SelectContent>
               </Select>

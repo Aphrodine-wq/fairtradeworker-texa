@@ -5,7 +5,8 @@ import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
-import { useKV } from "@github/spark/hooks"
+import { BackgroundBlobs } from "@/components/ui/BackgroundBlobs"
+import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { initializeDemoData } from "@/lib/demoData"
@@ -68,8 +69,20 @@ const ProjectMilestones = lazy(() => retryImport(() =>
 const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
 ))
+const AboutPage = lazy(() => retryImport(() =>
+  import("@/pages/About").then(m => ({ default: m.AboutPage }))
+))
+const ContactPage = lazy(() => retryImport(() =>
+  import("@/pages/Contact").then(m => ({ default: m.ContactPage }))
+))
+const PrivacyPage = lazy(() => retryImport(() =>
+  import("@/pages/Privacy").then(m => ({ default: m.PrivacyPage }))
+))
+const TermsPage = lazy(() => retryImport(() =>
+  import("@/pages/Terms").then(m => ({ default: m.TermsPage }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -129,12 +142,12 @@ function LoadingFallback() {
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [selectedJobId, setSelectedJobId] = useState<string | undefined>()
-  const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
-  const [isDemoMode, setIsDemoMode] = useKV<boolean>("is-demo-mode", false)
+  const [currentUser, setCurrentUser] = useLocalKV<User | null>("current-user", null)
+  const [isDemoMode, setIsDemoMode] = useLocalKV<boolean>("is-demo-mode", false)
   const [preselectedRole, setPreselectedRole] = useState<UserRole | undefined>()
-  const [jobs, setJobs] = useKV<Job[]>("jobs", [])
-  const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
-  const [territories, setTerritories] = useKV<Territory[]>("territories", [])
+  const [jobs, setJobs] = useLocalKV<Job[]>("jobs", [])
+  const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
+  const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
@@ -145,8 +158,8 @@ function App() {
   useEffect(() => {
     let mounted = true
     const initData = async () => {
-      const existingJobs = await window.spark.kv.get<Job[]>("jobs")
-      if (!existingJobs || existingJobs.length === 0) {
+      // Check if we already have jobs (from localStorage via useLocalKV)
+      if (jobs.length === 0) {
         const demoData = initializeDemoData()
         if (demoData && mounted) {
           const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData
@@ -237,7 +250,9 @@ function App() {
           ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
-        return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') 
+          ? <BrowseJobs user={currentUser} /> 
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         if (!currentUser) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
         
@@ -250,11 +265,11 @@ function App() {
         }
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'invoices':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><InvoiceManager user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
@@ -282,6 +297,30 @@ function App() {
             <PhotoScoperPage />
           </Suspense>
         )
+      case 'about':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <AboutPage />
+          </Suspense>
+        )
+      case 'contact':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ContactPage />
+          </Suspense>
+        )
+      case 'privacy':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <PrivacyPage />
+          </Suspense>
+        )
+      case 'terms':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <TermsPage />
+          </Suspense>
+        )
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
@@ -289,6 +328,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <BackgroundBlobs />
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>
@@ -316,7 +356,7 @@ function App() {
           </Suspense>
         </ErrorBoundary>
       </main>
-      <Footer />
+      <Footer onNavigate={handleNavigate} />
       <Toaster position="top-center" />
     </div>
   )

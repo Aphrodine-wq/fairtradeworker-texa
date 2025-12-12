@@ -225,6 +225,13 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               Dashboard
             </NavButton>
             <NavButton 
+              onClick={() => handleNav('browse-jobs', 'jobs')} 
+              isActive={activeTab === 'jobs'}
+              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
+            >
+              Browse Jobs
+            </NavButton>
+            <NavButton 
               onClick={() => handleNav('territory-map', 'territory')} 
               isActive={activeTab === 'territory'}
               icon={<MapPin size={16} weight={activeTab === 'territory' ? 'fill' : 'regular'} />}

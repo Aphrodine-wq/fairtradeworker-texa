@@ -77,7 +77,7 @@ export function ConfidenceScore({ score, detectedObjects, showDetails = false }:
       
       {score >= 90 && (
         <p className="text-xs text-muted-foreground">
-          ✓ AI analysis highly confident. Contractors trust these estimates.
+          ✓ AI analysis highly confident. Contractors/Subcontractors trust these estimates.
         </p>
       )}
       

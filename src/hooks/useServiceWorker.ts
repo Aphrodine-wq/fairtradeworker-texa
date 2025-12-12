@@ -135,13 +135,16 @@ export function useOfflineQueue() {
 
   const loadQueue = async () => {
     try {
-      const stored = await window.spark.kv.get<typeof queue>('offline-queue');
-      if (stored?.length) {
-        const trimmed = stored.slice(-MAX_QUEUE_ITEMS);
-        if (trimmed.length !== stored.length) {
-          await window.spark.kv.set('offline-queue', trimmed);
+      const storedStr = window.localStorage.getItem('offline-queue');
+      if (storedStr) {
+        const stored = JSON.parse(storedStr) as typeof queue;
+        if (stored?.length) {
+          const trimmed = stored.slice(-MAX_QUEUE_ITEMS);
+          if (trimmed.length !== stored.length) {
+            window.localStorage.setItem('offline-queue', JSON.stringify(trimmed));
+          }
+          updateQueueState(trimmed);
         }
-        updateQueueState(trimmed);
       }
     } catch (error) {
       console.error('Failed to load offline queue:', error);
@@ -169,18 +172,18 @@ export function useOfflineQueue() {
       console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
     }
 
-    await window.spark.kv.set('offline-queue', merged);
+    window.localStorage.setItem('offline-queue', JSON.stringify(merged));
   };
 
   const removeFromQueue = async (id: string) => {
     const newQueue = (queueRef.current || []).filter(item => item.id !== id);
     updateQueueState(newQueue);
-    await window.spark.kv.set('offline-queue', newQueue);
+    window.localStorage.setItem('offline-queue', JSON.stringify(newQueue));
   };
 
   const clearQueue = async () => {
     updateQueueState([]);
-    await window.spark.kv.delete('offline-queue');
+    window.localStorage.removeItem('offline-queue');
   };
 
   const processQueue = async () => {

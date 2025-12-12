@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { MapPin, Clock, NavigationArrow, Lightning, TrendUp, Star, CalendarBlank } from "@phosphor-icons/react"
 import type { User, Job, Bid } from "@/lib/types"
 import { calculateRouteEfficiency, clusterJobsByProximity, calculateDriveTime, type JobCluster } from "@/lib/routing"

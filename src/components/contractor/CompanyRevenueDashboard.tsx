@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
   TrendUp, 
   CurrencyDollar, 
@@ -27,8 +27,14 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
 
   useEffect(() => {
     const loadUsers = async () => {
-      const storedUsers = await window.spark.kv.get<User[]>("demo-users")
-      setUsers(storedUsers || [])
+      try {
+        const storedStr = window.localStorage.getItem("demo-users")
+        const storedUsers = storedStr ? JSON.parse(storedStr) as User[] : []
+        setUsers(storedUsers || [])
+      } catch (error) {
+        console.error('Error loading demo users:', error)
+        setUsers([])
+      }
     }
     loadUsers()
   }, [])
