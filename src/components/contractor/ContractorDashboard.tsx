@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { FeeComparison } from "./FeeComparison"
 import { FeeSavingsDashboard } from "./FeeSavingsDashboard"
+import { AvailabilityCalendar } from "./AvailabilityCalendar"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Lightning } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Calendar } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { CRMDashboard } from "./CRMDashboard"
@@ -236,6 +237,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               <MapTrifold className="mr-1 md:mr-2" size={14} weight="duotone" />
               <span className="hidden sm:inline">Routes</span>
             </TabsTrigger>
+            <TabsTrigger value="availability" className="text-xs md:text-sm">
+              <Calendar className="mr-1 md:mr-2" size={14} weight="duotone" />
+              <span className="hidden sm:inline">Availability</span>
+            </TabsTrigger>
             <TabsTrigger value="crm" className="text-xs md:text-sm">CRM</TabsTrigger>
             <TabsTrigger value="replies" className="text-xs md:text-sm">
               <Sparkle className="mr-1 md:mr-2" size={14} weight="duotone" />
@@ -275,6 +280,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           
           <TabsContent value="routes" className="mt-6">
             <RouteBuilder user={user} />
+          </TabsContent>
+          
+          <TabsContent value="availability" className="mt-6">
+            <AvailabilityCalendar user={user} />
           </TabsContent>
           
           <TabsContent value="crm" className="mt-6">

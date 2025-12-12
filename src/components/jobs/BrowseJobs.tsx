@@ -12,10 +12,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { LightningBadge } from "./LightningBadge"
 import { DriveTimeWarning } from "./DriveTimeWarning"
+import { JobMap } from "./JobMap"
+import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, Eye, Users } from "@phosphor-icons/react"
-import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer } from "@phosphor-icons/react"
+import type { Job, Bid, User, JobSize } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
 interface BrowseJobsProps {
@@ -31,11 +33,41 @@ const JobCard = memo(function JobCard({
   onViewPhotos: (photos: string[]) => void
   onPlaceBid: (job: Job) => void
 }) {
+  const [timeRemaining, setTimeRemaining] = useState<string>("")
+  
   const isFresh = useMemo(() => {
     const jobAge = Date.now() - new Date(job.createdAt).getTime()
     const fifteenMinutes = 15 * 60 * 1000
     return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
   }, [job.createdAt, job.size, job.bids.length])
+
+  const isUrgent = job.isUrgent && job.urgentDeadline
+  const isExpired = isUrgent && new Date(job.urgentDeadline!) < new Date()
+
+  useEffect(() => {
+    if (!isUrgent || isExpired) return
+
+    const updateTimer = () => {
+      const now = Date.now()
+      const deadline = new Date(job.urgentDeadline!).getTime()
+      const diff = deadline - now
+
+      if (diff <= 0) {
+        setTimeRemaining("EXPIRED")
+        return
+      }
+
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+      setTimeRemaining(`${hours}h ${minutes}m ${seconds}s`)
+    }
+
+    updateTimer()
+    const interval = setInterval(updateTimer, 1000)
+    return () => clearInterval(interval)
+  }, [isUrgent, isExpired, job.urgentDeadline])
 
   const photos = useMemo(() => job.photos || [], [job.photos])
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
@@ -55,8 +87,20 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full ${isFresh ? "border-green-500 border-2 shadow-lg" : ""}`}>
-      {isFresh && (
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isFresh ? "border-green-500 border-2 shadow-lg" : ""} ${isUrgent && !isExpired ? "border-orange-500 border-2" : ""}`}>
+      {isUrgent && !isExpired && (
+        <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Timer weight="fill" size={20} className="animate-pulse" />
+            <span className="font-semibold text-sm">URGENT - Need it today!</span>
+          </div>
+          <div className="flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full">
+            <Timer size={16} />
+            <span className="font-mono text-sm font-bold">{timeRemaining}</span>
+          </div>
+        </div>
+      )}
+      {isFresh && !isUrgent && (
         <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 flex items-center gap-2">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
@@ -183,72 +227,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
-  const [bidTemplates, setBidTemplates] = useKV<BidTemplate[]>('bid-templates', [])
-  const [saveAsTemplate, setSaveAsTemplate] = useState(false)
-  const [templateName, setTemplateName] = useState("")
-
-  // Track contractor viewing jobs
-  useEffect(() => {
-    if (user.role === 'contractor' && jobs && jobs.length > 0) {
-      const timeout = setTimeout(() => {
-        setJobs((currentJobs) => 
-          (currentJobs || []).map(job => {
-            if (job.status === 'open') {
-              const viewers = job.viewingContractors || []
-              const now = new Date().toISOString()
-              
-              // Remove this contractor if already viewing
-              const filteredViewers = viewers.filter(id => id !== user.id)
-              
-              // Add them back (this refreshes their presence)
-              return {
-                ...job,
-                viewingContractors: [...filteredViewers, user.id],
-                lastViewUpdate: now
-              }
-            }
-            return job
-          })
-        )
-      }, 2000) // Delay to avoid tracking on quick page loads
-
-      return () => clearTimeout(timeout)
-    }
-  }, [user.id, user.role, setJobs, jobs?.length])
-
-  // Clean up old viewing contractors (remove those who haven't updated in 2 minutes)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const twoMinutesAgo = Date.now() - (2 * 60 * 1000)
-      setJobs((currentJobs) => {
-        // Early exit if no jobs
-        if (!currentJobs || currentJobs.length === 0) return currentJobs
-        
-        // Check if any jobs have viewing contractors before processing
-        const hasViewingContractors = currentJobs.some(job => 
-          job.viewingContractors && job.viewingContractors.length > 0
-        )
-        
-        if (!hasViewingContractors) return currentJobs
-        
-        return currentJobs.map(job => {
-          if (job.viewingContractors && job.viewingContractors.length > 0) {
-            const lastUpdate = job.lastViewUpdate ? new Date(job.lastViewUpdate).getTime() : 0
-            if (lastUpdate < twoMinutesAgo) {
-              return {
-                ...job,
-                viewingContractors: [],
-                lastViewUpdate: undefined
-              }
-            }
-          }
-          return job
-        })
-      })
-    }, 30000) // Check every 30 seconds
-
-    return () => clearInterval(interval)
-  }, [setJobs])
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
 
   const myScheduledJobs = useMemo(() => {
     return (jobs || []).filter(job =>
@@ -421,6 +400,21 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <TabsTrigger value="large">🔴 Large</TabsTrigger>
               </TabsList>
             </Tabs>
+            
+            <div className="flex-1" />
+            
+            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
+              <TabsList>
+                <TabsTrigger value="list">
+                  <List weight="duotone" size={18} className="mr-2" />
+                  List
+                </TabsTrigger>
+                <TabsTrigger value="map">
+                  <MapTrifold weight="duotone" size={18} className="mr-2" />
+                  Map
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
 
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -431,15 +425,19 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedOpenJobs.map(job => (
-            <JobCard
-              key={job.id}
-              job={job}
-              onViewPhotos={handlePhotoClick}
-              onPlaceBid={handleBidClick}
-            />
-          ))}
+        <div className="space-y-6">
+          {viewMode === 'map' ? (
+            <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+          ) : (
+            sortedOpenJobs.map(job => (
+              <JobCard
+                key={job.id}
+                job={job}
+                onViewPhotos={handlePhotoClick}
+                onPlaceBid={handleBidClick}
+              />
+            ))
+          )}
         </div>
       </div>
 
@@ -468,6 +466,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 scheduledJobs={myScheduledJobs}
                 user={user}
               />
+            </div>
+          )}
+
+          {selectedJob && (
+            <div className="py-2 max-h-[300px] overflow-y-auto">
+              <JobQA job={selectedJob} currentUser={user} isContractor={true} />
             </div>
           )}
           

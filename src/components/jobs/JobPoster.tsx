@@ -6,21 +6,23 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
+import { Switch } from "@/components/ui/switch"
 import { PhotoUploader } from "@/components/ui/PhotoUploader"
-import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree } from "@phosphor-icons/react"
+import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree, Timer, Plus, Trash } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
 import { JobPostingTimer } from "./JobPostingTimer"
 import { MajorProjectScopeBuilder, type ProjectScope } from "./MajorProjectScopeBuilder"
 import { TierBadge } from "./TierBadge"
-import type { Job, User, ReferralCode, JobTier } from "@/lib/types"
+import type { Job, User, ReferralCode, JobTier, BundledTask } from "@/lib/types"
 import type { UploadedPhoto } from "@/hooks/usePhotoUpload"
 import { calculateJobSize } from "@/lib/types"
 import { generateReferralCode } from "@/lib/viral"
 import { generateMilestonesFromTemplate } from "@/lib/milestones"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
+import { v4 as uuidv4 } from "uuid"
 
 interface JobPosterProps {
   user: User
@@ -47,6 +49,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [currentReferralCode, setCurrentReferralCode] = useState<ReferralCode | null>(null)
   const [postingStartTime, setPostingStartTime] = useState<number>(0)
   const [postingEndTime, setPostingEndTime] = useState<number>(0)
+  const [isUrgent, setIsUrgent] = useState(false)
+  const [bundledTasks, setBundledTasks] = useState<Array<{title: string, description: string, estimatedCost: number}>>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -184,7 +188,14 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
             estimatedCost,
             estimatedCost >= 15000
           )
-        : undefined
+        : undefined,
+      isUrgent,
+      urgentDeadline: isUrgent ? new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString() : undefined,
+      bundledTasks: bundledTasks.length > 0 ? bundledTasks.map((task) => ({
+        id: uuidv4(),
+        ...task
+      })) : undefined,
+      questions: []
     }
 
     setJobs((currentJobs) => [...(currentJobs || []), newJob])
@@ -590,6 +601,95 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
+            </div>
+
+            {/* Urgency Toggle */}
+            <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">
+              <div className="flex items-center gap-3">
+                <Timer weight="duotone" size={24} className="text-orange-500" />
+                <div>
+                  <Label htmlFor="urgent" className="text-base font-semibold cursor-pointer">
+                    Need it today?
+                  </Label>
+                  <p className="text-sm text-muted-foreground">
+                    Creates 2-hour countdown timer visible to all contractors
+                  </p>
+                </div>
+              </div>
+              <Switch
+                id="urgent"
+                checked={isUrgent}
+                onCheckedChange={setIsUrgent}
+              />
+            </div>
+
+            {/* Job Bundles */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-base font-semibold">Bundle Multiple Tasks (Optional)</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setBundledTasks([...bundledTasks, { title: "", description: "", estimatedCost: 0 }])}
+                >
+                  <Plus className="mr-2" weight="bold" size={16} />
+                  Add Task
+                </Button>
+              </div>
+              
+              {bundledTasks.map((task, idx) => (
+                <Card key={idx} className="p-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold text-sm">Task {idx + 1}</h4>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setBundledTasks(bundledTasks.filter((_, i) => i !== idx))}
+                      >
+                        <Trash weight="duotone" size={16} />
+                      </Button>
+                    </div>
+                    <Input
+                      placeholder="Task title"
+                      value={task.title}
+                      onChange={(e) => {
+                        const updated = [...bundledTasks]
+                        updated[idx].title = e.target.value
+                        setBundledTasks(updated)
+                      }}
+                    />
+                    <Textarea
+                      placeholder="Task description"
+                      value={task.description}
+                      onChange={(e) => {
+                        const updated = [...bundledTasks]
+                        updated[idx].description = e.target.value
+                        setBundledTasks(updated)
+                      }}
+                      rows={2}
+                    />
+                    <Input
+                      type="number"
+                      placeholder="Estimated cost"
+                      value={task.estimatedCost || ""}
+                      onChange={(e) => {
+                        const updated = [...bundledTasks]
+                        updated[idx].estimatedCost = parseFloat(e.target.value) || 0
+                        setBundledTasks(updated)
+                      }}
+                    />
+                  </div>
+                </Card>
+              ))}
+              
+              {bundledTasks.length > 0 && (
+                <p className="text-xs text-muted-foreground">
+                  Contractors can bid on the full bundle or individual items
+                </p>
+              )}
             </div>
 
             {inputMethod === 'text' && (
