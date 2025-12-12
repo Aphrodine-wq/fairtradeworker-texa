@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const MAX_QUEUE_ITEMS = 50;
 const MAX_BODY_LENGTH = 50_000;
+const HEX_RADIX = 16;
 
 const trimBody = (body?: string) => {
   if (!body) return undefined;
@@ -13,19 +14,19 @@ const trimBody = (body?: string) => {
 const generateQueueId = () => {
   try {
     if (typeof crypto !== 'undefined') {
-      if (typeof crypto.randomUUID === 'function') {
-        return crypto.randomUUID();
+        if (typeof crypto.randomUUID === 'function') {
+          return crypto.randomUUID();
+        }
+        if (typeof crypto.getRandomValues === 'function') {
+          const buffer = new Uint32Array(2);
+          crypto.getRandomValues(buffer);
+          return `${Date.now()}-${buffer[0].toString(HEX_RADIX)}-${buffer[1].toString(HEX_RADIX)}`;
+        }
       }
-      if (typeof crypto.getRandomValues === 'function') {
-        const buffer = new Uint32Array(2);
-        crypto.getRandomValues(buffer);
-        return `${Date.now()}-${buffer[0].toString(16)}-${buffer[1].toString(16)}`;
-      }
+    } catch {
+      // Ignore and fall back
     }
-  } catch {
-    // Ignore and fall back
-  }
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
+  return `${Date.now()}-${Math.random().toString(HEX_RADIX).slice(2)}-${Math.random().toString(HEX_RADIX).slice(2)}`;
 };
 
 export function useServiceWorker() {
@@ -153,18 +154,20 @@ export function useOfflineQueue() {
       timestamp: Date.now()
     };
 
-    const merged = [...(queueRef.current || []), newItem];
-    const trimmed = merged.length > MAX_QUEUE_ITEMS
-      ? merged.slice(-MAX_QUEUE_ITEMS)
-      : merged;
-    const dropped = merged.length - trimmed.length;
-    updateQueueState(trimmed);
+    const currentQueue = queueRef.current || [];
+    const needsTrim = currentQueue.length >= MAX_QUEUE_ITEMS;
+    const baseQueue = needsTrim
+      ? currentQueue.slice(-(MAX_QUEUE_ITEMS - 1))
+      : currentQueue;
+    const merged = [...baseQueue, newItem];
+    const dropped = needsTrim ? currentQueue.length - baseQueue.length : 0;
+    updateQueueState(merged);
 
     if (dropped > 0) {
       console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
     }
 
-    await window.spark.kv.set('offline-queue', trimmed);
+    await window.spark.kv.set('offline-queue', merged);
   };
 
   const removeFromQueue = async (id: string) => {
