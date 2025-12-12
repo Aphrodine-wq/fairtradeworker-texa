@@ -70,15 +70,15 @@ export function CRMKanban({ user }: CRMKanbanProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold">CRM Kanban Board</h2>
-        <p className="text-muted-foreground mt-1">
+    <div className="space-y-8">
+      <div className="text-center max-w-3xl mx-auto">
+        <h2 className="text-2xl md:text-3xl font-bold mb-2">CRM Kanban Board</h2>
+        <p className="text-muted-foreground">
           Drag customers between stages to update their status
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
         {columns.map((column) => {
           const columnCustomers = getCustomersByStatus(column.status)
           
@@ -100,7 +100,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                     key={customer.id}
                     draggable
                     onDragStart={() => handleDragStart(customer)}
-                    className="cursor-move hover:shadow-md transition-shadow"
+                    className="cursor-move hover:shadow-lg transition-all duration-200"
                   >
                     <CardHeader className="p-4">
                       <CardTitle className="text-sm font-medium">{customer.name}</CardTitle>

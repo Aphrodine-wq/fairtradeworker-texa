@@ -69,27 +69,29 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
+        <div className="text-center md:text-left">
+          <h2 className="text-2xl md:text-3xl font-bold flex items-center justify-center md:justify-start gap-2 mb-2">
             <Users weight="duotone" size={32} className="text-primary" />
             Customer CRM
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground">
             Manage your customer relationships and in-person sign-ups
           </p>
         </div>
-        <div className="text-right">
-          <div className="text-3xl font-bold text-primary">{myCustomers.length}</div>
+        <div className="text-center">
+          <div className="text-4xl font-bold text-primary">{myCustomers.length}</div>
           <div className="text-sm text-muted-foreground">Total Customers</div>
         </div>
       </div>
 
-      <InstantInvite user={user} />
+      <div className="max-w-6xl mx-auto">
+        <InstantInvite user={user} />
+      </div>
 
       {myCustomers.length === 0 ? (
-        <Card>
+        <Card className="max-w-2xl mx-auto">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Users size={64} weight="duotone" className="text-muted-foreground mb-4" />
             <h3 className="text-xl font-semibold mb-2">No customers yet</h3>
@@ -99,12 +101,12 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
           {myCustomers.map((customer) => (
             <Dialog key={customer.id}>
               <DialogTrigger asChild>
                 <Card
-                  className="cursor-pointer hover:shadow-md hover:translate-y-[-2px] transition-all"
+                  className="cursor-pointer hover:shadow-lg hover:translate-y-[-2px] transition-all duration-200"
                   onClick={() => {
                     setSelectedCustomer(customer)
                     setNotes(customer.notes || "")
