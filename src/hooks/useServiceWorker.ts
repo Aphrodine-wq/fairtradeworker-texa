@@ -172,7 +172,7 @@ export function useOfflineQueue() {
       console.warn(`[OfflineQueue] Dropped ${dropped} queued request(s) to stay within memory limits`);
     }
 
-    await window.localStorage.setItem('offline-queue', JSON.stringify(merged));
+    window.localStorage.setItem('offline-queue', JSON.stringify(merged));
   };
 
   const removeFromQueue = async (id: string) => {

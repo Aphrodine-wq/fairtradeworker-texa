@@ -37,10 +37,10 @@ export function useLocalKV<T>(
 
     const initFromSparkKV = async () => {
       try {
-        // @ts-ignore - Spark KV might not be available
-        if (window.spark?.kv) {
-          // @ts-ignore
-          const sparkValue = await window.spark.kv.get(key)
+        // Attempt to use Spark KV if available
+        const spark = (window as any).spark
+        if (spark?.kv) {
+          const sparkValue = await spark.kv.get(key)
           if (sparkValue !== null && sparkValue !== undefined) {
             setStoredValue(sparkValue)
           }
@@ -63,10 +63,9 @@ export function useLocalKV<T>(
 
         // Try to sync to Spark KV if available, but don't wait
         try {
-          // @ts-ignore
-          if (window.spark?.kv) {
-            // @ts-ignore
-            window.spark.kv.set(key, valueToStore).catch(() => {
+          const spark = (window as any).spark
+          if (spark?.kv) {
+            spark.kv.set(key, valueToStore).catch(() => {
               // Silently fail - localStorage is our source of truth in dev mode
             })
           }
