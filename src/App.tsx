@@ -234,7 +234,7 @@ function App() {
         />
       )}
       <OfflineIndicator />
-      <main className="flex-1">
+      <main className="flex-1 pt-16">
         <Suspense fallback={<LoadingFallback />}>
           {renderPage()}
         </Suspense>
