@@ -247,6 +247,13 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               Dashboard
             </NavButton>
             <NavButton 
+              onClick={() => handleNav('browse-jobs', 'jobs')} 
+              isActive={activeTab === 'jobs'}
+              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
+            >
+              Browse Jobs
+            </NavButton>
+            <NavButton 
               onClick={() => handleNav('territory-map', 'territory')} 
               isActive={activeTab === 'territory'}
               icon={<MapPin size={16} weight={activeTab === 'territory' ? 'fill' : 'regular'} />}
@@ -333,10 +340,24 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
             </>
           )}
           {user!.role === 'operator' && (
-            <DropdownMenuItem onClick={() => onNavigate('territory-map')} className="cursor-pointer py-2.5 rounded-md">
-              <MapPin className="mr-3" size={18} />
-              <span className="font-medium">Territory Map</span>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem onClick={() => onNavigate('territory-map')} className="cursor-pointer py-2.5 rounded-md">
+                <MapPin className="mr-3" size={18} />
+                <span className="font-medium">Territory Map</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('crm')} className="cursor-pointer py-2.5 rounded-md">
+                <Users className="mr-3" size={18} />
+                <span className="font-medium">CRM</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('invoices')} className="cursor-pointer py-2.5 rounded-md">
+                <Receipt className="mr-3" size={18} />
+                <span className="font-medium">Invoices</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onNavigate('photo-scoper')} className="cursor-pointer py-2.5 rounded-md">
+                <Camera className="mr-3" size={18} />
+                <span className="font-medium">Photo Scoper</span>
+              </DropdownMenuItem>
+            </>
           )}
           {user!.isOperator && user!.role !== 'operator' && (
             <DropdownMenuItem onClick={() => onNavigate('revenue-dashboard')} className="cursor-pointer py-2.5 rounded-md">
@@ -528,16 +549,58 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
             )}
             
             {user!.role === 'operator' && (
-              <motion.div whileTap={{ scale: 0.97 }}>
-                <Button 
-                  variant="outline" 
-                  onClick={() => handleNavigation('territory-map', 'territory')} 
-                  className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
-                >
-                  <MapPin weight="fill" className="mr-3" size={20} />
-                  Territory Map
-                </Button>
-              </motion.div>
+              <>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleNavigation('territory-map', 'territory')} 
+                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  >
+                    <MapPin weight="fill" className="mr-3" size={20} />
+                    Territory Map
+                  </Button>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleNavigation('browse-jobs', 'browse')} 
+                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  >
+                    <Hammer className="mr-3" size={20} />
+                    Browse Jobs
+                  </Button>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleNavigation('crm', 'crm')} 
+                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  >
+                    <Users className="mr-3" size={20} />
+                    CRM
+                  </Button>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleNavigation('invoices', 'invoices')} 
+                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  >
+                    <Receipt className="mr-3" size={20} />
+                    Invoices
+                  </Button>
+                </motion.div>
+                <motion.div whileTap={{ scale: 0.97 }}>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => handleNavigation('photo-scoper', 'scoper')} 
+                    className="w-full justify-start h-12 text-base hover:bg-primary/5 hover:border-primary/20"
+                  >
+                    <Camera className="mr-3" size={20} />
+                    Scope Generator
+                  </Button>
+                </motion.div>
+              </>
             )}
             
             {user!.isOperator && user!.role !== 'operator' && (

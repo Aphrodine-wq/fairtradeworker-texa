@@ -249,7 +249,9 @@ function App() {
           ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
-        return currentUser ? <BrowseJobs user={currentUser} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') 
+          ? <BrowseJobs user={currentUser} /> 
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         if (!currentUser) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
         
@@ -262,11 +264,11 @@ function App() {
         }
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'invoices':
-        return currentUser?.role === 'contractor'
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
           ? <Suspense fallback={<LoadingFallback />}><InvoiceManager user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'pro-upgrade':
