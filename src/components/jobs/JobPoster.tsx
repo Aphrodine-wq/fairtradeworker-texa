@@ -19,7 +19,7 @@ import type { UploadedPhoto } from "@/hooks/usePhotoUpload"
 import { calculateJobSize } from "@/lib/types"
 import { generateReferralCode } from "@/lib/viral"
 import { generateMilestonesFromTemplate } from "@/lib/milestones"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 
 interface JobPosterProps {

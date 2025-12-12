@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Users, EnvelopeSimple, DeviceMobile, Note, Trash } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import { InstantInvite } from "./InstantInvite"

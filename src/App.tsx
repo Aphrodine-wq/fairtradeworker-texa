@@ -5,7 +5,7 @@ import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { initializeDemoData } from "@/lib/demoData"
@@ -129,12 +129,12 @@ function LoadingFallback() {
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home')
   const [selectedJobId, setSelectedJobId] = useState<string | undefined>()
-  const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
-  const [isDemoMode, setIsDemoMode] = useKV<boolean>("is-demo-mode", false)
+  const [currentUser, setCurrentUser] = useLocalKV<User | null>("current-user", null)
+  const [isDemoMode, setIsDemoMode] = useLocalKV<boolean>("is-demo-mode", false)
   const [preselectedRole, setPreselectedRole] = useState<UserRole | undefined>()
-  const [jobs, setJobs] = useKV<Job[]>("jobs", [])
-  const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
-  const [territories, setTerritories] = useKV<Territory[]>("territories", [])
+  const [jobs, setJobs] = useLocalKV<Job[]>("jobs", [])
+  const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
+  const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
@@ -145,8 +145,8 @@ function App() {
   useEffect(() => {
     let mounted = true
     const initData = async () => {
-      const existingJobs = await window.spark.kv.get<Job[]>("jobs")
-      if (!existingJobs || existingJobs.length === 0) {
+      // Check if we already have jobs (from localStorage via useLocalKV)
+      if (jobs.length === 0) {
         const demoData = initializeDemoData()
         if (demoData && mounted) {
           const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories } = demoData

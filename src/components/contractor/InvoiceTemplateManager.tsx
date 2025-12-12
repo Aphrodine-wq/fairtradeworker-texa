@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { useKV } from "@github/spark/hooks"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { Plus, FloppyDisk, Trash, PencilSimple, Copy, Clock, CheckCircle } from "@phosphor-icons/react"
 import type { User, InvoiceTemplate, InvoiceLineItem } from "@/lib/types"
