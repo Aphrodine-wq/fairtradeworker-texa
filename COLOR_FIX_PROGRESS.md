@@ -3,8 +3,8 @@
 ## Status: In Progress
 - Total files with colored elements: 77
 - Total matches: 475 (down from 523)
-- Files fixed: 23
-- Remaining: 54
+- Files fixed: 30+
+- Remaining: ~40
 
 ## Fixed Files ✅
 1. src/components/ui/button.tsx
@@ -30,6 +30,16 @@
 21. src/components/contractor/NotificationPrompt.tsx
 22. src/components/contractor/JobCostCalculator.tsx
 23. src/components/homeowner/SavedContractors.tsx
+24. src/components/ui/dropdown-menu.tsx
+25. src/components/ui/select.tsx
+26. src/components/viral/ContractorReferralSystem.tsx
+27. src/components/viral/ReferralCodeCard.tsx
+28. src/components/shared/FreeToolsHub.tsx
+29. src/components/contractor/CompanyRevenueDashboard.tsx
+30. src/components/contractor/CustomizableCRM.tsx
+31. src/components/contractor/EnhancedCRM.tsx
+32. src/components/contractor/EnhancedCRMDashboard.tsx
+33. src/index.css (animations fixed)
 
 ## Remaining Files (62)
 - src/components/jobs/MajorProjectScopeBuilder.tsx
