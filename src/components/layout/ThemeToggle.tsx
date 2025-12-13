@@ -1,6 +1,18 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 
+function updateThemeColor(isDark: boolean) {
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+  if (themeColorMeta) {
+    themeColorMeta.setAttribute('content', isDark ? '#000000' : '#ffffff')
+  }
+  // Also update Apple status bar style
+  const appleStatusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
+  if (appleStatusBarMeta) {
+    appleStatusBarMeta.setAttribute('content', isDark ? 'black' : 'default')
+  }
+}
+
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
 
@@ -11,6 +23,7 @@ export function ThemeToggle() {
     
     setIsDark(shouldBeDark)
     document.documentElement.classList.toggle('dark', shouldBeDark)
+    updateThemeColor(shouldBeDark)
   }, [])
 
   const toggleTheme = () => {
@@ -18,6 +31,7 @@ export function ThemeToggle() {
     setIsDark(newTheme)
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
     document.documentElement.classList.toggle('dark', newTheme)
+    updateThemeColor(newTheme)
   }
 
   return (
