@@ -31,82 +31,89 @@
   --spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Glass Surface Classes - Softer appearance */
+/* Glass Surface Classes - Pure White/Black */
 .glass {
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .dark .glass {
-  background: transparent;
+  background: black;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .glass-subtle {
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .dark .glass-subtle {
-  background: transparent;
+  background: black;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .glass-bold {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .dark .glass-bold {
-  background: transparent;
+  background: black;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .glass-dark {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 0;
-}
-
-.dark .glass-dark {
-  background: transparent;
+  background: white;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 0;
 }
 
-/* Blue tinted glass */
+.dark .glass-dark {
+  background: black;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+}
+
+/* No colored glass - pure white/black only */
 .glass-blue {
-  background: rgba(59, 130, 246, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .dark .glass-blue {
-  background: transparent;
+  background: black;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border: 0;
 }
 
 .glass-success {
-  background: rgba(34, 197, 94, 0.08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: white;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 0;
+}
+
+.dark .glass-success {
+  background: black;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border: 0;
 }
 

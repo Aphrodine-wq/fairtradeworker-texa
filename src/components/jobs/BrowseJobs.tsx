@@ -88,12 +88,12 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group h-full flex flex-col ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
-      {/* Blue accent line on hover */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group h-full flex flex-col ${isFresh ? "border-black dark:border-white border-2 shadow-lg" : ""}`}>
+      {/* Accent line on hover */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-black dark:bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
       {isFresh && (
-        <div className="bg-emerald-600 text-white px-4 py-2 flex items-center gap-2">
+        <div className="bg-white dark:bg-black text-black dark:text-white border-b-2 border-black dark:border-white px-4 py-2 flex items-center gap-2">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
         </div>
@@ -115,13 +115,13 @@ const JobCard = memo(function JobCard({
               
               {/* Social Proof Indicators */}
               {viewingCount > 0 && (
-                <Badge variant="outline" className="text-xs bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 animate-pulse">
+                <Badge variant="outline" className="text-xs bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 animate-pulse">
                   <Eye size={12} className="mr-1" weight="duotone" />
                   {viewingCount} viewing
                 </Badge>
               )}
               {recentBidsCount > 0 && (
-                <Badge variant="outline" className="text-xs bg-orange-50 dark:bg-orange-950 text-orange-700 dark:text-orange-300 border-orange-200 dark:border-orange-800 animate-pulse">
+                <Badge variant="outline" className="text-xs bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 animate-pulse">
                   <Users size={12} className="mr-1" weight="duotone" />
                   {recentBidsCount} {recentBidsCount === 1 ? 'bid' : 'bids'} in 5 min
                 </Badge>
@@ -133,7 +133,7 @@ const JobCard = memo(function JobCard({
           {photos.length > 0 && (
             <button
               onClick={() => onViewPhotos(photos)}
-              className="relative w-40 h-40 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
+                  className="relative w-40 h-40 rounded-lg overflow-hidden hover:ring-2 hover:ring-black dark:hover:ring-white transition-all flex-shrink-0 group"
             >
               <img
                 src={photos[0]}
@@ -152,17 +152,17 @@ const JobCard = memo(function JobCard({
       <CardContent className="space-y-3 pt-0 flex-grow">
         {job.aiScope && (
           <div className="glass-subtle rounded-xl p-4 space-y-3">
-            <div className="flex items-center gap-2 text-sm font-semibold text-blue-600">
+            <div className="flex items-center gap-2 text-sm font-semibold text-black dark:text-white">
               <Wrench weight="duotone" size={18} />
               <span>AI Scope</span>
             </div>
             <p className="text-sm leading-relaxed text-black dark:text-white/80">{job.aiScope.scope}</p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <CurrencyDollar weight="duotone" size={24} className="text-blue-600" />
+                <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
                 <div>
                   <div className="text-xs text-black dark:text-white/70">Estimated</div>
-                  <div className="text-lg font-bold text-blue-600">
+                  <div className="text-lg font-bold text-black dark:text-white">
                     ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
                   </div>
                 </div>
@@ -205,7 +205,7 @@ const JobCard = memo(function JobCard({
                 <button
                   key={idx}
                   onClick={() => onViewPhotos(photos)}
-                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all group"
+                  className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-black dark:hover:ring-white transition-all group"
                 >
                   <img
                     src={photo}
@@ -219,7 +219,7 @@ const JobCard = memo(function JobCard({
             {photos.length > 5 && (
               <button
                 onClick={() => onViewPhotos(photos)}
-                className="text-xs text-primary hover:underline mt-2"
+                className="text-xs text-black dark:text-white hover:underline mt-2"
               >
                 + {photos.length - 5} more photos
               </button>
@@ -433,11 +433,11 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               {/* Stats Cards */}
               <div className="flex gap-4">
                 <Card className="px-6 py-4 min-w-[140px]">
-                  <div className="text-2xl font-bold text-primary">{sortedOpenJobs.length}</div>
+                  <div className="text-2xl font-bold text-black dark:text-white">{sortedOpenJobs.length}</div>
                   <div className="text-sm text-muted-foreground">Active Jobs</div>
                 </Card>
                 <Card className="px-6 py-4 min-w-[140px]">
-                  <div className="text-2xl font-bold text-green-600">
+                  <div className="text-2xl font-bold text-black dark:text-white">
                     {sortedOpenJobs.filter(j => j.bids.length === 0).length}
                   </div>
                   <div className="text-sm text-muted-foreground">No Bids Yet</div>

@@ -135,8 +135,12 @@
     left: 0;
     width: 0;
     height: 1.5px;
-    background: oklch(0.506 0.213 264);
+    background: black;
     transition: width 0.1s ease;
+  }
+  
+  .dark a::after {
+    background: white;
   }
 
   a:hover::after {
@@ -152,32 +156,23 @@
     color: inherit;
   }
   
-  /* Force all backgrounds to white in light mode */
-  body, main, section, article, aside, header, footer, nav,
-  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-card"]):not([class*="bg-background"]):not([class*="bg-muted"]) {
+  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - NO EXCEPTIONS */
+  *:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]) {
     background-color: white !important;
   }
   
-  /* Force all backgrounds to black in dark mode */
-  .dark body, .dark main, .dark section, .dark article, .dark aside, .dark header, .dark footer, .dark nav,
-  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-card"]):not([class*="bg-background"]):not([class*="bg-muted"]) {
+  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - NO EXCEPTIONS */
+  .dark *:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]) {
     background-color: black !important;
   }
   
-  /* Force all text to black in light mode */
-  body, p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, label, 
-  button, a, input, textarea, select, 
-  .text-muted-foreground, .text-foreground, .text-secondary-foreground,
-  [class*="text-"]:not([class*="dark:"]):not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="text-success"]):not([class*="text-warning"]) {
+  /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - NO EXCEPTIONS */
+  *:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]) {
     color: black !important;
   }
   
-  /* Force white text in dark mode */
-  .dark body, .dark p, .dark span, .dark div, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark li, .dark td, .dark th, .dark label,
-  .dark button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
-  .dark a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
-  .dark .text-muted-foreground, .dark .text-foreground, .dark .text-secondary-foreground,
-  .dark [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="text-success"]):not([class*="text-warning"]) {
+  /* FORCE ALL TEXT TO WHITE IN DARK MODE - NO EXCEPTIONS */
+  .dark *:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]) {
     color: white !important;
   }
   

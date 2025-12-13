@@ -69,7 +69,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
       </div>
 
       {/* Map Container */}
-      <Card className="relative h-[600px] overflow-hidden bg-blue-50 dark:bg-blue-950">
+      <Card className="relative h-[600px] overflow-hidden bg-white dark:bg-black">
         {/* Map Grid Background */}
         <div className="absolute inset-0 opacity-20">
           <svg width="100%" height="100%">
@@ -103,11 +103,11 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
                   <MapPin 
                     size={isMultiple ? 40 : 32} 
                     weight="fill" 
-                    className={`${isMultiple ? 'text-orange-500' : 'text-blue-500'} drop-shadow-lg`}
+                    className="text-black dark:text-white drop-shadow-lg"
                   />
                   {/* Cluster Count */}
                   {isMultiple && (
-                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-orange-500">
+                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-black dark:border-white">
                       {cluster.jobs.length}
                     </div>
                   )}
@@ -157,7 +157,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
                 <Badge variant="secondary">
                   {selectedJob.size}
                 </Badge>
-                <span className="text-sm font-semibold text-primary">
+                <span className="text-sm font-semibold text-black dark:text-white">
                   ${selectedJob.aiScope.priceLow} - ${selectedJob.aiScope.priceHigh}
                 </span>
                 <span className="text-xs text-muted-foreground">
@@ -179,7 +179,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
         <div className="absolute top-4 right-4 bg-white dark:bg-black rounded-lg p-3 shadow-lg space-y-2 text-xs">
           <div className="font-semibold mb-2">Legend</div>
           <div className="flex items-center gap-2">
-            <MapPin size={20} weight="fill" className="text-blue-500" />
+            <MapPin size={20} weight="fill" className="text-black dark:text-white" />
             <span>Single Job</span>
           </div>
           <div className="flex items-center gap-2">

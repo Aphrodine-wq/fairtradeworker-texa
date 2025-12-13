@@ -91,25 +91,25 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
       label: "Jobs Posted Today",
       value: displayJobsToday,
       icon: Lightning,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200"
+      color: "text-black dark:text-white",
+      bgColor: "bg-white dark:bg-black",
+      borderColor: "border-black/10 dark:border-white/10"
     },
     {
       label: "Avg Bid Time",
       value: `${avgBidTime}m`,
       icon: Clock,
-      color: "text-blue-500",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-100"
+      color: "text-black dark:text-white",
+      bgColor: "bg-white dark:bg-black",
+      borderColor: "border-black/10 dark:border-white/10"
     },
     {
       label: "Completed This Week",
       value: displayCompleted,
       icon: TrendUp,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200"
+      color: "text-black dark:text-white",
+      bgColor: "bg-white dark:bg-black",
+      borderColor: "border-black/10 dark:border-white/10"
     }
   ]
 
@@ -128,8 +128,8 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.3 }}
             >
-              <div className={cn("p-2 rounded-lg bg-primary/20", stat.color)}>
-                <Icon size={24} weight="bold" className="text-primary" />
+              <div className={cn("p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10", stat.color)}>
+                <Icon size={24} weight="bold" className="text-black dark:text-white" />
               </div>
               <div>
                 <motion.div 

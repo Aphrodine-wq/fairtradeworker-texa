@@ -1,0 +1,57 @@
+/**
+ * Utility to replace all colored backgrounds and text with white/black
+ * This is a helper script for bulk replacements
+ */
+
+// This file documents the color replacement patterns used throughout the codebase
+// All colored backgrounds should be: bg-white dark:bg-black
+// All colored text should be: text-black dark:text-white
+
+export const COLOR_REPLACEMENTS = {
+  // Background replacements
+  'bg-blue-50': 'bg-white dark:bg-black',
+  'bg-blue-100': 'bg-white dark:bg-black',
+  'bg-green-50': 'bg-white dark:bg-black',
+  'bg-green-100': 'bg-white dark:bg-black',
+  'bg-yellow-50': 'bg-white dark:bg-black',
+  'bg-yellow-100': 'bg-white dark:bg-black',
+  'bg-red-50': 'bg-white dark:bg-black',
+  'bg-red-100': 'bg-white dark:bg-black',
+  'bg-orange-50': 'bg-white dark:bg-black',
+  'bg-orange-100': 'bg-white dark:bg-black',
+  'bg-emerald-50': 'bg-white dark:bg-black',
+  'bg-emerald-100': 'bg-white dark:bg-black',
+  'bg-amber-50': 'bg-white dark:bg-black',
+  'bg-amber-100': 'bg-white dark:bg-black',
+  'bg-rose-50': 'bg-white dark:bg-black',
+  'bg-rose-100': 'bg-white dark:bg-black',
+  'bg-purple-50': 'bg-white dark:bg-black',
+  'bg-pink-50': 'bg-white dark:bg-black',
+  
+  // Text replacements
+  'text-blue-600': 'text-black dark:text-white',
+  'text-blue-700': 'text-black dark:text-white',
+  'text-blue-500': 'text-black dark:text-white',
+  'text-green-600': 'text-black dark:text-white',
+  'text-green-700': 'text-black dark:text-white',
+  'text-yellow-600': 'text-black dark:text-white',
+  'text-red-600': 'text-black dark:text-white',
+  'text-orange-600': 'text-black dark:text-white',
+  'text-orange-700': 'text-black dark:text-white',
+  'text-emerald-600': 'text-black dark:text-white',
+  'text-emerald-700': 'text-black dark:text-white',
+  'text-amber-600': 'text-black dark:text-white',
+  'text-amber-700': 'text-black dark:text-white',
+  'text-rose-600': 'text-black dark:text-white',
+  'text-rose-700': 'text-black dark:text-white',
+  
+  // Border replacements
+  'border-blue-200': 'border-black/10 dark:border-white/10',
+  'border-blue-300': 'border-black/10 dark:border-white/10',
+  'border-green-200': 'border-black/10 dark:border-white/10',
+  'border-orange-200': 'border-black/10 dark:border-white/10',
+  'border-emerald-500': 'border-black dark:border-white',
+  'border-red-500': 'border-black dark:border-white',
+  'border-yellow-500': 'border-black dark:border-white',
+}
+

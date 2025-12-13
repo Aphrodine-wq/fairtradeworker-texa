@@ -60,7 +60,7 @@ export function CompletionCard({
       >
         <CardContent className="p-0">
           {/* Header */}
-          <div className="bg-primary text-primary-foreground p-6 text-center">
+          <div className="bg-white dark:bg-black text-black dark:text-white p-6 text-center border-b border-black/10 dark:border-white/10">
             <h2 className="text-2xl font-bold mb-2">✨ Job Completed!</h2>
             <p className="text-sm opacity-90">{formattedDate}</p>
           </div>
@@ -122,14 +122,14 @@ export function CompletionCard({
             {/* Price */}
             <div className="flex items-center justify-between pt-4 border-t">
               <span className="text-sm text-muted-foreground">Total Paid</span>
-              <span className="text-2xl font-bold text-primary">${amount}</span>
+              <span className="text-2xl font-bold text-black dark:text-white">${amount}</span>
             </div>
           </div>
 
           {/* Watermark Footer */}
           <div className="bg-muted/50 px-6 py-3 text-center border-t">
             <p className="text-xs text-muted-foreground">
-              Posted on <span className="font-semibold text-primary">FairTradeWorker</span> • Zero fees, 100% earnings
+              Posted on <span className="font-semibold text-black dark:text-white">FairTradeWorker</span> • Zero fees, 100% earnings
             </p>
           </div>
         </CardContent>
