@@ -278,36 +278,36 @@
     opacity: 1 !important;
   }
   
-  /* Force all bg-*/ opacity classes to solid white in light mode */
-  [class*="bg-white/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-black/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-primary/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-secondary/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-accent/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-muted/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-card/"]:not([class*="animate"]):not([style*="background"]) {
+  /* Force all bg-* opacity classes to solid white in light mode */
+  [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]) {
     background-color: white !important;
   }
   
-  /* Force all bg-*/ opacity classes to solid black in dark mode */
-  .dark [class*="bg-white/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-black/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-primary/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-secondary/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-accent/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-muted/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-card/"]:not([class*="animate"]):not([style*="background"]) {
+  /* Force all bg-* opacity classes to solid black in dark mode */
+  .dark [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]) {
     background-color: black !important;
   }
   
   /* Force all hover opacity to solid */
-  [class*="hover:bg-white/"]:hover:not([class*="animate"]):not([style*="background"]),
-  [class*="hover:bg-black/"]:hover:not([class*="animate"]):not([style*="background"]) {
+  [class*="hover:bg-white"][class*="/"]:hover:not([class*="animate"]):not([style*="background"]),
+  [class*="hover:bg-black"][class*="/"]:hover:not([class*="animate"]):not([style*="background"]) {
     background-color: white !important;
   }
   
-  .dark [class*="hover:bg-white/"]:hover:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="hover:bg-black/"]:hover:not([class*="animate"]):not([style*="background"]) {
+  .dark [class*="hover:bg-white"][class*="/"]:hover:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="hover:bg-black"][class*="/"]:hover:not([class*="animate"]):not([style*="background"]) {
     background-color: black !important;
   }
 }
