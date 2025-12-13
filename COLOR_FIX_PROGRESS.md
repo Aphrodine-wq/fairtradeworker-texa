@@ -3,8 +3,8 @@
 ## Status: In Progress
 - Total files with colored elements: 77
 - Total matches: 475 (down from 523)
-- Files fixed: 30+
-- Remaining: ~40
+- Files fixed: 36+
+- Remaining: ~30
 
 ## Fixed Files ✅
 1. src/components/ui/button.tsx
@@ -40,6 +40,12 @@
 31. src/components/contractor/EnhancedCRM.tsx
 32. src/components/contractor/EnhancedCRMDashboard.tsx
 33. src/index.css (animations fixed)
+34. src/components/contractor/ContractorDashboard.tsx
+35. src/components/contractor/CRMDashboard.tsx
+36. src/components/viral/SpeedMetricsDashboard.tsx
+37. src/components/payments/PaymentDashboard.tsx
+38. src/components/payments/MilestonePayments.tsx
+39. src/components/payments/ContractorPayouts.tsx
 
 ## Remaining Files (62)
 - src/components/jobs/MajorProjectScopeBuilder.tsx
