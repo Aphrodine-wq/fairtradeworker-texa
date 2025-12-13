@@ -23,7 +23,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-      <section className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-12 md:py-24 !bg-white dark:!bg-black">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-12 md:py-24 !bg-white dark:!bg-black relative z-0">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight text-black dark:text-white">
