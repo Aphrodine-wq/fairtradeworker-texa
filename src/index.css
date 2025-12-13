@@ -108,7 +108,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-foreground transition-colors duration-150;
+    @apply bg-background text-foreground;
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -121,7 +121,7 @@
   }
 
   main > * {
-    animation: fadeIn 0.12s ease-out;
+    animation: fadeIn 0.08s ease-out;
   }
 
   a {

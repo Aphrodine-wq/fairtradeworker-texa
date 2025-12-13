@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { Sun, Moon } from "@phosphor-icons/react"
 
 function updateThemeColor(isDark: boolean) {
   const themeColorMeta = document.querySelector('meta[name="theme-color"]')
@@ -15,6 +15,7 @@ function updateThemeColor(isDark: boolean) {
 
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
     const saved = localStorage.getItem('theme')
@@ -27,32 +28,44 @@ export function ThemeToggle() {
   }, [])
 
   const toggleTheme = () => {
+    if (isAnimating) return
+    
+    setIsAnimating(true)
     const newTheme = !isDark
     setIsDark(newTheme)
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
+    
+    // Apply theme change immediately for instant feedback
     document.documentElement.classList.toggle('dark', newTheme)
     updateThemeColor(newTheme)
+    
+    // Reset animation state after transition
+    setTimeout(() => setIsAnimating(false), 150)
   }
 
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-9 h-9 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200 hover:scale-105 active:scale-95 min-w-[32px] min-h-[32px]"
+      className="relative w-9 h-9 rounded-full flex items-center justify-center bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:bg-white dark:hover:bg-black focus:outline-none focus:ring-2 focus:ring-black/20 dark:focus:ring-white/20 transition-transform duration-100 hover:scale-110 active:scale-95 min-w-[36px] min-h-[36px]"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      disabled={isAnimating}
     >
-      <motion.div
-        className="absolute inset-0 rounded-full border-2"
-        initial={false}
-        animate={{
-          backgroundColor: isDark 
-            ? 'oklch(0.2 0.02 264)' 
-            : 'oklch(0.95 0.05 85)',
-          borderColor: isDark 
-            ? 'oklch(0.35 0.02 264)' 
-            : 'oklch(0.85 0.1 85)',
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      <div className="relative w-5 h-5">
+        <Sun
+          weight="fill"
+          className={`absolute inset-0 text-black dark:text-white transition-all duration-100 ${
+            isDark ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'
+          }`}
+          size={20}
+        />
+        <Moon
+          weight="fill"
+          className={`absolute inset-0 text-black dark:text-white transition-all duration-100 ${
+            isDark ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'
+          }`}
+          size={20}
+        />
+      </div>
     </button>
   )
 }
