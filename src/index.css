@@ -248,6 +248,26 @@
     background-color: white !important;
     color: black !important;
   }
+  
+  /* Force all bg-muted, bg-card, bg-background, and bg-transparent to be solid */
+  [class*="bg-muted"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-card"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-background"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-transparent"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+    background-color: white !important;
+  }
+  
+  .dark [class*="bg-muted"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-card"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-background"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-transparent"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+    background-color: black !important;
+  }
+  
+  /* Remove backdrop-blur to ensure solid backgrounds */
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+  }
 }
 
 @keyframes fadeIn {
