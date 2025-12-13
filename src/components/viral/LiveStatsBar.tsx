@@ -101,7 +101,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   ]
 
   return (
-    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-transparent">
+    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-black">
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
