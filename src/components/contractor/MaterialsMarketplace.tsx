@@ -120,21 +120,21 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
       </div>
 
       {aiMaterialsList && aiMaterialsList.length > 0 && (
-        <Card className="p-4 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+        <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
           <div className="flex items-start gap-3">
-            <Wrench className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" weight="duotone" />
+            <Wrench className="w-5 h-5 text-black dark:text-white flex-shrink-0 mt-1" weight="duotone" />
             <div className="flex-1">
-              <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              <h3 className="font-semibold text-black dark:text-white mb-2">
                 AI-Suggested Materials for This Job
               </h3>
               <div className="flex flex-wrap gap-2">
                 {aiMaterialsList.map((material, i) => (
-                  <Badge key={i} variant="outline" className="bg-white dark:bg-blue-950">
+                  <Badge key={i} variant="outline" className="bg-white dark:bg-black">
                     {material}
                   </Badge>
                 ))}
               </div>
-              <p className="text-sm text-blue-700 dark:text-blue-300 mt-2">
+              <p className="text-sm text-black dark:text-white/80 mt-2">
                 Based on the job scope, these materials are commonly needed
               </p>
             </div>
@@ -272,15 +272,15 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
                     <span>Retail Price:</span>
                     <span className="line-through text-muted-foreground">${retailPrice.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-sm text-green-600 dark:text-green-400 font-medium">
+                  <div className="flex justify-between text-sm text-black dark:text-white font-medium">
                     <span>Bulk Discount (12%):</span>
                     <span>-${savings.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold border-t pt-2">
                     <span>Your Price:</span>
-                    <span className="text-primary">${total.toFixed(2)}</span>
+                    <span className="text-black dark:text-white">${total.toFixed(2)}</span>
                   </div>
-                  <div className="text-xs text-center text-green-600 dark:text-green-400">
+                  <div className="text-xs text-center text-black dark:text-white">
                     You save ${savings.toFixed(2)}
                   </div>
                 </div>
