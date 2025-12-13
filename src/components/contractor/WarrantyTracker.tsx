@@ -132,19 +132,19 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
 
   const getWarrantyStatus = (endDate: string) => {
     const days = getDaysRemaining(endDate)
-    if (days < 0) return { text: "Expired", color: "bg-white dark:bg-black border-2 border-gray-500", icon: Clock }
-    if (days <= 30) return { text: `${days} days left`, color: "bg-red-500", icon: Warning }
-    if (days <= 90) return { text: `${days} days left`, color: "bg-yellow-500", icon: Clock }
-    return { text: `${days} days left`, color: "bg-green-500", icon: CheckCircle }
+    if (days < 0) return { text: "Expired", color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Clock }
+    if (days <= 30) return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Warning }
+    if (days <= 90) return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Clock }
+    return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: CheckCircle }
   }
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-green-500/5 border-green-500/20">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center">
-              <ShieldCheck weight="fill" className="text-white" size={24} />
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+              <ShieldCheck weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
               <h2 className="text-2xl font-bold">Warranty Tracker</h2>
@@ -244,19 +244,19 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 mt-6">
-          <div className="p-4 bg-green-500/10 rounded-lg border border-green-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Active Warranties</p>
-            <p className="text-3xl font-bold text-green-500">{activeWarranties.length}</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{activeWarranties.length}</p>
           </div>
 
-          <div className="p-4 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Expiring Soon (30 days)</p>
-            <p className="text-3xl font-bold text-yellow-500">{expiringIn30Days.length}</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{expiringIn30Days.length}</p>
           </div>
 
           <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Expired</p>
-            <p className="text-3xl font-bold text-gray-500">{expiredWarranties.length}</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{expiredWarranties.length}</p>
           </div>
         </div>
       </Card>
@@ -278,20 +278,20 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
           {expiringIn30Days.length > 0 && (
             <div>
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <Warning size={20} className="text-yellow-500" />
+                <Warning size={20} className="text-black dark:text-white" />
                 Expiring Soon
               </h3>
               <div className="space-y-3">
                 {expiringIn30Days.map(warranty => {
                   const status = getWarrantyStatus(warranty.endDate)
                   return (
-                    <Card key={warranty.id} className="p-4 border-yellow-500/30 bg-yellow-500/5">
+                    <Card key={warranty.id} className="p-4 border border-black/10 dark:border-white/10 bg-white dark:bg-black">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <User size={16} className="text-muted-foreground" />
                             <span className="font-semibold">{warranty.customerName}</span>
-                            <Badge className={`${status.color} text-white`}>
+                            <Badge className={`${status.color} text-black dark:text-white`}>
                               {status.text}
                             </Badge>
                           </div>
@@ -323,7 +323,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
           {activeWarranties.filter(w => !expiringIn30Days.includes(w)).length > 0 && (
             <div>
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <CheckCircle size={20} className="text-green-500" />
+                <CheckCircle size={20} className="text-black dark:text-white" />
                 Active Warranties
               </h3>
               <div className="space-y-3">
@@ -336,7 +336,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                           <div className="flex items-center gap-2 mb-2">
                             <User size={16} className="text-muted-foreground" />
                             <span className="font-semibold">{warranty.customerName}</span>
-                            <Badge className={`${status.color} text-white`}>
+                            <Badge className={`${status.color} text-black dark:text-white`}>
                               {status.text}
                             </Badge>
                           </div>
@@ -368,7 +368,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
           {expiredWarranties.length > 0 && (
             <div>
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <Clock size={20} className="text-gray-500" />
+                <Clock size={20} className="text-black dark:text-white" />
                 Expired Warranties
               </h3>
               <div className="space-y-3">

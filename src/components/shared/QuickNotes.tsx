@@ -36,12 +36,12 @@ interface QuickNotesProps {
 }
 
 const NOTE_CATEGORIES = [
-  { value: "job", label: "Job Related", color: "bg-blue-500" },
-  { value: "customer", label: "Customer Info", color: "bg-green-500" },
-  { value: "material", label: "Materials", color: "bg-yellow-500" },
-  { value: "reminder", label: "Reminder", color: "bg-red-500" },
-  { value: "idea", label: "Idea", color: "bg-purple-500" },
-  { value: "other", label: "Other", color: "bg-white dark:bg-black border-2 border-gray-500" }
+  { value: "job", label: "Job Related", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" },
+  { value: "customer", label: "Customer Info", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" },
+  { value: "material", label: "Materials", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" },
+  { value: "reminder", label: "Reminder", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" },
+  { value: "idea", label: "Idea", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" },
+  { value: "other", label: "Other", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10" }
 ]
 
 export function QuickNotes({ user }: QuickNotesProps) {
@@ -133,7 +133,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
   }
 
   const getCategoryColor = (cat: string) => {
-    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-2 border-gray-500"
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border border-black/10 dark:border-white/10"
   }
 
   const getCategoryLabel = (cat: string) => {
@@ -154,11 +154,11 @@ export function QuickNotes({ user }: QuickNotesProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-purple-500/5 border-purple-500/20">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center">
-              <Note weight="fill" className="text-white" size={24} />
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+              <Note weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
               <h2 className="text-2xl font-bold">Quick Notes</h2>
@@ -242,19 +242,19 @@ export function QuickNotes({ user }: QuickNotesProps) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 mt-6">
-          <div className="p-4 bg-purple-500/10 rounded-lg border border-purple-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Total Notes</p>
-            <p className="text-3xl font-bold text-purple-500">{notes?.length || 0}</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{notes?.length || 0}</p>
           </div>
 
-          <div className="p-4 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Pinned</p>
-            <p className="text-3xl font-bold text-yellow-500">{pinnedCount}</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{pinnedCount}</p>
           </div>
 
-          <div className="p-4 bg-blue-500/10 rounded-lg border border-blue-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">This Week</p>
-            <p className="text-3xl font-bold text-blue-500">
+            <p className="text-3xl font-bold text-black dark:text-white">
               {notes?.filter(n => {
                 const weekAgo = new Date()
                 weekAgo.setDate(weekAgo.getDate() - 7)
@@ -324,18 +324,18 @@ export function QuickNotes({ user }: QuickNotesProps) {
             <Card 
               key={note.id} 
               className={`p-4 hover:shadow-md transition-shadow ${
-                note.isPinned ? 'border-yellow-500/40 bg-yellow-500/5' : ''
+                note.isPinned ? 'border-2 border-black dark:border-white bg-white dark:bg-black' : ''
               }`}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     {note.isPinned && (
-                      <PushPin size={16} className="text-yellow-500" weight="fill" />
+                      <PushPin size={16} className="text-black dark:text-white" weight="fill" />
                     )}
                     <h3 className="font-bold">{note.title}</h3>
                   </div>
-                  <Badge className={`${getCategoryColor(note.category)} text-white text-xs`}>
+                  <Badge className={`${getCategoryColor(note.category)} text-black dark:text-white text-xs`}>
                     {getCategoryLabel(note.category)}
                   </Badge>
                 </div>
@@ -349,7 +349,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
                     <PushPin 
                       size={16} 
                       weight={note.isPinned ? "fill" : "regular"}
-                      className={note.isPinned ? "text-yellow-500" : ""}
+                      className={note.isPinned ? "text-black dark:text-white" : ""}
                     />
                   </Button>
                   <Button
