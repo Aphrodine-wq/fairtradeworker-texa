@@ -286,11 +286,11 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
           {/* Revenue Share Highlight */}
           {operatorRevenue > 0 && (
-            <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+            <Card className="p-6 bg-primary/5 border-primary/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Your Territory Earnings</p>
-                  <p className="text-4xl font-bold mt-1 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <p className="text-4xl font-bold mt-1 text-primary">
                     ${operatorRevenue.toLocaleString()}
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">

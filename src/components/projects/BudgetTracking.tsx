@@ -167,7 +167,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="bg-gradient-to-br from-primary/5 via-transparent to-accent/5 border-primary/20">
+      <Card className="bg-primary/5 border-primary/20">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">

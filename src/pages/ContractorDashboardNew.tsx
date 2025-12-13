@@ -199,7 +199,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               <div className="flex items-center gap-3">
                 <h1 className="text-3xl font-bold">Welcome back, {user.fullName.split(' ')[0]}</h1>
                 {user.isPro && (
-                  <Badge className="bg-gradient-to-r from-primary to-accent">PRO</Badge>
+                  <Badge className="bg-primary">PRO</Badge>
                 )}
               </div>
               <p className="text-muted-foreground mt-1">
@@ -284,11 +284,11 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Fee Savings Highlight */}
           {feesAvoided > 0 && (
-            <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
+            <Card className="p-6 bg-primary/5 border-primary/20">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Fees Avoided on FairTradeWorker</p>
-                  <p className="text-4xl font-bold mt-1 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <p className="text-4xl font-bold mt-1 text-primary">
                     ${feesAvoided.toLocaleString()}
                   </p>
                   <p className="text-sm text-muted-foreground mt-2">
