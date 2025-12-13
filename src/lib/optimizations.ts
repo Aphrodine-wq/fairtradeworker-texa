@@ -3,7 +3,7 @@
  * Includes memoization, debouncing, throttling, and lazy loading utilities
  */
 
-import { useMemo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react'
 
 // ============================================================================
 // Debounce
