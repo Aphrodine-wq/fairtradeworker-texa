@@ -23,7 +23,7 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
     <nav 
       aria-label="Breadcrumb" 
       className={cn(
-        "flex items-center gap-2 text-sm px-4 py-3 bg-white dark:bg-black backdrop-blur-sm rounded-lg border border-border/50",
+        "flex items-center gap-2 text-sm px-4 py-3 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10",
         className
       )}
     >
@@ -48,7 +48,7 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
                   onClick={() => onNavigate(item.page!)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-white/80 dark:hover:bg-black/80 transition-colors text-muted-foreground hover:text-foreground font-medium group"
+                  className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-white dark:hover:bg-black transition-colors text-muted-foreground hover:text-foreground font-medium group"
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.icon && (

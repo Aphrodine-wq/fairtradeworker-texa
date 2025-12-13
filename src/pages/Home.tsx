@@ -51,7 +51,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 dark:bg-card dark:hover:bg-card/90 border-0 text-black dark:text-white transition-all duration-300"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-white dark:bg-black hover:bg-white dark:hover:bg-black border-0 text-black dark:text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'homeowner')}
             >
               <House weight="fill" className="mr-3 text-black dark:text-white" size={24} />
@@ -60,7 +60,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 dark:bg-card dark:hover:bg-card/90 border-0 text-black dark:text-white transition-all duration-300"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-white dark:bg-black hover:bg-white dark:hover:bg-black border-0 text-black dark:text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'contractor')}
             >
               <Hammer weight="fill" className="mr-3 text-black dark:text-white" size={24} />
@@ -69,7 +69,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 dark:bg-card dark:hover:bg-card/90 border-0 text-black dark:text-white transition-all duration-300"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-white dark:bg-black hover:bg-white dark:hover:bg-black border-0 text-black dark:text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'operator')}
             >
               <MapTrifold weight="fill" className="mr-3 text-black dark:text-white" size={24} />
@@ -133,7 +133,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                 <House weight="fill" className="text-primary-foreground" size={24} />
               </div>
@@ -142,7 +142,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
               </p>
             </Card>
-            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Hammer weight="fill" className="text-secondary-foreground" size={24} />
               </div>
@@ -151,7 +151,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
               </p>
             </Card>
-            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                 <MapTrifold weight="fill" className="text-accent-foreground" size={24} />
               </div>
