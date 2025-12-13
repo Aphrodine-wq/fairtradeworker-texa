@@ -11,7 +11,7 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Calendar } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
-import { CRMDashboard } from "./CRMDashboard"
+import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import { CompanySettings } from "./CompanySettings"
 import { RouteBuilder } from "./RouteBuilder"
@@ -287,7 +287,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsContent>
           
           <TabsContent value="crm" className="mt-6">
-            <CRMDashboard user={user} />
+            <EnhancedCRMDashboard user={user} />
           </TabsContent>
           
           <TabsContent value="replies" className="mt-6">

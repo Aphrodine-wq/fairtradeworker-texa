@@ -396,6 +396,18 @@ export interface CRMCustomer {
   createdAt: string
 }
 
+export interface CRMInteraction {
+  id: string
+  customerId: string
+  type: 'call' | 'email' | 'meeting' | 'note' | 'bid' | 'payment'
+  title: string
+  description?: string
+  date: string
+  outcome?: 'positive' | 'neutral' | 'negative'
+  nextAction?: string
+  nextActionDate?: string
+}
+
 export interface FollowUpSequence {
   id: string
   contractorId: string
