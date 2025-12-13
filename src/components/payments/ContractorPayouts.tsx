@@ -170,7 +170,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+              <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 space-y-2">
                 <h4 className="font-semibold text-sm">Standard Payout</h4>
                 <p className="text-xs text-muted-foreground">
                   Free transfers to your bank account. Arrives in 2-3 business days.
@@ -188,7 +188,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                   </p>
                 </div>
               ) : (
-                <div className="p-4 bg-muted/30 border border-dashed rounded-lg space-y-2">
+                <div className="p-4 bg-white dark:bg-black border border-dashed border-black/10 dark:border-white/10 rounded-lg space-y-2">
                   <div className="flex items-center gap-2">
                     <Lightning size={18} className="text-muted-foreground" />
                     <h4 className="font-semibold text-sm text-muted-foreground">Instant Payout</h4>
@@ -219,7 +219,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
               ].map((payout, idx) => (
                 <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-full ${payout.method === 'instant' ? 'bg-primary/10' : 'bg-muted'}`}>
+                    <div className={`p-2 rounded-full ${payout.method === 'instant' ? 'bg-white dark:bg-black border border-black/10 dark:border-white/10' : 'bg-white dark:bg-black border border-black/10 dark:border-white/10'}`}>
                       {payout.method === 'instant' ? (
                         <Lightning size={18} weight="fill" className="text-primary" />
                       ) : (
@@ -409,7 +409,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                 id="accountType"
                 value={bankDetails.accountType}
                 onChange={(e) => setBankDetails(prev => ({ ...prev, accountType: e.target.value as 'checking' | 'savings' }))}
-                className="w-full h-10 px-3 rounded-md border border-border bg-background"
+                className="w-full h-10 px-3 rounded-md border border-black/10 dark:border-white/10 bg-white dark:bg-black"
               >
                 <option value="checking">Checking</option>
                 <option value="savings">Savings</option>

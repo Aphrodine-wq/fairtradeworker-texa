@@ -254,12 +254,12 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                     <p className="text-2xl font-bold text-black dark:text-white">0%</p>
                     <p className="text-xs text-muted-foreground mt-1">Contractor fees</p>
                   </div>
-                  <div className="p-4 border rounded-lg bg-muted/50">
+                  <div className="p-4 border rounded-lg bg-white dark:bg-black">
                     <p className="text-sm text-muted-foreground mb-1">Thumbtack</p>
                     <p className="text-2xl font-bold">10-15%</p>
                     <p className="text-xs text-muted-foreground mt-1">Lead fees + commission</p>
                   </div>
-                  <div className="p-4 border rounded-lg bg-muted/50">
+                  <div className="p-4 border rounded-lg bg-white dark:bg-black">
                     <p className="text-sm text-muted-foreground mb-1">HomeAdvisor</p>
                     <p className="text-2xl font-bold">15-20%</p>
                     <p className="text-xs text-muted-foreground mt-1">Per lead + monthly</p>
@@ -296,7 +296,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
             <CardContent>
               <div className="space-y-3">
                 {recentTransactions.map((transaction) => (
-                  <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                  <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-white dark:hover:bg-black transition-colors">
                     <div className="flex items-center gap-4">
                       <div className={`p-3 rounded-full ${
                         transaction.type === 'payout' ? 'bg-primary/10' :

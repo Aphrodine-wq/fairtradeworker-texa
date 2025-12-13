@@ -103,7 +103,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             {/* Available Now Toggle */}
-            <div className="flex items-center gap-3 px-4 py-2 rounded-lg border bg-card">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-lg border bg-white dark:bg-black border-black/10 dark:border-white/10">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
                   <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
