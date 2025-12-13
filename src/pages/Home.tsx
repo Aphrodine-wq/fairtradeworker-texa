@@ -23,13 +23,13 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-      <section className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-12 md:py-24">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-12 md:py-24 bg-black">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight text-white">
               Zero-fee home services marketplace.
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/80 leading-relaxed">
               AI scopes in 60 seconds. Contractors keep 100%.
             </p>
           </div>
@@ -38,71 +38,71 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-transparent hover:bg-white/10 border-0 border-white/20 text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'homeowner')}
             >
-              <House weight="fill" className="mr-3" size={24} />
+              <House weight="fill" className="mr-3 text-white" size={24} />
               I'm a Homeowner
             </Button>
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-transparent hover:bg-white/10 border-0 border-white/20 text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'contractor')}
             >
-              <Hammer weight="fill" className="mr-3" size={24} />
+              <Hammer weight="fill" className="mr-3 text-white" size={24} />
               I'm a Contractor/Subcontractor
             </Button>
             <Button 
               size="lg" 
               variant="ghost"
-              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-transparent hover:bg-white/10 border-0 border-white/20 text-white transition-all duration-300"
               onClick={() => onNavigate('signup', 'operator')}
             >
-              <MapTrifold weight="fill" className="mr-3" size={24} />
+              <MapTrifold weight="fill" className="mr-3 text-white" size={24} />
               I'm an Operator
             </Button>
           </div>
 
-          <Card className="mt-12 p-6 bg-accent/10 border-accent/20">
-            <p className="text-2xl md:text-3xl font-bold">
-              Jobs posted today: <span className="text-accent">{todayJobs.length}</span>
+          <Card className="mt-12 p-6 bg-transparent border-white/20">
+            <p className="text-2xl md:text-3xl font-bold text-white">
+              Jobs posted today: <span className="text-primary">{todayJobs.length}</span>
             </p>
           </Card>
 
           {onDemoLogin && (
-            <Card className="mt-8 p-6 border-2 border-primary/20 bg-primary/5">
+            <Card className="mt-8 p-6 border-2 border-white/20 bg-transparent">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Play weight="fill" className="text-primary" size={24} />
-                  <h3 className="text-xl font-bold">Try Demo Mode</h3>
+                  <h3 className="text-xl font-bold text-white">Try Demo Mode</h3>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-white/80">
                   Explore the platform instantly with pre-populated demo accounts for each user type.
                 </p>
                 <div className="flex flex-col md:flex-row gap-3">
                   <Button 
                     variant="outline"
-                    className="flex-1 border-primary/30 hover:bg-primary/10"
+                    className="flex-1 border-white/30 hover:bg-white/10 text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
                   >
-                    <House weight="fill" className="mr-2" size={20} />
+                    <House weight="fill" className="mr-2 text-white" size={20} />
                     Demo as Homeowner
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 border-secondary/30 hover:bg-secondary/10"
+                    className="flex-1 border-white/30 hover:bg-white/10 text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.contractor)}
                   >
-                    <Hammer weight="fill" className="mr-2" size={20} />
+                    <Hammer weight="fill" className="mr-2 text-white" size={20} />
                     Demo as Contractor/Subcontractor
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 border-accent/30 hover:bg-accent/10"
+                    className="flex-1 border-white/30 hover:bg-white/10 text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.operator)}
                   >
-                    <MapTrifold weight="fill" className="mr-2" size={20} />
+                    <MapTrifold weight="fill" className="mr-2 text-white" size={20} />
                     Demo as Operator
                   </Button>
                 </div>

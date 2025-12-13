@@ -101,7 +101,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   ]
 
   return (
-    <div className="glass-subtle rounded-2xl mx-auto max-w-2xl my-8">
+    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-transparent">
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
@@ -109,20 +109,19 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
             <motion.div 
               key={stat.label} 
               className={cn(
-                "flex-1 px-6 py-3 rounded-xl bg-white/50 border flex items-center gap-3",
-                stat.borderColor
+                "flex-1 px-6 py-3 rounded-xl bg-transparent border border-white/20 flex items-center gap-3"
               )}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.3 }}
             >
-              <div className={cn("p-2 rounded-lg", stat.bgColor, stat.color)}>
-                <Icon size={24} weight="bold" />
+              <div className={cn("p-2 rounded-lg bg-primary/20", stat.color)}>
+                <Icon size={24} weight="bold" className="text-primary" />
               </div>
               <div>
                 <motion.div 
                   className={cn(
-                    "text-2xl font-bold text-blue-600"
+                    "text-2xl font-bold text-white"
                   )}
                   key={stat.value}
                   initial={{ scale: 1.1 }}
@@ -131,7 +130,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
+                <div className="text-sm text-white/70">{stat.label}</div>
               </div>
             </motion.div>
           )
