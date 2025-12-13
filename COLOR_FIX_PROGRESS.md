@@ -3,8 +3,8 @@
 ## Status: In Progress
 - Total files with colored elements: 77
 - Total matches: 475 (down from 523)
-- Files fixed: 20
-- Remaining: 57
+- Files fixed: 23
+- Remaining: 54
 
 ## Fixed Files ✅
 1. src/components/ui/button.tsx
@@ -27,6 +27,9 @@
 18. src/components/jobs/MajorProjectScopeBuilder.tsx
 19. src/components/contractor/MaterialsMarketplace.tsx
 20. src/components/contractor/FeeSavingsDashboard.tsx
+21. src/components/contractor/NotificationPrompt.tsx
+22. src/components/contractor/JobCostCalculator.tsx
+23. src/components/homeowner/SavedContractors.tsx
 
 ## Remaining Files (62)
 - src/components/jobs/MajorProjectScopeBuilder.tsx
