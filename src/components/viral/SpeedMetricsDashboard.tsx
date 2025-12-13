@@ -79,22 +79,22 @@ export const SpeedMetricsDashboard = memo(function SpeedMetricsDashboard({ jobs,
   const getStatusColor = (status: MetricStatus) => {
     switch (status) {
       case 'success':
-        return 'bg-primary text-primary-foreground'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'warning':
-        return 'bg-accent text-accent-foreground'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'danger':
-        return 'bg-destructive text-destructive-foreground'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
     }
   }
 
   const getStatusLight = (status: MetricStatus) => {
     switch (status) {
       case 'success':
-        return 'bg-primary'
+        return 'bg-black dark:bg-white'
       case 'warning':
-        return 'bg-accent'
+        return 'bg-black dark:bg-white'
       case 'danger':
-        return 'bg-destructive'
+        return 'bg-black dark:bg-white'
     }
   }
 
@@ -133,15 +133,15 @@ export const SpeedMetricsDashboard = memo(function SpeedMetricsDashboard({ jobs,
         <h3 className="font-heading text-lg font-semibold mb-4">Status Key</h3>
         <div className="flex flex-wrap gap-4">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-primary" />
+            <div className="h-4 w-4 rounded-full bg-black dark:bg-white" />
             <span className="text-sm">Green - On Target</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-accent" />
+            <div className="h-4 w-4 rounded-full bg-black dark:bg-white" />
             <span className="text-sm">Yellow - Needs Attention</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-destructive" />
+            <div className="h-4 w-4 rounded-full bg-black dark:bg-white" />
             <span className="text-sm">Red - Action Required</span>
           </div>
         </div>

@@ -8,7 +8,7 @@ import { FeeComparison } from "./FeeComparison"
 import { FeeSavingsDashboard } from "./FeeSavingsDashboard"
 import { AvailabilityCalendar } from "./AvailabilityCalendar"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Calendar } from "@phosphor-icons/react"
+import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Calendar, Lightning } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
@@ -106,9 +106,9 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             <div className="flex items-center gap-3 px-4 py-2 rounded-lg border bg-card">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
-                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
                 )}
-                <Lightning size={20} weight={user.availableNow ? "fill" : "regular"} className={user.availableNow ? "text-green-600" : "text-muted-foreground"} />
+                <Lightning size={20} weight={user.availableNow ? "fill" : "regular"} className={user.availableNow ? "text-black dark:text-white" : "text-muted-foreground"} />
                 <span className="text-sm font-medium">Available Now</span>
               </div>
               <Switch
@@ -117,7 +117,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               />
             </div>
             {user.isPro && (
-              <Badge className="bg-accent text-accent-foreground px-4 py-2 text-base">
+              <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 px-4 py-2 text-base">
                 <Crown weight="fill" className="mr-2" />
                 PRO Member
               </Badge>
@@ -131,7 +131,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Active Jobs
               </CardTitle>
-              <Briefcase className="text-primary" size={24} weight="duotone" />
+              <Briefcase className="text-black dark:text-white" size={24} weight="duotone" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">{acceptedBids.length}</div>
@@ -152,15 +152,15 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             </CardContent>
           </Card>
 
-          <Card className={user.referralEarnings > 0 ? "border-2 border-accent/30" : ""}>
+          <Card className={user.referralEarnings > 0 ? "border-2 border-black/10 dark:border-white/10" : ""}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Referral Earnings
               </CardTitle>
-              <CurrencyDollar className="text-accent" size={24} weight="fill" />
+              <CurrencyDollar className="text-black dark:text-white" size={24} weight="fill" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-accent">${user.referralEarnings || 0}</div>
+              <div className="text-3xl font-bold text-black dark:text-white">${user.referralEarnings || 0}</div>
               <p className="text-xs text-muted-foreground mt-1">
                 {user.contractorInviteCount || 0} successful invites
               </p>
@@ -172,12 +172,12 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Total This Month
               </CardTitle>
-              <CurrencyDollar className="text-primary" size={24} weight="duotone" />
+              <CurrencyDollar className="text-black dark:text-white" size={24} weight="duotone" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">${totalEarnings}</div>
               {user.referralEarnings > 0 && (
-                <p className="text-xs text-accent mt-1">
+                <p className="text-xs text-black dark:text-white mt-1">
                   +${user.referralEarnings} referrals
                 </p>
               )}
@@ -186,11 +186,11 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         </div>
         
         {feesSaved > 0 && (
-          <Card className="border-2 border-primary/30 bg-primary/5">
+          <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <TrendUp className="text-primary" size={24} weight="bold" />
+                  <TrendUp className="text-black dark:text-white" size={24} weight="bold" />
                   <h3 className="text-xl font-semibold">Fees Avoided This Year</h3>
                 </div>
                 <p className="text-muted-foreground">
@@ -198,7 +198,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
                 </p>
               </div>
               <div className="text-right">
-                <div className="text-4xl font-bold text-primary">${Math.round(feesSaved).toLocaleString()}</div>
+                <div className="text-4xl font-bold text-black dark:text-white">${Math.round(feesSaved).toLocaleString()}</div>
                 <p className="text-sm text-muted-foreground mt-1">vs. competitors</p>
               </div>
             </CardContent>
@@ -206,7 +206,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         {!user.isPro && (
-          <Card className="border-2 border-accent/30 bg-accent/5">
+          <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <h3 className="text-xl font-semibold mb-2">Upgrade to Pro</h3>

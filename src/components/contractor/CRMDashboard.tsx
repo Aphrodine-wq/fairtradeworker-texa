@@ -78,13 +78,13 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-500/10 text-green-700 border-green-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'lead':
-        return 'bg-blue-500/10 text-blue-700 border-blue-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'completed':
-        return 'bg-purple-500/10 text-purple-700 border-purple-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'advocate':
-        return 'bg-amber-500/10 text-amber-700 border-amber-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
     }
   }
 
@@ -103,7 +103,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-3 mb-2 dark:text-white">
-              <Users weight="duotone" size={40} className="text-primary" />
+              <Users weight="duotone" size={40} className="text-black dark:text-white" />
               Customer CRM
             </h1>
             <p className="text-muted-foreground text-lg dark:text-white/70">
@@ -114,19 +114,19 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
-            <div className="text-3xl font-bold text-primary mb-1 dark:text-white">{myCustomers.length}</div>
+            <div className="text-3xl font-bold text-black dark:text-white mb-1">{myCustomers.length}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Total Customers</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
-            <div className="text-3xl font-bold text-green-600 mb-1 dark:text-white">{activeCount}</div>
+            <div className="text-3xl font-bold text-black dark:text-white mb-1">{activeCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Active</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
-            <div className="text-3xl font-bold text-blue-600 mb-1 dark:text-white">{leadCount}</div>
+            <div className="text-3xl font-bold text-black dark:text-white mb-1">{leadCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Leads</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
-            <div className="text-3xl font-bold text-purple-600 mb-1 dark:text-white">{completedCount}</div>
+            <div className="text-3xl font-bold text-black dark:text-white mb-1">{completedCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Completed</div>
           </Card>
         </div>
