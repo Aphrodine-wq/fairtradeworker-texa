@@ -355,7 +355,7 @@ function App() {
         />
       )}
       <OfflineIndicator />
-      <main className="flex-1 pt-16">
+      <main className="flex-1 pt-16 bg-white dark:bg-black">
         {currentPage !== 'home' && breadcrumbs.length > 0 && (
           <div className="container mx-auto px-4 md:px-8 pt-6">
             <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
