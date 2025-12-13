@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
   Users, EnvelopeSimple, DeviceMobile, Note, Trash, MagnifyingGlass, Funnel,
-  ChartLine, Calendar, Clock, TrendingUp, DollarSign, Target, Sparkle,
+  ChartLine, Calendar, Clock, TrendUp, CurrencyDollar, Target, Sparkle,
   Phone, ChatCircle, FileText, Tag, Plus, X, CheckCircle, Circle
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
@@ -222,7 +222,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       case 'meeting': return Calendar
       case 'note': return Note
       case 'bid': return Target
-      case 'payment': return DollarSign
+      case 'payment': return CurrencyDollar
     }
   }
 
@@ -245,8 +245,8 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <DollarSign weight="duotone" size={24} className="text-primary" />
-              <TrendingUp weight="duotone" size={20} className="text-green-600" />
+              <CurrencyDollar weight="duotone" size={24} className="text-primary" />
+              <TrendUp weight="duotone" size={20} className="text-green-600" />
             </div>
             <div className="text-2xl font-bold text-primary mb-1 dark:text-white">
               ${analytics.totalRevenue.toLocaleString()}
