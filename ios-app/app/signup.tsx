@@ -186,11 +186,11 @@ export default function SignupScreen() {
               </View>
 
               <Button
-                title="Create Account"
+                title="Sign Up - Create Account"
                 onPress={handleSignup}
                 loading={loading}
                 disabled={loading || !role}
-                style={styles.submitButton}
+                style={[styles.submitButton, { backgroundColor: Colors.primary }]}
               />
             </View>
 

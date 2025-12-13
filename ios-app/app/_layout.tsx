@@ -42,8 +42,13 @@ export default function RootLayout() {
         <Stack.Screen 
           name="signup" 
           options={{ 
-            title: 'Sign Up',
+            title: 'Create Account',
             presentation: 'modal',
+            headerRight: () => (
+              <View style={{ marginRight: 16 }}>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: Colors.primary }}>Sign Up</Text>
+              </View>
+            ),
           }} 
         />
         <Stack.Screen 

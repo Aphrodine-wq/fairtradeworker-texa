@@ -46,23 +46,21 @@ export default function HomeScreen() {
               size="lg"
               icon={<Ionicons name="home" size={24} color={Colors.textInverse} />}
               onPress={() => router.push('/signup?role=homeowner')}
-              style={styles.actionButton}
+              style={[styles.actionButton, { backgroundColor: Colors.primary }]}
             />
             <Button
               title="I'm a Contractor/Subcontractor"
-              variant="outline"
               size="lg"
-              icon={<Ionicons name="hammer" size={24} color={Colors.primary} />}
+              icon={<Ionicons name="hammer" size={24} color={Colors.textInverse} />}
               onPress={() => router.push('/signup?role=contractor')}
-              style={styles.actionButton}
+              style={[styles.actionButton, { backgroundColor: Colors.primary }]}
             />
             <Button
               title="I'm an Operator"
-              variant="outline"
               size="lg"
-              icon={<Ionicons name="map" size={24} color={Colors.primary} />}
+              icon={<Ionicons name="map" size={24} color={Colors.textInverse} />}
               onPress={() => router.push('/signup?role=operator')}
-              style={styles.actionButton}
+              style={[styles.actionButton, { backgroundColor: Colors.primary }]}
             />
           </View>
 

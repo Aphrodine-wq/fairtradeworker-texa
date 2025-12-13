@@ -70,14 +70,14 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg hover:opacity-90 transition-opacity px-2 py-1"
             aria-label="Go to home"
           >
-            <div className="flex items-center justify-center w-9 h-9 bg-foreground rounded-lg shadow-sm">
-              <Wrench className="text-background" size={20} weight="bold" />
+            <div className="flex items-center justify-center w-9 h-9 bg-primary rounded-lg shadow-sm">
+              <Wrench className="text-white" size={20} weight="bold" />
             </div>
             <div className="hidden sm:flex flex-col items-start">
-              <span className="font-heading font-bold text-base leading-none text-foreground">
+              <span className="font-heading font-bold text-base leading-none text-black dark:text-white">
                 FairTradeWorker
               </span>
-              <span className="text-[10px] text-muted-foreground leading-none font-semibold tracking-wide mt-0.5">
+              <span className="text-[10px] text-black/70 dark:text-white/70 leading-none font-semibold tracking-wide mt-0.5">
                 HOME SERVICES
               </span>
             </div>
@@ -96,7 +96,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
                 </Button>
                 <Button 
                   onClick={() => onNavigate('signup')} 
-                  className="min-h-[44px] bg-foreground text-background hover:bg-foreground/90 transition-all font-bold"
+                  className="min-h-[44px] bg-primary text-white hover:bg-primary/90 transition-all font-bold shadow-lg"
                 >
                   <Sparkle weight="fill" className="mr-2" size={16} />
                   Sign Up

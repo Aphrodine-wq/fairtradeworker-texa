@@ -31,7 +31,17 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={size} color={color} />
           ),
-          headerTitle: 'FairTradeWorker',
+          headerTitle: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+              <View style={{ width: 32, height: 32, backgroundColor: Colors.primary, borderRadius: 8, justifyContent: 'center', alignItems: 'center' }}>
+                <Ionicons name="construct" size={20} color={Colors.textInverse} />
+              </View>
+              <View>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: Colors.textPrimary }}>FairTradeWorker</Text>
+                <Text style={{ fontSize: 9, fontWeight: '600', color: Colors.textSecondary, letterSpacing: 0.5 }}>HOME SERVICES</Text>
+              </View>
+            </View>
+          ),
         }}
       />
       <Tabs.Screen
