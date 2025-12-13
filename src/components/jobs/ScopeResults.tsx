@@ -115,7 +115,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
             <h3 className="font-semibold text-lg">Estimated Price Range</h3>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <div className="h-3 bg-primary rounded-full" />
+                <div className="h-3 bg-black dark:bg-white rounded-full" />
               </div>
             </div>
             <div className="flex justify-between items-center">
@@ -123,7 +123,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
                 ${aiScope.priceLow}
               </span>
               <span className="text-sm text-muted-foreground">to</span>
-              <span className="text-2xl font-bold text-primary">
+              <span className="text-2xl font-bold text-black dark:text-white">
                 ${aiScope.priceHigh}
               </span>
             </div>
