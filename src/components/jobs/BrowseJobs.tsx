@@ -107,7 +107,7 @@ const JobCard = memo(function JobCard({
               >
                 {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)} (≤${job.aiScope.priceHigh})
               </Badge>
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+              <div className="flex items-center gap-1 text-xs text-black dark:text-white/70">
                 <span>{job.bids.length}</span>
                 <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
               </div>
@@ -126,8 +126,8 @@ const JobCard = memo(function JobCard({
                 </Badge>
               )}
             </div>
-            <CardTitle className="text-xl leading-tight mb-2 text-gray-900">{job.title}</CardTitle>
-            <CardDescription className="text-sm line-clamp-2 text-gray-600">{job.description}</CardDescription>
+            <CardTitle className="text-xl leading-tight mb-2 text-black dark:text-white">{job.title}</CardTitle>
+            <CardDescription className="text-sm line-clamp-2 text-black dark:text-white/80">{job.description}</CardDescription>
           </div>
           {photos.length > 0 && (
             <button
@@ -155,12 +155,12 @@ const JobCard = memo(function JobCard({
               <Wrench weight="duotone" size={18} />
               <span>AI Scope</span>
             </div>
-            <p className="text-sm leading-relaxed text-gray-700">{job.aiScope.scope}</p>
+            <p className="text-sm leading-relaxed text-black dark:text-white/80">{job.aiScope.scope}</p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <CurrencyDollar weight="duotone" size={24} className="text-blue-600" />
                 <div>
-                  <div className="text-xs text-gray-500">Estimated</div>
+                  <div className="text-xs text-black dark:text-white/70">Estimated</div>
                   <div className="text-lg font-bold text-blue-600">
                     ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
                   </div>

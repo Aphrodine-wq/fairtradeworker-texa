@@ -73,6 +73,7 @@ export interface Job {
   urgentDeadline?: string
   bundledTasks?: BundledTask[]
   questions?: Question[]
+  viewingContractors?: string[] // Array of contractor IDs currently viewing this job
 }
 
 export interface Bid {

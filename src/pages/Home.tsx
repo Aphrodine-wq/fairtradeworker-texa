@@ -114,36 +114,36 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
       <LiveStatsBar jobs={jobs || []} />
 
-      <section className="bg-muted py-16 px-4 md:px-8">
+      <section className="bg-black py-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 space-y-4">
+            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
                 <House weight="fill" className="text-primary-foreground" size={24} />
               </div>
-              <h3 className="text-xl font-semibold">Post Your Job</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-semibold text-black dark:text-white">Post Your Job</h3>
+              <p className="text-black dark:text-white/80">
                 Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
               </p>
             </Card>
-            <Card className="p-6 space-y-4">
+            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center">
                 <Hammer weight="fill" className="text-secondary-foreground" size={24} />
               </div>
-              <h3 className="text-xl font-semibold">Get Bids</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-semibold text-black dark:text-white">Get Bids</h3>
+              <p className="text-black dark:text-white/80">
                 Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
               </p>
             </Card>
-            <Card className="p-6 space-y-4">
+            <Card className="p-6 space-y-4 bg-white dark:bg-transparent dark:border-white/10">
               <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                 <MapTrifold weight="fill" className="text-accent-foreground" size={24} />
               </div>
-              <h3 className="text-xl font-semibold">Zero Fees</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl font-semibold text-black dark:text-white">Zero Fees</h3>
+              <p className="text-black dark:text-white/80">
                 Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
               </p>
             </Card>
