@@ -268,6 +268,48 @@
   [class*="backdrop-blur"] {
     backdrop-filter: none !important;
   }
+  
+  /* Force all opacity values to be solid - replace /50, /30, /20, /10, /5 with solid colors */
+  [class*="/50"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  [class*="/30"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  [class*="/20"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  [class*="/10"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  [class*="/5"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+    opacity: 1 !important;
+  }
+  
+  /* Force all bg-*/ opacity classes to solid white in light mode */
+  [class*="bg-white/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-black/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-primary/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-secondary/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-accent/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-muted/"]:not([class*="animate"]):not([style*="background"]),
+  [class*="bg-card/"]:not([class*="animate"]):not([style*="background"]) {
+    background-color: white !important;
+  }
+  
+  /* Force all bg-*/ opacity classes to solid black in dark mode */
+  .dark [class*="bg-white/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-black/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-primary/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-secondary/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-accent/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-muted/"]:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-card/"]:not([class*="animate"]):not([style*="background"]) {
+    background-color: black !important;
+  }
+  
+  /* Force all hover opacity to solid */
+  [class*="hover:bg-white/"]:hover:not([class*="animate"]):not([style*="background"]),
+  [class*="hover:bg-black/"]:hover:not([class*="animate"]):not([style*="background"]) {
+    background-color: white !important;
+  }
+  
+  .dark [class*="hover:bg-white/"]:hover:not([class*="animate"]):not([style*="background"]),
+  .dark [class*="hover:bg-black/"]:hover:not([class*="animate"]):not([style*="background"]) {
+    background-color: black !important;
+  }
 }
 
 @keyframes fadeIn {
