@@ -519,7 +519,6 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                             <Button
                               size="sm"
                               onClick={() => setShowAddInteraction(true)}
-                              className="dark:bg-white dark:text-black dark:hover:bg-white/90"
                             >
                               <Plus size={16} className="mr-2" />
                               Add Interaction
@@ -601,7 +600,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 className="dark:bg-transparent dark:text-white dark:border-white/20"
                               />
                               <div className="flex gap-2">
-                                <Button onClick={handleSaveNotes} size="sm" className="dark:bg-white dark:text-black dark:hover:bg-white/90">
+                                <Button onClick={handleSaveNotes} size="sm">
                                   Save Notes
                                 </Button>
                                 <Button
@@ -894,7 +893,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
               <div className="flex gap-2 pt-4">
                 <Button
                   onClick={handleAddInteraction}
-                  className="flex-1 dark:bg-white dark:text-black dark:hover:bg-white/90"
+                  className="flex-1"
                 >
                   Add Interaction
                 </Button>

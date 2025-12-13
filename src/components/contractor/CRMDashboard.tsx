@@ -292,7 +292,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                           className="dark:bg-transparent dark:text-white dark:border-white/20"
                         />
                         <div className="flex gap-2">
-                          <Button onClick={handleSaveNotes} size="sm" className="dark:bg-white dark:text-black dark:hover:bg-white/90">
+                          <Button onClick={handleSaveNotes} size="sm">
                             Save Notes
                           </Button>
                           <Button
