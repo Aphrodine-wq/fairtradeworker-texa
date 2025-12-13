@@ -129,13 +129,13 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
   const getStatusColor = (status: TradeBudget['status']) => {
     switch (status) {
       case 'complete':
-        return 'bg-green-500/10 text-green-700 border-green-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'under':
-        return 'bg-blue-500/10 text-blue-700 border-blue-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'on-track':
-        return 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'over':
-        return 'bg-red-500/10 text-red-700 border-red-500/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
     }
   }
   
@@ -167,11 +167,11 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="bg-primary/5 border-primary/20">
+      <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <CurrencyDollar className="w-6 h-6 text-primary" weight="bold" />
+            <div className="p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <CurrencyDollar className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
               <CardTitle className="text-xl">Budget Overview</CardTitle>
@@ -195,7 +195,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
             
             <div className="p-4 rounded-lg bg-card border border-border">
               <div className="text-sm text-muted-foreground mb-1">Total Spent</div>
-              <div className="text-2xl font-bold text-primary">
+              <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalSpent.toLocaleString()}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
@@ -205,7 +205,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
             
             <div className="p-4 rounded-lg bg-card border border-border">
               <div className="text-sm text-muted-foreground mb-1">Remaining</div>
-              <div className="text-2xl font-bold text-accent">
+              <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalRemaining.toLocaleString()}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
@@ -228,9 +228,9 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
           </div>
           
           {budgetData.percentSpent > 90 && budgetData.totalRemaining > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-              <Warning className="w-5 h-5 text-yellow-700 shrink-0" weight="fill" />
-              <div className="text-sm text-yellow-700">
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Warning className="w-5 h-5 text-black dark:text-white shrink-0" weight="fill" />
+              <div className="text-sm text-black dark:text-white">
                 <span className="font-medium">Budget Alert:</span> You've spent {budgetData.percentSpent.toFixed(1)}% of the total budget
               </div>
             </div>
@@ -241,8 +241,8 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-accent/10">
-              <Wrench className="w-6 h-6 text-accent" weight="bold" />
+            <div className="p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Wrench className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
               <CardTitle className="text-xl">Cost Breakdown by Trade</CardTitle>
@@ -306,31 +306,31 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
               <div className="grid grid-cols-2 gap-4 mt-3 pt-3 border-t border-border">
                 <div>
                   <div className="text-xs text-muted-foreground">Spent</div>
-                  <div className="text-sm font-medium text-primary">
+                  <div className="text-sm font-medium text-black dark:text-white">
                     ${trade.spent.toLocaleString()}
                   </div>
                 </div>
                 <div>
                   <div className="text-xs text-muted-foreground">Remaining</div>
-                  <div className="text-sm font-medium text-accent">
+                  <div className="text-sm font-medium text-black dark:text-white">
                     ${trade.remaining.toLocaleString()}
                   </div>
                 </div>
               </div>
               
               {trade.status === 'over' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded bg-red-500/10 border border-red-500/20">
-                  <Warning className="w-4 h-4 text-red-700 shrink-0" weight="fill" />
-                  <span className="text-xs text-red-700">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                  <Warning className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
+                  <span className="text-xs text-black dark:text-white">
                     This trade is approaching budget limit
                   </span>
                 </div>
               )}
               
               {trade.status === 'complete' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded bg-green-500/10 border border-green-500/20">
-                  <CheckCircle className="w-4 h-4 text-green-700 shrink-0" weight="fill" />
-                  <span className="text-xs text-green-700">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                  <CheckCircle className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
+                  <span className="text-xs text-black dark:text-white">
                     All payments complete for this trade
                   </span>
                 </div>
@@ -344,8 +344,8 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-yellow-500/10">
-                <TrendUp className="w-6 h-6 text-yellow-700" weight="bold" />
+              <div className="p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                <TrendUp className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div>
                 <CardTitle className="text-xl">Scope Changes</CardTitle>
@@ -369,18 +369,12 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
                     </p>
                   </div>
                   <div className="text-right">
-                    <div className="text-base font-bold text-yellow-700">
+                    <div className="text-base font-bold text-black dark:text-white">
                       +${sc.additionalCost.toLocaleString()}
                     </div>
                     <Badge 
                       variant="outline"
-                      className={
-                        sc.status === 'approved' 
-                          ? 'bg-green-500/10 text-green-700 border-green-500/20'
-                          : sc.status === 'rejected'
-                          ? 'bg-red-500/10 text-red-700 border-red-500/20'
-                          : 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20'
-                      }
+                      className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10"
                     >
                       {sc.status === 'approved' && '✓ Approved'}
                       {sc.status === 'rejected' && '✗ Rejected'}
