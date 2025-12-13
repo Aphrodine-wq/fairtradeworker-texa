@@ -15,6 +15,19 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   
   const [displayJobsToday, setDisplayJobsToday] = useState(0)
   const [displayCompleted, setDisplayCompleted] = useState(0)
+  const [isDark, setIsDark] = useState(false)
+  
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'))
+    }
+    checkDarkMode()
+    const observer = new MutationObserver(checkDarkMode)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    return () => observer.disconnect()
+  }, [])
+  
+  const bgColor = isDark ? '#000000' : '#ffffff'
   
   const jobsPostedToday = jobs.filter(j => new Date(j.createdAt) >= todayStart).length
   
@@ -101,7 +114,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   ]
 
   return (
-    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-white dark:bg-black">
+    <div className="rounded-2xl mx-auto max-w-2xl my-8 relative z-10" style={{ backgroundColor: bgColor }}>
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon

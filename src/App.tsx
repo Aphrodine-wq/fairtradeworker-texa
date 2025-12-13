@@ -340,8 +340,7 @@ function App() {
   }, [currentPage, currentUser, preselectedRole, selectedJob, handleNavigate, handleLogin, handleDemoLogin])
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <BackgroundBlobs />
+    <div className="flex flex-col min-h-screen bg-white dark:bg-black">
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>
