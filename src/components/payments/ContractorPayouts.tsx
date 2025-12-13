@@ -87,10 +87,10 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
     <>
       <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
-          <Card className="border-primary/20">
+          <Card className="border border-black/10 dark:border-white/10">
             <CardHeader className="pb-3">
               <CardDescription>Available Balance</CardDescription>
-              <CardTitle className="text-3xl font-bold text-primary">
+              <CardTitle className="text-3xl font-bold text-black dark:text-white">
                 ${balance.available.toLocaleString()}
               </CardTitle>
             </CardHeader>

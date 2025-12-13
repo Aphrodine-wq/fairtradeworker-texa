@@ -120,8 +120,8 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center text-sm text-muted-foreground">
-                  <TrendUp className="mr-1 text-green-500" size={16} weight="bold" />
-                  <span className="text-green-500 font-semibold mr-1">+23%</span>
+                  <TrendUp className="mr-1 text-black dark:text-white" size={16} weight="bold" />
+                  <span className="text-black dark:text-white font-semibold mr-1">+23%</span>
                   vs last year
                 </div>
               </CardContent>
@@ -155,16 +155,16 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
               </CardContent>
             </Card>
 
-            <Card className="border-primary/20">
+            <Card className="border border-black/10 dark:border-white/10">
               <CardHeader className="pb-3">
                 <CardDescription>Fees Saved (vs 15%)</CardDescription>
-                <CardTitle className="text-2xl text-primary">
+                <CardTitle className="text-2xl text-black dark:text-white">
                   ${paymentStats.savedInFees.toLocaleString()}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center text-sm">
-                  <CheckCircle className="mr-1 text-primary" size={16} weight="fill" />
+                  <CheckCircle className="mr-1 text-black dark:text-white" size={16} weight="fill" />
                   <span className="font-semibold">Zero contractor fees</span>
                 </div>
               </CardContent>
@@ -180,7 +180,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
               <CardContent>
                 <div className="space-y-4">
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-primary mb-2">
+                    <div className="text-4xl font-bold text-black dark:text-white mb-2">
                       {paymentStats.successRate}%
                     </div>
                     <p className="text-sm text-muted-foreground">
@@ -191,21 +191,21 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">
-                        <CheckCircle className="text-green-500" size={16} weight="fill" />
+                        <CheckCircle className="text-black dark:text-white" size={16} weight="fill" />
                         <span>Successful</span>
                       </div>
                       <span className="font-semibold">{Math.floor(paymentStats.transactionCount * (paymentStats.successRate / 100))}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">
-                        <Clock className="text-yellow-500" size={16} weight="fill" />
+                        <Clock className="text-black dark:text-white" size={16} weight="fill" />
                         <span>Pending</span>
                       </div>
                       <span className="font-semibold">1</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2">
-                        <Warning className="text-red-500" size={16} weight="fill" />
+                        <Warning className="text-black dark:text-white" size={16} weight="fill" />
                         <span>Failed</span>
                       </div>
                       <span className="font-semibold">{paymentStats.transactionCount - Math.floor(paymentStats.transactionCount * (paymentStats.successRate / 100)) - 1}</span>
@@ -251,7 +251,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="p-4 border rounded-lg">
                     <p className="text-sm text-muted-foreground mb-1">FairTradeWorker</p>
-                    <p className="text-2xl font-bold text-primary">0%</p>
+                    <p className="text-2xl font-bold text-black dark:text-white">0%</p>
                     <p className="text-xs text-muted-foreground mt-1">Contractor fees</p>
                   </div>
                   <div className="p-4 border rounded-lg bg-muted/50">
@@ -266,9 +266,9 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                   </div>
                 </div>
 
-                <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                <div className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-lg">
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={20} weight="fill" />
+                    <CheckCircle className="text-black dark:text-white flex-shrink-0 mt-0.5" size={20} weight="fill" />
                     <div className="space-y-1">
                       <p className="font-semibold">You've saved ${paymentStats.savedInFees.toLocaleString()} this year</p>
                       <p className="text-sm text-muted-foreground">
@@ -338,9 +338,9 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                         <Badge 
                           variant="outline" 
                           className={`text-xs ${
-                            transaction.status === 'completed' ? 'bg-green-500/10 text-green-700 border-green-500/20' :
-                            transaction.status === 'pending' ? 'bg-yellow-500/10 text-yellow-700 border-yellow-500/20' :
-                            'bg-red-500/10 text-red-700 border-red-500/20'
+                            transaction.status === 'completed' ? 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10' :
+                            transaction.status === 'pending' ? 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10' :
+                            'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
                           }`}
                         >
                           {transaction.status === 'completed' && <CheckCircle className="mr-1" size={10} weight="fill" />}

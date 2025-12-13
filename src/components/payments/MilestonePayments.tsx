@@ -69,7 +69,7 @@ export function MilestonePaymentDialog({
         </DialogHeader>
 
         <div className="space-y-6">
-          <Card className="border-primary/20 bg-primary/5">
+          <Card className="border border-black/10 dark:border-white/10 bg-white dark:bg-black">
             <CardContent className="pt-6 space-y-4">
               <div>
                 <div className="flex items-start justify-between mb-2">
@@ -91,7 +91,7 @@ export function MilestonePaymentDialog({
               <div className="space-y-2">
                 {milestone.photos && milestone.photos.length > 0 && (
                   <div className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="text-primary" size={16} weight="fill" />
+                    <CheckCircle className="text-black dark:text-white" size={16} weight="fill" />
                     <span>{milestone.photos.length} verification photos attached</span>
                   </div>
                 )}
