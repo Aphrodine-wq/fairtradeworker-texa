@@ -109,7 +109,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
             <motion.div 
               key={stat.label} 
               className={cn(
-                "flex-1 px-6 py-3 rounded-xl bg-transparent border border-white/20 flex items-center gap-3"
+                "flex-1 px-6 py-3 rounded-xl bg-card border-0 flex items-center gap-3"
               )}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

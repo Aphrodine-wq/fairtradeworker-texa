@@ -87,7 +87,7 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group h-full flex flex-col ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
       {/* Blue accent line on hover */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
@@ -99,7 +99,7 @@ const JobCard = memo(function JobCard({
       )}
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge 
                 variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
@@ -132,7 +132,7 @@ const JobCard = memo(function JobCard({
           {photos.length > 0 && (
             <button
               onClick={() => onViewPhotos(photos)}
-              className="relative w-24 h-24 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
+              className="relative w-40 h-40 rounded-lg overflow-hidden hover:ring-2 hover:ring-blue-500 transition-all flex-shrink-0 group"
             >
               <img
                 src={photos[0]}
@@ -287,17 +287,27 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       return jobAge <= firstBidWindow && bidAge <= stickyDuration
     }
 
+    // Sort by: 1) Fresh jobs first, 2) Sticky jobs, 3) Job size (small, medium, large), 4) Most recent
     return [...openJobs].sort((a, b) => {
       const aFresh = isJobFresh(a)
       const bFresh = isJobFresh(b)
       const aSticky = hasFirstBidSticky(a)
       const bSticky = hasFirstBidSticky(b)
       
+      // Fresh jobs first
       if (aFresh && !bFresh) return -1
       if (!aFresh && bFresh) return 1
+      
+      // Sticky jobs second
       if (aSticky && !bSticky) return -1
       if (!aSticky && bSticky) return 1
       
+      // Then by job size: small, medium, large
+      const sizeOrder = { small: 0, medium: 1, large: 2 }
+      const sizeDiff = sizeOrder[a.size] - sizeOrder[b.size]
+      if (sizeDiff !== 0) return sizeDiff
+      
+      // Finally by most recent
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
   }, [jobs, sizeFilter])
@@ -470,7 +480,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </div>
 
           {/* Jobs Grid/List */}
-          <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3'}>
+          <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch'}>
             {viewMode === 'map' ? (
               <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
             ) : sortedOpenJobs.length === 0 ? (
