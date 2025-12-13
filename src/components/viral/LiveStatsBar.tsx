@@ -143,7 +143,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-sm text-black/70 dark:text-white/70">{stat.label}</div>
+                <div className="text-sm text-black dark:text-white">{stat.label}</div>
               </div>
             </motion.div>
           )

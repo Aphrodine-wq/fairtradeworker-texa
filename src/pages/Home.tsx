@@ -42,7 +42,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight text-black dark:text-white">
               Zero-fee home services marketplace.
             </h1>
-            <p className="text-xl md:text-2xl text-black/80 dark:text-white/80 leading-relaxed">
+            <p className="text-xl md:text-2xl text-black dark:text-white leading-relaxed">
               AI scopes in 60 seconds. Contractors keep 100%.
             </p>
           </div>
@@ -79,7 +79,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
           <Card className="mt-12 p-6 bg-card border-0">
             <p className="text-2xl md:text-3xl font-bold text-black dark:text-white">
-              Jobs posted today: <span className="text-primary">{todayJobs.length}</span>
+              Jobs posted today: <span className="text-black dark:text-white">{todayJobs.length}</span>
             </p>
           </Card>
 
@@ -87,10 +87,10 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             <Card className="mt-8 p-6 border-0 bg-card">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
-                  <Play weight="fill" className="text-primary" size={24} />
+                  <Play weight="fill" className="text-black dark:text-white" size={24} />
                   <h3 className="text-xl font-bold text-black dark:text-white">Try Demo Mode</h3>
                 </div>
-                <p className="text-black/80 dark:text-white/80">
+                <p className="text-black dark:text-white">
                   Explore the platform instantly with pre-populated demo accounts for each user type.
                 </p>
                 <div className="flex flex-col md:flex-row gap-3">
@@ -138,7 +138,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 <House weight="fill" className="text-primary-foreground" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Post Your Job</h3>
-              <p className="text-black dark:text-white/80">
+              <p className="text-black dark:text-white">
                 Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
               </p>
             </Card>
@@ -147,7 +147,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 <Hammer weight="fill" className="text-secondary-foreground" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Get Bids</h3>
-              <p className="text-black dark:text-white/80">
+              <p className="text-black dark:text-white">
                 Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
               </p>
             </Card>
@@ -156,7 +156,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 <MapTrifold weight="fill" className="text-accent-foreground" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Zero Fees</h3>
-              <p className="text-black dark:text-white/80">
+              <p className="text-black dark:text-white">
                 Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
               </p>
             </Card>
