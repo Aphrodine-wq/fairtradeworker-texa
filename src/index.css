@@ -157,23 +157,28 @@
   }
   
   /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - NO EXCEPTIONS */
-  *:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]) {
+  * {
     background-color: white !important;
   }
   
   /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - NO EXCEPTIONS */
-  .dark *:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]) {
+  .dark * {
     background-color: black !important;
   }
   
   /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - NO EXCEPTIONS */
-  *:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]) {
+  * {
     color: black !important;
   }
   
   /* FORCE ALL TEXT TO WHITE IN DARK MODE - NO EXCEPTIONS */
-  .dark *:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]) {
+  .dark * {
     color: white !important;
+  }
+  
+  /* Allow specific overrides for borders only */
+  [class*="border-black"], [class*="border-white"] {
+    border-color: inherit !important;
   }
   
   /* Force black text on homepage buttons in light mode */

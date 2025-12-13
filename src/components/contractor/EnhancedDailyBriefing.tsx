@@ -249,19 +249,19 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
   const getDensityColor = (density: string) => {
     switch (density) {
       case 'empty': return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
-      case 'light': return 'bg-white dark:bg-black border-2 border-yellow-400'
-      case 'busy': return 'bg-white dark:bg-black border-2 border-green-500'
-      case 'overbooked': return 'bg-white dark:bg-black border-2 border-red-500'
+      case 'light': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'busy': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'overbooked': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
     }
   }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-white dark:bg-black border-2 border-red-500'
-      case 'important': return 'bg-white dark:bg-black border-2 border-orange-500'
-      case 'info': return 'bg-white dark:bg-black border-2 border-blue-500'
-      case 'positive': return 'bg-white dark:bg-black border-2 border-green-500'
+      case 'critical': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'important': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'info': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'positive': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
     }
   }
@@ -303,7 +303,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
               <div className="flex items-baseline gap-2">
                 <p className="text-2xl font-bold text-black dark:text-white">{todayStats.todayJobs.length}</p>
                 <p className="text-sm text-muted-foreground">jobs</p>
-                <p className="text-2xl font-bold text-primary ml-4">${todayStats.expectedEarnings.toFixed(0)}</p>
+                <p className="text-2xl font-bold text-black dark:text-white ml-4">${todayStats.expectedEarnings.toFixed(0)}</p>
               </div>
             </div>
           </div>
