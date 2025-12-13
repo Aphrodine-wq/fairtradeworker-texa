@@ -37,28 +37,29 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           <div className="flex flex-col md:flex-row gap-4 justify-center pt-8">
             <Button 
               size="lg" 
-              className="text-lg px-8 py-6 h-auto bg-card !text-black hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:!text-white dark:hover:bg-white/5"
+              variant="ghost"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
               onClick={() => onNavigate('signup', 'homeowner')}
             >
-              <House weight="fill" className="mr-3 !text-black dark:!text-white" size={24} />
+              <House weight="fill" className="mr-3" size={24} />
               I'm a Homeowner
             </Button>
             <Button 
               size="lg" 
-              variant="outline"
-              className="text-lg px-8 py-6 h-auto bg-card !text-black hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:!text-white dark:hover:bg-white/5"
+              variant="ghost"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
               onClick={() => onNavigate('signup', 'contractor')}
             >
-              <Hammer weight="fill" className="mr-3 !text-black dark:!text-white" size={24} />
+              <Hammer weight="fill" className="mr-3" size={24} />
               I'm a Contractor/Subcontractor
             </Button>
             <Button 
               size="lg" 
-              variant="outline"
-              className="text-lg px-8 py-6 h-auto bg-card !text-black hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:!text-white dark:hover:bg-white/5"
+              variant="ghost"
+              className="homepage-signup-button text-lg px-8 py-6 h-auto bg-card hover:bg-card/90 border-0 shadow-[0_4px_20px_rgba(0,0,0,0.04)] transition-all duration-300 hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:bg-transparent dark:hover:bg-white/5"
               onClick={() => onNavigate('signup', 'operator')}
             >
-              <MapTrifold weight="fill" className="mr-3 !text-black dark:!text-white" size={24} />
+              <MapTrifold weight="fill" className="mr-3" size={24} />
               I'm an Operator
             </Button>
           </div>

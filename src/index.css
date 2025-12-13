@@ -146,6 +146,23 @@
   input, textarea, select {
     font-size: 16px;
   }
+  
+  /* Force black text on homepage buttons in light mode */
+  .homepage-signup-button {
+    color: black !important;
+  }
+  
+  .homepage-signup-button svg {
+    color: black !important;
+  }
+  
+  .dark .homepage-signup-button {
+    color: white !important;
+  }
+  
+  .dark .homepage-signup-button svg {
+    color: white !important;
+  }
 }
 
 @keyframes fadeIn {
