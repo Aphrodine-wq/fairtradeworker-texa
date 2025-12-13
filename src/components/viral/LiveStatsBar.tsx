@@ -122,7 +122,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
               <div>
                 <motion.div 
                   className={cn(
-                    "text-2xl font-bold bg-gradient-to-br from-blue-500 to-blue-600 bg-clip-text text-transparent"
+                    "text-2xl font-bold text-blue-600"
                   )}
                   key={stat.value}
                   initial={{ scale: 1.1 }}

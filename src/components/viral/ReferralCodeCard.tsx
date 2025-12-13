@@ -39,7 +39,7 @@ export function ReferralCodeCard({ code, userName, earnings, usedCount }: Referr
   }
 
   return (
-    <Card className="p-6 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
+    <Card className="p-6 bg-primary/10 border-primary/20">
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div>

@@ -58,7 +58,7 @@ export function FeeSavingsDashboard({
       animate="show"
     >
       <motion.div variants={item}>
-        <Card className="p-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
+        <Card className="p-8 bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -170,7 +170,7 @@ export function FeeSavingsDashboard({
                     </p>
                   </div>
 
-                  <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
                     <div className="flex items-center gap-2 mb-2">
                       <CalendarBlank className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                       <span className="font-semibold text-blue-900 dark:text-blue-100">
@@ -192,7 +192,7 @@ export function FeeSavingsDashboard({
       </div>
 
       <motion.div variants={item}>
-        <Card className="p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200 dark:border-amber-800">
+        <Card className="p-6 bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-amber-100 dark:bg-amber-950/30 rounded-lg flex-shrink-0">
               <Medal className="w-6 h-6 text-amber-600 dark:text-amber-400" weight="fill" />

@@ -69,7 +69,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
       </div>
 
       {/* Map Container */}
-      <Card className="relative h-[600px] overflow-hidden bg-gradient-to-br from-blue-50 to-green-50 dark:from-blue-950 dark:to-green-950">
+      <Card className="relative h-[600px] overflow-hidden bg-blue-50 dark:bg-blue-950">
         {/* Map Grid Background */}
         <div className="absolute inset-0 opacity-20">
           <svg width="100%" height="100%">

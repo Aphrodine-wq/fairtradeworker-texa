@@ -426,7 +426,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
       )}
 
       {personalBests && (
-        <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+        <Card className="bg-primary/5 border-primary/20">
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <TrendUp weight="duotone" size={32} className="text-primary" />

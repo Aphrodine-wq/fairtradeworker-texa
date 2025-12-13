@@ -115,7 +115,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
             <h3 className="font-semibold text-lg">Estimated Price Range</h3>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <div className="h-3 bg-gradient-to-r from-secondary to-primary rounded-full" />
+                <div className="h-3 bg-primary rounded-full" />
               </div>
             </div>
             <div className="flex justify-between items-center">

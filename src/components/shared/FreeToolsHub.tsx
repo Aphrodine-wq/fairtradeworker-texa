@@ -21,7 +21,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Job Cost Calculator",
       description: "Calculate profit margins and hourly rates instantly",
       icon: Calculator,
-      color: "from-blue-500/10 to-purple-500/10",
+      color: "bg-blue-500/10",
       borderColor: "border-blue-500/20",
       iconBg: "bg-blue-500"
     },
@@ -30,7 +30,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Warranty Tracker",
       description: "Never lose track of warranties you've given",
       icon: ShieldCheck,
-      color: "from-green-500/10 to-blue-500/10",
+      color: "bg-green-500/10",
       borderColor: "border-green-500/20",
       iconBg: "bg-green-500"
     },
@@ -39,7 +39,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Quick Notes",
       description: "Capture job details and customer info on the go",
       icon: Note,
-      color: "from-purple-500/10 to-blue-500/10",
+      color: "bg-purple-500/10",
       borderColor: "border-purple-500/20",
       iconBg: "bg-purple-500"
     }
@@ -51,7 +51,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Saved Contractors",
       description: "Quick access to your trusted contractors",
       icon: Heart,
-      color: "from-pink-500/10 to-primary/10",
+      color: "bg-pink-500/10",
       borderColor: "border-pink-500/20",
       iconBg: "bg-pink-500"
     },
@@ -60,7 +60,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Quick Notes",
       description: "Keep track of important project information",
       icon: Note,
-      color: "from-purple-500/10 to-blue-500/10",
+      color: "bg-purple-500/10",
       borderColor: "border-purple-500/20",
       iconBg: "bg-purple-500"
     }
@@ -72,7 +72,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
             <Sparkle weight="fill" className="text-white" size={32} />
           </div>
         </div>
@@ -88,7 +88,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
           return (
             <Card 
               key={tool.id}
-              className={`group p-8 bg-gradient-to-br ${tool.color} ${tool.borderColor} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 dark:bg-transparent dark:border-white/10 dark:hover:border-white/20`}
+              className={`group p-8 ${tool.color} ${tool.borderColor} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 dark:bg-transparent dark:border-white/10 dark:hover:border-white/20`}
               onClick={() => onToolSelect(tool.id)}
             >
               <div className="flex flex-col h-full">

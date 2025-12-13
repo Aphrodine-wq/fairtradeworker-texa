@@ -67,7 +67,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-gradient-to-br from-primary to-accent border-0 text-primary-foreground">
+      <Card className="p-6 bg-primary border-0 text-primary-foreground">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="bg-primary-foreground/20 p-3 rounded-lg">

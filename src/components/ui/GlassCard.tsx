@@ -21,7 +21,7 @@ export function GlassCard({ children, className, hover = true, animated = true, 
         )}
       >
         {blueAccent && (
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         )}
         {children}
       </div>

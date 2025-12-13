@@ -67,7 +67,7 @@ export function NotificationPrompt({ user }: NotificationPromptProps) {
   }
 
   return (
-    <Card className="p-4 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 animate-fadeIn">
+    <Card className="p-4 bg-primary/10 border-primary/20 animate-fadeIn">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
           <Bell className="w-5 h-5 text-primary" />

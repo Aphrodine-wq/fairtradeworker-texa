@@ -89,10 +89,10 @@ const JobCard = memo(function JobCard({
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group ${isFresh ? "border-emerald-500 border-2 shadow-lg" : ""}`}>
       {/* Blue accent line on hover */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       
       {isFresh && (
-        <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 flex items-center gap-2">
+        <div className="bg-emerald-600 text-white px-4 py-2 flex items-center gap-2">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
         </div>
@@ -161,7 +161,7 @@ const JobCard = memo(function JobCard({
                 <CurrencyDollar weight="duotone" size={24} className="text-blue-600" />
                 <div>
                   <div className="text-xs text-gray-500">Estimated</div>
-                  <div className="text-lg font-bold bg-gradient-to-br from-blue-500 to-blue-600 bg-clip-text text-transparent">
+                  <div className="text-lg font-bold text-blue-600">
                     ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
                   </div>
                 </div>
@@ -411,7 +411,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                <h1 className="text-4xl md:text-5xl font-bold mb-3 text-primary">
                   Browse Jobs
                 </h1>
                 <p className="text-lg text-muted-foreground">

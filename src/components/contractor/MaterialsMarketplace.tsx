@@ -300,7 +300,7 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
         </div>
       </div>
 
-      <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200 dark:border-green-800">
+      <Card className="p-6 bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-green-100 dark:bg-green-950/30 rounded-lg flex-shrink-0">
             <Percent className="w-6 h-6 text-green-600 dark:text-green-400" weight="bold" />

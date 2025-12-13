@@ -130,7 +130,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="col-span-1 md:col-span-3 bg-gradient-to-br from-primary/10 to-accent/10 border-primary/20">
+        <Card className="col-span-1 md:col-span-3 bg-primary/10 border-primary/20">
           <CardHeader>
             <CardDescription className="text-xs uppercase tracking-wider">Total Lifetime Revenue</CardDescription>
             <CardTitle className="text-5xl font-bold text-primary">{formatCurrency(totalRevenue)}</CardTitle>

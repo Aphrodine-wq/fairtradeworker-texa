@@ -99,7 +99,7 @@ export function JobCostCalculator() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+      <Card className="p-6 bg-primary/5 border-primary/20">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
             <Calculator weight="fill" className="text-primary-foreground" size={24} />

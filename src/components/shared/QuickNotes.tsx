@@ -154,7 +154,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-gradient-to-br from-purple-500/5 to-blue-500/5 border-purple-500/20">
+      <Card className="p-6 bg-purple-500/5 border-purple-500/20">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center">
