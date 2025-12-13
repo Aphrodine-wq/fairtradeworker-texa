@@ -114,9 +114,9 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
       <LiveStatsBar jobs={jobs || []} />
 
-      <section className="bg-black py-16 px-4 md:px-8">
+      <section className="bg-white dark:bg-black py-16 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-black dark:text-white">
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">

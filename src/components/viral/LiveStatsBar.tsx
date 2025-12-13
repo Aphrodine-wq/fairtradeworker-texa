@@ -101,7 +101,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   ]
 
   return (
-    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-black">
+    <div className="rounded-2xl mx-auto max-w-2xl my-8 bg-white dark:bg-black">
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
@@ -121,7 +121,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
               <div>
                 <motion.div 
                   className={cn(
-                    "text-2xl font-bold text-white"
+                    "text-2xl font-bold text-black dark:text-white"
                   )}
                   key={stat.value}
                   initial={{ scale: 1.1 }}
@@ -130,7 +130,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
                 >
                   {stat.value}
                 </motion.div>
-                <div className="text-sm text-white/70">{stat.label}</div>
+                <div className="text-sm text-black/70 dark:text-white/70">{stat.label}</div>
               </div>
             </motion.div>
           )
