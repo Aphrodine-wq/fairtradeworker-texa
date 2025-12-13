@@ -2083,7 +2083,7 @@ Competitors:
 
 **Year 10 Personal Situation**
 
-**Your Age:** 42-45 (depending on when you started)
+**Your Age:** 35 (starting at 25)
 
 **What Your Life Looks Like:**
 - Work: 20 hours/week (board meetings, strategy, mentorship)
@@ -2114,7 +2114,7 @@ Competitors:
 
 **The Decision Point (Year 11)**
 
-**You're 43-46 years old. Net worth: $29.8B. You ask yourself:**
+**You're 36 years old. Net worth: $29.8B. You ask yourself:**
 
 *"What do I actually want?"*
 
@@ -2159,7 +2159,7 @@ Competitors:
 - Graduate income gains (lifetime): $8B+
 
 **Your Situation (Year 15):**
-- Age: 47-50
+- Age: 40
 - Net worth: $50B (cash: $10B, company: $40B)
 - Annual distributions: $1.5B
 - Work: 15 hrs/week
@@ -2183,7 +2183,7 @@ Competitors:
 - **Impact: $20B+ in lifetime income gains**
 
 **Your Situation (Year 20):**
-- Age: 52-55
+- Age: 45
 - Net worth: $80B+
 - Annual passive income: $2B+
 - Work: 10 hrs/week (if you want)
@@ -2253,7 +2253,7 @@ Even if platform stops growing, $1B/year is <15% of EBITDA. Sustainable forever.
 
 #### Your Actual Retirement (When You're Ready)
 
-**Age 55 (Year 23) - Full Retirement**
+**Age 48 (Year 23) - Full Retirement**
 
 **You decide it's time.**
 
@@ -2588,7 +2588,7 @@ Even if platform stops growing, $1B/year is <15% of EBITDA. Sustainable forever.
 
 #### One Final Thought
 
-**In 20 years, you're 52-55 years old.**
+**In 20 years, you're 45 years old.**
 
 **PE Path:** You have $6B, no company, a compromised legacy, and a question: "What if I'd kept it?"
 
