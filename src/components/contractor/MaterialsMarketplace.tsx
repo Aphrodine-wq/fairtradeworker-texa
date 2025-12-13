@@ -300,16 +300,16 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
         </div>
       </div>
 
-      <Card className="p-6 bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-green-100 dark:bg-green-950/30 rounded-lg flex-shrink-0">
-            <Percent className="w-6 h-6 text-green-600 dark:text-green-400" weight="bold" />
+          <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-lg flex-shrink-0">
+            <Percent className="w-6 h-6 text-black dark:text-white" weight="bold" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-green-900 dark:text-green-100 mb-2">
+            <h3 className="font-semibold text-black dark:text-white mb-2">
               How the Materials Marketplace Works
             </h3>
-            <div className="grid md:grid-cols-3 gap-4 text-sm text-green-700 dark:text-green-300">
+            <div className="grid md:grid-cols-3 gap-4 text-sm text-black dark:text-white/80">
               <div>
                 <div className="font-semibold mb-1">1. Auto-Generated Lists</div>
                 <p>AI identifies materials from job scope</p>
