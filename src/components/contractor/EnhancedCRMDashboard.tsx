@@ -189,13 +189,13 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-green-500/10 text-green-700 border-green-500/20 dark:text-green-400 dark:border-green-500/30'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'lead':
-        return 'bg-blue-500/10 text-blue-700 border-blue-500/20 dark:text-blue-400 dark:border-blue-500/30'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'completed':
-        return 'bg-purple-500/10 text-purple-700 border-purple-500/20 dark:text-purple-400 dark:border-purple-500/30'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
       case 'advocate':
-        return 'bg-amber-500/10 text-amber-700 border-amber-500/20 dark:text-amber-400 dark:border-amber-500/30'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
     }
   }
 
@@ -232,7 +232,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-3 mb-2 dark:text-white">
-              <Users weight="duotone" size={40} className="text-primary" />
+              <Users weight="duotone" size={40} className="text-black dark:text-white" />
               CRM Command Center
             </h1>
             <p className="text-muted-foreground text-lg dark:text-white/70">
@@ -245,40 +245,40 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <CurrencyDollar weight="duotone" size={24} className="text-primary" />
-              <TrendUp weight="duotone" size={20} className="text-green-600" />
+              <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
+              <TrendUp weight="duotone" size={20} className="text-black dark:text-white" />
             </div>
-            <div className="text-2xl font-bold text-primary mb-1 dark:text-white">
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
               ${analytics.totalRevenue.toLocaleString()}
             </div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Total Revenue</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <Users weight="duotone" size={24} className="text-blue-600" />
-              <CheckCircle weight="duotone" size={20} className="text-green-600" />
+              <Users weight="duotone" size={24} className="text-black dark:text-white" />
+              <CheckCircle weight="duotone" size={20} className="text-black dark:text-white" />
             </div>
-            <div className="text-2xl font-bold text-blue-600 mb-1 dark:text-white">
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
               {analytics.activeCustomers}
             </div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Active Customers</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <Target weight="duotone" size={24} className="text-purple-600" />
-              <ChartLine weight="duotone" size={20} className="text-purple-600" />
+              <Target weight="duotone" size={24} className="text-black dark:text-white" />
+              <ChartLine weight="duotone" size={20} className="text-black dark:text-white" />
             </div>
-            <div className="text-2xl font-bold text-purple-600 mb-1 dark:text-white">
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
               {analytics.conversionRate.toFixed(1)}%
             </div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Conversion Rate</div>
           </Card>
           <Card className="p-6 dark:bg-transparent dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
-              <ChatCircle weight="duotone" size={24} className="text-amber-600" />
-              <Clock weight="duotone" size={20} className="text-amber-600" />
+              <ChatCircle weight="duotone" size={24} className="text-black dark:text-white" />
+              <Clock weight="duotone" size={20} className="text-black dark:text-white" />
             </div>
-            <div className="text-2xl font-bold text-amber-600 mb-1 dark:text-white">
+            <div className="text-2xl font-bold text-black dark:text-white mb-1">
               {analytics.recentInteractions}
             </div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Interactions (30d)</div>
@@ -387,7 +387,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                             {customer.lifetimeValue > 0 && (
                               <div className="flex items-center justify-between text-sm">
                                 <span className="text-muted-foreground dark:text-white/70">Lifetime Value</span>
-                                <span className="font-semibold text-primary dark:text-white">
+                                <span className="font-semibold text-black dark:text-white">
                                   ${customer.lifetimeValue.toLocaleString()}
                                 </span>
                               </div>
@@ -538,8 +538,8 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 return (
                                   <Card key={interaction.id} className="p-4 dark:bg-transparent dark:border-white/10">
                                     <div className="flex items-start gap-3">
-                                      <div className="p-2 rounded-lg bg-primary/10 dark:bg-white/10">
-                                        <Icon weight="duotone" size={20} className="text-primary dark:text-white" />
+                                      <div className="p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                                        <Icon weight="duotone" size={20} className="text-black dark:text-white" />
                                       </div>
                                       <div className="flex-1">
                                         <div className="flex items-start justify-between mb-1">
@@ -554,7 +554,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                           </p>
                                         )}
                                         {interaction.nextAction && (
-                                          <div className="flex items-center gap-2 text-xs text-primary dark:text-white/80">
+                                          <div className="flex items-center gap-2 text-xs text-black dark:text-white/80">
                                             <Circle weight="fill" size={8} />
                                             Next: {interaction.nextAction}
                                             {interaction.nextActionDate && (
@@ -630,7 +630,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDeleteCustomer(customer.id, customer.name)}
-                          className="dark:bg-red-600 dark:hover:bg-red-700"
+                          className="dark:bg-black dark:hover:bg-black/80"
                         >
                           <Trash weight="bold" className="mr-2" />
                           Remove Customer
@@ -724,7 +724,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground dark:text-white/70">Total Revenue</span>
-                        <span className="text-2xl font-bold text-primary dark:text-white">
+                        <span className="text-2xl font-bold text-black dark:text-white">
                           ${analytics.totalRevenue.toLocaleString()}
                         </span>
                       </div>
@@ -736,7 +736,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground dark:text-white/70">Conversion Rate</span>
-                        <span className="text-xl font-semibold text-purple-600 dark:text-white">
+                        <span className="text-xl font-semibold text-black dark:text-white">
                           {analytics.conversionRate.toFixed(1)}%
                         </span>
                       </div>
@@ -752,13 +752,13 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground dark:text-white/70">Active</span>
-                        <span className="text-xl font-semibold text-green-600 dark:text-white">
+                        <span className="text-xl font-semibold text-black dark:text-white">
                           {analytics.activeCustomers}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground dark:text-white/70">Leads</span>
-                        <span className="text-xl font-semibold text-blue-600 dark:text-white">
+                        <span className="text-xl font-semibold text-black dark:text-white">
                           {analytics.leads}
                         </span>
                       </div>
@@ -774,7 +774,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                       const Icon = getInteractionIcon(interaction.type)
                       return (
                         <div key={interaction.id} className="flex items-center gap-3 p-3 bg-muted rounded-lg dark:bg-transparent dark:border dark:border-white/10">
-                          <Icon weight="duotone" size={20} className="text-primary dark:text-white" />
+                          <Icon weight="duotone" size={20} className="text-black dark:text-white" />
                           <div className="flex-1">
                             <div className="font-semibold dark:text-white">{interaction.title}</div>
                             <div className="text-sm text-muted-foreground dark:text-white/70">

@@ -134,7 +134,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Gear weight="duotone" size={32} className="text-primary" />
+            <Gear weight="duotone" size={32} className="text-black dark:text-white" />
             Customizable CRM
           </h1>
           <p className="text-muted-foreground mt-2">

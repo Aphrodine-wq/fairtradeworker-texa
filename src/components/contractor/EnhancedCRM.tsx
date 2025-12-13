@@ -36,7 +36,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
         <div className="space-y-8">
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 mb-3">
-              <Users weight="duotone" size={40} className="text-primary" />
+              <Users weight="duotone" size={40} className="text-black dark:text-white" />
               CRM Command Center
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -49,7 +49,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center">
                   <span className="text-sm text-muted-foreground mb-2">Total Customers</span>
-                  <span className="text-4xl font-bold text-primary">{myCustomers.length}</span>
+                  <span className="text-4xl font-bold text-black dark:text-white">{myCustomers.length}</span>
                 </div>
               </CardContent>
             </Card>
@@ -58,7 +58,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center">
                   <span className="text-sm text-muted-foreground mb-2">Active</span>
-                  <span className="text-4xl font-bold text-green-600">{activeCustomers.length}</span>
+                  <span className="text-4xl font-bold text-black dark:text-white">{activeCustomers.length}</span>
                 </div>
               </CardContent>
             </Card>
@@ -67,7 +67,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center">
                   <span className="text-sm text-muted-foreground mb-2">Total LTV</span>
-                  <span className="text-4xl font-bold text-amber-600">${totalLTV.toLocaleString()}</span>
+                  <span className="text-4xl font-bold text-black dark:text-white">${totalLTV.toLocaleString()}</span>
                 </div>
               </CardContent>
             </Card>
@@ -76,7 +76,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <CardContent className="p-6">
                 <div className="flex flex-col items-center text-center">
                   <span className="text-sm text-muted-foreground mb-2">Repeat Rate</span>
-                  <span className="text-4xl font-bold text-purple-600">{repeatRate.toFixed(0)}%</span>
+                  <span className="text-4xl font-bold text-black dark:text-white">{repeatRate.toFixed(0)}%</span>
                 </div>
               </CardContent>
             </Card>
