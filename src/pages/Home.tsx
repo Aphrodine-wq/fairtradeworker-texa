@@ -96,26 +96,26 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 <div className="flex flex-col md:flex-row gap-3">
                   <Button 
                     variant="outline"
-                    className="flex-1 border-border hover:bg-accent text-black dark:text-white"
+                    className="flex-1 bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:bg-white dark:hover:bg-black text-black dark:text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
                   >
-                    <House weight="fill" className="mr-2" size={20} />
+                    <House weight="fill" className="mr-2 text-black dark:text-white" size={20} />
                     Demo as Homeowner
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 border-border hover:bg-accent text-black dark:text-white"
+                    className="flex-1 bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:bg-white dark:hover:bg-black text-black dark:text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.contractor)}
                   >
-                    <Hammer weight="fill" className="mr-2" size={20} />
+                    <Hammer weight="fill" className="mr-2 text-black dark:text-white" size={20} />
                     Demo as Contractor/Subcontractor
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 border-border hover:bg-accent text-black dark:text-white"
+                    className="flex-1 bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:bg-white dark:hover:bg-black text-black dark:text-white"
                     onClick={() => onDemoLogin(DEMO_USERS.operator)}
                   >
-                    <MapTrifold weight="fill" className="mr-2" size={20} />
+                    <MapTrifold weight="fill" className="mr-2 text-black dark:text-white" size={20} />
                     Demo as Operator
                   </Button>
                 </div>
