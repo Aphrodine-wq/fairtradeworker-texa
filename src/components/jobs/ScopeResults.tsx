@@ -33,10 +33,10 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
   
   return (
     <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
-      <Card className="border-2 border-primary/20">
+      <Card className="border-2 border-black/10 dark:border-white/10">
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
-            <CheckCircle weight="fill" className="text-accent" size={32} />
+            <CheckCircle weight="fill" className="text-black dark:text-white" size={32} />
             <CardTitle className="text-3xl">AI Scope Ready</CardTitle>
           </div>
           <CardDescription className="text-base">
@@ -52,9 +52,9 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
           
           {/* Smart Title Suggestion */}
           {hasSuggestedTitle && (
-            <Card className="border-2 border-primary/30 bg-primary/5">
+            <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
               <CardContent className="pt-6 space-y-4">
-                <div className="flex items-center gap-2 text-primary">
+                <div className="flex items-center gap-2 text-black dark:text-white">
                   <Sparkle size={20} weight="fill" />
                   <span className="font-semibold">AI Title Suggestion</span>
                 </div>
@@ -68,13 +68,13 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
                   </div>
                   
                   <div className="flex items-center justify-center py-2">
-                    <ArrowRight size={20} className="text-primary" weight="bold" />
+                    <ArrowRight size={20} className="text-black dark:text-white" weight="bold" />
                   </div>
                   
                   <div className="flex items-start gap-3">
                     <div className="flex-1 space-y-1">
                       <div className="text-xs text-muted-foreground">Suggested title:</div>
-                      <div className="text-base font-semibold text-primary">{aiScope.suggestedTitle}</div>
+                      <div className="text-base font-semibold text-black dark:text-white">{aiScope.suggestedTitle}</div>
                     </div>
                   </div>
                 </div>

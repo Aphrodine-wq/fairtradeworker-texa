@@ -259,7 +259,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
           {tradeBreakdown.map((trade, idx) => (
             <div 
               key={idx}
-              className="p-4 rounded-lg border border-border bg-card hover:bg-accent/5 transition-colors"
+              className="p-4 rounded-lg border border-border bg-card hover:bg-white/80 dark:hover:bg-black/80 transition-colors"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">

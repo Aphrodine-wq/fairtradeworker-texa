@@ -69,7 +69,7 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.icon && (
-                    <span className={isLast ? "text-primary" : "text-muted-foreground"}>
+                    <span className={isLast ? "text-black dark:text-white" : "text-muted-foreground"}>
                       {item.icon}
                     </span>
                   )}
