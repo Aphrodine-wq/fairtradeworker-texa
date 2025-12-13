@@ -404,65 +404,94 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12">
-      <div className="max-w-7xl mx-auto space-y-6">
-        <div className="space-y-4">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">Browse Jobs</h1>
-            <p className="text-muted-foreground text-lg">Find your next project – bid free, keep 100%</p>
-          </div>
-
-          <div className="flex items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-2">
-              <Funnel weight="duotone" size={20} className="text-muted-foreground" />
-              <span className="text-sm font-medium">Filter by size:</span>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 md:px-8 py-8">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Modern Header Section */}
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                  Browse Jobs
+                </h1>
+                <p className="text-lg text-muted-foreground">
+                  Find your next project – bid free, keep 100%
+                </p>
+              </div>
+              
+              {/* Stats Cards */}
+              <div className="flex gap-4">
+                <Card className="px-6 py-4 min-w-[140px]">
+                  <div className="text-2xl font-bold text-primary">{sortedOpenJobs.length}</div>
+                  <div className="text-sm text-muted-foreground">Active Jobs</div>
+                </Card>
+                <Card className="px-6 py-4 min-w-[140px]">
+                  <div className="text-2xl font-bold text-green-600">
+                    {sortedOpenJobs.filter(j => j.bids.length === 0).length}
+                  </div>
+                  <div className="text-sm text-muted-foreground">No Bids Yet</div>
+                </Card>
+              </div>
             </div>
-            <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')}>
-              <TabsList>
-                <TabsTrigger value="all">All Jobs</TabsTrigger>
-                <TabsTrigger value="small">🟢 Small</TabsTrigger>
-                <TabsTrigger value="medium">🟡 Medium</TabsTrigger>
-                <TabsTrigger value="large">🔴 Large</TabsTrigger>
-              </TabsList>
-            </Tabs>
-            
-            <div className="flex-1" />
-            
-            <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
-              <TabsList>
-                <TabsTrigger value="list">
-                  <List weight="duotone" size={18} className="mr-2" />
-                  List
-                </TabsTrigger>
-                <TabsTrigger value="map">
-                  <MapTrifold weight="duotone" size={18} className="mr-2" />
-                  Map
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+
+            {/* Enhanced Filter Bar */}
+            <Card className="p-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 flex-wrap">
+                <div className="flex items-center gap-3">
+                  <Funnel weight="duotone" size={20} className="text-primary" />
+                  <span className="font-semibold">Filters:</span>
+                </div>
+                
+                <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')}>
+                  <TabsList className="bg-muted">
+                    <TabsTrigger value="all">All Jobs</TabsTrigger>
+                    <TabsTrigger value="small">🟢 Small</TabsTrigger>
+                    <TabsTrigger value="medium">🟡 Medium</TabsTrigger>
+                    <TabsTrigger value="large">🔴 Large</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                
+                <div className="flex-1" />
+                
+                <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
+                  <TabsList className="bg-muted">
+                    <TabsTrigger value="list">
+                      <List weight="duotone" size={18} className="mr-2" />
+                      List View
+                    </TabsTrigger>
+                    <TabsTrigger value="map">
+                      <MapTrifold weight="duotone" size={18} className="mr-2" />
+                      Map View
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+            </Card>
           </div>
 
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span>{sortedOpenJobs.length} active {sortedOpenJobs.length === 1 ? 'job' : 'jobs'}</span>
-            </div>
+          {/* Jobs Grid/List */}
+          <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3'}>
+            {viewMode === 'map' ? (
+              <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+            ) : sortedOpenJobs.length === 0 ? (
+              <div className="col-span-full">
+                <Card className="p-12 text-center">
+                  <Wrench size={64} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
+                  <h2 className="text-2xl font-bold mb-2">No Jobs Available</h2>
+                  <p className="text-muted-foreground">Check back soon for new opportunities!</p>
+                </Card>
+              </div>
+            ) : (
+              sortedOpenJobs.map(job => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  onViewPhotos={handlePhotoClick}
+                  onPlaceBid={handleBidClick}
+                />
+              ))
+            )}
           </div>
-        </div>
-
-        <div className="space-y-6">
-          {viewMode === 'map' ? (
-            <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
-          ) : (
-            sortedOpenJobs.map(job => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onViewPhotos={handlePhotoClick}
-                onPlaceBid={handleBidClick}
-              />
-            ))
-          )}
         </div>
       </div>
 

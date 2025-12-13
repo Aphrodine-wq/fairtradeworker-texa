@@ -20,24 +20,24 @@
 
 :root {
   --background: oklch(0.988 0.002 264);
-  --foreground: oklch(0.165 0.01 264);
+  --foreground: oklch(0 0 0); /* Black text in light mode */
 
   --card: oklch(1 0 0 / 0.85);
-  --card-foreground: oklch(0.165 0.01 264);
+  --card-foreground: oklch(0 0 0); /* Black text in light mode */
   --popover: oklch(1 0 0 / 0.85);
-  --popover-foreground: oklch(0.165 0.01 264);
+  --popover-foreground: oklch(0 0 0); /* Black text in light mode */
 
   --primary: oklch(0.506 0.213 264);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.706 0.12 264);
-  --secondary-foreground: oklch(0.165 0.01 264);
+  --secondary-foreground: oklch(0 0 0); /* Black text in light mode */
   --accent: oklch(0.456 0.243 264);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(1 0 0);
 
   --muted: oklch(0.96 0.002 264);
-  --muted-foreground: oklch(0.556 0.01 264);
+  --muted-foreground: oklch(0 0 0); /* Black text in light mode */
   --border: oklch(0.922 0.005 264 / 0.3);
   --input: oklch(0.922 0.005 264 / 0.4);
   --ring: oklch(0.506 0.213 264);
@@ -47,24 +47,24 @@
 
 .dark {
   --background: oklch(0 0 0);
-  --foreground: oklch(1 0 0);
+  --foreground: oklch(1 0 0); /* White text in dark mode */
 
   --card: oklch(0 0 0);
-  --card-foreground: oklch(1 0 0);
+  --card-foreground: oklch(1 0 0); /* White text in dark mode */
   --popover: oklch(0 0 0);
-  --popover-foreground: oklch(1 0 0);
+  --popover-foreground: oklch(1 0 0); /* White text in dark mode */
 
   --primary: oklch(0.606 0.213 264);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.306 0.05 264);
-  --secondary-foreground: oklch(0.988 0.002 264);
+  --secondary-foreground: oklch(1 0 0); /* White text in dark mode */
   --accent: oklch(0.556 0.243 264);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.65 0.22 27);
   --destructive-foreground: oklch(1 0 0);
 
   --muted: oklch(0.22 0.015 264);
-  --muted-foreground: oklch(0.656 0.01 264);
+  --muted-foreground: oklch(1 0 0); /* White text in dark mode */
   --border: oklch(0.322 0.015 264 / 0.5);
   --input: oklch(0.322 0.015 264 / 0.5);
   --ring: oklch(0.606 0.213 264);
@@ -145,6 +145,19 @@
   
   input, textarea, select {
     font-size: 16px;
+  }
+  
+  /* Global text colors - black in light mode, white in dark mode */
+  * {
+    color: inherit;
+  }
+  
+  body, p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, label {
+    color: black;
+  }
+  
+  .dark body, .dark p, .dark span, .dark div, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark li, .dark td, .dark th, .dark label {
+    color: white;
   }
   
   /* Force black text on homepage buttons in light mode */

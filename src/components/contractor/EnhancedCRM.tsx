@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Calendar, Kanban, TrendUp } from "@phosphor-icons/react"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
+import { CustomizableCRM } from "./CustomizableCRM"
 import { CRMKanban } from "./CRMKanban"
 import { FollowUpSequences } from "./FollowUpSequences"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -101,7 +102,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
             </TabsList>
 
             <TabsContent value="list" className="mt-8">
-              <EnhancedCRMDashboard user={user} />
+              <CustomizableCRM user={user} />
             </TabsContent>
 
             <TabsContent value="kanban" className="mt-8">
