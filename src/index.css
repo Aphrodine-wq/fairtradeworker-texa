@@ -37,7 +37,7 @@
   --destructive-foreground: oklch(1 0 0);
 
   --muted: oklch(0.96 0.002 264);
-  --muted-foreground: oklch(0 0 0); /* Black text in light mode */
+  --muted-foreground: oklch(0 0 0); /* Black text in light mode - pure black */
   --border: oklch(0.922 0.005 264 / 0.3);
   --input: oklch(0.922 0.005 264 / 0.4);
   --ring: oklch(0.506 0.213 264);
@@ -152,12 +152,21 @@
     color: inherit;
   }
   
-  body, p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, label {
-    color: black;
+  /* Force all text to black in light mode */
+  body, p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, label, 
+  button, a, input, textarea, select, 
+  .text-muted-foreground, .text-foreground, .text-secondary-foreground,
+  [class*="text-"]:not([class*="dark:"]):not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="text-success"]):not([class*="text-warning"]) {
+    color: black !important;
   }
   
-  .dark body, .dark p, .dark span, .dark div, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark li, .dark td, .dark th, .dark label {
-    color: white;
+  /* Force white text in dark mode */
+  .dark body, .dark p, .dark span, .dark div, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark li, .dark td, .dark th, .dark label,
+  .dark button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
+  .dark a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
+  .dark .text-muted-foreground, .dark .text-foreground, .dark .text-secondary-foreground,
+  .dark [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="text-success"]):not([class*="text-warning"]) {
+    color: white !important;
   }
   
   /* Force black text on homepage buttons in light mode */
