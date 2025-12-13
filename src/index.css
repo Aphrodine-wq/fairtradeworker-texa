@@ -156,29 +156,38 @@
     color: inherit;
   }
   
-  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - NO EXCEPTIONS */
-  * {
+  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, AND SPECIFIC ELEMENTS */
+  body, main, section, article, aside, header, footer, nav, div, span, p, h1, h2, h3, h4, h5, h6, 
+  button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]) {
     background-color: white !important;
   }
   
-  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - NO EXCEPTIONS */
-  .dark * {
+  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE */
+  .dark body, .dark main, .dark section, .dark article, .dark aside, .dark header, .dark footer, .dark nav, 
+  .dark div:not(img):not(svg), .dark span, .dark p, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
+  .dark button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]) {
     background-color: black !important;
   }
   
-  /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - NO EXCEPTIONS */
-  * {
+  /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - EXCEPT FOR IMAGES AND SVGS */
+  body, p, span, div:not(img):not(svg), h1, h2, h3, h4, h5, h6, li, td, th, label, 
+  button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
+  a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
+  input, textarea, select,
+  [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not(img):not(svg) {
     color: black !important;
   }
   
-  /* FORCE ALL TEXT TO WHITE IN DARK MODE - NO EXCEPTIONS */
-  .dark * {
+  /* FORCE ALL TEXT TO WHITE IN DARK MODE */
+  .dark body, .dark p, .dark span, .dark div:not(img):not(svg), .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, 
+  .dark li, .dark td, .dark th, .dark label,
+  .dark button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
+  .dark a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
+  .dark input, .dark textarea, .dark select,
+  .dark [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not(img):not(svg) {
     color: white !important;
-  }
-  
-  /* Allow specific overrides for borders only */
-  [class*="border-black"], [class*="border-white"] {
-    border-color: inherit !important;
   }
   
   /* Force black text on homepage buttons in light mode */
