@@ -72,8 +72,8 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
-            <Sparkle weight="fill" className="text-white" size={32} />
+          <div className="w-16 h-16 rounded-2xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center shadow-lg">
+            <Sparkle weight="fill" className="text-black dark:text-white" size={32} />
           </div>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Free Tools</h1>
@@ -93,7 +93,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
             >
               <div className="flex flex-col h-full">
                 <div className={`w-16 h-16 rounded-2xl ${tool.iconBg} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon weight="fill" className="text-white" size={32} />
+                  <Icon weight="fill" className="text-black dark:text-white" size={32} />
                 </div>
                 
                 <h3 className="font-bold text-xl mb-3 dark:text-white">{tool.name}</h3>

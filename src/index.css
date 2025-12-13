@@ -156,37 +156,47 @@
     color: inherit;
   }
   
-  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, AND SPECIFIC ELEMENTS */
-  body, main, section, article, aside, header, footer, nav, div, span, p, h1, h2, h3, h4, h5, h6, 
-  button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
-  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]) {
+  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, ANIMATIONS, AND SPECIFIC ELEMENTS */
+  body, main, section, article, aside, header, footer, nav, 
+  div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  span:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  p:not([class*="animate"]):not([style*="background"]),
+  h1:not([class*="animate"]):not([style*="background"]), h2:not([class*="animate"]):not([style*="background"]), h3:not([class*="animate"]):not([style*="background"]), h4:not([class*="animate"]):not([style*="background"]), h5:not([class*="animate"]):not([style*="background"]), h6:not([class*="animate"]):not([style*="background"]),
+  button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="animate"]):not([style*="background"]),
+  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
     background-color: white !important;
   }
   
-  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE */
+  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - EXCEPT FOR ANIMATIONS */
   .dark body, .dark main, .dark section, .dark article, .dark aside, .dark header, .dark footer, .dark nav, 
-  .dark div:not(img):not(svg), .dark span, .dark p, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
-  .dark button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
-  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]) {
+  .dark div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  .dark span:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
+  .dark p:not([class*="animate"]):not([style*="background"]),
+  .dark h1:not([class*="animate"]):not([style*="background"]), .dark h2:not([class*="animate"]):not([style*="background"]), .dark h3:not([class*="animate"]):not([style*="background"]), .dark h4:not([class*="animate"]):not([style*="background"]), .dark h5:not([class*="animate"]):not([style*="background"]), .dark h6:not([class*="animate"]):not([style*="background"]),
+  .dark button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="animate"]):not([style*="background"]),
+  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
     background-color: black !important;
   }
   
-  /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - EXCEPT FOR IMAGES AND SVGS */
-  body, p, span, div:not(img):not(svg), h1, h2, h3, h4, h5, h6, li, td, th, label, 
-  button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
-  a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
-  input, textarea, select,
-  [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not(img):not(svg) {
+  /* FORCE ALL TEXT TO BLACK IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, AND ANIMATIONS */
+  body, p, span, div:not(img):not(svg):not([class*="animate"]):not([style*="color"]),
+  h1:not([class*="animate"]):not([style*="color"]), h2:not([class*="animate"]):not([style*="color"]), h3:not([class*="animate"]):not([style*="color"]), h4:not([class*="animate"]):not([style*="color"]), h5:not([class*="animate"]):not([style*="color"]), h6:not([class*="animate"]):not([style*="color"]),
+  li:not([class*="animate"]):not([style*="color"]), td:not([class*="animate"]):not([style*="color"]), th:not([class*="animate"]):not([style*="color"]), label:not([class*="animate"]):not([style*="color"]),
+  button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="animate"]):not([style*="color"]),
+  a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="animate"]):not([style*="color"]),
+  input:not([class*="animate"]):not([style*="color"]), textarea:not([class*="animate"]):not([style*="color"]), select:not([class*="animate"]):not([style*="color"]),
+  [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="animate"]):not([style*="color"]):not(img):not(svg) {
     color: black !important;
   }
   
-  /* FORCE ALL TEXT TO WHITE IN DARK MODE */
-  .dark body, .dark p, .dark span, .dark div:not(img):not(svg), .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, 
-  .dark li, .dark td, .dark th, .dark label,
-  .dark button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]),
-  .dark a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]),
-  .dark input, .dark textarea, .dark select,
-  .dark [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not(img):not(svg) {
+  /* FORCE ALL TEXT TO WHITE IN DARK MODE - EXCEPT FOR ANIMATIONS */
+  .dark body, .dark p, .dark span, .dark div:not(img):not(svg):not([class*="animate"]):not([style*="color"]),
+  .dark h1:not([class*="animate"]):not([style*="color"]), .dark h2:not([class*="animate"]):not([style*="color"]), .dark h3:not([class*="animate"]):not([style*="color"]), .dark h4:not([class*="animate"]):not([style*="color"]), .dark h5:not([class*="animate"]):not([style*="color"]), .dark h6:not([class*="animate"]):not([style*="color"]),
+  .dark li:not([class*="animate"]):not([style*="color"]), .dark td:not([class*="animate"]):not([style*="color"]), .dark th:not([class*="animate"]):not([style*="color"]), .dark label:not([class*="animate"]):not([style*="color"]),
+  .dark button:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="animate"]):not([style*="color"]),
+  .dark a:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="animate"]):not([style*="color"]),
+  .dark input:not([class*="animate"]):not([style*="color"]), .dark textarea:not([class*="animate"]):not([style*="color"]), .dark select:not([class*="animate"]):not([style*="color"]),
+  .dark [class*="text-"]:not([class*="text-primary"]):not([class*="text-secondary"]):not([class*="text-accent"]):not([class*="text-destructive"]):not([class*="animate"]):not([style*="color"]):not(img):not(svg) {
     color: white !important;
   }
   

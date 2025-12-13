@@ -67,11 +67,11 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-primary border-0 text-primary-foreground">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="bg-primary-foreground/20 p-3 rounded-lg">
-              <Hammer size={24} weight="bold" />
+            <div className="bg-white dark:bg-black border border-black/10 dark:border-white/10 p-3 rounded-lg">
+              <Hammer size={24} weight="bold" className="text-black dark:text-white" />
             </div>
             <div>
               <h3 className="font-heading text-xl font-bold">Invite a Tradesman</h3>
@@ -84,27 +84,27 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
           </div>
         </div>
 
-        <div className="space-y-4 pt-4 border-t border-primary-foreground/20">
+        <div className="space-y-4 pt-4 border-t border-black/10 dark:border-white/10">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <Label htmlFor="buddy-name" className="text-primary-foreground">Buddy's Name</Label>
+              <Label htmlFor="buddy-name" className="text-black dark:text-white">Buddy's Name</Label>
               <Input
                 id="buddy-name"
                 value={buddyName}
                 onChange={(e) => setBuddyName(e.target.value)}
                 placeholder="Carlos"
-                className="mt-1.5 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
+                className="mt-1.5 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white placeholder:text-black/50 dark:placeholder:text-white/50"
               />
             </div>
             <div>
-              <Label htmlFor="buddy-phone" className="text-primary-foreground">Phone Number</Label>
+              <Label htmlFor="buddy-phone" className="text-black dark:text-white">Phone Number</Label>
               <Input
                 id="buddy-phone"
                 type="tel"
                 value={buddyPhone}
                 onChange={(e) => setBuddyPhone(e.target.value)}
                 placeholder="(512) 555-0123"
-                className="mt-1.5 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50"
+                className="mt-1.5 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white placeholder:text-black/50 dark:placeholder:text-white/50"
               />
             </div>
           </div>
@@ -112,7 +112,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
           <Button
             onClick={handleInvite}
             disabled={sending || !canInviteMore}
-            className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90 h-12 text-lg font-bold"
+            className="w-full bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 hover:bg-white/80 dark:hover:bg-black/80 h-12 text-lg font-bold"
           >
             <DeviceMobile size={20} className="mr-2" weight="bold" />
             {sending ? "Sending..." : `Send Invite (${monthlyCount}/10 this month)`}
@@ -133,11 +133,11 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
                 <div className="flex items-center gap-3">
                   {referral.status === 'completed-first-job' ? (
                     <>
-                      <div className="flex items-center gap-1 text-accent font-bold">
+                      <div className="flex items-center gap-1 text-black dark:text-white font-bold">
                         <CurrencyDollar size={18} weight="bold" />
                         <span>$50</span>
                       </div>
-                      <CheckCircle size={20} weight="fill" className="text-primary" />
+                      <CheckCircle size={20} weight="fill" className="text-black dark:text-white" />
                     </>
                   ) : (
                     <span className="text-sm text-muted-foreground capitalize">{referral.status.replace('-', ' ')}</span>

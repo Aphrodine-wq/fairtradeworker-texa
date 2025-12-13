@@ -77,21 +77,21 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       value: platformFees,
       description: `$20 × ${completedJobs.length} completed jobs`,
       icon: Receipt,
-      color: "text-primary"
+      color: "text-black dark:text-white"
     },
     {
       label: "Pro Subscriptions",
       value: proSubscriptionRevenue,
       description: `$39/mo × ${proContractors.length} Pro contractors`,
       icon: Crown,
-      color: "text-amber-600"
+      color: "text-black dark:text-white"
     },
     {
       label: "Processing Fees",
       value: processingFees,
       description: `2.9% of $${totalInvoiceValue.toFixed(0)} invoiced`,
       icon: ChartLine,
-      color: "text-green-600"
+      color: "text-black dark:text-white"
     },
     {
       label: "Territory Royalties",
