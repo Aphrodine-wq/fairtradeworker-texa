@@ -5,7 +5,7 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
-import { memo, useMemo } from "react"
+import { memo, useMemo, useState, useEffect } from "react"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
