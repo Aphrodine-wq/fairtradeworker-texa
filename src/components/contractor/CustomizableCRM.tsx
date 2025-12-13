@@ -10,8 +10,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
-  Users, Plus, Settings, Layout, Tag, FileText, Calendar, 
-  Funnel, Eye, EyeSlash, GripVertical, Trash, Edit, Save, X
+  Users, Plus, Gear, Layout, Tag, FileText, Calendar, 
+  Funnel, Eye, EyeSlash, DotsThreeVertical, Trash, PencilSimple, FloppyDisk, X
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
@@ -134,7 +134,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-3">
-            <Settings weight="duotone" size={32} className="text-primary" />
+            <Gear weight="duotone" size={32} className="text-primary" />
             Customizable CRM
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -190,7 +190,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                   {defaultFields.map((field) => (
                     <div key={field.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                       <div className="flex items-center gap-3">
-                        <GripVertical size={20} className="text-muted-foreground" />
+                        <DotsThreeVertical size={20} className="text-muted-foreground" />
                         <div>
                           <div className="font-medium">{field.name}</div>
                           <div className="text-sm text-muted-foreground capitalize">{field.type}</div>
@@ -220,7 +220,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                     {customFields.map((field) => (
                       <div key={field.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                         <div className="flex items-center gap-3">
-                          <GripVertical size={20} className="text-muted-foreground" />
+                          <DotsThreeVertical size={20} className="text-muted-foreground" />
                           <div>
                             <div className="font-medium">{field.name}</div>
                             <div className="text-sm text-muted-foreground capitalize">{field.type}</div>
@@ -235,7 +235,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                               setShowFieldDialog(true)
                             }}
                           >
-                            <Edit size={16} />
+                            <PencilSimple size={16} />
                           </Button>
                           <Button
                             variant="ghost"
@@ -347,7 +347,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                   <CardContent>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm">
-                        <Edit size={16} className="mr-2" />
+                        <PencilSimple size={16} className="mr-2" />
                         Edit
                       </Button>
                     </div>
@@ -576,7 +576,7 @@ function FieldForm({
           visible,
           order: field?.order || 100,
         })}>
-          <Save size={16} className="mr-2" />
+          <FloppyDisk size={16} className="mr-2" />
           {field ? 'Update' : 'Create'} Field
         </Button>
       </div>
@@ -659,7 +659,7 @@ function ViewForm({
           sortBy: view?.sortBy || 'createdAt',
           sortOrder: view?.sortOrder || 'desc',
         })}>
-          <Save size={16} className="mr-2" />
+          <FloppyDisk size={16} className="mr-2" />
           {view ? 'Update' : 'Create'} View
         </Button>
       </div>
@@ -727,7 +727,7 @@ function WorkflowForm({
           conditions: workflow?.conditions || {},
           actions: workflow?.actions || [],
         })}>
-          <Save size={16} className="mr-2" />
+          <FloppyDisk size={16} className="mr-2" />
           {workflow ? 'Update' : 'Create'} Workflow
         </Button>
       </div>
