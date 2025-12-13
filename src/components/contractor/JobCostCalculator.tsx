@@ -84,17 +84,17 @@ export function JobCostCalculator() {
   }
 
   const getProfitQuality = (margin: number) => {
-    if (margin >= 40) return { text: "Excellent", color: "bg-green-500", icon: TrendUp }
-    if (margin >= 25) return { text: "Good", color: "bg-blue-500", icon: TrendUp }
-    if (margin >= 15) return { text: "Fair", color: "bg-yellow-500", icon: TrendUp }
-    return { text: "Low", color: "bg-red-500", icon: TrendDown }
+    if (margin >= 40) return { text: "Excellent", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
+    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
+    if (margin >= 15) return { text: "Fair", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
+    return { text: "Low", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendDown }
   }
 
   const getHourlyRateQuality = (rate: number) => {
-    if (rate >= 100) return { text: "Excellent", color: "text-green-500" }
-    if (rate >= 60) return { text: "Good", color: "text-blue-500" }
-    if (rate >= 40) return { text: "Fair", color: "text-yellow-500" }
-    return { text: "Low", color: "text-red-500" }
+    if (rate >= 100) return { text: "Excellent", color: "text-black dark:text-white" }
+    if (rate >= 60) return { text: "Good", color: "text-black dark:text-white" }
+    if (rate >= 40) return { text: "Fair", color: "text-black dark:text-white" }
+    return { text: "Low", color: "text-black dark:text-white" }
   }
 
   return (
@@ -214,7 +214,7 @@ export function JobCostCalculator() {
 
             <div className="space-y-1">
               <p className="text-sm text-muted-foreground">Your Labor Pay</p>
-              <p className="text-2xl font-bold text-green-500">
+              <p className="text-2xl font-bold text-black dark:text-white">
                 ${breakdown.profit.toFixed(2)}
               </p>
             </div>

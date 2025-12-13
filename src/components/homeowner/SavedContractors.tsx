@@ -114,11 +114,11 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-primary/5 border-primary/20">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-pink-500 flex items-center justify-center">
-              <Heart weight="fill" className="text-white" size={24} />
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+              <Heart weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
               <h2 className="text-2xl font-bold">Saved Contractors</h2>
@@ -136,19 +136,19 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
         {recentlyUsed.length > 0 && (
           <div className="mt-6">
             <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              <Lightning size={16} className="text-yellow-500" />
+              <Lightning size={16} className="text-black dark:text-white" />
               Recently Hired
             </h3>
             <div className="grid gap-3 md:grid-cols-3">
               {recentlyUsed.map(contractor => (
                 <Card 
                   key={contractor.id}
-                  className="p-3 bg-accent/5 border-accent/20 hover:border-accent/40 transition-colors cursor-pointer"
+                  className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-colors cursor-pointer"
                   onClick={() => handleQuickRehire(contractor)}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-sm">{contractor.contractorName}</span>
-                    <CheckCircle size={16} className="text-green-500" />
+                    <CheckCircle size={16} className="text-black dark:text-white" />
                   </div>
                   <p className="text-xs text-muted-foreground">
                     {getTimeSinceLastJob(contractor.lastJobDate)}
@@ -179,8 +179,8 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Hammer size={20} className="text-primary" />
+                    <div className="w-12 h-12 rounded-full bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+                      <Hammer size={20} className="text-black dark:text-white" />
                     </div>
                     <div>
                       <h3 className="font-bold text-lg">{contractor.contractorName}</h3>
@@ -192,7 +192,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3">
                     <div className="flex items-center gap-2">
-                      <CheckCircle size={16} className="text-green-500" />
+                      <CheckCircle size={16} className="text-black dark:text-white" />
                       <div>
                         <p className="text-xs text-muted-foreground">Jobs Done</p>
                         <p className="font-semibold">{contractor.totalJobsCompleted}</p>
@@ -200,7 +200,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Clock size={16} className="text-blue-500" />
+                      <Clock size={16} className="text-black dark:text-white" />
                       <div>
                         <p className="text-xs text-muted-foreground">Last Job</p>
                         <p className="font-semibold text-sm">
@@ -211,7 +211,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
 
                     {contractor.lastJobAmount && (
                       <div className="flex items-center gap-2">
-                        <CurrencyDollar size={16} className="text-green-500" />
+                        <CurrencyDollar size={16} className="text-black dark:text-white" />
                         <div>
                           <p className="text-xs text-muted-foreground">Last Amount</p>
                           <p className="font-semibold">${contractor.lastJobAmount}</p>
@@ -221,7 +221,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
 
                     {contractor.averageRating && (
                       <div className="flex items-center gap-2">
-                        <Star size={16} className="text-yellow-500" weight="fill" />
+                        <Star size={16} className="text-black dark:text-white" weight="fill" />
                         <div>
                           <p className="text-xs text-muted-foreground">Rating</p>
                           <p className="font-semibold">{contractor.averageRating.toFixed(1)}</p>
@@ -268,7 +268,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
         </div>
       )}
 
-      <Card className="p-4 bg-primary/5 border-primary/20">
+      <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <p className="text-sm text-muted-foreground">
           <strong>💡 Pro Tip:</strong> Save contractors who did great work so you can hire them again instantly. 
           No need to browse bids - just click "Quick Hire" and they'll see your new job first!

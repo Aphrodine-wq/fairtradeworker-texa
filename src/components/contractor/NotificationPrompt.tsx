@@ -67,15 +67,15 @@ export function NotificationPrompt({ user }: NotificationPromptProps) {
   }
 
   return (
-    <Card className="p-4 bg-primary/10 border-primary/20 animate-fadeIn">
+    <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10 animate-fadeIn">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-          <Bell className="w-5 h-5 text-primary" />
+        <div className="w-10 h-10 rounded-full bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center flex-shrink-0">
+          <Bell className="w-5 h-5 text-black dark:text-white" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-heading font-semibold">Never Miss a Job</h3>
-            <Zap className="w-4 h-4 text-primary" />
+            <Zap className="w-4 h-4 text-black dark:text-white" />
           </div>
           <p className="text-sm text-muted-foreground mb-3">
             Get instant alerts for new jobs near you. Contractors who respond in under 15 minutes
