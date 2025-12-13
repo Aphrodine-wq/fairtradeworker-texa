@@ -107,7 +107,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
                   />
                   {/* Cluster Count */}
                   {isMultiple && (
-                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-900 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-orange-500">
+                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-orange-500">
                       {cluster.jobs.length}
                     </div>
                   )}
@@ -176,7 +176,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
         )}
 
         {/* Map Legend */}
-        <div className="absolute top-4 right-4 bg-white dark:bg-gray-900 rounded-lg p-3 shadow-lg space-y-2 text-xs">
+        <div className="absolute top-4 right-4 bg-white dark:bg-black rounded-lg p-3 shadow-lg space-y-2 text-xs">
           <div className="font-semibold mb-2">Legend</div>
           <div className="flex items-center gap-2">
             <MapPin size={20} weight="fill" className="text-blue-500" />

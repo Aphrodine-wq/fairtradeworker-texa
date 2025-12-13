@@ -132,7 +132,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
 
   const getWarrantyStatus = (endDate: string) => {
     const days = getDaysRemaining(endDate)
-    if (days < 0) return { text: "Expired", color: "bg-gray-500", icon: Clock }
+    if (days < 0) return { text: "Expired", color: "bg-white dark:bg-black border-2 border-gray-500", icon: Clock }
     if (days <= 30) return { text: `${days} days left`, color: "bg-red-500", icon: Warning }
     if (days <= 90) return { text: `${days} days left`, color: "bg-yellow-500", icon: Clock }
     return { text: `${days} days left`, color: "bg-green-500", icon: CheckCircle }
@@ -254,7 +254,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
             <p className="text-3xl font-bold text-yellow-500">{expiringIn30Days.length}</p>
           </div>
 
-          <div className="p-4 bg-gray-500/10 rounded-lg border border-gray-500/20">
+          <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
             <p className="text-sm text-muted-foreground mb-1">Expired</p>
             <p className="text-3xl font-bold text-gray-500">{expiredWarranties.length}</p>
           </div>
@@ -379,7 +379,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                         <div className="flex items-center gap-2 mb-2">
                           <User size={16} className="text-muted-foreground" />
                           <span className="font-semibold">{warranty.customerName}</span>
-                          <Badge className="bg-gray-500 text-white">
+                          <Badge className="bg-white dark:bg-black border-2 border-gray-500 text-black dark:text-white">
                             Expired
                           </Badge>
                         </div>

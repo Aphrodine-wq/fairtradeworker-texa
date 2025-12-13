@@ -41,7 +41,7 @@ const NOTE_CATEGORIES = [
   { value: "material", label: "Materials", color: "bg-yellow-500" },
   { value: "reminder", label: "Reminder", color: "bg-red-500" },
   { value: "idea", label: "Idea", color: "bg-purple-500" },
-  { value: "other", label: "Other", color: "bg-gray-500" }
+  { value: "other", label: "Other", color: "bg-white dark:bg-black border-2 border-gray-500" }
 ]
 
 export function QuickNotes({ user }: QuickNotesProps) {
@@ -133,7 +133,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
   }
 
   const getCategoryColor = (cat: string) => {
-    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-gray-500"
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-2 border-gray-500"
   }
 
   const getCategoryLabel = (cat: string) => {

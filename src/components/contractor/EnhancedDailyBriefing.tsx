@@ -248,21 +248,21 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
 
   const getDensityColor = (density: string) => {
     switch (density) {
-      case 'empty': return 'bg-gray-200'
-      case 'light': return 'bg-yellow-400'
-      case 'busy': return 'bg-green-500'
-      case 'overbooked': return 'bg-red-500'
-      default: return 'bg-gray-200'
+      case 'empty': return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
+      case 'light': return 'bg-white dark:bg-black border-2 border-yellow-400'
+      case 'busy': return 'bg-white dark:bg-black border-2 border-green-500'
+      case 'overbooked': return 'bg-white dark:bg-black border-2 border-red-500'
+      default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
     }
   }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-50 border-red-200'
-      case 'important': return 'bg-orange-50 border-orange-200'
-      case 'info': return 'bg-blue-50 border-blue-200'
-      case 'positive': return 'bg-green-50 border-green-200'
-      default: return 'bg-gray-50 border-gray-200'
+      case 'critical': return 'bg-white dark:bg-black border-2 border-red-500'
+      case 'important': return 'bg-white dark:bg-black border-2 border-orange-500'
+      case 'info': return 'bg-white dark:bg-black border-2 border-blue-500'
+      case 'positive': return 'bg-white dark:bg-black border-2 border-green-500'
+      default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
     }
   }
 
@@ -348,7 +348,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
           </div>
           <div className="flex items-center gap-4 mt-4 text-xs">
             <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded bg-gray-200" />
+              <div className="w-3 h-3 rounded bg-white dark:bg-black border border-black/10 dark:border-white/10" />
               <span className="text-muted-foreground">Empty</span>
             </div>
             <div className="flex items-center gap-1">

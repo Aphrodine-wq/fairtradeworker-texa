@@ -19,54 +19,54 @@
 }
 
 :root {
-  --background: oklch(0.988 0.002 264);
-  --foreground: oklch(0 0 0); /* Black text in light mode */
+  --background: oklch(1 0 0); /* Pure white background in light mode */
+  --foreground: oklch(0 0 0); /* Pure black text in light mode */
 
-  --card: oklch(1 0 0 / 0.85);
-  --card-foreground: oklch(0 0 0); /* Black text in light mode */
-  --popover: oklch(1 0 0 / 0.85);
-  --popover-foreground: oklch(0 0 0); /* Black text in light mode */
+  --card: oklch(1 0 0); /* Pure white card background */
+  --card-foreground: oklch(0 0 0); /* Pure black text in light mode */
+  --popover: oklch(1 0 0); /* Pure white popover background */
+  --popover-foreground: oklch(0 0 0); /* Pure black text in light mode */
 
   --primary: oklch(0.506 0.213 264);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.706 0.12 264);
-  --secondary-foreground: oklch(0 0 0); /* Black text in light mode */
+  --secondary-foreground: oklch(0 0 0); /* Pure black text in light mode */
   --accent: oklch(0.456 0.243 264);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(1 0 0);
 
-  --muted: oklch(0.96 0.002 264);
-  --muted-foreground: oklch(0 0 0); /* Black text in light mode - pure black */
+  --muted: oklch(1 0 0); /* Pure white muted background */
+  --muted-foreground: oklch(0 0 0); /* Pure black text in light mode */
   --border: oklch(0.922 0.005 264 / 0.3);
-  --input: oklch(0.922 0.005 264 / 0.4);
+  --input: oklch(1 0 0); /* Pure white input background */
   --ring: oklch(0.506 0.213 264);
 
   --radius: 0.625rem;
 }
 
 .dark {
-  --background: oklch(0 0 0);
-  --foreground: oklch(1 0 0); /* White text in dark mode */
+  --background: oklch(0 0 0); /* Pure black background in dark mode */
+  --foreground: oklch(1 0 0); /* Pure white text in dark mode */
 
-  --card: oklch(0 0 0);
-  --card-foreground: oklch(1 0 0); /* White text in dark mode */
-  --popover: oklch(0 0 0);
-  --popover-foreground: oklch(1 0 0); /* White text in dark mode */
+  --card: oklch(0 0 0); /* Pure black card background */
+  --card-foreground: oklch(1 0 0); /* Pure white text in dark mode */
+  --popover: oklch(0 0 0); /* Pure black popover background */
+  --popover-foreground: oklch(1 0 0); /* Pure white text in dark mode */
 
   --primary: oklch(0.606 0.213 264);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.306 0.05 264);
-  --secondary-foreground: oklch(1 0 0); /* White text in dark mode */
+  --secondary-foreground: oklch(1 0 0); /* Pure white text in dark mode */
   --accent: oklch(0.556 0.243 264);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.65 0.22 27);
   --destructive-foreground: oklch(1 0 0);
 
-  --muted: oklch(0.22 0.015 264);
-  --muted-foreground: oklch(1 0 0); /* White text in dark mode */
+  --muted: oklch(0 0 0); /* Pure black muted background */
+  --muted-foreground: oklch(1 0 0); /* Pure white text in dark mode */
   --border: oklch(0.322 0.015 264 / 0.5);
-  --input: oklch(0.322 0.015 264 / 0.5);
+  --input: oklch(0 0 0); /* Pure black input background */
   --ring: oklch(0.606 0.213 264);
 }
 
@@ -150,6 +150,18 @@
   /* Global text colors - black in light mode, white in dark mode */
   * {
     color: inherit;
+  }
+  
+  /* Force all backgrounds to white in light mode */
+  body, main, section, article, aside, header, footer, nav,
+  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-card"]):not([class*="bg-background"]):not([class*="bg-muted"]) {
+    background-color: white !important;
+  }
+  
+  /* Force all backgrounds to black in dark mode */
+  .dark body, .dark main, .dark section, .dark article, .dark aside, .dark header, .dark footer, .dark nav,
+  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-success"]):not([class*="bg-warning"]):not([class*="bg-card"]):not([class*="bg-background"]):not([class*="bg-muted"]) {
+    background-color: black !important;
   }
   
   /* Force all text to black in light mode */

@@ -56,7 +56,7 @@ export function CompletionCard({
       {/* Shareable Card */}
       <Card 
         ref={cardRef}
-        className="overflow-hidden border-2 border-primary/20 bg-white dark:bg-gray-950"
+        className="overflow-hidden border-2 border-primary/20 bg-white dark:bg-black"
       >
         <CardContent className="p-0">
           {/* Header */}
