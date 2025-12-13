@@ -119,7 +119,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-2xl font-bold text-secondary">
+              <span className="text-2xl font-bold text-black dark:text-white">
                 ${aiScope.priceLow}
               </span>
               <span className="text-sm text-muted-foreground">to</span>
