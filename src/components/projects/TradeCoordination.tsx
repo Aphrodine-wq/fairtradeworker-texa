@@ -74,7 +74,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getRoleBadge = (role: TradeContractor['role']) => {
     return role === 'lead' 
-      ? <Badge className="bg-primary text-primary-foreground">Contractor</Badge>
+      ? <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10">Contractor</Badge>
       : <Badge variant="outline">Subcontractor</Badge>
   }
 

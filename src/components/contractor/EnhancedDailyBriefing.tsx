@@ -151,7 +151,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
         priority: 'important',
         message: `Invoice overdue 14+ days - $${totalOverdue.toFixed(0)}`,
         action: 'View Invoices',
-        icon: <Warning size={20} weight="fill" className="text-orange-500" />
+        icon: <Warning size={20} weight="fill" className="text-black dark:text-white" />
       })
     }
 
@@ -166,27 +166,27 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
           priority: 'critical',
           message: `${cert.name} expired ${Math.abs(daysUntil)} days ago`,
           action: 'Update Cert',
-          icon: <Shield size={20} weight="fill" className="text-red-500" />
+          icon: <Shield size={20} weight="fill" className="text-black dark:text-white" />
         })
       } else if (daysUntil <= 7) {
         alerts.push({
           priority: 'critical',
           message: `${cert.name} expires in ${daysUntil} days`,
           action: 'Renew Now',
-          icon: <Shield size={20} weight="fill" className="text-red-500" />
+          icon: <Shield size={20} weight="fill" className="text-black dark:text-white" />
         })
       } else if (daysUntil <= 30) {
         alerts.push({
           priority: 'important',
           message: `${cert.name} expires in ${daysUntil} days`,
           action: 'View Certs',
-          icon: <Shield size={20} weight="fill" className="text-orange-500" />
+          icon: <Shield size={20} weight="fill" className="text-black dark:text-white" />
         })
       } else if (daysUntil <= 60) {
         alerts.push({
           priority: 'info',
           message: `${cert.name} expires in ${daysUntil} days`,
-          icon: <Shield size={20} weight="duotone" className="text-blue-500" />
+          icon: <Shield size={20} weight="duotone" className="text-black dark:text-white" />
         })
       }
     })
@@ -196,7 +196,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
       alerts.push({
         priority: 'positive',
         message: `New review received - 5 stars!`,
-        icon: <Star size={20} weight="fill" className="text-yellow-500" />
+        icon: <Star size={20} weight="fill" className="text-black dark:text-white" />
       })
     }
 
@@ -275,7 +275,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
         </div>
         <div className="text-right">
           <p className="text-sm text-muted-foreground">Expected earnings</p>
-          <p className="text-4xl font-bold text-primary">
+          <p className="text-4xl font-bold text-black dark:text-white">
             ${todayStats.expectedEarnings.toLocaleString()}
           </p>
         </div>
@@ -284,7 +284,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <TrendUp weight="duotone" size={24} className="text-primary" />
+            <TrendUp weight="duotone" size={24} className="text-black dark:text-white" />
             Yesterday Comparison
           </CardTitle>
         </CardHeader>
@@ -301,7 +301,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
             <div>
               <p className="text-sm text-muted-foreground mb-2">Today (scheduled)</p>
               <div className="flex items-baseline gap-2">
-                <p className="text-2xl font-bold text-primary">{todayStats.todayJobs.length}</p>
+                <p className="text-2xl font-bold text-black dark:text-white">{todayStats.todayJobs.length}</p>
                 <p className="text-sm text-muted-foreground">jobs</p>
                 <p className="text-2xl font-bold text-primary ml-4">${todayStats.expectedEarnings.toFixed(0)}</p>
               </div>
