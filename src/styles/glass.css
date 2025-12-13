@@ -36,56 +36,56 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 0;
 }
 
 .dark .glass {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
 .glass-subtle {
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 0;
 }
 
 .dark .glass-subtle {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
 .glass-bold {
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 0;
 }
 
 .dark .glass-bold {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
 .glass-dark {
   background: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 0;
 }
 
 .dark .glass-dark {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
 /* Blue tinted glass */
@@ -97,14 +97,14 @@
   );
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(59, 130, 246, 0.15);
+  border: 0;
 }
 
 .dark .glass-blue {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 0;
 }
 
 .glass-success {
@@ -115,7 +115,7 @@
   );
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(34, 197, 94, 0.15);
+  border: 0;
 }
 
 /* Reduce blur on mobile for better performance */

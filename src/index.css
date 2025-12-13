@@ -4,7 +4,17 @@
 
 @layer base {
   * {
-    @apply border-border
+    @apply border-0
+  }
+  
+  /* Remove borders from all cards, buttons, and boxes */
+  [data-slot="card"],
+  [data-slot="button"],
+  button,
+  input,
+  select,
+  textarea {
+    border: 0 !important;
   }
 }
 
