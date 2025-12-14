@@ -1,4 +1,7 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
+import { safeInput } from "@/lib/utils"
+import { CircleNotch } from "@phosphor-icons/react"
+import { toast } from "sonner"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -82,18 +85,60 @@ export function DocumentManager({ user }: { user: User }) {
     })
   }
 
-  const handleCreateFolder = () => {
-    if (!newFolderName.trim()) return
-    const newFolder: Folder = {
-      id: `folder-${Date.now()}`,
-      name: newFolderName,
-      parentId: currentFolderId || undefined,
-      createdAt: new Date().toISOString()
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false)
+  const [folderErrors, setFolderErrors] = useState<{ name?: string }>({})
+
+  const handleCreateFolder = useCallback(async () => {
+    setFolderErrors({})
+    
+    if (!newFolderName.trim()) {
+      setFolderErrors({ name: "Folder name is required" })
+      toast.error("Please enter a folder name")
+      return
+    } else if (newFolderName.trim().length < 2) {
+      setFolderErrors({ name: "Folder name must be at least 2 characters" })
+      toast.error("Folder name must be at least 2 characters")
+      return
+    } else if (newFolderName.trim().length > 50) {
+      setFolderErrors({ name: "Folder name is too long (max 50 characters)" })
+      toast.error("Folder name is too long")
+      return
     }
-    setFolders([...folders, newFolder])
-    setNewFolderName("")
-    setShowNewFolderDialog(false)
-  }
+
+    // Check for duplicate folder names in same parent
+    const existingFolder = folders.find(f => 
+      f.name.toLowerCase() === newFolderName.trim().toLowerCase() &&
+      f.parentId === (currentFolderId || undefined)
+    )
+    if (existingFolder) {
+      setFolderErrors({ name: "A folder with this name already exists" })
+      toast.error("A folder with this name already exists")
+      return
+    }
+
+    setIsCreatingFolder(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      const newFolder: Folder = {
+        id: `folder-${Date.now()}`,
+        name: safeInput(newFolderName.trim()),
+        parentId: currentFolderId || undefined,
+        createdAt: new Date().toISOString()
+      }
+      setFolders([...folders, newFolder])
+      setNewFolderName("")
+      setFolderErrors({})
+      setShowNewFolderDialog(false)
+      toast.success("Folder created!")
+    } catch (error) {
+      console.error("Error creating folder:", error)
+      toast.error("Failed to create folder. Please try again.")
+    } finally {
+      setIsCreatingFolder(false)
+    }
+  }, [newFolderName, folders, currentFolderId])
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return bytes + ' B'

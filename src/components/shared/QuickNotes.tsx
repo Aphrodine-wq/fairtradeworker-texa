@@ -1,4 +1,6 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
+import { safeInput } from "@/lib/utils"
+import { CircleNotch } from "@phosphor-icons/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -89,34 +91,60 @@ export function QuickNotes({ user }: QuickNotesProps) {
     [notes]
   )
 
-  const handleAddNote = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{ title?: string }>({})
+
+  const handleAddNote = useCallback(async () => {
+    setErrors({})
+    
     if (!title.trim()) {
+      setErrors({ title: "Title is required" })
       toast.error("Please enter a title")
+      return
+    } else if (title.trim().length < 2) {
+      setErrors({ title: "Title must be at least 2 characters" })
+      toast.error("Title must be at least 2 characters")
+      return
+    } else if (title.trim().length > 100) {
+      setErrors({ title: "Title is too long (max 100 characters)" })
+      toast.error("Title is too long")
       return
     }
 
-    const newNote: QuickNote = {
-      id: `note-${Date.now()}`,
-      title: title.trim(),
-      content: content.trim(),
-      category,
-      isPinned: false,
-      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    setIsSubmitting(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      const newNote: QuickNote = {
+        id: `note-${Date.now()}`,
+        title: safeInput(title.trim()),
+        content: content ? safeInput(content.trim()) : '',
+        category,
+        isPinned: false,
+        tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+
+      setNotes([...(notes || []), newNote])
+      
+      // Reset form
+      setTitle("")
+      setContent("")
+      setCategory("other")
+      setTags("")
+      setErrors({})
+      setIsAddDialogOpen(false)
+
+      toast.success("Note added!")
+    } catch (error) {
+      console.error("Error adding note:", error)
+      toast.error("Failed to add note. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    setNotes([...(notes || []), newNote])
-    
-    // Reset form
-    setTitle("")
-    setContent("")
-    setCategory("other")
-    setTags("")
-    setIsAddDialogOpen(false)
-
-    toast.success("Note added!")
-  }
+  }, [title, content, category, tags, notes])
 
   const handleTogglePin = (noteId: string) => {
     setNotes(notes.map(n => 
@@ -235,8 +263,21 @@ export function QuickNotes({ user }: QuickNotesProps) {
                   <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
                     Cancel
                   </Button>
-                  <Button onClick={handleAddNote} className="h-11">
-                    Add Note
+                  <Button 
+                    onClick={handleAddNote} 
+                    className="h-11 border-2 border-black dark:border-white"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                        Adding...
+                      </>
+                    ) : (
+                      <>
+                        Add Note
+                      </>
+                    )}
                   </Button>
                 </DialogFooter>
               </div>
