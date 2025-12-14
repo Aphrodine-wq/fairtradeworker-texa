@@ -99,7 +99,7 @@ export function PaymentProcessing({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Total Received</span>
@@ -110,7 +110,7 @@ export function PaymentProcessing({ user }: { user: User }) {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Pending</span>
@@ -121,7 +121,7 @@ export function PaymentProcessing({ user }: { user: User }) {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Card Payments</span>
@@ -132,7 +132,7 @@ export function PaymentProcessing({ user }: { user: User }) {
                 </div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">ACH Payments</span>
