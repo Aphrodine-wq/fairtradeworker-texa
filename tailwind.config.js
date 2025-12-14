@@ -36,6 +36,19 @@ const defaultTheme = {
       "ipad-pro": "1024px",
     },
     colors: {
+      // BRUTALIST PRIMARY PALETTE
+      white: '#FFFFFF',
+      black: '#000000',
+      success: '#00FF00',
+      danger: '#FF0000',
+      warning: '#FFFF00',
+      
+      // GLASSMORPHISM (PRO ONLY)
+      glass: {
+        light: 'rgba(255, 255, 255, 0.2)',
+        dark: 'rgba(0, 0, 0, 0.2)',
+      },
+      
       neutral: {
         1: "var(--color-neutral-1)",
         2: "var(--color-neutral-2)",
@@ -105,12 +118,27 @@ const defaultTheme = {
       "focus-ring": "var(--color-focus-ring)",
     },
     borderRadius: {
-      sm: "var(--radius-sm)",
-      md: "var(--radius-md)",
-      lg: "var(--radius-lg)",
-      xl: "var(--radius-xl)",
-      "2xl": "var(--radius-2xl)",
-      full: "var(--radius-full)",
+      none: "0px", // DEFAULT - 94% of elements
+      sm: "2px", // Small inputs, tags
+      md: "4px", // Buttons (occasional)
+      lg: "6px", // Medium elements (rare)
+      xl: "8px", // Large cards (rare)
+      "2xl": "12px", // Hero sections (exception)
+      full: "9999px", // Profile avatars ONLY
+    },
+    boxShadow: {
+      none: '0 0 0 0 #000000',
+      sm: '2px 2px 0 0 #000000',
+      DEFAULT: '4px 4px 0 0 #000000', // shadow-md
+      md: '4px 4px 0 0 #000000',
+      lg: '6px 6px 0 0 #000000',
+      xl: '8px 8px 0 0 #000000',
+      '2xl': '12px 12px 0 0 #000000',
+      glass: '0 4px 6px rgba(0, 0, 0, 0.1)', // Pro glass only
+    },
+    backdropBlur: {
+      none: '0',
+      xs: '2px', // Pro glass only
     },
   },
   spacing: {

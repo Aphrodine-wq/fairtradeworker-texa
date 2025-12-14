@@ -288,6 +288,113 @@ Every contractor knows the pain:
 
 ---
 
+## 🎨 BRUTALIST GLASSMORPHISM DESIGN SYSTEM v4.0
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║          BRUTALIST GLASSMORPHISM — FUNCTION OVER DECORATION. ALWAYS.         ║
+║          RAWNESS FUSED WITH GLASS-LIKE CLARITY.                              ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+**UPDATE v4.0:** Introducing Brutalist Glassmorphism—a fusion of raw brutalist edges with subtle glass-like effects. Glassmorphism is implemented sparingly: semi-transparent overlays with hard borders (alpha 0.1-0.3 allowed only for glass effects), no blur in core UI, but subtle backdrop-filter for pro features. This maintains performance while adding depth without cost.
+
+### Color System — Absolute Purity with Glass Variants
+
+**PRIMARY PALETTE (9 COLORS ONLY, INCLUDING GLASS)**
+- `#FFFFFF` Pure White — Background (light mode), Contrast Ratio: 21:1
+- `#000000` Pure Black — Foreground (light mode text), Contrast Ratio: 21:1
+- `#00FF00` Success Green — Money, completion, positive (15.3:1 vs black)
+- `#FF0000` Danger Red — Errors, critical warnings (5.25:1 vs white)
+- `#FFFF00` Warning Yellow — Attention, pending status (19.56:1 vs black)
+- `rgba(255,255,255,0.2)` Glass Light — Overlay for glassmorphism (pro features only)
+- `rgba(0,0,0,0.2)` Glass Dark — Overlay for glassmorphism (pro dark mode)
+
+**COLOR USAGE RULES**
+✅ **ALLOWED:**
+- Direct hex values ONLY (#FFFFFF, not 'white')
+- rgba() with alpha 0.1-0.3 ONLY for glassmorphism overlays (pro features)
+- backdrop-filter: blur() max 2px (pro glass components only)
+
+❌ **STRICTLY FORBIDDEN:**
+- rgba() with alpha < 0.1 or > 0.3
+- hsl(), hsla() (unpredictable contrast)
+- gradient functions (linear-gradient, radial-gradient)
+- backdrop-filter: blur() > 2px or outside pro glass components
+- opacity property on containers (use rgba instead)
+- box-shadow with blur radius > 0 (except glass shadows: 0 4px 6px rgba(0,0,0,0.1))
+
+### Shadow & Border System — Hard Edges with Glass Variants
+
+**BORDERS:**
+- `border-2` 2px — DEFAULT (All cards, sections, buttons)
+- `border-4` 4px — Emphasis (Hero sections, primary CTAs)
+- `border-8` 8px — Maximum emphasis (Only one per page)
+- Border color: `#000000` ONLY — NO EXCEPTIONS
+- Border style: `solid` ONLY
+
+**SHADOWS:**
+- `shadow-md` 4px 4px 0 0 #000000 — DEFAULT CARD SHADOW
+- `shadow-lg` 6px 6px 0 0 #000000 — Elevated sections
+- `shadow-xl` 8px 8px 0 0 #000000 — Hero elements only
+- `shadow-glass` 0 4px 6px rgba(0,0,0,0.1) — Pro glass only
+- NO BLUR RADIUS (0px) — NO TRANSPARENCY — NO MULTIPLE SHADOWS EXCEPT GLASS
+
+**BORDER RADIUS:**
+- `rounded-none` 0px — DEFAULT (94% of all elements)
+- `rounded-sm` 2px — Small inputs, tags
+- NO ROUNDED CORNERS ON: Cards, Modals, Tables, Containers, Main sections
+
+### Glass Components — Pro Features Only
+
+Glassmorphism is restricted to Pro dashboard components to add premium depth:
+
+```tsx
+// ✅ CORRECT — Pro glass card
+<div className="bg-glass-light backdrop-blur-xs border-2 border-black shadow-glass">
+  {/* Pro feature content */}
+</div>
+
+// ❌ FORBIDDEN — Glass in free features
+<div className="bg-white/50 backdrop-blur-lg"> {/* NO */}
+```
+
+**Glass Variants:**
+- `.glass-card` — Pro dashboard cards with rgba(255,255,255,0.2) + 2px blur
+- `.glass-overlay` — Modal overlays with rgba(0,0,0,0.2) in dark mode
+- Performance: GPU-accelerated, no impact on FPS
+
+### Typography System — Monolithic Precision
+
+**FONT STACK:**
+- **Primary:** Inter — All UI text (Weights: 400, 600, 900)
+- **Display:** SF Pro — Marketing headlines (Apple devices)
+- **Mono:** JetBrains Mono — Numbers, code, data, prices
+
+**TYPOGRAPHY SCALE (12 SIZES):**
+- `text-xs` 12px / 16px — Labels, timestamps
+- `text-sm` 14px / 20px — Secondary text
+- `text-base` 16px / 24px — Body text (default)
+- `text-xl` 20px / 28px — Section subheads
+- `text-2xl` 24px / 32px — Card titles
+- `text-3xl` 30px / 36px — Page section headers
+- `text-4xl` 36px / 40px — Dashboard titles
+- `text-5xl` 48px / 1.0 — Landing page H2
+- `text-6xl` 60px / 1.0 — Landing page H1
+
+### Animation System — Purposeful Motion
+
+All animations use Framer Motion with consistent spring physics:
+- **Spring:** stiffness: 300, damping: 30, mass: 1
+- **Page transitions:** 150ms fade + 8px slide
+- **Card hover:** 2% scale + 2px lift (20ms)
+- **Button tap:** 2% press (50ms)
+- **Performance:** Max 3 elements animating simultaneously per viewport
+
+---
+
 ## 📁 CODEBASE ARCHITECTURE
 
 ```
