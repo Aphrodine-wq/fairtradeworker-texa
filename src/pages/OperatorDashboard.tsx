@@ -3,6 +3,9 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { 
   MapTrifold, 
@@ -17,10 +20,12 @@ import {
   Target,
   Fire,
   UserPlus,
-  Buildings
+  Buildings,
+  Copy,
+  Check
 } from "@phosphor-icons/react"
 import type { User, Job, Territory } from "@/lib/types"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 
 interface OperatorDashboardProps {
   user: User
@@ -31,6 +36,17 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   const [jobs] = useKV<Job[]>("jobs", [])
   const [territories] = useKV<Territory[]>("territories", [])
   const [users] = useKV<User[]>("users", [])
+  const [referralDialogOpen, setReferralDialogOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const referralLink = `https://fairtradeworker.com?operator-ref=${user.id}`
+  
+  const handleCopyReferral = () => {
+    navigator.clipboard.writeText(referralLink)
+    setCopied(true)
+    toast.success("Referral link copied to clipboard!")
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   // Operators can only control one territory
   const myTerritory = useMemo(() => {
@@ -460,7 +476,12 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 <p className="text-sm text-muted-foreground mb-3">
                   Grow your network to increase coverage
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => setReferralDialogOpen(true)}
+                >
                   Get Referral Link
                 </Button>
               </Card>
@@ -471,7 +492,12 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 <p className="text-sm text-muted-foreground mb-3">
                   Build relationships with hardware stores
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => onNavigate('business-tools')}
+                >
                   View Toolkit
                 </Button>
               </Card>
@@ -482,7 +508,12 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 <p className="text-sm text-muted-foreground mb-3">
                   Increase your revenue share percentage
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full"
+                  onClick={() => onNavigate('territory-map')}
+                >
                   View Requirements
                 </Button>
               </Card>
@@ -490,6 +521,48 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
           </Card>
         </div>
       </div>
+
+      {/* Referral Link Dialog */}
+      <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
+        <DialogContent className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+          <DialogHeader>
+            <DialogTitle className="text-black dark:text-white">Your Operator Referral Link</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Share this link with contractors in your territory. When they sign up using your link, they'll be connected to your territory.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="referral-link" className="text-black dark:text-white">Referral Link</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="referral-link"
+                  value={referralLink}
+                  readOnly
+                  className="font-mono text-sm bg-white dark:bg-black border border-black/20 dark:border-white/20 text-black dark:text-white"
+                />
+                <Button
+                  onClick={handleCopyReferral}
+                  variant="outline"
+                  size="icon"
+                  className="flex-shrink-0"
+                >
+                  {copied ? (
+                    <Check size={16} className="text-green-600 dark:text-green-400" weight="bold" />
+                  ) : (
+                    <Copy size={16} className="text-black dark:text-white" />
+                  )}
+                </Button>
+              </div>
+            </div>
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-md border border-blue-200 dark:border-blue-900/50">
+              <p className="text-sm text-black dark:text-white">
+                <strong>How it works:</strong> Contractors who sign up using your referral link will be automatically assigned to your territory. This helps grow your network and increases coverage in your area.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
