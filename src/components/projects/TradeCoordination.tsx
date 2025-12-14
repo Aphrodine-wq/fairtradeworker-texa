@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -16,10 +16,12 @@ import {
   Phone,
   Envelope,
   Trash,
-  Pencil
+  Pencil,
+  CircleNotch
 } from '@phosphor-icons/react'
 import type { TradeContractor, Job } from '@/lib/types'
 import { toast } from 'sonner'
+import { safeInput } from '@/lib/utils'
 
 interface TradeCoordinationProps {
   job: Job
@@ -50,6 +52,13 @@ const TRADE_TYPES = [
 export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinationProps) {
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [editingTrade, setEditingTrade] = useState<TradeContractor | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{
+    contractorName?: string
+    trade?: string
+    contactEmail?: string
+    contactPhone?: string
+  }>({})
   const [formData, setFormData] = useState({
     contractorName: '',
     trade: '',
@@ -60,6 +69,15 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
   })
 
   const trades = job.tradeContractors || []
+
+  const validateEmail = useCallback((email: string): boolean => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }, [])
+
+  const validatePhone = useCallback((phone: string): boolean => {
+    const cleaned = phone.replace(/\D/g, '')
+    return cleaned.length === 10 || cleaned.length === 11
+  }, [])
 
   const getStatusBadge = (status: TradeContractor['status']) => {
     const variants = {
@@ -78,26 +96,57 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
       : <Badge variant="outline">Subcontractor</Badge>
   }
 
-  const handleAdd = () => {
-    if (!formData.contractorName || !formData.trade) {
-      toast.error('Please fill in required fields')
+  const handleAdd = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
+    if (!formData.contractorName.trim()) {
+      setErrors({ contractorName: "Contractor name is required" })
+      toast.error('Please enter contractor name')
+      return
+    } else if (formData.contractorName.trim().length < 2) {
+      setErrors({ contractorName: "Name must be at least 2 characters" })
+      toast.error('Contractor name must be at least 2 characters')
       return
     }
 
-    const newTrade: TradeContractor = {
-      id: `trade-${Date.now()}`,
-      jobId: job.id,
-      contractorId: `contractor-${Date.now()}`,
-      contractorName: formData.contractorName,
-      trade: formData.trade,
-      role: formData.role,
-      status: 'invited',
-      assignedMilestones: [],
-      totalAmount: 0,
-      amountPaid: 0,
-      contactPhone: formData.contactPhone,
-      contactEmail: formData.contactEmail,
-      notes: formData.notes,
+    if (!formData.trade) {
+      setErrors({ trade: "Trade type is required" })
+      toast.error('Please select a trade type')
+      return
+    }
+
+    if (formData.contactEmail && !validateEmail(formData.contactEmail)) {
+      setErrors({ contactEmail: "Please enter a valid email address" })
+      toast.error('Please enter a valid email address')
+      return
+    }
+
+    if (formData.contactPhone && !validatePhone(formData.contactPhone)) {
+      setErrors({ contactPhone: "Please enter a valid phone number" })
+      toast.error('Please enter a valid phone number')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 400))
+
+      const newTrade: TradeContractor = {
+        id: `trade-${Date.now()}`,
+        jobId: job.id,
+        contractorId: `contractor-${Date.now()}`,
+        contractorName: safeInput(formData.contractorName.trim()),
+        trade: formData.trade,
+        role: formData.role,
+        status: 'invited',
+        assignedMilestones: [],
+        totalAmount: 0,
+        amountPaid: 0,
+        contactPhone: formData.contactPhone ? safeInput(formData.contactPhone.trim()) : undefined,
+        contactEmail: formData.contactEmail ? safeInput(formData.contactEmail.trim().toLowerCase()) : undefined,
+        notes: formData.notes ? safeInput(formData.notes.trim()) : undefined,
       invitedAt: new Date().toISOString()
     }
 

@@ -1,4 +1,6 @@
-import { useState, useEffect, memo } from "react"
+import { useState, useEffect, memo, useCallback } from "react"
+import { safeInput } from "@/lib/utils"
+import { CircleNotch } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -413,8 +415,26 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
                 <Input 
                   placeholder="e.g., Texas State Board of Plumbing Examiners"
                   value={formData.issuingOrganization}
-                  onChange={(e) => setFormData(p => ({ ...p, issuingOrganization: e.target.value }))}
+                  onChange={(e) => {
+                    setFormData(p => ({ ...p, issuingOrganization: safeInput(e.target.value) }))
+                    if (errors.issuingOrganization) setErrors(prev => ({ ...prev, issuingOrganization: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.issuingOrganization && formData.issuingOrganization.trim().length < 2) {
+                      setErrors(prev => ({ ...prev, issuingOrganization: "Organization name must be at least 2 characters" }))
+                    }
+                  }}
+                  className={errors.issuingOrganization ? "border-[#FF0000]" : ""}
+                  disabled={isSubmitting}
+                  required
+                  aria-invalid={!!errors.issuingOrganization}
+                  aria-describedby={errors.issuingOrganization ? "issuing-org-error" : undefined}
                 />
+                {errors.issuingOrganization && (
+                  <p id="issuing-org-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.issuingOrganization}
+                  </p>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -443,17 +463,57 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
                   <Input 
                     type="date"
                     value={formData.issueDate}
-                    onChange={(e) => setFormData(p => ({ ...p, issueDate: e.target.value }))}
+                    onChange={(e) => {
+                      setFormData(p => ({ ...p, issueDate: e.target.value }))
+                      if (errors.issueDate) setErrors(prev => ({ ...prev, issueDate: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (!formData.issueDate) {
+                        setErrors(prev => ({ ...prev, issueDate: "Issue date is required" }))
+                      }
+                    }}
+                    className={errors.issueDate ? "border-[#FF0000]" : ""}
+                    disabled={isSubmitting}
+                    required
+                    max={new Date().toISOString().split('T')[0]}
+                    aria-invalid={!!errors.issueDate}
+                    aria-describedby={errors.issueDate ? "issue-date-error" : undefined}
                   />
+                  {errors.issueDate && (
+                    <p id="issue-date-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.issueDate}
+                    </p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label>Expiration Date</Label>
                   <Input 
                     type="date"
                     value={formData.expirationDate}
-                    disabled={formData.neverExpires}
-                    onChange={(e) => setFormData(p => ({ ...p, expirationDate: e.target.value }))}
+                    disabled={formData.neverExpires || isSubmitting}
+                    onChange={(e) => {
+                      setFormData(p => ({ ...p, expirationDate: e.target.value }))
+                      if (errors.expirationDate) setErrors(prev => ({ ...prev, expirationDate: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (formData.expirationDate && formData.issueDate && !formData.neverExpires) {
+                        const issueDate = new Date(formData.issueDate)
+                        const expDate = new Date(formData.expirationDate)
+                        if (expDate <= issueDate) {
+                          setErrors(prev => ({ ...prev, expirationDate: "Expiration date must be after issue date" }))
+                        }
+                      }
+                    }}
+                    className={errors.expirationDate ? "border-[#FF0000]" : ""}
+                    min={formData.issueDate || undefined}
+                    aria-invalid={!!errors.expirationDate}
+                    aria-describedby={errors.expirationDate ? "expiration-date-error" : undefined}
                   />
+                  {errors.expirationDate && (
+                    <p id="expiration-date-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.expirationDate}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -494,8 +554,21 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-              <Button onClick={handleSubmit}>
-                {editingCert ? 'Update' : 'Add'} Certification
+              <Button 
+                onClick={handleSubmit}
+                className="border-2 border-black dark:border-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                    {editingCert ? 'Updating...' : 'Adding...'}
+                  </>
+                ) : (
+                  <>
+                    {editingCert ? 'Update' : 'Add'} Certification
+                  </>
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
