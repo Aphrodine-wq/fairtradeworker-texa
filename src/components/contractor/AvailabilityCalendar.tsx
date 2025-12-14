@@ -99,16 +99,35 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
     }
   }, [newSlot, timeSlots, user.id, setTimeSlots])
 
-  const handleRemoveSlot = (slotId: string) => {
+  const [deletingSlotId, setDeletingSlotId] = useState<string | null>(null)
+
+  const handleRemoveSlot = useCallback(async (slotId: string) => {
+    if (deletingSlotId) return
+
     const slot = timeSlots.find(s => s.id === slotId)
     if (slot?.isBooked) {
       toast.error("Cannot remove booked slots")
       return
     }
 
-    setTimeSlots(timeSlots.filter(s => s.id !== slotId))
-    toast.success("Slot removed")
-  }
+    const confirmed = window.confirm(
+      "Are you sure you want to remove this availability slot? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingSlotId(slotId)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      setTimeSlots(timeSlots.filter(s => s.id !== slotId))
+      toast.success("Slot removed successfully")
+    } catch (error) {
+      console.error("Error removing slot:", error)
+      toast.error('Failed to remove slot. Please try again.')
+    } finally {
+      setDeletingSlotId(null)
+    }
+  }, [timeSlots, deletingSlotId, setTimeSlots])
 
   const formatSlotTime = (slot: TimeSlot) => {
     const date = new Date(slot.date).toLocaleDateString('en-US', {
