@@ -130,10 +130,10 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'consultation': return 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-      case 'job': return 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
-      case 'follow-up': return 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'
-      default: return 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300'
+      case 'consultation': return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+      case 'job': return 'bg-[#00FF00] dark:bg-[#00FF00] text-black border-2 border-black dark:border-white'
+      case 'follow-up': return 'bg-[#FFFF00] dark:bg-[#FFFF00] text-black border-2 border-black dark:border-white'
+      default: return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
     }
   }
 
@@ -274,7 +274,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
             </TabsList>
 
             <TabsContent value="month" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateMonth(-1)}>
@@ -302,7 +302,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                         <div
                           key={idx}
                           className={`min-h-[80px] p-1 border border-black/10 dark:border-white/10 ${
-                            isCurrentMonth ? 'bg-white dark:bg-black' : 'bg-muted/30'
+                            isCurrentMonth ? 'bg-white dark:bg-black' : 'bg-white dark:bg-black'
                           } ${isToday(day) ? 'ring-2 ring-primary' : ''}`}
                         >
                           <div className={`text-xs mb-1 ${isCurrentMonth ? 'text-black dark:text-white' : 'text-muted-foreground'}`}>
@@ -333,7 +333,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="week" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateWeek(-1)}>
@@ -352,7 +352,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                     {weekDays.map(day => {
                       const dayAppointments = getAppointmentsForDate(day)
                       return (
-                        <div key={day.toISOString()} className="border border-black/10 dark:border-white/10 rounded-lg p-4">
+                        <div key={day.toISOString()} className="border-2 border-black dark:border-white rounded-none p-4 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                           <div className="flex items-center justify-between mb-3">
                             <div>
                               <div className={`font-semibold text-lg ${isToday(day) ? 'text-primary' : 'text-black dark:text-white'}`}>
@@ -366,7 +366,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                           </div>
                           <div className="space-y-2">
                             {dayAppointments.map(apt => (
-                              <Card key={apt.id} className="p-3 bg-muted/50">
+                              <Card key={apt.id} className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <div className="font-semibold text-black dark:text-white">{apt.title}</div>
@@ -399,7 +399,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="day" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateDay(-1)}>
@@ -416,7 +416,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                 <CardContent>
                   <div className="space-y-4">
                     {getAppointmentsForDate(currentDate).map(apt => (
-                      <Card key={apt.id} className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                      <Card key={apt.id} className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <div className="font-semibold text-xl text-black dark:text-white">{apt.title}</div>
@@ -445,7 +445,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                     ))}
                     {getAppointmentsForDate(currentDate).length === 0 && (
                       <div className="text-center py-12">
-                        <Calendar size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                        <Calendar size={64} className="mx-auto mb-4 text-black dark:text-white" />
                         <p className="text-muted-foreground text-lg">No appointments scheduled</p>
                       </div>
                     )}

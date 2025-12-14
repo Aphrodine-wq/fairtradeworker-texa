@@ -124,7 +124,7 @@ export function DocumentManager({ user }: { user: User }) {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-                  <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                  <div className="px-8 pt-6 pb-4 border-b-2 border-black dark:border-white flex-shrink-0">
                     <DialogHeader className="text-left">
                       <DialogTitle className="text-2xl">Create Folder</DialogTitle>
                       <DialogDescription>Organize your documents</DialogDescription>
@@ -144,7 +144,7 @@ export function DocumentManager({ user }: { user: User }) {
                       </div>
                     </div>
                   </div>
-                  <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                  <div className="px-8 py-4 border-t-2 border-black dark:border-white flex-shrink-0">
                     <div className="flex gap-3 justify-end">
                       <Button variant="outline" onClick={() => setShowNewFolderDialog(false)} className="h-11">
                         Cancel

@@ -122,7 +122,7 @@ export function TaxHelper({ user }: { user: User }) {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">
                   ${income.toLocaleString()}
@@ -130,7 +130,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Income</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   ${totalDeductions.toLocaleString()}
@@ -138,7 +138,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Deductions</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   ${taxableIncome.toLocaleString()}
@@ -146,7 +146,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-sm text-muted-foreground mt-1">Taxable Income</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">
                   ${estimatedTax.toLocaleString()}
@@ -158,7 +158,7 @@ export function TaxHelper({ user }: { user: User }) {
 
           {/* Main Content */}
           <Tabs defaultValue="deductions" className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-2 border-black dark:border-white">
               <TabsTrigger value="deductions">Deductions</TabsTrigger>
               <TabsTrigger value="calculator">Tax Calculator</TabsTrigger>
               <TabsTrigger value="forms">Forms & Filing</TabsTrigger>
@@ -175,7 +175,7 @@ export function TaxHelper({ user }: { user: User }) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {deductions.map(deduction => (
-                  <Card key={deduction.id} className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                  <Card key={deduction.id} className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <Badge variant="outline">{deduction.category}</Badge>
@@ -238,9 +238,9 @@ export function TaxHelper({ user }: { user: User }) {
                   </Card>
                 ))}
                 {deductions.length === 0 && (
-                  <Card className="col-span-2 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                  <Card className="col-span-2 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
                     <CardContent className="p-12 text-center">
-                      <FileText size={48} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                      <FileText size={48} className="mx-auto mb-4 text-black dark:text-white" />
                       <p className="text-muted-foreground">No deductions tracked yet</p>
                       <Button onClick={handleAddDeduction} className="mt-4">
                         Add Your First Deduction
@@ -252,7 +252,7 @@ export function TaxHelper({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="calculator" className="mt-6">
-              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <CardHeader>
                   <CardTitle>Tax Calculator</CardTitle>
                   <CardDescription>Estimate your tax liability for {year}</CardDescription>
@@ -281,7 +281,7 @@ export function TaxHelper({ user }: { user: User }) {
                       className="h-11 text-lg"
                     />
                   </div>
-                  <div className="p-6 bg-muted/50 rounded-lg space-y-3">
+                  <div className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none space-y-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
                     <div className="flex justify-between text-base">
                       <span>Total Income:</span>
                       <span className="font-semibold">${income.toLocaleString()}</span>
@@ -299,7 +299,7 @@ export function TaxHelper({ user }: { user: User }) {
                       <span>${estimatedTax.toLocaleString()}</span>
                     </div>
                   </div>
-                  <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg text-sm">
+                  <div className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none text-sm shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
                     <p className="font-semibold mb-1">💡 Tax Tip</p>
                     <p className="text-muted-foreground mb-2">
                       This is an estimate. Consult a tax professional for accurate calculations.
@@ -325,7 +325,7 @@ export function TaxHelper({ user }: { user: User }) {
               <h2 className="text-2xl font-semibold">Tax Forms & Filing</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {commonForms.map(form => (
-                  <Card key={form.id} className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                  <Card key={form.id} className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
