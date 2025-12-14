@@ -2,7 +2,33 @@ import { ComponentProps } from "react"
 
 import { cn } from "@/lib/utils"
 
-function Card({ className, ...props }: ComponentProps<"div">) {
+interface CardProps extends ComponentProps<"div"> {
+  /** Enable glass effect for Pro features */
+  glass?: boolean
+}
+
+function Card({ className, glass = false, ...props }: CardProps) {
+  if (glass) {
+    // Pro glass variant - semi-transparent with subtle blur
+    return (
+      <div
+        data-slot="card"
+        className={cn(
+          "bg-glass-light dark:bg-glass-dark backdrop-blur-xs",
+          "text-black dark:text-white flex flex-col gap-5 rounded-none py-5",
+          "border-2 border-black dark:border-white",
+          "shadow-glass",
+          "transition-all duration-200",
+          "hover:-translate-y-0.5",
+          "relative overflow-hidden group",
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+
+  // Default brutalist card (non-glass)
   return (
     <div
       data-slot="card"

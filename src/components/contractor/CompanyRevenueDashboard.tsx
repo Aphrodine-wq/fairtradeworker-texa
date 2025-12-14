@@ -22,6 +22,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
   const [jobs] = useKV<Job[]>("jobs", [])
   const [invoices] = useKV<Invoice[]>("invoices", [])
   const [territories] = useKV<Territory[]>("territories", [])
+  const isPro = user.isPro || false
   
   const [users, setUsers] = useState<User[]>([])
 
@@ -108,7 +109,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
   if (!user.isOperator && user.role !== 'operator') {
     return (
       <div className="container mx-auto px-4 py-12">
-        <Card>
+        <Card glass={isPro}>
           <CardContent className="p-16 text-center">
             <TrendUp className="mx-auto mb-4 text-black dark:text-white" size={64} weight="duotone" />
             <h2 className="text-2xl font-bold mb-2">Access Restricted</h2>
@@ -130,7 +131,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="col-span-1 md:col-span-3 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+        <Card className="col-span-1 md:col-span-3" glass={isPro}>
           <CardHeader>
             <CardDescription className="text-xs uppercase tracking-wider">Total Lifetime Revenue</CardDescription>
             <CardTitle className="text-5xl font-bold text-primary">{formatCurrency(totalRevenue)}</CardTitle>
@@ -140,7 +141,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
           </CardHeader>
         </Card>
 
-        <Card>
+        <Card glass={isPro}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-black dark:text-white">Monthly MRR</span>
@@ -151,7 +152,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
           </CardContent>
         </Card>
 
-        <Card>
+        <Card glass={isPro}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-black dark:text-white">Projected ARR</span>
@@ -162,7 +163,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
           </CardContent>
         </Card>
 
-        <Card>
+        <Card glass={isPro}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-black dark:text-white">Active Users</span>

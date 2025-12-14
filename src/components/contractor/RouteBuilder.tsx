@@ -17,6 +17,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
   const [jobs] = useKV<Job[]>("jobs", [])
   const [selectedDay, setSelectedDay] = useState<string>('today')
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null)
+  const isPro = user.isPro || false
 
   const availableJobs = useMemo(() => {
     return (jobs || []).filter(job => 

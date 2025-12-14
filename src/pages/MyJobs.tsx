@@ -35,6 +35,7 @@ interface MyJobsProps {
 export function MyJobs({ user, onNavigate }: MyJobsProps) {
   const [jobs, setJobs] = useKV<Job[]>("jobs", [])
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
+  // Homeowner pages don't use glass (free tier)
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)

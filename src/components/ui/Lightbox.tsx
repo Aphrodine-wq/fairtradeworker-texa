@@ -54,7 +54,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-50 bg-black/90 dark:bg-white/90 flex items-center justify-center"
+          className="fixed inset-0 z-50 glass-overlay backdrop-blur-xs flex items-center justify-center"
           onClick={handleBackdropClick}
         >
           <Button

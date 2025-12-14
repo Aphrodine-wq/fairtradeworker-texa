@@ -23,8 +23,9 @@ export function BidIntelligence({
     contractorWinRate
   )
   
+  // BidIntelligence is a Pro feature - always use glass
   return (
-    <Card className="p-4">
+    <Card className="p-4" glass={true}>
       <div className="flex items-center gap-2 mb-4">
         <ChartBar className="text-primary" size={20} weight="bold" />
         <h3 className="text-sm font-semibold">Bid Intelligence</h3>

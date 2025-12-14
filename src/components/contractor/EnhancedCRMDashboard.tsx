@@ -44,6 +44,9 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [viewMode, setViewMode] = useState<'list' | 'pipeline' | 'analytics'>('list')
+  
+  // Use glass for Pro users
+  const isPro = user.isPro || false
   const [newInteraction, setNewInteraction] = useState<Partial<CRMInteraction>>({
     type: 'note',
     title: '',
@@ -308,7 +311,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
 
         {/* Search and Filter - Always visible when customers exist */}
         {myCustomers.length > 0 && (
-          <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-4" glass={isPro}>
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
@@ -337,7 +340,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
         )}
 
         {myCustomers.length === 0 ? (
-          <Card className="max-w-2xl mx-auto dark:bg-black border-2 border-black dark:border-white">
+          <Card className="max-w-2xl mx-auto" glass={isPro}>
             <CardContent className="flex flex-col items-center justify-center py-16">
               <Users size={64} weight="duotone" className="text-muted-foreground mb-4 dark:text-white/50" />
               <h3 className="text-xl font-semibold mb-2 dark:text-white">No customers yet</h3>
@@ -585,7 +588,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                 return (
                                   <Card key={interaction.id} className="p-3 dark:bg-black dark:border-white/10">
                                     <div className="flex items-start gap-2">
-                                      <div className="p-1.5 rounded bg-white dark:bg-black border border-black/10 dark:border-white/10 flex-shrink-0">
+                                      <div className="p-1.5 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex-shrink-0">
                                         <Icon weight="duotone" size={16} className="text-black dark:text-white" />
                                       </div>
                                       <div className="flex-1 min-w-0">
@@ -622,7 +625,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                       </div>
 
                       {/* Footer */}
-                      <div className="px-8 py-4 border-t dark:border-white/10 flex-shrink-0">
+                      <div className="px-8 py-4 border-t-2 border-black dark:border-white flex-shrink-0">
                         <Button
                           variant="destructive"
                           size="sm"
@@ -655,7 +658,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                           <Dialog key={customer.id}>
                             <DialogTrigger asChild>
                               <Card
-                                className="cursor-pointer hover:shadow-lg transition-all dark:bg-black dark:border-white/10 dark:hover:border-white/20"
+                                className="cursor-pointer hover:shadow-lg transition-all" glass={isPro}
                                 onClick={() => {
                                   setSelectedCustomer(customer)
                                   setNotes(customer.notes || "")
@@ -711,7 +714,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                   {customer.notes && (
                                     <div>
                                       <Label className="dark:text-white text-sm mb-2 block">Notes</Label>
-                                      <div className="text-sm p-3 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10 dark:text-white">
+                                      <div className="text-sm p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white dark:text-white">
                                         {customer.notes}
                                       </div>
                                     </div>
@@ -736,7 +739,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
             {viewMode === 'analytics' && (
               <div className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
-                  <Card className="p-6 dark:bg-black dark:border-white/10">
+                  <Card className="p-6" glass={isPro}>
                     <h3 className="text-lg font-semibold mb-4 dark:text-white">Revenue Overview</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -760,7 +763,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                     </div>
                   </Card>
 
-                  <Card className="p-6 dark:bg-black dark:border-white/10">
+                  <Card className="p-6" glass={isPro}>
                     <h3 className="text-lg font-semibold mb-4 dark:text-white">Customer Metrics</h3>
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -783,7 +786,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                   </Card>
                 </div>
 
-                <Card className="p-6 dark:bg-black dark:border-white/10">
+                <Card className="p-6" glass={isPro}>
                   <h3 className="text-lg font-semibold mb-4 dark:text-white">Recent Activity</h3>
                   <div className="space-y-3">
                     {(interactions || []).slice(0, 10).map((interaction) => {

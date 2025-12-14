@@ -33,6 +33,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
   const [sequences, setSequences] = useKV<FollowUpSequence[]>("follow-up-sequences", [])
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingSequence, setEditingSequence] = useState<FollowUpSequence | null>(null)
+  const isPro = user.isPro || false
   
   const [sequenceName, setSequenceName] = useState("")
   const [steps, setSteps] = useState<Omit<FollowUpStep, 'id'>[]>([])

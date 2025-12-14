@@ -127,6 +127,7 @@ function SaveTemplateDialog({
 }
 
 export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
+  const isPro = user.isPro || false
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [jobs] = useKV<Job[]>("jobs", [])
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -349,8 +350,8 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
         </Button>
       </div>
 
-      {!user.isPro && (
-        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
+      {!isPro && (
+        <Card>
           <CardHeader>
             <CardTitle className="text-lg">Pro Features Available</CardTitle>
             <CardDescription>
@@ -381,7 +382,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
               if (tabValue === 'sent') return inv.status === 'sent' || inv.status === 'viewed'
               return inv.status === tabValue
             }).length === 0 ? (
-              <Card>
+              <Card glass={isPro}>
                 <CardContent className="flex flex-col items-center justify-center py-16">
                   <Receipt className="text-muted-foreground mb-4" size={64} weight="duotone" />
                   <h3 className="text-xl font-semibold mb-2">No {tabValue === 'all' ? '' : tabValue} invoices</h3>
@@ -403,7 +404,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                   if (tabValue === 'sent') return inv.status === 'sent' || inv.status === 'viewed'
                   return inv.status === tabValue
                 }).map(invoice => (
-                  <Card key={invoice.id}>
+                  <Card key={invoice.id} glass={isPro}>
                     <CardHeader>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -697,7 +698,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
               ))}
             </div>
 
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card glass={isPro}>
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <Calculator weight="duotone" size={20} className="text-primary" />

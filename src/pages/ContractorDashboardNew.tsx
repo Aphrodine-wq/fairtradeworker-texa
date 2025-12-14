@@ -32,6 +32,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
   const [jobs] = useKV<Job[]>("jobs", [])
   const [invoices] = useKV<Invoice[]>("invoices", [])
   const [currentTime, setCurrentTime] = useState(new Date())
+  const isPro = user.isPro || false
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000)
@@ -220,7 +221,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Active Jobs</p>
@@ -235,7 +236,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">This Month</p>
@@ -254,7 +255,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Win Rate</p>
@@ -269,7 +270,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Performance</p>
@@ -285,7 +286,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Fee Savings Highlight */}
           {feesAvoided > 0 && (
-            <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Fees Avoided on FairTradeWorker</p>
@@ -380,7 +381,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
             {/* Today's Focus */}
             <div className="space-y-6">
-              <Card className="p-6">
+              <Card className="p-6" glass={isPro}>
                 <h3 className="font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                   <Calendar className="h-5 w-5 text-primary" />
                   Today's Schedule
@@ -406,7 +407,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 )}
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6" glass={isPro}>
                 <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -436,7 +437,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </Card>
 
               {upcomingMilestones.length > 0 && (
-                <Card className="p-6">
+                <Card className="p-6" glass={isPro}>
                   <h3 className="font-semibold mb-4">Upcoming Milestones</h3>
                   <div className="space-y-3">
                     {upcomingMilestones.map(({ job, milestone }) => (
@@ -456,7 +457,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Quick Actions */}
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
@@ -469,7 +470,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('invoices')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
@@ -482,7 +483,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('revenue-dashboard')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
@@ -495,7 +496,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </div>
             </Card>
 
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('business-tools')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">

@@ -192,7 +192,7 @@ export function FeeSavingsDashboard({
       </div>
 
       <motion.div variants={item}>
-        <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+        <Card className="p-6" glass={user.isPro}>
           <div className="flex items-start gap-4">
             <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-lg flex-shrink-0">
               <Medal className="w-6 h-6 text-black dark:text-white" weight="fill" />

@@ -25,6 +25,7 @@ interface HomeownerDashboardProps {
 export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [invoices] = useKV<Invoice[]>("invoices", [])
+  // Homeowner dashboards don't use glass (free tier)
 
   const myJobs = useMemo(() => 
     (jobs || []).filter(j => j.homeownerId === user.id),
