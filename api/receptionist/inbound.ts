@@ -336,9 +336,10 @@ async function sendOnboardingSMS(
 ): Promise<boolean> {
   try {
     // TODO: Implement Twilio SMS
-    const accountSid = (process as any).env?.TWILIO_ACCOUNT_SID
-    const authToken = (process as any).env?.TWILIO_AUTH_TOKEN
-    const fromNumber = (process as any).env?.TWILIO_PHONE_NUMBER
+    const env = typeof process !== 'undefined' ? (process as any).env : {}
+    const accountSid = env.TWILIO_ACCOUNT_SID
+    const authToken = env.TWILIO_AUTH_TOKEN
+    const fromNumber = env.TWILIO_PHONE_NUMBER
 
     if (!accountSid || !authToken || !fromNumber) {
       console.warn('Twilio credentials not configured')
