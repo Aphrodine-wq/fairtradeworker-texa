@@ -373,7 +373,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             {inProgressJobs.length === 0 ? (
               <Card className="p-12 text-center">
                 <Clock size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
-                <h3 className="font-semibold text-lg mb-2">No jobs in progress</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black dark:text-white">No jobs in progress</h3>
                 <p className="text-muted-foreground">Accept a bid to get work started</p>
               </Card>
             ) : (
@@ -387,7 +387,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             {completedJobs.length === 0 ? (
               <Card className="p-12 text-center">
                 <CheckCircle size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
-                <h3 className="font-semibold text-lg mb-2">No completed jobs</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black dark:text-white">No completed jobs</h3>
                 <p className="text-muted-foreground">Completed jobs will appear here</p>
               </Card>
             ) : (

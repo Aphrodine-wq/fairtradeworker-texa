@@ -156,25 +156,38 @@
     color: inherit;
   }
   
-  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, ANIMATIONS, AND SPECIFIC ELEMENTS */
+  /* FORCE ALL BACKGROUNDS TO WHITE IN LIGHT MODE - EXCEPT FOR IMAGES, SVGS, ANIMATIONS, OVERLAYS, AND SPECIFIC ELEMENTS */
   body, main, section, article, aside, header, footer, nav, 
-  div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]),
   span:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
   p:not([class*="animate"]):not([style*="background"]),
   h1:not([class*="animate"]):not([style*="background"]), h2:not([class*="animate"]):not([style*="background"]), h3:not([class*="animate"]):not([style*="background"]), h4:not([class*="animate"]):not([style*="background"]), h5:not([class*="animate"]):not([style*="background"]), h6:not([class*="animate"]):not([style*="background"]),
   button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="animate"]):not([style*="background"]),
-  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+  [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]) {
     background-color: white !important;
   }
   
-  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - EXCEPT FOR ANIMATIONS */
+  /* Force bg-black without dark mode variant to be white in light mode */
+  /* This catches elements with bg-black that don't have dark:bg-* variant */
+  div[class*="bg-black"]:not([class*="dark:bg"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]):not([class*="/"]):not(img):not(svg),
+  section[class*="bg-black"]:not([class*="dark:bg"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]):not([class*="/"]):not(img):not(svg),
+  article[class*="bg-black"]:not([class*="dark:bg"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]):not([class*="/"]):not(img):not(svg) {
+    background-color: white !important;
+  }
+  
+  /* FORCE ALL BACKGROUNDS TO BLACK IN DARK MODE - EXCEPT FOR ANIMATIONS AND OVERLAYS */
   .dark body, .dark main, .dark section, .dark article, .dark aside, .dark header, .dark footer, .dark nav, 
-  .dark div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]),
+  .dark div:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]),
   .dark span:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
   .dark p:not([class*="animate"]):not([style*="background"]),
   .dark h1:not([class*="animate"]):not([style*="background"]), .dark h2:not([class*="animate"]):not([style*="background"]), .dark h3:not([class*="animate"]):not([style*="background"]), .dark h4:not([class*="animate"]):not([style*="background"]), .dark h5:not([class*="animate"]):not([style*="background"]), .dark h6:not([class*="animate"]):not([style*="background"]),
   .dark button:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+  .dark [class*="bg-"]:not([class*="bg-primary"]):not([class*="bg-secondary"]):not([class*="bg-accent"]):not([class*="bg-destructive"]):not([class*="bg-white"]):not([class*="bg-black"]):not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]) {
+    background-color: black !important;
+  }
+  
+  /* Force bg-white without dark mode variant to be black in dark mode */
+  .dark [class*="bg-white"]:not([class*="dark:bg"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]):not([data-slot*="sheet-overlay"]):not([class*="/"]):not(img):not(svg) {
     background-color: black !important;
   }
   
@@ -269,35 +282,37 @@
     backdrop-filter: none !important;
   }
   
-  /* Force all opacity values to be solid - replace /50, /30, /20, /10, /5 with solid colors */
-  [class*="/50"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
-  [class*="/30"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
-  [class*="/20"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
-  [class*="/10"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg),
-  [class*="/5"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg) {
+  /* Force all opacity values to be solid - EXCEPT for overlay backgrounds */
+  [class*="/50"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="/30"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="/20"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="/10"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="/5"]:not([class*="animate"]):not([style*="background"]):not(img):not(svg):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]) {
     opacity: 1 !important;
   }
   
-  /* Force all bg-* opacity classes to solid white in light mode */
-  [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]) {
+  /* Force all bg-* opacity classes to solid white in light mode - EXCEPT overlays */
+  [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]) {
     background-color: white !important;
+    opacity: 1 !important;
   }
   
-  /* Force all bg-* opacity classes to solid black in dark mode */
-  .dark [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]),
-  .dark [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]) {
+  /* Force all bg-* opacity classes to solid black in dark mode - EXCEPT overlays */
+  .dark [class*="bg-white"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-black"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-primary"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-secondary"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-accent"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-muted"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]),
+  .dark [class*="bg-card"][class*="/"]:not([class*="animate"]):not([style*="background"]):not([data-slot*="overlay"]):not([data-slot*="dialog-overlay"]) {
     background-color: black !important;
+    opacity: 1 !important;
   }
   
   /* Force all hover opacity to solid */

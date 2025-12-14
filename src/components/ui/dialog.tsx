@@ -36,7 +36,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black dark:bg-white",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 dark:bg-white/50",
         className
       )}
       {...props}
@@ -100,7 +100,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-3xl md:text-4xl lg:text-5xl leading-none font-bold", className)}
+      className={cn("text-3xl md:text-4xl lg:text-5xl leading-none font-bold text-black dark:text-white", className)}
       {...props}
     />
   )
@@ -113,7 +113,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-lg md:text-xl lg:text-2xl", className)}
+      className={cn("text-muted-foreground text-lg md:text-xl lg:text-2xl text-black dark:text-white", className)}
       {...props}
     />
   )

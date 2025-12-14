@@ -231,13 +231,13 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{tools.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Tools</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   {tools.filter(t => t.status === 'complete').length}
@@ -245,7 +245,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                 <div className="text-sm text-muted-foreground mt-1">Complete</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   {tools.filter(t => t.status === 'enhanced').length}
@@ -253,7 +253,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                 <div className="text-sm text-muted-foreground mt-1">Enhanced</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                   {tools.filter(t => t.status === 'new').length}
