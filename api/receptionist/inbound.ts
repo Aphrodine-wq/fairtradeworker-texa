@@ -72,7 +72,8 @@ export default async function handler(
     // 2. Get transcription (or transcribe recording)
     let transcript = callData.TranscriptionText
     if (!transcript && callData.RecordingUrl) {
-      transcript = await transcribeRecording(callData.RecordingUrl)
+      const transcribed = await transcribeRecording(callData.RecordingUrl)
+      transcript = transcribed || undefined
       if (!transcript) {
         res.status(500).json({
           success: false,
@@ -128,7 +129,7 @@ export default async function handler(
 async function matchContractorToNumber(phoneNumber: string): Promise<string | null> {
   // TODO: Query contractor database for matching Twilio number
   // For now, return mock - will be replaced with actual DB lookup
-  const contractors = JSON.parse(process.env.CONTRACTOR_PHONES || '{}')
+    const contractors = JSON.parse((process as any).env?.CONTRACTOR_PHONES || '{}')
   return contractors[phoneNumber] || null
 }
 
@@ -142,7 +143,7 @@ async function transcribeRecording(recordingUrl: string): Promise<string | null>
     const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${(process as any).env?.OPENAI_API_KEY || ''}`,
         'Content-Type': 'multipart/form-data'
       },
       body: JSON.stringify({
@@ -193,7 +194,7 @@ Return ONLY valid JSON, no markdown formatting.`
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${(process as any).env?.OPENAI_API_KEY || ''}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
