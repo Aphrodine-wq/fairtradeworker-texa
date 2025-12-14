@@ -164,7 +164,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
             topClusters.map((cluster) => (
               <Card 
                 key={cluster.id}
-                className={`transition-all cursor-pointer hover:shadow-md ${
+                className={`transition-all cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] border-2 border-black dark:border-white ${
                   selectedCluster === cluster.id ? 'ring-2 ring-primary' : ''
                 }`}
                 onClick={() => setSelectedCluster(cluster.id)}
@@ -209,7 +209,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
 
                       return (
                         <div key={job.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
-                          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex-shrink-0">
+                          <div className="flex items-center justify-center w-6 h-6 rounded-none bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white text-xs font-black uppercase flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                             {index + 1}
                           </div>
                           <div className="flex-1 min-w-0">

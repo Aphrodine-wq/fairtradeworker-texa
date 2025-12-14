@@ -244,7 +244,7 @@ export function ComplianceTracker({ user }: { user: User }) {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {expiredItems.map(item => (
-                    <div key={item.id} className="p-3 bg-white dark:bg-black rounded-lg border border-red-200 dark:border-red-800">
+                    <div key={item.id} className="p-3 bg-[#FF0000] rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div className="font-semibold text-black dark:text-white">{item.name}</div>
                       <div className="text-sm text-muted-foreground">
                         Expired: {new Date(item.expirationDate).toLocaleDateString()}
@@ -274,7 +274,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                       (new Date(item.expirationDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                     )
                     return (
-                      <div key={item.id} className="p-3 bg-white dark:bg-black rounded-lg border border-yellow-200 dark:border-yellow-800">
+                      <div key={item.id} className="p-3 bg-[#FFFF00] rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                         <div className="font-semibold text-black dark:text-white">{item.name}</div>
                         <div className="text-sm text-muted-foreground">
                           Expires in {daysUntilExp} day{daysUntilExp !== 1 ? 's' : ''}
@@ -289,25 +289,25 @@ export function ComplianceTracker({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{items.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Items</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">{activeItems.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Active</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{expiringSoon.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Expiring Soon</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">{expiredItems.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Expired</div>
@@ -380,7 +380,7 @@ export function ComplianceTracker({ user }: { user: User }) {
             {items.length === 0 && (
               <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
                 <CardContent className="p-12 text-center">
-                  <ShieldCheck size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <ShieldCheck size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg">No compliance items yet</p>
                   <p className="text-sm text-muted-foreground mt-1 mb-4">
                     Track licenses, insurance, permits, and certifications

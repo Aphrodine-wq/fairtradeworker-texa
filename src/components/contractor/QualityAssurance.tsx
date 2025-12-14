@@ -333,7 +333,7 @@ export function QualityAssurance({ user }: { user: User }) {
             {inspections.map(inspection => (
               <Card
                 key={inspection.id}
-                className="bg-white dark:bg-black border border-black/10 dark:border-white/10"
+                className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -373,9 +373,9 @@ export function QualityAssurance({ user }: { user: User }) {
             ))}
 
             {inspections.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="col-span-full bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
                 <CardContent className="p-12 text-center">
-                  <CheckCircle size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <CheckCircle size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg">No inspections yet</p>
                   <p className="text-sm text-muted-foreground mt-1 mb-4">
                     Track quality and compliance for your projects
