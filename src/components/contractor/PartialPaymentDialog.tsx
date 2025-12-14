@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -23,7 +23,7 @@ interface PartialPaymentDialogProps {
   onPaymentAdded: (invoiceId: string, payment: PartialPayment) => void
 }
 
-export function PartialPaymentDialog({
+export const PartialPaymentDialog = memo(function PartialPaymentDialog({
   invoice,
   open,
   onOpenChange,
@@ -34,7 +34,7 @@ export function PartialPaymentDialog({
   const amountPaid = invoice.amountPaid || 0
   const amountRemaining = invoice.total - amountPaid
 
-  const handleAddPayment = () => {
+  const handleAddPayment = useCallback(() => {
     const paymentAmount = parseFloat(amount)
 
     if (isNaN(paymentAmount) || paymentAmount <= 0) {
@@ -58,7 +58,7 @@ export function PartialPaymentDialog({
     toast.success(`Payment of $${paymentAmount.toFixed(2)} recorded!`)
     setAmount("")
     onOpenChange(false)
-  }
+  }, [amount, amountRemaining, invoice.id, onPaymentAdded, onOpenChange])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -111,7 +111,7 @@ export function PartialPaymentDialog({
                 {invoice.partialPayments.map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                    className="flex items-center justify-between p-3 bg-muted rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
                   >
                     <div className="flex items-center gap-2">
                       <CheckCircle weight="fill" className="text-[#00FF00]" />
@@ -162,4 +162,4 @@ export function PartialPaymentDialog({
       </DialogContent>
     </Dialog>
   )
-}
+})

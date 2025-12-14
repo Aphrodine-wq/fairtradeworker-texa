@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo, useMemo, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -22,7 +22,7 @@ interface InvoiceManagerProps {
   onNavigate: (page: string) => void
 }
 
-export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
+export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [jobs] = useKV<Job[]>("jobs", [])
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -41,11 +41,11 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [useCompanyLogo, setUseCompanyLogo] = useState(true)
   const [customNotes, setCustomNotes] = useState("")
 
-  const myInvoices = (invoices || []).filter(inv => inv.contractorId === user.id)
+  const myInvoices = useMemo(() => (invoices || []).filter(inv => inv.contractorId === user.id), [invoices, user.id])
   
-  const completedJobs = (jobs || []).filter(job =>
+  const completedJobs = useMemo(() => (jobs || []).filter(job =>
     job.bids.some(bid => bid.contractorId === user.id && bid.status === 'accepted')
-  )
+  ), [jobs, user.id])
 
   const handleApplyTemplate = (template: InvoiceTemplate) => {
     setLineItems(template.lineItems.map(item => ({ ...item })))
@@ -761,7 +761,7 @@ function SaveTemplateDialog({
             />
           </div>
 
-          <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
             <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
             {customNotes && ', custom notes'}
           </div>
@@ -777,6 +777,6 @@ function SaveTemplateDialog({
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+      </Dialog>
   )
-}
+})

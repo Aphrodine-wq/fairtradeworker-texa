@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, memo, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -13,7 +13,7 @@ interface RouteBuilderProps {
   user: User
 }
 
-export function RouteBuilder({ user }: RouteBuilderProps) {
+export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [selectedDay, setSelectedDay] = useState<string>('today')
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null)
@@ -208,7 +208,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
                       )
 
                       return (
-                        <div key={job.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
+                        <div key={job.id} className="flex items-start gap-3 p-3 rounded-none border-2 border-black dark:border-white bg-muted shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                           <div className="flex items-center justify-center w-6 h-6 rounded-none bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white text-xs font-black uppercase flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                             {index + 1}
                           </div>
@@ -346,7 +346,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
                 </div>
               ) : (
                 anchorJobs.map(job => (
-                  <div key={job.id} className="p-4 rounded-lg border bg-accent/5">
+                  <div key={job.id} className="p-4 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <div className="flex items-start gap-3">
                       <Star weight="fill" size={24} className="text-accent flex-shrink-0 mt-1" />
                       <div className="flex-1">
@@ -391,4 +391,4 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
       </Tabs>
     </div>
   )
-}
+})

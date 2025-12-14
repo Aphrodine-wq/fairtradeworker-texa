@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, memo, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -35,7 +35,7 @@ interface CRMDashboardProps {
   user: User
 }
 
-export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
+export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
   const [customers, setCustomers] = useKV<CRMCustomer[]>("crm-customers", [])
   const [interactions, setInteractions] = useKV<CRMInteraction[]>("crm-interactions", [])
   const [selectedCustomer, setSelectedCustomer] = useState<CRMCustomer | null>(null)
@@ -937,5 +937,5 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       )}
     </div>
   )
-}
+})
 
