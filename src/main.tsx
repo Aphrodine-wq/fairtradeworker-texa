@@ -28,6 +28,24 @@ function initializeThemeColor() {
 
 initializeThemeColor()
 
+// Global handler for chunk load errors
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    const errorMessage = event.message || ''
+    const isChunkLoadError = errorMessage.includes('Failed to fetch dynamically imported module') ||
+                            errorMessage.includes('Loading chunk') ||
+                            errorMessage.includes('Loading CSS chunk')
+    
+    if (isChunkLoadError && event.filename) {
+      console.warn('Chunk load error detected, reloading page to fetch fresh chunks:', event.filename)
+      // Small delay to ensure error is logged
+      setTimeout(() => {
+        window.location.reload()
+      }, 100)
+    }
+  }, true) // Use capture phase to catch errors early
+}
+
 registerSW()
 
 createRoot(document.getElementById('root')!).render(

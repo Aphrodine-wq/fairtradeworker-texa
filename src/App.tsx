@@ -15,11 +15,32 @@ import { Button } from "@/components/ui/button"
 
 const retryImport = <T,>(importFn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
   return importFn().catch((error) => {
-    if (retries === 0) throw error
+    // Check if it's a chunk loading error (stale chunk reference)
+    const isChunkLoadError = error.message?.includes('Failed to fetch dynamically imported module') ||
+                             error.message?.includes('Loading chunk') ||
+                             error.message?.includes('Loading CSS chunk') ||
+                             error.name === 'ChunkLoadError' ||
+                             (error as any).type === 'chunkLoadError'
+    
+    if (retries === 0) {
+      // If it's a chunk loading error and we've exhausted retries, reload the page
+      // This happens when a new deployment has different chunk hashes
+      if (isChunkLoadError && typeof window !== 'undefined') {
+        console.warn('Chunk load failed after retries. Reloading page to fetch fresh chunks...', error)
+        window.location.reload()
+        // Return a never-resolving promise to prevent rendering during reload
+        return new Promise(() => {})
+      }
+      throw error
+    }
+    
+    // For chunk load errors, use longer delay to allow CDN cache to clear
+    const retryDelay = isChunkLoadError ? delay * 1.5 : delay
+    
     return new Promise<T>((resolve) => {
       setTimeout(() => {
-        resolve(retryImport(importFn, retries - 1, delay))
-      }, delay)
+        resolve(retryImport(importFn, retries - 1, retryDelay))
+      }, retryDelay)
     })
   })
 }
@@ -102,6 +123,20 @@ class ErrorBoundary extends Component<
 
   componentDidCatch(error: Error, errorInfo: any) {
     console.error('ErrorBoundary caught error:', error, errorInfo)
+    
+    // Check if it's a chunk loading error
+    const isChunkLoadError = error.message?.includes('Failed to fetch dynamically imported module') ||
+                             error.message?.includes('Loading chunk') ||
+                             error.message?.includes('Loading CSS chunk') ||
+                             error.name === 'ChunkLoadError'
+    
+    // If it's a chunk load error, reload the page to get fresh chunks
+    if (isChunkLoadError && typeof window !== 'undefined') {
+      console.warn('Chunk load error in ErrorBoundary, reloading page...')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
+    }
   }
 
   render() {
