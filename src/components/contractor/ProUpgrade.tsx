@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { BrutalistGlassCard, GlassCardContent } from "@/components/ui/BrutalistGlassCard"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -111,17 +112,19 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               {features.map((feature, idx) => (
-                <div key={idx} className="flex gap-4 p-4 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all">
-                  <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-white dark:text-black">
-                    {feature.icon}
+                <BrutalistGlassCard key={idx} glass={true} className="p-4">
+                  <div className="flex gap-4">
+                    <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-white dark:text-black">
+                      {feature.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-lg mb-2 text-black dark:text-white">{feature.title}</h3>
+                      <p className="text-sm text-black dark:text-white leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg mb-2 text-black dark:text-white">{feature.title}</h3>
-                    <p className="text-sm text-black dark:text-white leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
+                </BrutalistGlassCard>
               ))}
             </div>
 
