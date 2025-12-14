@@ -44,47 +44,61 @@
 
 **Core value propositions that justify the Pro subscription.**
 
-### Flagship Pro Features (Core Value)
+---
 
 ### 1. AI Receptionist
 
 **24/7 Phone Answering System**
-- Never miss a call - AI answers instantly
-- Transcribes calls with Whisper AI
-- Extracts job details automatically
-- Creates private jobs in your CRM
-- Texts callers with onboarding links
-- Context-aware conversations
-- Calendar sync for auto-scheduling
-- Live upsell suggestions during calls
 
-**Value:** Most contractors spend $200-500/month on answering services or miss calls entirely. This pays for itself.
+**What It Does:**
+- Never miss a call - AI answers instantly with natural voice
+- Transcribes calls automatically using Whisper AI
+- Extracts job details, urgency, and requirements automatically
+- Creates private jobs in your CRM automatically
+- Texts callers with unique onboarding links
+- Context-aware conversations recognize returning customers
+- Calendar sync enables auto-scheduling during calls
+- Live upsell suggestions increase job value 20-50%
+
+**Business Value:**
+Most contractors spend $200-500/month on answering services or miss calls entirely. This pays for itself.
+
+**Cost to Platform:** $3-5/month per user  
+**Charge to Contractor:** $50/month  
+**Margin:** 90%+
 
 ---
 
 ### 2. AI Bid Optimizer & Auto-Bid Engine
+
 **Win More Jobs with Data-Driven Pricing**
-- Upload past job data → AI analyzes win/loss patterns
-- Suggests optimal bid prices based on market data
-- Auto-places bids based on customizable rules
-- Win probability predictions for each bid
-- "What-if" simulations to test different pricing
+
+**What It Does:**
+- Upload past job data and AI analyzes win/loss patterns
+- Suggests optimal bid prices based on market data and your history
+- Auto-places bids based on customizable rules you set
+- Provides win probability predictions for each bid
+- "What-if" simulations let you test different pricing strategies
 - Margin estimates and profitability analysis
 
-**Value:** Stops over/under-bidding (biggest profit killer). Increases win rate 30-50%.
+**Business Value:**
+Stops over/under-bidding (biggest profit killer). Increases win rate 30-50%. Saves hours of research time. Auto-bid runs 24/7 while you sleep.
 
 ---
 
 ### 3. Follow-Up Automator & Sequence Builder
-**Never Lose a Lead Again**
-- Drag-and-drop sequence builder
-- Auto-sends SMS/email/in-app messages
-- AI personalizes messages from call transcripts
-- Triggers on job status changes
-- Recovers 70% of "forgotten" leads
-- Analytics show recovered revenue
 
-**Value:** Turns forgotten leads into wins. Personalizes at scale. Frees 10-20 hours/week.
+**Never Lose a Lead Again**
+
+**What It Does:**
+- Drag-and-drop sequence builder for SMS/email/in-app messages
+- AI personalizes messages from call transcripts automatically
+- Triggers send on job status changes or time-based rules
+- Tracks which leads convert from automated follow-ups
+- Analytics show recovered revenue from forgotten leads
+
+**Business Value:**
+Turns "forgotten leads" into wins (most contractors lose 70% of leads here). Personalizes at scale. Frees 10-20 hours/week from manual follow-up work.
 
 ---
 
@@ -412,7 +426,9 @@ Every contractor knows the pain of watching platforms take a huge cut of their h
 
 ---
 
-## 📊 VALUATION
+---
+
+## VALUATION
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -489,7 +505,11 @@ Every contractor knows the pain of watching platforms take a huge cut of their h
 
 ---
 
-## 🎨 BRUTALIST GLASSMORPHISM DESIGN SYSTEM v4.0
+---
+
+## DESIGN SYSTEM
+
+**Brutalist Glassmorphism Design System v4.0**
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════════╗
