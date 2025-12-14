@@ -17,7 +17,8 @@ import {
   ShieldCheck,
   CheckCircle,
   Gear,
-  Lightning
+  Lightning,
+  Phone
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 
@@ -28,6 +29,18 @@ interface BusinessToolsProps {
 
 export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const tools = [
+    {
+      id: 'receptionist',
+      title: 'AI Receptionist',
+      description: '24/7 AI-powered phone answering service that never misses a call. Automatically answers, transcribes, understands intent, creates private jobs in your CRM, and texts callers with onboarding links. Turns inbound calls into actionable leads with zero manual work. Includes context-aware conversations, calendar sync, and proactive upselling.',
+      icon: Phone,
+      color: 'text-[#00FF00] dark:text-[#00FF00]',
+      bgColor: 'bg-[#00FF00]/10 dark:bg-[#00FF00]/10',
+      status: 'new',
+      category: 'sales',
+      isPro: true,
+      priority: 1
+    },
     {
       id: 'invoices',
       title: 'Invoice Generator',
@@ -193,6 +206,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const handleToolClick = (toolId: string) => {
     // Map tool IDs to actual routes
     const routeMap: Record<string, string> = {
+      'receptionist': 'receptionist',
       'invoices': 'invoices',
       'expenses': 'expenses',
       'tax-helper': 'tax-helper',
@@ -231,13 +245,13 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{tools.length}</div>
                 <div className="text-sm text-black dark:text-white mt-1">Total Tools</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   {tools.filter(t => t.status === 'complete').length}
@@ -245,7 +259,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                 <div className="text-sm text-muted-foreground mt-1">Complete</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   {tools.filter(t => t.status === 'enhanced').length}
@@ -253,7 +267,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                 <div className="text-sm text-muted-foreground mt-1">Enhanced</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                   {tools.filter(t => t.status === 'new').length}
@@ -287,7 +301,8 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                       return (
                         <Card
                           key={tool.id}
-                          className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50 bg-white dark:bg-black"
+                          className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50"
+                          glass={isPro && tool.isPro}
                           onClick={() => handleToolClick(tool.id)}
                         >
                           <CardHeader>
@@ -295,17 +310,24 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                               <div className={`p-3 rounded-lg ${tool.bgColor}`}>
                                 <Icon size={32} weight="duotone" className={tool.color} />
                               </div>
-                              <Badge 
-                                variant={
-                                  tool.status === 'complete' ? 'default' :
-                                  tool.status === 'enhanced' ? 'secondary' : 'outline'
-                                }
-                                className="text-xs"
-                              >
-                                {tool.status === 'complete' && '✓ Complete'}
-                                {tool.status === 'enhanced' && '↑ Enhanced'}
-                                {tool.status === 'new' && '✨ New'}
-                              </Badge>
+                              <div className="flex flex-col gap-1 items-end">
+                                {tool.isPro && (
+                                  <Badge variant="default" className="text-xs bg-[#00FF00] text-black">
+                                    PRO
+                                  </Badge>
+                                )}
+                                <Badge 
+                                  variant={
+                                    tool.status === 'complete' ? 'default' :
+                                    tool.status === 'enhanced' ? 'secondary' : 'outline'
+                                  }
+                                  className="text-xs"
+                                >
+                                  {tool.status === 'complete' && '✓ Complete'}
+                                  {tool.status === 'enhanced' && '↑ Enhanced'}
+                                  {tool.status === 'new' && '✨ New'}
+                                </Badge>
+                              </div>
                             </div>
                             <CardTitle className="text-xl mt-4 text-black dark:text-white">
                               {tool.title}
