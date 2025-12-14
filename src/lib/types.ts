@@ -35,6 +35,7 @@ export type JobTier = 'QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT'
 export interface Job {
   id: string
   homeownerId: string
+  contractorId?: string // For private jobs from AI Receptionist
   title: string
   description: string
   mediaUrl?: string
@@ -74,6 +75,18 @@ export interface Job {
   bundledTasks?: BundledTask[]
   questions?: Question[]
   viewingContractors?: string[] // Array of contractor IDs currently viewing this job
+  // AI Receptionist fields
+  isPrivate?: boolean // Private job (bypasses marketplace)
+  source?: 'ai_receptionist' | 'marketplace' | 'direct'
+  metadata?: {
+    callId?: string
+    callerPhone?: string
+    callerName?: string
+    transcript?: string
+    recordingUrl?: string
+    urgency?: 'low' | 'medium' | 'high' | 'emergency'
+    estimatedScope?: string
+  }
 }
 
 export interface Bid {
