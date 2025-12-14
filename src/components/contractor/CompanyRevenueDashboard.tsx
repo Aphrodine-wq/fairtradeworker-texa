@@ -211,7 +211,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
         </TabsContent>
 
         <TabsContent value="contractors" className="mt-6">
-          <Card>
+          <Card glass={isPro}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Crown weight="duotone" className="text-amber-600" />
@@ -247,7 +247,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
         </TabsContent>
 
         <TabsContent value="territories" className="mt-6">
-          <Card>
+          <Card glass={isPro}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MapTrifold weight="duotone" className="text-purple-600" />
@@ -292,7 +292,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
         </TabsContent>
       </Tabs>
 
-      <Card className="bg-muted/50">
+      <Card glass={isPro}>
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="p-3 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">

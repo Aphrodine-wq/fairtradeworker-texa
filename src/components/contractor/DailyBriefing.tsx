@@ -16,15 +16,21 @@ interface DailyBriefingProps {
   unreadMessages: number
 }
 
+interface DailyBriefingPropsWithUser extends DailyBriefingProps {
+  user?: { isPro?: boolean }
+}
+
 export function DailyBriefing({
   scheduledJobs,
   expectedEarnings,
   weatherAlert,
   unreadMessages,
-}: DailyBriefingProps) {
+  user,
+}: DailyBriefingPropsWithUser) {
   const currentHour = new Date().getHours()
   const greeting =
     currentHour < 12 ? 'Good morning' : currentHour < 18 ? 'Good afternoon' : 'Good evening'
+  const isPro = user?.isPro || false
   
   return (
     <div className="space-y-4">
@@ -58,7 +64,7 @@ export function DailyBriefing({
       )}
       
       {unreadMessages > 0 && (
-        <Card className="p-4 border-primary/30">
+        <Card className="p-4" glass={isPro}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <ChatCircle className="text-primary" size={20} weight="bold" />
@@ -78,7 +84,7 @@ export function DailyBriefing({
         </div>
         
         {scheduledJobs.length === 0 ? (
-          <Card className="p-6 text-center">
+          <Card className="p-6 text-center" glass={isPro}>
             <p className="text-muted-foreground mb-2">No jobs scheduled today</p>
             <p className="text-sm text-muted-foreground">
               Check the Browse Jobs tab to find work
@@ -93,7 +99,7 @@ export function DailyBriefing({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1 }}
               >
-                <Card className="p-4">
+                <Card className="p-4" glass={isPro}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex-1">
                       <p className="font-semibold">{job.title}</p>

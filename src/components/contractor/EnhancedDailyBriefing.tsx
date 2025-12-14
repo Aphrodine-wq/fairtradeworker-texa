@@ -37,6 +37,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
   const currentHour = new Date().getHours()
   const greeting =
     currentHour < 12 ? 'Good morning' : currentHour < 18 ? 'Good afternoon' : 'Good evening'
+  const isPro = user.isPro || false
 
   const todayStats = useMemo(() => {
     const today = new Date()
@@ -281,7 +282,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
         </div>
       </div>
 
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendUp weight="duotone" size={24} className="text-black dark:text-white" />
@@ -316,7 +317,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
         </CardContent>
       </Card>
 
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CalendarCheck weight="duotone" size={24} className="text-primary" />
