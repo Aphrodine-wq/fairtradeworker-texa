@@ -397,8 +397,13 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                             variant="ghost"
                             onClick={() => handleDelete(trade.id)}
                             className="text-destructive hover:text-destructive"
+                            disabled={deletingTradeId === trade.id}
                           >
-                            <Trash size={14} />
+                            {deletingTradeId === trade.id ? (
+                              <CircleNotch size={14} className="animate-spin" />
+                            ) : (
+                              <Trash size={14} />
+                            )}
                           </Button>
                         </div>
                       )}

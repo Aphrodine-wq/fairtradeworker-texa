@@ -276,8 +276,13 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
                             variant="ghost"
                             onClick={() => handleDelete(update.id)}
                             className="text-destructive hover:text-destructive"
+                            disabled={deletingUpdateId === update.id}
                           >
-                            <Trash size={16} />
+                            {deletingUpdateId === update.id ? (
+                              <CircleNotch size={16} className="animate-spin" />
+                            ) : (
+                              <Trash size={16} />
+                            )}
                           </Button>
                         )}
                       </div>
