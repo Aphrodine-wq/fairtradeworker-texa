@@ -406,7 +406,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
         <div className="max-w-7xl mx-auto">
           <div className="text-center py-16">
             <Wrench className="mx-auto mb-4 text-muted-foreground" size={64} weight="duotone" />
-            <h2 className="text-2xl font-bold mb-2">No Jobs Available</h2>
+            <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">No Jobs Available</h2>
             <p className="text-muted-foreground">Check back soon for new opportunities!</p>
           </div>
         </div>
@@ -488,7 +488,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               <div className="col-span-full">
                 <Card className="p-12 text-center">
                   <Wrench size={64} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
-                  <h2 className="text-2xl font-bold mb-2">No Jobs Available</h2>
+                  <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">No Jobs Available</h2>
                   <p className="text-muted-foreground">Check back soon for new opportunities!</p>
                 </Card>
               </div>
