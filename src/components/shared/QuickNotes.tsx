@@ -175,7 +175,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
                 New Note
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-5xl">
+            <DialogContent>
               <DialogHeader>
                 <DialogTitle>Add Quick Note</DialogTitle>
               </DialogHeader>

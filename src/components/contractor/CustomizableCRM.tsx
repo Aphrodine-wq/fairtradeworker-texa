@@ -369,7 +369,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
 
       {/* Field Dialog */}
       <Dialog open={showFieldDialog} onOpenChange={setShowFieldDialog}>
-        <DialogContent className="max-w-6xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{editingField ? 'Edit Field' : 'Create Custom Field'}</DialogTitle>
             <DialogDescription>
@@ -395,7 +395,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
 
       {/* View Dialog */}
       <Dialog open={showViewDialog} onOpenChange={setShowViewDialog}>
-        <DialogContent className="max-w-6xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{editingView ? 'Edit View' : 'Create Custom View'}</DialogTitle>
             <DialogDescription>
@@ -428,7 +428,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
 
       {/* Workflow Dialog */}
       <Dialog open={showWorkflowDialog} onOpenChange={setShowWorkflowDialog}>
-        <DialogContent className="max-w-6xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>{editingWorkflow ? 'Edit Workflow' : 'Create Automation Workflow'}</DialogTitle>
             <DialogDescription>

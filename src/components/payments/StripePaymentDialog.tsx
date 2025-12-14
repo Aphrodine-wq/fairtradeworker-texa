@@ -92,7 +92,7 @@ export function StripePaymentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-2xl">Complete Payment</DialogTitle>
           <DialogDescription>

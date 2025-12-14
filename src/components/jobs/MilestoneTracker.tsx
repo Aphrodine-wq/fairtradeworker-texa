@@ -218,7 +218,7 @@ export function MilestoneTracker({
       
       {/* Request Payment Dialog */}
       <Dialog open={!!selectedMilestone && !showDisputeDialog} onOpenChange={(open) => !open && setSelectedMilestone(null)}>
-        <DialogContent className="max-w-6xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Request Milestone Payment</DialogTitle>
             <DialogDescription>

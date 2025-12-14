@@ -507,7 +507,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] w-[95vw] overflow-hidden flex flex-col p-0 gap-0">
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0">
           {/* Header Section - Fixed */}
           <div className="px-8 pt-8 pb-6 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black">
             <DialogHeader className="text-left">

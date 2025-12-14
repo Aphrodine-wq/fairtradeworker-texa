@@ -60,7 +60,7 @@ export function MilestonePaymentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Pay Milestone</DialogTitle>
           <DialogDescription>

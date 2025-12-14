@@ -400,7 +400,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       </div>
 
       <Dialog open={!!selectedJob && !paymentDialogOpen} onOpenChange={(open) => !open && setSelectedJob(null)}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>Bids for {selectedJob?.title}</DialogTitle>
             <DialogDescription>
@@ -525,7 +525,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
 
       {/* Completion Card Dialog */}
       <Dialog open={completionCardOpen} onOpenChange={setCompletionCardOpen}>
-        <DialogContent className="max-w-6xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>🎉 Job Complete!</DialogTitle>
             <DialogDescription>

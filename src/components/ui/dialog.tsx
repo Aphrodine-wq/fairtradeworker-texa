@@ -55,7 +55,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "glass-bold data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-3xl p-8 shadow-[0_25px_80px_rgba(0,0,0,0.15)] duration-200 sm:max-w-5xl md:max-w-6xl lg:max-w-7xl max-h-[90vh] overflow-y-auto",
+          "glass-bold data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-[98vw] max-w-[98vw] translate-x-[-50%] translate-y-[-50%] gap-6 rounded-3xl p-12 md:p-16 lg:p-20 shadow-[0_25px_80px_rgba(0,0,0,0.15)] duration-200 max-h-[95vh] overflow-y-auto",
           className
         )}
         {...props}
@@ -74,7 +74,7 @@ function DialogHeader({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-3 text-center sm:text-left pb-4", className)}
+      className={cn("flex flex-col gap-4 text-center sm:text-left pb-6", className)}
       {...props}
     />
   )
@@ -100,7 +100,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-2xl md:text-3xl leading-none font-bold", className)}
+      className={cn("text-3xl md:text-4xl lg:text-5xl leading-none font-bold", className)}
       {...props}
     />
   )
@@ -113,7 +113,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-base md:text-lg", className)}
+      className={cn("text-muted-foreground text-lg md:text-xl lg:text-2xl", className)}
       {...props}
     />
   )
