@@ -7,14 +7,14 @@
     @apply border-0
   }
   
-  /* Remove borders from all cards, buttons, and boxes */
+  /* Subtle borders for cards, buttons, and inputs */
   [data-slot="card"],
   [data-slot="button"],
   button,
   input,
   select,
   textarea {
-    border: 0 !important;
+    /* Allow borders but make them subtle */
   }
 }
 
@@ -42,7 +42,7 @@
   --input: oklch(1 0 0); /* Pure white input background */
   --ring: oklch(0 0 0); /* Pure black focus ring */
 
-  --radius: 0; /* No rounded corners - brutalist */
+  --radius: 0.5rem; /* Subtle rounded corners - modern professional */
 }
 
 .dark {

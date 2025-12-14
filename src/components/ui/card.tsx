@@ -15,9 +15,9 @@ function Card({ className, glass = false, ...props }: CardProps) {
         data-slot="card"
         className={cn(
           "bg-glass-light dark:bg-glass-dark backdrop-blur-xs",
-          "text-black dark:text-white flex flex-col gap-5 rounded-none py-5",
-          "border-2 border-black dark:border-white",
-          "shadow-glass",
+          "text-black dark:text-white flex flex-col gap-5 rounded-lg py-5",
+          "border border-black/10 dark:border-white/10",
+          "shadow-sm hover:shadow-md",
           "transition-all duration-200",
           "hover:-translate-y-0.5",
           "relative overflow-hidden group",
@@ -28,12 +28,12 @@ function Card({ className, glass = false, ...props }: CardProps) {
     )
   }
 
-  // Default brutalist card (non-glass)
+  // Default card (non-glass) - modern professional style
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-none py-5 border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] relative overflow-hidden group",
+        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-lg py-5 border border-black/10 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-200 relative overflow-hidden group",
         className
       )}
       {...props}

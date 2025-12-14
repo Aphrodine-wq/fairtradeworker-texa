@@ -5,22 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center rounded-none border-2 px-3 py-1 text-xs font-black uppercase tracking-tight w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-black dark:focus-visible:border-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white aria-invalid:border-[#FF0000] transition-[color,box-shadow] duration-100 overflow-hidden",
+  "inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-semibold w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-1 [&>svg]:pointer-events-none focus-visible:border-black dark:focus-visible:border-white focus-visible:ring-2 focus-visible:ring-black/10 dark:focus-visible:ring-white/10 aria-invalid:border-[#FF0000] transition-[color,box-shadow] duration-100 overflow-hidden",
   {
     variants: {
       variant: {
         default:
-          "bg-white dark:bg-black text-black dark:text-white border-black dark:border-white",
+          "bg-black dark:bg-white text-white dark:text-black border-black/20 dark:border-white/20",
         secondary:
-          "bg-white dark:bg-black text-black dark:text-white border-black dark:border-white",
+          "bg-black/5 dark:bg-white/5 text-black dark:text-white border-black/10 dark:border-white/10",
         destructive:
-          "bg-[#FF0000] text-white border-black dark:border-white",
+          "bg-[#FF0000] text-white border-[#FF0000]/20",
         outline:
-          "text-black dark:text-white border-black dark:border-white [a&]:hover:bg-white dark:[a&]:hover:bg-black",
+          "text-black dark:text-white border-black/20 dark:border-white/20 [a&]:hover:bg-black/5 dark:[a&]:hover:bg-white/5",
         success:
-          "bg-[#00FF00] text-black border-black dark:border-white",
+          "bg-[#00FF00]/20 text-black border-[#00FF00]/30 dark:border-[#00FF00]/20",
         warning:
-          "bg-[#FFFF00] text-black border-black dark:border-white",
+          "bg-[#FFFF00]/20 text-black border-[#FFFF00]/30 dark:border-[#FFFF00]/20",
       },
     },
     defaultVariants: {
