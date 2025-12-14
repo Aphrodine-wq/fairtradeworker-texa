@@ -230,8 +230,6 @@ export function QuickNotes({ user }: QuickNotesProps) {
                   />
                 </div>
               </div>
-
-              </div>
               <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
                 <DialogFooter className="gap-3">
                   <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
