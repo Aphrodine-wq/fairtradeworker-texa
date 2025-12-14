@@ -1,4 +1,6 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
+import { safeInput } from "@/lib/utils"
+import { CircleNotch } from "@phosphor-icons/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -73,48 +75,114 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
     )
   }, [activeWarranties])
 
-  const handleAddWarranty = () => {
-    if (!customerName.trim() || !jobDescription.trim() || !warrantyType.trim()) {
-      toast.error("Please fill in all required fields")
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{
+    customerName?: string
+    jobDescription?: string
+    warrantyType?: string
+    durationMonths?: string
+    startDate?: string
+  }>({})
+
+  const handleAddWarranty = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
+    if (!customerName.trim()) {
+      setErrors({ customerName: "Customer name is required" })
+      toast.error("Please enter customer name")
+      return
+    } else if (customerName.trim().length < 2) {
+      setErrors({ customerName: "Name must be at least 2 characters" })
+      toast.error("Customer name must be at least 2 characters")
+      return
+    }
+
+    if (!jobDescription.trim()) {
+      setErrors({ jobDescription: "Job description is required" })
+      toast.error("Please enter job description")
+      return
+    } else if (jobDescription.trim().length < 3) {
+      setErrors({ jobDescription: "Description must be at least 3 characters" })
+      toast.error("Job description must be at least 3 characters")
+      return
+    }
+
+    if (!warrantyType.trim()) {
+      setErrors({ warrantyType: "Warranty type is required" })
+      toast.error("Please enter warranty type")
+      return
+    } else if (warrantyType.trim().length < 2) {
+      setErrors({ warrantyType: "Warranty type must be at least 2 characters" })
+      toast.error("Warranty type must be at least 2 characters")
       return
     }
 
     const months = parseInt(durationMonths)
     if (isNaN(months) || months <= 0) {
+      setErrors({ durationMonths: "Duration must be greater than 0" })
       toast.error("Please enter a valid warranty duration")
+      return
+    } else if (months > 120) {
+      setErrors({ durationMonths: "Duration cannot exceed 120 months" })
+      toast.error("Duration cannot exceed 120 months")
+      return
+    }
+
+    if (!startDate) {
+      setErrors({ startDate: "Start date is required" })
+      toast.error("Please select a start date")
       return
     }
 
     const start = new Date(startDate)
-    const end = new Date(start)
-    end.setMonth(end.getMonth() + months)
-
-    const newWarranty: Warranty = {
-      id: `warranty-${Date.now()}`,
-      customerId: `customer-${customerName.toLowerCase().replace(/\s+/g, '-')}`,
-      customerName: customerName.trim(),
-      jobDescription: jobDescription.trim(),
-      warrantyType: warrantyType.trim(),
-      durationMonths: months,
-      startDate: start.toISOString(),
-      endDate: end.toISOString(),
-      notes: notes.trim(),
-      createdAt: new Date().toISOString()
+    if (start > new Date()) {
+      setErrors({ startDate: "Start date cannot be in the future" })
+      toast.error("Start date cannot be in the future")
+      return
     }
 
-    setWarranties([...(warranties || []), newWarranty])
-    
-    // Reset form
-    setCustomerName("")
-    setJobDescription("")
-    setWarrantyType("")
-    setDurationMonths("12")
-    setStartDate(new Date().toISOString().split('T')[0])
-    setNotes("")
-    setIsAddDialogOpen(false)
+    setIsSubmitting(true)
 
-    toast.success("Warranty added successfully!")
-  }
+    try {
+      await new Promise(resolve => setTimeout(resolve, 400))
+
+      const end = new Date(start)
+      end.setMonth(end.getMonth() + months)
+
+      const newWarranty: Warranty = {
+        id: `warranty-${Date.now()}`,
+        customerId: `customer-${customerName.toLowerCase().replace(/\s+/g, '-')}`,
+        customerName: safeInput(customerName.trim()),
+        jobDescription: safeInput(jobDescription.trim()),
+        warrantyType: safeInput(warrantyType.trim()),
+        durationMonths: months,
+        startDate: start.toISOString(),
+        endDate: end.toISOString(),
+        notes: notes ? safeInput(notes.trim()) : undefined,
+        createdAt: new Date().toISOString()
+      }
+
+      setWarranties([...(warranties || []), newWarranty])
+      
+      // Reset form
+      setCustomerName("")
+      setJobDescription("")
+      setWarrantyType("")
+      setDurationMonths("12")
+      setStartDate(new Date().toISOString().split('T')[0])
+      setNotes("")
+      setErrors({})
+      setIsAddDialogOpen(false)
+
+      toast.success("Warranty added successfully!")
+    } catch (error) {
+      console.error("Error adding warranty:", error)
+      toast.error("Failed to add warranty. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [customerName, jobDescription, warrantyType, durationMonths, startDate, notes, warranties])
 
   const handleDeleteWarranty = (id: string) => {
     if (confirm("Are you sure you want to delete this warranty?")) {
@@ -237,8 +305,21 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                   <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
                     Cancel
                   </Button>
-                  <Button onClick={handleAddWarranty} className="h-11">
-                    Add Warranty
+                  <Button 
+                    onClick={handleAddWarranty} 
+                    className="h-11 border-2 border-black dark:border-white"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                        Adding...
+                      </>
+                    ) : (
+                      <>
+                        Add Warranty
+                      </>
+                    )}
                   </Button>
                 </DialogFooter>
               </div>

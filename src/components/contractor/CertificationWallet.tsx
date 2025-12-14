@@ -306,9 +306,11 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
     if (editingCert) {
       setCertifications((prev = []) => prev.map(c => 
         c.id === editingCert.id 
-          ? {
+            ? {
               ...c,
               ...formData,
+              name: safeInput(formData.name.trim()),
+              issuingOrganization: safeInput(formData.issuingOrganization.trim()),
               coverageAmount: formData.coverageAmount ? parseFloat(formData.coverageAmount) : undefined,
               status: getCertificationStatus({
                 ...c,
@@ -319,7 +321,7 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
             }
           : c
       ))
-      toast.success('Certification updated')
+      toast.success('Certification updated successfully!')
     } else {
       const newCert: Certification = {
         id: `cert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
