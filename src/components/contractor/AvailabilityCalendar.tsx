@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
+import { CircleNotch } from "@phosphor-icons/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,9 +27,32 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
   const availableSlots = mySlots.filter(slot => !slot.isBooked)
   const bookedSlots = mySlots.filter(slot => slot.isBooked)
 
-  const handleAddSlot = () => {
-    if (!newSlot.date || !newSlot.startTime || !newSlot.endTime) {
-      toast.error("Please fill in all fields")
+  const [isAdding, setIsAdding] = useState(false)
+  const [errors, setErrors] = useState<{
+    date?: string
+    startTime?: string
+    endTime?: string
+  }>({})
+
+  const handleAddSlot = useCallback(async () => {
+    setErrors({})
+
+    // Validation
+    if (!newSlot.date) {
+      setErrors({ date: "Date is required" })
+      toast.error("Please select a date")
+      return
+    }
+
+    if (!newSlot.startTime) {
+      setErrors({ startTime: "Start time is required" })
+      toast.error("Please select a start time")
+      return
+    }
+
+    if (!newSlot.endTime) {
+      setErrors({ endTime: "End time is required" })
+      toast.error("Please select an end time")
       return
     }
 
@@ -38,29 +62,42 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
     slotDate.setHours(0, 0, 0, 0)
     
     if (slotDate < today) {
+      setErrors({ date: "Cannot add slots in the past" })
       toast.error("Cannot add slots in the past")
       return
     }
 
     if (newSlot.startTime >= newSlot.endTime) {
+      setErrors({ endTime: "End time must be after start time" })
       toast.error("End time must be after start time")
       return
     }
 
-    const slot: TimeSlot = {
-      id: uuidv4(),
-      contractorId: user.id,
-      date: newSlot.date,
-      startTime: newSlot.startTime,
-      endTime: newSlot.endTime,
-      isBooked: false,
-      createdAt: new Date().toISOString()
-    }
+    setIsAdding(true)
 
-    setTimeSlots([...timeSlots, slot])
-    setNewSlot({ date: "", startTime: "", endTime: "" })
-    toast.success("Availability slot added!")
-  }
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      const slot: TimeSlot = {
+        id: uuidv4(),
+        contractorId: user.id,
+        date: newSlot.date,
+        startTime: newSlot.startTime,
+        endTime: newSlot.endTime,
+        isBooked: false,
+        createdAt: new Date().toISOString()
+      }
+
+      setTimeSlots([...timeSlots, slot])
+      setNewSlot({ date: "", startTime: "", endTime: "" })
+      toast.success("Availability slot added!")
+    } catch (error) {
+      console.error("Error adding slot:", error)
+      toast.error("Failed to add slot. Please try again.")
+    } finally {
+      setIsAdding(false)
+    }
+  }, [newSlot, timeSlots, user.id, setTimeSlots])
 
   const handleRemoveSlot = (slotId: string) => {
     const slot = timeSlots.find(s => s.id === slotId)

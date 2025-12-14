@@ -3,7 +3,9 @@
  * Free Feature - Save common bid structures
  */
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
+import { CircleNotch } from "@phosphor-icons/react"
+import { safeInput } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -47,34 +49,78 @@ export function QuickBidTemplates({ user, onUseTemplate }: QuickBidTemplatesProp
     { title: "Terms", content: "" }
   ])
 
-  const createTemplate = () => {
+  const [isCreating, setIsCreating] = useState(false)
+  const [errors, setErrors] = useState<{
+    templateName?: string
+    sections?: string
+  }>({})
+
+  const createTemplate = useCallback(async () => {
+    setErrors({})
+
+    // Validation
     if (!templateName.trim()) {
+      setErrors({ templateName: "Template name is required" })
       toast.error("Enter a template name")
+      return
+    } else if (templateName.trim().length < 3) {
+      setErrors({ templateName: "Template name must be at least 3 characters" })
+      toast.error("Template name must be at least 3 characters")
+      return
+    } else if (templateName.trim().length > 100) {
+      setErrors({ templateName: "Template name must be less than 100 characters" })
+      toast.error("Template name must be less than 100 characters")
       return
     }
 
-    const newTemplate: BidTemplate = {
-      id: `template-${Date.now()}`,
-      name: templateName,
-      sections: sections.filter(s => s.title.trim() || s.content.trim()),
-      defaultPrice: defaultPrice || undefined,
-      contractorId: user.id,
-      createdAt: new Date().toISOString()
+    const validSections = sections.filter(s => s.title.trim() || s.content.trim())
+    if (validSections.length === 0) {
+      setErrors({ sections: "At least one section with content is required" })
+      toast.error("Add at least one section with content")
+      return
     }
 
-    setTemplates([...templates, newTemplate])
-    toast.success(`Template "${templateName}" created!`)
-    setShowForm(false)
-    setTemplateName("")
-    setDefaultPrice(0)
-    setSections([
-      { title: "Introduction", content: "" },
-      { title: "Scope of Work", content: "" },
-      { title: "Materials", content: "" },
-      { title: "Timeline", content: "" },
-      { title: "Terms", content: "" }
-    ])
-  }
+    if (defaultPrice < 0) {
+      toast.error("Default price cannot be negative")
+      return
+    }
+
+    setIsCreating(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+
+      const newTemplate: BidTemplate = {
+        id: `template-${Date.now()}`,
+        name: safeInput(templateName.trim()),
+        sections: validSections.map(s => ({
+          title: safeInput(s.title.trim()),
+          content: safeInput(s.content.trim())
+        })),
+        defaultPrice: defaultPrice || undefined,
+        contractorId: user.id,
+        createdAt: new Date().toISOString()
+      }
+
+      setTemplates([...templates, newTemplate])
+      toast.success(`Template "${templateName}" created!`)
+      setShowForm(false)
+      setTemplateName("")
+      setDefaultPrice(0)
+      setSections([
+        { title: "Introduction", content: "" },
+        { title: "Scope of Work", content: "" },
+        { title: "Materials", content: "" },
+        { title: "Timeline", content: "" },
+        { title: "Terms", content: "" }
+      ])
+    } catch (error) {
+      console.error("Error creating template:", error)
+      toast.error("Failed to create template. Please try again.")
+    } finally {
+      setIsCreating(false)
+    }
+  }, [templateName, sections, defaultPrice, templates, user.id, setTemplates])
 
   const deleteTemplate = (templateId: string) => {
     setTemplates(templates.filter(t => t.id !== templateId))
@@ -118,10 +164,28 @@ export function QuickBidTemplates({ user, onUseTemplate }: QuickBidTemplatesProp
               <Input
                 id="template-name"
                 value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
+                onChange={(e) => {
+                  setTemplateName(safeInput(e.target.value))
+                  if (errors.templateName) setErrors(prev => ({ ...prev, templateName: undefined }))
+                }}
+                onBlur={() => {
+                  if (templateName.trim() && templateName.trim().length < 3) {
+                    setErrors(prev => ({ ...prev, templateName: "Template name must be at least 3 characters" }))
+                  }
+                }}
                 placeholder="e.g., Kitchen Remodel Standard"
-                className="mt-2"
+                className={`mt-2 ${errors.templateName ? "border-[#FF0000]" : ""}`}
+                disabled={isCreating}
+                maxLength={100}
+                required
+                aria-invalid={!!errors.templateName}
+                aria-describedby={errors.templateName ? "template-name-error" : undefined}
               />
+              {errors.templateName && (
+                <p id="template-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                  {errors.templateName}
+                </p>
+              )}
             </div>
 
             <div>

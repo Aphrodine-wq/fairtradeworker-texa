@@ -281,8 +281,10 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
                 id="companyAddress"
                 placeholder="123 Main Street&#10;Austin, TX 78701"
                 value={companyAddress}
-                onChange={(e) => setCompanyAddress(e.target.value)}
+                onChange={(e) => setCompanyAddress(safeInput(e.target.value))}
                 rows={3}
+                disabled={isSaving}
+                maxLength={200}
               />
             </div>
 
@@ -294,8 +296,25 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
                   type="tel"
                   placeholder="(512) 555-0123"
                   value={companyPhone}
-                  onChange={(e) => setCompanyPhone(e.target.value)}
+                  onChange={(e) => {
+                    setCompanyPhone(safeInput(e.target.value))
+                    if (errors.companyPhone) setErrors(prev => ({ ...prev, companyPhone: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (companyPhone.trim() && !validatePhone(companyPhone.trim())) {
+                      setErrors(prev => ({ ...prev, companyPhone: "Please enter a valid phone number" }))
+                    }
+                  }}
+                  className={errors.companyPhone ? "border-[#FF0000]" : ""}
+                  disabled={isSaving}
+                  aria-invalid={!!errors.companyPhone}
+                  aria-describedby={errors.companyPhone ? "company-phone-error" : undefined}
                 />
+                {errors.companyPhone && (
+                  <p id="company-phone-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.companyPhone}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -305,8 +324,25 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
                   type="email"
                   placeholder="contact@company.com"
                   value={companyEmail}
-                  onChange={(e) => setCompanyEmail(e.target.value)}
+                  onChange={(e) => {
+                    setCompanyEmail(safeInput(e.target.value))
+                    if (errors.companyEmail) setErrors(prev => ({ ...prev, companyEmail: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (companyEmail.trim() && !validateEmail(companyEmail.trim())) {
+                      setErrors(prev => ({ ...prev, companyEmail: "Please enter a valid email address" }))
+                    }
+                  }}
+                  className={errors.companyEmail ? "border-[#FF0000]" : ""}
+                  disabled={isSaving}
+                  aria-invalid={!!errors.companyEmail}
+                  aria-describedby={errors.companyEmail ? "company-email-error" : undefined}
                 />
+                {errors.companyEmail && (
+                  <p id="company-email-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.companyEmail}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -323,8 +359,19 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
             }}>
               Reset
             </Button>
-            <Button onClick={handleSave}>
-              Save Company Profile
+            <Button 
+              onClick={handleSave}
+              disabled={isSaving}
+              className="border-2 border-black dark:border-white"
+            >
+              {isSaving ? (
+                <>
+                  <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                  Saving...
+                </>
+              ) : (
+                "Save Company Profile"
+              )}
             </Button>
           </div>
         </CardContent>
