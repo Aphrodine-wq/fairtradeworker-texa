@@ -80,11 +80,11 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3 flex-1">
             {isSubscribed ? (
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <Bell className="w-5 h-5 text-primary" />
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+              <div className="w-10 h-10 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <BellOff className="w-5 h-5 text-muted-foreground" />
               </div>
             )}

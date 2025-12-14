@@ -132,8 +132,8 @@ export function NotificationCenter({ user }: { user: User }) {
                 key={notification.id}
                 className={`bg-white dark:bg-black border-2 ${
                   !notification.read 
-                    ? 'border-primary/50 shadow-md' 
-                    : 'border-black/10 dark:border-white/10'
+                    ? 'border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]' 
+                    : 'border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]'
                 }`}
               >
                 <CardContent className="p-6">
@@ -155,7 +155,7 @@ export function NotificationCenter({ user }: { user: User }) {
                           </Badge>
                         </div>
                         {!notification.read && (
-                          <div className="h-2 w-2 rounded-full bg-primary flex-shrink-0 mt-2" />
+                          <div className="h-2 w-2 rounded-none bg-black dark:bg-white border border-black dark:border-white flex-shrink-0 mt-2" />
                         )}
                       </div>
                       <p className="text-muted-foreground mb-3">
@@ -193,9 +193,9 @@ export function NotificationCenter({ user }: { user: User }) {
             ))}
 
             {filteredNotifications.length === 0 && (
-              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
                 <CardContent className="p-12 text-center">
-                  <Bell size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <Bell size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg">No notifications</p>
                   <p className="text-sm text-muted-foreground mt-1">
                     You're all caught up!

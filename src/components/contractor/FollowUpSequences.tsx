@@ -132,7 +132,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
       </div>
 
       {!user.isPro && (
-        <Card className="border-primary/50 bg-primary/5">
+        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
           <CardHeader>
             <CardTitle className="text-lg">Pro Feature</CardTitle>
             <CardDescription>
@@ -210,7 +210,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
                   {sequence.steps.map((step, i) => (
                     <div
                       key={step.id}
-                      className="flex items-start gap-3 p-3 bg-muted rounded-lg text-sm"
+                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none text-sm font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
                     >
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                         {i + 1}
@@ -271,7 +271,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             <div className="lg:col-span-2 overflow-hidden">
               {steps.length === 0 ? (
                 <div className="text-center py-16 text-muted-foreground">
-                  <Calendar size={48} weight="duotone" className="mx-auto mb-4 opacity-50" />
+                  <Calendar size={48} weight="duotone" className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-lg">Click "Add Step" to create your first follow-up step</p>
                 </div>
               ) : (

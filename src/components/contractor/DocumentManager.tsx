@@ -216,11 +216,11 @@ export function DocumentManager({ user }: { user: User }) {
             {subFolders.map(folder => (
               <Card
                 key={folder.id}
-                className="hover:shadow-lg transition-all cursor-pointer bg-white dark:bg-black border border-black/10 dark:border-white/10"
+                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all cursor-pointer bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
                 onClick={() => setCurrentFolderId(folder.id)}
               >
                 <CardContent className="p-6 flex flex-col items-center text-center">
-                  <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950 mb-3">
+                  <div className="p-4 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white mb-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <Folder size={32} weight="duotone" className="text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="font-semibold text-black dark:text-white truncate w-full">
@@ -237,11 +237,11 @@ export function DocumentManager({ user }: { user: User }) {
             {filteredDocuments.map(doc => (
               <Card
                 key={doc.id}
-                className="hover:shadow-lg transition-all bg-white dark:bg-black border border-black/10 dark:border-white/10"
+                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded bg-muted/50 flex-shrink-0">
+                    <div className="p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <File size={24} weight="duotone" className="text-muted-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -283,9 +283,9 @@ export function DocumentManager({ user }: { user: User }) {
             ))}
 
             {subFolders.length === 0 && filteredDocuments.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="col-span-full bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
                 <CardContent className="p-12 text-center">
-                  <Folder size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <Folder size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg mb-2">No documents yet</p>
                   <p className="text-sm text-muted-foreground mb-4">
                     Upload files or create folders to get started
