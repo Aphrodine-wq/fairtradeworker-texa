@@ -27,7 +27,8 @@ import {
   Trash,
   Users,
   ChartLine,
-  Receipt
+  Receipt,
+  CircleNotch
 } from '@phosphor-icons/react'
 import type { Job, Milestone, User, TradeContractor, ProjectUpdate } from '@/lib/types'
 import { getMilestoneProgress } from '@/lib/milestones'
@@ -174,13 +175,28 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
     })
   }
   
-  const handleRequestPayment = () => {
-    if (!selectedMilestone) return
+  const [isRequestingPayment, setIsRequestingPayment] = useState(false)
+
+  const handleRequestPayment = useCallback(async () => {
+    if (!selectedMilestone || isRequestingPayment) return
     
     if (photos.length < 3) {
       toast.error('Please upload at least 3 photos')
       return
     }
+    
+    if (!notes.trim()) {
+      toast.error('Please add completion notes')
+      return
+    } else if (notes.trim().length < 10) {
+      toast.error('Completion notes must be at least 10 characters')
+      return
+    }
+
+    setIsRequestingPayment(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
     
     const updatedMilestones = milestones.map(m => 
       m.id === selectedMilestone.id 
@@ -194,12 +210,18 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
         : m
     )
     
-    updateJobMilestones(updatedMilestones)
-    setSelectedMilestone(null)
-    setPhotos([])
-    setNotes('')
-    toast.success('Payment request submitted')
-  }
+      updateJobMilestones(updatedMilestones)
+      setSelectedMilestone(null)
+      setPhotos([])
+      setNotes('')
+      toast.success('Payment request submitted successfully!')
+    } catch (error) {
+      console.error("Error requesting payment:", error)
+      toast.error('Failed to submit payment request. Please try again.')
+    } finally {
+      setIsRequestingPayment(false)
+    }
+  }, [selectedMilestone, photos, notes, milestones, isRequestingPayment, updateJobMilestones])
   
   const handleApprove = (milestone: Milestone) => {
     const updatedMilestones = milestones.map(m => 
@@ -273,29 +295,82 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
     toast.success('Milestone updated')
   }
   
-  const handleAddMilestone = () => {
-    if (!newMilestone.name || !newMilestone.amount) {
-      toast.error('Please fill in all required fields')
+  const [isAddingMilestone, setIsAddingMilestone] = useState(false)
+  const [milestoneErrors, setMilestoneErrors] = useState<{
+    name?: string
+    amount?: string
+    percentage?: string
+  }>({})
+
+  const handleAddMilestone = useCallback(async () => {
+    setMilestoneErrors({})
+    
+    // Validation
+    if (!newMilestone.name.trim()) {
+      setMilestoneErrors({ name: "Milestone name is required" })
+      toast.error('Please enter a milestone name')
+      return
+    } else if (newMilestone.name.trim().length < 3) {
+      setMilestoneErrors({ name: "Name must be at least 3 characters" })
+      toast.error('Milestone name must be at least 3 characters')
       return
     }
-    
-    const milestone: Milestone = {
-      id: `milestone-${job.id}-${Date.now()}`,
-      jobId: job.id,
-      name: newMilestone.name,
-      description: newMilestone.description,
-      amount: newMilestone.amount,
-      percentage: newMilestone.percentage,
-      sequence: milestones.length + 1,
-      status: 'pending',
-      verificationRequired: 'photos'
+
+    if (!newMilestone.amount || newMilestone.amount <= 0) {
+      setMilestoneErrors({ amount: "Amount must be greater than 0" })
+      toast.error('Please enter a valid amount')
+      return
+    } else if (newMilestone.amount > 10000000) {
+      setMilestoneErrors({ amount: "Amount is too large (max $10,000,000)" })
+      toast.error('Amount is too large')
+      return
     }
-    
-    updateJobMilestones([...milestones, milestone])
-    setShowAddDialog(false)
-    setNewMilestone({ name: '', description: '', amount: 0, percentage: 0 })
-    toast.success('Milestone added')
-  }
+
+    if (newMilestone.percentage < 0 || newMilestone.percentage > 100) {
+      setMilestoneErrors({ percentage: "Percentage must be between 0 and 100" })
+      toast.error('Percentage must be between 0 and 100')
+      return
+    }
+
+    // Check total milestone amounts don't exceed job total
+    const totalMilestoneAmounts = milestones.reduce((sum, m) => sum + m.amount, 0) + newMilestone.amount
+    const jobTotal = job.bids.find(b => b.status === 'accepted')?.amount || 0
+    if (jobTotal > 0 && totalMilestoneAmounts > jobTotal * 1.1) {
+      const confirmed = window.confirm(
+        `Total milestone amounts ($${totalMilestoneAmounts.toLocaleString()}) exceed the job total ($${jobTotal.toLocaleString()}) by $${(totalMilestoneAmounts - jobTotal).toLocaleString()}. Continue?`
+      )
+      if (!confirmed) return
+    }
+
+    setIsAddingMilestone(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 400))
+      
+      const milestone: Milestone = {
+        id: `milestone-${job.id}-${Date.now()}`,
+        jobId: job.id,
+        name: safeInput(newMilestone.name.trim()),
+        description: newMilestone.description ? safeInput(newMilestone.description.trim()) : undefined,
+        amount: newMilestone.amount,
+        percentage: newMilestone.percentage,
+        sequence: milestones.length + 1,
+        status: 'pending',
+        verificationRequired: 'photos'
+      }
+      
+      updateJobMilestones([...milestones, milestone])
+      setShowAddDialog(false)
+      setNewMilestone({ name: '', description: '', amount: 0, percentage: 0 })
+      setMilestoneErrors({})
+      toast.success(`Milestone "${milestone.name}" added!`)
+    } catch (error) {
+      console.error("Error adding milestone:", error)
+      toast.error('Failed to add milestone. Please try again.')
+    } finally {
+      setIsAddingMilestone(false)
+    }
+  }, [newMilestone, milestones, job.id, job.bids])
   
   const handleDeleteMilestone = (milestoneId: string) => {
     const updatedMilestones = milestones.filter(m => m.id !== milestoneId)
@@ -602,10 +677,21 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           </div>
           <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
             <Button 
-              onClick={handleRequestPayment} 
-              className="w-full h-11"
-              disabled={photos.length < 3}
+              onClick={handleRequestPayment}
+              className="w-full h-11 border-2 border-black dark:border-white"
+              disabled={photos.length < 3 || isRequestingPayment || !notes.trim()}
             >
+              {isRequestingPayment ? (
+                <>
+                  <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <CurrencyDollar className="mr-2" size={18} />
+                  Request Payment
+                </>
+              )}
               <Upload className="mr-2" size={18} />
               Submit for Approval
             </Button>
@@ -754,22 +840,63 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
             <div className="space-y-4">
               <div>
                 <Label className="text-base">Milestone Name *</Label>
-                <Input 
+                <Input
                   value={newMilestone.name}
-                  onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
+                  onChange={(e) => {
+                    setNewMilestone({ ...newMilestone, name: safeInput(e.target.value) })
+                    if (milestoneErrors.name) setMilestoneErrors(prev => ({ ...prev, name: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (newMilestone.name && newMilestone.name.trim().length < 3) {
+                      setMilestoneErrors(prev => ({ ...prev, name: "Name must be at least 3 characters" }))
+                    }
+                  }}
                   placeholder="e.g., Contract Signing"
-                  className="h-11"
+                  className={`h-11 ${milestoneErrors.name ? "border-[#FF0000]" : ""}`}
+                  disabled={isAddingMilestone}
+                  maxLength={100}
+                  required
+                  aria-invalid={!!milestoneErrors.name}
+                  aria-describedby={milestoneErrors.name ? "milestone-name-error" : undefined}
                 />
+                {milestoneErrors.name && (
+                  <p id="milestone-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {milestoneErrors.name}
+                  </p>
+                )}
               </div>
               
               <div>
                 <Label className="text-base">Amount ($) *</Label>
-                <Input 
+                <Input
                   type="number"
                   value={newMilestone.amount || ''}
-                  onChange={(e) => setNewMilestone({ ...newMilestone, amount: Number(e.target.value) })}
-                  className="h-11"
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0
+                    setNewMilestone({ ...newMilestone, amount: value })
+                    if (milestoneErrors.amount) setMilestoneErrors(prev => ({ ...prev, amount: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (newMilestone.amount <= 0) {
+                      setMilestoneErrors(prev => ({ ...prev, amount: "Amount must be greater than 0" }))
+                    } else if (newMilestone.amount > 1000000) {
+                      setMilestoneErrors(prev => ({ ...prev, amount: "Amount is too large (max $1,000,000)" }))
+                    }
+                  }}
+                  className={`h-11 ${milestoneErrors.amount ? "border-[#FF0000]" : ""}`}
+                  disabled={isAddingMilestone}
+                  min="0.01"
+                  max="1000000"
+                  step="0.01"
+                  required
+                  aria-invalid={!!milestoneErrors.amount}
+                  aria-describedby={milestoneErrors.amount ? "milestone-amount-error" : undefined}
                 />
+                {milestoneErrors.amount && (
+                  <p id="milestone-amount-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {milestoneErrors.amount}
+                  </p>
+                )}
               </div>
             </div>
             
@@ -786,12 +913,34 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               
               <div>
                 <Label className="text-base">Percentage (%)</Label>
-                <Input 
+                <Input
                   type="number"
                   value={newMilestone.percentage || ''}
-                  onChange={(e) => setNewMilestone({ ...newMilestone, percentage: Number(e.target.value) })}
-                  className="h-11"
+                  onChange={(e) => {
+                    const value = parseFloat(e.target.value) || 0
+                    setNewMilestone({ ...newMilestone, percentage: value })
+                    if (milestoneErrors.percentage) setMilestoneErrors(prev => ({ ...prev, percentage: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (newMilestone.percentage !== undefined && newMilestone.percentage !== 0) {
+                      if (newMilestone.percentage < 0 || newMilestone.percentage > 100) {
+                        setMilestoneErrors(prev => ({ ...prev, percentage: "Percentage must be between 0 and 100" }))
+                      }
+                    }
+                  }}
+                  className={`h-11 ${milestoneErrors.percentage ? "border-[#FF0000]" : ""}`}
+                  disabled={isAddingMilestone}
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  aria-invalid={!!milestoneErrors.percentage}
+                  aria-describedby={milestoneErrors.percentage ? "milestone-percentage-error" : undefined}
                 />
+                {milestoneErrors.percentage && (
+                  <p id="milestone-percentage-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {milestoneErrors.percentage}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -808,12 +957,22 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               >
                 Cancel
               </Button>
-              <Button 
+              <Button
                 onClick={handleAddMilestone}
-                className="flex-1 h-11"
+                className="flex-1 h-11 border-2 border-black dark:border-white"
+                disabled={isAddingMilestone}
               >
-                <Plus className="mr-2" size={16} />
-                Add Milestone
+                {isAddingMilestone ? (
+                  <>
+                    <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
+                    Adding...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2" size={16} />
+                    Add Milestone
+                  </>
+                )}
               </Button>
             </div>
           </div>

@@ -245,11 +245,59 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
     }
   }
 
-  const handleSubmit = () => {
-    if (!formData.name || !formData.issuingOrganization || !formData.issueDate) {
-      toast.error('Please fill in all required fields')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{
+    name?: string
+    issuingOrganization?: string
+    issueDate?: string
+    expirationDate?: string
+  }>({})
+
+  const handleSubmit = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
+    if (!formData.name?.trim()) {
+      setErrors({ name: "Certification name is required" })
+      toast.error('Please enter a certification name')
+      return
+    } else if (formData.name.trim().length < 2) {
+      setErrors({ name: "Name must be at least 2 characters" })
+      toast.error('Certification name must be at least 2 characters')
       return
     }
+
+    if (!formData.issuingOrganization?.trim()) {
+      setErrors({ issuingOrganization: "Issuing organization is required" })
+      toast.error('Please enter the issuing organization')
+      return
+    } else if (formData.issuingOrganization.trim().length < 2) {
+      setErrors({ issuingOrganization: "Organization name must be at least 2 characters" })
+      toast.error('Organization name must be at least 2 characters')
+      return
+    }
+
+    if (!formData.issueDate) {
+      setErrors({ issueDate: "Issue date is required" })
+      toast.error('Please select an issue date')
+      return
+    }
+
+    // Validate expiration date if provided
+    if (formData.expirationDate && !formData.neverExpires) {
+      const issueDate = new Date(formData.issueDate)
+      const expDate = new Date(formData.expirationDate)
+      if (expDate <= issueDate) {
+        setErrors({ expirationDate: "Expiration date must be after issue date" })
+        toast.error('Expiration date must be after issue date')
+        return
+      }
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
 
     const now = new Date().toISOString()
     
@@ -288,9 +336,16 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
       toast.success('Certification added')
     }
 
-    setIsAddDialogOpen(false)
-    resetForm()
-  }
+      setIsAddDialogOpen(false)
+      resetForm()
+      setErrors({})
+    } catch (error) {
+      console.error("Error saving certification:", error)
+      toast.error('Failed to save certification. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [formData, editingCert, setCertifications, user.id, getCertificationStatus])
 
   const handleJobTypeToggle = (jobType: string) => {
     setFormData(prev => ({

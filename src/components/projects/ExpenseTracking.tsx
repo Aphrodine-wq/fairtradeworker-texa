@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,10 +18,12 @@ import {
   Truck,
   FileText,
   Car,
-  Package
+  Package,
+  CircleNotch
 } from '@phosphor-icons/react'
 import type { Milestone, MilestoneExpense } from '@/lib/types'
 import { toast } from 'sonner'
+import { safeInput } from '@/lib/utils'
 
 interface ExpenseTrackingProps {
   milestone: Milestone
@@ -50,6 +52,13 @@ const categoryColors: Record<MilestoneExpense['category'], string> = {
 export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: ExpenseTrackingProps) {
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [receiptPreview, setReceiptPreview] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{
+    description?: string
+    amount?: string
+    quantity?: string
+    unitCost?: string
+  }>({})
   const [formData, setFormData] = useState<Partial<MilestoneExpense>>({
     category: 'materials',
     description: '',
@@ -83,41 +92,87 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
     reader.readAsDataURL(file)
   }
 
-  const handleAddExpense = () => {
+  const handleAddExpense = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
     if (!formData.description?.trim()) {
+      setErrors({ description: "Description is required" })
       toast.error('Please enter a description')
+      return
+    } else if (formData.description.trim().length < 3) {
+      setErrors({ description: "Description must be at least 3 characters" })
+      toast.error('Description must be at least 3 characters')
       return
     }
 
     if (!formData.amount || formData.amount <= 0) {
+      setErrors({ amount: "Amount must be greater than 0" })
       toast.error('Please enter a valid amount')
+      return
+    } else if (formData.amount > 1000000) {
+      setErrors({ amount: "Amount is too large (max $1,000,000)" })
+      toast.error('Amount is too large')
       return
     }
 
-    const newExpense: MilestoneExpense = {
-      id: `exp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      milestoneId: milestone.id,
-      category: formData.category as MilestoneExpense['category'],
-      description: formData.description,
+    if (formData.quantity !== undefined && formData.quantity <= 0) {
+      setErrors({ quantity: "Quantity must be greater than 0" })
+      toast.error('Quantity must be greater than 0')
+      return
+    }
+
+    if (formData.unitCost !== undefined && formData.unitCost < 0) {
+      setErrors({ unitCost: "Unit cost cannot be negative" })
+      toast.error('Unit cost cannot be negative')
+      return
+    }
+
+    // Check budget
+    const newTotal = totalExpenses + formData.amount
+    if (newTotal > milestone.amount * 1.1) { // Allow 10% over budget warning
+      const confirmed = window.confirm(
+        `This expense will exceed the milestone budget by $${(newTotal - milestone.amount).toFixed(2)}. Continue?`
+      )
+      if (!confirmed) return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 400))
+
+      const newExpense: MilestoneExpense = {
+        id: `exp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        milestoneId: milestone.id,
+        category: formData.category as MilestoneExpense['category'],
+      description: safeInput(formData.description.trim()),
       amount: formData.amount,
       quantity: formData.quantity,
       unitCost: formData.unitCost,
-      vendor: formData.vendor,
+      vendor: formData.vendor ? safeInput(formData.vendor.trim()) : undefined,
       receiptPhoto: formData.receiptPhoto,
       date: formData.date || new Date().toISOString().split('T')[0],
-      notes: formData.notes
+      notes: formData.notes ? safeInput(formData.notes.trim()) : undefined
     }
 
-    const updatedMilestone = {
-      ...milestone,
-      expenses: [...expenses, newExpense]
-    }
+      const updatedMilestone = {
+        ...milestone,
+        expenses: [...expenses, newExpense]
+      }
 
-    onUpdateMilestone(updatedMilestone)
-    setShowAddDialog(false)
-    resetForm()
-    toast.success('Expense added')
-  }
+      onUpdateMilestone(updatedMilestone)
+      setShowAddDialog(false)
+      resetForm()
+      setErrors({})
+      toast.success(`Expense of $${formData.amount.toLocaleString()} added!`)
+    } catch (error) {
+      console.error("Error adding expense:", error)
+      toast.error('Failed to add expense. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [formData, expenses, milestone, totalExpenses, onUpdateMilestone])
 
   const handleDeleteExpense = (expenseId: string) => {
     const updatedMilestone = {
@@ -333,8 +388,19 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                       <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm(); }} className="h-11">
                         Cancel
                       </Button>
-                      <Button onClick={handleAddExpense} className="h-11">
-                        Add Expense
+                      <Button 
+                        onClick={handleAddExpense} 
+                        className="h-11 border-2 border-black dark:border-white"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                            Adding...
+                          </>
+                        ) : (
+                          "Add Expense"
+                        )}
                       </Button>
                     </div>
                   </div>

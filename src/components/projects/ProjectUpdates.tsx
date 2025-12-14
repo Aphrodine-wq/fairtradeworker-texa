@@ -456,9 +456,22 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
               >
                 Cancel
               </Button>
-              <Button onClick={handleAdd} className="flex-1 h-11">
-                <Plus className="mr-2" size={16} />
-                Post Update
+              <Button 
+                onClick={handleAdd} 
+                className="flex-1 h-11 border-2 border-black dark:border-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
+                    Posting...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="mr-2" size={16} />
+                    Post Update
+                  </>
+                )}
               </Button>
             </div>
           </div>
