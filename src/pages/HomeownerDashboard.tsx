@@ -124,7 +124,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold">Welcome back, {user.fullName.split(' ')[0]}</h1>
+              <h1 className="text-3xl font-bold text-black dark:text-white">Welcome back, {user.fullName.split(' ')[0]}</h1>
               <p className="text-muted-foreground mt-1">Manage your home projects and contractors</p>
             </div>
             <Button onClick={() => onNavigate('post-job')} size="lg">
@@ -188,7 +188,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Active Projects</h2>
+                <h2 className="text-xl font-semibold text-black dark:text-white">Active Projects</h2>
                 <Button variant="outline" onClick={() => onNavigate('my-jobs')}>View All</Button>
               </div>
 
@@ -214,7 +214,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <h3 className="font-semibold">{job.title}</h3>
+                              <h3 className="font-semibold text-black dark:text-white">{job.title}</h3>
                               {job.tier === 'MAJOR_PROJECT' && (
                                 <Badge variant="secondary">Major Project</Badge>
                               )}
@@ -250,7 +250,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
 
             <div className="space-y-6">
               <Card className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+                <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Recent Activity</h2>
                 {recentActivity.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-6">No recent activity</p>
                 ) : (
@@ -299,7 +299,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
               )}
 
               <Card className="p-6">
-                <h3 className="font-semibold mb-3">Your Stats</h3>
+                <h3 className="font-semibold mb-3 text-black dark:text-white">Your Stats</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Total Jobs</span>
@@ -325,11 +325,11 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
 
           {openJobs.length > 0 && (
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Open Jobs Awaiting Your Response</h2>
+              <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Open Jobs Awaiting Your Response</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {openJobs.map(job => (
                   <Card key={job.id} className="p-4 hover:border-primary/50 transition-colors">
-                    <h3 className="font-semibold mb-2">{job.title}</h3>
+                    <h3 className="font-semibold mb-2 text-black dark:text-white">{job.title}</h3>
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm text-muted-foreground">{job.bids.length} bids received</span>
                       {job.tier && (

@@ -206,7 +206,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold">Territory Operator Dashboard</h1>
+                <h1 className="text-3xl font-bold text-black dark:text-white">Territory Operator Dashboard</h1>
                 {myTerritory && (
                   <Badge variant="outline" className="text-base">
                     {myTerritory.countyName}
@@ -314,7 +314,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
             <Card className="lg:col-span-2 p-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-semibold">Territory Activity</h2>
+                  <h2 className="text-xl font-semibold text-black dark:text-white">Territory Activity</h2>
                   {growthRate > 0 && (
                     <Badge variant="secondary">
                       <TrendUp className="h-3 w-3 mr-1" />
@@ -345,7 +345,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
               {freshJobs.length > 0 && (
                 <div>
-                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2 text-black dark:text-white">
                     <Fire className="h-5 w-5 text-primary" />
                     FRESH Jobs in Your Territory
                   </h3>
@@ -373,7 +373,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
             {/* Sidebar */}
             <div className="space-y-6">
               <Card className="p-6">
-                <h3 className="font-semibold mb-4">Top Contractors</h3>
+                <h3 className="font-semibold mb-4 text-black dark:text-white">Top Contractors</h3>
                 {topContractors.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-6">
                     No contractor data yet
@@ -401,7 +401,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
               </Card>
 
               <Card className="p-6">
-                <h3 className="font-semibold mb-4">Contractor Tiers</h3>
+                <h3 className="font-semibold mb-4 text-black dark:text-white">Contractor Tiers</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">PRO</span>
@@ -419,7 +419,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
               </Card>
 
               <Card className="p-6">
-                <h3 className="font-semibold mb-4">Recent Activity</h3>
+                <h3 className="font-semibold mb-4 text-black dark:text-white">Recent Activity</h3>
                 {recentActivity.length === 0 ? (
                   <p className="text-sm text-muted-foreground text-center py-6">
                     No recent activity
@@ -450,11 +450,11 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
           {/* Growth Opportunities */}
           <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Growth Opportunities</h2>
+            <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Growth Opportunities</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card className="p-4 bg-muted/50">
                 <UserPlus className="h-8 w-8 text-primary mb-2" />
-                <h3 className="font-semibold mb-1">Recruit Contractors</h3>
+                  <h3 className="font-semibold mb-1 text-black dark:text-white">Recruit Contractors</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   Grow your network to increase coverage
                 </p>
@@ -465,7 +465,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
               <Card className="p-4 bg-muted/50">
                 <Buildings className="h-8 w-8 text-primary mb-2" />
-                <h3 className="font-semibold mb-1">Partner with Local Businesses</h3>
+                  <h3 className="font-semibold mb-1 text-black dark:text-white">Partner with Local Businesses</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   Build relationships with hardware stores
                 </p>
@@ -476,7 +476,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
               <Card className="p-4 bg-muted/50">
                 <ChartLine className="h-8 w-8 text-primary mb-2" />
-                <h3 className="font-semibold mb-1">Upgrade Territory Tier</h3>
+                  <h3 className="font-semibold mb-1 text-black dark:text-white">Upgrade Territory Tier</h3>
                 <p className="text-sm text-muted-foreground mb-3">
                   Increase your revenue share percentage
                 </p>
