@@ -306,7 +306,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     <div className="container mx-auto px-4 md:px-8 py-12">
       <div className="max-w-6xl mx-auto space-y-8">
         <div>
-          <h1 className="text-3xl font-bold">My Jobs</h1>
+          <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>
           <p className="text-muted-foreground mt-1">Manage your posted jobs and contractor bids</p>
         </div>
 
@@ -359,7 +359,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             {openJobs.length === 0 ? (
               <Card className="p-12 text-center">
                 <Briefcase size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
-                <h3 className="font-semibold text-lg mb-2">No open jobs</h3>
+                <h3 className="font-semibold text-lg mb-2 text-black dark:text-white">No open jobs</h3>
                 <p className="text-muted-foreground">Post a job to get started!</p>
               </Card>
             ) : (
