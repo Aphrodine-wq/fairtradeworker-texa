@@ -675,7 +675,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
       />
     </div>
   )
-}
+})
 
 function SaveTemplateDialog({ 
   open, 
