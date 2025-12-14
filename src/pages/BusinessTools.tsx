@@ -35,8 +35,8 @@ interface BusinessToolsProps {
 export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const isPro = user?.isPro || false
   
-  // Free Tools (available to everyone)
-  const freeTools = user.role === 'contractor' ? [
+  // Free Tools for Contractors
+  const contractorFreeTools = [
     {
       id: 'cost-calculator',
       title: 'Job Cost Calculator',
@@ -70,7 +70,10 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       category: 'free',
       isFree: true
     }
-  ] : user.role === 'homeowner' ? [
+  ]
+  
+  // Free Tools for Homeowners
+  const homeownerFreeTools = [
     {
       id: 'saved-contractors',
       title: 'Saved Contractors',
@@ -93,9 +96,10 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       category: 'free',
       isFree: true
     }
-  ] : []
+  ]
   
-  const tools = [
+  // Business Tools (contractor/operator only - all are FREE unless marked PRO)
+  const businessTools = user.role === 'contractor' || user.role === 'operator' ? [
     {
       id: 'receptionist',
       title: 'AI Receptionist',
@@ -301,8 +305,14 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       status: 'enhanced',
       category: 'sales',
       isPro: true
-    },
-    ...freeTools
+    }
+  ] : []
+  
+  // Combine all tools based on role
+  const tools = [
+    ...(user.role === 'contractor' ? contractorFreeTools : []),
+    ...(user.role === 'homeowner' ? homeownerFreeTools : []),
+    ...businessTools
   ]
 
   const categories = [
@@ -373,7 +383,10 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
               </h1>
             </div>
             <p className="text-black dark:text-white text-lg max-w-2xl mx-auto">
-              All-in-one toolkit for running your contracting business efficiently
+              {user.role === 'homeowner' 
+                ? 'Free tools to help you manage your home projects'
+                : 'All-in-one toolkit for running your business efficiently. Most tools are FREE - only PRO tools require subscription.'
+              }
             </p>
           </div>
 
@@ -445,12 +458,11 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                                 <Icon size={32} weight="duotone" className={tool.color} />
                               </div>
                               <div className="flex flex-col gap-1 items-end">
-                                {tool.isPro && (
+                                {tool.isPro ? (
                                   <Badge variant="default" className="text-xs bg-[#00FF00] text-black">
                                     PRO
                                   </Badge>
-                                )}
-                                {(tool as any).isFree && (
+                                ) : (
                                   <Badge variant="outline" className="text-xs border-green-500 text-green-600 dark:text-green-400">
                                     FREE
                                   </Badge>

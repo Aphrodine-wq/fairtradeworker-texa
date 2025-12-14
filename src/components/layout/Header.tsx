@@ -214,13 +214,6 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               CRM
             </NavButton>
             <NavButton 
-              onClick={() => handleNav('business-tools', 'business-tools')} 
-              isActive={activeTab === 'business-tools'}
-              icon={<Sparkle size={16} weight={activeTab === 'business-tools' ? 'fill' : 'regular'} />}
-            >
-              Business Tools
-            </NavButton>
-            <NavButton 
               onClick={() => handleNav('business-tools', 'tools')} 
               isActive={activeTab === 'tools'}
               icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
