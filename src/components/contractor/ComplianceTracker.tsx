@@ -290,25 +290,25 @@ export function ComplianceTracker({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{items.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Items</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">{activeItems.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Active</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{expiringSoon.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Expiring Soon</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">{expiredItems.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Expired</div>
@@ -379,7 +379,7 @@ export function ComplianceTracker({ user }: { user: User }) {
             ))}
 
             {items.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="col-span-full" glass={isPro}>
                 <CardContent className="p-12 text-center">
                   <ShieldCheck size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg">No compliance items yet</p>

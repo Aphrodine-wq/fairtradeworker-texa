@@ -284,7 +284,7 @@ export function DocumentManager({ user }: { user: User }) {
             ))}
 
             {subFolders.length === 0 && filteredDocuments.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+              <Card className="col-span-full" glass={isPro}>
                 <CardContent className="p-12 text-center">
                   <Folder size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg mb-2">No documents yet</p>

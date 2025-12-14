@@ -24,6 +24,7 @@ interface InventoryItem {
 export function InventoryManagement({ user }: { user: User }) {
   const [items, setItems] = useKV<InventoryItem[]>("inventory-items", [])
   const [showAddDialog, setShowAddDialog] = useState(false)
+  const isPro = user.isPro || false
   const [newItem, setNewItem] = useState<Partial<InventoryItem>>({
     name: '',
     category: '',
@@ -179,19 +180,19 @@ export function InventoryManagement({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{items.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Items</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">{lowStockItems.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Low Stock</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   ${totalValue.toLocaleString()}
