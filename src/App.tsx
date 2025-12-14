@@ -632,6 +632,18 @@ function App() {
             <ProOnlyFilters user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'calendar-sync':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CalendarSync user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'receptionist-upsell':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ReceptionistUpsell user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
