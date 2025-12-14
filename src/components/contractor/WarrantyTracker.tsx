@@ -184,12 +184,32 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
     }
   }, [customerName, jobDescription, warrantyType, durationMonths, startDate, notes, warranties])
 
-  const handleDeleteWarranty = (id: string) => {
-    if (confirm("Are you sure you want to delete this warranty?")) {
+  const [deletingWarrantyId, setDeletingWarrantyId] = useState<string | null>(null)
+
+  const handleDeleteWarranty = useCallback(async (id: string) => {
+    if (deletingWarrantyId) return
+
+    const warranty = warranties.find(w => w.id === id)
+    const confirmed = window.confirm(
+      warranty 
+        ? `Are you sure you want to delete the warranty for "${warranty.customerName}"? This action cannot be undone.`
+        : "Are you sure you want to delete this warranty? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingWarrantyId(id)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
       setWarranties(warranties.filter(w => w.id !== id))
-      toast.success("Warranty deleted")
+      toast.success("Warranty deleted successfully")
+    } catch (error) {
+      console.error("Error deleting warranty:", error)
+      toast.error('Failed to delete warranty. Please try again.')
+    } finally {
+      setDeletingWarrantyId(null)
     }
-  }
+  }, [warranties, deletingWarrantyId])
 
   const getDaysRemaining = (endDate: string) => {
     const end = new Date(endDate)

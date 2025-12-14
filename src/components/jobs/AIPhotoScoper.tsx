@@ -563,9 +563,31 @@ Generate a complete, professional scope document now.`
                       type="text"
                       placeholder="78701"
                       value={projectInfo.zip}
-                      onChange={(e) => setProjectInfo({...projectInfo, zip: e.target.value})}
-                      className="mt-2"
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 5) + (e.target.value.includes('-') && e.target.value.length > 5 ? '-' + e.target.value.replace(/\D/g, '').slice(5, 9) : '')
+                        setProjectInfo({...projectInfo, zip: value})
+                        if (scopeErrors.zip) setScopeErrors(prev => ({ ...prev, zip: undefined }))
+                      }}
+                      onBlur={() => {
+                        if (!projectInfo.zip?.trim()) {
+                          setScopeErrors(prev => ({ ...prev, zip: "ZIP code is required" }))
+                        } else if (!/^\d{5}(-\d{4})?$/.test(projectInfo.zip.trim())) {
+                          setScopeErrors(prev => ({ ...prev, zip: "Please enter a valid ZIP code (e.g., 78701 or 78701-1234)" }))
+                        }
+                      }}
+                      className={`mt-2 ${scopeErrors.zip ? "border-[#FF0000]" : ""}`}
+                      disabled={loading}
+                      required
+                      maxLength={10}
+                      pattern="^\d{5}(-\d{4})?$"
+                      aria-invalid={!!scopeErrors.zip}
+                      aria-describedby={scopeErrors.zip ? "zip-error" : undefined}
                     />
+                    {scopeErrors.zip && (
+                      <p id="zip-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                        {scopeErrors.zip}
+                      </p>
+                    )}
                   </div>
                 </div>
               </CardContent>
@@ -593,6 +615,17 @@ Generate a complete, professional scope document now.`
                     className="hidden"
                   />
                 </label>
+
+                {uploadErrors.length > 0 && (
+                  <div className="mt-4 p-3 bg-[#FF0000]/10 border-2 border-[#FF0000] rounded-md">
+                    <p className="text-sm font-bold text-[#FF0000] mb-2">Upload Errors:</p>
+                    <ul className="text-xs text-[#FF0000] space-y-1 list-disc list-inside">
+                      {uploadErrors.map((error, idx) => (
+                        <li key={idx}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {photos.length > 0 && (
                   <div className="mt-5 space-y-4">
@@ -733,8 +766,8 @@ Generate a complete, professional scope document now.`
 
             <Button
               onClick={generateScope}
-              disabled={loading}
-              className="w-full h-14 text-lg"
+              disabled={loading || photos.length === 0 || !projectInfo.name?.trim() || !projectInfo.address?.trim()}
+              className="w-full h-14 text-lg border-2 border-black dark:border-white"
               size="lg"
             >
               {loading ? (

@@ -240,12 +240,27 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
     setIsAddDialogOpen(true)
   }
 
-  const handleDelete = (cert: Certification) => {
-    if (window.confirm(`Delete ${cert.name}?`)) {
+  const [deletingCertId, setDeletingCertId] = useState<string | null>(null)
+
+  const handleDelete = useCallback(async (cert: Certification) => {
+    if (deletingCertId) return
+    
+    const confirmed = window.confirm(`Are you sure you want to delete "${cert.name}"? This action cannot be undone.`)
+    if (!confirmed) return
+
+    setDeletingCertId(cert.id)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
       setCertifications((prev = []) => prev.filter(c => c.id !== cert.id))
-      toast.success('Certification deleted')
+      toast.success(`Certification "${cert.name}" deleted successfully`)
+    } catch (error) {
+      console.error("Error deleting certification:", error)
+      toast.error('Failed to delete certification. Please try again.')
+    } finally {
+      setDeletingCertId(null)
     }
-  }
+  }, [deletingCertId, setCertifications])
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState<{
