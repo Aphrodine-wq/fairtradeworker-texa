@@ -7,7 +7,7 @@ function Card({ className, ...props }: ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-white dark:bg-black text-card-foreground flex flex-col gap-5 rounded-none py-5 border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] relative overflow-hidden group",
+        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-none py-5 border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] relative overflow-hidden group",
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ function CardTitle({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-tight font-semibold text-base", className)}
+      className={cn("leading-tight font-semibold text-base text-black dark:text-white", className)}
       {...props}
     />
   )
@@ -42,7 +42,7 @@ function CardDescription({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-muted-foreground text-sm text-black dark:text-white", className)}
       {...props}
     />
   )

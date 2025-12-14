@@ -312,7 +312,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="lg:col-span-2 p-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-semibold">FRESH Jobs</h2>
+                  <h2 className="text-xl font-semibold text-black dark:text-white">FRESH Jobs</h2>
                   <Badge variant="destructive" className="animate-pulse">
                     <Lightning className="h-3 w-3 mr-1" />
                     {freshJobs.length} New
@@ -381,7 +381,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             {/* Today's Focus */}
             <div className="space-y-6">
               <Card className="p-6">
-                <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <h3 className="font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                   <Calendar className="h-5 w-5 text-primary" />
                   Today's Schedule
                 </h3>
@@ -407,7 +407,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </Card>
 
               <Card className="p-6">
-                <h3 className="font-semibold mb-4">Quick Stats</h3>
+                <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">Response Time</span>
