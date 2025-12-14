@@ -143,8 +143,17 @@ const EnhancedExpenseTracking = lazy(() => retryImport(() =>
 const ReceptionistCRM = lazy(() => retryImport(() =>
   import("@/components/contractor/ReceptionistCRM").then(m => ({ default: m.ReceptionistCRM }))
 ))
+const BidOptimizer = lazy(() => retryImport(() =>
+  import("@/components/contractor/BidOptimizer").then(m => ({ default: m.BidOptimizer }))
+))
+const ChangeOrderBuilder = lazy(() => retryImport(() =>
+  import("@/components/contractor/ChangeOrderBuilder").then(m => ({ default: m.ChangeOrderBuilder }))
+))
+const CrewDispatcher = lazy(() => retryImport(() =>
+  import("@/components/contractor/CrewDispatcher").then(m => ({ default: m.CrewDispatcher }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments' | 'receptionist'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<

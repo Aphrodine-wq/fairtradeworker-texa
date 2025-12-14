@@ -18,7 +18,8 @@ import {
   CheckCircle,
   Gear,
   Lightning,
-  Phone
+  Phone,
+  Target
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 
@@ -190,6 +191,50 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       bgColor: 'bg-violet-50 dark:bg-violet-950',
       status: 'complete',
       category: 'automation'
+    },
+    {
+      id: 'bid-optimizer',
+      title: 'AI Bid Optimizer',
+      description: 'Upload past job data → AI analyzes win/loss patterns → suggests optimal prices + auto-places bids. "What-if" simulations included. Stops over/under-bidding (biggest profit killer). Increases win rate 30-50%. Auto-bid runs 24/7.',
+      icon: Target,
+      color: 'text-[#00FF00] dark:text-[#00FF00]',
+      bgColor: 'bg-[#00FF00]/10 dark:bg-[#00FF00]/10',
+      status: 'new',
+      category: 'sales',
+      isPro: true
+    },
+    {
+      id: 'change-order',
+      title: 'Change Order Generator',
+      description: 'Mid-job discovery? Snap photo → AI scopes extra work → generates change order PDF → homeowner approves digitally. Captures 20-40% more revenue per job from extras. Eliminates disputes with signed approvals. Instant quotes.',
+      icon: FileText,
+      color: 'text-[#00FF00] dark:text-[#00FF00]',
+      bgColor: 'bg-[#00FF00]/10 dark:bg-[#00FF00]/10',
+      status: 'new',
+      category: 'operations',
+      isPro: true
+    },
+    {
+      id: 'crew-dispatcher',
+      title: 'Crew Dispatcher',
+      description: 'AI assigns jobs to subs by skills/availability/location → SMS schedules → tracks progress with photo check-ins. Scales operations without chaos. Reduces no-shows. Real-time oversight = higher quality.',
+      icon: Users,
+      color: 'text-[#00FF00] dark:text-[#00FF00]',
+      bgColor: 'bg-[#00FF00]/10 dark:bg-[#00FF00]/10',
+      status: 'new',
+      category: 'operations',
+      isPro: true
+    },
+    {
+      id: 'follow-up',
+      title: 'Follow-Up Automator',
+      description: 'Drag-and-drop sequence builder (SMS/email/in-app) → AI personalizes from transcripts → auto-sends on triggers. Turns "forgotten leads" into wins (most contractors lose 70% here). Personalizes at scale. Frees 10-20 hours/week.',
+      icon: Calendar,
+      color: 'text-[#00FF00] dark:text-[#00FF00]',
+      bgColor: 'bg-[#00FF00]/10 dark:bg-[#00FF00]/10',
+      status: 'enhanced',
+      category: 'sales',
+      isPro: true
     }
   ]
 
@@ -221,7 +266,11 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'inventory': 'inventory',
       'quality': 'quality',
       'compliance': 'compliance',
-      'automation': 'crm' // Customize tab in CRM
+      'automation': 'crm', // Customize tab in CRM
+      'bid-optimizer': 'bid-optimizer',
+      'change-order': 'change-order',
+      'crew-dispatcher': 'crew-dispatcher',
+      'follow-up': 'crm' // Show in CRM
     }
     onNavigate(routeMap[toolId] || toolId)
   }
