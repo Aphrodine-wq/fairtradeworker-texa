@@ -29,6 +29,7 @@ interface BusinessToolsProps {
 }
 
 export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
+  const isPro = user?.isPro || false
   const tools = [
     {
       id: 'receptionist',
