@@ -6,7 +6,17 @@
  * creates private jobs in CRM, and sends SMS to caller.
  */
 
-import type { VercelRequest, VercelResponse } from '@vercel/node'
+// @ts-ignore - Vercel serverless function types
+interface VercelRequest {
+  method?: string
+  body?: any
+}
+
+// @ts-ignore - Vercel serverless function types
+interface VercelResponse {
+  status: (code: number) => VercelResponse
+  json: (data: any) => void
+}
 
 interface TwilioCallWebhook {
   From: string // E.164 format: +1234567890
@@ -202,7 +212,11 @@ Return ONLY valid JSON, no markdown formatting.`
     }
 
     const data = await response.json()
-    const extraction = JSON.parse(data.choices[0].message.content) as CallExtraction
+    const content = data.choices[0]?.message?.content
+    if (!content) {
+      throw new Error('No content in GPT response')
+    }
+    const extraction = JSON.parse(content) as CallExtraction
     
     return extraction
   } catch (error) {
@@ -320,9 +334,9 @@ async function sendOnboardingSMS(
 ): Promise<boolean> {
   try {
     // TODO: Implement Twilio SMS
-    const accountSid = process.env.TWILIO_ACCOUNT_SID
-    const authToken = process.env.TWILIO_AUTH_TOKEN
-    const fromNumber = process.env.TWILIO_PHONE_NUMBER
+    const accountSid = (process as any).env?.TWILIO_ACCOUNT_SID
+    const authToken = (process as any).env?.TWILIO_AUTH_TOKEN
+    const fromNumber = (process as any).env?.TWILIO_PHONE_NUMBER
 
     if (!accountSid || !authToken || !fromNumber) {
       console.warn('Twilio credentials not configured')
@@ -337,7 +351,7 @@ async function sendOnboardingSMS(
       {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${Buffer.from(`${accountSid}:${authToken}`).toString('base64')}`,
+          'Authorization': `Basic ${btoa(`${accountSid}:${authToken}`)}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
