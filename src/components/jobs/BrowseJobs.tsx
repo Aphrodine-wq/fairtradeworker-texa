@@ -494,93 +494,182 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
       <div className="container mx-auto px-4 md:px-8 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
-          {/* Modern Header Section */}
-          <div className="space-y-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-3 text-primary">
-                  Browse Jobs
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                  Find your next project – bid free, keep 100%
-                </p>
-              </div>
-              
-              {/* Stats Cards */}
-              <div className="flex gap-4">
-                <Card className="px-6 py-4 min-w-[140px]">
-                  <div className="text-2xl font-bold text-black dark:text-white">{sortedOpenJobs.length}</div>
-                  <div className="text-sm text-muted-foreground">Active Jobs</div>
-                </Card>
-                <Card className="px-6 py-4 min-w-[140px]">
-                  <div className="text-2xl font-bold text-black dark:text-white">
-                    {sortedOpenJobs.filter(j => j.bids.length === 0).length}
+          {/* Hero Header Section */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 p-8 md:p-12 border border-primary/20">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Wrench size={24} weight="duotone" className="text-primary" />
+                    </div>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                      Browse Jobs
+                    </h1>
                   </div>
-                  <div className="text-sm text-muted-foreground">No Bids Yet</div>
-                </Card>
-              </div>
-            </div>
-
-            {/* Enhanced Filter Bar */}
-            <Card className="p-4">
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-4 flex-wrap">
-                <div className="flex items-center gap-3">
-                  <Funnel weight="duotone" size={20} className="text-primary" />
-                  <span className="font-semibold">Filters:</span>
+                  <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
+                    Find your next project – <span className="font-semibold text-primary">bid free</span>, keep <span className="font-semibold text-green-600 dark:text-green-400">100%</span>
+                  </p>
+                  
+                  {/* Quick Stats Inline */}
+                  <div className="flex flex-wrap items-center gap-6 pt-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                      <span className="text-sm font-medium text-muted-foreground">
+                        <span className="font-bold text-foreground">{sortedOpenJobs.length}</span> active jobs
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                      <span className="text-sm font-medium text-muted-foreground">
+                        <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids yet
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                      <span className="text-sm font-medium text-muted-foreground">
+                        <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => {
+                          const jobAge = Date.now() - new Date(j.createdAt).getTime()
+                          const fifteenMinutes = 15 * 60 * 1000
+                          return jobAge <= fifteenMinutes && j.size === 'small' && j.bids.length === 0
+                        }).length}</span> fresh opportunities
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 
-                <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')}>
-                  <TabsList className="bg-muted">
-                    <TabsTrigger value="all">All Jobs</TabsTrigger>
-                    <TabsTrigger value="small">🟢 Small</TabsTrigger>
-                    <TabsTrigger value="medium">🟡 Medium</TabsTrigger>
-                    <TabsTrigger value="large">🔴 Large</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                {/* Enhanced Stats Cards */}
+                <div className="flex gap-4 lg:flex-col lg:gap-3">
+                  <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] bg-white/80 dark:bg-black/80 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <Wrench size={18} weight="duotone" className="text-primary" />
+                      </div>
+                      <div className="text-3xl font-bold text-foreground">{sortedOpenJobs.length}</div>
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground">Active Jobs</div>
+                  </Card>
+                  <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] bg-white/80 dark:bg-black/80 backdrop-blur-sm border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
+                        <Eye size={18} weight="duotone" className="text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div className="text-3xl font-bold text-foreground">
+                        {sortedOpenJobs.filter(j => j.bids.length === 0).length}
+                      </div>
+                    </div>
+                    <div className="text-sm font-medium text-muted-foreground">No Bids Yet</div>
+                  </Card>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Enhanced Filter & View Controls */}
+          <div className="space-y-4">
+            <Card className="p-5 bg-white/50 dark:bg-black/50 backdrop-blur-sm border-border/50">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                {/* Job Size Filters */}
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="flex items-center gap-2">
+                    <Funnel weight="duotone" size={20} className="text-primary" />
+                    <span className="font-semibold text-sm text-muted-foreground hidden sm:inline">Job Size:</span>
+                  </div>
+                  
+                  <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
+                    <TabsList className="grid grid-cols-4 w-full lg:w-auto bg-muted/50">
+                      <TabsTrigger value="all" className="text-xs sm:text-sm">All</TabsTrigger>
+                      <TabsTrigger value="small" className="text-xs sm:text-sm">🟢 Small</TabsTrigger>
+                      <TabsTrigger value="medium" className="text-xs sm:text-sm">🟡 Medium</TabsTrigger>
+                      <TabsTrigger value="large" className="text-xs sm:text-sm">🔴 Large</TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
                 
-                <div className="flex-1" />
-                
-                <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
-                  <TabsList className="bg-muted">
-                    <TabsTrigger value="list">
-                      <List weight="duotone" size={18} className="mr-2" />
-                      List View
-                    </TabsTrigger>
-                    <TabsTrigger value="map">
-                      <MapTrifold weight="duotone" size={18} className="mr-2" />
-                      Map View
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
+                {/* View Mode Toggle */}
+                <div className="flex items-center gap-3 lg:border-l lg:pl-4">
+                  <span className="text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
+                  <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
+                    <TabsList className="bg-muted/50">
+                      <TabsTrigger value="list" className="gap-2">
+                        <List weight="duotone" size={16} />
+                        <span className="hidden sm:inline">List</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="map" className="gap-2">
+                        <MapTrifold weight="duotone" size={16} />
+                        <span className="hidden sm:inline">Map</span>
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
+                </div>
               </div>
             </Card>
           </div>
 
-          {/* Jobs Grid/List */}
-          <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch'}>
-            {viewMode === 'map' ? (
-              <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
-            ) : sortedOpenJobs.length === 0 ? (
-              <div className="col-span-full">
-                <Card className="p-12 text-center">
-                  <Wrench size={64} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
-                  <h2 className="text-2xl font-bold mb-2 text-black dark:text-white">No Jobs Available</h2>
-                  <p className="text-muted-foreground">Check back soon for new opportunities!</p>
-                </Card>
+          {/* Jobs Grid/List Section */}
+          <div className="space-y-6">
+            {/* Results Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">
+                  {sizeFilter === 'all' ? 'All Jobs' : `${getJobSizeLabel(sizeFilter as JobSize)} Jobs`}
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Showing <span className="font-semibold text-foreground">{sortedOpenJobs.length}</span> {sortedOpenJobs.length === 1 ? 'job' : 'jobs'}
+                </p>
               </div>
-            ) : (
-              sortedOpenJobs.map(job => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  onViewPhotos={handlePhotoClick}
-                  onPlaceBid={handleBidClick}
-                />
-              ))
-            )}
+            </div>
+
+            {/* Jobs Grid/Map */}
+            <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch'}>
+              {viewMode === 'map' ? (
+                <div className="rounded-xl overflow-hidden border border-border shadow-lg">
+                  <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+                </div>
+              ) : sortedOpenJobs.length === 0 ? (
+                <div className="col-span-full">
+                  <Card className="p-16 text-center bg-gradient-to-br from-muted/50 to-muted/20 border-border/50">
+                    <div className="max-w-md mx-auto space-y-4">
+                      <div className="relative inline-block">
+                        <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
+                        <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl" />
+                      </div>
+                      <div>
+                        <h2 className="text-3xl font-bold mb-2 text-foreground">No Jobs Available</h2>
+                        <p className="text-muted-foreground text-lg">
+                          {sizeFilter === 'all' 
+                            ? "We'll notify you when new opportunities arrive!"
+                            : `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters. Try a different size.`
+                          }
+                        </p>
+                      </div>
+                      {sizeFilter !== 'all' && (
+                        <Button 
+                          onClick={() => setSizeFilter('all')}
+                          variant="outline"
+                          className="mt-4"
+                        >
+                          View All Jobs
+                        </Button>
+                      )}
+                    </div>
+                  </Card>
+                </div>
+              ) : (
+                sortedOpenJobs.map(job => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    onViewPhotos={handlePhotoClick}
+                    onPlaceBid={handleBidClick}
+                  />
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
