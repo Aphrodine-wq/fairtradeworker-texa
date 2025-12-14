@@ -97,7 +97,7 @@ export function PartialPaymentDialog({
             </Card>
           </div>
 
-          <Card className="bg-primary/5 border-primary/20">
+          <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
             <CardContent className="pt-6">
               <p className="text-sm text-muted-foreground">Amount Remaining</p>
               <p className="text-3xl font-bold text-primary">{formatCurrency(amountRemaining)}</p>
@@ -114,7 +114,7 @@ export function PartialPaymentDialog({
                     className="flex items-center justify-between p-3 bg-muted rounded-lg"
                   >
                     <div className="flex items-center gap-2">
-                      <CheckCircle weight="fill" className="text-green-600" />
+                      <CheckCircle weight="fill" className="text-[#00FF00]" />
                       <span className="text-sm">
                         {new Date(payment.paidAt).toLocaleDateString()}
                       </span>
