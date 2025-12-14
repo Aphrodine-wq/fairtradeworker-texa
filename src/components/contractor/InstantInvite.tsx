@@ -123,17 +123,49 @@ export function InstantInvite({ user }: InstantInviteProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="email" className="w-full">
+        <Tabs defaultValue="sms" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="email" className="flex items-center gap-2">
-              <EnvelopeSimple weight="duotone" />
-              Email
-            </TabsTrigger>
             <TabsTrigger value="sms" className="flex items-center gap-2">
               <DeviceMobile weight="duotone" />
               SMS
             </TabsTrigger>
+            <TabsTrigger value="email" className="flex items-center gap-2">
+              <EnvelopeSimple weight="duotone" />
+              Email
+            </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="sms" className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <Label htmlFor="sms-name">Customer Name</Label>
+              <Input
+                id="sms-name"
+                placeholder="John Smith"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isSending}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="sms-phone">Phone Number</Label>
+              <Input
+                id="sms-phone"
+                type="tel"
+                placeholder="(555) 123-4567"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                disabled={isSending}
+              />
+            </div>
+            <Button
+              onClick={handleSendSMSInvite}
+              disabled={isSending}
+              className="w-full"
+            >
+              <DeviceMobile weight="bold" className="mr-2" size={18} />
+              {isSending ? "Sending..." : "Send SMS Invite"}
+            </Button>
+          </TabsContent>
 
           <TabsContent value="email" className="space-y-4 mt-4">
             <div className="space-y-2">
@@ -165,39 +197,6 @@ export function InstantInvite({ user }: InstantInviteProps) {
             >
               <EnvelopeSimple weight="bold" className="mr-2" />
               {isSending ? "Sending..." : "Send Email Invite"}
-            </Button>
-          </TabsContent>
-
-          <TabsContent value="sms" className="space-y-4 mt-4">
-            <div className="space-y-2">
-              <Label htmlFor="sms-name">Customer Name</Label>
-              <Input
-                id="sms-name"
-                placeholder="John Smith"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={isSending}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="phone-number">Phone Number</Label>
-              <Input
-                id="phone-number"
-                type="tel"
-                placeholder="(555) 123-4567"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                disabled={isSending}
-              />
-            </div>
-            <Button
-              onClick={handleSendSMSInvite}
-              className="w-full"
-              size="lg"
-              disabled={isSending}
-            >
-              <DeviceMobile weight="bold" className="mr-2" />
-              {isSending ? "Sending..." : "Send SMS Invite"}
             </Button>
           </TabsContent>
         </Tabs>

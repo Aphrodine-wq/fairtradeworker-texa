@@ -79,7 +79,7 @@ export function NotificationCenter({ user }: { user: User }) {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
+    <div className="min-h-screen w-full bg-white dark:bg-black">
       <div className="max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Header */}

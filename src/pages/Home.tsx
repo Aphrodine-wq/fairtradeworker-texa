@@ -14,16 +14,51 @@ interface HomePageProps {
 
 export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
-  const [isDark, setIsDark] = useState(false)
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark')
+    }
+    return false
+  })
   
   useEffect(() => {
     const checkDarkMode = () => {
-      setIsDark(document.documentElement.classList.contains('dark'))
+      const dark = document.documentElement.classList.contains('dark')
+      setIsDark(dark)
     }
+    
+    // Check immediately
     checkDarkMode()
-    const observer = new MutationObserver(checkDarkMode)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
-    return () => observer.disconnect()
+    
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+          checkDarkMode()
+        }
+      })
+    })
+    
+    observer.observe(document.documentElement, { 
+      attributes: true, 
+      attributeFilter: ['class'],
+      attributeOldValue: true
+    })
+    
+    // Also listen to theme toggle events if any
+    const handleThemeChange = () => {
+      // Small delay to ensure DOM is updated
+      requestAnimationFrame(() => {
+        checkDarkMode()
+      })
+    }
+    
+    window.addEventListener('themechange', handleThemeChange)
+    
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('themechange', handleThemeChange)
+    }
   }, [])
   
   const todayJobs = useMemo(() => {
@@ -40,7 +75,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight text-black dark:text-white">
-              Zero-fee home services marketplace.
+              Home services marketplace that works for everyone.
             </h1>
             <p className="text-xl md:text-2xl text-black dark:text-white leading-relaxed">
               AI scopes in 60 seconds. Contractors keep 100%.
@@ -155,9 +190,9 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
               <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center">
                 <MapTrifold weight="fill" className="text-accent-foreground" size={24} />
               </div>
-              <h3 className="text-xl font-semibold text-black dark:text-white">Zero Fees</h3>
+              <h3 className="text-xl font-semibold text-black dark:text-white">Fair Pricing</h3>
               <p className="text-black dark:text-white">
-                Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
+                Contractors keep 100% of your payment. Transparent pricing with fees only after job completion. Fair trade for everyone.
               </p>
             </Card>
           </div>

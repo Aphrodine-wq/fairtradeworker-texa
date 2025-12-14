@@ -488,7 +488,7 @@ function App() {
   }, [currentPage, currentUser, preselectedRole, selectedJob, handleNavigate, handleLogin, handleDemoLogin])
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-black">
+    <div className="flex flex-col min-h-screen w-full bg-white dark:bg-black overflow-x-hidden">
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>
@@ -504,7 +504,7 @@ function App() {
         />
       )}
       <OfflineIndicator />
-      <main className="flex-1 pt-16 bg-white dark:bg-black">
+      <main className="flex-1 pt-16 w-full bg-white dark:bg-black overflow-x-hidden">
         {currentPage !== 'home' && breadcrumbs.length > 0 && (
           <div className="container mx-auto px-4 md:px-8 pt-6">
             <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
