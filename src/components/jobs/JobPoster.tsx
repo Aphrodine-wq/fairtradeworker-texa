@@ -282,7 +282,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 max-w-5xl">
+    <div className="min-h-screen bg-background p-[1pt]">
+      <div className="container mx-auto px-4 md:px-8 py-12 max-w-5xl">
       {step === 'tier-select' && (
         <Card>
           <CardHeader>
@@ -800,6 +801,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
           </CardContent>
         </Card>
       )}
+      </div>
     </div>
   )
 }
