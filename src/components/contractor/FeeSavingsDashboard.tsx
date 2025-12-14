@@ -58,7 +58,7 @@ export function FeeSavingsDashboard({
       animate="show"
     >
       <motion.div variants={item}>
-        <Card className="p-8 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+        <Card className="p-8 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export function FeeSavingsDashboard({
         <motion.div variants={item}>
           <Card className="p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-lg">
+              <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <CurrencyDollar className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div className="flex-1 space-y-3">
@@ -97,25 +97,25 @@ export function FeeSavingsDashboard({
                 </div>
                 
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <span className="text-sm">Thumbtack (15%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${thumbtackSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <span className="text-sm">HomeAdvisor (20%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${homeadvisorSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <span className="text-sm">Angi (18%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${angiSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-muted/50 rounded">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <span className="text-sm">TaskRabbit (26%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${taskrabbitSavings.toLocaleString()}
@@ -142,7 +142,7 @@ export function FeeSavingsDashboard({
         <motion.div variants={item}>
           <Card className="p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-lg">
+              <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <TrendUp className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div className="flex-1 space-y-3">
@@ -159,7 +159,7 @@ export function FeeSavingsDashboard({
                         ${projectedYearlySavings.toLocaleString()}
                       </span>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none overflow-hidden shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div 
                         className="h-full bg-black dark:bg-white rounded-full"
                         style={{ width: `${((new Date().getMonth() + 1) / 12) * 100}%` }}
@@ -170,7 +170,7 @@ export function FeeSavingsDashboard({
                     </p>
                   </div>
 
-                  <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
+                  <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                     <div className="flex items-center gap-2 mb-2">
                       <CalendarBlank className="w-5 h-5 text-black dark:text-white" />
                       <span className="font-semibold text-black dark:text-white">
@@ -202,7 +202,7 @@ export function FeeSavingsDashboard({
                 What You Could Do With Your Savings
               </h4>
               <div className="grid gap-2 md:grid-cols-3">
-                <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded">
+                <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <div className="font-semibold text-black dark:text-white">
                     ${(homeadvisorSavings / 12).toFixed(0)}/month
                   </div>
@@ -210,7 +210,7 @@ export function FeeSavingsDashboard({
                     New truck payment
                   </div>
                 </div>
-                <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded">
+                <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <div className="font-semibold text-black dark:text-white">
                     ${homeadvisorSavings.toLocaleString()}
                   </div>
@@ -218,7 +218,7 @@ export function FeeSavingsDashboard({
                     Family vacation
                   </div>
                 </div>
-                <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded">
+                <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <div className="font-semibold text-black dark:text-white">
                     ${fiveYearSavings.toLocaleString()}
                   </div>

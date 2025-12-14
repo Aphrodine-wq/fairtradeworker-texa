@@ -21,18 +21,18 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Job Cost Calculator",
       description: "Calculate profit margins and hourly rates instantly",
       icon: Calculator,
-      color: "bg-blue-500/10",
-      borderColor: "border-blue-500/20",
-      iconBg: "bg-blue-500"
+      color: "bg-white dark:bg-black",
+      borderColor: "border-black dark:border-white",
+      iconBg: "bg-black dark:bg-white"
     },
     {
       id: "warranty-tracker",
       name: "Warranty Tracker",
       description: "Never lose track of warranties you've given",
       icon: ShieldCheck,
-      color: "bg-green-500/10",
-      borderColor: "border-green-500/20",
-      iconBg: "bg-green-500"
+      color: "bg-white dark:bg-black",
+      borderColor: "border-black dark:border-white",
+      iconBg: "bg-[#00FF00] dark:bg-[#00FF00]"
     },
     {
       id: "quick-notes",
@@ -51,9 +51,9 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       name: "Saved Contractors",
       description: "Quick access to your trusted contractors",
       icon: Heart,
-      color: "bg-pink-500/10",
-      borderColor: "border-pink-500/20",
-      iconBg: "bg-pink-500"
+      color: "bg-white dark:bg-black",
+      borderColor: "border-black dark:border-white",
+      iconBg: "bg-black dark:bg-white"
     },
     {
       id: "quick-notes",
@@ -72,7 +72,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 rounded-2xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
             <Sparkle weight="fill" className="text-black dark:text-white" size={32} />
           </div>
         </div>
@@ -92,7 +92,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
               onClick={() => onToolSelect(tool.id)}
             >
               <div className="flex flex-col h-full">
-                <div className={`w-16 h-16 rounded-2xl ${tool.iconBg} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-16 h-16 rounded-none ${tool.iconBg} border-2 border-black dark:border-white flex items-center justify-center mb-6 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] group-hover:scale-110 transition-transform duration-200`}>
                   <Icon weight="fill" className="text-black dark:text-white" size={32} />
                 </div>
                 
@@ -118,7 +118,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
         })}
       </div>
 
-      <Card className="max-w-4xl mx-auto mt-8 p-6 bg-primary/5 border-primary/20 dark:bg-transparent dark:border-white/10">
+      <Card className="max-w-4xl mx-auto mt-8 p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
         <div className="flex items-start gap-4">
           <div className="text-3xl">💡</div>
           <div>

@@ -94,7 +94,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
                 key={currentIndex}
                 src={images[currentIndex]}
                 alt={`Photo ${currentIndex + 1}`}
-                className="max-w-full max-h-full object-contain rounded-lg"
+                className="max-w-full max-h-full object-contain rounded-none border-2 border-white dark:border-black"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}

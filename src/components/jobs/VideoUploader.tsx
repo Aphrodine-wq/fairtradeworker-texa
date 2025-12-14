@@ -179,7 +179,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
       <Card>
         <CardContent className="p-6 space-y-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-none bg-[#00FF00] border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <Check className="text-white" size={24} weight="bold" />
             </div>
             <div className="flex-1">
@@ -237,7 +237,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
                   <button
                     key={index}
                     onClick={() => setSelectedThumbnailIndex(index)}
-                    className={`relative rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`relative rounded-none overflow-hidden border-2 border-black dark:border-white transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
                       selectedThumbnailIndex === index
                         ? 'border-primary ring-2 ring-primary ring-offset-2'
                         : 'border-border hover:border-primary/50'
@@ -245,7 +245,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
                   >
                     <img src={thumb} alt={`Frame ${index + 1}`} className="w-20 h-20 object-cover" />
                     {selectedThumbnailIndex === index && (
-                      <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black dark:bg-white flex items-center justify-center border-2 border-black dark:border-white">
                         <Check className="text-white" size={24} weight="bold" />
                       </div>
                     )}

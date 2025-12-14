@@ -67,10 +67,10 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white">
+      <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white text-black dark:text-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="bg-white dark:bg-black border border-black/10 dark:border-white/10 p-3 rounded-lg">
+            <div className="bg-white dark:bg-black border-2 border-black dark:border-white p-3 rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <Hammer size={24} weight="bold" className="text-black dark:text-white" />
             </div>
             <div>
@@ -80,11 +80,11 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold">${totalEarnings}</div>
-            <div className="text-sm opacity-90">Total Earned</div>
+            <div className="text-sm text-black dark:text-white font-mono">Total Earned</div>
           </div>
         </div>
 
-        <div className="space-y-4 pt-4 border-t border-black/10 dark:border-white/10">
+        <div className="space-y-4 pt-4 border-t-2 border-black dark:border-white">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="buddy-name" className="text-black dark:text-white">Buddy's Name</Label>
@@ -93,7 +93,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
                 value={buddyName}
                 onChange={(e) => setBuddyName(e.target.value)}
                 placeholder="Carlos"
-                className="mt-1.5 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white placeholder:text-black/50 dark:placeholder:text-white/50"
+                className="mt-1.5 bg-white dark:bg-black border-2 border-black dark:border-white text-black dark:text-white placeholder:text-black dark:placeholder:text-white font-mono"
               />
             </div>
             <div>
@@ -104,7 +104,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
                 value={buddyPhone}
                 onChange={(e) => setBuddyPhone(e.target.value)}
                 placeholder="(512) 555-0123"
-                className="mt-1.5 bg-white dark:bg-black border border-black/10 dark:border-white/10 text-black dark:text-white placeholder:text-black/50 dark:placeholder:text-white/50"
+                className="mt-1.5 bg-white dark:bg-black border-2 border-black dark:border-white text-black dark:text-white placeholder:text-black dark:placeholder:text-white font-mono"
               />
             </div>
           </div>
@@ -125,7 +125,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
           <h4 className="font-heading text-lg font-semibold mb-4">Your Referrals</h4>
           <div className="space-y-3">
             {userReferrals.map((referral) => (
-              <div key={referral.id} className="flex items-center justify-between p-4 bg-muted rounded-lg">
+              <div key={referral.id} className="flex items-center justify-between p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <div>
                   <p className="font-medium">{referral.refereeName}</p>
                   <p className="text-sm text-muted-foreground">{referral.phone}</p>

@@ -61,7 +61,7 @@ export function MilestonePaymentDialog({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-        <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+        <div className="px-8 pt-6 pb-4 border-b-2 border-black dark:border-white flex-shrink-0">
           <DialogHeader className="text-left">
             <DialogTitle className="text-2xl">Pay Milestone</DialogTitle>
             <DialogDescription>
@@ -100,7 +100,7 @@ export function MilestonePaymentDialog({
                     </div>
                   )}
                   {milestone.notes && (
-                    <div className="p-3 bg-background rounded-lg border text-xs">
+                    <div className="p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white text-xs font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <p className="text-muted-foreground mb-1 font-medium">Completion Notes:</p>
                       <p>{milestone.notes}</p>
                     </div>
@@ -127,7 +127,7 @@ export function MilestonePaymentDialog({
               </CardContent>
             </Card>
 
-            <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+            <div className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none space-y-2 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <div className="flex items-start gap-2">
                 <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={16} weight="fill" />
                 <div className="text-xs text-muted-foreground space-y-1">
@@ -169,8 +169,8 @@ export function MilestonePaymentDialog({
             <button
               type="button"
               onClick={() => setPaymentMethod('new')}
-              className={`w-full p-4 border rounded-lg text-left transition-colors ${
-                paymentMethod === 'new' ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+              className={`w-full p-4 border-2 border-black dark:border-white rounded-none text-left transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
+                paymentMethod === 'new' ? 'bg-black dark:bg-white text-white dark:text-black' : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -301,10 +301,10 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
                   key={num}
                   type="button"
                   onClick={() => setNumberOfPayments(num)}
-                  className={`p-3 border rounded-lg text-center transition-colors ${
+                  className={`p-3 border-2 border-black dark:border-white rounded-none text-center transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
                     numberOfPayments === num 
-                      ? 'border-primary bg-primary/5 font-semibold' 
-                      : 'border-border hover:border-primary/50'
+                      ? 'bg-black dark:bg-white text-white dark:text-black font-black uppercase' 
+                      : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
                   }`}
                 >
                   {num} payments
@@ -342,7 +342,7 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
           </div>
         </div>
 
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
           <CardContent className="pt-4 space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Job Amount</span>
@@ -368,9 +368,9 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
         <div className="space-y-2">
           <p className="text-sm font-medium">Payment Schedule</p>
           {generatePaymentSchedule().map((payment, idx) => (
-            <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
+            <div key={idx} className="flex items-center justify-between p-3 border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-primary/10 rounded-full">
+                <div className="p-2 bg-black dark:bg-white border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Calendar size={18} className="text-primary" />
                 </div>
                 <div>

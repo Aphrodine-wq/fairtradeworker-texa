@@ -87,7 +87,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
     <>
       <div className="space-y-6">
         <div className="grid gap-4 md:grid-cols-3">
-          <Card className="border border-black/10 dark:border-white/10">
+          <Card className="border-2 border-black dark:border-white">
             <CardHeader className="pb-3">
               <CardDescription>Available Balance</CardDescription>
               <CardTitle className="text-3xl font-bold text-black dark:text-white">
@@ -142,7 +142,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
             <CardDescription>Manage your payout destination</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center justify-between p-4 border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-full">
                   <Bank size={24} weight="fill" className="text-primary" />
@@ -158,7 +158,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
               </div>
               <div className="flex items-center gap-2">
                 {bankDetails.verified && (
-                  <Badge variant="outline" className="bg-green-500/10 text-green-700 border-green-500/20">
+                  <Badge variant="outline" className="bg-[#00FF00] text-black border-2 border-black dark:border-white">
                     <CheckCircle className="mr-1" size={14} weight="fill" />
                     Verified
                   </Badge>
@@ -177,7 +177,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                 </p>
               </div>
               {user.isPro ? (
-                <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg space-y-2">
+                <div className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none space-y-2 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <div className="flex items-center gap-2">
                     <Lightning size={18} weight="fill" className="text-primary" />
                     <h4 className="font-semibold text-sm">Instant Payout</h4>
@@ -217,9 +217,9 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                 { date: '2024-03-10', amount: 1870, method: 'standard', status: 'completed' },
                 { date: '2024-03-05', amount: 3200, method: 'instant', status: 'completed' },
               ].map((payout, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 border rounded-lg">
+                <div key={idx} className="flex items-center justify-between p-3 border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-full ${payout.method === 'instant' ? 'bg-white dark:bg-black border border-black/10 dark:border-white/10' : 'bg-white dark:bg-black border border-black/10 dark:border-white/10'}`}>
+                    <div className={`p-2 rounded-none border-2 border-black dark:border-white ${payout.method === 'instant' ? 'bg-black dark:bg-white' : 'bg-white dark:bg-black'}`}>
                       {payout.method === 'instant' ? (
                         <Lightning size={18} weight="fill" className="text-primary" />
                       ) : (
@@ -237,7 +237,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                       </p>
                     </div>
                   </div>
-                  <Badge variant="outline" className="bg-green-500/10 text-green-700 border-green-500/20">
+                  <Badge variant="outline" className="bg-[#00FF00] text-black border-2 border-black dark:border-white">
                     <CheckCircle className="mr-1" size={12} weight="fill" />
                     Completed
                   </Badge>
@@ -286,8 +286,8 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                   <button
                     type="button"
                     onClick={() => setInstantPayout(false)}
-                    className={`p-4 border rounded-lg text-left transition-colors ${
-                      !instantPayout ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'
+                    className={`p-4 border-2 border-black dark:border-white rounded-none text-left transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
+                      !instantPayout ? 'bg-white dark:bg-black' : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -331,7 +331,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
             )}
 
             {payoutAmount && parseFloat(payoutAmount) > 0 && (
-              <Card className="border-primary/20 bg-primary/5">
+              <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
                 <CardContent className="pt-4 space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Transfer Amount</span>
@@ -409,7 +409,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
                 id="accountType"
                 value={bankDetails.accountType}
                 onChange={(e) => setBankDetails(prev => ({ ...prev, accountType: e.target.value as 'checking' | 'savings' }))}
-                className="w-full h-10 px-3 rounded-md border border-black/10 dark:border-white/10 bg-white dark:bg-black"
+                className="w-full h-10 px-3 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono"
               >
                 <option value="checking">Checking</option>
                 <option value="savings">Savings</option>

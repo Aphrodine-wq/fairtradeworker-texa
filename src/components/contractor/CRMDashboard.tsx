@@ -78,13 +78,13 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'lead':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'completed':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'advocate':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
     }
   }
 
@@ -113,19 +113,19 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-6 dark:bg-transparent dark:border-white/10">
+          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{myCustomers.length}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Total Customers</div>
           </Card>
-          <Card className="p-6 dark:bg-transparent dark:border-white/10">
+          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{activeCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Active</div>
           </Card>
-          <Card className="p-6 dark:bg-transparent dark:border-white/10">
+          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{leadCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Leads</div>
           </Card>
-          <Card className="p-6 dark:bg-transparent dark:border-white/10">
+          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{completedCount}</div>
             <div className="text-sm text-muted-foreground dark:text-white/70">Completed</div>
           </Card>
@@ -136,7 +136,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         <InstantInvite user={user} />
 
         {myCustomers.length > 0 && (
-          <Card className="p-4 dark:bg-transparent dark:border-white/10">
+          <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
@@ -144,11 +144,11 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                   placeholder="Search customers by name, email, phone, or notes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 dark:bg-transparent dark:text-white dark:border-white/20"
+                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px] dark:bg-transparent dark:text-white dark:border-white/20">
+                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white">
                   <Funnel weight="duotone" className="mr-2" size={16} />
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -166,7 +166,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
       </div>
 
       {myCustomers.length === 0 ? (
-        <Card className="max-w-2xl mx-auto dark:bg-transparent dark:border-white/10">
+        <Card className="max-w-2xl mx-auto bg-white dark:bg-black border-2 border-black dark:border-white">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Users size={64} weight="duotone" className="text-muted-foreground mb-4 dark:text-white/50" />
             <h3 className="text-xl font-semibold mb-2 dark:text-white">No customers yet</h3>
@@ -193,7 +193,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
             <Dialog key={customer.id}>
               <DialogTrigger asChild>
                 <Card
-                  className="cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 dark:bg-transparent dark:border-white/10 dark:hover:border-white/20"
+                  className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:translate-y-[-4px] transition-all duration-200 bg-white dark:bg-black border-2 border-black dark:border-white"
                   onClick={() => {
                     setSelectedCustomer(customer)
                     setNotes(customer.notes || "")
@@ -228,7 +228,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="dark:bg-black dark:border-white/20">
+              <DialogContent className="bg-white dark:bg-black border-4 border-black dark:border-white">
                 <DialogHeader>
                   <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
                   <DialogDescription className="dark:text-white/70">Customer details and notes</DialogDescription>
