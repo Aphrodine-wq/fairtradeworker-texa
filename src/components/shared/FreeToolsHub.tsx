@@ -72,7 +72,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+          <div className="w-16 h-16 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
             <Sparkle weight="fill" className="text-black dark:text-white" size={32} />
           </div>
         </div>
@@ -92,7 +92,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
               onClick={() => onToolSelect(tool.id)}
             >
               <div className="flex flex-col h-full">
-                <div className={`w-16 h-16 rounded-none ${tool.iconBg} border-2 border-black dark:border-white flex items-center justify-center mb-6 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] group-hover:scale-110 transition-transform duration-200`}>
+                <div className={`w-16 h-16 rounded-md ${tool.iconBg} border border-black/20 dark:border-white/20 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-200`}>
                   <Icon weight="fill" className="text-black dark:text-white" size={32} />
                 </div>
                 
@@ -118,7 +118,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
         })}
       </div>
 
-      <Card className="max-w-4xl mx-auto mt-8 p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+      <Card className="max-w-4xl mx-auto mt-8 p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
         <div className="flex items-start gap-4">
           <div className="text-3xl">💡</div>
           <div>

@@ -217,11 +217,11 @@ export function DocumentManager({ user }: { user: User }) {
             {subFolders.map(folder => (
               <Card
                 key={folder.id}
-                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all cursor-pointer bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all cursor-pointer bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
                 onClick={() => setCurrentFolderId(folder.id)}
               >
                 <CardContent className="p-6 flex flex-col items-center text-center">
-                  <div className="p-4 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white mb-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                  <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 mb-3 shadow-sm">
                     <Folder size={32} weight="duotone" className="text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="font-semibold text-black dark:text-white truncate w-full">
@@ -238,11 +238,11 @@ export function DocumentManager({ user }: { user: User }) {
             {filteredDocuments.map(doc => (
               <Card
                 key={doc.id}
-                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                    <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex-shrink-0 shadow-sm">
                       <File size={24} weight="duotone" className="text-muted-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">

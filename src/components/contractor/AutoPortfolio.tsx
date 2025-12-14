@@ -171,7 +171,7 @@ Keep it professional but conversational. Focus on value delivered.`
       </div>
 
       {availableJobs.length > 0 && (
-        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+        <Card className="border border-black/20 dark:border-white/20 bg-white dark:bg-black shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Sparkle className="h-5 w-5 text-primary" />
@@ -183,7 +183,7 @@ Keep it professional but conversational. Focus on value delivered.`
           </CardHeader>
           <CardContent className="space-y-3">
             {availableJobs.slice(0, 3).map(job => (
-              <div key={job.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+              <div key={job.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
                 <div className="flex-1">
                   <div className="font-medium">{job.title}</div>
                   <div className="text-sm text-black dark:text-white">

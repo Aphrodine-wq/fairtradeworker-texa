@@ -103,7 +103,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             {/* Available Now Toggle */}
-            <div className="flex items-center gap-3 px-4 py-2 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black shadow-sm">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
                   <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
@@ -117,7 +117,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               />
             </div>
             {user.isPro && (
-              <Badge className="bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white px-4 py-2 text-base font-black uppercase">
+              <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 px-4 py-2 text-base font-semibold">
                 <Crown weight="fill" className="mr-2" />
                 PRO Member
               </Badge>
@@ -152,7 +152,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             </CardContent>
           </Card>
 
-          <Card className={user.referralEarnings > 0 ? "border-2 border-black/10 dark:border-white/10" : ""}>
+          <Card className={user.referralEarnings > 0 ? "border border-black/20/10 dark:border-white/10" : ""}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Referral Earnings
@@ -186,7 +186,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         </div>
         
         {feesSaved > 0 && (
-          <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
+          <Card className="border border-black/20/10 dark:border-white/10 bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -206,7 +206,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         {!user.isPro && (
-          <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
+          <Card className="border border-black/20/10 dark:border-white/10 bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <h3 className="text-xl font-semibold mb-2">Upgrade to Pro</h3>

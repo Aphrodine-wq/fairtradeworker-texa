@@ -18,7 +18,7 @@ interface BrutalistGlassCardProps extends ComponentProps<"div"> {
  * - Glass variant uses rgba(255,255,255,0.2) + 2px blur
  * - Hard 2px borders with #000000
  * - Shadow: 0 4px 6px rgba(0,0,0,0.1) for glass
- * - No rounded corners (rounded-none)
+ * - No rounded corners (rounded-md)
  */
 function BrutalistGlassCard({ 
   className, 
@@ -36,12 +36,12 @@ function BrutalistGlassCard({
           "bg-glass-light dark:bg-glass-dark",
           // Subtle 2px blur (Pro only)
           "backdrop-blur-xs",
-          // Hard brutalist border
-          "border-2 border-black dark:border-white",
+          // Subtle border
+          "border border-black/10 dark:border-white/10",
           // Glass shadow (soft, not hard pixel shadow)
-          "shadow-glass",
-          // No rounded corners
-          "rounded-none",
+          "shadow-sm hover:shadow-md",
+          // Rounded corners
+          "rounded-lg",
           // Layout
           "flex flex-col gap-5 py-5 px-5",
           // Transitions
@@ -61,10 +61,10 @@ function BrutalistGlassCard({
       data-slot="card"
       className={cn(
         "bg-white dark:bg-black text-black dark:text-white",
-        "flex flex-col gap-5 rounded-none py-5 border-2 border-black dark:border-white",
-        "shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]",
+        "flex flex-col gap-5 rounded-lg py-5 border border-black/10 dark:border-white/10",
+        "shadow-sm",
         "transition-all duration-200",
-        "hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff]",
+        "hover:shadow-md",
         "relative overflow-hidden",
         className
       )}

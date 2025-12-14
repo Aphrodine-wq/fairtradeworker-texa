@@ -200,7 +200,7 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
                   <div className="mt-4 grid grid-cols-3 gap-4">
                     {photos.map((photo, idx) => (
                       <div key={idx} className="relative">
-                        <img src={photo} alt={`Discovery ${idx + 1}`} className="w-full h-32 object-cover border-2 border-black dark:border-white" />
+                        <img src={photo} alt={`Discovery ${idx + 1}`} className="w-full h-32 object-cover border border-black/20 dark:border-white/20" />
                         <Button
                           size="sm"
                           variant="ghost"
@@ -264,7 +264,7 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {jobChangeOrders.map((co) => (
-              <div key={co.id} className="p-4 border-2 border-black dark:border-white">
+              <div key={co.id} className="p-4 border border-black/20 dark:border-white/20">
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p className="font-semibold text-black dark:text-white">

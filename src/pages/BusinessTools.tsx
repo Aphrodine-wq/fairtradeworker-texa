@@ -341,7 +341,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
           {/* Category Tabs */}
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 md:grid-cols-7 bg-white dark:bg-black border-2 border-black dark:border-white">
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 md:grid-cols-7 bg-white dark:bg-black border border-black/20 dark:border-white/20">
               {categories.map(cat => (
                 <TabsTrigger 
                   key={cat.id} 

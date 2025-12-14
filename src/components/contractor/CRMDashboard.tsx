@@ -78,13 +78,13 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'lead':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'completed':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'advocate':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
     }
   }
 
@@ -113,19 +113,19 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{myCustomers.length}</div>
             <div className="text-sm text-black dark:text-white dark:text-white/70">Total Customers</div>
           </Card>
-          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{activeCount}</div>
             <div className="text-sm text-black dark:text-white dark:text-white/70">Active</div>
           </Card>
-          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{leadCount}</div>
             <div className="text-sm text-black dark:text-white dark:text-white/70">Leads</div>
           </Card>
-          <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{completedCount}</div>
             <div className="text-sm text-black dark:text-white dark:text-white/70">Completed</div>
           </Card>
@@ -136,7 +136,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         <InstantInvite user={user} />
 
         {myCustomers.length > 0 && (
-          <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black dark:text-white" size={20} weight="duotone" />
@@ -144,11 +144,11 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                   placeholder="Search customers by name, email, phone, or notes..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white"
+                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white">
+                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20">
                   <Funnel weight="duotone" className="mr-2" size={16} />
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -166,7 +166,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
       </div>
 
       {myCustomers.length === 0 ? (
-        <Card className="max-w-2xl mx-auto bg-white dark:bg-black border-2 border-black dark:border-white">
+        <Card className="max-w-2xl mx-auto bg-white dark:bg-black border border-black/20 dark:border-white/20">
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Users size={64} weight="duotone" className="text-black dark:text-white mb-4 dark:text-white/50" />
             <h3 className="text-xl font-semibold mb-2 dark:text-white">No customers yet</h3>
@@ -193,7 +193,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
             <Dialog key={customer.id}>
               <DialogTrigger asChild>
                 <Card
-                  className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:translate-y-[-4px] transition-all duration-200 bg-white dark:bg-black border-2 border-black dark:border-white"
+                  className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:translate-y-[-4px] transition-all duration-200 bg-white dark:bg-black border border-black/20 dark:border-white/20"
                   onClick={() => {
                     setSelectedCustomer(customer)
                     setNotes(customer.notes || "")
@@ -228,7 +228,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                   </CardContent>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="bg-white dark:bg-black border-4 border-black dark:border-white">
+              <DialogContent className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
                 <DialogHeader>
                   <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
                   <DialogDescription className="dark:text-white/70">Customer details and notes</DialogDescription>
@@ -236,7 +236,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
                     <Label className="dark:text-white">Contact</Label>
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg dark:bg-transparent dark:border-2 border-black dark:border-white">
+                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg dark:bg-transparent dark:border border-black/20 dark:border-white/20">
                       {customer.invitedVia === 'email' ? (
                         <>
                           <EnvelopeSimple weight="duotone" size={20} className="dark:text-white" />
@@ -309,7 +309,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                         </div>
                       </>
                     ) : (
-                      <div className="text-sm p-3 bg-muted rounded-lg min-h-[80px] dark:bg-transparent dark:border-2 border-black dark:border-white dark:text-white/80">
+                      <div className="text-sm p-3 bg-muted rounded-lg min-h-[80px] dark:bg-transparent dark:border border-black/20 dark:border-white/20 dark:text-white/80">
                         {customer.notes || "No notes yet"}
                       </div>
                     )}

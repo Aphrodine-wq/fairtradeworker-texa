@@ -257,7 +257,7 @@ Provide JSON response:
                 </div>
 
                 {prediction && (
-                  <Card glass={isPro} className="border-2 border-black dark:border-white">
+                  <Card glass={isPro} className="border border-black/20 dark:border-white/20">
                     <CardHeader>
                       <CardTitle className="text-lg">AI Prediction</CardTitle>
                     </CardHeader>
@@ -266,7 +266,7 @@ Provide JSON response:
                         <div>
                           <p className="text-sm text-black dark:text-white mb-1">Win Probability</p>
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-white dark:bg-black border-2 border-black dark:border-white h-6">
+                            <div className="flex-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
                               <div 
                                 className="h-full bg-[#00FF00] dark:bg-[#00FF00]"
                                 style={{ width: `${prediction.winProbability * 100}%` }}
@@ -292,7 +292,7 @@ Provide JSON response:
                       </div>
                       <div>
                         <p className="text-sm text-black dark:text-white mb-2">AI Reasoning</p>
-                        <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border-2 border-black dark:border-white">
+                        <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
                           {prediction.reasoning}
                         </p>
                       </div>

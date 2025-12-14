@@ -53,7 +53,7 @@ export function ReferralCodeCard({ code, userName, earnings, usedCount }: Referr
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex-1 bg-background border-2 border-black dark:border-white rounded-lg px-4 py-3">
+          <div className="flex-1 bg-background border border-black/20 dark:border-white/20 rounded-lg px-4 py-3">
             <p className="text-2xl font-heading font-bold tracking-wider text-black dark:text-white">{code}</p>
           </div>
         </div>

@@ -132,7 +132,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Won</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border-2 border-black dark:border-white h-6">
+                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
                       <div 
                         className="h-full bg-green-600 dark:bg-green-400"
                         style={{ width: `${(analytics.won / analytics.totalBids) * 100}%` }}
@@ -144,7 +144,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Lost</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border-2 border-black dark:border-white h-6">
+                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
                       <div 
                         className="h-full bg-red-600 dark:bg-red-400"
                         style={{ width: `${(analytics.lost / analytics.totalBids) * 100}%` }}
@@ -156,7 +156,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Pending</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border-2 border-black dark:border-white h-6">
+                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
                       <div 
                         className="h-full bg-yellow-600 dark:bg-yellow-400"
                         style={{ width: `${(analytics.pending / analytics.totalBids) * 100}%` }}
@@ -166,7 +166,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                   </div>
                 </div>
               </div>
-              <div className="p-4 border-2 border-black dark:border-white mt-4">
+              <div className="p-4 border border-black/20 dark:border-white/20 mt-4">
                 <p className="text-sm font-semibold text-black dark:text-white mb-2">Average Bid Amount</p>
                 <p className="text-2xl font-bold text-black dark:text-white">
                   ${analytics.avgBidAmount.toLocaleString()}
@@ -183,7 +183,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="p-4 border-2 border-black dark:border-white">
+                <div className="p-4 border border-black/20 dark:border-white/20">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />
@@ -197,7 +197,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                     Lightning fast responses have the highest win rate
                   </p>
                 </div>
-                <div className="p-4 border-2 border-black dark:border-white">
+                <div className="p-4 border border-black/20 dark:border-white/20">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />
@@ -208,7 +208,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                     </span>
                   </div>
                 </div>
-                <div className="p-4 border-2 border-black dark:border-white">
+                <div className="p-4 border border-black/20 dark:border-white/20">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />

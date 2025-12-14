@@ -21,7 +21,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white flex h-full w-full flex-col overflow-hidden rounded-none shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]",
+        "bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 flex h-full w-full flex-col overflow-hidden rounded-lg shadow-sm",
         className
       )}
       {...props}
@@ -66,7 +66,7 @@ function CommandInput({
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
-          "placeholder:text-black dark:placeholder:text-white flex h-10 w-full rounded-none bg-white dark:bg-black py-3 text-sm font-mono outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+          "placeholder:text-black/60 dark:placeholder:text-white/60 flex h-10 w-full rounded-md bg-white dark:bg-black py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
@@ -140,7 +140,7 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "data-[selected=true]:bg-black dark:data-[selected=true]:bg-white data-[selected=true]:text-white dark:data-[selected=true]:text-black [&_svg:not([class*='text-'])]:text-black dark:[&_svg:not([class*='text-'])]:text-white relative flex cursor-default items-center gap-2 rounded-none px-2 py-1.5 text-sm font-mono outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "data-[selected=true]:bg-black/10 dark:data-[selected=true]:bg-white/10 data-[selected=true]:text-black dark:data-[selected=true]:text-white [&_svg:not([class*='text-'])]:text-black dark:[&_svg:not([class*='text-'])]:text-white relative flex cursor-default items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

@@ -138,7 +138,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[600px]">
             {/* Threads List */}
-            <div className="border-2 border-black dark:border-white overflow-y-auto">
+            <div className="border border-black/20 dark:border-white/20 overflow-y-auto">
               <div className="p-2 space-y-2">
                 {threads.length === 0 ? (
                   <p className="text-center text-black dark:text-white py-8 text-sm">
@@ -180,7 +180,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
             </div>
 
             {/* Messages */}
-            <div className="md:col-span-2 flex flex-col border-2 border-black dark:border-white">
+            <div className="md:col-span-2 flex flex-col border border-black/20 dark:border-white/20">
               {currentThread ? (
                 <>
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">

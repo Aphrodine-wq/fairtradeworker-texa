@@ -144,7 +144,7 @@ export function CustomFieldsTags({ user }: CustomFieldsTagsProps) {
               {customFields.map((field) => (
                 <div
                   key={field.id}
-                  className="p-4 border-2 border-black dark:border-white flex items-center justify-between"
+                  className="p-4 border border-black/20 dark:border-white/20 flex items-center justify-between"
                 >
                   <div>
                     <h3 className="font-semibold text-black dark:text-white">{field.name}</h3>

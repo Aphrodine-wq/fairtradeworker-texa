@@ -168,15 +168,15 @@ export function LeadImportAutoBid({ user }: LeadImportAutoBidProps) {
 
           {importedLeads.length > 0 && (
             <div className="grid grid-cols-3 gap-4">
-              <div className="p-4 border-2 border-black dark:border-white text-center">
+              <div className="p-4 border border-black/20 dark:border-white/20 text-center">
                 <p className="text-2xl font-bold text-black dark:text-white">{newLeads.length}</p>
                 <p className="text-sm text-black dark:text-white">New Leads</p>
               </div>
-              <div className="p-4 border-2 border-black dark:border-white text-center">
+              <div className="p-4 border border-black/20 dark:border-white/20 text-center">
                 <p className="text-2xl font-bold text-black dark:text-white">{processed.length}</p>
                 <p className="text-sm text-black dark:text-white">Processed</p>
               </div>
-              <div className="p-4 border-2 border-black dark:border-white text-center">
+              <div className="p-4 border border-black/20 dark:border-white/20 text-center">
                 <p className="text-2xl font-bold text-black dark:text-white">{duplicates.length}</p>
                 <p className="text-sm text-black dark:text-white">Duplicates</p>
               </div>
@@ -206,7 +206,7 @@ export function LeadImportAutoBid({ user }: LeadImportAutoBidProps) {
               {importedLeads.map((lead) => (
                 <div
                   key={lead.id}
-                  className="p-4 border-2 border-black dark:border-white flex items-start justify-between"
+                  className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between"
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">

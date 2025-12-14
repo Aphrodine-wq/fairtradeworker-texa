@@ -227,7 +227,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
               ) : (
                 <div className="space-y-3">
                   {proContractors.map(contractor => (
-                    <div key={contractor.id} className="flex items-center justify-between p-4 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                    <div key={contractor.id} className="flex items-center justify-between p-4 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
                       <div>
                         <p className="font-semibold">{contractor.fullName}</p>
                         <p className="text-sm text-black dark:text-white">
@@ -268,7 +268,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                     const operatorShare = territoryFees * 0.1
                     
                     return (
-                      <div key={territory.id} className="flex items-center justify-between p-4 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                      <div key={territory.id} className="flex items-center justify-between p-4 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
                         <div>
                           <p className="font-semibold">{territory.countyName}</p>
                           <p className="text-sm text-black dark:text-white">
@@ -295,7 +295,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       <Card glass={isPro}>
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="p-3 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-3 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 shadow-sm">
               <TrendUp size={24} weight="duotone" className="text-primary" />
             </div>
             <div className="flex-1">

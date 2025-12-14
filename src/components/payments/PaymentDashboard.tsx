@@ -249,7 +249,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
             <CardContent>
               <div className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="p-4 border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                  <div className="p-4 border border-black/20 dark:border-white/20 rounded-md shadow-sm">
                     <p className="text-sm text-muted-foreground mb-1">FairTradeWorker</p>
                     <p className="text-2xl font-bold text-black dark:text-white">0%</p>
                     <p className="text-xs text-muted-foreground mt-1">Contractor fees</p>
@@ -266,7 +266,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                   </div>
                 </div>
 
-                <div className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
                   <div className="flex items-start gap-3">
                     <CheckCircle className="text-black dark:text-white flex-shrink-0 mt-0.5" size={20} weight="fill" />
                     <div className="space-y-1">
@@ -296,9 +296,9 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
             <CardContent>
               <div className="space-y-3">
                 {recentTransactions.map((transaction) => (
-                  <div key={transaction.id} className="flex items-center justify-between p-4 border-2 border-black dark:border-white rounded-none hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all">
+                  <div key={transaction.id} className="flex items-center justify-between p-4 border border-black/20 dark:border-white/20 rounded-md hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all">
                     <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-none border-2 border-black dark:border-white ${
+                      <div className={`p-3 rounded-md border border-black/20 dark:border-white/20 ${
                         transaction.type === 'payout' ? 'bg-white dark:bg-black' :
                         transaction.type === 'payment' ? 'bg-[#00FF00] dark:bg-[#00FF00]' :
                         'bg-[#FFFF00] dark:bg-[#FFFF00]'
@@ -338,9 +338,9 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
                         <Badge 
                           variant="outline" 
                           className={`text-xs ${
-                            transaction.status === 'completed' ? 'bg-[#00FF00] text-black border-2 border-black dark:border-white' :
-                            transaction.status === 'pending' ? 'bg-[#FFFF00] text-black border-2 border-black dark:border-white' :
-                            'bg-[#FF0000] text-white border-2 border-black dark:border-white'
+                            transaction.status === 'completed' ? 'bg-[#00FF00] text-black border border-black/20 dark:border-white/20' :
+                            transaction.status === 'pending' ? 'bg-[#FFFF00] text-black border border-black/20 dark:border-white/20' :
+                            'bg-[#FF0000] text-white border border-black/20 dark:border-white/20'
                           }`}
                         >
                           {transaction.status === 'completed' && <CheckCircle className="mr-1" size={10} weight="fill" />}

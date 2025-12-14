@@ -33,7 +33,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
   
   return (
     <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
-      <Card className="border-2 border-black/10 dark:border-white/10">
+      <Card className="border border-black/20/10 dark:border-white/10">
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
             <CheckCircle weight="fill" className="text-black dark:text-white" size={32} />
@@ -52,7 +52,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
           
           {/* Smart Title Suggestion */}
           {hasSuggestedTitle && (
-            <Card className="border-2 border-black/10 dark:border-white/10 bg-white dark:bg-black">
+            <Card className="border border-black/20/10 dark:border-white/10 bg-white dark:bg-black">
               <CardContent className="pt-6 space-y-4">
                 <div className="flex items-center gap-2 text-black dark:text-white">
                   <Sparkle size={20} weight="fill" />

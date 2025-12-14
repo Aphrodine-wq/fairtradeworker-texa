@@ -88,7 +88,7 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] group h-full flex flex-col ${isFresh ? "border-black dark:border-white border-2 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]" : ""}`}>
+    <Card className={`overflow-hidden transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] group h-full flex flex-col ${isFresh ? "border-black dark:border-white border-2 shadow-sm" : ""}`}>
       {/* Accent line on hover */}
       <div className="absolute top-0 left-0 right-0 h-2 bg-black dark:bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       
@@ -607,7 +607,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
                   {/* Save as Template Option */}
                   {user.role === 'contractor' && bidMessage.trim() && (
-                    <div className="space-y-3 p-4 rounded-lg border-2 border-black/10 dark:border-white/20 bg-white dark:bg-black">
+                    <div className="space-y-3 p-4 rounded-lg border border-black/20/10 dark:border-white/20 bg-white dark:bg-black">
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"

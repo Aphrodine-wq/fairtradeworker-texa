@@ -31,7 +31,7 @@ function Calendar({
         table: "w-full border-collapse space-x-1",
         head_row: "flex",
         head_cell:
-          "text-black dark:text-white rounded-none w-8 font-black uppercase text-[0.8rem] font-mono",
+          "text-black dark:text-white rounded-md w-8 font-semibold text-[0.8rem] font-mono",
         row: "flex w-full mt-2",
         cell: cn(
           "relative p-0 text-center text-sm font-mono focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-black dark:[&:has([aria-selected])]:bg-white [&:has([aria-selected])]:text-white dark:[&:has([aria-selected])]:text-black",
@@ -48,8 +48,8 @@ function Calendar({
         day_range_end:
           "day-range-end aria-selected:bg-black dark:aria-selected:bg-white aria-selected:text-white dark:aria-selected:text-black",
         day_selected:
-          "bg-black dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black border-2 border-black dark:border-white",
-        day_today: "bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white",
+          "bg-black dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black border border-black/20 dark:border-white/20",
+        day_today: "bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20",
         day_outside:
           "day-outside text-muted-foreground aria-selected:text-muted-foreground",
         day_disabled: "text-muted-foreground opacity-50",

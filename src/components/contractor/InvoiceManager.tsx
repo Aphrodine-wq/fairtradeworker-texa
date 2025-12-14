@@ -106,7 +106,7 @@ function SaveTemplateDialog({
             />
           </div>
 
-          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
             <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
             {customNotes && ', custom notes'}
           </div>
@@ -480,13 +480,13 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                       
                       <div className="mt-4 space-y-2">
                         {invoice.useCompanyLogo === false && (
-                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-2 rounded-none flex items-center gap-2 font-mono">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-2 rounded-md flex items-center gap-2 font-mono">
                             <ImageIcon size={14} weight="duotone" />
                             Using FairTradeWorker Texas generic logo
                           </div>
                         )}
                         {invoice.customNotes && (
-                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-2 rounded-none font-mono">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-2 rounded-md font-mono">
                             <strong>Notes:</strong> {invoice.customNotes}
                           </div>
                         )}
@@ -615,7 +615,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
             </div>
 
             {!user.companyLogo && (
-              <div className="text-sm text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-3 rounded-none font-mono">
+              <div className="text-sm text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-3 rounded-md font-mono">
                 💡 <strong>Tip:</strong> Add your company logo in settings to brand your invoices professionally.
                 For now, invoices will use the FairTradeWorker Texas logo to ensure tax compliance.
               </div>
@@ -688,7 +688,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                       </div>
                       <div className="space-y-1">
                         <Label className="text-xs">Total</Label>
-                        <div className="h-10 flex items-center px-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-black uppercase">
+                        <div className="h-10 flex items-center px-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-semibold">
                           {formatCurrency(item.total)}
                         </div>
                       </div>

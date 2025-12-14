@@ -129,13 +129,13 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
   const getStatusColor = (status: TradeBudget['status']) => {
     switch (status) {
       case 'complete':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'under':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'on-track':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
       case 'over':
-        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
     }
   }
   
@@ -170,7 +170,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
       <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <CurrencyDollar className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
@@ -181,7 +181,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Total Budget</div>
               <div className="text-2xl font-bold">
                 ${budgetData.totalBudget.toLocaleString()}
@@ -193,7 +193,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
               )}
             </div>
             
-            <div className="p-4 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Total Spent</div>
               <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalSpent.toLocaleString()}
@@ -203,7 +203,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
               </div>
             </div>
             
-            <div className="p-4 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Remaining</div>
               <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalRemaining.toLocaleString()}
@@ -228,7 +228,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
           </div>
           
           {budgetData.percentSpent > 90 && budgetData.totalRemaining > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="flex items-center gap-2 p-3 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <Warning className="w-5 h-5 text-black dark:text-white shrink-0" weight="fill" />
               <div className="text-sm text-black dark:text-white">
                 <span className="font-medium">Budget Alert:</span> You've spent {budgetData.percentSpent.toFixed(1)}% of the total budget
@@ -241,7 +241,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
               <Wrench className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
@@ -259,7 +259,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
           {tradeBreakdown.map((trade, idx) => (
             <div 
               key={idx}
-              className="p-4 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+              className="p-4 rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all shadow-sm"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
@@ -319,7 +319,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
               </div>
               
               {trade.status === 'over' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm font-mono">
                   <Warning className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
                   <span className="text-xs text-black dark:text-white">
                     This trade is approaching budget limit
@@ -328,7 +328,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
               )}
               
               {trade.status === 'complete' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm font-mono">
                   <CheckCircle className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
                   <span className="text-xs text-black dark:text-white">
                     All payments complete for this trade
@@ -344,7 +344,7 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
                 <TrendUp className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div>

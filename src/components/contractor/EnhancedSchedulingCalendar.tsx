@@ -130,10 +130,10 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'consultation': return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
-      case 'job': return 'bg-[#00FF00] dark:bg-[#00FF00] text-black border-2 border-black dark:border-white'
-      case 'follow-up': return 'bg-[#FFFF00] dark:bg-[#FFFF00] text-black border-2 border-black dark:border-white'
-      default: return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
+      case 'consultation': return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+      case 'job': return 'bg-[#00FF00] dark:bg-[#00FF00] text-black border border-black/20 dark:border-white/20'
+      case 'follow-up': return 'bg-[#FFFF00] dark:bg-[#FFFF00] text-black border border-black/20 dark:border-white/20'
+      default: return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
     }
   }
 
@@ -267,7 +267,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
 
           {/* View Tabs */}
           <Tabs value={view} onValueChange={(v: any) => setView(v)}>
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white dark:bg-black border-2 border-black dark:border-white">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
               <TabsTrigger value="month">Month</TabsTrigger>
               <TabsTrigger value="week">Week</TabsTrigger>
               <TabsTrigger value="day">Day</TabsTrigger>
@@ -352,7 +352,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                     {weekDays.map(day => {
                       const dayAppointments = getAppointmentsForDate(day)
                       return (
-                        <div key={day.toISOString()} className="border-2 border-black dark:border-white rounded-none p-4 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                        <div key={day.toISOString()} className="border border-black/20 dark:border-white/20 rounded-md p-4 shadow-sm">
                           <div className="flex items-center justify-between mb-3">
                             <div>
                               <div className={`font-semibold text-lg ${isToday(day) ? 'text-primary' : 'text-black dark:text-white'}`}>
@@ -366,7 +366,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                           </div>
                           <div className="space-y-2">
                             {dayAppointments.map(apt => (
-                              <Card key={apt.id} className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                              <Card key={apt.id} className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
                                 <div className="flex items-start justify-between">
                                   <div className="flex-1">
                                     <div className="font-semibold text-black dark:text-white">{apt.title}</div>
@@ -416,7 +416,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                 <CardContent>
                   <div className="space-y-4">
                     {getAppointmentsForDate(currentDate).map(apt => (
-                      <Card key={apt.id} className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                      <Card key={apt.id} className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
                         <div className="flex items-start justify-between mb-3">
                           <div>
                             <div className="font-semibold text-xl text-black dark:text-white">{apt.title}</div>

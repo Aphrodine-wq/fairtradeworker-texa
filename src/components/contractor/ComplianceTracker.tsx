@@ -245,7 +245,7 @@ export function ComplianceTracker({ user }: { user: User }) {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {expiredItems.map(item => (
-                    <div key={item.id} className="p-3 bg-[#FF0000] rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                    <div key={item.id} className="p-3 bg-[#FF0000] rounded-md border border-black/20 dark:border-white/20 shadow-sm">
                       <div className="font-semibold text-black dark:text-white">{item.name}</div>
                       <div className="text-sm text-muted-foreground">
                         Expired: {new Date(item.expirationDate).toLocaleDateString()}
@@ -275,7 +275,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                       (new Date(item.expirationDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                     )
                     return (
-                      <div key={item.id} className="p-3 bg-[#FFFF00] rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                      <div key={item.id} className="p-3 bg-[#FFFF00] rounded-md border border-black/20 dark:border-white/20 shadow-sm">
                         <div className="font-semibold text-black dark:text-white">{item.name}</div>
                         <div className="text-sm text-muted-foreground">
                           Expires in {daysUntilExp} day{daysUntilExp !== 1 ? 's' : ''}

@@ -149,7 +149,7 @@ export function PortfolioBuilder({ user }: PortfolioBuilderProps) {
             <Label>Before/After Photos</Label>
             <div className="mt-2 space-y-4">
               {(portfolio?.beforeAfterPhotos || []).map((pair, idx) => (
-                <div key={idx} className="grid grid-cols-2 gap-4 p-4 border-2 border-black dark:border-white">
+                <div key={idx} className="grid grid-cols-2 gap-4 p-4 border border-black/20 dark:border-white/20">
                   <div>
                     <Label>Before</Label>
                     {pair.before ? (

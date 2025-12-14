@@ -127,7 +127,7 @@ export function BioBuilder({ user }: BioBuilderProps) {
         <CardContent className="space-y-6">
           <div className="text-center">
             <div className="mb-2">
-              <div className="w-full bg-white dark:bg-black border-2 border-black dark:border-white h-6">
+              <div className="w-full bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
                 <div 
                   className="h-full bg-black dark:bg-white"
                   style={{ width: `${completionPercentage()}%` }}
@@ -144,7 +144,7 @@ export function BioBuilder({ user }: BioBuilderProps) {
             <div className="mt-2">
               {bio.photo ? (
                 <div className="relative w-32 h-32">
-                  <img src={bio.photo} alt="Profile" className="w-full h-32 object-cover border-2 border-black dark:border-white" />
+                  <img src={bio.photo} alt="Profile" className="w-full h-32 object-cover border border-black/20 dark:border-white/20" />
                   <Button
                     size="sm"
                     variant="ghost"
@@ -230,7 +230,7 @@ export function BioBuilder({ user }: BioBuilderProps) {
             {bio.certifications?.length > 0 && (
               <div className="space-y-2 mt-2">
                 {bio.certifications.map((cert: string, idx: number) => (
-                  <div key={idx} className="flex items-center justify-between p-2 border-2 border-black dark:border-white">
+                  <div key={idx} className="flex items-center justify-between p-2 border border-black/20 dark:border-white/20">
                     <span className="text-sm text-black dark:text-white flex items-center gap-2">
                       <Award size={16} />
                       {cert}

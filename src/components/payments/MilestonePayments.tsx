@@ -100,7 +100,7 @@ export function MilestonePaymentDialog({
                     </div>
                   )}
                   {milestone.notes && (
-                    <div className="p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white text-xs font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                    <div className="p-3 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 text-xs font-mono shadow-sm">
                       <p className="text-muted-foreground mb-1 font-medium">Completion Notes:</p>
                       <p>{milestone.notes}</p>
                     </div>
@@ -127,7 +127,7 @@ export function MilestonePaymentDialog({
               </CardContent>
             </Card>
 
-            <div className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none space-y-2 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md space-y-2 shadow-sm">
               <div className="flex items-start gap-2">
                 <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={16} weight="fill" />
                 <div className="text-xs text-muted-foreground space-y-1">
@@ -169,7 +169,7 @@ export function MilestonePaymentDialog({
             <button
               type="button"
               onClick={() => setPaymentMethod('new')}
-              className={`w-full p-4 border-2 border-black dark:border-white rounded-none text-left transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
+              className={`w-full p-4 border border-black/20 dark:border-white/20 rounded-md text-left transition-all shadow-sm ${
                 paymentMethod === 'new' ? 'bg-black dark:bg-white text-white dark:text-black' : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
               }`}
             >
@@ -301,9 +301,9 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
                   key={num}
                   type="button"
                   onClick={() => setNumberOfPayments(num)}
-                  className={`p-3 border-2 border-black dark:border-white rounded-none text-center transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
+                  className={`p-3 border border-black/20 dark:border-white/20 rounded-md text-center transition-all shadow-sm ${
                     numberOfPayments === num 
-                      ? 'bg-black dark:bg-white text-white dark:text-black font-black uppercase' 
+                      ? 'bg-black dark:bg-white text-white dark:text-black font-semibold' 
                       : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
                   }`}
                 >
@@ -342,7 +342,7 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
           </div>
         </div>
 
-        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
+        <Card className="border border-black/20 dark:border-white/20 bg-white dark:bg-black">
           <CardContent className="pt-4 space-y-3">
             <div className="flex items-center justify-between text-sm">
               <span className="text-muted-foreground">Job Amount</span>
@@ -368,9 +368,9 @@ export function PaymentPlanSetup({ jobAmount, jobTitle, tier = 'STANDARD', onCom
         <div className="space-y-2">
           <p className="text-sm font-medium">Payment Schedule</p>
           {generatePaymentSchedule().map((payment, idx) => (
-            <div key={idx} className="flex items-center justify-between p-3 border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div key={idx} className="flex items-center justify-between p-3 border border-black/20 dark:border-white/20 rounded-md shadow-sm">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-black dark:bg-white border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="p-2 bg-black dark:bg-white border border-black/20 dark:border-white/20 rounded-md shadow-sm">
                   <Calendar size={18} className="text-primary" />
                 </div>
                 <div>

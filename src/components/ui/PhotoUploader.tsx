@@ -132,7 +132,7 @@ export function PhotoUploader({
                 <img
                   src={photo.preview}
                   alt="Upload preview"
-                  className="w-full h-full object-cover rounded-none border-2 border-black dark:border-white"
+                  className="w-full h-full object-cover rounded-md border border-black/20 dark:border-white/20"
                 />
                 
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
@@ -148,7 +148,7 @@ export function PhotoUploader({
                 </div>
 
                 {photo.status === 'compressing' && (
-                  <div className="absolute inset-0 bg-black dark:bg-white rounded-none flex items-center justify-center border-2 border-black dark:border-white">
+                  <div className="absolute inset-0 bg-black dark:bg-white rounded-md flex items-center justify-center border border-black/20 dark:border-white/20">
                     <div className="text-center text-white">
                       <CircleNotch className="w-6 h-6 animate-spin mx-auto mb-1" />
                       <div className="text-xs font-medium">Optimizing...</div>
@@ -157,7 +157,7 @@ export function PhotoUploader({
                 )}
 
                 {photo.status === 'uploading' && (
-                  <div className="absolute inset-0 bg-black dark:bg-white rounded-none flex items-center justify-center border-2 border-black dark:border-white">
+                  <div className="absolute inset-0 bg-black dark:bg-white rounded-md flex items-center justify-center border border-black/20 dark:border-white/20">
                     <div className="text-center text-white">
                       <CircleNotch className="w-6 h-6 animate-spin mx-auto mb-1" />
                       <div className="text-xs">{Math.round(photo.progress)}%</div>
@@ -166,7 +166,7 @@ export function PhotoUploader({
                 )}
 
                 {photo.status === 'error' && (
-                  <div className="absolute inset-0 bg-[#FF0000] rounded-none flex items-center justify-center border-2 border-black dark:border-white">
+                  <div className="absolute inset-0 bg-[#FF0000] rounded-md flex items-center justify-center border border-black/20 dark:border-white/20">
                     <Button
                       type="button"
                       size="icon"
@@ -191,11 +191,11 @@ export function PhotoUploader({
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className="border-2 border-dashed border-black dark:border-white rounded-none p-8 text-center hover:border-black dark:hover:border-white transition-all cursor-pointer shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+        className="border-2 border-dashed border-black dark:border-white rounded-md p-8 text-center hover:border-black dark:hover:border-white transition-all cursor-pointer shadow-sm"
         onClick={() => fileInputRef.current?.click()}
       >
         <div className="flex flex-col items-center gap-3">
-          <div className="rounded-none bg-black dark:bg-white border-2 border-black dark:border-white p-4 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+          <div className="rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 p-4 shadow-sm">
             <Camera className="w-8 h-8 text-primary" />
           </div>
           
@@ -256,7 +256,7 @@ export function PhotoUploader({
                 </div>
 
                 <div className="absolute top-2 right-2 flex gap-1">
-                  <div className="rounded-none bg-white dark:bg-black border-2 border-black dark:border-white p-1.5">
+                  <div className="rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 p-1.5">
                     {getStatusIcon(photo)}
                   </div>
                   
@@ -272,14 +272,14 @@ export function PhotoUploader({
                 </div>
 
                 {photo.status === 'compressing' && (
-                  <div className="absolute inset-0 bg-black dark:bg-white rounded-none flex flex-col items-center justify-center text-white dark:text-black border-2 border-black dark:border-white">
+                  <div className="absolute inset-0 bg-black dark:bg-white rounded-md flex flex-col items-center justify-center text-white dark:text-black border border-black/20 dark:border-white/20">
                     <CircleNotch className="w-6 h-6 animate-spin mb-2" />
                     <div className="text-sm font-medium">Optimizing...</div>
                   </div>
                 )}
 
                 {photo.status === 'uploading' && (
-                  <div className="absolute inset-0 bg-black dark:bg-white rounded-none flex flex-col items-center justify-center text-white dark:text-black border-2 border-black dark:border-white">
+                  <div className="absolute inset-0 bg-black dark:bg-white rounded-md flex flex-col items-center justify-center text-white dark:text-black border border-black/20 dark:border-white/20">
                     <CircleNotch className="w-6 h-6 animate-spin mb-2" />
                     <div className="text-sm font-medium">{Math.round(photo.progress)}%</div>
                     <Progress 

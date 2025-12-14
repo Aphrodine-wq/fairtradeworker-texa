@@ -131,7 +131,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 <div className="flex flex-col md:flex-row gap-3">
                   <Button 
                     variant="outline"
-                    className="flex-1 bg-white dark:bg-black border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] rounded-none font-black uppercase"
+                    className="flex-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-sm rounded-md font-semibold"
                     onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
                   >
                     <House weight="fill" className="mr-2 text-black dark:text-white" size={20} />
@@ -139,7 +139,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 bg-white dark:bg-black border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] rounded-none font-black uppercase"
+                    className="flex-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-sm rounded-md font-semibold"
                     onClick={() => onDemoLogin(DEMO_USERS.contractor)}
                   >
                     <Hammer weight="fill" className="mr-2 text-black dark:text-white" size={20} />
@@ -147,7 +147,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                   </Button>
                   <Button 
                     variant="outline"
-                    className="flex-1 bg-white dark:bg-black border-2 border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff] rounded-none font-black uppercase"
+                    className="flex-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black text-black dark:text-white shadow-sm rounded-md font-semibold"
                     onClick={() => onDemoLogin(DEMO_USERS.operator)}
                   >
                     <MapTrifold weight="fill" className="mr-2 text-black dark:text-white" size={20} />
@@ -168,8 +168,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 space-y-4 bg-white dark:bg-black border-2 border-black dark:border-white">
-              <div className="w-12 h-12 rounded-none bg-black dark:bg-white flex items-center justify-center border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+              <div className="w-12 h-12 rounded-md bg-black dark:bg-white flex items-center justify-center border border-black/20 dark:border-white/20 shadow-sm">
                 <House weight="fill" className="text-primary-foreground" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Post Your Job</h3>

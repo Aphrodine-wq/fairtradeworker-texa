@@ -123,7 +123,7 @@ export function ProfitCalculator({ user, job, bidAmount: initialBid }: ProfitCal
           </div>
         </div>
 
-        <div className="p-4 border-2 border-black dark:border-white bg-white dark:bg-black">
+        <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-black dark:text-white">Bid Amount</span>

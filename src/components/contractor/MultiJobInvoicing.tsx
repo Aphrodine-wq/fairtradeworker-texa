@@ -144,7 +144,7 @@ export function MultiJobInvoicing({ user }: MultiJobInvoicingProps) {
               </div>
 
               {selectedJobs.size > 0 && (
-                <div className="p-4 border-2 border-black dark:border-white bg-white dark:bg-black">
+                <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <p className="text-sm text-black dark:text-white">

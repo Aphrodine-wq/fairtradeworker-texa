@@ -68,7 +68,7 @@ function TableHead({ className, ...props }: ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-black dark:text-white h-10 px-2 text-left align-middle font-black uppercase tracking-tight whitespace-nowrap font-mono [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-black dark:text-white h-10 px-2 text-left align-middle font-semibold tracking-tight whitespace-nowrap font-mono [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className
       )}
       {...props}

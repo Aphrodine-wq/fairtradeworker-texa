@@ -92,7 +92,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Add New Slot Form */}
-        <div className="border-2 border-black dark:border-white rounded-none p-4 space-y-4 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+        <div className="border border-black/20 dark:border-white/20 rounded-md p-4 space-y-4 shadow-sm">
           <h4 className="font-semibold flex items-center gap-2">
             <Plus weight="bold" size={18} />
             Add Available Time Slot
@@ -140,7 +140,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
             Available Slots ({availableSlots.length})
           </h4>
           {availableSlots.length === 0 ? (
-            <div className="text-center py-6 text-black dark:text-white border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+            <div className="text-center py-6 text-black dark:text-white border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
               <Calendar size={32} className="mx-auto mb-2 text-black dark:text-white" />
               <p className="text-sm">No available slots yet. Add your availability above.</p>
             </div>
@@ -149,7 +149,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
               {availableSlots
                 .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
                 .map(slot => (
-                  <div key={slot.id} className="flex items-center justify-between p-3 border-2 border-black dark:border-white rounded-none hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+                  <div key={slot.id} className="flex items-center justify-between p-3 border border-black/20 dark:border-white/20 rounded-md hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all shadow-sm font-mono">
                     <div className="flex items-center gap-3">
                       <Calendar weight="duotone" size={20} className="text-primary" />
                       <div>
@@ -180,7 +180,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
               {bookedSlots
                 .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
                 .map(slot => (
-                  <div key={slot.id} className="flex items-center justify-between p-3 border-2 border-black dark:border-white bg-[#00FF00] dark:bg-[#00FF00] rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+                  <div key={slot.id} className="flex items-center justify-between p-3 border border-black/20 dark:border-white/20 bg-[#00FF00] dark:bg-[#00FF00] rounded-md shadow-sm font-mono">
                     <div className="flex items-center gap-3">
                       <Calendar weight="fill" size={20} className="text-green-600" />
                       <div>
@@ -190,7 +190,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
                         )}
                       </div>
                     </div>
-                    <Badge variant="outline" className="bg-[#00FF00] text-black border-2 border-black dark:border-white">
+                    <Badge variant="outline" className="bg-[#00FF00] text-black border border-black/20 dark:border-white/20">
                       Booked
                     </Badge>
                   </div>

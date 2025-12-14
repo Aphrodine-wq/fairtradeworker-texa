@@ -333,7 +333,7 @@ Generate a complete, professional scope document now.`
           </h1>
           <p className="text-xl text-muted-foreground mb-2">Generate professional scope of services documents for your projects</p>
           <p className="text-sm text-primary font-medium mb-4">Powered by GPT-4o</p>
-          <div className="max-w-2xl mx-auto bg-white dark:bg-black border-2 border-black dark:border-white rounded-none p-4 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md p-4 shadow-sm">
             <p className="text-sm text-foreground">
               <strong>Note:</strong> Upload photos to help document your project. The AI will generate a comprehensive preliminary scope template that you can customize based on your specific project details and on-site assessment.
             </p>
@@ -418,7 +418,7 @@ Generate a complete, professional scope document now.`
                 </div>
               </CardHeader>
               <CardContent>
-                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-black dark:border-white rounded-none cursor-pointer hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-black transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-black dark:border-white rounded-md cursor-pointer hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-black transition-all shadow-sm">
                   <div className="flex flex-col items-center">
                     <Camera className="w-12 h-12 text-muted-foreground mb-3" />
                     <span className="text-base text-foreground font-medium mb-1">Click to upload photos</span>
@@ -458,7 +458,7 @@ Generate a complete, professional scope document now.`
                               Compressed
                             </div>
                           )}
-                          <div className="absolute bottom-1 left-1 right-1 bg-black dark:bg-white text-white dark:text-black text-xs px-1.5 py-0.5 rounded-none border border-white dark:border-black truncate font-mono">
+                          <div className="absolute bottom-1 left-1 right-1 bg-black dark:bg-white text-white dark:text-black text-xs px-1.5 py-0.5 rounded-md border border-white dark:border-black truncate font-mono">
                             {formatFileSize(photo.compressedSize || photo.originalSize)}
                           </div>
                           <button
@@ -476,7 +476,7 @@ Generate a complete, professional scope document now.`
             </Card>
 
             {photos.length > 0 && (
-              <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
+              <Card className="border border-black/20 dark:border-white/20 bg-white dark:bg-black">
                 <CardHeader>
                   <div className="flex items-center gap-3 pb-3 border-b border-border">
                     <ArrowsClockwise className="w-6 h-6 text-primary" />
@@ -534,7 +534,7 @@ Generate a complete, professional scope document now.`
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-white dark:bg-black border-2 border-black dark:border-white rounded-none p-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                      <div className="bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md p-3 shadow-sm">
                         <p className="text-xs text-blue-900 dark:text-blue-100">
                           <strong>Tip:</strong> Compressing photos reduces upload time and improves processing speed. 
                           Recommended quality: 80% for best balance.
@@ -596,7 +596,7 @@ Generate a complete, professional scope document now.`
               </div>
             )}
 
-            <div className="bg-white dark:bg-black border-2 border-black dark:border-white rounded-none p-4 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+            <div className="bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md p-4 shadow-sm">
               <p className="text-sm text-foreground text-center font-medium">
                 💰 Fast, accurate, and powered by AI
               </p>

@@ -107,7 +107,7 @@ export function JobMap({ jobs, onJobClick }: JobMapProps) {
                   />
                   {/* Cluster Count */}
                   {isMultiple && (
-                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border-2 border-black dark:border-white">
+                    <div className="absolute top-1 left-1/2 transform -translate-x-1/2 bg-white dark:bg-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold border border-black/20 dark:border-white/20">
                       {cluster.jobs.length}
                     </div>
                   )}

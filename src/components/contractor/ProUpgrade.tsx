@@ -114,7 +114,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
               {features.map((feature, idx) => (
                 <BrutalistGlassCard key={idx} glass={true} className="p-4">
                   <div className="flex gap-4">
-                    <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-white dark:text-black">
+                    <div className="shrink-0 w-12 h-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm text-white dark:text-black">
                       {feature.icon}
                     </div>
                     <div className="flex-1">

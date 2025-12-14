@@ -211,7 +211,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
                   {sequence.steps.map((step, i) => (
                     <div
                       key={step.id}
-                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none text-sm font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md text-sm font-mono shadow-sm"
                     >
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                         {i + 1}

@@ -249,21 +249,21 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
 
   const getDensityColor = (density: string) => {
     switch (density) {
-      case 'empty': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'light': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'busy': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'overbooked': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      default: return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'empty': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'light': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'busy': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'overbooked': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      default: return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
     }
   }
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'important': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'info': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      case 'positive': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      default: return 'bg-white dark:bg-black border-2 border-black dark:border-white'
+      case 'critical': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'important': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'info': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'positive': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      default: return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
     }
   }
 
@@ -338,7 +338,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                   {day.date.toLocaleDateString('en-US', { weekday: 'short' })}
                 </p>
                 <div 
-                  className={`h-16 rounded-none border-2 border-black dark:border-white ${getDensityColor(day.density)} flex items-center justify-center cursor-pointer transition-all hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`}
+                  className={`h-16 rounded-md border border-black/20 dark:border-white/20 ${getDensityColor(day.density)} flex items-center justify-center cursor-pointer transition-all hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] shadow-sm`}
                   onClick={() => {}}
                 >
                   <p className="text-sm font-bold text-white">{day.jobCount || '-'}</p>
@@ -409,7 +409,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className={`p-4 rounded-none border-2 border-black dark:border-white ${getPriorityColor(alert.priority)} flex items-start gap-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`}
+                className={`p-4 rounded-md border border-black/20 dark:border-white/20 ${getPriorityColor(alert.priority)} flex items-start gap-3 shadow-sm`}
               >
                 {alert.icon}
                 <div className="flex-1">
@@ -452,7 +452,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono"
+                className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

@@ -148,7 +148,7 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
           {photos.length > 0 && (
             <div className="grid grid-cols-3 gap-4 mt-4">
               {photos.map((photo, idx) => (
-                <img key={idx} src={photo} alt={`Review ${idx + 1}`} className="w-full h-24 object-cover border-2 border-black dark:border-white" />
+                <img key={idx} src={photo} alt={`Review ${idx + 1}`} className="w-full h-24 object-cover border border-black/20 dark:border-white/20" />
               ))}
             </div>
           )}

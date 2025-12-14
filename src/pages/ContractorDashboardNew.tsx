@@ -230,7 +230,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     {todaySchedule.length} scheduled today
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -264,7 +264,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     {wonBids.length} of {myBids.length} bids
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Target className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -277,7 +277,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                   <p className="text-3xl font-bold mt-1">{performanceScore}/100</p>
                   <Progress value={performanceScore} className="mt-2 h-1" />
                 </div>
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <ChartLine className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -393,7 +393,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 ) : (
                   <div className="space-y-3">
                     {todaySchedule.map(job => (
-                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none">
+                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md">
                         <MapPin className="h-4 w-4 text-primary mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{job.title}</p>
@@ -460,7 +460,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
@@ -486,7 +486,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('revenue-dashboard')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <ChartLine className="h-6 w-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -499,7 +499,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('business-tools')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
                 </div>
                 <div>

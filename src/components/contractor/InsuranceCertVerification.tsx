@@ -213,7 +213,7 @@ export function InsuranceCertVerification({ user }: InsuranceCertVerificationPro
             {verifications.map((verification) => (
               <div
                 key={verification.id}
-                className="p-4 border-2 border-black dark:border-white flex items-start justify-between"
+                className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between"
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">

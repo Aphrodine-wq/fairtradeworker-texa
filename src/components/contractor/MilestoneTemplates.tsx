@@ -125,7 +125,7 @@ export function MilestoneTemplates({ user, onUseTemplate }: MilestoneTemplatesPr
           </div>
 
           {template && (
-            <div className="mt-6 p-4 border-2 border-black dark:border-white">
+            <div className="mt-6 p-4 border border-black/20 dark:border-white/20">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-black dark:text-white">{template.jobType}</h3>
                 <Button onClick={() => useTemplate(template)}>
@@ -135,7 +135,7 @@ export function MilestoneTemplates({ user, onUseTemplate }: MilestoneTemplatesPr
               </div>
               <div className="space-y-3">
                 {template.milestones.map((milestone, idx) => (
-                  <div key={idx} className="p-3 border-2 border-black dark:border-white">
+                  <div key={idx} className="p-3 border border-black/20 dark:border-white/20">
                     <div className="flex items-start gap-3">
                       <div className="flex-1">
                         <h4 className="font-semibold text-black dark:text-white">

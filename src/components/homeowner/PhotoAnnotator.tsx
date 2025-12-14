@@ -191,7 +191,7 @@ export function PhotoAnnotator({ user, imageUrl, onSave }: PhotoAnnotatorProps) 
           </div>
         </div>
 
-        <div className="border-2 border-black dark:border-white overflow-auto max-h-[600px]">
+        <div className="border border-black/20 dark:border-white/20 overflow-auto max-h-[600px]">
           <canvas
             ref={canvasRef}
             onMouseDown={handleMouseDown}

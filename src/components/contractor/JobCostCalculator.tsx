@@ -89,10 +89,10 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
   }
 
   const getProfitQuality = (margin: number) => {
-    if (margin >= 40) return { text: "Excellent", color: "bg-[#00FF00] border-2 border-black dark:border-white", icon: TrendUp }
-    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: TrendUp }
-    if (margin >= 15) return { text: "Fair", color: "bg-[#FFFF00] border-2 border-black dark:border-white", icon: TrendUp }
-    return { text: "Low", color: "bg-[#FF0000] text-white border-2 border-black dark:border-white", icon: TrendDown }
+    if (margin >= 40) return { text: "Excellent", color: "bg-[#00FF00] border border-black/20 dark:border-white/20", icon: TrendUp }
+    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: TrendUp }
+    if (margin >= 15) return { text: "Fair", color: "bg-[#FFFF00] border border-black/20 dark:border-white/20", icon: TrendUp }
+    return { text: "Low", color: "bg-[#FF0000] text-white border border-black/20 dark:border-white/20", icon: TrendDown }
   }
 
   const getHourlyRateQuality = (rate: number) => {
@@ -226,7 +226,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
           </div>
 
           <div className="border-t pt-6 space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+            <div className="flex items-center justify-between p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
                 <p className="text-3xl font-bold">{breakdown.profitMargin.toFixed(1)}%</p>
@@ -254,7 +254,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+          <div className="mt-6 p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
             <p className="text-sm text-muted-foreground">
               <strong>💡 Tip:</strong> Industry standard margins are 25-40%. 
               If your margin is below 20%, consider increasing your bid or reducing costs.
@@ -265,7 +265,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
       )}
 
       {!breakdown && (
-        <Card className="p-12 text-center border-2 border-black dark:border-white border-dashed">
+        <Card className="p-12 text-center border border-black/20 dark:border-white/20 border-dashed">
           <Calculator size={48} className="mx-auto mb-4 text-muted-foreground" />
           <p className="text-muted-foreground">
             Enter your job details above to see the cost breakdown

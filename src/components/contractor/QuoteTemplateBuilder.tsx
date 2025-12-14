@@ -123,7 +123,7 @@ export function QuoteTemplateBuilder({ user }: QuoteTemplateBuilderProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="p-4 border-2 border-black dark:border-white bg-white dark:bg-black">
+                <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
                   <div className="space-y-2">
                     {template.sections.map((section, idx) => (
                       <div key={idx} className="flex items-center gap-2 text-sm text-black dark:text-white">

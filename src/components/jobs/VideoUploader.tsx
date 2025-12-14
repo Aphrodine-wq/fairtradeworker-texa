@@ -179,7 +179,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
       <Card>
         <CardContent className="p-6 space-y-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-none bg-[#00FF00] border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="w-12 h-12 rounded-md bg-[#00FF00] border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
               <Check className="text-white" size={24} weight="bold" />
             </div>
             <div className="flex-1">
@@ -237,7 +237,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
                   <button
                     key={index}
                     onClick={() => setSelectedThumbnailIndex(index)}
-                    className={`relative rounded-none overflow-hidden border-2 border-black dark:border-white transition-all shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
+                    className={`relative rounded-md overflow-hidden border border-black/20 dark:border-white/20 transition-all shadow-sm ${
                       selectedThumbnailIndex === index
                         ? 'border-primary ring-2 ring-primary ring-offset-2'
                         : 'border-border hover:border-primary/50'
@@ -245,7 +245,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
                   >
                     <img src={thumb} alt={`Frame ${index + 1}`} className="w-20 h-20 object-cover" />
                     {selectedThumbnailIndex === index && (
-                      <div className="absolute inset-0 bg-black dark:bg-white flex items-center justify-center border-2 border-black dark:border-white">
+                      <div className="absolute inset-0 bg-black dark:bg-white flex items-center justify-center border border-black/20 dark:border-white/20">
                         <Check className="text-white" size={24} weight="bold" />
                       </div>
                     )}
@@ -256,7 +256,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           )}
 
           {analysis.metadata.gpsCoordinates && (
-            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
               <Info className="text-blue-600 flex-shrink-0" size={20} />
               <div className="text-sm">
                 <p className="font-medium text-blue-900">Location detected</p>
@@ -370,7 +370,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed border-black dark:border-white rounded-none p-12 text-center transition-all cursor-pointer shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${isDragging 
+            border-2 border-dashed border-black dark:border-white rounded-md p-12 text-center transition-all cursor-pointer shadow-sm ${isDragging 
               ? 'bg-black dark:bg-white text-white dark:text-black' 
               : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
             }
@@ -378,7 +378,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           onClick={() => fileInputRef.current?.click()}
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-20 h-20 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="w-20 h-20 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
               <VideoCamera className="text-primary" size={40} weight="fill" />
             </div>
             
@@ -398,7 +398,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
               <span className="text-sm text-muted-foreground">or drag and drop</span>
             </div>
 
-            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] max-w-md">
+            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm max-w-md">
               <Info className="text-muted-foreground flex-shrink-0 mt-0.5" size={16} />
               <p className="text-xs text-muted-foreground text-left">
                 Supported: MP4, MOV, MKV, WebM • Max 150 MB • Recommended bitrate: 1.3 Mbps

@@ -132,18 +132,18 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
 
   const getWarrantyStatus = (endDate: string) => {
     const days = getDaysRemaining(endDate)
-    if (days < 0) return { text: "Expired", color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Clock }
-    if (days <= 30) return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Warning }
-    if (days <= 90) return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: Clock }
-    return { text: `${days} days left`, color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: CheckCircle }
+    if (days < 0) return { text: "Expired", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: Clock }
+    if (days <= 30) return { text: `${days} days left`, color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: Warning }
+    if (days <= 90) return { text: `${days} days left`, color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: Clock }
+    return { text: `${days} days left`, color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: CheckCircle }
   }
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+      <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="w-12 h-12 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
               <ShieldCheck weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
@@ -247,17 +247,17 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 mt-6">
-          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Active Warranties</p>
             <p className="text-3xl font-bold text-black dark:text-white">{activeWarranties.length}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Expiring Soon (30 days)</p>
             <p className="text-3xl font-bold text-black dark:text-white">{expiringIn30Days.length}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Expired</p>
             <p className="text-3xl font-bold text-black dark:text-white">{expiredWarranties.length}</p>
           </div>
@@ -376,7 +376,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
               </h3>
               <div className="space-y-3">
                 {expiredWarranties.slice(0, 5).map(warranty => (
-                  <Card key={warranty.id} className="p-4 opacity-100 border-2 border-black dark:border-white">
+                  <Card key={warranty.id} className="p-4 opacity-100 border border-black/20 dark:border-white/20">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">

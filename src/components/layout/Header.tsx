@@ -59,25 +59,25 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-150",
         scrolled 
-          ? "bg-white dark:bg-black border-b-2 border-black dark:border-white shadow-[0_4px_0_#000] dark:shadow-[0_4px_0_#fff]" 
-          : "bg-white dark:bg-black border-b-2 border-black dark:border-white"
+          ? "bg-white dark:bg-black border-b border-black/20 dark:border-white/20 shadow-sm" 
+          : "bg-white dark:bg-black border-b border-black/20 dark:border-white/20"
       )}
     >
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex h-14 items-center justify-between">
           <button 
             onClick={handleHomeClick}
-            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-none hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
+            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
             aria-label="Go to home"
           >
-            <div className="flex items-center justify-center w-9 h-9 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <div className="flex items-center justify-center w-9 h-9 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
               <Wrench className="text-black dark:text-white" size={20} weight="bold" />
             </div>
             <div className="hidden sm:flex flex-col items-start">
               <span className="font-heading font-bold text-base leading-none text-black dark:text-white">
                 FairTradeWorker
               </span>
-              <span className="text-[10px] text-black dark:text-white leading-none font-black uppercase tracking-wide mt-0.5 font-mono">
+              <span className="text-[10px] text-black dark:text-white leading-none font-semibold tracking-wide mt-0.5">
                 HOME SERVICES
               </span>
             </div>
@@ -90,13 +90,13 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
                 <Button 
                   variant="ghost" 
                   onClick={() => onNavigate('login')} 
-                  className="min-h-[44px] hover:bg-white dark:hover:bg-black font-black uppercase"
+                  className="min-h-[44px] hover:bg-black/5 dark:hover:bg-white/5"
                 >
                   Log In
                 </Button>
                 <Button 
                   onClick={() => onNavigate('signup')} 
-                  className="min-h-[44px] bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] transition-all font-black uppercase rounded-none"
+                  className="min-h-[44px] bg-black dark:bg-white text-white dark:text-black border border-black/20 dark:border-white/20 hover:shadow-md shadow-sm transition-all rounded-md"
                 >
                   <Sparkle weight="fill" className="mr-2" size={16} />
                   Sign Up
@@ -129,7 +129,7 @@ const NavButton = memo(({ onClick, children, variant = "ghost", className = "", 
     onClick={onClick} 
     className={cn(
       "min-h-[44px] relative transition-all font-semibold px-3",
-      isActive && "bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white",
+      isActive && "bg-black dark:bg-white text-white dark:text-black border border-black/20 dark:border-white/20 shadow-sm",
       className
     )}
   >
