@@ -47,9 +47,22 @@ export function TaxHelper({ user }: { user: User }) {
     if (taxableIncome <= 0) return 0
     // Simplified tax calculation (self-employment ~15.3% + federal)
     const selfEmploymentTax = taxableIncome * 0.153
-    const federalTax = taxableIncome > 578125 ? taxableIncome * 0.37 : taxableIncome * 0.22
-    return selfEmploymentTax + federalTax
+    // Federal tax brackets (simplified)
+    let federalTax = 0
+    if (taxableIncome <= 10275) federalTax = taxableIncome * 0.10
+    else if (taxableIncome <= 41775) federalTax = 1027.5 + (taxableIncome - 10275) * 0.12
+    else if (taxableIncome <= 89450) federalTax = 4807.5 + (taxableIncome - 41775) * 0.22
+    else if (taxableIncome <= 190750) federalTax = 15213.5 + (taxableIncome - 89450) * 0.24
+    else if (taxableIncome <= 364200) federalTax = 34647.5 + (taxableIncome - 190750) * 0.32
+    else if (taxableIncome <= 462500) federalTax = 49335.5 + (taxableIncome - 364200) * 0.35
+    else federalTax = 162718 + (taxableIncome - 462500) * 0.37
+    return Math.round(selfEmploymentTax + federalTax)
   }, [taxableIncome])
+
+  const quarterlyTax = useMemo(() => 
+    Math.round(estimatedTax / 4),
+    [estimatedTax]
+  )
 
   const deductionCategories = [
     'Vehicle & Mileage',

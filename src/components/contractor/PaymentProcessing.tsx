@@ -92,7 +92,7 @@ export function PaymentProcessing({ user }: { user: User }) {
               <span className="text-black dark:text-white">Payment Processing</span>
             </h1>
             <p className="text-muted-foreground text-lg">
-              Multiple payment methods and transaction tracking
+              Multiple payment methods and transaction tracking. Accept cards, ACH, and manage all payments in one place.
             </p>
           </div>
 
