@@ -29,10 +29,19 @@ interface ContractorDashboardNewProps {
 }
 
 export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboardNewProps) {
-  const [jobs] = useKV<Job[]>("jobs", [])
-  const [invoices] = useKV<Invoice[]>("invoices", [])
+  const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
+  const [invoices, , invoicesLoading] = useKV<Invoice[]>("invoices", [])
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [isInitializing, setIsInitializing] = useState(true)
   const isPro = user.isPro || false
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!jobsLoading && !invoicesLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [jobsLoading, invoicesLoading])
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000)

@@ -18,7 +18,8 @@ import {
   X,
   CreditCard,
   Package,
-  ChartBar
+  ChartBar,
+  CircleNotch
 } from "@phosphor-icons/react"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { CompletionCard } from "@/components/jobs/CompletionCard"
@@ -67,33 +68,64 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     setPaymentDialogOpen(true)
   }
 
-  const handlePayment = () => {
-    if (!selectedJob || !selectedBid) return
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
 
-    if (!cardNumber || cardNumber.length < 16) {
-      toast.error("Please enter a valid card number")
+  const handlePayment = useCallback(async () => {
+    if (!selectedJob || !selectedBid || isProcessingPayment) return
+
+    // Enhanced validation
+    const cleanedCardNumber = cardNumber.replace(/\s/g, '')
+    if (!cleanedCardNumber || cleanedCardNumber.length < 13 || cleanedCardNumber.length > 19) {
+      toast.error("Please enter a valid card number (13-19 digits)")
       return
     }
 
-    const platformFee = 20
-    const totalAmount = selectedBid.amount + platformFee
-
-    setJobs((currentJobs) =>
-      (currentJobs || []).map(job => {
-        if (job.id === selectedJob.id) {
-          return {
-            ...job,
-            status: 'in-progress' as const,
-            bids: job.bids.map(b =>
-              b.id === selectedBid.id
-                ? { ...b, status: 'accepted' as const }
-                : { ...b, status: 'rejected' as const }
-            )
-          }
+    // Basic Luhn check
+    const luhnCheck = (num: string): boolean => {
+      let sum = 0
+      let isEven = false
+      for (let i = num.length - 1; i >= 0; i--) {
+        let digit = parseInt(num[i])
+        if (isEven) {
+          digit *= 2
+          if (digit > 9) digit -= 9
         }
-        return job
-      })
-    )
+        sum += digit
+        isEven = !isEven
+      }
+      return sum % 10 === 0
+    }
+
+    if (!luhnCheck(cleanedCardNumber)) {
+      toast.error("Invalid card number. Please check and try again.")
+      return
+    }
+
+    setIsProcessingPayment(true)
+
+    try {
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      const platformFee = 20
+      const totalAmount = selectedBid.amount + platformFee
+
+      setJobs((currentJobs) =>
+        (currentJobs || []).map(job => {
+          if (job.id === selectedJob.id) {
+            return {
+              ...job,
+              status: 'in-progress' as const,
+              bids: job.bids.map(b =>
+                b.id === selectedBid.id
+                  ? { ...b, status: 'accepted' as const }
+                  : { ...b, status: 'rejected' as const }
+              )
+            }
+          }
+          return job
+        })
+      )
 
     const newInvoice: Invoice = {
       id: `inv-${Date.now()}`,
@@ -116,17 +148,23 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       createdAt: new Date().toISOString()
     }
 
-    setInvoices((current) => [...(current || []), newInvoice])
+      setInvoices((current) => [...(current || []), newInvoice])
 
-    toast.success(`Payment processed! ${selectedBid.contractorName} has been notified.`, {
-      description: `Total: $${totalAmount} ($${selectedBid.amount} + $${platformFee} platform fee)`
-    })
+      toast.success(`Payment processed! ${selectedBid.contractorName} has been notified.`, {
+        description: `Total: $${totalAmount.toLocaleString()} ($${selectedBid.amount.toLocaleString()} + $${platformFee} platform fee)`
+      })
 
-    setPaymentDialogOpen(false)
-    setSelectedJob(null)
-    setSelectedBid(null)
-    setCardNumber("")
-  }
+      setPaymentDialogOpen(false)
+      setSelectedJob(null)
+      setSelectedBid(null)
+      setCardNumber("")
+    } catch (error) {
+      console.error("Payment processing error:", error)
+      toast.error("Payment processing failed. Please try again.")
+    } finally {
+      setIsProcessingPayment(false)
+    }
+  }, [selectedJob, selectedBid, cardNumber, isProcessingPayment, setJobs, setInvoices])
 
   const handleMarkComplete = (job: Job) => {
     setJobs((currentJobs) =>
@@ -510,6 +548,27 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                   <Label htmlFor="card-number" className="text-base">Card Number (Simulated)</Label>
                   <Input
                     id="card-number"
+                    type="text"
+                    placeholder="1234 5678 9012 3456"
+                    value={cardNumber}
+                    onChange={(e) => {
+                      // Format card number with spaces
+                      const value = e.target.value.replace(/\s/g, '').replace(/\D/g, '')
+                      const formatted = value.match(/.{1,4}/g)?.join(' ') || value
+                      setCardNumber(formatted.slice(0, 19))
+                    }}
+                    disabled={isProcessingPayment}
+                    className="text-lg"
+                    maxLength={19}
+                    aria-label="Card number"
+                  />
+                  {cardNumber && cardNumber.replace(/\s/g, '').length < 13 && (
+                    <p className="text-sm text-muted-foreground">
+                      Card number must be 13-19 digits
+                    </p>
+                  )}
+                </div>
+                    id="card-number"
                     placeholder="4242 4242 4242 4242"
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
@@ -529,9 +588,22 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="h-11">
                 Cancel
               </Button>
-              <Button onClick={handlePayment} className="h-11">
-                <CreditCard weight="fill" className="mr-2" size={18} />
-                Complete Payment
+              <Button 
+                onClick={handlePayment} 
+                className="h-11 border-2 border-black dark:border-white"
+                disabled={isProcessingPayment}
+              >
+                {isProcessingPayment ? (
+                  <>
+                    <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <CreditCard weight="fill" className="mr-2" size={18} />
+                    Complete Payment
+                  </>
+                )}
               </Button>
             </DialogFooter>
           </div>

@@ -33,8 +33,17 @@ interface OperatorDashboardProps {
 }
 
 export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) {
-  const [jobs] = useKV<Job[]>("jobs", [])
-  const [territories] = useKV<Territory[]>("territories", [])
+  const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
+  const [territories, , territoriesLoading] = useKV<Territory[]>("territories", [])
+  const [isInitializing, setIsInitializing] = useState(true)
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!jobsLoading && !territoriesLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [jobsLoading, territoriesLoading])
   const [users] = useKV<User[]>("users", [])
   const [referralDialogOpen, setReferralDialogOpen] = useState(false)
   const [copied, setCopied] = useState(false)

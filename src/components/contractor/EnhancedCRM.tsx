@@ -14,7 +14,7 @@ interface EnhancedCRMProps {
 }
 
 export function EnhancedCRM({ user }: EnhancedCRMProps) {
-  const [customers] = useKV<CRMCustomer[]>("crm-customers", [])
+  const [customers, , customersLoading] = useKV<CRMCustomer[]>("crm-customers", [])
   
   const { myCustomers, activeCustomers, totalLTV, conversionRate } = useMemo(() => {
     const mine = (customers || []).filter(c => c.contractorId === user.id)

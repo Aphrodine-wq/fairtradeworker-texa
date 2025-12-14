@@ -11,7 +11,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FeeComparison } from "./FeeComparison"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon, FloppyDisk } from "@phosphor-icons/react"
+import { Plus, Receipt, Clock, CheckCircle, Warning, Trash, Calculator, ArrowClockwise, CurrencyDollar, Image as ImageIcon, FloppyDisk, CircleNotch } from "@phosphor-icons/react"
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import type { User, Invoice, InvoiceLineItem, Job, PartialPayment, InvoiceTemplate } from "@/lib/types"
 import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
 import { PartialPaymentDialog } from "./PartialPaymentDialog"
@@ -128,8 +129,17 @@ function SaveTemplateDialog({
 
 export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const isPro = user.isPro || false
-  const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
-  const [jobs] = useKV<Job[]>("jobs", [])
+  const [invoices, setInvoices, invoicesLoading] = useKV<Invoice[]>("invoices", [])
+  const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
+  const [isInitializing, setIsInitializing] = useState(true)
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!invoicesLoading && !jobsLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 400)
+      return () => clearTimeout(timer)
+    }
+  }, [invoicesLoading, jobsLoading])
   const [dialogOpen, setDialogOpen] = useState(false)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
@@ -205,51 +215,116 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
     return calculateSubtotal() + calculateTax()
   }
 
-  const handleCreateInvoice = () => {
+  const [isCreatingInvoice, setIsCreatingInvoice] = useState(false)
+  const [invoiceErrors, setInvoiceErrors] = useState<{
+    job?: string
+    dueDate?: string
+    lineItems?: string
+  }>({})
+
+  const handleCreateInvoice = useCallback(async () => {
+    setInvoiceErrors({})
+    
+    // Validation
     if (!selectedJobId) {
       toast.error("Please select a job")
+      setInvoiceErrors({ job: "Job selection is required" })
       return
     }
 
     if (!dueDate) {
       toast.error("Please set a due date")
+      setInvoiceErrors({ dueDate: "Due date is required" })
       return
     }
 
-    if (lineItems.some(item => !item.description.trim() || item.total === 0)) {
-      toast.error("All line items must have a description and amount")
+    const dueDateObj = new Date(dueDate)
+    if (dueDateObj < new Date()) {
+      toast.error("Due date cannot be in the past")
+      setInvoiceErrors({ dueDate: "Due date must be in the future" })
       return
     }
 
-    const job = completedJobs.find(j => j.id === selectedJobId)
-    if (!job) return
-
-    const newInvoice: Invoice = {
-      id: `inv-${Date.now()}`,
-      contractorId: user.id,
-      jobId: selectedJobId,
-      jobTitle: job.title,
-      lineItems: lineItems,
-      subtotal: calculateSubtotal(),
-      taxRate: taxRate,
-      taxAmount: calculateTax(),
-      total: calculateTotal(),
-      status: 'sent',
-      dueDate,
-      sentDate: new Date().toISOString(),
-      isProForma: isProForma,
-      lateFeeApplied: false,
-      isRecurring: isRecurring,
-      recurringInterval: isRecurring ? recurringInterval : undefined,
-      useCompanyLogo: useCompanyLogo,
-      customNotes: customNotes.trim() || undefined,
-      createdAt: new Date().toISOString()
+    const invalidItems = lineItems.filter(item => !item.description.trim() || item.total <= 0)
+    if (invalidItems.length > 0) {
+      toast.error("All line items must have a description and amount greater than 0")
+      setInvoiceErrors({ lineItems: "All line items must be valid" })
+      return
     }
 
-    setInvoices((current) => [...(current || []), newInvoice])
-    toast.success(isProForma ? "Pro forma invoice created!" : "Invoice created and sent!")
-    handleCloseDialog()
-  }
+    if (lineItems.length === 0) {
+      toast.error("Invoice must have at least one line item")
+      setInvoiceErrors({ lineItems: "At least one line item required" })
+      return
+    }
+
+    const subtotal = calculateSubtotal()
+    if (subtotal <= 0) {
+      toast.error("Invoice total must be greater than 0")
+      setInvoiceErrors({ lineItems: "Total must be greater than 0" })
+      return
+    }
+
+    if (taxRate < 0 || taxRate > 100) {
+      toast.error("Tax rate must be between 0 and 100")
+      return
+    }
+
+    setIsCreatingInvoice(true)
+
+    try {
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const job = completedJobs.find(j => j.id === selectedJobId)
+      if (!job) {
+        toast.error("Selected job not found")
+        setIsCreatingInvoice(false)
+        return
+      }
+
+      const newInvoice: Invoice = {
+        id: `inv-${Date.now()}`,
+        contractorId: user.id,
+        jobId: selectedJobId,
+        jobTitle: job.title,
+        lineItems: lineItems.map(item => ({ ...item })),
+        subtotal: subtotal,
+        taxRate: taxRate,
+        taxAmount: calculateTax(),
+        total: calculateTotal(),
+        status: 'sent',
+        dueDate,
+        sentDate: new Date().toISOString(),
+        isProForma: isProForma,
+        lateFeeApplied: false,
+        isRecurring: isRecurring,
+        recurringInterval: isRecurring ? recurringInterval : undefined,
+        useCompanyLogo: useCompanyLogo,
+        customNotes: customNotes.trim() || undefined,
+        createdAt: new Date().toISOString()
+      }
+
+      setInvoices((current) => [...(current || []), newInvoice])
+      
+      toast.success(
+        isProForma 
+          ? "Pro forma invoice created!" 
+          : `Invoice for $${calculateTotal().toLocaleString()} created and sent!`,
+        {
+          description: `Due date: ${new Date(dueDate).toLocaleDateString()}`
+        }
+      )
+      
+      handleCloseDialog()
+    } catch (error) {
+      console.error("Error creating invoice:", error)
+      toast.error("Failed to create invoice. Please try again.")
+      setInvoiceErrors({})
+    } finally {
+      setIsCreatingInvoice(false)
+    }
+  }, [selectedJobId, dueDate, lineItems, taxRate, isProForma, isRecurring, recurringInterval, useCompanyLogo, customNotes, completedJobs, user.id, setInvoices, calculateSubtotal, calculateTax, calculateTotal])
 
   const handleCloseDialog = () => {
     setDialogOpen(false)
@@ -377,7 +452,13 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
 
         {['all', 'draft', 'sent', 'paid', 'overdue'].map((tabValue) => (
           <TabsContent key={tabValue} value={tabValue}>
-            {myInvoices.filter(inv => {
+            {isInitializing ? (
+              <div className="space-y-3 mt-4">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <SkeletonLoader key={i} variant="card" />
+                ))}
+              </div>
+            ) : myInvoices.filter(inv => {
               if (tabValue === 'all') return true
               if (tabValue === 'sent') return inv.status === 'sent' || inv.status === 'viewed'
               return inv.status === tabValue
@@ -750,9 +831,22 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                 <Button variant="outline" onClick={handleCloseDialog} className="h-11">
                   Cancel
                 </Button>
-                <Button onClick={handleCreateInvoice} className="h-11">
-                  <Receipt className="mr-2" weight="bold" />
-                  {isProForma ? 'Create Pro Forma' : 'Create & Send'}
+                <Button 
+                  onClick={handleCreateInvoice} 
+                  className="h-11 border-2 border-black dark:border-white"
+                  disabled={isCreatingInvoice}
+                >
+                  {isCreatingInvoice ? (
+                    <>
+                      <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
+                      Creating...
+                    </>
+                  ) : (
+                    <>
+                      <Receipt className="mr-2" weight="bold" />
+                      {isProForma ? 'Create Pro Forma' : 'Create & Send'}
+                    </>
+                  )}
                 </Button>
               </div>
             </div>

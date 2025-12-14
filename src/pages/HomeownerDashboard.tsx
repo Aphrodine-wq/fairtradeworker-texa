@@ -23,9 +23,18 @@ interface HomeownerDashboardProps {
 }
 
 export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps) {
-  const [jobs] = useKV<Job[]>("jobs", [])
-  const [invoices] = useKV<Invoice[]>("invoices", [])
+  const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
+  const [invoices, , invoicesLoading] = useKV<Invoice[]>("invoices", [])
+  const [isInitializing, setIsInitializing] = useState(true)
   // Homeowner dashboards don't use glass (free tier)
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!jobsLoading && !invoicesLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [jobsLoading, invoicesLoading])
 
   const myJobs = useMemo(() => 
     (jobs || []).filter(j => j.homeownerId === user.id),

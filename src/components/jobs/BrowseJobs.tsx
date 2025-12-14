@@ -468,6 +468,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }, [bidTemplates])
 
   const [isSubmittingBid, setIsSubmittingBid] = useState(false)
+  const [isLoadingJobs, setIsLoadingJobs] = useState(false)
 
   const handleSubmitBid = useCallback(async () => {
     if (!selectedJob || isSubmittingBid) return
@@ -736,6 +737,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     </div>
                   </Card>
                 </div>
+              ) : (isLoadingJobs || jobsLoading) && sortedOpenJobs.length === 0 ? (
+                <SkeletonGrid count={6} columns={3} />
               ) : (
                 sortedOpenJobs.map(job => (
                   <JobCard
