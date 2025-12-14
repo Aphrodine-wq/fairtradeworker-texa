@@ -133,7 +133,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
       </div>
 
       {!user.isPro && (
-        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+        <Card glass={isPro}>
           <CardHeader>
             <CardTitle className="text-lg">Pro Feature</CardTitle>
             <CardDescription>
@@ -166,7 +166,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
       {user.isPro && mySequences.length > 0 && (
         <div className="grid gap-4">
           {mySequences.map((sequence) => (
-            <Card key={sequence.id} className={!sequence.active ? 'opacity-60' : ''}>
+            <Card key={sequence.id} className={!sequence.active ? 'opacity-60' : ''} glass={isPro}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -278,7 +278,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full overflow-hidden">
                   {steps.map((step, index) => (
-                    <Card key={index} className="p-4 flex flex-col">
+                    <Card key={index} className="p-4 flex flex-col" glass={isPro}>
                       <div className="flex items-center justify-between mb-3 flex-shrink-0">
                         <span className="font-semibold text-base">Step {index + 1}</span>
                         <Button

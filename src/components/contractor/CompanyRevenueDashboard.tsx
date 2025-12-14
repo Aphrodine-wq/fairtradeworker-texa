@@ -186,7 +186,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
 
         <TabsContent value="breakdown" className="space-y-4 mt-6">
           {revenueBreakdown.map((item, index) => (
-            <Card key={index}>
+            <Card key={index} glass={isPro}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">

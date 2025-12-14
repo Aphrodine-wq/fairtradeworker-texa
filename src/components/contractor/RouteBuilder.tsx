@@ -80,7 +80,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
       </div>
 
       <div className="grid md:grid-cols-3 gap-4">
-        <Card>
+        <Card glass={isPro}>
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-primary">
               <MapPin weight="duotone" size={24} />
@@ -95,7 +95,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
           </CardContent>
         </Card>
 
-        <Card>
+        <Card glass={isPro}>
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-green-600">
               <Clock weight="duotone" size={24} />
@@ -112,7 +112,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
           </CardContent>
         </Card>
 
-        <Card>
+        <Card glass={isPro}>
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2 text-accent">
               <TrendUp weight="duotone" size={24} />
@@ -165,10 +165,11 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
             topClusters.map((cluster) => (
               <Card 
                 key={cluster.id}
-                className={`transition-all cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] border-2 border-black dark:border-white ${
+                className={`transition-all cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] ${
                   selectedCluster === cluster.id ? 'ring-2 ring-primary' : ''
                 }`}
                 onClick={() => setSelectedCluster(cluster.id)}
+                glass={isPro}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -256,7 +257,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
 
         <TabsContent value="scheduled" className="space-y-4 mt-6">
           {myScheduledJobs.length === 0 ? (
-            <Card>
+            <Card glass={isPro}>
               <CardContent className="py-12 text-center">
                 <CalendarBlank size={48} weight="duotone" className="mx-auto mb-4 text-muted-foreground" />
                 <p className="text-muted-foreground">
@@ -268,7 +269,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
               </CardContent>
             </Card>
           ) : (
-            <Card>
+            <Card glass={isPro}>
               <CardHeader>
                 <CardTitle>Your Scheduled Jobs</CardTitle>
                 <CardDescription>
@@ -326,7 +327,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
         </TabsContent>
 
         <TabsContent value="anchor" className="space-y-4 mt-6">
-          <Card>
+          <Card glass={isPro}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Star weight="duotone" size={24} className="text-accent" />
