@@ -229,7 +229,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     {todaySchedule.length} scheduled today
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -263,7 +263,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     {wonBids.length} of {myBids.length} bids
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Target className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -276,7 +276,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                   <p className="text-3xl font-bold mt-1">{performanceScore}/100</p>
                   <Progress value={performanceScore} className="mt-2 h-1" />
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <ChartLine className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -285,7 +285,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Fee Savings Highlight */}
           {feesAvoided > 0 && (
-            <Card className="p-6 bg-primary/5 border-primary/20">
+            <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Fees Avoided on FairTradeWorker</p>
@@ -392,7 +392,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 ) : (
                   <div className="space-y-3">
                     {todaySchedule.map(job => (
-                      <div key={job.id} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg">
+                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none">
                         <MapPin className="h-4 w-4 text-primary mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{job.title}</p>
@@ -459,7 +459,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
               onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
@@ -485,7 +485,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
               onClick={() => onNavigate('revenue-dashboard')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <ChartLine className="h-6 w-6 text-secondary-foreground" />
                 </div>
                 <div>
@@ -498,7 +498,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
               onClick={() => onNavigate('business-tools')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-950 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
                 </div>
                 <div>

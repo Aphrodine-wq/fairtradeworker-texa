@@ -38,11 +38,11 @@
 
   --muted: oklch(1 0 0); /* Pure white muted background */
   --muted-foreground: oklch(0 0 0); /* Pure black text in light mode */
-  --border: oklch(0.922 0.005 264 / 0.3);
+  --border: oklch(0 0 0); /* Pure black borders - no transparency */
   --input: oklch(1 0 0); /* Pure white input background */
-  --ring: oklch(0.506 0.213 264);
+  --ring: oklch(0 0 0); /* Pure black focus ring */
 
-  --radius: 0.625rem;
+  --radius: 0; /* No rounded corners - brutalist */
 }
 
 .dark {
@@ -65,9 +65,9 @@
 
   --muted: oklch(0 0 0); /* Pure black muted background */
   --muted-foreground: oklch(1 0 0); /* Pure white text in dark mode */
-  --border: oklch(0.322 0.015 264 / 0.5);
+  --border: oklch(1 0 0); /* Pure white borders - no transparency */
   --input: oklch(0 0 0); /* Pure black input background */
-  --ring: oklch(0.606 0.213 264);
+  --ring: oklch(1 0 0); /* Pure white focus ring */
 }
 
 @supports (backdrop-filter: blur(12px)) {

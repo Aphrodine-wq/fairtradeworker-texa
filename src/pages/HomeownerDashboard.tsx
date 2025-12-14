@@ -140,7 +140,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Active Jobs</p>
                   <p className="text-3xl font-bold mt-1">{activeJobs.length}</p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Wrench className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -154,7 +154,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                     {openJobs.reduce((sum, j) => sum + j.bids.length, 0)}
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Users className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -166,7 +166,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Completed</p>
                   <p className="text-3xl font-bold mt-1">{completedJobs.length}</p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <CheckCircle className="h-6 w-6 text-accent-foreground" />
                 </div>
               </div>
@@ -178,7 +178,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Total Spent</p>
                   <p className="text-3xl font-bold mt-1">${totalSpent.toLocaleString()}</p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <CurrencyDollar className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -230,7 +230,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                                   <span className="text-muted-foreground">Progress</span>
                                   <span className="font-medium">{completedMilestones}/{totalMilestones} milestones</span>
                                 </div>
-                                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                                <div className="h-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none overflow-hidden">
                                   <div 
                                     className="h-full bg-primary transition-all duration-300"
                                     style={{ width: `${progress}%` }}
@@ -277,7 +277,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
               </Card>
 
               {pendingPayments > 0 && (
-                <Card className="p-6 bg-accent/5 border-accent">
+                <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
                   <div className="flex items-start gap-3">
                     <Clock className="h-5 w-5 text-accent-foreground mt-0.5" />
                     <div>

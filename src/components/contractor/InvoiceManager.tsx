@@ -246,7 +246,7 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
       </div>
 
       {!user.isPro && (
-        <Card className="border-primary/50 bg-primary/5">
+        <Card className="border-2 border-black dark:border-white bg-white dark:bg-black">
           <CardHeader>
             <CardTitle className="text-lg">Pro Features Available</CardTitle>
             <CardDescription>
@@ -375,13 +375,13 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                       
                       <div className="mt-4 space-y-2">
                         {invoice.useCompanyLogo === false && (
-                          <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded flex items-center gap-2">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-2 rounded-none flex items-center gap-2 font-mono">
                             <ImageIcon size={14} weight="duotone" />
                             Using FairTradeWorker Texas generic logo
                           </div>
                         )}
                         {invoice.customNotes && (
-                          <div className="text-xs text-muted-foreground bg-muted/50 p-2 rounded">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-2 rounded-none font-mono">
                             <strong>Notes:</strong> {invoice.customNotes}
                           </div>
                         )}
@@ -510,7 +510,7 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
             </div>
 
             {!user.companyLogo && (
-              <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+              <div className="text-sm text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white p-3 rounded-none font-mono">
                 💡 <strong>Tip:</strong> Add your company logo in settings to brand your invoices professionally.
                 For now, invoices will use the FairTradeWorker Texas logo to ensure tax compliance.
               </div>
@@ -583,7 +583,7 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
                       </div>
                       <div className="space-y-1">
                         <Label className="text-xs">Total</Label>
-                        <div className="h-10 flex items-center px-3 bg-muted rounded-md font-medium">
+                        <div className="h-10 flex items-center px-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-black uppercase">
                           {formatCurrency(item.total)}
                         </div>
                       </div>
@@ -593,7 +593,7 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
               ))}
             </div>
 
-            <Card className="bg-muted/50">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <Calculator weight="duotone" size={20} className="text-primary" />

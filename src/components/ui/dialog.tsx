@@ -36,7 +36,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/20 dark:bg-white/10 backdrop-blur-sm",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black dark:bg-white",
         className
       )}
       {...props}
@@ -55,13 +55,13 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "glass-bold data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-[98vw] max-w-[98vw] h-[95vh] translate-x-[-50%] translate-y-[-50%] gap-6 rounded-3xl p-12 md:p-16 lg:p-20 shadow-[0_25px_80px_rgba(0,0,0,0.15)] duration-200 overflow-hidden flex flex-col",
+          "bg-white dark:bg-black data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-[98vw] max-w-[98vw] h-[95vh] translate-x-[-50%] translate-y-[-50%] gap-6 rounded-none border-4 border-black dark:border-white p-12 md:p-16 lg:p-20 shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff] duration-200 overflow-hidden flex flex-col",
           className
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="ring-offset-background focus:ring-blue-400/30 data-[state=open]:bg-white dark:data-[state=open]:bg-black data-[state=open]:text-black dark:data-[state=open]:text-white absolute top-4 right-4 rounded-lg opacity-70 transition-opacity duration-100 hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 p-2">
+        <DialogPrimitive.Close className="ring-offset-background focus:ring-black dark:focus:ring-white data-[state=open]:bg-white dark:data-[state=open]:bg-black data-[state=open]:text-black dark:data-[state=open]:text-white absolute top-4 right-4 rounded-none border-2 border-black dark:border-white opacity-100 transition-all duration-200 hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 p-2">
           <XIcon />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>

@@ -233,13 +233,13 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'lead':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'completed':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
       case 'advocate':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white'
     }
   }
 
@@ -278,7 +278,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       {/* View Mode Tabs */}
       {myCustomers.length > 0 && (
         <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-2 border-black dark:border-white">
             <TabsTrigger 
               value="list" 
               className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
@@ -308,7 +308,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
 
         {/* Search and Filter - Always visible when customers exist */}
         {myCustomers.length > 0 && (
-          <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+          <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
@@ -316,11 +316,11 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                   placeholder="Search by name, email, phone, notes, or tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border-black/10 dark:border-white/20"
+                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border-black/10 dark:border-white/20">
+                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white">
                   <Funnel weight="duotone" className="mr-2" size={16} />
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -337,7 +337,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
         )}
 
         {myCustomers.length === 0 ? (
-          <Card className="max-w-2xl mx-auto dark:bg-black dark:border-white/10">
+          <Card className="max-w-2xl mx-auto dark:bg-black border-2 border-black dark:border-white">
             <CardContent className="flex flex-col items-center justify-center py-16">
               <Users size={64} weight="duotone" className="text-muted-foreground mb-4 dark:text-white/50" />
               <h3 className="text-xl font-semibold mb-2 dark:text-white">No customers yet</h3>
@@ -354,7 +354,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                   <Dialog key={customer.id}>
                     <DialogTrigger asChild>
                       <Card
-                        className="cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white dark:bg-black border-black/10 dark:border-white/10 dark:hover:border-white/20"
+                        className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:scale-[1.02] transition-all duration-200 bg-white dark:bg-black border-2 border-black dark:border-white"
                         onClick={() => {
                           setSelectedCustomer(customer)
                           setNotes(customer.notes || "")
@@ -436,10 +436,10 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 gap-4 p-6">
                         {/* Left Column - Overview */}
                         <div className="lg:col-span-1 space-y-4 overflow-hidden flex flex-col">
-                          <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 space-y-4">
+                          <div className="bg-white dark:bg-black rounded-none border-2 border-black dark:border-white p-4 space-y-4">
                             <div className="space-y-2">
                               <Label className="dark:text-white text-sm">Contact</Label>
-                              <div className="flex items-center gap-2 p-2 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10">
+                              <div className="flex items-center gap-2 p-2 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white">
                                 {customer.invitedVia === 'email' ? (
                                   <>
                                     <EnvelopeSimple weight="duotone" size={18} className="dark:text-white" />
@@ -460,7 +460,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 value={customer.status}
                                 onValueChange={(value) => handleUpdateStatus(customer.id, value as CRMCustomer['status'])}
                               >
-                                <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20 h-9">
+                                <SelectTrigger className="dark:bg-black dark:text-white border-2 border-black dark:border-white h-9">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -510,7 +510,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                           </div>
 
                           {/* Notes Section */}
-                          <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-1 overflow-hidden flex flex-col">
+                          <div className="bg-white dark:bg-black rounded-none border-2 border-black dark:border-white p-4 flex-1 overflow-hidden flex flex-col">
                             <div className="flex items-center justify-between mb-3 flex-shrink-0">
                               <Label className="flex items-center gap-2 dark:text-white text-sm">
                                 <Note weight="duotone" size={16} />
@@ -534,7 +534,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                   placeholder="Add notes..."
                                   value={notes}
                                   onChange={(e) => setNotes(e.target.value)}
-                                  className="flex-1 dark:bg-black dark:text-white dark:border-white/20 text-sm resize-none"
+                                  className="flex-1 dark:bg-black dark:text-white border-2 border-black dark:border-white text-sm resize-none font-mono"
                                 />
                                 <div className="flex gap-2 flex-shrink-0">
                                   <Button onClick={handleSaveNotes} size="sm" className="h-8 text-xs">Save</Button>
@@ -545,14 +545,14 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                       setNotes(customer.notes || "")
                                       setIsEditingNotes(false)
                                     }}
-                                    className="dark:bg-black dark:text-white dark:border-white/20 h-8 text-xs"
+                                    className="dark:bg-black dark:text-white border-2 border-black dark:border-white h-8 text-xs font-mono"
                                   >
                                     Cancel
                                   </Button>
                                 </div>
                               </div>
                             ) : (
-                              <div className="flex-1 text-xs p-3 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10 dark:text-white overflow-hidden">
+                              <div className="flex-1 text-xs p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white dark:text-white overflow-hidden font-mono">
                                 {customer.notes || "No notes yet. Click Edit to add notes."}
                               </div>
                             )}
@@ -560,7 +560,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                         </div>
 
                         {/* Right Column - Interactions */}
-                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 overflow-hidden flex flex-col">
+                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white p-4 overflow-hidden flex flex-col">
                           <div className="flex items-center justify-between mb-4 flex-shrink-0">
                             <Label className="dark:text-white text-base font-semibold">Interaction History</Label>
                             <Button
@@ -644,7 +644,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {pipelineStages.map((stage) => (
                     <div key={stage.id} className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
+                      <div className="flex items-center justify-between p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white">
                         <h3 className="font-semibold dark:text-white">{stage.name}</h3>
                         <Badge variant="outline" className="dark:border-white/20 dark:text-white/80">
                           {stage.customers.length}
@@ -790,7 +790,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                       const customer = myCustomers.find(c => c.id === interaction.customerId)
                       const Icon = getInteractionIcon(interaction.type)
                       return (
-                        <div key={interaction.id} className="flex items-center gap-3 p-3 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
+                        <div key={interaction.id} className="flex items-center gap-3 p-3 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white">
                           <Icon weight="duotone" size={20} className="text-black dark:text-white" />
                           <div className="flex-1">
                             <div className="font-semibold dark:text-white">{interaction.title}</div>

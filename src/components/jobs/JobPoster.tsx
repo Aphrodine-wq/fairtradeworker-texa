@@ -297,7 +297,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('QUICK_FIX')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-none border-2 border-black dark:border-white hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
                 <div className="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -324,10 +324,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('STANDARD')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-none border-2 border-black dark:border-white hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-lg bg-amber-100 dark:bg-amber-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-none bg-[#FFFF00] dark:bg-[#FFFF00] border-2 border-black dark:border-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <House weight="fill" className="text-amber-600 dark:text-amber-400" size={28} />
                 </div>
                 <TierBadge tier="STANDARD" />
@@ -351,10 +351,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('MAJOR_PROJECT')
                 setStep('project-select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-none border-2 border-black dark:border-white hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-lg bg-blue-100 dark:bg-blue-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={28} />
                 </div>
                 <TierBadge tier="MAJOR_PROJECT" />
@@ -399,7 +399,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('kitchen-remodel')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🍳</div>
               <div className="flex-1">
@@ -413,7 +413,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('bathroom-remodel')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🚿</div>
               <div className="flex-1">
@@ -427,7 +427,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('roof-replacement')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🏠</div>
               <div className="flex-1">
@@ -441,7 +441,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('deck-build')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🪵</div>
               <div className="flex-1">
@@ -455,7 +455,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('fence-installation')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🚧</div>
               <div className="flex-1">
@@ -469,7 +469,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('room-addition')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">🏗️</div>
               <div className="flex-1">
@@ -483,7 +483,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('custom')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-xl border-2 border-dashed border-border hover:border-primary hover:shadow-md transition-all text-left"
+              className="flex items-center gap-4 p-5 rounded-none border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
               <div className="text-4xl">✏️</div>
               <div className="flex-1">
@@ -546,7 +546,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
               onClick={() => handleMethodSelect('photos')}
               className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
             >
-              <div className="w-16 h-16 rounded-xl bg-primary flex items-center justify-center">
+              <div className="w-16 h-16 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <Camera weight="fill" className="text-primary-foreground" size={32} />
               </div>
               <div className="text-center">

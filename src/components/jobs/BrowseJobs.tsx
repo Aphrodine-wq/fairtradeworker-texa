@@ -88,9 +88,9 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group h-full flex flex-col ${isFresh ? "border-black dark:border-white border-2 shadow-lg" : ""}`}>
+    <Card className={`overflow-hidden transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] group h-full flex flex-col ${isFresh ? "border-black dark:border-white border-2 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]" : ""}`}>
       {/* Accent line on hover */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-black dark:bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 left-0 right-0 h-2 bg-black dark:bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       
       {isFresh && (
         <div className="bg-white dark:bg-black text-black dark:text-white border-b-2 border-black dark:border-white px-4 py-2 flex items-center gap-2">
