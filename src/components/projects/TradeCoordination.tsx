@@ -413,15 +413,41 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                 <Label className="text-base">Contractor Name *</Label>
                 <Input
                   value={formData.contractorName}
-                  onChange={(e) => setFormData({ ...formData, contractorName: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, contractorName: safeInput(e.target.value) })
+                    if (errors.contractorName) setErrors(prev => ({ ...prev, contractorName: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.contractorName && formData.contractorName.trim().length < 2) {
+                      setErrors(prev => ({ ...prev, contractorName: "Name must be at least 2 characters" }))
+                    }
+                  }}
                   placeholder="e.g., Mike's Electric"
-                  className="h-11"
+                  className={`h-11 ${errors.contractorName ? "border-[#FF0000]" : ""}`}
+                  disabled={isSubmitting}
+                  required
+                  aria-invalid={!!errors.contractorName}
+                  aria-describedby={errors.contractorName ? "contractor-name-error" : undefined}
                 />
+                {errors.contractorName && (
+                  <p id="contractor-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.contractorName}
+                  </p>
+                )}
               </div>
               <div>
                 <Label className="text-base">Trade *</Label>
-                <Select value={formData.trade} onValueChange={(value) => setFormData({ ...formData, trade: value })}>
-                  <SelectTrigger className="h-11">
+                <Select 
+                  value={formData.trade} 
+                  onValueChange={(value) => {
+                    setFormData({ ...formData, trade: value })
+                    if (errors.trade) setErrors(prev => ({ ...prev, trade: undefined }))
+                  }}
+                >
+                  <SelectTrigger 
+                    className={`h-11 ${errors.trade ? "border-[#FF0000]" : ""}`}
+                    aria-invalid={!!errors.trade}
+                  >
                     <SelectValue placeholder="Select trade" />
                   </SelectTrigger>
                   <SelectContent>
@@ -452,10 +478,39 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                 <Input
                   type="tel"
                   value={formData.contactPhone}
-                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
+                  onChange={(e) => {
+                    // Format phone number
+                    const value = e.target.value.replace(/\D/g, '')
+                    let formatted = value
+                    if (value.length > 0) {
+                      if (value.length <= 3) {
+                        formatted = `(${value}`
+                      } else if (value.length <= 6) {
+                        formatted = `(${value.slice(0, 3)}) ${value.slice(3)}`
+                      } else {
+                        formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`
+                      }
+                    }
+                    setFormData({ ...formData, contactPhone: formatted.slice(0, 14) })
+                    if (errors.contactPhone) setErrors(prev => ({ ...prev, contactPhone: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.contactPhone && !validatePhone(formData.contactPhone)) {
+                      setErrors(prev => ({ ...prev, contactPhone: "Please enter a valid phone number" }))
+                    }
+                  }}
                   placeholder="(555) 123-4567"
-                  className="h-11"
+                  className={`h-11 ${errors.contactPhone ? "border-[#FF0000]" : ""}`}
+                  disabled={isSubmitting}
+                  maxLength={14}
+                  aria-invalid={!!errors.contactPhone}
+                  aria-describedby={errors.contactPhone ? "contact-phone-error" : undefined}
                 />
+                {errors.contactPhone && (
+                  <p id="contact-phone-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.contactPhone}
+                  </p>
+                )}
               </div>
               <div>
                 <Label className="text-base">Email</Label>
@@ -498,8 +553,19 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
               </Button>
               <Button
                 onClick={editingTrade ? handleUpdate : handleAdd}
-                className="flex-1 h-11"
+                className="flex-1 h-11 border-2 border-black dark:border-white"
+                disabled={isSubmitting}
               >
+                {isSubmitting ? (
+                  <>
+                    <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                    {editingTrade ? 'Updating...' : 'Adding...'}
+                  </>
+                ) : (
+                  <>
+                    {editingTrade ? 'Save Changes' : 'Add Trade Contractor'}
+                  </>
+                )}
                 {editingTrade ? 'Save Changes' : 'Add Trade'}
               </Button>
             </div>
