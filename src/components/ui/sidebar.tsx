@@ -244,7 +244,7 @@ function Sidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-white dark:bg-black group-data-[variant=floating]:border-2 group-data-[variant=floating]:border-black dark:group-data-[variant=floating]:border-white flex h-full w-full flex-col group-data-[variant=floating]:rounded-md group-data-[variant=floating]:shadow-[2px_2px_0_#000] dark:group-data-[variant=floating]:shadow-[2px_2px_0_#fff]"
+          className="bg-white dark:bg-black group-data-[variant=floating]:border group-data-[variant=floating]:border-black/20 dark:group-data-[variant=floating]:border-white/20 flex h-full w-full flex-col group-data-[variant=floating]:rounded-md group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>
@@ -310,7 +310,7 @@ function SidebarInset({ className, ...props }: ComponentProps<"main">) {
       data-slot="sidebar-inset"
       className={cn(
         "bg-background relative flex w-full flex-1 flex-col",
-        "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-md md:peer-data-[variant=inset]:border-2 md:peer-data-[variant=inset]:border-black dark:md:peer-data-[variant=inset]:border-white md:peer-data-[variant=inset]:shadow-[2px_2px_0_#000] dark:md:peer-data-[variant=inset]:shadow-[2px_2px_0_#fff] md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
+        "md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-md md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:border-black/20 dark:md:peer-data-[variant=inset]:border-white/20 md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2",
         className
       )}
       {...props}

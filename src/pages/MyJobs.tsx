@@ -155,7 +155,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     const acceptedBid = job.bids.find(bid => bid.status === 'accepted')
     
     return (
-    <Card className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all">
+    <Card className="hover:shadow-md transition-all">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -216,7 +216,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               {job.photos.slice(0, 4).map((photo, idx) => (
                 <div
                   key={idx}
-                  className="aspect-square rounded-md border border-black/20 dark:border-white/20 overflow-hidden cursor-pointer hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all"
+                  className="aspect-square rounded-md border border-black/20 dark:border-white/20 overflow-hidden cursor-pointer hover:shadow-md transition-all"
                   onClick={() => handlePhotoClick(job.photos || [], idx)}
                 >
                   <img
