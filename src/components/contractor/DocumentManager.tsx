@@ -217,7 +217,7 @@ export function DocumentManager({ user }: { user: User }) {
             {subFolders.map(folder => (
               <Card
                 key={folder.id}
-                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all cursor-pointer bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
+                className="hover:shadow-md transition-all cursor-pointer bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
                 onClick={() => setCurrentFolderId(folder.id)}
               >
                 <CardContent className="p-6 flex flex-col items-center text-center">
