@@ -1,10 +1,11 @@
 import { useMemo } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock } from "@phosphor-icons/react"
+import { Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock, Gear } from "@phosphor-icons/react"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
 import { CRMKanban } from "./CRMKanban"
 import { FollowUpSequences } from "./FollowUpSequences"
+import { CustomizableCRM } from "./CustomizableCRM"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
@@ -90,7 +91,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
 
           {/* Main Tabs */}
           <Tabs defaultValue="customers" className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
               <TabsTrigger 
                 value="customers" 
                 className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
@@ -116,6 +117,14 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                 <span className="sm:hidden">Auto</span>
                 {!user.isPro && <span className="ml-1">🔒</span>}
               </TabsTrigger>
+              <TabsTrigger 
+                value="customize" 
+                className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+              >
+                <Gear weight="duotone" size={18} />
+                <span className="hidden sm:inline">Customize</span>
+                <span className="sm:hidden">Settings</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="customers" className="mt-6">
@@ -128,6 +137,10 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
 
             <TabsContent value="followups" className="mt-6">
               <FollowUpSequences user={user} />
+            </TabsContent>
+
+            <TabsContent value="customize" className="mt-6">
+              <CustomizableCRM user={user} />
             </TabsContent>
           </Tabs>
         </div>
