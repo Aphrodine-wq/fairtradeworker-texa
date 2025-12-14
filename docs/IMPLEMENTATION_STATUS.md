@@ -69,7 +69,7 @@
 3. ✅ **Quote Template Builder** - `src/components/contractor/QuoteTemplateBuilder.tsx`
 4. ✅ **Change Order System** - ✅ Already implemented (ChangeOrderBuilder)
 5. ✅ **Seasonal Demand Forecast** - `src/components/contractor/SeasonalDemandForecast.tsx`
-6. ⏳ **Custom Branding on Portfolio** - Pending (can enhance PortfolioBuilder)
+6. ✅ **Custom Branding on Portfolio** - `src/components/contractor/CustomBranding.tsx`
 7. ✅ **Advanced Bid Analytics** - `src/components/contractor/AdvancedBidAnalytics.tsx`
 8. ✅ **Custom Automation Builder** - ✅ Already exists (`AutomationRunner.tsx`)
 9. ✅ **Territory Heatmaps** - ✅ Already exists (`TerritoryMap.tsx`)
@@ -78,12 +78,12 @@
 12. ✅ **Profit Calculator** - `src/components/contractor/ProfitCalculator.tsx`
 13. ✅ **Custom Fields & Tags** - `src/components/contractor/CustomFieldsTags.tsx`
 14. ✅ **Export Everything** - `src/components/contractor/ExportEverything.tsx`
-15. ⏳ **Bid Boost History** - Pending
+15. ✅ **Bid Boost History** - `src/components/contractor/BidBoostHistory.tsx`
 16. ✅ **Client Portal Link** - `src/components/contractor/ClientPortal.tsx`
 17. ✅ **Insurance/Cert Upload Verification** - `src/components/contractor/InsuranceCertVerification.tsx`
 18. ✅ **Pro-Only Filters** - `src/components/contractor/ProOnlyFilters.tsx`
-19. ⏳ **Dedicated Pro Support Chat** - Pending (can use CommunicationHub)
-20. ⏳ **Custom Branding** - Pending
+19. ✅ **Dedicated Pro Support Chat** - `src/components/contractor/ProSupportChat.tsx`
+20. ✅ **Custom Branding** - `src/components/contractor/CustomBranding.tsx` (already listed above)
 
 ### Infrastructure & Architecture
 - ✅ **Type Updates** - Updated Job interface for private jobs, metadata, jobIds arrays
