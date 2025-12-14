@@ -25,7 +25,7 @@ import {
   Check
 } from "@phosphor-icons/react"
 import type { User, Job, Territory } from "@/lib/types"
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 
 interface OperatorDashboardProps {
   user: User

@@ -15,7 +15,7 @@ import {
   Plus
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice } from "@/lib/types"
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 
 interface HomeownerDashboardProps {
   user: User
