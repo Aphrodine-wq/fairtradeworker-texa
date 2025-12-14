@@ -588,3 +588,330 @@ TLDR: Do whatever you want. Just keep it fair.
 [Website](https://fairtradeworker.com) • [Documentation](https://docs.fairtradeworker.com) • [Support](mailto:support@fairtradeworker.com)
 
 </div>
+
+---
+
+# CURSOR AI INSTRUCTIONS — FairTradeWorker
+
+> System prompt and development guidelines for AI-assisted coding on FairTradeWorker
+
+---
+
+## PROJECT CONTEXT
+
+You are working on **FairTradeWorker**, a zero-fee home services marketplace. This is a production-grade React/TypeScript application with 39,700+ lines of code.
+
+### Core Mission
+- Contractors keep 100% of their earnings
+- Homeowners pay a flat $20 platform fee
+- AI-powered job scoping in 60 seconds
+- Built-in CRM, invoicing, and automation
+
+### Tech Stack
+- **Frontend**: React 19, TypeScript 5.7, Vite 7.2
+- **Styling**: Tailwind CSS v4, shadcn/ui
+- **State**: Local storage with custom hooks
+- **Testing**: Vitest, React Testing Library
+- **Icons**: Phosphor Icons
+
+---
+
+## DESIGN SYSTEM — BRUTALIST MINIMAL
+
+### CRITICAL: Follow these principles EXACTLY
+
+```css
+/* COLOR PALETTE - NO EXCEPTIONS */
+--background: #FFFFFF;      /* Light mode */
+--background-dark: #000000; /* Dark mode */
+--foreground: #000000;      /* Light mode text */
+--foreground-dark: #FFFFFF; /* Dark mode text */
+--success: #00FF00;         /* Money green */
+--danger: #FF0000;          /* Error red */
+--warning: #FFFF00;         /* Attention yellow */
+--border: #000000;          /* Always black borders */
+```
+
+### HARD RULES
+
+1. **NO GRADIENTS** — Ever. Zero. None.
+2. **NO TRANSPARENCY** — All backgrounds are 100% opaque
+3. **NO ROUNDED CORNERS** — Use `rounded-none` or very minimal `rounded-sm`
+4. **HIGH CONTRAST** — Black on white, white on black
+5. **BOLD BORDERS** — 2px minimum, always black
+6. **HARD SHADOWS** — Use `shadow-[4px_4px_0_#000]` style, no blur
+7. **MONOSPACE FOR DATA** — Numbers, stats, codes use `font-mono`
+
+### Component Patterns
+
+```tsx
+// ✅ CORRECT - Brutalist card
+<div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0_#000]">
+  <h3 className="text-xl font-black uppercase tracking-tight">Title</h3>
+  <p className="font-mono text-sm">Content</p>
+</div>
+
+// ❌ WRONG - Generic AI slop
+<div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl shadow-lg">
+  <h3 className="text-gray-600">Title</h3>
+</div>
+```
+
+```tsx
+// ✅ CORRECT - Brutalist button
+<button className="bg-black text-white px-6 py-3 font-black uppercase border-2 border-black hover:bg-white hover:text-black transition-colors">
+  ACTION
+</button>
+
+// ❌ WRONG - Soft button
+<button className="bg-blue-500 rounded-full px-4 py-2 text-white shadow-md">
+  Click me
+</button>
+```
+
+---
+
+## CODE STYLE
+
+### TypeScript Requirements
+
+1. **100% TypeScript** — No `.js` or `.jsx` files
+2. **Strict mode** — All types explicit, no `any`
+3. **Type definitions** in `/src/lib/types.ts`
+
+```tsx
+// ✅ CORRECT
+interface ContractorProfile {
+  id: string;
+  name: string;
+  trades: Trade[];
+  rating: number;
+  completedJobs: number;
+}
+
+// ❌ WRONG
+const contractor: any = { ... }
+```
+
+### Component Structure
+
+```tsx
+// Standard component template
+import { useState, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import type { SomeType } from '@/lib/types';
+
+interface ComponentProps {
+  data: SomeType;
+  onAction: (id: string) => void;
+}
+
+export function ComponentName({ data, onAction }: ComponentProps) {
+  const [state, setState] = useState<StateType>(initialValue);
+  
+  const handleAction = useCallback(() => {
+    // Implementation
+  }, [dependency]);
+  
+  return (
+    <Card className="border-2 border-black shadow-[4px_4px_0_#000]">
+      <CardHeader>
+        <CardTitle className="font-black uppercase">Title</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {/* Content */}
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+### File Organization
+
+```
+src/
+├── components/
+│   ├── ui/           # shadcn/ui primitives
+│   ├── contractor/   # Contractor-specific components
+│   ├── homeowner/    # Homeowner-specific components
+│   ├── jobs/         # Job-related components
+│   ├── payments/     # Payment components
+│   ├── projects/     # Project management
+│   ├── viral/        # Growth features
+│   ├── layout/       # Layout components
+│   └── shared/       # Shared components
+├── pages/            # Page components
+├── lib/              # Utilities and types
+├── hooks/            # Custom hooks
+└── tests/            # Test files
+```
+
+---
+
+## FEATURE IMPLEMENTATION PATTERNS
+
+### Adding New Features
+
+1. **Start with types** — Define interfaces in `/src/lib/types.ts`
+2. **Create hook** — If state logic is complex, extract to custom hook
+3. **Build component** — Follow brutalist styling rules
+4. **Add tests** — Unit tests for logic, integration for workflows
+5. **Update docs** — Keep README current
+
+### Example: Adding a new CRM feature
+
+```tsx
+// 1. Types (lib/types.ts)
+export interface Lead {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  status: 'new' | 'contacted' | 'quoted' | 'won' | 'lost';
+  source: 'referral' | 'organic' | 'paid';
+  createdAt: Date;
+  notes: string[];
+}
+
+// 2. Hook (hooks/useLeads.ts)
+export function useLeads() {
+  const [leads, setLeads] = useLocalKV<Lead[]>('ftw:leads', []);
+  
+  const addLead = useCallback((lead: Omit<Lead, 'id' | 'createdAt'>) => {
+    const newLead: Lead = {
+      ...lead,
+      id: crypto.randomUUID(),
+      createdAt: new Date(),
+    };
+    setLeads(prev => [...prev, newLead]);
+    return newLead;
+  }, [setLeads]);
+  
+  return { leads, addLead };
+}
+
+// 3. Component (components/contractor/LeadCard.tsx)
+export function LeadCard({ lead, onStatusChange }: LeadCardProps) {
+  return (
+    <div className="bg-white border-2 border-black p-4 shadow-[4px_4px_0_#000]">
+      <div className="flex justify-between items-start">
+        <div>
+          <h4 className="font-black uppercase">{lead.name}</h4>
+          <p className="font-mono text-sm">{lead.phone}</p>
+        </div>
+        <span className={cn(
+          "px-2 py-1 font-mono text-xs uppercase border-2 border-black",
+          lead.status === 'won' && "bg-[#00FF00]",
+          lead.status === 'lost' && "bg-[#FF0000] text-white"
+        )}>
+          {lead.status}
+        </span>
+      </div>
+    </div>
+  );
+}
+```
+
+---
+
+## COMMON TASKS
+
+### Adding a new page
+
+1. Create component in `/src/pages/NewPage.tsx`
+2. Add route in `App.tsx`
+3. Add navigation link in `Header.tsx`
+
+### Adding a shadcn/ui component
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+Then customize to match brutalist styling.
+
+### Running tests
+
+```bash
+npm test              # Run all tests
+npm test -- --watch   # Watch mode
+npm test -- --coverage # Coverage report
+```
+
+### Building for production
+
+```bash
+npm run build
+```
+
+---
+
+## INTEGRATION POINTS (READY BUT NOT CONNECTED)
+
+### Stripe Payments
+- File: `/src/lib/stripe.ts`
+- Status: Types and mock implementation ready
+- Action needed: Add Stripe API keys, connect webhooks
+
+### OpenAI (GPT-4 Vision + Whisper)
+- File: `/src/lib/ai.ts`
+- Status: Simulation logic ready
+- Action needed: Replace mock with actual API calls
+
+### Twilio SMS
+- File: Structure ready for `/src/lib/sms.ts`
+- Action needed: Implement Twilio client
+
+### SendGrid Email
+- File: Structure ready for `/src/lib/email.ts`
+- Action needed: Implement SendGrid client
+
+---
+
+## PERFORMANCE GUIDELINES
+
+1. **Lazy load** heavy components with `React.lazy()`
+2. **Memoize** expensive calculations with `useMemo`
+3. **Debounce** search inputs
+4. **Virtualize** long lists (jobs, leads)
+5. **Compress images** before upload (see `/src/lib/imageCompression.ts`)
+
+---
+
+## DO NOT
+
+- ❌ Use `any` type
+- ❌ Add gradients or transparency
+- ❌ Use rounded corners > `rounded-sm`
+- ❌ Add blur effects
+- ❌ Use pastel colors
+- ❌ Create `.js` or `.jsx` files
+- ❌ Skip writing tests
+- ❌ Use inline styles (use Tailwind)
+- ❌ Commit without running `npm run build`
+
+---
+
+## WHEN IN DOUBT
+
+1. **Keep it brutal** — Raw, functional, high contrast
+2. **Keep it typed** — If you're unsure, add more types
+3. **Keep it tested** — Unit tests for logic, e2e for flows
+4. **Keep fees at zero** — Never add contractor fees
+
+---
+
+## QUICK REFERENCE
+
+| Task | Command |
+|------|---------|
+| Dev server | `npm run dev` |
+| Build | `npm run build` |
+| Test | `npm test` |
+| Lint | `npm run lint` |
+| Type check | `npx tsc --noEmit` |
+
+---
+
+**Remember: We're building something that gives contractors their money back. Every line of code should serve that mission.**
