@@ -270,7 +270,19 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'bid-optimizer': 'bid-optimizer',
       'change-order': 'change-order',
       'crew-dispatcher': 'crew-dispatcher',
-      'follow-up': 'crm' // Show in CRM
+      'follow-up': 'crm', // Show in CRM
+      'lead-import': 'lead-import',
+      'quote-builder': 'quote-builder',
+      'seasonal-forecast': 'seasonal-forecast',
+      'priority-alerts': 'priority-alerts',
+      'multi-invoice': 'multi-invoice',
+      'bid-analytics': 'bid-analytics',
+      'custom-fields': 'custom-fields',
+      'export': 'export',
+      'client-portal': 'client-portal',
+      'profit-calc': 'profit-calc',
+      'insurance-verify': 'insurance-verify',
+      'pro-filters': 'pro-filters'
     }
     onNavigate(routeMap[toolId] || toolId)
   }

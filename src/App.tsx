@@ -152,8 +152,41 @@ const ChangeOrderBuilder = lazy(() => retryImport(() =>
 const CrewDispatcher = lazy(() => retryImport(() =>
   import("@/components/contractor/CrewDispatcher").then(m => ({ default: m.CrewDispatcher }))
 ))
+const LeadImportAutoBid = lazy(() => retryImport(() =>
+  import("@/components/contractor/LeadImportAutoBid").then(m => ({ default: m.LeadImportAutoBid }))
+))
+const QuoteTemplateBuilder = lazy(() => retryImport(() =>
+  import("@/components/contractor/QuoteTemplateBuilder").then(m => ({ default: m.QuoteTemplateBuilder }))
+))
+const SeasonalDemandForecast = lazy(() => retryImport(() =>
+  import("@/components/contractor/SeasonalDemandForecast").then(m => ({ default: m.SeasonalDemandForecast }))
+))
+const PriorityJobAlerts = lazy(() => retryImport(() =>
+  import("@/components/contractor/PriorityJobAlerts").then(m => ({ default: m.PriorityJobAlerts }))
+))
+const MultiJobInvoicing = lazy(() => retryImport(() =>
+  import("@/components/contractor/MultiJobInvoicing").then(m => ({ default: m.MultiJobInvoicing }))
+))
+const AdvancedBidAnalytics = lazy(() => retryImport(() =>
+  import("@/components/contractor/AdvancedBidAnalytics").then(m => ({ default: m.AdvancedBidAnalytics }))
+))
+const CustomFieldsTags = lazy(() => retryImport(() =>
+  import("@/components/contractor/CustomFieldsTags").then(m => ({ default: m.CustomFieldsTags }))
+))
+const ExportEverything = lazy(() => retryImport(() =>
+  import("@/components/contractor/ExportEverything").then(m => ({ default: m.ExportEverything }))
+))
+const ProfitCalculator = lazy(() => retryImport(() =>
+  import("@/components/contractor/ProfitCalculator").then(m => ({ default: m.ProfitCalculator }))
+))
+const InsuranceCertVerification = lazy(() => retryImport(() =>
+  import("@/components/contractor/InsuranceCertVerification").then(m => ({ default: m.InsuranceCertVerification }))
+))
+const ProOnlyFilters = lazy(() => retryImport(() =>
+  import("@/components/contractor/ProOnlyFilters").then(m => ({ default: m.ProOnlyFilters }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
