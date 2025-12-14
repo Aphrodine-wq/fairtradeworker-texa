@@ -1000,6 +1000,148 @@ npm run build
 
 ---
 
+## 🚀 COMPLETE PRODUCT ROADMAP & FEATURE SPECIFICATION
+
+**Bootstrap Launch: January 1, 2026**
+
+### Part 1: AI Receptionist (Flagship Pro Feature)
+
+**TL;DR VERDICT: YES, DO IT — IT'S A PRO MONETIZATION NUCLEAR WEAPON**
+
+Price at $50/month total Pro tier (or $39 base + $11 add-on). Makes Pro feel like an "unfair advantage" package. Most contractors spend $200-500/month on answering services or miss calls entirely.
+
+**Core Value Proposition:**
+- AI answers 24/7 with natural voice
+- Transcribes with Whisper, understands intent with GPT
+- Routes intelligently (emergency → call contractor immediately; quote → create private job)
+- Auto-creates private job in contractor's FTW dashboard (bypasses marketplace — 100% theirs)
+- Texts caller with unique link → onboards homeowner directly to platform
+
+**Result:** Contractor never misses a lead, keeps job private, gets it funneled straight into FTW's CRM/tools.
+
+**Bootstrap Implementation (Zero Extra Backend Cost):**
+- Twilio: ~$1/number + pennies per min/SMS
+- OpenAI: Whisper + GPT-4o (reuse lib/ai.ts)
+- Webhooks: Vercel functions → process call → create private job
+- **Cost per user:** ~$3-5/month → charge $50 → INSANE MARGIN
+
+**Top 5 Priority Enhancements (Build Order):**
+1. **Full CRM Auto-Population & Private Job Creation** (HIGHEST — Build First)
+   - GPT extracts structured data → auto-create CRM card + private job → attach transcript + audio → text caller unique onboarding link
+2. **Context-Aware Conversations with Contractor History**
+   - Pull recent jobs from CRM before GPT response. "Welcome back, Mrs. Johnson — is this about the kitchen remodel?"
+3. **Calendar Sync & Auto-Scheduling**
+   - AI checks calendar slots real-time → offers times → books on confirmation
+4. **Proactive Upsell & Quote Estimation During Call**
+   - GPT includes upsells. Pull from materials price DB → instant ballpark → auto-create draft invoice
+5. **Multi-Channel Expansion (SMS/Chat Fallback + Website Widget)**
+   - Twilio SMS webhook → same GPT processing. Embed script for contractor portfolio sites
+
+**Recommended Build Timeline:**
+- Week 1: #1 (CRM auto-population) + basic call handling
+- Week 2: #2 (context) + #4 (upsell/quote)
+- Week 3: #3 (scheduling) + #5 (SMS/widget)
+
+---
+
+### Part 2: Flagship Pro Features ($50/month)
+
+Five additional flagship features that make Pro feel like a full virtual office.
+
+1. **AI Bid Optimizer & Auto-Bid Engine**
+   - Upload past job data → AI analyzes win/loss patterns → suggests optimal prices + auto-places bids
+   - Effort: 7-10 days
+
+2. **AI Follow-Up Automator & Sequence Builder**
+   - Drag-and-drop sequence builder (SMS/email/in-app) → AI personalizes from transcripts
+   - Effort: 6-8 days
+
+3. **AI Expense & Profit Tracker with Tax Optimizer**
+   - Snap receipt photos → AI categorizes → real-time P&L per job → quarterly tax estimates
+   - Effort: 5-7 days
+
+4. **AI Change Order & Upsell Generator**
+   - Mid-job discovery? Snap photo → AI scopes extra work → generates change order PDF
+   - Effort: 4-6 days
+
+5. **AI Crew Dispatcher & Subcontractor Manager**
+   - AI assigns jobs to subs by skills/availability/location → SMS schedules → tracks progress
+   - Effort: 8-10 days
+
+---
+
+### Part 3: Free Features (Adoption & Virality Drivers)
+
+20 zero-cost features that make FTW the daily hub contractors can't live without:
+- Job Alerts & Saved Searches
+- Contractor Portfolio Builder
+- Review & Rating System
+- Dispute Center (Light)
+- Materials Price Checker
+- Job Drafts for Homeowners
+- Bulk Actions on Job Lists
+- Keyboard Shortcuts Dashboard
+- Dark Mode Toggle
+- Homeowner Job History
+- Contractor Availability Calendar
+- Simple Weather Integration
+- Job Comparison Tool
+- Basic Milestone Templates
+- Referral Leaderboard
+- In-App Messaging (Light)
+- Job Bookmark Folders
+- Quick Bid Templates
+- Homeowner Photo Annotation
+- Contractor Bio Builder
+
+---
+
+### Part 4: Additional Pro Features ($39/month Tier)
+
+20 more features that create unfair advantages for power users:
+- Lead Import & Auto-Bid
+- Expense Tracker
+- Quote Template Builder
+- Change Order System
+- Seasonal Demand Forecast
+- Custom Branding on Portfolio
+- Advanced Bid Analytics
+- Custom Automation Builder
+- Territory Heatmaps
+- Priority Job Alerts
+- Multi-Job Invoicing
+- Profit Calculator
+- Custom Fields & Tags
+- Export Everything
+- Bid Boost History
+- Client Portal Link
+- Insurance/Cert Upload Verification
+- Pro-Only Filters
+- Dedicated Pro Support Chat
+
+---
+
+### Part 5: Launch Strategy
+
+**January 1 Announcement:**
+🚀 **PRO EXCLUSIVE: AI RECEPTIONIST**
+Never miss a call again. Turns inbound leads into private FTW jobs automatically.
+
+**Expected Impact:**
+- 2-3x Pro conversion rate
+- Insane margins ($3-5 cost per user, charge $50)
+- Viral word-of-mouth in contractor Facebook groups
+
+**What's Next:**
+Ready to spec code for any of these features. Recommended order:
+1. AI Receptionist core (CRM auto-population)
+2. Bid Optimizer (pure ROI)
+3. Follow-Up Automator (recovers lost leads)
+4. Expense Tracker (daily use = stickiness)
+5. Change Order Generator (captures extra revenue)
+
+---
+
 ## WHEN IN DOUBT
 
 1. **Keep it brutal** — Raw, functional, high contrast
