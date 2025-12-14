@@ -1,226 +1,276 @@
-export function preloadImage(src: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = reject;
-    img.src = src;
-  });
+/**
+ * Performance optimization utilities
+ * Implements monitoring, caching, and optimization strategies
+ */
+
+// Performance monitoring
+interface PerformanceMetric {
+  name: string
+  value: number
+  timestamp: number
 }
 
-export function preloadImages(srcs: string[]): Promise<void[]> {
-  return Promise.all(srcs.map(preloadImage));
+class PerformanceMonitor {
+  private metrics: PerformanceMetric[] = []
+  private observers: PerformanceObserver[] = []
+
+  constructor() {
+    if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
+      this.setupObservers()
+    }
+  }
+
+  private setupObservers() {
+    // Monitor long tasks
+    try {
+      const longTaskObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (entry.duration > 50) {
+            this.recordMetric('long-task', entry.duration)
+          }
+        }
+      })
+      longTaskObserver.observe({ entryTypes: ['longtask'] })
+      this.observers.push(longTaskObserver)
+    } catch (e) {
+      // Long task observer not supported
+    }
+
+    // Monitor paint metrics
+    try {
+      const paintObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          this.recordMetric(entry.name, entry.startTime)
+        }
+      })
+      paintObserver.observe({ entryTypes: ['paint'] })
+      this.observers.push(paintObserver)
+    } catch (e) {
+      // Paint observer not supported
+    }
+  }
+
+  recordMetric(name: string, value: number) {
+    this.metrics.push({ name, value, timestamp: Date.now() })
+    
+    // Keep only last 100 metrics
+    if (this.metrics.length > 100) {
+      this.metrics.shift()
+    }
+  }
+
+  getMetrics(): PerformanceMetric[] {
+    return [...this.metrics]
+  }
+
+  getAverageMetric(name: string): number {
+    const filtered = this.metrics.filter(m => m.name === name)
+    if (filtered.length === 0) return 0
+    const sum = filtered.reduce((acc, m) => acc + m.value, 0)
+    return sum / filtered.length
+  }
+
+  cleanup() {
+    this.observers.forEach(obs => obs.disconnect())
+    this.observers = []
+  }
 }
 
-export function lazyLoadImage(img: HTMLImageElement) {
-  const src = img.dataset.src;
-  if (!src) return;
+export const performanceMonitor = new PerformanceMonitor()
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const element = entry.target as HTMLImageElement;
-        element.src = element.dataset.src || '';
-        element.removeAttribute('data-src');
-        observer.unobserve(element);
-      }
-    });
-  }, {
-    rootMargin: '50px'
-  });
+// LRU Cache implementation
+class LRUCache<K, V> {
+  private cache: Map<K, V>
+  private maxSize: number
 
-  observer.observe(img);
+  constructor(maxSize: number = 100) {
+    this.cache = new Map()
+    this.maxSize = maxSize
+  }
+
+  get(key: K): V | undefined {
+    if (!this.cache.has(key)) return undefined
+    
+    // Move to end (most recently used)
+    const value = this.cache.get(key)!
+    this.cache.delete(key)
+    this.cache.set(key, value)
+    return value
+  }
+
+  set(key: K, value: V): void {
+    if (this.cache.has(key)) {
+      this.cache.delete(key)
+    } else if (this.cache.size >= this.maxSize) {
+      // Remove least recently used (first item)
+      const firstKey = this.cache.keys().next().value
+      this.cache.delete(firstKey)
+    }
+    this.cache.set(key, value)
+  }
+
+  clear(): void {
+    this.cache.clear()
+  }
+
+  size(): number {
+    return this.cache.size
+  }
 }
 
-export function prefetchRoute(route: string) {
-  const link = document.createElement('link');
-  link.rel = 'prefetch';
-  link.href = route;
-  document.head.appendChild(link);
-}
+export const dataCache = new LRUCache<string, any>(200)
 
-export function preconnect(url: string) {
-  const link = document.createElement('link');
-  link.rel = 'preconnect';
-  link.href = url;
-  document.head.appendChild(link);
-}
-
-export function deferScript(src: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = reject;
-    document.body.appendChild(script);
-  });
-}
-
+// Debounce function
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout;
+  let timeout: NodeJS.Timeout | null = null
+  
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
-      clearTimeout(timeout);
-      func(...args);
-    };
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-  };
+      timeout = null
+      func(...args)
+    }
+    
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+  }
 }
 
+// Throttle function
 export function throttle<T extends (...args: any[]) => any>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
-  let inThrottle: boolean;
+  let inThrottle: boolean = false
+  
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
-      func(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+      func(...args)
+      inThrottle = true
+      setTimeout(() => inThrottle = false, limit)
     }
-  };
+  }
 }
 
-export function measurePerformance(name: string, fn: () => void) {
-  const start = performance.now();
-  fn();
-  const end = performance.now();
-  console.log(`[Performance] ${name}: ${(end - start).toFixed(2)}ms`);
+// Batch DOM updates
+export function batchDOMUpdates(updates: (() => void)[]): void {
+  requestAnimationFrame(() => {
+    updates.forEach(update => update())
+  })
 }
 
-export async function measureAsync(name: string, fn: () => Promise<any>) {
-  const start = performance.now();
-  const result = await fn();
-  const end = performance.now();
-  console.log(`[Performance] ${name}: ${(end - start).toFixed(2)}ms`);
-  return result;
+// Preload images
+export async function preloadImages(srcs: string[]): Promise<void[]> {
+  return Promise.all(
+    srcs.map(src => {
+      return new Promise<void>((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve()
+        img.onerror = reject
+        img.src = src
+      })
+    })
+  )
 }
 
-export function optimizeRender(component: React.ComponentType<any>) {
-  return React.memo(component, (prevProps, nextProps) => {
-    return JSON.stringify(prevProps) === JSON.stringify(nextProps);
-  });
-}
+// Lazy load image with Intersection Observer
+export function lazyLoadImage(img: HTMLImageElement) {
+  const src = img.dataset.src
+  if (!src) return
 
-export function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);
-
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
-}
-
-export function useThrottle<T>(value: T, limit: number): T {
-  const [throttledValue, setThrottledValue] = React.useState<T>(value);
-  const lastRan = React.useRef(Date.now());
-
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      if (Date.now() - lastRan.current >= limit) {
-        setThrottledValue(value);
-        lastRan.current = Date.now();
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const element = entry.target as HTMLImageElement
+        element.src = element.dataset.src || ''
+        element.removeAttribute('data-src')
+        observer.unobserve(element)
       }
-    }, limit - (Date.now() - lastRan.current));
+    })
+  }, {
+    rootMargin: '50px'
+  })
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, limit]);
-
-  return throttledValue;
+  observer.observe(img)
 }
 
-export function batchUpdates<T>(
-  updates: T[],
-  callback: (batch: T[]) => void,
-  batchSize: number = 10,
-  delay: number = 50
-) {
-  let batch: T[] = [];
-  let timeout: NodeJS.Timeout;
-
-  updates.forEach((update, index) => {
-    batch.push(update);
-
-    if (batch.length >= batchSize || index === updates.length - 1) {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        callback([...batch]);
-        batch = [];
-      }, delay);
-    }
-  });
+// Prefetch route
+export function prefetchRoute(route: string) {
+  const link = document.createElement('link')
+  link.rel = 'prefetch'
+  link.href = route
+  document.head.appendChild(link)
 }
 
-export function useVirtualizeList<T>(
-  items: T[],
+// Measure function execution time
+export function measurePerformance<T>(
+  name: string,
+  fn: () => T
+): T {
+  const start = performance.now()
+  const result = fn()
+  const end = performance.now()
+  performanceMonitor.recordMetric(name, end - start)
+  return result
+}
+
+// Virtual scrolling helper
+export interface VirtualScrollItem {
+  id: string
+  height?: number
+}
+
+export function calculateVirtualScroll(
+  items: VirtualScrollItem[],
   containerHeight: number,
   itemHeight: number,
   scrollTop: number
-): {
-  visibleItems: T[];
-  startIndex: number;
-  endIndex: number;
-  totalHeight: number;
-  offsetY: number;
-} {
-  const startIndex = Math.floor(scrollTop / itemHeight);
-  const endIndex = Math.min(
-    startIndex + Math.ceil(containerHeight / itemHeight) + 1,
-    items.length
-  );
+): { startIndex: number; endIndex: number; offsetY: number } {
+  const startIndex = Math.floor(scrollTop / itemHeight)
+  const visibleCount = Math.ceil(containerHeight / itemHeight)
+  const endIndex = Math.min(startIndex + visibleCount + 1, items.length)
+  const offsetY = startIndex * itemHeight
 
-  return {
-    visibleItems: items.slice(startIndex, endIndex),
-    startIndex,
-    endIndex,
-    totalHeight: items.length * itemHeight,
-    offsetY: startIndex * itemHeight
-  };
+  return { startIndex, endIndex, offsetY }
 }
 
-export const performanceMonitor = {
-  marks: new Map<string, number>(),
-
-  start(name: string) {
-    this.marks.set(name, performance.now());
-  },
-
-  end(name: string) {
-    const start = this.marks.get(name);
-    if (start) {
-      const duration = performance.now() - start;
-      console.log(`[Performance] ${name}: ${duration.toFixed(2)}ms`);
-      this.marks.delete(name);
-      return duration;
-    }
-    return 0;
-  },
-
-  measure(name: string, fn: () => void) {
-    this.start(name);
-    fn();
-    return this.end(name);
-  },
-
-  async measureAsync(name: string, fn: () => Promise<any>) {
-    this.start(name);
-    const result = await fn();
-    this.end(name);
-    return result;
+// Memory cleanup utility
+export function cleanupMemory() {
+  if ('gc' in window && typeof (window as any).gc === 'function') {
+    (window as any).gc()
   }
-};
+  
+  // Clear caches
+  dataCache.clear()
+  
+  // Force garbage collection hint
+  if (performance.memory) {
+    const used = (performance as any).memory.usedJSHeapSize
+    const limit = (performance as any).memory.jsHeapSizeLimit
+    
+    if (used / limit > 0.9) {
+      console.warn('High memory usage detected:', used / 1024 / 1024, 'MB')
+    }
+  }
+}
 
-import React from 'react';
+// Request idle callback wrapper
+export function requestIdleCallback(callback: () => void, timeout?: number) {
+  if ('requestIdleCallback' in window) {
+    return window.requestIdleCallback(callback, { timeout })
+  } else {
+    // Fallback to setTimeout
+    return setTimeout(callback, timeout || 1)
+  }
+}
+
+// Cancel idle callback wrapper
+export function cancelIdleCallback(id: number) {
+  if ('cancelIdleCallback' in window) {
+    window.cancelIdleCallback(id)
+  } else {
+    clearTimeout(id)
+  }
+}
