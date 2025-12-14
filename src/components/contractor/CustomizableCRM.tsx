@@ -179,7 +179,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
               <CardContent>
                 <div className="space-y-2">
                   {defaultFields.map((field) => (
-                    <div key={field.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                    <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div className="flex items-center gap-3">
                         <DotsThreeVertical size={20} className="text-muted-foreground" />
                         <div>
@@ -209,7 +209,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                 <CardContent>
                   <div className="space-y-2">
                     {customFields.map((field) => (
-                      <div key={field.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                      <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                         <div className="flex items-center gap-3">
                           <DotsThreeVertical size={20} className="text-muted-foreground" />
                           <div>
@@ -560,7 +560,7 @@ function FieldForm({
               {options.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
                   {options.map((opt, idx) => (
-                    <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-muted rounded-full">
+                    <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <span className="text-sm">{opt}</span>
                       <button
                         onClick={() => setOptions(options.filter((_, i) => i !== idx))}
@@ -742,7 +742,7 @@ function WorkflowForm({
 
         {/* Right Column */}
         <div className="space-y-4">
-          <div className="text-sm text-muted-foreground p-4 bg-muted/50 rounded-lg">
+          <div className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
             Advanced workflow configuration coming soon. For now, basic triggers are available.
           </div>
         </div>

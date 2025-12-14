@@ -248,11 +248,11 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
 
   const getDensityColor = (density: string) => {
     switch (density) {
-      case 'empty': return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
+      case 'empty': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       case 'light': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       case 'busy': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       case 'overbooked': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
+      default: return 'bg-white dark:bg-black border-2 border-black dark:border-white'
     }
   }
 
@@ -262,7 +262,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
       case 'important': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       case 'info': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
       case 'positive': return 'bg-white dark:bg-black border-2 border-black dark:border-white'
-      default: return 'bg-white dark:bg-black border border-black/10 dark:border-white/10'
+      default: return 'bg-white dark:bg-black border-2 border-black dark:border-white'
     }
   }
 

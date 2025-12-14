@@ -326,7 +326,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
           {filteredNotes.map(note => (
             <Card 
               key={note.id} 
-              className={`p-4 hover:shadow-md transition-shadow ${
+              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-2 border-black dark:border-white ${
                 note.isPinned ? 'border-2 border-black dark:border-white bg-white dark:bg-black' : ''
               }`}
             >

@@ -89,12 +89,12 @@ export function CommunicationHub({ user }: { user: User }) {
           </div>
 
           {/* Main Communication Interface */}
-          <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+          <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-3 h-[600px]">
                 {/* Conversations List */}
                 <div className="border-r border-black/10 dark:border-white/10 flex flex-col">
-                  <div className="p-4 border-b border-black/10 dark:border-white/10">
+                  <div className="p-4 border-b-2 border-black dark:border-white">
                     <div className="relative">
                       <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
                       <Input
@@ -110,12 +110,12 @@ export function CommunicationHub({ user }: { user: User }) {
                       <div
                         key={conv.id}
                         onClick={() => setSelectedConversation(conv.id)}
-                        className={`p-4 border-b border-black/10 dark:border-white/10 cursor-pointer hover:bg-muted/50 transition-colors ${
-                          selectedConversation === conv.id ? 'bg-primary/10' : ''
+                        className={`p-4 border-b-2 border-black dark:border-white cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all ${
+                          selectedConversation === conv.id ? 'bg-black dark:bg-white text-white dark:text-black' : ''
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <div className="h-10 w-10 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                             <User weight="fill" size={20} className="text-primary" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -141,7 +141,7 @@ export function CommunicationHub({ user }: { user: User }) {
                     ))}
                     {filteredConversations.length === 0 && (
                       <div className="p-8 text-center">
-                        <ChatCircleDots size={48} className="mx-auto mb-3 text-muted-foreground opacity-50" />
+                        <ChatCircleDots size={48} className="mx-auto mb-3 text-black dark:text-white" />
                         <p className="text-muted-foreground">No conversations yet</p>
                       </div>
                     )}
@@ -184,10 +184,10 @@ export function CommunicationHub({ user }: { user: User }) {
                               key={msg.id}
                               className={`flex ${isFromMe ? 'justify-end' : 'justify-start'}`}
                             >
-                              <div className={`max-w-[70%] rounded-lg p-3 ${
+                              <div className={`max-w-[70%] rounded-none border-2 border-black dark:border-white p-3 font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${
                                 isFromMe
-                                  ? 'bg-primary text-primary-foreground'
-                                  : 'bg-muted text-foreground'
+                                  ? 'bg-black dark:bg-white text-white dark:text-black'
+                                  : 'bg-white dark:bg-black text-black dark:text-white'
                               }`}>
                                 <p className="text-sm">{msg.content}</p>
                                 <p className={`text-xs mt-1 ${
@@ -202,7 +202,7 @@ export function CommunicationHub({ user }: { user: User }) {
                       </div>
 
                       {/* Message Input */}
-                      <div className="p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black">
+                      <div className="p-4 border-t-2 border-black dark:border-white bg-white dark:bg-black">
                         <div className="flex gap-2">
                           <Input
                             placeholder="Type a message..."

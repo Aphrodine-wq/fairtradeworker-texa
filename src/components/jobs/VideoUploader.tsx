@@ -256,7 +256,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           )}
 
           {analysis.metadata.gpsCoordinates && (
-            <div className="flex items-start gap-2 p-3 bg-blue-50 rounded-lg">
+            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <Info className="text-blue-600 flex-shrink-0" size={20} />
               <div className="text-sm">
                 <p className="font-medium text-blue-900">Location detected</p>
@@ -370,16 +370,15 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed rounded-xl p-12 text-center transition-all cursor-pointer
-            ${isDragging 
-              ? 'border-primary bg-primary/5' 
-              : 'border-border hover:border-primary hover:bg-muted/50'
+            border-2 border-dashed border-black dark:border-white rounded-none p-12 text-center transition-all cursor-pointer shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] ${isDragging 
+              ? 'bg-black dark:bg-white text-white dark:text-black' 
+              : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
             }
           `}
           onClick={() => fileInputRef.current?.click()}
         >
           <div className="flex flex-col items-center gap-4">
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-20 h-20 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <VideoCamera className="text-primary" size={40} weight="fill" />
             </div>
             
@@ -399,7 +398,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
               <span className="text-sm text-muted-foreground">or drag and drop</span>
             </div>
 
-            <div className="flex items-start gap-2 p-3 bg-muted rounded-lg max-w-md">
+            <div className="flex items-start gap-2 p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] max-w-md">
               <Info className="text-muted-foreground flex-shrink-0 mt-0.5" size={16} />
               <p className="text-xs text-muted-foreground text-left">
                 Supported: MP4, MOV, MKV, WebM • Max 150 MB • Recommended bitrate: 1.3 Mbps
