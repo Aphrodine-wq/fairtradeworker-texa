@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
+import { CircleNotch } from "@phosphor-icons/react"
+import { safeInput } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -63,19 +65,82 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
     toast.success("Logo removed. Save changes to apply.")
   }
 
-  const handleSave = () => {
-    const updates: Partial<User> = {
-      companyName: companyName.trim() || undefined,
-      companyAddress: companyAddress.trim() || undefined,
-      companyPhone: companyPhone.trim() || undefined,
-      companyEmail: companyEmail.trim() || undefined,
-      taxId: taxId.trim() || undefined,
-      companyLogo: logoPreview || undefined
+  const [isSaving, setIsSaving] = useState(false)
+  const [errors, setErrors] = useState<{
+    companyName?: string
+    companyEmail?: string
+    companyPhone?: string
+    taxId?: string
+  }>({})
+
+  const validateEmail = useCallback((email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }, [])
+
+  const validatePhone = useCallback((phone: string): boolean => {
+    const phoneRegex = /^[\d\s\-\(\)]+$/
+    return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10
+  }, [])
+
+  const handleSave = useCallback(async () => {
+    setErrors({})
+
+    // Validation
+    if (companyName.trim() && companyName.trim().length < 2) {
+      setErrors({ companyName: "Company name must be at least 2 characters" })
+      toast.error("Company name must be at least 2 characters")
+      return
     }
 
-    onUpdate(updates)
-    toast.success("Company settings saved successfully!")
-  }
+    if (companyEmail.trim()) {
+      if (!validateEmail(companyEmail.trim())) {
+        setErrors({ companyEmail: "Please enter a valid email address" })
+        toast.error("Please enter a valid email address")
+        return
+      }
+    }
+
+    if (companyPhone.trim()) {
+      if (!validatePhone(companyPhone.trim())) {
+        setErrors({ companyPhone: "Please enter a valid phone number" })
+        toast.error("Please enter a valid phone number")
+        return
+      }
+    }
+
+    if (taxId.trim()) {
+      const cleanTaxId = taxId.replace(/\D/g, '')
+      if (cleanTaxId.length !== 9) {
+        setErrors({ taxId: "Tax ID must be 9 digits" })
+        toast.error("Tax ID must be 9 digits")
+        return
+      }
+    }
+
+    setIsSaving(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      const updates: Partial<User> = {
+        companyName: companyName.trim() || undefined,
+        companyAddress: companyAddress.trim() || undefined,
+        companyPhone: companyPhone.trim() || undefined,
+        companyEmail: companyEmail.trim() || undefined,
+        taxId: taxId.trim() || undefined,
+        companyLogo: logoPreview || undefined
+      }
+
+      onUpdate(updates)
+      toast.success("Company settings saved successfully!")
+    } catch (error) {
+      console.error("Error saving company settings:", error)
+      toast.error("Failed to save company settings. Please try again.")
+    } finally {
+      setIsSaving(false)
+    }
+  }, [companyName, companyEmail, companyPhone, taxId, logoPreview, validateEmail, validatePhone, onUpdate])
 
   return (
     <div className="space-y-6">
@@ -154,8 +219,26 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
                   id="companyName"
                   placeholder="ABC Plumbing & Services"
                   value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  onChange={(e) => {
+                    setCompanyName(safeInput(e.target.value))
+                    if (errors.companyName) setErrors(prev => ({ ...prev, companyName: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (companyName.trim() && companyName.trim().length < 2) {
+                      setErrors(prev => ({ ...prev, companyName: "Company name must be at least 2 characters" }))
+                    }
+                  }}
+                  className={errors.companyName ? "border-[#FF0000]" : ""}
+                  disabled={isSaving}
+                  maxLength={100}
+                  aria-invalid={!!errors.companyName}
+                  aria-describedby={errors.companyName ? "company-name-error" : undefined}
                 />
+                {errors.companyName && (
+                  <p id="company-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.companyName}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
