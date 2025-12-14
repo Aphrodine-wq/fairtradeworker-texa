@@ -227,100 +227,56 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-3 mb-2 dark:text-white">
-              <Users weight="duotone" size={40} className="text-black dark:text-white" />
-              CRM Command Center
-            </h1>
-            <p className="text-muted-foreground text-lg dark:text-white/70">
-              Manage relationships, track interactions, and grow your business
-            </p>
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* Add Customer Section - Always Visible */}
+      <InstantInvite user={user} />
 
-        {/* Analytics Dashboard */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="p-6 dark:bg-black dark:border-white/10">
-            <div className="flex items-center justify-between mb-2">
-              <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
-              <TrendUp weight="duotone" size={20} className="text-black dark:text-white" />
-            </div>
-            <div className="text-2xl font-bold text-black dark:text-white mb-1">
-              ${analytics.totalRevenue.toLocaleString()}
-            </div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Total Revenue</div>
-          </Card>
-          <Card className="p-6 dark:bg-black dark:border-white/10">
-            <div className="flex items-center justify-between mb-2">
-              <Users weight="duotone" size={24} className="text-black dark:text-white" />
-              <CheckCircle weight="duotone" size={20} className="text-black dark:text-white" />
-            </div>
-            <div className="text-2xl font-bold text-black dark:text-white mb-1">
-              {analytics.activeCustomers}
-            </div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Active Customers</div>
-          </Card>
-          <Card className="p-6 dark:bg-black dark:border-white/10">
-            <div className="flex items-center justify-between mb-2">
-              <Target weight="duotone" size={24} className="text-black dark:text-white" />
-              <ChartLine weight="duotone" size={20} className="text-black dark:text-white" />
-            </div>
-            <div className="text-2xl font-bold text-black dark:text-white mb-1">
-              {analytics.conversionRate.toFixed(1)}%
-            </div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Conversion Rate</div>
-          </Card>
-          <Card className="p-6 dark:bg-black dark:border-white/10">
-            <div className="flex items-center justify-between mb-2">
-              <ChatCircle weight="duotone" size={24} className="text-black dark:text-white" />
-              <Clock weight="duotone" size={20} className="text-black dark:text-white" />
-            </div>
-            <div className="text-2xl font-bold text-black dark:text-white mb-1">
-              {analytics.recentInteractions}
-            </div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Interactions (30d)</div>
-          </Card>
-        </div>
-
-        {/* View Mode Tabs */}
-        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)} className="mb-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3 dark:bg-black dark:border-white/10">
-            <TabsTrigger value="list" className="dark:text-white dark:data-[state=active]:bg-black">
-              <Users weight="duotone" size={18} className="mr-2" />
+      {/* View Mode Tabs */}
+      {myCustomers.length > 0 && (
+        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <TabsTrigger 
+              value="list" 
+              className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+            >
+              <Users weight="duotone" size={18} />
               List View
             </TabsTrigger>
-            <TabsTrigger value="pipeline" className="dark:text-white dark:data-[state=active]:bg-black">
-              <Target weight="duotone" size={18} className="mr-2" />
+            <TabsTrigger 
+              value="pipeline" 
+              className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+            >
+              <Target weight="duotone" size={18} />
               Pipeline
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="dark:text-white dark:data-[state=active]:bg-black">
-              <ChartLine weight="duotone" size={18} className="mr-2" />
+            <TabsTrigger 
+              value="analytics" 
+              className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+            >
+              <ChartLine weight="duotone" size={18} />
               Analytics
             </TabsTrigger>
           </TabsList>
         </Tabs>
-      </div>
+      )}
 
-      <div className="max-w-7xl mx-auto space-y-6">
-        <InstantInvite user={user} />
+      <div className="space-y-6">
 
+        {/* Search and Filter - Always visible when customers exist */}
         {myCustomers.length > 0 && (
-          <Card className="p-4 dark:bg-black dark:border-white/10">
+          <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
                 <Input
-                  placeholder="Search customers by name, email, phone, notes, or tags..."
+                  placeholder="Search by name, email, phone, notes, or tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 dark:bg-black dark:text-white dark:border-white/20"
+                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border-black/10 dark:border-white/20"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px] dark:bg-black dark:text-white dark:border-white/20">
+                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border-black/10 dark:border-white/20">
                   <Funnel weight="duotone" className="mr-2" size={16} />
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -354,7 +310,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                   <Dialog key={customer.id}>
                     <DialogTrigger asChild>
                       <Card
-                        className="cursor-pointer hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 dark:bg-black dark:border-white/10 dark:hover:border-white/20"
+                        className="cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-200 bg-white dark:bg-black border-black/10 dark:border-white/10 dark:hover:border-white/20"
                         onClick={() => {
                           setSelectedCustomer(customer)
                           setNotes(customer.notes || "")

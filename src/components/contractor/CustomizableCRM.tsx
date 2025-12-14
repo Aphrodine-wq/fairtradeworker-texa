@@ -14,7 +14,6 @@ import {
   Funnel, Eye, EyeSlash, DotsThreeVertical, Trash, PencilSimple, FloppyDisk, X
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
-import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
 import type { User, CRMCustomer } from "@/lib/types"
 
 interface CustomField {
@@ -61,7 +60,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
   const [customFields, setCustomFields] = useKV<CustomField[]>("crm-custom-fields", [])
   const [customViews, setCustomViews] = useKV<CustomView[]>("crm-custom-views", [])
   const [customWorkflows, setCustomWorkflows] = useKV<CustomWorkflow[]>("crm-custom-workflows", [])
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'fields' | 'views' | 'workflows'>('dashboard')
+  const [activeTab, setActiveTab] = useState<'fields' | 'views' | 'workflows'>('fields')
   const [editingField, setEditingField] = useState<CustomField | null>(null)
   const [editingView, setEditingView] = useState<CustomView | null>(null)
   const [editingWorkflow, setEditingWorkflow] = useState<CustomWorkflow | null>(null)
@@ -144,11 +143,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       </div>
 
       <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
-        <TabsList className="grid w-full max-w-2xl grid-cols-4">
-          <TabsTrigger value="dashboard">
-            <Users weight="duotone" size={18} className="mr-2" />
-            Dashboard
-          </TabsTrigger>
+        <TabsList className="grid w-full max-w-2xl grid-cols-3">
           <TabsTrigger value="fields">
             <FileText weight="duotone" size={18} className="mr-2" />
             Custom Fields
@@ -162,10 +157,6 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
             Workflows
           </TabsTrigger>
         </TabsList>
-
-        <TabsContent value="dashboard" className="mt-6">
-          <EnhancedCRMDashboard user={user} />
-        </TabsContent>
 
         <TabsContent value="fields" className="mt-6 space-y-6">
           <div className="flex items-center justify-between">
@@ -290,7 +281,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                           setShowViewDialog(true)
                         }}
                       >
-                        <Edit size={16} />
+                        <PencilSimple size={16} />
                       </Button>
                     </div>
                   </CardContent>
