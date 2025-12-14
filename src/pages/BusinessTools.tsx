@@ -368,7 +368,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'inventory': 'inventory',
       'quality': 'quality',
       'compliance': 'compliance',
-      'automation': 'crm', // Customize tab in CRM
+      'automation': 'automation', // Dedicated automation page
       'bid-optimizer': 'bid-optimizer',
       'change-order': 'change-order',
       'crew-dispatcher': 'crew-dispatcher',
@@ -451,12 +451,12 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
           {/* Category Tabs */}
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 md:grid-cols-8 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-3 md:grid-cols-4 lg:grid-cols-8 bg-white dark:bg-black border border-black/20 dark:border-white/20 gap-2 p-2">
               {categories.map(cat => (
                 <TabsTrigger 
                   key={cat.id} 
                   value={cat.id}
-                  className="text-xs md:text-sm"
+                  className="text-xs md:text-sm px-4 py-2"
                 >
                   {cat.label} ({cat.count})
                 </TabsTrigger>

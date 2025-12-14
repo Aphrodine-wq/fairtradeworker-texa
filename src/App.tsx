@@ -56,6 +56,10 @@ const AutomationRunner = lazy(() => retryImport(() =>
   import("@/components/contractor/AutomationRunner")
     .then(m => ({ default: m.AutomationRunner }))
 ))
+const WorkflowAutomation = lazy(() => retryImport(() =>
+  import("@/components/contractor/WorkflowAutomation")
+    .then(m => ({ default: m.WorkflowAutomation }))
+))
 const HomeownerDashboard = lazy(() => retryImport(() =>
   import("@/pages/HomeownerDashboard").then(m => ({ default: m.HomeownerDashboard }))
 ))
@@ -200,8 +204,11 @@ const CalendarSync = lazy(() => retryImport(() =>
 const ReceptionistUpsell = lazy(() => retryImport(() =>
   import("@/components/contractor/ReceptionistUpsell").then(m => ({ default: m.ReceptionistUpsell }))
 ))
+const ClientPortal = lazy(() => retryImport(() =>
+  import("@/components/contractor/ClientPortal").then(m => ({ default: m.ClientPortal }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -524,6 +531,12 @@ function App() {
             <ComplianceTracker user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'automation':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <WorkflowAutomation user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'communication':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
@@ -642,6 +655,12 @@ function App() {
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
             <ProOnlyFilters user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'client-portal':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ClientPortal user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'calendar-sync':

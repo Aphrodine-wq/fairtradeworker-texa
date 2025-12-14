@@ -441,7 +441,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(750),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
     bids: [],
   },
   {
@@ -463,7 +463,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(950),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(), // 30 minutes ago
     bids: [],
   },
   {
@@ -507,7 +507,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(1800),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), // 1 hour ago
     bids: [],
   },
   {
@@ -529,7 +529,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(1200),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(), // 45 minutes ago
     bids: [],
   },
   {
@@ -551,7 +551,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(1400),
     status: 'open',
     territoryId: 2,
-    createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(), // 20 minutes ago
     bids: [],
   },
   {
@@ -596,7 +596,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(12500),
     status: 'open',
     territoryId: 2,
-    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
     bids: [],
   },
   {
@@ -618,7 +618,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(18000),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(), // 15 minutes ago
     bids: [],
   },
   {
@@ -682,7 +682,7 @@ export const DEMO_JOBS: Job[] = [
     size: calculateJobSize(6800),
     status: 'open',
     territoryId: 1,
-    createdAt: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // 5 minutes ago
     bids: [],
   },
 ]
