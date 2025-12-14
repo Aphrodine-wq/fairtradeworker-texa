@@ -183,7 +183,7 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                     Add Expense
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>Add Expense</DialogTitle>
                     <DialogDescription>

@@ -369,7 +369,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                         </CardContent>
                       </Card>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto dark:bg-black dark:border-white/20">
+                    <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto dark:bg-black dark:border-white/20">
                       <DialogHeader>
                         <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
                         <DialogDescription className="dark:text-white/70">
@@ -630,7 +630,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 </CardHeader>
                               </Card>
                             </DialogTrigger>
-                            <DialogContent className="max-w-2xl dark:bg-black dark:border-white/20">
+                            <DialogContent className="max-w-6xl dark:bg-black dark:border-white/20">
                               <DialogHeader>
                                 <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
                               </DialogHeader>

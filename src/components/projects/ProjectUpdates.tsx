@@ -234,7 +234,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
       </CardContent>
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-6xl">
           <DialogHeader>
             <DialogTitle>Post Project Update</DialogTitle>
             <DialogDescription>

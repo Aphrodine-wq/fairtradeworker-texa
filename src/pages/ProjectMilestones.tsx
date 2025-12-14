@@ -529,7 +529,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </div>
       
       <Dialog open={!!selectedMilestone && !showDisputeDialog && !showEditDialog} onOpenChange={(open) => !open && setSelectedMilestone(null)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Request Milestone Payment</DialogTitle>
             <DialogDescription>
@@ -790,7 +790,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </Dialog>
       
       <Dialog open={!!selectedExpenseMilestone} onOpenChange={(open) => !open && setSelectedExpenseMilestone(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Expense Tracking - {selectedExpenseMilestone?.name}</DialogTitle>
             <DialogDescription>

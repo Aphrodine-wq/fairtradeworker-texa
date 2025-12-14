@@ -161,7 +161,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                 Add Warranty
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-5xl">
               <DialogHeader>
                 <DialogTitle>Add New Warranty</DialogTitle>
               </DialogHeader>

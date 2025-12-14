@@ -347,7 +347,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
           resetForm()
         }
       }}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-6xl">
           <DialogHeader>
             <DialogTitle>{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
             <DialogDescription>
