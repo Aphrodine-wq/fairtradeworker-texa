@@ -449,6 +449,14 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                   <MapPin size={20} className="mr-3" weight={activeTab === 'territory' ? 'fill' : 'regular'} />
                   Territory Map
                 </Button>
+                <Button 
+                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
+                  onClick={() => handleNav('business-tools', 'tools')}
+                  className="justify-start min-h-[44px]"
+                >
+                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
+                  Business Tools
+                </Button>
               </>
             )}
 

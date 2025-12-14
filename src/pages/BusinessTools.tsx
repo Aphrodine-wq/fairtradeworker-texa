@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -34,6 +35,7 @@ interface BusinessToolsProps {
 
 export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const isPro = user?.isPro || false
+  const [selectedFreeTool, setSelectedFreeTool] = useState<string | null>(null)
   
   // Free Tools for Contractors
   const contractorFreeTools = [
@@ -339,7 +341,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
   const categories = [
     { id: 'all', label: 'All Tools', count: tools.length },
-    { id: 'free', label: 'Free Tools', count: tools.filter(t => t.category === 'free').length },
+    { id: 'free', label: 'Free Tools', count: tools.filter(t => !t.isPro).length },
     { id: 'finance', label: 'Finance', count: tools.filter(t => t.category === 'finance').length },
     { id: 'sales', label: 'Sales & CRM', count: tools.filter(t => t.category === 'sales').length },
     { id: 'management', label: 'Management', count: tools.filter(t => t.category === 'management').length },
@@ -383,12 +385,12 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'profit-calc': 'profit-calc',
       'insurance-verify': 'insurance-verify',
       'pro-filters': 'pro-filters',
-      // Free Tools - handle inline or navigate to specific components
-      'cost-calculator': 'business-tools',
-      'warranty-tracker': 'business-tools',
-      'quick-notes': 'business-tools',
-      'saved-contractors': 'business-tools',
-      'project-budget-calculator': 'business-tools'
+      // Free Tools - navigate to free tools page (will be handled by FreeToolsPage component)
+      'cost-calculator': 'free-tools',
+      'warranty-tracker': 'free-tools',
+      'quick-notes': 'free-tools',
+      'saved-contractors': 'free-tools',
+      'project-budget-calculator': 'free-tools'
     }
     onNavigate(routeMap[toolId] || toolId)
   }
@@ -465,7 +467,11 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
               <TabsContent key={category.id} value={category.id} className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {tools
-                    .filter(tool => category.id === 'all' || tool.category === category.id)
+                    .filter(tool => {
+                      if (category.id === 'all') return true
+                      if (category.id === 'free') return !tool.isPro
+                      return tool.category === category.id
+                    })
                     .map(tool => {
                       const Icon = tool.icon
                       return (

@@ -28,11 +28,13 @@ interface BrowseJobsProps {
 const JobCard = memo(function JobCard({ 
   job, 
   onViewPhotos, 
-  onPlaceBid 
+  onPlaceBid,
+  userRole
 }: { 
   job: Job
   onViewPhotos: (photos: string[]) => void
   onPlaceBid: (job: Job) => void
+  userRole?: 'contractor' | 'operator' | 'homeowner'
 }) {
   const [timeRemaining, setTimeRemaining] = useState<string>("")
   
@@ -41,6 +43,14 @@ const JobCard = memo(function JobCard({
     const fifteenMinutes = 15 * 60 * 1000
     return jobAge <= fifteenMinutes && job.size === 'small' && job.bids.length === 0
   }, [job.createdAt, job.size, job.bids.length])
+
+  const isPriorityLead = useMemo(() => {
+    // Priority leads for operators: jobs less than 10 minutes old
+    if (userRole !== 'operator') return false
+    const jobAge = Date.now() - new Date(job.createdAt).getTime()
+    const tenMinutes = 10 * 60 * 1000
+    return jobAge <= tenMinutes
+  }, [job.createdAt, userRole])
 
   const isUrgent = job.isUrgent && job.urgentDeadline
   const isExpired = isUrgent && new Date(job.urgentDeadline!) < new Date()
@@ -70,7 +80,11 @@ const JobCard = memo(function JobCard({
     return () => clearInterval(interval)
   }, [isUrgent, isExpired, job.urgentDeadline])
 
-  const photos = useMemo(() => job.photos || [], [job.photos])
+  const photos = useMemo(() => {
+    const jobPhotos = job.photos || []
+    // Filter out empty/null/undefined photos
+    return jobPhotos.filter((photo): photo is string => Boolean(photo && photo.trim()))
+  }, [job.photos])
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
   // Calculate recent bids (last 5 minutes)
@@ -89,32 +103,45 @@ const JobCard = memo(function JobCard({
 
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col relative ${isFresh ? "ring-2 ring-green-500/50 ring-offset-2" : ""}`}>
+      {/* Priority Lead Banner for Operators */}
+      {isPriorityLead && (
+        <div className="absolute top-0 left-0 right-0 z-10 bg-[#FFFF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-black shadow-[0_2px_0_#000]">
+          <span className="font-black text-lg">⚡</span>
+          <span className="font-black text-sm uppercase">PRIORITY LEAD - 10 MIN EARLY ACCESS</span>
+        </div>
+      )}
+      
       {/* Fresh Job Banner */}
-      {isFresh && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-green-600 dark:bg-green-700 text-white px-4 py-2 flex items-center gap-2 shadow-md">
-          <span className="animate-pulse text-lg">⚡</span>
-          <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
+      {isFresh && !isPriorityLead && (
+        <div className="absolute top-0 left-0 right-0 z-10 bg-[#00FF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-black shadow-[0_2px_0_#000]">
+          <span className="font-black text-lg">⚡</span>
+          <span className="font-black text-sm uppercase">FRESH JOB - FIRST TO BID GETS FEATURED!</span>
         </div>
       )}
 
       {/* Hero Image Section */}
-      {photos.length > 0 ? (
+      {photos.length > 0 && photos[0] ? (
         <div className="relative h-48 overflow-hidden bg-muted">
           <button
             onClick={() => onViewPhotos(photos)}
             className="relative w-full h-full group/image"
           >
             <img
-              src={photos[0] || 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'}
+              src={photos[0]}
               alt="Job preview"
               className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110"
               loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement
-                if (!target.src.includes('placeholder')) {
+                if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
                   target.src = 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'
                   target.onerror = null
                 }
+              }}
+              onLoad={(e) => {
+                // Image loaded successfully
+                const target = e.target as HTMLImageElement
+                target.style.opacity = '1'
               }}
             />
             <div className="absolute inset-0 bg-black/60 opacity-100 group-hover/image:opacity-80 transition-opacity duration-300" />
@@ -226,25 +253,23 @@ const JobCard = memo(function JobCard({
       <CardContent className="space-y-4 pt-0 flex-grow flex flex-col">
         {/* AI Scope Section */}
         {job.aiScope && (
-          <div className="rounded-lg p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/50">
-                <Wrench weight="duotone" size={16} className="text-blue-600 dark:text-blue-400" />
+          <div className="border-2 border-black dark:border-white p-4 bg-white dark:bg-black space-y-3">
+            <div className="flex items-center gap-2 border-b-2 border-black dark:border-white pb-2">
+              <div className="p-2 border-2 border-black dark:border-white bg-white dark:bg-black">
+                <Wrench weight="bold" size={18} className="text-black dark:text-white" />
               </div>
-              <span className="text-sm font-semibold text-black dark:text-white">AI Scope</span>
+              <span className="text-sm font-black uppercase tracking-wide text-black dark:text-white">AI SCOPE</span>
             </div>
-            <p className="text-sm leading-relaxed text-muted-foreground line-clamp-3">{job.aiScope.scope}</p>
-            {!photos.length && (
-              <div className="flex items-center gap-2 pt-2 border-t border-blue-100 dark:border-blue-900/50">
-                <CurrencyDollar weight="duotone" size={20} className="text-blue-600 dark:text-blue-400" />
-                <div>
-                  <div className="text-xs text-muted-foreground">Estimated Range</div>
-                  <div className="text-lg font-bold text-black dark:text-white">
-                    ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
-                  </div>
+            <p className="text-sm leading-relaxed text-black dark:text-white font-mono">{job.aiScope.scope}</p>
+            <div className="flex items-center gap-3 pt-2 border-t-2 border-black dark:border-white">
+              <CurrencyDollar weight="bold" size={20} className="text-[#00FF00]" />
+              <div>
+                <div className="text-xs font-mono uppercase text-black/70 dark:text-white/70">ESTIMATED RANGE</div>
+                <div className="text-lg font-black text-black dark:text-white">
+                  ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )}
 
@@ -359,6 +384,17 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     
     let openJobs = jobs.filter(job => job.status === 'open')
     
+    // Priority leads for operators: operators see jobs 10 minutes before contractors
+    if (user.role === 'contractor') {
+      const tenMinutesAgo = Date.now() - (10 * 60 * 1000)
+      openJobs = openJobs.filter(job => {
+        const jobCreatedAt = new Date(job.createdAt).getTime()
+        // Contractors only see jobs older than 10 minutes (operators get priority)
+        return jobCreatedAt <= tenMinutesAgo
+      })
+    }
+    // Operators see all jobs immediately (priority access)
+    
     if (sizeFilter !== 'all') {
       openJobs = openJobs.filter(job => job.size === sizeFilter)
     }
@@ -404,7 +440,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       // Finally by most recent
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
-  }, [jobs, sizeFilter])
+  }, [jobs, sizeFilter, user.role])
 
   const handleBidClick = useCallback((job: Job) => {
     setSelectedJob(job)
@@ -670,6 +706,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               ) : (
                 sortedOpenJobs.map(job => (
                   <JobCard
+                    userRole={user.role}
                     key={job.id}
                     job={job}
                     onViewPhotos={handlePhotoClick}

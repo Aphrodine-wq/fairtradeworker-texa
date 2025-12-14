@@ -459,7 +459,15 @@ function App() {
           </Suspense>
         )
       case 'free-tools':
-        // Redirect to business-tools (consolidated)
+        // Show FreeToolsPage for homeowners, BusinessTools for contractors/operators
+        if (currentUser?.role === 'homeowner') {
+          return (
+            <Suspense fallback={<LoadingFallback />}>
+              <FreeToolsPage user={currentUser} onNavigate={handleNavigate} />
+            </Suspense>
+          )
+        }
+        // Contractors/operators see free tools in BusinessTools
         if (currentUser?.role === 'contractor' || currentUser?.role === 'operator') {
           return (
             <Suspense fallback={<LoadingFallback />}>
