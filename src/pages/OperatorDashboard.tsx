@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -225,6 +226,30 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
     return Math.min(health, 100)
   }, [territoryContractors.length, avgResponseTime, completedJobs.length, growthRate])
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-background p-[1pt]">
+        <div className="container mx-auto px-4 py-8">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <SkeletonLoader variant="text" className="h-10 w-64" />
+              <SkeletonLoader variant="rectangular" className="h-10 w-32" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonLoader key={i} variant="card" />
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SkeletonLoader variant="card" />
+              <SkeletonLoader variant="card" />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background p-[1pt]">

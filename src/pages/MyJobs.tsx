@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -34,10 +35,19 @@ interface MyJobsProps {
 }
 
 export function MyJobs({ user, onNavigate }: MyJobsProps) {
-  const [jobs, setJobs] = useKV<Job[]>("jobs", [])
-  const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
+  const [jobs, setJobs, jobsLoading] = useKV<Job[]>("jobs", [])
+  const [invoices, setInvoices, invoicesLoading] = useKV<Invoice[]>("invoices", [])
+  const [isInitializing, setIsInitializing] = useState(true)
   // Homeowner pages don't use glass (free tier)
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!jobsLoading && !invoicesLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [jobsLoading, invoicesLoading])
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
   const [cardNumber, setCardNumber] = useState("")
