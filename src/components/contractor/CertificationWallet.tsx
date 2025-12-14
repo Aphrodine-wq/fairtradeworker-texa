@@ -324,19 +324,21 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
       const newCert: Certification = {
         id: `cert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         contractorId: user.id,
-        ...formData,
-        coverageAmount: formData.coverageAmount ? parseFloat(formData.coverageAmount) : undefined,
-        status: 'active',
-        createdAt: now,
-        updatedAt: now,
-      }
-      
-      const { status } = getCertificationStatus(newCert)
-      newCert.status = status
-      
-      setCertifications((prev = []) => [...prev, newCert])
-      toast.success('Certification added')
-    }
+              ...formData,
+              name: safeInput(formData.name.trim()),
+              issuingOrganization: safeInput(formData.issuingOrganization.trim()),
+              coverageAmount: formData.coverageAmount ? parseFloat(formData.coverageAmount) : undefined,
+              status: 'active',
+              createdAt: now,
+              updatedAt: now,
+            }
+            
+            const { status } = getCertificationStatus(newCert)
+            newCert.status = status
+            
+            setCertifications((prev = []) => [...prev, newCert])
+            toast.success('Certification added successfully!')
+          }
 
       setIsAddDialogOpen(false)
       resetForm()
@@ -406,8 +408,26 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
                 <Input 
                   placeholder="e.g., Master Plumber License"
                   value={formData.name}
-                  onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
+                  onChange={(e) => {
+                    setFormData(p => ({ ...p, name: safeInput(e.target.value) }))
+                    if (errors.name) setErrors(prev => ({ ...prev, name: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.name && formData.name.trim().length < 2) {
+                      setErrors(prev => ({ ...prev, name: "Name must be at least 2 characters" }))
+                    }
+                  }}
+                  className={errors.name ? "border-[#FF0000]" : ""}
+                  disabled={isSubmitting}
+                  required
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "cert-name-error" : undefined}
                 />
+                {errors.name && (
+                  <p id="cert-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.name}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">

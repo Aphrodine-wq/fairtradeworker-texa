@@ -239,29 +239,48 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
     toast.success('Milestone approved - payment released')
   }
   
-  const handleDispute = () => {
-    if (!selectedMilestone) return
+  const [isSubmittingDispute, setIsSubmittingDispute] = useState(false)
+
+  const handleDispute = useCallback(async () => {
+    if (!selectedMilestone || isSubmittingDispute) return
     
     if (!disputeReason.trim()) {
       toast.error('Please explain your concern')
       return
+    } else if (disputeReason.trim().length < 10) {
+      toast.error('Dispute reason must be at least 10 characters')
+      return
+    } else if (disputeReason.trim().length > 1000) {
+      toast.error('Dispute reason is too long (max 1000 characters)')
+      return
     }
-    
-    const updatedMilestones = milestones.map(m => 
-      m.id === selectedMilestone.id 
-        ? { 
-            ...m, 
-            status: 'disputed' as const,
-            disputeReason
-          }
-        : m
-    )
-    
-    updateJobMilestones(updatedMilestones)
-    setShowDisputeDialog(false)
-    setDisputeReason('')
-    toast.info('Dispute submitted - contractor will be notified')
-  }
+
+    setIsSubmittingDispute(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      const updatedMilestones = milestones.map(m => 
+        m.id === selectedMilestone.id 
+          ? { 
+              ...m, 
+              status: 'disputed' as const,
+              disputeReason: safeInput(disputeReason.trim())
+            }
+          : m
+      )
+      
+      updateJobMilestones(updatedMilestones)
+      setShowDisputeDialog(false)
+      setDisputeReason('')
+      toast.info('Dispute submitted - contractor will be notified')
+    } catch (error) {
+      console.error("Error submitting dispute:", error)
+      toast.error('Failed to submit dispute. Please try again.')
+    } finally {
+      setIsSubmittingDispute(false)
+    }
+  }, [selectedMilestone, disputeReason, milestones, isSubmittingDispute, updateJobMilestones])
   
   const handleResolveDispute = (milestone: Milestone) => {
     const updatedMilestones = milestones.map(m => 

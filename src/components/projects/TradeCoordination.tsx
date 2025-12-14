@@ -478,49 +478,36 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                 <Input
                   type="tel"
                   value={formData.contactPhone}
-                  onChange={(e) => {
-                    // Format phone number
-                    const value = e.target.value.replace(/\D/g, '')
-                    let formatted = value
-                    if (value.length > 0) {
-                      if (value.length <= 3) {
-                        formatted = `(${value}`
-                      } else if (value.length <= 6) {
-                        formatted = `(${value.slice(0, 3)}) ${value.slice(3)}`
-                      } else {
-                        formatted = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`
-                      }
-                    }
-                    setFormData({ ...formData, contactPhone: formatted.slice(0, 14) })
-                    if (errors.contactPhone) setErrors(prev => ({ ...prev, contactPhone: undefined }))
-                  }}
-                  onBlur={() => {
-                    if (formData.contactPhone && !validatePhone(formData.contactPhone)) {
-                      setErrors(prev => ({ ...prev, contactPhone: "Please enter a valid phone number" }))
-                    }
-                  }}
+                  onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
                   placeholder="(555) 123-4567"
-                  className={`h-11 ${errors.contactPhone ? "border-[#FF0000]" : ""}`}
-                  disabled={isSubmitting}
-                  maxLength={14}
-                  aria-invalid={!!errors.contactPhone}
-                  aria-describedby={errors.contactPhone ? "contact-phone-error" : undefined}
+                  className="h-11"
                 />
-                {errors.contactPhone && (
-                  <p id="contact-phone-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
-                    {errors.contactPhone}
-                  </p>
-                )}
               </div>
               <div>
                 <Label className="text-base">Email</Label>
                 <Input
                   type="email"
                   value={formData.contactEmail}
-                  onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, contactEmail: safeInput(e.target.value) })
+                    if (errors.contactEmail) setErrors(prev => ({ ...prev, contactEmail: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.contactEmail && !validateEmail(formData.contactEmail)) {
+                      setErrors(prev => ({ ...prev, contactEmail: "Please enter a valid email address" }))
+                    }
+                  }}
                   placeholder="contractor@example.com"
-                  className="h-11"
+                  className={`h-11 ${errors.contactEmail ? "border-[#FF0000]" : ""}`}
+                  disabled={isSubmitting}
+                  aria-invalid={!!errors.contactEmail}
+                  aria-describedby={errors.contactEmail ? "contact-email-error" : undefined}
                 />
+                {errors.contactEmail && (
+                  <p id="contact-email-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.contactEmail}
+                  </p>
+                )}
               </div>
             </div>
 
