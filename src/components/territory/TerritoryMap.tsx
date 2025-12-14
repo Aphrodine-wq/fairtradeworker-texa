@@ -46,6 +46,13 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
       return
     }
 
+    // Operators can only control one territory
+    const existingTerritory = (currentTerritories || []).find(t => t.operatorId === user.id)
+    if (existingTerritory) {
+      toast.error(`You already control ${existingTerritory.countyName}. Operators can only manage one territory.`)
+      return
+    }
+
     setTerritories((current) =>
       (current || []).map(t =>
         t.id === territory.id
@@ -63,11 +70,14 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
   }), [currentTerritories, user.id])
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12">
+    <div className="min-h-screen bg-background p-[1pt]">
+      <div className="container mx-auto px-4 md:px-8 py-12">
       <div className="max-w-6xl mx-auto space-y-8">
         <div>
           <h1 className="text-3xl font-bold mb-2">Territory Map</h1>
-          <p className="text-muted-foreground">Claim counties to manage jobs in your area</p>
+          <p className="text-muted-foreground">
+            Operators are contractors who perform well in their zip code. You get priority access to leads. Claim one county to manage jobs in your area.
+          </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -170,6 +180,7 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
           </TabsContent>
         </Tabs>
       </div>
+    </div>
     </div>
   )
 }

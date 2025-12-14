@@ -32,7 +32,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 py-12">
+    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)] px-4 py-12 p-[1pt]">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl">Log In</CardTitle>

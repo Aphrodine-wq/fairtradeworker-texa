@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
+import { toast } from "sonner"
 import { 
   MapTrifold, 
   Users, 
@@ -31,10 +32,11 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   const [territories] = useKV<Territory[]>("territories", [])
   const [users] = useKV<User[]>("users", [])
 
-  const myTerritory = useMemo(() => 
-    (territories || []).find(t => t.id === user.territoryId),
-    [territories, user.territoryId]
-  )
+  // Operators can only control one territory
+  const myTerritory = useMemo(() => {
+    if (!user.territoryId) return null
+    return (territories || []).find(t => t.id === user.territoryId) || null
+  }, [territories, user.territoryId])
 
   const territoryJobs = useMemo(() => 
     (jobs || []).filter(j => j.territoryId === user.territoryId),
@@ -200,7 +202,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   }, [territoryContractors.length, avgResponseTime, completedJobs.length, growthRate])
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background p-[1pt]">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
@@ -214,7 +216,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 )}
               </div>
               <p className="text-muted-foreground mt-1">
-                Manage and grow your territory
+                Operators are contractors who perform well in their zip code. You get priority access to leads in your territory.
               </p>
             </div>
             <Button onClick={() => onNavigate('territory-map')} size="lg">

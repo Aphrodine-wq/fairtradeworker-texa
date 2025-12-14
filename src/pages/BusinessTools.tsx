@@ -19,7 +19,11 @@ import {
   Gear,
   Lightning,
   Phone,
-  Target
+  Target,
+  Calculator,
+  Note,
+  Heart,
+  Sparkle
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 
@@ -30,6 +34,67 @@ interface BusinessToolsProps {
 
 export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const isPro = user?.isPro || false
+  
+  // Free Tools (available to everyone)
+  const freeTools = user.role === 'contractor' ? [
+    {
+      id: 'cost-calculator',
+      title: 'Job Cost Calculator',
+      description: 'Calculate profit margins and hourly rates instantly. Free forever.',
+      icon: Calculator,
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    },
+    {
+      id: 'warranty-tracker',
+      title: 'Warranty Tracker',
+      description: 'Never lose track of warranties you\'ve given. Always free.',
+      icon: ShieldCheck,
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    },
+    {
+      id: 'quick-notes',
+      title: 'Quick Notes',
+      description: 'Capture job details and customer info on the go. Zero cost.',
+      icon: Note,
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-50 dark:bg-purple-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    }
+  ] : user.role === 'homeowner' ? [
+    {
+      id: 'saved-contractors',
+      title: 'Saved Contractors',
+      description: 'Quick access to your trusted contractors. Free forever.',
+      icon: Heart,
+      color: 'text-pink-600 dark:text-pink-400',
+      bgColor: 'bg-pink-50 dark:bg-pink-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    },
+    {
+      id: 'quick-notes',
+      title: 'Quick Notes',
+      description: 'Keep track of important project information. Always free.',
+      icon: Note,
+      color: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-50 dark:bg-purple-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    }
+  ] : []
+  
   const tools = [
     {
       id: 'receptionist',
@@ -236,11 +301,13 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       status: 'enhanced',
       category: 'sales',
       isPro: true
-    }
+    },
+    ...freeTools
   ]
 
   const categories = [
     { id: 'all', label: 'All Tools', count: tools.length },
+    { id: 'free', label: 'Free Tools', count: tools.filter(t => t.category === 'free').length },
     { id: 'finance', label: 'Finance', count: tools.filter(t => t.category === 'finance').length },
     { id: 'sales', label: 'Sales & CRM', count: tools.filter(t => t.category === 'sales').length },
     { id: 'management', label: 'Management', count: tools.filter(t => t.category === 'management').length },
@@ -283,13 +350,18 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'client-portal': 'client-portal',
       'profit-calc': 'profit-calc',
       'insurance-verify': 'insurance-verify',
-      'pro-filters': 'pro-filters'
+      'pro-filters': 'pro-filters',
+      // Free Tools - handle inline or navigate to specific components
+      'cost-calculator': 'business-tools', // Will show inline
+      'warranty-tracker': 'business-tools',
+      'quick-notes': 'business-tools',
+      'saved-contractors': 'business-tools'
     }
     onNavigate(routeMap[toolId] || toolId)
   }
 
   return (
-    <div className="w-full bg-white dark:bg-black">
+    <div className="w-full bg-white dark:bg-black min-h-screen p-[1pt]">
       <div className="w-full px-4 md:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Header */}
@@ -341,7 +413,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
           {/* Category Tabs */}
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 md:grid-cols-7 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-3 md:grid-cols-8 bg-white dark:bg-black border border-black/20 dark:border-white/20">
               {categories.map(cat => (
                 <TabsTrigger 
                   key={cat.id} 
@@ -376,6 +448,11 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                                 {tool.isPro && (
                                   <Badge variant="default" className="text-xs bg-[#00FF00] text-black">
                                     PRO
+                                  </Badge>
+                                )}
+                                {(tool as any).isFree && (
+                                  <Badge variant="outline" className="text-xs border-green-500 text-green-600 dark:text-green-400">
+                                    FREE
                                   </Badge>
                                 )}
                                 <Badge 

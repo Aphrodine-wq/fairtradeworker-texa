@@ -105,10 +105,17 @@ const JobCard = memo(function JobCard({
             className="relative w-full h-full group/image"
           >
             <img
-              src={photos[0]}
+              src={photos[0] || 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'}
               alt="Job preview"
               className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110"
               loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                if (!target.src.includes('placeholder')) {
+                  target.src = 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'
+                  target.onerror = null
+                }
+              }}
             />
             <div className="absolute inset-0 bg-black/60 opacity-100 group-hover/image:opacity-80 transition-opacity duration-300" />
             
@@ -278,10 +285,17 @@ const JobCard = memo(function JobCard({
                   className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all group/thumb"
                 >
                   <img
-                    src={photo}
+                    src={photo || 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'}
                     alt={`Photo ${idx + 2}`}
                     className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-200"
                     loading="lazy"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      if (!target.src.includes('placeholder')) {
+                        target.src = 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'
+                        target.onerror = null
+                      }
+                    }}
                   />
                 </button>
               ))}
@@ -494,7 +508,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background p-[1pt]">
       <div className="container mx-auto px-4 md:px-8 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Hero Header Section */}

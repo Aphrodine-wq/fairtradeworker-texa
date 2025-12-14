@@ -168,11 +168,11 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               My Jobs
             </NavButton>
             <NavButton 
-              onClick={() => handleNav('free-tools', 'tools')} 
+              onClick={() => handleNav('business-tools', 'tools')} 
               isActive={activeTab === 'tools'}
               icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
             >
-              Free Tools
+              Business Tools
             </NavButton>
             <NavButton 
               onClick={() => handleNav('photo-scoper', 'scoper')} 
@@ -221,11 +221,11 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
               Business Tools
             </NavButton>
             <NavButton 
-              onClick={() => handleNav('free-tools', 'tools')} 
+              onClick={() => handleNav('business-tools', 'tools')} 
               isActive={activeTab === 'tools'}
               icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
             >
-              Free Tools
+              Business Tools
             </NavButton>
             <NavButton 
               onClick={() => handleNav('photo-scoper', 'scoper')} 
@@ -369,11 +369,11 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 </Button>
                 <Button 
                   variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('free-tools', 'tools')}
+                  onClick={() => handleNav('business-tools', 'tools')}
                   className="justify-start min-h-[44px]"
                 >
                   <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
-                  Free Tools
+                  Business Tools
                 </Button>
                 <Button 
                   variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 
@@ -421,11 +421,11 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
                 </Button>
                 <Button 
                   variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('free-tools', 'tools')}
+                  onClick={() => handleNav('business-tools', 'tools')}
                   className="justify-start min-h-[44px]"
                 >
                   <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
-                  Free Tools
+                  Business Tools
                 </Button>
                 <Button 
                   variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 

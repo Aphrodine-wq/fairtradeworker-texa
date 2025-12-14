@@ -220,8 +220,15 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                   onClick={() => handlePhotoClick(job.photos || [], idx)}
                 >
                   <img
-                    src={photo}
+                    src={photo || 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'}
                     alt={`Job photo ${idx + 1}`}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      if (!target.src.includes('placeholder')) {
+                        target.src = 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'
+                        target.onerror = null
+                      }
+                    }}
                     className="w-full h-full object-cover"
                   />
                 </div>

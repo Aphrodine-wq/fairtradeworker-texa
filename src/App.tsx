@@ -459,11 +459,15 @@ function App() {
           </Suspense>
         )
       case 'free-tools':
-        return currentUser ? (
-          <Suspense fallback={<LoadingFallback />}>
-            <FreeToolsPage user={currentUser} onNavigate={handleNavigate} />
-          </Suspense>
-        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        // Redirect to business-tools (consolidated)
+        if (currentUser?.role === 'contractor' || currentUser?.role === 'operator') {
+          return (
+            <Suspense fallback={<LoadingFallback />}>
+              <BusinessTools user={currentUser} onNavigate={handleNavigate} />
+            </Suspense>
+          )
+        }
+        return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'business-tools':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>

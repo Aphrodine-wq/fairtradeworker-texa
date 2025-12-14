@@ -70,7 +70,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
   const bgColor = isDark ? '#000000' : '#ffffff'
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)]">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] p-[1pt]">
       <section className="flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-12 md:py-24 relative z-10" style={{ backgroundColor: bgColor }}>
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
