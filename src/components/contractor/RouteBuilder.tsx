@@ -282,7 +282,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
                   )
                   
                   return (
-                    <div key={job.id} className="p-4 rounded-lg border">
+                    <div key={job.id} className="p-4 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="font-medium">{job.title}</div>
@@ -354,7 +354,7 @@ export function RouteBuilder({ user }: RouteBuilderProps) {
                         <div className="text-sm text-muted-foreground mb-3">
                           Big job anchoring your schedule
                         </div>
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                        <div className="bg-[#00FF00] border-2 border-black dark:border-white rounded-none p-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                           <div className="text-sm font-medium text-green-800 mb-2">
                             3 nearby jobs found within 10 minutes
                           </div>

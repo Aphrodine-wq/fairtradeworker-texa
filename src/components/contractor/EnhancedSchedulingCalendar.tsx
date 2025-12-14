@@ -267,14 +267,14 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
 
           {/* View Tabs */}
           <Tabs value={view} onValueChange={(v: any) => setView(v)}>
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <TabsList className="grid w-full max-w-md mx-auto grid-cols-3 bg-white dark:bg-black border-2 border-black dark:border-white">
               <TabsTrigger value="month">Month</TabsTrigger>
               <TabsTrigger value="week">Week</TabsTrigger>
               <TabsTrigger value="day">Day</TabsTrigger>
             </TabsList>
 
             <TabsContent value="month" className="mt-6">
-              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateMonth(-1)}>
@@ -333,7 +333,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="week" className="mt-6">
-              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateWeek(-1)}>
@@ -399,7 +399,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="day" className="mt-6">
-              <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <Button variant="outline" onClick={() => navigateDay(-1)}>
