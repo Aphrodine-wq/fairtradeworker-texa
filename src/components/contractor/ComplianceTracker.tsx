@@ -1,0 +1,400 @@
+import { useState, useMemo } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ShieldCheck, Plus, AlertCircle, CheckCircle, Calendar } from "@phosphor-icons/react"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
+import type { User } from "@/lib/types"
+
+interface ComplianceItem {
+  id: string
+  type: 'license' | 'insurance' | 'permit' | 'certification'
+  name: string
+  issuer: string
+  issueDate: string
+  expirationDate: string
+  expiryDate?: string
+  number?: string
+  status: 'active' | 'expired' | 'expiring-soon' | 'pending'
+  notes?: string
+}
+
+export function ComplianceTracker({ user }: { user: User }) {
+  const [items, setItems] = useKV<ComplianceItem[]>("compliance-items", [])
+  const [showAddDialog, setShowAddDialog] = useState(false)
+  const [newItem, setNewItem] = useState<Partial<ComplianceItem>>({
+    type: 'license',
+    name: '',
+    issuer: '',
+    issueDate: new Date().toISOString().split('T')[0],
+    expirationDate: '',
+    status: 'active'
+  })
+
+  const expiredItems = useMemo(() => 
+    items.filter(item => {
+      if (item.expirationDate) {
+        return new Date(item.expirationDate) < new Date()
+      }
+      return false
+    }),
+    [items]
+  )
+
+  const expiringSoon = useMemo(() => 
+    items.filter(item => {
+      if (item.expirationDate && item.status === 'active') {
+        const expDate = new Date(item.expirationDate)
+        const daysUntilExp = (expDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+        return daysUntilExp <= 30 && daysUntilExp > 0
+      }
+      return false
+    }),
+    [items]
+  )
+
+  const activeItems = useMemo(() => 
+    items.filter(item => item.status === 'active' && !expiredItems.find(e => e.id === item.id)),
+    [items, expiredItems]
+  )
+
+  const handleSaveItem = () => {
+    if (!newItem.name || !newItem.expirationDate) return
+
+      const expirationDate = new Date(newItem.expirationDate || newItem.expiryDate || '')
+    const isExpired = expirationDate < new Date()
+    const daysUntilExp = (expirationDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    const isExpiringSoon = daysUntilExp <= 30 && daysUntilExp > 0
+
+    const status: ComplianceItem['status'] = isExpired 
+      ? 'expired' 
+      : isExpiringSoon 
+        ? 'expiring-soon' 
+        : 'active'
+
+    const item: ComplianceItem = {
+      id: `compliance-${Date.now()}`,
+      type: newItem.type || 'license',
+      name: newItem.name!,
+      issuer: newItem.issuer || '',
+      issueDate: newItem.issueDate || new Date().toISOString().split('T')[0],
+      expirationDate: newItem.expirationDate!,
+      number: newItem.number,
+      status,
+      notes: newItem.notes
+    }
+
+    setItems([...items, item])
+    setNewItem({
+      type: 'license',
+      name: '',
+      issuer: '',
+      issueDate: new Date().toISOString().split('T')[0],
+      expirationDate: '',
+      status: 'active'
+    })
+    setShowAddDialog(false)
+  }
+
+  const getStatusBadge = (status: string, expirationDate: string) => {
+    if (new Date(expirationDate) < new Date()) {
+      return <Badge variant="destructive">Expired</Badge>
+    }
+    if (status === 'expiring-soon') {
+      return <Badge variant="outline" className="border-yellow-500 text-yellow-700 dark:text-yellow-400">
+        Expiring Soon
+      </Badge>
+    }
+    return <Badge variant="default" className="bg-green-600">Active</Badge>
+  }
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-black">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold flex items-center gap-3 mb-2">
+                <ShieldCheck weight="duotone" size={40} className="text-black dark:text-white" />
+                <span className="text-black dark:text-white">Compliance Tracker</span>
+              </h1>
+              <p className="text-muted-foreground text-lg">
+                Track licenses, insurance, permits, and certifications
+              </p>
+            </div>
+            <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus size={18} className="mr-2" />
+                  Add Item
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+                <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                  <DialogHeader className="text-left">
+                    <DialogTitle className="text-2xl">Add Compliance Item</DialogTitle>
+                    <DialogDescription>Track licenses, insurance, permits, certifications</DialogDescription>
+                  </DialogHeader>
+                </div>
+                <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Type</Label>
+                      <Select value={newItem.type} onValueChange={(v: any) => setNewItem({ ...newItem, type: v })}>
+                        <SelectTrigger className="h-11">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="license">License</SelectItem>
+                          <SelectItem value="insurance">Insurance</SelectItem>
+                          <SelectItem value="permit">Permit</SelectItem>
+                          <SelectItem value="certification">Certification</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Name</Label>
+                      <Input
+                        value={newItem.name}
+                        onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+                        placeholder="e.g., General Contractor License"
+                        className="h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label>Issuer</Label>
+                      <Input
+                        value={newItem.issuer}
+                        onChange={(e) => setNewItem({ ...newItem, issuer: e.target.value })}
+                        placeholder="e.g., State Licensing Board"
+                        className="h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label>License/Policy Number</Label>
+                      <Input
+                        value={newItem.number}
+                        onChange={(e) => setNewItem({ ...newItem, number: e.target.value })}
+                        placeholder="Optional"
+                        className="h-11"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Issue Date</Label>
+                      <Input
+                        type="date"
+                        value={newItem.issueDate}
+                        onChange={(e) => setNewItem({ ...newItem, issueDate: e.target.value })}
+                        className="h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label>Expiration Date *</Label>
+                      <Input
+                        type="date"
+                        value={newItem.expirationDate}
+                        onChange={(e) => setNewItem({ ...newItem, expirationDate: e.target.value })}
+                        className="h-11"
+                      />
+                    </div>
+                    <div>
+                      <Label>Notes</Label>
+                      <Textarea
+                        value={newItem.notes}
+                        onChange={(e) => setNewItem({ ...newItem, notes: e.target.value })}
+                        placeholder="Additional information..."
+                        className="h-32"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                  <div className="flex gap-3 justify-end">
+                    <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-11">
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSaveItem} className="h-11">
+                      Save Item
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
+          {/* Alerts */}
+          {expiredItems.length > 0 && (
+            <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100">
+                  <AlertCircle size={24} weight="fill" />
+                  Expired Items
+                </CardTitle>
+                <CardDescription>
+                  {expiredItems.length} item{expiredItems.length !== 1 ? 's' : ''} need renewal
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {expiredItems.map(item => (
+                    <div key={item.id} className="p-3 bg-white dark:bg-black rounded-lg border border-red-200 dark:border-red-800">
+                      <div className="font-semibold text-black dark:text-white">{item.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        Expired: {new Date(item.expirationDate).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {expiringSoon.length > 0 && (
+            <Card className="bg-yellow-50 dark:bg-yellow-950 border-yellow-200 dark:border-yellow-800">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-yellow-900 dark:text-yellow-100">
+                  <Calendar size={24} weight="fill" />
+                  Expiring Soon
+                </CardTitle>
+                <CardDescription>
+                  {expiringSoon.length} item{expiringSoon.length !== 1 ? 's' : ''} expiring within 30 days
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {expiringSoon.map(item => {
+                    const daysUntilExp = Math.ceil(
+                      (new Date(item.expirationDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+                    )
+                    return (
+                      <div key={item.id} className="p-3 bg-white dark:bg-black rounded-lg border border-yellow-200 dark:border-yellow-800">
+                        <div className="font-semibold text-black dark:text-white">{item.name}</div>
+                        <div className="text-sm text-muted-foreground">
+                          Expires in {daysUntilExp} day{daysUntilExp !== 1 ? 's' : ''}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-black dark:text-white">{items.length}</div>
+                <div className="text-sm text-muted-foreground mt-1">Total Items</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-green-600 dark:text-green-400">{activeItems.length}</div>
+                <div className="text-sm text-muted-foreground mt-1">Active</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400">{expiringSoon.length}</div>
+                <div className="text-sm text-muted-foreground mt-1">Expiring Soon</div>
+              </CardContent>
+            </Card>
+            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-red-600 dark:text-red-400">{expiredItems.length}</div>
+                <div className="text-sm text-muted-foreground mt-1">Expired</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Items List */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {items.map(item => (
+              <Card
+                key={item.id}
+                className={`bg-white dark:bg-black border-2 ${
+                  item.status === 'expired'
+                    ? 'border-red-200 dark:border-red-800'
+                    : item.status === 'expiring-soon'
+                      ? 'border-yellow-200 dark:border-yellow-800'
+                      : 'border-black/10 dark:border-white/10'
+                }`}
+              >
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <CardTitle className="text-lg text-black dark:text-white">{item.name}</CardTitle>
+                      <CardDescription className="capitalize">{item.type}</CardDescription>
+                    </div>
+                    {getStatusBadge(item.status, item.expirationDate)}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-sm">
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground">Issuer:</span>
+                      <span className="font-semibold text-black dark:text-white">{item.issuer || 'N/A'}</span>
+                    </div>
+                    {item.number && (
+                      <div className="flex justify-between mb-1">
+                        <span className="text-muted-foreground">Number:</span>
+                        <span className="font-semibold text-black dark:text-white">{item.number}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between mb-1">
+                      <span className="text-muted-foreground">Issue Date:</span>
+                      <span className="font-semibold text-black dark:text-white">
+                        {new Date(item.issueDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Expires:</span>
+                      <span className={`font-semibold ${
+                        new Date(item.expirationDate) < new Date()
+                          ? 'text-red-600 dark:text-red-400'
+                          : item.status === 'expiring-soon'
+                            ? 'text-yellow-600 dark:text-yellow-400'
+                            : 'text-black dark:text-white'
+                      }`}>
+                        {new Date(item.expirationDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                  {item.notes && (
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {item.notes}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+
+            {items.length === 0 && (
+              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                <CardContent className="p-12 text-center">
+                  <ShieldCheck size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <p className="text-muted-foreground text-lg">No compliance items yet</p>
+                  <p className="text-sm text-muted-foreground mt-1 mb-4">
+                    Track licenses, insurance, permits, and certifications
+                  </p>
+                  <Button onClick={() => setShowAddDialog(true)}>
+                    <Plus size={18} className="mr-2" />
+                    Add First Item
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -54,8 +54,48 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
 
   const myCustomers = (customers || []).filter(c => c.contractorId === user.id)
 
+  const getCustomerInteractions = (customerId: string) => {
+    return (interactions || []).filter(i => i.customerId === customerId)
+  }
+
+  // Calculate lead scores
+  const customersWithScores = useMemo(() => {
+    return myCustomers.map(customer => {
+      let score = 0
+      
+      // Base score by status
+      if (customer.status === 'active') score += 30
+      else if (customer.status === 'lead') score += 10
+      
+      // Lifetime value (higher LTV = higher score)
+      if (customer.lifetimeValue > 10000) score += 40
+      else if (customer.lifetimeValue > 5000) score += 30
+      else if (customer.lifetimeValue > 1000) score += 20
+      else if (customer.lifetimeValue > 0) score += 10
+      
+      // Recent interactions (more recent = higher score)
+      const customerInteractions = getCustomerInteractions(customer.id)
+      const recentInteractions = customerInteractions.filter(i => {
+        const interactionDate = new Date(i.date)
+        const thirtyDaysAgo = new Date()
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+        return interactionDate >= thirtyDaysAgo
+      })
+      score += Math.min(recentInteractions.length * 5, 20)
+      
+      // Tags (VIP, High Priority, etc.)
+      if (customer.tags?.some(tag => tag.toLowerCase().includes('vip'))) score += 15
+      if (customer.tags?.some(tag => tag.toLowerCase().includes('priority'))) score += 10
+      
+      // Source (referrals score higher)
+      if (customer.source === 'referral') score += 10
+      
+      return { ...customer, leadScore: Math.min(score, 100) }
+    })
+  }, [myCustomers, interactions])
+
   const filteredCustomers = useMemo(() => {
-    let filtered = myCustomers
+    let filtered = customersWithScores
 
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
@@ -73,9 +113,10 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
     }
 
     return filtered.sort((a, b) => 
+      ((b as any).leadScore || 0) - ((a as any).leadScore || 0) ||
       new Date(b.invitedAt).getTime() - new Date(a.invitedAt).getTime()
     )
-  }, [myCustomers, searchQuery, statusFilter])
+  }, [customersWithScores, searchQuery, statusFilter])
 
   // Pipeline stages
   const pipelineStages: PipelineStage[] = useMemo(() => {
@@ -86,6 +127,17 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       { id: 'advocate', name: 'Advocates', customers: filteredCustomers.filter(c => c.status === 'advocate') },
     ]
   }, [filteredCustomers])
+
+  const getCustomerInteractions = (customerId: string) => {
+    return (interactions || []).filter(i => i.customerId === customerId)
+  }
+
+  const getLeadScoreColor = (score: number) => {
+    if (score >= 80) return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-950'
+    if (score >= 60) return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950'
+    if (score >= 40) return 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950'
+    return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950'
+  }
 
   // Analytics
   const analytics = useMemo(() => {
@@ -340,6 +392,14 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-2">
+                            {(customer as any).leadScore !== undefined && (
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-xs text-muted-foreground dark:text-white/70">Lead Score</span>
+                                <Badge className={`text-xs ${getLeadScoreColor((customer as any).leadScore || 0)}`}>
+                                  {(customer as any).leadScore || 0}/100
+                                </Badge>
+                              </div>
+                            )}
                             {customer.lifetimeValue > 0 && (
                               <div className="flex items-center justify-between text-sm">
                                 <span className="text-muted-foreground dark:text-white/70">Lifetime Value</span>

@@ -104,8 +104,44 @@ const TermsPage = lazy(() => retryImport(() =>
 const FreeToolsPage = lazy(() => retryImport(() =>
   import("@/pages/FreeToolsPage").then(m => ({ default: m.FreeToolsPage }))
 ))
+const BusinessTools = lazy(() => retryImport(() =>
+  import("@/pages/BusinessTools").then(m => ({ default: m.BusinessTools }))
+))
+const TaxHelper = lazy(() => retryImport(() =>
+  import("@/components/contractor/TaxHelper").then(m => ({ default: m.TaxHelper }))
+))
+const DocumentManager = lazy(() => retryImport(() =>
+  import("@/components/contractor/DocumentManager").then(m => ({ default: m.DocumentManager }))
+))
+const NotificationCenter = lazy(() => retryImport(() =>
+  import("@/components/contractor/NotificationCenter").then(m => ({ default: m.NotificationCenter }))
+))
+const ReportingSuite = lazy(() => retryImport(() =>
+  import("@/components/contractor/ReportingSuite").then(m => ({ default: m.ReportingSuite }))
+))
+const InventoryManagement = lazy(() => retryImport(() =>
+  import("@/components/contractor/InventoryManagement").then(m => ({ default: m.InventoryManagement }))
+))
+const QualityAssurance = lazy(() => retryImport(() =>
+  import("@/components/contractor/QualityAssurance").then(m => ({ default: m.QualityAssurance }))
+))
+const ComplianceTracker = lazy(() => retryImport(() =>
+  import("@/components/contractor/ComplianceTracker").then(m => ({ default: m.ComplianceTracker }))
+))
+const CommunicationHub = lazy(() => retryImport(() =>
+  import("@/components/contractor/CommunicationHub").then(m => ({ default: m.CommunicationHub }))
+))
+const EnhancedSchedulingCalendar = lazy(() => retryImport(() =>
+  import("@/components/contractor/EnhancedSchedulingCalendar").then(m => ({ default: m.EnhancedSchedulingCalendar }))
+))
+const PaymentProcessing = lazy(() => retryImport(() =>
+  import("@/components/contractor/PaymentProcessing").then(m => ({ default: m.PaymentProcessing }))
+))
+const EnhancedExpenseTracking = lazy(() => retryImport(() =>
+  import("@/components/contractor/EnhancedExpenseTracking").then(m => ({ default: m.EnhancedExpenseTracking }))
+))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'expenses' | 'payments'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -366,6 +402,84 @@ function App() {
         return currentUser ? (
           <Suspense fallback={<LoadingFallback />}>
             <FreeToolsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'business-tools':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <BusinessTools user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'tax-helper':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <TaxHelper user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'documents':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <DocumentManager user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'notifications':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <NotificationCenter user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'reports':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ReportingSuite user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'inventory':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <InventoryManagement user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'quality':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <QualityAssurance user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'compliance':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ComplianceTracker user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'communication':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CommunicationHub user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'calendar':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <EnhancedSchedulingCalendar user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'leads':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <EnhancedCRM user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'expenses':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <EnhancedExpenseTracking user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'payments':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <PaymentProcessing user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:

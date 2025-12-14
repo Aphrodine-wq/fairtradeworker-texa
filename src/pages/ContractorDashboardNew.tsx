@@ -17,7 +17,8 @@ import {
   Wrench,
   MapPin,
   Target,
-  Fire
+  Fire,
+  Sparkle
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice, Bid } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
@@ -454,7 +455,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
           </div>
 
           {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
               onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
@@ -490,6 +491,19 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 <div>
                   <p className="font-semibold">Revenue Analytics</p>
                   <p className="text-sm text-muted-foreground">View insights</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+              onClick={() => onNavigate('business-tools')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-purple-100 dark:bg-purple-950 flex items-center justify-center">
+                  <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Business Tools</p>
+                  <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
                 </div>
               </div>
             </Card>
