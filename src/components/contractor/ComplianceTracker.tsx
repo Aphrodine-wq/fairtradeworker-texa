@@ -234,7 +234,7 @@ export function ComplianceTracker({ user }: { user: User }) {
             <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100">
-                  <AlertCircle size={24} weight="fill" />
+                  <Warning size={24} weight="fill" />
                   Expired Items
                 </CardTitle>
                 <CardDescription>

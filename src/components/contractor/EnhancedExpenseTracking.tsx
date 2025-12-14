@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ChartLine, FileText, Download, TrendingUp } from "@phosphor-icons/react"
+import { ChartLine, FileText, Download, TrendUp } from "@phosphor-icons/react"
 import { ExpenseTracking } from "@/components/projects/ExpenseTracking"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Milestone, MilestoneExpense } from "@/lib/types"
