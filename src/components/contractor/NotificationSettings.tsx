@@ -144,7 +144,7 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
               >
                 {isSubscribing ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-none animate-spin" />
                     Enabling...
                   </>
                 ) : (
@@ -437,7 +437,7 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-4 bg-muted/50 rounded-lg">
+            <div className="flex items-center gap-2 p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
               <Check className="w-5 h-5 text-primary" />
               <p className="text-sm text-muted-foreground">
                 Your notification settings are saved automatically
@@ -448,7 +448,7 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
       </Card>
 
       {isSubscribed && !isExpanded && (
-        <Card className="p-4 bg-primary/5 border-primary/20">
+        <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
           <div className="flex items-start gap-3">
             <Zap className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <div>

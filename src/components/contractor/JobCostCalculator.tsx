@@ -84,10 +84,10 @@ export function JobCostCalculator() {
   }
 
   const getProfitQuality = (margin: number) => {
-    if (margin >= 40) return { text: "Excellent", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
-    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
-    if (margin >= 15) return { text: "Fair", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendUp }
-    return { text: "Low", color: "bg-white dark:bg-black border border-black/10 dark:border-white/10", icon: TrendDown }
+    if (margin >= 40) return { text: "Excellent", color: "bg-[#00FF00] border-2 border-black dark:border-white", icon: TrendUp }
+    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border-2 border-black dark:border-white", icon: TrendUp }
+    if (margin >= 15) return { text: "Fair", color: "bg-[#FFFF00] border-2 border-black dark:border-white", icon: TrendUp }
+    return { text: "Low", color: "bg-[#FF0000] text-white border-2 border-black dark:border-white", icon: TrendDown }
   }
 
   const getHourlyRateQuality = (rate: number) => {
@@ -99,7 +99,7 @@ export function JobCostCalculator() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-primary/5 border-primary/20">
+      <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
             <Calculator weight="fill" className="text-primary-foreground" size={24} />
@@ -221,7 +221,7 @@ export function JobCostCalculator() {
           </div>
 
           <div className="border-t pt-6 space-y-4">
-            <div className="flex items-center justify-between p-4 bg-accent/10 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
                 <p className="text-3xl font-bold">{breakdown.profitMargin.toFixed(1)}%</p>
@@ -249,7 +249,7 @@ export function JobCostCalculator() {
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-muted rounded-lg">
+          <div className="mt-6 p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
             <p className="text-sm text-muted-foreground">
               <strong>💡 Tip:</strong> Industry standard margins are 25-40%. 
               If your margin is below 20%, consider increasing your bid or reducing costs.

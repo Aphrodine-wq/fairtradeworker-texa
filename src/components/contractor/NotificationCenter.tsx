@@ -63,18 +63,18 @@ export function NotificationCenter({ user }: { user: User }) {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950'
-      case 'medium': return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950'
-      default: return 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950'
+      case 'high': return 'text-white bg-[#FF0000] border-2 border-black dark:border-white'
+      case 'medium': return 'text-black bg-[#FFFF00] border-2 border-black dark:border-white'
+      default: return 'text-black dark:text-white bg-white dark:bg-black border-2 border-black dark:border-white'
     }
   }
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'success': return <CheckCircle weight="fill" size={20} className="text-green-600 dark:text-green-400" />
-      case 'warning': return <Bell weight="fill" size={20} className="text-yellow-600 dark:text-yellow-400" />
-      case 'error': return <X weight="fill" size={20} className="text-red-600 dark:text-red-400" />
-      default: return <Bell weight="fill" size={20} className="text-blue-600 dark:text-blue-400" />
+      case 'success': return <CheckCircle weight="fill" size={20} className="text-[#00FF00]" />
+      case 'warning': return <Bell weight="fill" size={20} className="text-[#FFFF00]" />
+      case 'error': return <X weight="fill" size={20} className="text-[#FF0000]" />
+      default: return <Bell weight="fill" size={20} className="text-black dark:text-white" />
     }
   }
 

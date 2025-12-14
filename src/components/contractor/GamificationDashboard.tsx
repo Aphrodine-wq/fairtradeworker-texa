@@ -144,11 +144,11 @@ export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-4 bg-orange-500/10 rounded-lg">
-              <div className="text-3xl font-bold text-orange-500">{currentStreak}</div>
+            <div className="text-center p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
+              <div className="text-3xl font-black font-mono text-black dark:text-white">{currentStreak}</div>
               <div className="text-sm text-muted-foreground">Day Job Streak</div>
             </div>
-            <div className="text-center p-4 bg-blue-500/10 rounded-lg">
+            <div className="text-center p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono">
               <div className="text-3xl font-bold text-blue-500">{longestStreak}</div>
               <div className="text-sm text-muted-foreground">Longest Streak</div>
             </div>
@@ -170,11 +170,11 @@ export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className={achievement.unlocked ? 'border-primary bg-primary/5' : ''}>
+                <Card className={`border-2 border-black dark:border-white ${achievement.unlocked ? 'bg-[#00FF00] dark:bg-[#00FF00]' : 'bg-white dark:bg-black'}`}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
                       <div className={`
-                        p-3 rounded-lg
+                        p-3 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono
                         ${achievement.unlocked 
                           ? 'bg-primary text-primary-foreground' 
                           : 'bg-muted text-muted-foreground'
