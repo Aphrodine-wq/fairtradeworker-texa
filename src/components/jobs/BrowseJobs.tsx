@@ -1,5 +1,6 @@
 
 import { useState, useMemo, memo, useCallback, useEffect } from "react"
+import { SkeletonGrid, JobCardSkeleton } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -17,7 +18,7 @@ import { JobMap } from "./JobMap"
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
@@ -366,6 +367,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [bidMessage, setBidMessage] = useState("")
   const [saveAsTemplate, setSaveAsTemplate] = useState(false)
   const [templateName, setTemplateName] = useState("")
+  const [isLoadingJobs, setIsLoadingJobs] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
@@ -465,12 +467,24 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     }
   }, [bidTemplates])
 
-  const handleSubmitBid = () => {
-    if (!selectedJob) return
+  const [isSubmittingBid, setIsSubmittingBid] = useState(false)
 
-    const amount = parseInt(bidAmount)
-    if (!amount || amount <= 0) {
+  const handleSubmitBid = useCallback(async () => {
+    if (!selectedJob || isSubmittingBid) return
+
+    const amount = parseFloat(bidAmount.replace(/[^0-9.]/g, ''))
+    if (!amount || amount <= 0 || isNaN(amount)) {
       toast.error("Please enter a valid bid amount")
+      return
+    }
+
+    if (amount < selectedJob.aiScope.priceLow * 0.5) {
+      toast.error(`Bid seems too low. Estimated range is $${selectedJob.aiScope.priceLow}-${selectedJob.aiScope.priceHigh}`)
+      return
+    }
+
+    if (amount > selectedJob.aiScope.priceHigh * 3) {
+      toast.error(`Bid seems too high. Estimated range is $${selectedJob.aiScope.priceLow}-${selectedJob.aiScope.priceHigh}`)
       return
     }
 
@@ -478,6 +492,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       toast.error("Please add a message with your bid")
       return
     }
+
+    if (bidMessage.trim().length < 10) {
+      toast.error("Please provide a more detailed message (at least 10 characters)")
+      return
+    }
+
+    setIsSubmittingBid(true)
 
     // Save as template if requested
     if (saveAsTemplate && templateName.trim()) {
@@ -493,10 +514,14 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       toast.success(`Template "${templateName}" saved!`)
     }
 
-    const jobTime = new Date(selectedJob.createdAt).getTime()
-    const bidTime = Date.now()
-    const responseTimeMinutes = Math.round((bidTime - jobTime) / 1000 / 60)
-    const isLightning = responseTimeMinutes <= 10
+    try {
+      // Simulate network delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      const jobTime = new Date(selectedJob.createdAt).getTime()
+      const bidTime = Date.now()
+      const responseTimeMinutes = Math.round((bidTime - jobTime) / 1000 / 60)
+      const isLightning = responseTimeMinutes <= 10
     
     const newBid: Bid = {
       id: `bid-${Date.now()}`,
@@ -519,15 +544,23 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       )
     )
 
-    if (isLightning && selectedJob.bids.length < 3) {
-      toast.success(`⚡ Lightning bid! You responded in ${responseTimeMinutes} minutes!`)
-    } else {
-      toast.success("Bid submitted successfully!")
+      if (isLightning && selectedJob.bids.length < 3) {
+        toast.success(`⚡ Lightning bid! You responded in ${responseTimeMinutes} minutes!`)
+      } else {
+        toast.success("Bid submitted successfully!")
+      }
+      
+      setDialogOpen(false)
+      setSelectedJob(null)
+      setBidAmount("")
+      setBidMessage("")
+    } catch (error) {
+      console.error("Error submitting bid:", error)
+      toast.error("Failed to submit bid. Please try again.")
+    } finally {
+      setIsSubmittingBid(false)
     }
-    
-    setDialogOpen(false)
-    setSelectedJob(null)
-  }
+  }, [selectedJob, bidAmount, bidMessage, saveAsTemplate, templateName, user, setJobs, setBidTemplates, bidTemplates])
 
   if (sortedOpenJobs.length === 0) {
     return (
@@ -883,11 +916,19 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 >
                   Cancel
                 </Button>
-                <Button 
+                <Button
                   onClick={handleSubmitBid}
-                  className="h-10 px-8 text-sm font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
+                  disabled={isSubmittingBid}
+                  className="h-10 px-8 text-sm font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Submit Bid – $0 Fee
+                  {isSubmittingBid ? (
+                    <>
+                      <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Submit Bid – $0 Fee"
+                  )}
                 </Button>
               </div>
             </DialogFooter>

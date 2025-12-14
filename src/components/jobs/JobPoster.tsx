@@ -70,14 +70,33 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     }
   }
 
-  const handleProcess = async () => {
-    if (!title) {
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [processingError, setProcessingError] = useState<string | null>(null)
+
+  const handleProcess = useCallback(async () => {
+    setProcessingError(null)
+    
+    if (!title.trim()) {
       toast.error("Please enter a job title")
+      setProcessingError("Job title is required")
       return
     }
 
-    if (inputMethod === 'text' && !description) {
+    if (title.trim().length < 5) {
+      toast.error("Job title must be at least 5 characters")
+      setProcessingError("Job title too short")
+      return
+    }
+
+    if (inputMethod === 'text' && !description.trim()) {
       toast.error("Please enter a job description")
+      setProcessingError("Job description is required")
+      return
+    }
+
+    if (inputMethod === 'text' && description.trim().length < 20) {
+      toast.error("Please provide a more detailed description (at least 20 characters)")
+      setProcessingError("Description too short")
       return
     }
 
@@ -85,27 +104,40 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       const completedPhotos = uploadedPhotos.filter(p => p.status === 'complete')
       if (completedPhotos.length === 0) {
         toast.error("Please upload at least one photo")
+        setProcessingError("At least one photo required")
         return
       }
     }
 
     if (inputMethod === 'audio' && !file) {
-      toast.error(`Please upload an audio file`)
+      toast.error("Please upload an audio file")
+      setProcessingError("Audio file required")
       return
     }
 
+    setIsProcessing(true)
     setStep('processing')
 
-    const mockFile = new File(["mock"], "mock.txt")
-    const result = await fakeAIScope(mockFile)
-    
-    // Generate smart title suggestion
-    const suggestedTitle = generateSmartTitle(title, description, result)
-    result.suggestedTitle = suggestedTitle
-    
-    setAiResult(result)
-    setStep('results')
-  }
+    try {
+      const mockFile = new File(["mock"], "mock.txt")
+      const result = await fakeAIScope(mockFile)
+      
+      // Generate smart title suggestion
+      const suggestedTitle = generateSmartTitle(title, description, result)
+      result.suggestedTitle = suggestedTitle
+      
+      setAiResult(result)
+      setStep('results')
+      toast.success("AI scope generated successfully!")
+    } catch (error) {
+      console.error("Error processing job:", error)
+      toast.error("Failed to generate AI scope. Please try again.")
+      setProcessingError("AI processing failed. Please try again.")
+      setStep('input')
+    } finally {
+      setIsProcessing(false)
+    }
+  }, [title, description, inputMethod, uploadedPhotos, file])
 
   // Helper function to generate smart titles
   const generateSmartTitle = (originalTitle: string, desc: string, aiResult: any): string => {
