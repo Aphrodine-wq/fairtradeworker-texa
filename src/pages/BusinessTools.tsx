@@ -95,6 +95,28 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       status: 'complete',
       category: 'free',
       isFree: true
+    },
+    {
+      id: 'project-budget-calculator',
+      title: 'Project Budget Calculator',
+      description: 'Estimate costs for home improvement projects. Track your budget and compare contractor bids. Free forever.',
+      icon: Calculator,
+      color: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-50 dark:bg-blue-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
+    },
+    {
+      id: 'warranty-tracker',
+      title: 'Warranty Tracker',
+      description: 'Track warranties and guarantees from contractors. Never lose important warranty information. Always free.',
+      icon: ShieldCheck,
+      color: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-50 dark:bg-green-950',
+      status: 'complete',
+      category: 'free',
+      isFree: true
     }
   ]
   
@@ -362,10 +384,11 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       'insurance-verify': 'insurance-verify',
       'pro-filters': 'pro-filters',
       // Free Tools - handle inline or navigate to specific components
-      'cost-calculator': 'business-tools', // Will show inline
+      'cost-calculator': 'business-tools',
       'warranty-tracker': 'business-tools',
       'quick-notes': 'business-tools',
-      'saved-contractors': 'business-tools'
+      'saved-contractors': 'business-tools',
+      'project-budget-calculator': 'business-tools'
     }
     onNavigate(routeMap[toolId] || toolId)
   }
