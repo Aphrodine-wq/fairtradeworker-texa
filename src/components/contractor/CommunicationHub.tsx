@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChatCircleDots, Phone, VideoCamera, PaperPlaneTilt, Plus, Search, User } from "@phosphor-icons/react"
+import { ChatCircleDots, Phone, VideoCamera, PaperPlaneTilt, Plus, MagnifyingGlass, User } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 
@@ -96,7 +96,7 @@ export function CommunicationHub({ user }: { user: User }) {
                 <div className="border-r border-black/10 dark:border-white/10 flex flex-col">
                   <div className="p-4 border-b border-black/10 dark:border-white/10">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+                      <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
                       <Input
                         placeholder="Search conversations..."
                         value={searchQuery}

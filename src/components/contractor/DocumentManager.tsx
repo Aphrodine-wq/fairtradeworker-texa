@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Folder, File, Upload, Share, Trash, Plus, Search, Download, Eye } from "@phosphor-icons/react"
+import { Folder, File, Upload, Share, Trash, Plus, MagnifyingGlass, Download, Eye } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 
@@ -201,7 +201,7 @@ export function DocumentManager({ user }: { user: User }) {
 
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
             <Input
               placeholder="Search documents..."
               value={searchQuery}

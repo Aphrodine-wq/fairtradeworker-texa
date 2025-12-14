@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CreditCard, Bank, ArrowUp, ArrowDown, TrendingUp, Filter, Clock } from "@phosphor-icons/react"
+import { CreditCard, Bank, ArrowUp, ArrowDown, TrendingUp, Funnel, Clock } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Invoice } from "@/lib/types"
 

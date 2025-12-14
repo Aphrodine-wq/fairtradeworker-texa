@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
-import { Bell, CheckCircle, X, Filter, Search, Trash } from "@phosphor-icons/react"
+import { Bell, CheckCircle, X, Funnel, MagnifyingGlass, Trash } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 
@@ -108,7 +108,7 @@ export function NotificationCenter({ user }: { user: User }) {
           {/* Search and Filter */}
           <div className="flex gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} />
+              <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
               <Input
                 placeholder="Search notifications..."
                 value={searchQuery}

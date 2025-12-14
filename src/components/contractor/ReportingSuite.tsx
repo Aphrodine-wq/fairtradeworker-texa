@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChartLine, TrendingUp, DollarSign, FileText, Download } from "@phosphor-icons/react"
+import { ChartLine, TrendingUp, CurrencyDollar, FileText, Download } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Job, Invoice } from "@/lib/types"
 
@@ -151,8 +151,8 @@ export function ReportingSuite({ user }: { user: User }) {
                 <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <DollarSign size={24} className="text-green-600 dark:text-green-400" />
-                      <TrendingUp size={20} className="text-green-600 dark:text-green-400" />
+                      <CurrencyDollar size={24} weight="duotone" className="text-green-600 dark:text-green-400" />
+                      <TrendingUp size={20} weight="duotone" className="text-green-600 dark:text-green-400" />
                     </div>
                     <div className="text-2xl font-bold text-black dark:text-white">
                       ${financialReport.totalRevenue.toLocaleString()}

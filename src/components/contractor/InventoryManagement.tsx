@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { Package, Plus, AlertCircle, CheckCircle, TrendingDown } from "@phosphor-icons/react"
+import { Package, Plus, Warning, CheckCircle, ArrowDown } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 
@@ -205,10 +205,10 @@ export function InventoryManagement({ user }: { user: User }) {
           {lowStockItems.length > 0 && (
             <Card className="bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100">
-                  <AlertCircle size={24} weight="fill" />
-                  Low Stock Alert
-                </CardTitle>
+                  <CardTitle className="flex items-center gap-2 text-red-900 dark:text-red-100">
+                    <Warning size={24} weight="fill" />
+                    Low Stock Alert
+                  </CardTitle>
                 <CardDescription>
                   {lowStockItems.length} item{lowStockItems.length !== 1 ? 's' : ''} need reordering
                 </CardDescription>
@@ -280,7 +280,7 @@ export function InventoryManagement({ user }: { user: User }) {
                         onClick={() => handleUpdateStock(item.id, -1)}
                         className="flex-1"
                       >
-                        <TrendingDown size={14} className="mr-1" />
+                        <ArrowDown size={14} weight="duotone" className="mr-1" />
                         Use
                       </Button>
                       <Button
