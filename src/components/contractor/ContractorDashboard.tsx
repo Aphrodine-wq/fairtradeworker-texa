@@ -103,10 +103,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             {/* Available Now Toggle */}
-            <div className="flex items-center gap-3 px-4 py-2 rounded-lg border bg-white dark:bg-black border-black/10 dark:border-white/10">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
-                  <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
+                  <div className="w-2 h-2 rounded-none bg-black dark:bg-white animate-pulse border border-black dark:border-white" />
                 )}
                 <Lightning size={20} weight={user.availableNow ? "fill" : "regular"} className={user.availableNow ? "text-black dark:text-white" : "text-muted-foreground"} />
                 <span className="text-sm font-medium">Available Now</span>
