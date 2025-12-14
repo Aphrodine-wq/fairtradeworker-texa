@@ -3,7 +3,9 @@
  * Free Feature - Save filters → browser notifications for matches
  */
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
+import { CircleNotch } from "@phosphor-icons/react"
+import { safeInput } from "@/lib/utils"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"

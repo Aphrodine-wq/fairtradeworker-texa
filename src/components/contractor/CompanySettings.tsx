@@ -247,8 +247,31 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
                   id="taxId"
                   placeholder="XX-XXXXXXX"
                   value={taxId}
-                  onChange={(e) => setTaxId(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '').slice(0, 9)
+                    const formatted = value.length > 2 ? `${value.slice(0, 2)}-${value.slice(2)}` : value
+                    setTaxId(formatted)
+                    if (errors.taxId) setErrors(prev => ({ ...prev, taxId: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (taxId.trim()) {
+                      const cleanTaxId = taxId.replace(/\D/g, '')
+                      if (cleanTaxId.length !== 9) {
+                        setErrors(prev => ({ ...prev, taxId: "Tax ID must be 9 digits" }))
+                      }
+                    }
+                  }}
+                  className={errors.taxId ? "border-[#FF0000]" : ""}
+                  disabled={isSaving}
+                  maxLength={11}
+                  aria-invalid={!!errors.taxId}
+                  aria-describedby={errors.taxId ? "tax-id-error" : undefined}
                 />
+                {errors.taxId && (
+                  <p id="tax-id-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.taxId}
+                  </p>
+                )}
               </div>
             </div>
 
