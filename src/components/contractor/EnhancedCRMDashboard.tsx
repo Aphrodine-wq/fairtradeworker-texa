@@ -54,10 +54,6 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
 
   const myCustomers = (customers || []).filter(c => c.contractorId === user.id)
 
-  const getCustomerInteractions = (customerId: string) => {
-    return (interactions || []).filter(i => i.customerId === customerId)
-  }
-
   // Calculate lead scores
   const customersWithScores = useMemo(() => {
     return myCustomers.map(customer => {
@@ -128,7 +124,7 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
     ]
   }, [filteredCustomers])
 
-  // Get customer interactions (sorted by date, newest first)
+  // Get customer interactions (sorted by date, newest first)  
   const getCustomerInteractions = (customerId: string) => {
     return (interactions || []).filter(i => i.customerId === customerId)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
