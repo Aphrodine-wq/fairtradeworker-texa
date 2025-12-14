@@ -106,7 +106,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             <div className="flex items-center gap-3 px-4 py-2 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
-                  <div className="w-2 h-2 rounded-none bg-black dark:bg-white animate-pulse border border-black dark:border-white" />
+                  <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
                 )}
                 <Lightning size={20} weight={user.availableNow ? "fill" : "regular"} className={user.availableNow ? "text-black dark:text-white" : "text-muted-foreground"} />
                 <span className="text-sm font-medium">Available Now</span>
@@ -117,7 +117,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               />
             </div>
             {user.isPro && (
-              <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 px-4 py-2 text-base">
+              <Badge className="bg-white dark:bg-black text-black dark:text-white border-2 border-black dark:border-white px-4 py-2 text-base font-black uppercase">
                 <Crown weight="fill" className="mr-2" />
                 PRO Member
               </Badge>
