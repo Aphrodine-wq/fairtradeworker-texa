@@ -213,8 +213,8 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   }
 
   return (
-    <div className="w-full bg-white dark:bg-black relative">
-      <div className="max-w-7xl w-full mx-auto px-4 md:px-6 lg:px-8 py-8">
+    <div className="w-full bg-white dark:bg-black">
+      <div className="w-full px-4 md:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Header */}
           <div className="text-center">
