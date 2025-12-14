@@ -243,8 +243,26 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                     id="customerName"
                     placeholder="John Smith"
                     value={customerName}
-                    onChange={(e) => setCustomerName(e.target.value)}
+                    onChange={(e) => {
+                      setCustomerName(safeInput(e.target.value))
+                      if (errors.customerName) setErrors(prev => ({ ...prev, customerName: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (customerName && customerName.trim().length < 2) {
+                        setErrors(prev => ({ ...prev, customerName: "Name must be at least 2 characters" }))
+                      }
+                    }}
+                    className={errors.customerName ? "border-[#FF0000]" : ""}
+                    disabled={isSubmitting}
+                    required
+                    aria-invalid={!!errors.customerName}
+                    aria-describedby={errors.customerName ? "customer-name-error" : undefined}
                   />
+                  {errors.customerName && (
+                    <p id="customer-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.customerName}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -253,8 +271,26 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                     id="jobDescription"
                     placeholder="Water heater installation"
                     value={jobDescription}
-                    onChange={(e) => setJobDescription(e.target.value)}
+                    onChange={(e) => {
+                      setJobDescription(safeInput(e.target.value))
+                      if (errors.jobDescription) setErrors(prev => ({ ...prev, jobDescription: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (jobDescription && jobDescription.trim().length < 3) {
+                        setErrors(prev => ({ ...prev, jobDescription: "Description must be at least 3 characters" }))
+                      }
+                    }}
+                    className={errors.jobDescription ? "border-[#FF0000]" : ""}
+                    disabled={isSubmitting}
+                    required
+                    aria-invalid={!!errors.jobDescription}
+                    aria-describedby={errors.jobDescription ? "job-description-error" : undefined}
                   />
+                  {errors.jobDescription && (
+                    <p id="job-description-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.jobDescription}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -263,8 +299,26 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                     id="warrantyType"
                     placeholder="Parts and Labor"
                     value={warrantyType}
-                    onChange={(e) => setWarrantyType(e.target.value)}
+                    onChange={(e) => {
+                      setWarrantyType(safeInput(e.target.value))
+                      if (errors.warrantyType) setErrors(prev => ({ ...prev, warrantyType: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (warrantyType && warrantyType.trim().length < 2) {
+                        setErrors(prev => ({ ...prev, warrantyType: "Warranty type must be at least 2 characters" }))
+                      }
+                    }}
+                    className={errors.warrantyType ? "border-[#FF0000]" : ""}
+                    disabled={isSubmitting}
+                    required
+                    aria-invalid={!!errors.warrantyType}
+                    aria-describedby={errors.warrantyType ? "warranty-type-error" : undefined}
                   />
+                  {errors.warrantyType && (
+                    <p id="warranty-type-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.warrantyType}
+                    </p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -274,9 +328,31 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                       id="durationMonths"
                       type="number"
                       min="1"
+                      max="120"
                       value={durationMonths}
-                      onChange={(e) => setDurationMonths(e.target.value)}
+                      onChange={(e) => {
+                        setDurationMonths(e.target.value)
+                        if (errors.durationMonths) setErrors(prev => ({ ...prev, durationMonths: undefined }))
+                      }}
+                      onBlur={() => {
+                        const months = parseInt(durationMonths)
+                        if (isNaN(months) || months <= 0) {
+                          setErrors(prev => ({ ...prev, durationMonths: "Duration must be greater than 0" }))
+                        } else if (months > 120) {
+                          setErrors(prev => ({ ...prev, durationMonths: "Duration cannot exceed 120 months" }))
+                        }
+                      }}
+                      className={errors.durationMonths ? "border-[#FF0000]" : ""}
+                      disabled={isSubmitting}
+                      required
+                      aria-invalid={!!errors.durationMonths}
+                      aria-describedby={errors.durationMonths ? "duration-months-error" : undefined}
                     />
+                    {errors.durationMonths && (
+                      <p id="duration-months-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                        {errors.durationMonths}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -285,8 +361,29 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                       id="startDate"
                       type="date"
                       value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
+                      onChange={(e) => {
+                        setStartDate(e.target.value)
+                        if (errors.startDate) setErrors(prev => ({ ...prev, startDate: undefined }))
+                      }}
+                      onBlur={() => {
+                        if (!startDate) {
+                          setErrors(prev => ({ ...prev, startDate: "Start date is required" }))
+                        } else if (new Date(startDate) > new Date()) {
+                          setErrors(prev => ({ ...prev, startDate: "Start date cannot be in the future" }))
+                        }
+                      }}
+                      max={new Date().toISOString().split('T')[0]}
+                      className={errors.startDate ? "border-[#FF0000]" : ""}
+                      disabled={isSubmitting}
+                      required
+                      aria-invalid={!!errors.startDate}
+                      aria-describedby={errors.startDate ? "start-date-error" : undefined}
                     />
+                    {errors.startDate && (
+                      <p id="start-date-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                        {errors.startDate}
+                      </p>
+                    )}
                   </div>
                 </div>
 

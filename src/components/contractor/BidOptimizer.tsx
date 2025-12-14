@@ -3,7 +3,8 @@
  * Flagship Pro Feature - Analyzes past jobs to suggest optimal bid prices
  */
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
+import { CircleNotch } from "@phosphor-icons/react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -74,14 +75,25 @@ export function BidOptimizer({ user, currentJob }: BidOptimizerProps) {
     )
   }, [jobs, user.id])
 
-  const analyzeBid = async () => {
-    if (!currentJob || completedJobs.length < 5) {
+  const analyzeBid = useCallback(async () => {
+    if (!currentJob) {
+      toast.error("Please select a job to analyze")
+      return
+    }
+
+    if (completedJobs.length < 5) {
       toast.error("Need at least 5 completed jobs for accurate analysis")
+      return
+    }
+
+    if (bidAmount <= 0) {
+      toast.error("Please enter a valid bid amount")
       return
     }
 
     setAnalyzing(true)
     try {
+      await new Promise(resolve => setTimeout(resolve, 800))
       // AI analysis using GPT-4o
       const analysisPrompt = `Analyze bid data and recommend optimal bid:
 
@@ -121,10 +133,13 @@ Provide JSON response:
     } catch (error) {
       toast.error("Analysis failed")
       console.error(error)
+    } catch (error) {
+      console.error("Error analyzing bid:", error)
+      toast.error("Analysis failed. Please try again.")
     } finally {
       setAnalyzing(false)
     }
-  }
+  }, [currentJob, completedJobs, bidAmount])
 
   const createAutoBidRule = () => {
     const newRule: AutoBidRule = {
@@ -242,8 +257,22 @@ Provide JSON response:
                       onChange={(e) => setBidAmount(Number(e.target.value))}
                       className="flex-1"
                     />
-                    <Button onClick={analyzeBid} disabled={analyzing}>
-                      {analyzing ? 'Analyzing...' : 'Analyze'}
+                    <Button 
+                      onClick={analyzeBid} 
+                      disabled={analyzing || !currentJob || completedJobs.length < 5 || bidAmount <= 0}
+                      className="border-2 border-black dark:border-white"
+                    >
+                      {analyzing ? (
+                        <>
+                          <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <Target size={18} className="mr-2" />
+                          Analyze
+                        </>
+                      )}
                     </Button>
                   </div>
                   <Slider

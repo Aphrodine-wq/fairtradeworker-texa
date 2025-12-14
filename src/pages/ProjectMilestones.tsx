@@ -759,9 +759,19 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               </Button>
               <Button 
                 onClick={handleDispute}
-                className="flex-1 h-11"
+                className="flex-1 h-11 border-2 border-black dark:border-white"
+                disabled={isSubmittingDispute || !disputeReason.trim() || disputeReason.trim().length < 10}
               >
-                Submit Question
+                {isSubmittingDispute ? (
+                  <>
+                    <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    Submit Question
+                  </>
+                )}
               </Button>
             </div>
           </div>
