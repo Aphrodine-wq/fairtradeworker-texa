@@ -32,6 +32,17 @@
 
 **Implementation: 100% Complete | 45 Features Deployed | Production Ready**
 
+### Recent Updates (December 2025)
+
+**Major Improvements:**
+- ✅ Consolidated Free Tools into Business Tools menu
+- ✅ Updated PRO/FREE classification (only PRO tools require subscription)
+- ✅ Added 4 free homeowner tools (Saved Contractors, Quick Notes, Project Budget Calculator, Warranty Tracker)
+- ✅ Enhanced operator system with single-territory control
+- ✅ Fixed image loading issues in demo mode
+- ✅ Added consistent 1pt padding to all pages
+- ✅ All operator dashboard buttons now have proper navigation destinations
+
 ---
 
 ## PRO TIER FEATURES
@@ -169,7 +180,48 @@ Captures 20-40% more revenue per job from extras. Eliminates disputes with signe
 
 **Available to All Users - Zero Cost, Maximum Value**
 
-**These features make FairTradeWorker the daily hub contractors can't live without.**
+**Note: All tools in Business Tools are FREE unless explicitly marked as PRO. Only 5 tools require PRO subscription.**
+
+### Free Contractor Tools (3 Tools)
+
+1. **Job Cost Calculator** - Calculate profit margins and hourly rates instantly. Free forever.
+2. **Warranty Tracker** - Never lose track of warranties you've given. Always free.
+3. **Quick Notes** - Capture job details and customer info on the go. Zero cost.
+
+### Free Homeowner Tools (4 Tools)
+
+1. **Saved Contractors** - Quick access to your trusted contractors. Free forever.
+2. **Quick Notes** - Keep track of important project information. Always free.
+3. **Project Budget Calculator** - Estimate costs for home improvement projects. Track your budget and compare contractor bids. Free forever.
+4. **Warranty Tracker** - Track warranties and guarantees from contractors. Never lose important warranty information. Always free.
+
+### Free Business Tools for Contractors
+
+All tools in Business Tools menu are FREE unless marked PRO:
+- Invoice Generator ✓ Complete (FREE)
+- Expense Tracker ✓ Complete (FREE)
+- Tax Helper ✨ New (FREE)
+- Payment Processing ✓ Complete (FREE)
+- Document Manager ✨ New (FREE)
+- Scheduling Calendar ↑ Enhanced (FREE)
+- Communication Hub ✨ New (FREE)
+- Notification Center ✨ New (FREE)
+- Lead Management ↑ Enhanced (FREE)
+- Customer Relationship Manager ✓ Complete (FREE)
+- Reporting Suite ✨ New (FREE)
+- Inventory Management ✨ New (FREE)
+- Quality Assurance ✨ New (FREE)
+- Compliance Tracker ✨ New (FREE)
+- Workflow Automation ✓ Complete (FREE)
+
+**PRO Tools (Paid - $50/month):**
+- AI Receptionist ✨ New (PRO)
+- AI Bid Optimizer ✨ New (PRO)
+- Change Order Generator ✨ New (PRO)
+- Crew Dispatcher ✨ New (PRO)
+- Follow-Up Automator ↑ Enhanced (PRO)
+
+### Additional Free Features
 
 1. **Job Alerts & Saved Searches** - Save filters → browser notifications for matches
 2. **Contractor Portfolio Builder** - Drag-and-drop before/after photos + testimonials → shareable link
@@ -192,7 +244,7 @@ Captures 20-40% more revenue per job from extras. Eliminates disputes with signe
 19. **Homeowner Photo Annotation** - Draw on photos to mark issues
 20. **Contractor Bio Builder** - Guided form → rich profile with completion %
 
-**Total Free Features: 20 features that make FTW the daily hub contractors can't live without.**
+**Total Free Features: 35+ features that make FTW the daily hub contractors can't live without.**
 
 ---
 
@@ -1452,3 +1504,38 @@ Every line of code should serve that mission.
 ---
 
 **Status:** PRODUCTION READY | **Live:** fairtradeworker.com
+
+---
+
+## RECENT UPDATES & IMPROVEMENTS
+
+### December 2025 Updates
+
+**Business Tools Consolidation:**
+- Free Tools menu merged into Business Tools for unified experience
+- All tools clearly labeled as FREE or PRO
+- Role-based tool filtering (contractors vs homeowners)
+- Only 5 tools require PRO subscription; all others are free
+
+**Operator Enhancements:**
+- Operators can only control one territory (validation added)
+- Updated operator description: "Contractors who perform well in their zip code get priority access to leads"
+- All Growth Opportunities buttons have proper navigation:
+  - Get Referral Link → Opens dialog with referral link
+  - View Toolkit → Navigates to Business Tools
+  - View Requirements → Navigates to Territory Map
+
+**UI Improvements:**
+- Fixed image loading in demo mode with proper error handlers
+- Added 1pt padding around all pages for consistent spacing
+- Improved Browse Jobs page design (removed gradients, cleaner layout)
+- Enhanced Job Card design with better information hierarchy
+
+**Homeowner Tools:**
+- Added 4 free homeowner tools to Business Tools:
+  - Saved Contractors (quick access to trusted pros)
+  - Quick Notes (project information tracking)
+  - Project Budget Calculator (cost estimation)
+  - Warranty Tracker (contractor warranty management)
+
+---
