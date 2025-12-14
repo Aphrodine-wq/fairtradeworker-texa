@@ -217,8 +217,29 @@ export function QuickNotes({ user }: QuickNotesProps) {
                     id="title"
                     placeholder="What's this about?"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => {
+                      setTitle(safeInput(e.target.value))
+                      if (errors.title) setErrors(prev => ({ ...prev, title: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (title && title.trim().length < 2) {
+                        setErrors(prev => ({ ...prev, title: "Title must be at least 2 characters" }))
+                      } else if (title && title.trim().length > 100) {
+                        setErrors(prev => ({ ...prev, title: "Title is too long (max 100 characters)" }))
+                      }
+                    }}
+                    className={errors.title ? "border-[#FF0000]" : ""}
+                    disabled={isSubmitting}
+                    maxLength={100}
+                    required
+                    aria-invalid={!!errors.title}
+                    aria-describedby={errors.title ? "note-title-error" : undefined}
                   />
+                  {errors.title && (
+                    <p id="note-title-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {errors.title}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">

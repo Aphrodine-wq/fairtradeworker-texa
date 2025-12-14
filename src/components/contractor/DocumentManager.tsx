@@ -182,11 +182,31 @@ export function DocumentManager({ user }: { user: User }) {
                         <Label>Folder Name</Label>
                         <Input
                           value={newFolderName}
-                          onChange={(e) => setNewFolderName(e.target.value)}
+                          onChange={(e) => {
+                            setNewFolderName(safeInput(e.target.value))
+                            if (folderErrors.name) setFolderErrors(prev => ({ ...prev, name: undefined }))
+                          }}
+                          onBlur={() => {
+                            if (newFolderName && newFolderName.trim().length < 2) {
+                              setFolderErrors(prev => ({ ...prev, name: "Folder name must be at least 2 characters" }))
+                            } else if (newFolderName && newFolderName.trim().length > 50) {
+                              setFolderErrors(prev => ({ ...prev, name: "Folder name is too long (max 50 characters)" }))
+                            }
+                          }}
                           placeholder="e.g., Contracts, Invoices, Receipts"
-                          className="h-11"
-                          onKeyPress={(e) => e.key === 'Enter' && handleCreateFolder()}
+                          className={`h-11 ${folderErrors.name ? "border-[#FF0000]" : ""}`}
+                          disabled={isCreatingFolder}
+                          maxLength={50}
+                          required
+                          onKeyPress={(e) => e.key === 'Enter' && !isCreatingFolder && handleCreateFolder()}
+                          aria-invalid={!!folderErrors.name}
+                          aria-describedby={folderErrors.name ? "folder-name-error" : undefined}
                         />
+                        {folderErrors.name && (
+                          <p id="folder-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                            {folderErrors.name}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -195,8 +215,21 @@ export function DocumentManager({ user }: { user: User }) {
                       <Button variant="outline" onClick={() => setShowNewFolderDialog(false)} className="h-11">
                         Cancel
                       </Button>
-                      <Button onClick={handleCreateFolder} className="h-11">
-                        Create Folder
+                      <Button 
+                        onClick={handleCreateFolder} 
+                        className="h-11 border-2 border-black dark:border-white"
+                        disabled={isCreatingFolder}
+                      >
+                        {isCreatingFolder ? (
+                          <>
+                            <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                            Creating...
+                          </>
+                        ) : (
+                          <>
+                            Create Folder
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>
