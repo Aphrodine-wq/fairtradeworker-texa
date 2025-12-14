@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -15,10 +15,12 @@ import {
   CheckCircle,
   Clock,
   Trash,
-  ImageSquare
+  ImageSquare,
+  CircleNotch
 } from '@phosphor-icons/react'
 import type { ProjectUpdate, Job, User } from '@/lib/types'
 import { toast } from 'sonner'
+import { safeInput } from '@/lib/utils'
 
 interface ProjectUpdatesProps {
   job: Job
@@ -35,6 +37,11 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
     visibility: 'all' as ProjectUpdate['visibility']
   })
   const [photos, setPhotos] = useState<string[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<{
+    title?: string
+    description?: string
+  }>({})
 
   const updates = job.projectUpdates || []
   const isContractor = user.role === 'contractor'
@@ -76,30 +83,73 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
     })
   }
 
-  const handleAdd = () => {
-    if (!formData.title || !formData.description) {
-      toast.error('Please fill in all required fields')
+  const handleAdd = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
+    if (!formData.title.trim()) {
+      setErrors({ title: "Title is required" })
+      toast.error('Please enter a title')
+      return
+    } else if (formData.title.trim().length < 3) {
+      setErrors({ title: "Title must be at least 3 characters" })
+      toast.error('Title must be at least 3 characters')
+      return
+    } else if (formData.title.trim().length > 100) {
+      setErrors({ title: "Title is too long (max 100 characters)" })
+      toast.error('Title is too long')
       return
     }
 
-    const newUpdate: ProjectUpdate = {
-      id: `update-${Date.now()}`,
-      jobId: job.id,
-      contractorId: user.id,
-      contractorName: user.fullName,
-      type: formData.type,
-      title: formData.title,
-      description: formData.description,
-      photos: photos.length > 0 ? photos : undefined,
-      createdAt: new Date().toISOString(),
-      visibility: formData.visibility
+    if (!formData.description.trim()) {
+      setErrors({ description: "Description is required" })
+      toast.error('Please enter a description')
+      return
+    } else if (formData.description.trim().length < 10) {
+      setErrors({ description: "Description must be at least 10 characters" })
+      toast.error('Description must be at least 10 characters')
+      return
+    } else if (formData.description.trim().length > 2000) {
+      setErrors({ description: "Description is too long (max 2000 characters)" })
+      toast.error('Description is too long')
+      return
     }
 
-    onUpdate([...updates, newUpdate])
-    setShowAddDialog(false)
-    resetForm()
-    toast.success('Update posted')
-  }
+    if (photos.length > 10) {
+      toast.error('Maximum 10 photos allowed')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const newUpdate: ProjectUpdate = {
+        id: `update-${Date.now()}`,
+        jobId: job.id,
+        contractorId: user.id,
+        contractorName: user.fullName,
+        type: formData.type,
+        title: safeInput(formData.title.trim()),
+        description: safeInput(formData.description.trim()),
+        photos: photos.length > 0 ? photos : undefined,
+        createdAt: new Date().toISOString(),
+        visibility: formData.visibility
+      }
+
+      onUpdate([...updates, newUpdate])
+      setShowAddDialog(false)
+      resetForm()
+      setErrors({})
+      toast.success('Update posted successfully!')
+    } catch (error) {
+      console.error("Error posting update:", error)
+      toast.error('Failed to post update. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [formData, photos, updates, job.id, user.id, user.fullName, onUpdate])
 
   const handleDelete = (updateId: string) => {
     const filtered = updates.filter(u => u.id !== updateId)
@@ -266,10 +316,35 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
                 <Label className="text-base">Title *</Label>
                 <Input
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, title: safeInput(e.target.value) })
+                    if (errors.title) setErrors(prev => ({ ...prev, title: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.title && formData.title.trim().length < 3) {
+                      setErrors(prev => ({ ...prev, title: "Title must be at least 3 characters" }))
+                    } else if (formData.title && formData.title.trim().length > 100) {
+                      setErrors(prev => ({ ...prev, title: "Title is too long (max 100 characters)" }))
+                    }
+                  }}
                   placeholder="e.g., Framing Complete"
-                  className="h-11"
+                  className={`h-11 ${errors.title ? "border-[#FF0000]" : ""}`}
+                  disabled={isSubmitting}
+                  maxLength={100}
+                  required
+                  aria-invalid={!!errors.title}
+                  aria-describedby={errors.title ? "title-error" : undefined}
                 />
+                {errors.title && (
+                  <p id="title-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.title}
+                  </p>
+                )}
+                {!errors.title && formData.title.length > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.title.length}/100 characters
+                  </p>
+                )}
               </div>
 
               <div>
@@ -310,10 +385,36 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
                 <Label className="text-base">Description *</Label>
                 <Textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, description: safeInput(e.target.value) })
+                    if (errors.description) setErrors(prev => ({ ...prev, description: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (formData.description && formData.description.trim().length < 10) {
+                      setErrors(prev => ({ ...prev, description: "Description must be at least 10 characters" }))
+                    } else if (formData.description && formData.description.trim().length > 2000) {
+                      setErrors(prev => ({ ...prev, description: "Description is too long (max 2000 characters)" }))
+                    }
+                  }}
                   placeholder="Provide details about this update..."
-                  className="flex-1 resize-none"
+                  className={`flex-1 resize-none ${errors.description ? "border-[#FF0000]" : ""}`}
+                  disabled={isSubmitting}
+                  maxLength={2000}
+                  required
+                  rows={6}
+                  aria-invalid={!!errors.description}
+                  aria-describedby={errors.description ? "description-error" : undefined}
                 />
+                {errors.description && (
+                  <p id="description-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                    {errors.description}
+                  </p>
+                )}
+                {!errors.description && formData.description.length > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {formData.description.length}/2000 characters
+                  </p>
+                )}
               </div>
 
               {photos.length > 0 && (
