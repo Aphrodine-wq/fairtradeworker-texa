@@ -31,7 +31,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'invoices',
       title: 'Invoice Generator',
-      description: 'Professional invoices with PDF export',
+      description: 'Create professional invoices in seconds with auto-populated job details, customizable templates, PDF export, recurring billing, partial payment tracking, late fee automation, and smart payment reminders. Track invoice status with real-time updates.',
       icon: Receipt,
       color: 'text-blue-600 dark:text-blue-400',
       bgColor: 'bg-blue-50 dark:bg-blue-950',
@@ -41,7 +41,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'expenses',
       title: 'Expense Tracker',
-      description: 'Categories, reports, tax integration',
+      description: 'Comprehensive expense management with AI-powered categorization, receipt scanning, tax deduction identification, mileage tracking, vendor management, multi-category reporting, and seamless tax integration for year-end filing.',
       icon: ChartLine,
       color: 'text-green-600 dark:text-green-400',
       bgColor: 'bg-green-50 dark:bg-green-950',
@@ -51,7 +51,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'tax-helper',
       title: 'Tax Helper',
-      description: 'Deductions, forms, filing assistance',
+      description: 'Smart tax assistance with deduction finder, quarterly estimated tax calculator, expense categorization guidance, tax form preparation helpers, year-end summary reports, and integration with popular tax software for seamless filing.',
       icon: FileText,
       color: 'text-red-600 dark:text-red-400',
       bgColor: 'bg-red-50 dark:bg-red-950',
@@ -61,7 +61,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'payments',
       title: 'Payment Processing',
-      description: 'Multiple payment methods, transaction tracking',
+      description: 'Accept payments via credit cards, ACH transfers, and digital wallets. Track all transactions in real-time, set up payment plans, process partial payments, handle refunds, and get instant notifications when payments are received.',
       icon: CreditCard,
       color: 'text-purple-600 dark:text-purple-400',
       bgColor: 'bg-purple-50 dark:bg-purple-950',
@@ -71,7 +71,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'documents',
       title: 'Document Manager',
-      description: 'Folder organization, file uploads, sharing',
+      description: 'Organize all your business documents with intelligent folder structures, secure cloud storage, version control, quick search, client document sharing, automated backups, and OCR text extraction for easy document retrieval.',
       icon: Folder,
       color: 'text-orange-600 dark:text-orange-400',
       bgColor: 'bg-orange-50 dark:bg-orange-950',
@@ -81,7 +81,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'calendar',
       title: 'Scheduling Calendar',
-      description: 'Month/week/day views, appointment management',
+      description: 'Advanced scheduling with month/week/day views, drag-and-drop appointment management, automated reminders, route optimization, buffer time settings, recurring job scheduling, and sync with external calendars (Google, Outlook).',
       icon: Calendar,
       color: 'text-indigo-600 dark:text-indigo-400',
       bgColor: 'bg-indigo-50 dark:bg-indigo-950',
@@ -91,7 +91,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'communication',
       title: 'Communication Hub',
-      description: 'Real-time messaging, video calls, file sharing',
+      description: 'Centralized communication with real-time messaging, SMS integration, video call scheduling, file sharing, message templates, automated follow-ups, conversation history, and multi-channel customer communication tracking.',
       icon: ChatCircleDots,
       color: 'text-cyan-600 dark:text-cyan-400',
       bgColor: 'bg-cyan-50 dark:bg-cyan-950',
@@ -101,7 +101,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'notifications',
       title: 'Notification Center',
-      description: 'Filtering, priority levels, read/unread status',
+      description: 'Smart notification system with customizable filtering, priority levels, read/unread status tracking, notification preferences, email digest options, mobile push notifications, and quiet hours settings.',
       icon: Bell,
       color: 'text-yellow-600 dark:text-yellow-400',
       bgColor: 'bg-yellow-50 dark:bg-yellow-950',
@@ -111,7 +111,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'leads',
       title: 'Lead Management',
-      description: 'Lead scoring, status tracking, follow-up scheduling',
+      description: 'Comprehensive lead management with AI-powered lead scoring, status tracking, automated follow-up scheduling, lead source attribution, conversion analytics, lead nurturing workflows, and integration with your CRM system.',
       icon: Users,
       color: 'text-pink-600 dark:text-pink-400',
       bgColor: 'bg-pink-50 dark:bg-pink-950',
@@ -121,7 +121,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'crm',
       title: 'Customer Relationship Manager',
-      description: 'Customer profiles, interaction history',
+      description: 'Powerful CRM with detailed customer profiles, complete interaction history, Kanban boards, timeline views, customer segmentation, lifetime value tracking, repeat customer identification, and automated customer insights.',
       icon: Users,
       color: 'text-emerald-600 dark:text-emerald-400',
       bgColor: 'bg-emerald-50 dark:bg-emerald-950',
@@ -131,7 +131,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'reports',
       title: 'Reporting Suite',
-      description: 'Financial, performance, operational reports',
+      description: 'Comprehensive business intelligence with financial reports, performance analytics, operational dashboards, profit margin analysis, customer lifetime value reports, seasonal trends, custom report builder, and scheduled email reports.',
       icon: ClipboardText,
       color: 'text-teal-600 dark:text-teal-400',
       bgColor: 'bg-teal-50 dark:bg-teal-950',
@@ -141,7 +141,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'inventory',
       title: 'Inventory Management',
-      description: 'Materials tracking, stock levels, reorder points',
+      description: 'Track materials and supplies with real-time stock levels, automated reorder points, vendor management, cost tracking, inventory valuation, low stock alerts, barcode scanning support, and integration with material ordering.',
       icon: Package,
       color: 'text-amber-600 dark:text-amber-400',
       bgColor: 'bg-amber-50 dark:bg-amber-950',
@@ -151,7 +151,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'quality',
       title: 'Quality Assurance',
-      description: 'Inspections, scoring, compliance tracking',
+      description: 'Maintain quality standards with customizable inspection checklists, quality scoring systems, photo documentation, compliance tracking, customer feedback integration, quality trend analysis, and corrective action workflows.',
       icon: CheckCircle,
       color: 'text-lime-600 dark:text-lime-400',
       bgColor: 'bg-lime-50 dark:bg-lime-950',
@@ -161,7 +161,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'compliance',
       title: 'Compliance Tracker',
-      description: 'Licenses, insurance, permits, certifications',
+      description: 'Never miss a renewal with automated tracking of licenses, insurance policies, permits, certifications, and training requirements. Get expiration reminders, document storage, compliance reports, and regulatory requirement updates.',
       icon: ShieldCheck,
       color: 'text-rose-600 dark:text-rose-400',
       bgColor: 'bg-rose-50 dark:bg-rose-950',
@@ -171,7 +171,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
     {
       id: 'automation',
       title: 'Workflow Automation',
-      description: 'Task automation, triggers, actions',
+      description: 'Automate repetitive tasks with custom triggers and actions, multi-step workflows, conditional logic, scheduled automation, email/SMS automation, invoice automation, follow-up sequences, and integration with all platform features.',
       icon: Gear,
       color: 'text-violet-600 dark:text-violet-400',
       bgColor: 'bg-violet-50 dark:bg-violet-950',
@@ -224,7 +224,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                 Business Tools
               </h1>
             </div>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            <p className="text-black dark:text-white text-lg max-w-2xl mx-auto">
               All-in-one toolkit for running your contracting business efficiently
             </p>
           </div>
@@ -234,7 +234,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
             <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{tools.length}</div>
-                <div className="text-sm text-muted-foreground mt-1">Total Tools</div>
+                <div className="text-sm text-black dark:text-white mt-1">Total Tools</div>
               </CardContent>
             </Card>
             <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">

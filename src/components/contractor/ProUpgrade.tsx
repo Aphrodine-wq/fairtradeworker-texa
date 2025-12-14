@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Crown, Lightning, Bell, Shield, FileText, CheckCircle } from "@phosphor-icons/react"
+import { Crown, Lightning, Bell, Shield, FileText, CheckCircle, Brain, ChartBar } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 
 interface ProUpgradeProps {
@@ -54,22 +54,32 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
     {
       icon: <Lightning weight="fill" size={24} />,
       title: "Instant Payouts",
-      description: "Get paid immediately instead of waiting 3-5 days. 1% fee capped at $5."
+      description: "Get paid in 30 minutes instead of waiting 3-5 days. Low 1% fee capped at $5 per transaction. Never wait for your money again."
     },
     {
       icon: <Bell weight="fill" size={24} />,
       title: "Auto Invoice Reminders",
-      description: "Automatic payment reminders sent 3 days before and after due dates."
+      description: "Intelligent payment reminders sent automatically 3 days before due dates, on due dates, and 7 days after. Increase collection rates by 30%."
     },
     {
       icon: <Shield weight="fill" size={24} />,
       title: "No-Show Protection",
-      description: "Charge $50 fee when homeowners don't show up for scheduled appointments."
+      description: "Automatically charge a $50 no-show fee when homeowners don't show up for scheduled appointments. Protects your time and reduces wasted trips."
     },
     {
       icon: <FileText weight="fill" size={24} />,
-      title: "Tax Export",
-      description: "Download yearly earnings reports formatted for tax filing."
+      title: "Tax Export & Reports",
+      description: "Download comprehensive yearly earnings reports formatted for tax filing. Includes categorized expenses, mileage logs, and all deductions."
+    },
+    {
+      icon: <Brain weight="fill" size={24} />,
+      title: "AI Bid Intelligence",
+      description: "Get AI-powered bid recommendations based on your win/loss history, market data, and job characteristics. Maximize your win rate and profitability."
+    },
+    {
+      icon: <ChartBar weight="fill" size={24} />,
+      title: "Advanced Analytics Dashboard",
+      description: "Deep business intelligence with profit forecasting, customer lifetime value tracking, seasonal trends analysis, and predictive insights to grow your business."
     }
   ]
 
@@ -94,20 +104,20 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
             <CardTitle className="text-5xl font-bold mb-2">
               $39<span className="text-2xl text-muted-foreground">/mo</span>
             </CardTitle>
-            <CardDescription className="text-base">
-              Cancel anytime, no commitment
+            <CardDescription className="text-base text-black dark:text-white">
+              Cancel anytime, no commitment • 30-day money-back guarantee
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               {features.map((feature, idx) => (
-                <div key={idx} className="flex gap-4">
-                  <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-black dark:text-white">
+                <div key={idx} className="flex gap-4 p-4 rounded-none border-2 border-black dark:border-white bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all">
+                  <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-white dark:text-black">
                     {feature.icon}
                   </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{feature.title}</h3>
-                    <p className="text-sm text-muted-foreground">
+                  <div className="flex-1">
+                    <h3 className="font-bold text-lg mb-2 text-black dark:text-white">{feature.title}</h3>
+                    <p className="text-sm text-black dark:text-white leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -126,9 +136,34 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
               </Button>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground pt-4">
-              <CheckCircle weight="fill" className="text-accent" />
-              <span>30-day money-back guarantee</span>
+            <div className="border-t-2 border-black dark:border-white pt-6 space-y-4">
+              <h3 className="font-bold text-lg text-center text-black dark:text-white mb-4">What Pro Members Get:</h3>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>Unlimited CRM contacts</span>
+                </div>
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>Priority support</span>
+                </div>
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>15% higher bid visibility</span>
+                </div>
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>Route optimization</span>
+                </div>
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>Repeat customer engine</span>
+                </div>
+                <div className="flex items-center gap-2 text-black dark:text-white">
+                  <CheckCircle weight="fill" className="text-green-600 dark:text-green-400 shrink-0" size={18} />
+                  <span>Win/loss analytics</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
