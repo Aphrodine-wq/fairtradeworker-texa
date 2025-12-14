@@ -62,7 +62,7 @@
 
 ---
 
-#### 2. AI Bid Optimizer & Auto-Bid Engine
+### 2. AI Bid Optimizer & Auto-Bid Engine
 **Win More Jobs with Data-Driven Pricing**
 - Upload past job data → AI analyzes win/loss patterns
 - Suggests optimal bid prices based on market data
@@ -75,7 +75,7 @@
 
 ---
 
-#### 3. Follow-Up Automator & Sequence Builder
+### 3. Follow-Up Automator & Sequence Builder
 **Never Lose a Lead Again**
 - Drag-and-drop sequence builder
 - Auto-sends SMS/email/in-app messages
@@ -88,7 +88,7 @@
 
 ---
 
-#### 4. Change Order & Upsell Generator
+### 4. Change Order & Upsell Generator
 **Capture Extra Revenue on Every Job**
 - Snap photo of mid-job discoveries
 - AI scopes extra work automatically
@@ -97,11 +97,20 @@
 - Auto-updates invoices
 - Tracks approval history
 
-**Value:** Captures 20-40% more revenue per job from extras. Eliminates disputes.
+**What It Does:**
+- Snap photo of mid-job discoveries (e.g., additional damage found)
+- AI scopes extra work automatically from the photo
+- Generates professional change order PDFs instantly
+- Homeowner approves digitally with electronic signature
+- Auto-updates invoices with approved changes
+- Tracks approval history and dispute resolution
+
+**Business Value:**
+Captures 20-40% more revenue per job from extras. Eliminates disputes with signed approvals. Instant quotes mean faster approvals.
 
 ---
 
-#### 5. Crew Dispatcher & Subcontractor Manager
+### 5. Crew Dispatcher & Subcontractor Manager
 **Scale Operations Without Chaos**
 - AI assigns jobs to subs by skills/availability/location
 - SMS dispatch notifications
@@ -113,7 +122,9 @@
 
 ---
 
-### Additional Pro Features (Advanced Tools)
+### Additional Pro Features
+
+**Advanced tools for power users and growing businesses.**
 
 1. **Lead Import & Auto-Bid** - CSV import old leads + auto-follow-ups + rule-based auto-bids
 2. **Quote Template Builder** - Professional PDF quotes with your branding
@@ -140,9 +151,11 @@
 
 ---
 
-## 🆓 FREE TIER FEATURES
+## FREE TIER FEATURES
 
 **Available to All Users - Zero Cost, Maximum Value**
+
+**These features make FairTradeWorker the daily hub contractors can't live without.**
 
 1. **Job Alerts & Saved Searches** - Save filters → browser notifications for matches
 2. **Contractor Portfolio Builder** - Drag-and-drop before/after photos + testimonials → shareable link
@@ -303,7 +316,9 @@ Every contractor knows the pain of watching platforms take a huge cut of their h
 
 ---
 
-## 🎯 HOW IT ACTUALLY WORKS
+---
+
+## HOW IT WORKS
 
 ```
                                   ┌─────────────────────┐
@@ -366,7 +381,9 @@ Every contractor knows the pain of watching platforms take a huge cut of their h
 
 ---
 
-## 💰 REVENUE MODEL
+---
+
+## REVENUE MODEL
 
 <div align="center">
 
