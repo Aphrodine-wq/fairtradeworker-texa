@@ -83,7 +83,7 @@ export function CommunicationHub({ user }: { user: User }) {
               <ChatCircleDots weight="duotone" size={40} className="text-black dark:text-white" />
               <span className="text-black dark:text-white">Communication Hub</span>
             </h1>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-black dark:text-white text-lg">
               Real-time messaging, video calls, and file sharing. Stay connected with customers and team members.
             </p>
           </div>
@@ -93,10 +93,10 @@ export function CommunicationHub({ user }: { user: User }) {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-3 h-[600px]">
                 {/* Conversations List */}
-                <div className="border-r border-black/10 dark:border-white/10 flex flex-col">
+                <div className="border-2 border-black dark:border-white flex flex-col">
                   <div className="p-4 border-b-2 border-black dark:border-white">
                     <div className="relative">
-                      <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
+                      <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white" size={20} weight="duotone" />
                       <Input
                         placeholder="Search conversations..."
                         value={searchQuery}
@@ -129,10 +129,10 @@ export function CommunicationHub({ user }: { user: User }) {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-muted-foreground truncate">
+                            <p className="text-sm text-black dark:text-white truncate">
                               {conv.lastMessage}
                             </p>
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-black dark:text-white mt-1">
                               {new Date(conv.lastMessageTime).toLocaleTimeString()}
                             </p>
                           </div>
@@ -142,7 +142,7 @@ export function CommunicationHub({ user }: { user: User }) {
                     {filteredConversations.length === 0 && (
                       <div className="p-8 text-center">
                         <ChatCircleDots size={48} className="mx-auto mb-3 text-black dark:text-white" />
-                        <p className="text-muted-foreground">No conversations yet</p>
+                        <p className="text-black dark:text-white">No conversations yet</p>
                       </div>
                     )}
                   </div>
@@ -153,7 +153,7 @@ export function CommunicationHub({ user }: { user: User }) {
                   {currentConversation ? (
                     <>
                       {/* Chat Header */}
-                      <div className="p-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between bg-white dark:bg-black">
+                      <div className="p-4 border-2 border-black dark:border-white flex items-center justify-between bg-white dark:bg-black">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                             <User weight="fill" size={20} className="text-primary" />
@@ -162,7 +162,7 @@ export function CommunicationHub({ user }: { user: User }) {
                             <h3 className="font-semibold text-black dark:text-white">
                               {currentConversation.participantName}
                             </h3>
-                            <p className="text-xs text-muted-foreground">Online</p>
+                            <p className="text-xs text-black dark:text-white">Online</p>
                           </div>
                         </div>
                         <div className="flex gap-2">
@@ -191,7 +191,7 @@ export function CommunicationHub({ user }: { user: User }) {
                               }`}>
                                 <p className="text-sm">{msg.content}</p>
                                 <p className={`text-xs mt-1 ${
-                                  isFromMe ? 'text-primary-foreground/70' : 'text-muted-foreground'
+                                  isFromMe ? 'text-primary-foreground/70' : 'text-black dark:text-white'
                                 }`}>
                                   {new Date(msg.timestamp).toLocaleTimeString()}
                                 </p>
@@ -221,7 +221,7 @@ export function CommunicationHub({ user }: { user: User }) {
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center">
                         <ChatCircleDots size={64} className="mx-auto mb-4 text-black dark:text-white" />
-                        <p className="text-muted-foreground text-lg">Select a conversation to start messaging</p>
+                        <p className="text-black dark:text-white text-lg">Select a conversation to start messaging</p>
                       </div>
                     </div>
                   )}

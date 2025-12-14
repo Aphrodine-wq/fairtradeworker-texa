@@ -110,9 +110,9 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       <div className="container mx-auto px-4 py-12">
         <Card>
           <CardContent className="p-16 text-center">
-            <TrendUp className="mx-auto mb-4 text-muted-foreground" size={64} weight="duotone" />
+            <TrendUp className="mx-auto mb-4 text-black dark:text-white" size={64} weight="duotone" />
             <h2 className="text-2xl font-bold mb-2">Access Restricted</h2>
-            <p className="text-muted-foreground">This dashboard is only available to platform operators.</p>
+            <p className="text-black dark:text-white">This dashboard is only available to platform operators.</p>
           </CardContent>
         </Card>
       </div>
@@ -126,7 +126,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
           <TrendUp weight="duotone" size={36} className="text-primary" />
           Company Revenue Dashboard
         </h1>
-        <p className="text-muted-foreground">Platform performance and revenue tracking</p>
+        <p className="text-black dark:text-white">Platform performance and revenue tracking</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -134,8 +134,8 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
           <CardHeader>
             <CardDescription className="text-xs uppercase tracking-wider">Total Lifetime Revenue</CardDescription>
             <CardTitle className="text-5xl font-bold text-primary">{formatCurrency(totalRevenue)}</CardTitle>
-            <p className="text-sm text-muted-foreground mt-2">
-              Net after royalties: <span className="font-semibold text-foreground">{formatCurrency(netRevenue)}</span>
+            <p className="text-sm text-black dark:text-white mt-2">
+              Net after royalties: <span className="font-semibold text-black dark:text-white">{formatCurrency(netRevenue)}</span>
             </p>
           </CardHeader>
         </Card>
@@ -143,33 +143,33 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Monthly MRR</span>
+              <span className="text-sm text-black dark:text-white">Monthly MRR</span>
               <TrendUp size={20} className="text-green-600" weight="fill" />
             </div>
             <p className="text-3xl font-bold">{formatCurrency(currentMonthMRR)}</p>
-            <p className="text-xs text-muted-foreground mt-1">This month</p>
+            <p className="text-xs text-black dark:text-white mt-1">This month</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Projected ARR</span>
+              <span className="text-sm text-black dark:text-white">Projected ARR</span>
               <ChartLine size={20} className="text-primary" weight="fill" />
             </div>
             <p className="text-3xl font-bold">{formatCurrency(projectedYearlyRevenue)}</p>
-            <p className="text-xs text-muted-foreground mt-1">Annual run-rate</p>
+            <p className="text-xs text-black dark:text-white mt-1">Annual run-rate</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-muted-foreground">Active Users</span>
+              <span className="text-sm text-black dark:text-white">Active Users</span>
               <Users size={20} className="text-accent" weight="fill" />
             </div>
             <p className="text-3xl font-bold">{users.length}</p>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-xs text-black dark:text-white mt-1">
               {proContractors.length} Pro ({((proContractors.length / Math.max(users.filter(u => u.role === 'contractor').length, 1)) * 100).toFixed(0)}%)
             </p>
           </CardContent>
@@ -194,7 +194,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">{item.label}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <p className="text-sm text-black dark:text-white">{item.description}</p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -222,14 +222,14 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
             </CardHeader>
             <CardContent>
               {proContractors.length === 0 ? (
-                <p className="text-center py-8 text-muted-foreground">No Pro contractors yet</p>
+                <p className="text-center py-8 text-black dark:text-white">No Pro contractors yet</p>
               ) : (
                 <div className="space-y-3">
                   {proContractors.map(contractor => (
                     <div key={contractor.id} className="flex items-center justify-between p-4 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div>
                         <p className="font-semibold">{contractor.fullName}</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-black dark:text-white">
                           Pro since: {contractor.proSince ? new Date(contractor.proSince).toLocaleDateString() : 'N/A'}
                         </p>
                       </div>
@@ -258,7 +258,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
             </CardHeader>
             <CardContent>
               {claimedTerritories.length === 0 ? (
-                <p className="text-center py-8 text-muted-foreground">No territories claimed yet</p>
+                <p className="text-center py-8 text-black dark:text-white">No territories claimed yet</p>
               ) : (
                 <div className="space-y-3">
                   {claimedTerritories.map(territory => {
@@ -270,16 +270,16 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                       <div key={territory.id} className="flex items-center justify-between p-4 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                         <div>
                           <p className="font-semibold">{territory.countyName}</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-black dark:text-white">
                             Operator: {territory.operatorName || 'Unknown'}
                           </p>
-                          <p className="text-xs text-muted-foreground mt-1">
+                          <p className="text-xs text-black dark:text-white mt-1">
                             {territoryJobs.length} completed jobs
                           </p>
                         </div>
                         <div className="text-right">
                           <p className="font-bold text-lg">{formatCurrency(operatorShare)}</p>
-                          <p className="text-xs text-muted-foreground">10% of fees</p>
+                          <p className="text-xs text-black dark:text-white">10% of fees</p>
                         </div>
                       </div>
                     )
@@ -301,23 +301,23 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
               <h3 className="font-semibold mb-2">Revenue Targets</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <p className="text-muted-foreground">Month 3 Goal</p>
+                  <p className="text-black dark:text-white">Month 3 Goal</p>
                   <p className="font-bold text-lg">{formatCurrency(75000)}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-black dark:text-white mt-1">
                     {((currentMonthMRR / 75000) * 100).toFixed(0)}% achieved
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Month 6 Goal</p>
+                  <p className="text-black dark:text-white">Month 6 Goal</p>
                   <p className="font-bold text-lg">{formatCurrency(178000)}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-black dark:text-white mt-1">
                     {((currentMonthMRR / 178000) * 100).toFixed(0)}% achieved
                   </p>
                 </div>
                 <div>
-                  <p className="text-muted-foreground">Break-Even</p>
+                  <p className="text-black dark:text-white">Break-Even</p>
                   <p className="font-bold text-lg">{formatCurrency(120000)}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-black dark:text-white mt-1">
                     Monthly burn rate
                   </p>
                 </div>

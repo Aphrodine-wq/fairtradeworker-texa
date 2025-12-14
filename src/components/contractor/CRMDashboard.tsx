@@ -106,7 +106,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
               <Users weight="duotone" size={40} className="text-black dark:text-white" />
               Customer CRM
             </h1>
-            <p className="text-muted-foreground text-lg dark:text-white/70">
+            <p className="text-black dark:text-white text-lg dark:text-white/70">
               Manage relationships, track interactions, and grow your business
             </p>
           </div>
@@ -115,19 +115,19 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{myCustomers.length}</div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Total Customers</div>
+            <div className="text-sm text-black dark:text-white dark:text-white/70">Total Customers</div>
           </Card>
           <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{activeCount}</div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Active</div>
+            <div className="text-sm text-black dark:text-white dark:text-white/70">Active</div>
           </Card>
           <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{leadCount}</div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Leads</div>
+            <div className="text-sm text-black dark:text-white dark:text-white/70">Leads</div>
           </Card>
           <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="text-3xl font-bold text-black dark:text-white mb-1">{completedCount}</div>
-            <div className="text-sm text-muted-foreground dark:text-white/70">Completed</div>
+            <div className="text-sm text-black dark:text-white dark:text-white/70">Completed</div>
           </Card>
         </div>
       </div>
@@ -139,7 +139,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
           <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
-                <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
+                <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black dark:text-white" size={20} weight="duotone" />
                 <Input
                   placeholder="Search customers by name, email, phone, or notes..."
                   value={searchQuery}
@@ -168,9 +168,9 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
       {myCustomers.length === 0 ? (
         <Card className="max-w-2xl mx-auto bg-white dark:bg-black border-2 border-black dark:border-white">
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <Users size={64} weight="duotone" className="text-muted-foreground mb-4 dark:text-white/50" />
+            <Users size={64} weight="duotone" className="text-black dark:text-white mb-4 dark:text-white/50" />
             <h3 className="text-xl font-semibold mb-2 dark:text-white">No customers yet</h3>
-            <p className="text-muted-foreground text-center max-w-md dark:text-white/70">
+            <p className="text-black dark:text-white text-center max-w-md dark:text-white/70">
               Use the instant invite form above to add your first customer to your CRM
             </p>
           </CardContent>
@@ -179,9 +179,9 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
         <div className="max-w-7xl mx-auto">
           {filteredCustomers.length === 0 ? (
             <Card className="p-12 text-center dark:bg-transparent dark:border-white/10">
-              <MagnifyingGlass size={48} weight="duotone" className="text-muted-foreground mx-auto mb-4 dark:text-white/50" />
+              <MagnifyingGlass size={48} weight="duotone" className="text-black dark:text-white mx-auto mb-4 dark:text-white/50" />
               <h3 className="text-lg font-semibold mb-2 dark:text-white">No customers found</h3>
-              <p className="text-muted-foreground dark:text-white/70">
+              <p className="text-black dark:text-white dark:text-white/70">
                 {searchQuery || statusFilter !== "all" 
                   ? "Try adjusting your search or filter criteria"
                   : "No customers match your criteria"}
@@ -221,7 +221,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                       <Badge className={getStatusColor(customer.status)}>
                         {customer.status}
                       </Badge>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-black dark:text-white">
                         {formatDate(customer.invitedAt)}
                       </span>
                     </div>
@@ -236,7 +236,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
                     <Label className="dark:text-white">Contact</Label>
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg dark:bg-transparent dark:border dark:border-white/10">
+                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg dark:bg-transparent dark:border-2 border-black dark:border-white">
                       {customer.invitedVia === 'email' ? (
                         <>
                           <EnvelopeSimple weight="duotone" size={20} className="dark:text-white" />
@@ -260,7 +260,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
 
                   <div className="space-y-2">
                     <Label className="dark:text-white">Invited</Label>
-                    <div className="text-sm text-muted-foreground dark:text-white/70">
+                    <div className="text-sm text-black dark:text-white dark:text-white/70">
                       {formatDate(customer.invitedAt)} via {customer.invitedVia}
                     </div>
                   </div>
@@ -309,7 +309,7 @@ export function CRMDashboard({ user }: CRMDashboardProps) {
                         </div>
                       </>
                     ) : (
-                      <div className="text-sm p-3 bg-muted rounded-lg min-h-[80px] dark:bg-transparent dark:border dark:border-white/10 dark:text-white/80">
+                      <div className="text-sm p-3 bg-muted rounded-lg min-h-[80px] dark:bg-transparent dark:border-2 border-black dark:border-white dark:text-white/80">
                         {customer.notes || "No notes yet"}
                       </div>
                     )}

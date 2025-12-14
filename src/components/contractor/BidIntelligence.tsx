@@ -38,10 +38,10 @@ export function BidIntelligence({
           className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
         >
           <div className="flex items-center gap-1 mb-1">
-            <Target size={14} className="text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Similar jobs</p>
+            <Target size={14} className="text-black dark:text-white" />
+            <p className="text-xs text-black dark:text-white">Similar jobs</p>
           </div>
-          <p className="text-lg font-bold text-foreground">
+          <p className="text-lg font-bold text-black dark:text-white">
             ${intelligence.similarJobsRange.low}-{intelligence.similarJobsRange.high}
           </p>
         </motion.div>
@@ -53,10 +53,10 @@ export function BidIntelligence({
           className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
         >
           <div className="flex items-center gap-1 mb-1">
-            <TrendUp size={14} className="text-muted-foreground" />
-            <p className="text-xs text-muted-foreground">Your win rate</p>
+            <TrendUp size={14} className="text-black dark:text-white" />
+            <p className="text-xs text-black dark:text-white">Your win rate</p>
           </div>
-          <p className="text-lg font-bold text-foreground">
+          <p className="text-lg font-bold text-black dark:text-white">
             {(intelligence.yourWinRate * 100).toFixed(0)}%
           </p>
         </motion.div>
@@ -81,7 +81,7 @@ export function BidIntelligence({
       </div>
       
       <div className="mt-3 pt-3 border-t">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-black dark:text-white">
           💡 Tip: Bids submitted before 9am have a {(intelligence.optimalBidTimeBoost * 100).toFixed(0)}% higher win rate
         </p>
       </div>

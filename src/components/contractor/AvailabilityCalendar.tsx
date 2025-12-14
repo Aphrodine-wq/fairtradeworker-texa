@@ -186,7 +186,7 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
                       <div>
                         <p className="font-medium text-sm">{formatSlotTime(slot)}</p>
                         {slot.jobId && (
-                          <p className="text-xs text-muted-foreground">Job ID: {slot.jobId}</p>
+                          <p className="text-xs text-black dark:text-white">Job ID: {slot.jobId}</p>
                         )}
                       </div>
                     </div>

@@ -1,64 +1,11 @@
 import { ComponentProps } from "react"
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import ChevronDownIcon from "lucide-react/dist/esm/icons/chevron-down"
-
-import { cn } from "@/lib/utils"
-
-function Accordion({
-  ...props
-}: ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />
-}
-
-function AccordionItem({
-  className,
-  ...props
-}: ComponentProps<typeof AccordionPrimitive.Item>) {
-  return (
-    <AccordionPrimitive.Item
-      data-slot="accordion-item"
-      className={cn("border-b-2 border-black dark:border-white last:border-b-0", className)}
-      {...props}
-    />
-  )
-}
-
-function AccordionTrigger({
-  className,
-  children,
-  ...props
-}: ComponentProps<typeof AccordionPrimitive.Trigger>) {
-  return (
-    <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger
-        data-slot="accordion-trigger"
-        className={cn(
-          "focus-visible:border-black dark:focus-visible:border-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white flex flex-1 items-start justify-between gap-4 rounded-none py-4 text-left text-sm font-black uppercase tracking-tight transition-all duration-200 outline-none hover:underline disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
-          className
-        )}
-        {...props}
-      >
-        {children}
-        <ChevronDownIcon className="text-muted-foreground pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-150" />
-      </AccordionPrimitive.Trigger>
-    </AccordionPrimitive.Header>
-  )
-}
-
-function AccordionContent({
-  className,
-  children,
-  ...props
-}: ComponentProps<typeof AccordionPrimitive.Content>) {
-  return (
-    <AccordionPrimitive.Content
-      data-slot="accordion-content"
-      className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
-      {...props}
-    >
-      <div className={cn("pt-0 pb-4", className)}>{children}</div>
-    </AccordionPrimitive.Content>
-  )
-}
-
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
+import ChevronDownIcon from "lucide-react/dist/esm/icons/chevron-down" import { cn } from "@/lib/utils" function Accordion({ ...props
+}: ComponentProps<typeof AccordionPrimitive.Root>) { return <AccordionPrimitive.Root data-slot="accordion" {...props} />
+} function AccordionItem({ className, ...props
+}: ComponentProps<typeof AccordionPrimitive.Item>) { return ( <AccordionPrimitive.Item data-slot="accordion-item" className={cn("border-b-2 border-black dark:border-white last:border-b-0", className)} {...props} /> )
+} function AccordionTrigger({ className, children, ...props
+}: ComponentProps<typeof AccordionPrimitive.Trigger>) { return ( <AccordionPrimitive.Header className="flex"> <AccordionPrimitive.Trigger data-slot="accordion-trigger" className={cn( "focus-visible:border-black dark:focus-visible:border-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white flex flex-1 items-start justify-between gap-4 rounded-none py-4 text-left text-sm font-black uppercase tracking-tight transition-all duration-200 outline-none hover:underline disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180", className )} {...props} > {children} <ChevronDownIcon className="text-black dark:text-white pointer-events-none size-4 shrink-0 translate-y-0.5 transition-transform duration-150" /> </AccordionPrimitive.Trigger> </AccordionPrimitive.Header> )
+} function AccordionContent({ className, children, ...props
+}: ComponentProps<typeof AccordionPrimitive.Content>) { return ( <AccordionPrimitive.Content data-slot="accordion-content" className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm" {...props} > <div className={cn("pt-0 pb-4", className)}>{children}</div> </AccordionPrimitive.Content> )
+} export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

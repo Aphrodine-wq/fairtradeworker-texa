@@ -180,8 +180,8 @@ class ErrorBoundary extends Component<
       return (
         <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
           <div className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Something went wrong</h2>
-            <p className="text-muted-foreground mb-6">
+            <h2 className="text-2xl font-bold text-black dark:text-white mb-4">Something went wrong</h2>
+            <p className="text-black dark:text-white mb-6">
               {this.state.error?.message || 'An error occurred while loading this page'}
             </p>
             <Button 
@@ -206,7 +206,7 @@ function LoadingFallback() {
     <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-        <p className="mt-4 text-muted-foreground">Loading...</p>
+        <p className="mt-4 text-black dark:text-white">Loading...</p>
       </div>
     </div>
   )

@@ -93,7 +93,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
     <div className="space-y-6">
       <div className="text-center">
         <h2 className="text-2xl md:text-3xl font-bold mb-2 text-black dark:text-white">Kanban Board</h2>
-        <p className="text-muted-foreground">
+        <p className="text-black dark:text-white">
           Drag customers between columns to update their status
         </p>
       </div>
@@ -142,7 +142,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                         <CardTitle className="text-base font-semibold text-black dark:text-white">
                           {customer.name}
                         </CardTitle>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                        <div className="flex items-center gap-2 text-xs text-black dark:text-white mt-1">
                           {customer.invitedVia === 'email' ? (
                             <>
                               <EnvelopeSimple size={12} />
@@ -170,7 +170,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                               <Badge 
                                 key={i} 
                                 variant="outline" 
-                                className="text-xs py-0 px-1.5 border-black/10 dark:border-white/10"
+                                className="text-xs py-0 px-1.5 border-2 border-black dark:border-white"
                               >
                                 <Tag size={10} weight="fill" className="mr-1" />
                                 {tag}
@@ -180,13 +180,13 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                         )}
 
                         {customer.notes && (
-                          <div className="text-xs text-muted-foreground flex items-start gap-1">
+                          <div className="text-xs text-black dark:text-white flex items-start gap-1">
                             <Note size={12} weight="duotone" className="mt-0.5 flex-shrink-0" />
                             <span className="line-clamp-2">{customer.notes}</span>
                           </div>
                         )}
 
-                        <div className="text-xs text-muted-foreground pt-1 border-t border-black/10 dark:border-white/10">
+                        <div className="text-xs text-black dark:text-white pt-1 border-2 border-black dark:border-white">
                           Last: {formatDate(customer.lastContact)}
                         </div>
                       </CardContent>
@@ -198,7 +198,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                   <div className={`flex items-center justify-center p-8 text-sm text-black dark:text-white border-2 border-dashed rounded-none transition-all font-mono ${
                       isDragOver 
                         ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black'
-                      : 'border-black/10 dark:border-white/10'
+                      : 'border-2 border-black dark:border-white'
                   }`}>
                     {isDragOver ? 'Drop here!' : 'Drop customers here'}
                   </div>

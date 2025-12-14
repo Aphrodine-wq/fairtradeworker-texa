@@ -75,10 +75,10 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
             <Icon className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">{cert.name}</h3>
-            <p className="text-sm text-muted-foreground">{cert.issuingOrganization}</p>
+            <h3 className="font-semibold text-black dark:text-white">{cert.name}</h3>
+            <p className="text-sm text-black dark:text-white">{cert.issuingOrganization}</p>
             {cert.licenseNumber && (
-              <p className="text-xs text-muted-foreground mt-1">License #: {cert.licenseNumber}</p>
+              <p className="text-xs text-black dark:text-white mt-1">License #: {cert.licenseNumber}</p>
             )}
           </div>
         </div>
@@ -93,12 +93,12 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
       </div>
 
       <div className="space-y-2 text-sm">
-        <div className="flex items-center justify-between text-muted-foreground">
+        <div className="flex items-center justify-between text-black dark:text-white">
           <span>Issued:</span>
           <span>{new Date(cert.issueDate).toLocaleDateString()}</span>
         </div>
         {!cert.neverExpires && cert.expirationDate && (
-          <div className="flex items-center justify-between text-muted-foreground">
+          <div className="flex items-center justify-between text-black dark:text-white">
             <span>Expires:</span>
             <span className={status === 'expired' ? 'text-red-600 font-medium' : ''}>
               {new Date(cert.expirationDate).toLocaleDateString()}
@@ -106,14 +106,14 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
           </div>
         )}
         {cert.coverageAmount && (
-          <div className="flex items-center justify-between text-muted-foreground">
+          <div className="flex items-center justify-between text-black dark:text-white">
             <span>Coverage:</span>
             <span className="font-medium">${cert.coverageAmount.toLocaleString()}</span>
           </div>
         )}
         {cert.jobTypesQualified && cert.jobTypesQualified.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs text-muted-foreground mb-1">Qualifies for:</p>
+            <p className="text-xs text-black dark:text-white mb-1">Qualifies for:</p>
             <div className="flex flex-wrap gap-1">
               {cert.jobTypesQualified.slice(0, 3).map(job => (
                 <Badge key={job} variant="outline" className="text-xs">{job}</Badge>
@@ -311,8 +311,8 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Certification Wallet</h2>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h2 className="text-2xl font-bold text-black dark:text-white">Certification Wallet</h2>
+          <p className="text-sm text-black dark:text-white mt-1">
             Manage your licenses, insurance, and certifications
           </p>
         </div>
@@ -460,7 +460,7 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
                   return (
                     <div key={alert.certificationId} className="text-sm">
                       <span className="font-medium">{cert.name}</span>
-                      <span className="text-muted-foreground">
+                      <span className="text-black dark:text-white">
                         {alert.daysUntilExpiration < 0 
                           ? ` expired ${Math.abs(alert.daysUntilExpiration)} days ago` 
                           : ` expires in ${alert.daysUntilExpiration} days`
@@ -480,29 +480,29 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
           className={`p-4 cursor-pointer transition-colors ${filter === 'all' ? 'ring-2 ring-primary' : 'hover:bg-accent'}`}
           onClick={() => setFilter('all')}
         >
-          <div className="text-2xl font-bold text-foreground">{stats.total}</div>
-          <div className="text-sm text-muted-foreground">Total</div>
+          <div className="text-2xl font-bold text-black dark:text-white">{stats.total}</div>
+          <div className="text-sm text-black dark:text-white">Total</div>
         </Card>
         <Card 
           className={`p-4 cursor-pointer transition-colors ${filter === 'active' ? 'ring-2 ring-primary' : 'hover:bg-accent'}`}
           onClick={() => setFilter('active')}
         >
           <div className="text-2xl font-bold text-green-600">{stats.active}</div>
-          <div className="text-sm text-muted-foreground">Active</div>
+          <div className="text-sm text-black dark:text-white">Active</div>
         </Card>
         <Card 
           className={`p-4 cursor-pointer transition-colors ${filter === 'expiring-soon' ? 'ring-2 ring-primary' : 'hover:bg-accent'}`}
           onClick={() => setFilter('expiring-soon')}
         >
           <div className="text-2xl font-bold text-orange-600">{stats.expiringSoon}</div>
-          <div className="text-sm text-muted-foreground">Expiring Soon</div>
+          <div className="text-sm text-black dark:text-white">Expiring Soon</div>
         </Card>
         <Card 
           className={`p-4 cursor-pointer transition-colors ${filter === 'expired' ? 'ring-2 ring-primary' : 'hover:bg-accent'}`}
           onClick={() => setFilter('expired')}
         >
           <div className="text-2xl font-bold text-red-600">{stats.expired}</div>
-          <div className="text-sm text-muted-foreground">Expired</div>
+          <div className="text-sm text-black dark:text-white">Expired</div>
         </Card>
       </div>
 
@@ -510,13 +510,13 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
         <Card className="p-12 text-center">
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
-              <FileText className="w-8 h-8 text-muted-foreground" />
+              <FileText className="w-8 h-8 text-black dark:text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground mb-1">
+              <h3 className="font-semibold text-black dark:text-white mb-1">
                 {filter === 'all' ? 'No Certifications Yet' : `No ${filter.replace('-', ' ')} certifications`}
               </h3>
-              <p className="text-sm text-muted-foreground max-w-md">
+              <p className="text-sm text-black dark:text-white max-w-md">
                 {filter === 'all' 
                   ? 'Add your licenses, insurance certificates, and other credentials to build trust with homeowners.'
                   : 'Adjust the filter to view other certifications.'
