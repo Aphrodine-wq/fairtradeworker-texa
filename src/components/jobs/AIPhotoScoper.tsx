@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { safeInput } from '@/lib/utils'
 import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -40,19 +41,59 @@ export function AIPhotoScoper() {
   const [compressionQuality, setCompressionQuality] = useState(80)
   const [compressing, setCompressing] = useState(false)
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [uploadErrors, setUploadErrors] = useState<string[]>([])
+
+  const handlePhotoUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
-    const newPhotos = files.map(file => ({
-      file,
-      preview: URL.createObjectURL(file),
-      name: file.name,
-      originalSize: file.size,
-      isCompressed: false
-    }))
-    setPhotos([...photos, ...newPhotos])
-    setError('')
-    toast.success(`${files.length} photo${files.length > 1 ? 's' : ''} added`)
-  }
+    if (files.length === 0) return
+
+    const errors: string[] = []
+    const validPhotos: Photo[] = []
+    const maxSize = 10 * 1024 * 1024 // 10MB
+    const maxPhotos = 20
+
+    if (photos.length + files.length > maxPhotos) {
+      errors.push(`Maximum ${maxPhotos} photos allowed. You have ${photos.length} and tried to add ${files.length}.`)
+      toast.error(`Maximum ${maxPhotos} photos allowed`)
+      return
+    }
+
+    files.forEach((file, index) => {
+      if (file.size > maxSize) {
+        errors.push(`${file.name} is too large (max 10MB)`)
+        return
+      }
+      if (!file.type.startsWith('image/')) {
+        errors.push(`${file.name} is not an image file`)
+        return
+      }
+
+      try {
+        validPhotos.push({
+          file,
+          preview: URL.createObjectURL(file),
+          name: file.name,
+          originalSize: file.size,
+          isCompressed: false
+        })
+      } catch (err) {
+        errors.push(`Failed to process ${file.name}`)
+        console.error(`Error processing ${file.name}:`, err)
+      }
+    })
+
+    if (errors.length > 0) {
+      setUploadErrors(errors)
+      toast.error(`${errors.length} file${errors.length > 1 ? 's' : ''} failed to upload`)
+    }
+
+    if (validPhotos.length > 0) {
+      setPhotos([...photos, ...validPhotos])
+      setError('')
+      setUploadErrors([])
+      toast.success(`${validPhotos.length} photo${validPhotos.length > 1 ? 's' : ''} added`)
+    }
+  }, [photos])
 
   const removePhoto = (index: number) => {
     const newPhotos = [...photos]
@@ -202,14 +243,79 @@ export function AIPhotoScoper() {
     })
   }
 
-  const generateScope = async () => {
+  const [scopeErrors, setScopeErrors] = useState<{
+    name?: string
+    address?: string
+    city?: string
+    state?: string
+    zip?: string
+    photos?: string
+  }>({})
+
+  const generateScope = useCallback(async () => {
+    setScopeErrors({})
+    setError('')
+
+    // Validation
     if (photos.length === 0) {
+      setScopeErrors({ photos: "Please upload at least one photo" })
       setError('Please upload at least one photo')
+      toast.error('Please upload at least one photo')
       return
     }
 
-    if (!projectInfo.name || !projectInfo.address) {
-      setError('Please fill in project name and address')
+    if (!projectInfo.name?.trim()) {
+      setScopeErrors({ name: "Project name is required" })
+      setError('Please enter project name')
+      toast.error('Please enter project name')
+      return
+    } else if (projectInfo.name.trim().length < 3) {
+      setScopeErrors({ name: "Project name must be at least 3 characters" })
+      setError('Project name must be at least 3 characters')
+      toast.error('Project name must be at least 3 characters')
+      return
+    }
+
+    if (!projectInfo.address?.trim()) {
+      setScopeErrors({ address: "Street address is required" })
+      setError('Please enter street address')
+      toast.error('Please enter street address')
+      return
+    } else if (projectInfo.address.trim().length < 3) {
+      setScopeErrors({ address: "Address must be at least 3 characters" })
+      setError('Address must be at least 3 characters')
+      toast.error('Address must be at least 3 characters')
+      return
+    }
+
+    if (!projectInfo.city?.trim()) {
+      setScopeErrors({ city: "City is required" })
+      setError('Please enter city')
+      toast.error('Please enter city')
+      return
+    }
+
+    if (!projectInfo.state?.trim()) {
+      setScopeErrors({ state: "State is required" })
+      setError('Please enter state')
+      toast.error('Please enter state')
+      return
+    } else if (projectInfo.state.trim().length !== 2) {
+      setScopeErrors({ state: "State must be 2 characters (e.g., TX)" })
+      setError('State must be 2 characters')
+      toast.error('State must be 2 characters (e.g., TX)')
+      return
+    }
+
+    if (!projectInfo.zip?.trim()) {
+      setScopeErrors({ zip: "ZIP code is required" })
+      setError('Please enter ZIP code')
+      toast.error('Please enter ZIP code')
+      return
+    } else if (!/^\d{5}(-\d{4})?$/.test(projectInfo.zip.trim())) {
+      setScopeErrors({ zip: "Please enter a valid ZIP code (e.g., 78701 or 78701-1234)" })
+      setError('Please enter a valid ZIP code')
+      toast.error('Please enter a valid ZIP code')
       return
     }
 
@@ -357,9 +463,26 @@ Generate a complete, professional scope document now.`
                     type="text"
                     placeholder="e.g., Holland Pole Barn Project"
                     value={projectInfo.name}
-                    onChange={(e) => setProjectInfo({...projectInfo, name: e.target.value})}
-                    className="mt-2"
+                    onChange={(e) => {
+                      setProjectInfo({...projectInfo, name: safeInput(e.target.value)})
+                      if (scopeErrors.name) setScopeErrors(prev => ({ ...prev, name: undefined }))
+                    }}
+                    onBlur={() => {
+                      if (projectInfo.name && projectInfo.name.trim().length < 3) {
+                        setScopeErrors(prev => ({ ...prev, name: "Project name must be at least 3 characters" }))
+                      }
+                    }}
+                    className={`mt-2 ${scopeErrors.name ? "border-[#FF0000]" : ""}`}
+                    disabled={loading}
+                    required
+                    aria-invalid={!!scopeErrors.name}
+                    aria-describedby={scopeErrors.name ? "project-name-error" : undefined}
                   />
+                  {scopeErrors.name && (
+                    <p id="project-name-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                      {scopeErrors.name}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <Label htmlFor="address" className="text-sm font-semibold">Street Address</Label>
@@ -380,9 +503,26 @@ Generate a complete, professional scope document now.`
                       type="text"
                       placeholder="Austin"
                       value={projectInfo.city}
-                      onChange={(e) => setProjectInfo({...projectInfo, city: e.target.value})}
-                      className="mt-2"
+                      onChange={(e) => {
+                        setProjectInfo({...projectInfo, city: safeInput(e.target.value)})
+                        if (scopeErrors.city) setScopeErrors(prev => ({ ...prev, city: undefined }))
+                      }}
+                      onBlur={() => {
+                        if (!projectInfo.city?.trim()) {
+                          setScopeErrors(prev => ({ ...prev, city: "City is required" }))
+                        }
+                      }}
+                      className={`mt-2 ${scopeErrors.city ? "border-[#FF0000]" : ""}`}
+                      disabled={loading}
+                      required
+                      aria-invalid={!!scopeErrors.city}
+                      aria-describedby={scopeErrors.city ? "city-error" : undefined}
                     />
+                    {scopeErrors.city && (
+                      <p id="city-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                        {scopeErrors.city}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="state" className="text-sm font-semibold">State</Label>
@@ -391,9 +531,30 @@ Generate a complete, professional scope document now.`
                       type="text"
                       placeholder="TX"
                       value={projectInfo.state}
-                      onChange={(e) => setProjectInfo({...projectInfo, state: e.target.value})}
-                      className="mt-2"
+                      onChange={(e) => {
+                        const value = safeInput(e.target.value).toUpperCase().slice(0, 2)
+                        setProjectInfo({...projectInfo, state: value})
+                        if (scopeErrors.state) setScopeErrors(prev => ({ ...prev, state: undefined }))
+                      }}
+                      onBlur={() => {
+                        if (!projectInfo.state?.trim()) {
+                          setScopeErrors(prev => ({ ...prev, state: "State is required" }))
+                        } else if (projectInfo.state.trim().length !== 2) {
+                          setScopeErrors(prev => ({ ...prev, state: "State must be 2 characters (e.g., TX)" }))
+                        }
+                      }}
+                      className={`mt-2 ${scopeErrors.state ? "border-[#FF0000]" : ""}`}
+                      disabled={loading}
+                      required
+                      maxLength={2}
+                      aria-invalid={!!scopeErrors.state}
+                      aria-describedby={scopeErrors.state ? "state-error" : undefined}
                     />
+                    {scopeErrors.state && (
+                      <p id="state-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                        {scopeErrors.state}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="zip" className="text-sm font-semibold">ZIP</Label>
