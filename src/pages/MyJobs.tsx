@@ -127,26 +127,26 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         })
       )
 
-    const newInvoice: Invoice = {
-      id: `inv-${Date.now()}`,
-      contractorId: selectedBid.contractorId,
-      jobId: selectedJob.id,
-      jobTitle: selectedJob.title,
-      lineItems: [
-        { description: selectedJob.title, quantity: 1, rate: selectedBid.amount, total: selectedBid.amount }
-      ],
-      subtotal: selectedBid.amount,
-      taxRate: 0,
-      taxAmount: 0,
-      total: selectedBid.amount,
-      status: 'paid',
-      dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-      sentDate: new Date().toISOString(),
-      paidDate: new Date().toISOString(),
-      isProForma: false,
-      lateFeeApplied: false,
-      createdAt: new Date().toISOString()
-    }
+      const newInvoice: Invoice = {
+        id: `inv-${Date.now()}`,
+        contractorId: selectedBid.contractorId,
+        jobId: selectedJob.id,
+        jobTitle: selectedJob.title,
+        lineItems: [
+          { description: selectedJob.title, quantity: 1, rate: selectedBid.amount, total: selectedBid.amount }
+        ],
+        subtotal: selectedBid.amount,
+        taxRate: 0,
+        taxAmount: 0,
+        total: selectedBid.amount,
+        status: 'paid',
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        sentDate: new Date().toISOString(),
+        paidDate: new Date().toISOString(),
+        isProForma: false,
+        lateFeeApplied: false,
+        createdAt: new Date().toISOString()
+      }
 
       setInvoices((current) => [...(current || []), newInvoice])
 
