@@ -248,14 +248,16 @@ export interface Invoice {
   id: string
   contractorId: string
   homeownerId?: string
-  jobId: string
-  jobTitle: string
+  jobId?: string // Single job (legacy)
+  jobIds?: string[] // Multiple jobs (multi-job invoicing)
+  jobTitle?: string
   lineItems: InvoiceLineItem[]
   subtotal: number
   taxRate: number
   taxAmount: number
   total: number
-  status: 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue' | 'partially-paid'
+  amount?: number // Total amount (for multi-job)
+  status: 'draft' | 'sent' | 'viewed' | 'paid' | 'overdue' | 'partially-paid' | 'pending'
   dueDate: string
   sentDate?: string
   paidDate?: string
