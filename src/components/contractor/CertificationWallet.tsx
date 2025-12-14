@@ -50,9 +50,9 @@ function getCertificationStatus(cert: Certification): { status: CertificationSta
 function getStatusBadge(status: CertificationStatus, daysUntil: number) {
   switch (status) {
     case 'active':
-      return <Badge className="bg-green-500/10 text-green-600 border-green-500/20"><CheckCircle className="w-3 h-3 mr-1" />Active</Badge>
+      return <Badge className="bg-[#00FF00] text-black border-2 border-black dark:border-white"><CheckCircle className="w-3 h-3 mr-1" />Active</Badge>
     case 'expiring-soon':
-      return <Badge className="bg-orange-500/10 text-orange-600 border-orange-500/20"><Warning className="w-3 h-3 mr-1" />Expires in {daysUntil}d</Badge>
+      return <Badge className="bg-[#FFFF00] text-black border-2 border-black dark:border-white"><Warning className="w-3 h-3 mr-1" />Expires in {daysUntil}d</Badge>
     case 'expired':
       return <Badge className="bg-red-500/10 text-red-600 border-red-500/20"><XCircle className="w-3 h-3 mr-1" />Expired</Badge>
   }
@@ -68,10 +68,10 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
   const Icon = typeInfo?.icon || Briefcase
 
   return (
-    <Card className="p-4 hover:shadow-md transition-shadow">
+    <Card className="p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-2 border-black dark:border-white">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
             <Icon className="w-5 h-5 text-primary" />
           </div>
           <div>
@@ -126,7 +126,7 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
         )}
       </div>
 
-      <div className="flex gap-2 mt-4 pt-4 border-t border-border">
+      <div className="flex gap-2 mt-4 pt-4 border-t-2 border-black dark:border-white">
         {cert.fileUrl && (
           <Button 
             variant="outline" 
@@ -509,7 +509,7 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
       {filteredCerts.length === 0 ? (
         <Card className="p-12 text-center">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
+            <div className="w-16 h-16 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <FileText className="w-8 h-8 text-muted-foreground" />
             </div>
             <div>

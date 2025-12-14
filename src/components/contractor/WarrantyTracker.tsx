@@ -140,7 +140,7 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">

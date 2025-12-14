@@ -262,7 +262,7 @@ export function QualityAssurance({ user }: { user: User }) {
                         />
                       </div>
                       {(newInspection.items || []).length > 0 && (
-                        <Card className="bg-muted/50 p-4">
+                        <Card className="bg-white dark:bg-black border-2 border-black dark:border-white p-4 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                           <div className="text-sm">
                             <div className="flex justify-between mb-1">
                               <span>Items Passed:</span>
@@ -304,13 +304,13 @@ export function QualityAssurance({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{inspections.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Inspections</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className={`text-3xl font-bold ${getScoreColor(avgScore)}`}>
                   {avgScore}%
@@ -318,7 +318,7 @@ export function QualityAssurance({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Avg Score</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   {passedCount}

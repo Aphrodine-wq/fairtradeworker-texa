@@ -120,7 +120,7 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
       </div>
 
       {aiMaterialsList && aiMaterialsList.length > 0 && (
-        <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+        <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
           <div className="flex items-start gap-3">
             <Wrench className="w-5 h-5 text-black dark:text-white flex-shrink-0 mt-1" weight="duotone" />
             <div className="flex-1">
@@ -220,14 +220,14 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
 
             {cart.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                <ShoppingCart size={48} className="mx-auto mb-2 opacity-20" />
+                <ShoppingCart size={48} className="mx-auto mb-2 text-black dark:text-white" />
                 <p>No items in cart</p>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="space-y-2 max-h-[400px] overflow-y-auto">
                   {cart.map((item) => (
-                    <div key={item.id} className="p-3 bg-muted/50 rounded-lg">
+                    <div key={item.id} className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
                           <div className="font-medium text-sm">{item.name}</div>
@@ -302,7 +302,7 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
 
       <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-lg flex-shrink-0">
+          <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none flex-shrink-0 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
             <Percent className="w-6 h-6 text-black dark:text-white" weight="bold" />
           </div>
           <div className="flex-1">

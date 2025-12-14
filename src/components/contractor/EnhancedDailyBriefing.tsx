@@ -337,7 +337,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                   {day.date.toLocaleDateString('en-US', { weekday: 'short' })}
                 </p>
                 <div 
-                  className={`h-16 rounded-lg ${getDensityColor(day.density)} flex items-center justify-center cursor-pointer transition-transform hover:scale-105`}
+                  className={`h-16 rounded-none border-2 border-black dark:border-white ${getDensityColor(day.density)} flex items-center justify-center cursor-pointer transition-all hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`}
                   onClick={() => {}}
                 >
                   <p className="text-sm font-bold text-white">{day.jobCount || '-'}</p>
@@ -408,7 +408,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className={`p-4 rounded-lg border ${getPriorityColor(alert.priority)} flex items-start gap-3`}
+                className={`p-4 rounded-none border-2 border-black dark:border-white ${getPriorityColor(alert.priority)} flex items-start gap-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`}
               >
                 {alert.icon}
                 <div className="flex-1">
@@ -451,7 +451,7 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="p-4 bg-muted/50 rounded-lg"
+                className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] font-mono"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">

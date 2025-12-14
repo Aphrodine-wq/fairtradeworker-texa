@@ -220,7 +220,7 @@ export function CommunicationHub({ user }: { user: User }) {
                   ) : (
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center">
-                        <ChatCircleDots size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
+                        <ChatCircleDots size={64} className="mx-auto mb-4 text-black dark:text-white" />
                         <p className="text-muted-foreground text-lg">Select a conversation to start messaging</p>
                       </div>
                     </div>
