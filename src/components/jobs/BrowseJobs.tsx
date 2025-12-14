@@ -91,7 +91,7 @@ const JobCard = memo(function JobCard({
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col relative ${isFresh ? "ring-2 ring-green-500/50 ring-offset-2" : ""}`}>
       {/* Fresh Job Banner */}
       {isFresh && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-r from-green-500 via-green-400 to-green-500 text-white px-4 py-2 flex items-center gap-2 shadow-md">
+        <div className="absolute top-0 left-0 right-0 z-10 bg-green-600 dark:bg-green-700 text-white px-4 py-2 flex items-center gap-2 shadow-md">
           <span className="animate-pulse text-lg">⚡</span>
           <span className="font-semibold text-sm">FRESH JOB - First to bid gets featured!</span>
         </div>
@@ -99,7 +99,7 @@ const JobCard = memo(function JobCard({
 
       {/* Hero Image Section */}
       {photos.length > 0 ? (
-        <div className="relative h-48 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800">
+        <div className="relative h-48 overflow-hidden bg-muted">
           <button
             onClick={() => onViewPhotos(photos)}
             className="relative w-full h-full group/image"
@@ -110,7 +110,7 @@ const JobCard = memo(function JobCard({
               className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110"
               loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 opacity-100 group-hover/image:opacity-80 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-black/60 opacity-100 group-hover/image:opacity-80 transition-opacity duration-300" />
             
             {/* Overlay Info */}
             <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -149,7 +149,7 @@ const JobCard = memo(function JobCard({
           </button>
         </div>
       ) : (
-        <div className="relative h-32 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 flex items-center justify-center">
+        <div className="relative h-32 bg-muted flex items-center justify-center">
           <div className="text-center">
             <Wrench size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
             <div className="text-xs text-muted-foreground">No photos available</div>
@@ -219,7 +219,7 @@ const JobCard = memo(function JobCard({
       <CardContent className="space-y-4 pt-0 flex-grow flex flex-col">
         {/* AI Scope Section */}
         {job.aiScope && (
-          <div className="rounded-lg p-4 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-blue-950/20 dark:to-transparent border border-blue-100 dark:border-blue-900/50 space-y-3">
+          <div className="rounded-lg p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/50 space-y-3">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/50">
                 <Wrench weight="duotone" size={16} className="text-blue-600 dark:text-blue-400" />
@@ -494,84 +494,81 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 md:px-8 py-8">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Hero Header Section */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent dark:from-primary/20 dark:via-primary/10 p-8 md:p-12 border border-primary/20">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-            <div className="relative z-10">
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <Wrench size={24} weight="duotone" className="text-primary" />
-                    </div>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                      Browse Jobs
-                    </h1>
+          <div className="space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-primary/10">
+                    <Wrench size={24} weight="duotone" className="text-primary" />
                   </div>
-                  <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-                    Find your next project – <span className="font-semibold text-primary">bid free</span>, keep <span className="font-semibold text-green-600 dark:text-green-400">100%</span>
-                  </p>
-                  
-                  {/* Quick Stats Inline */}
-                  <div className="flex flex-wrap items-center gap-6 pt-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-sm font-medium text-muted-foreground">
-                        <span className="font-bold text-foreground">{sortedOpenJobs.length}</span> active jobs
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                      <span className="text-sm font-medium text-muted-foreground">
-                        <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids yet
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                      <span className="text-sm font-medium text-muted-foreground">
-                        <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => {
-                          const jobAge = Date.now() - new Date(j.createdAt).getTime()
-                          const fifteenMinutes = 15 * 60 * 1000
-                          return jobAge <= fifteenMinutes && j.size === 'small' && j.bids.length === 0
-                        }).length}</span> fresh opportunities
-                      </span>
-                    </div>
-                  </div>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
+                    Browse Jobs
+                  </h1>
                 </div>
+                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
+                  Find your next project – <span className="font-semibold text-primary">bid free</span>, keep <span className="font-semibold text-green-600 dark:text-green-400">100%</span>
+                </p>
                 
-                {/* Enhanced Stats Cards */}
-                <div className="flex gap-4 lg:flex-col lg:gap-3">
-                  <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] bg-white/80 dark:bg-black/80 backdrop-blur-sm border-primary/20 hover:border-primary/40 transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-lg bg-primary/10">
-                        <Wrench size={18} weight="duotone" className="text-primary" />
-                      </div>
-                      <div className="text-3xl font-bold text-foreground">{sortedOpenJobs.length}</div>
-                    </div>
-                    <div className="text-sm font-medium text-muted-foreground">Active Jobs</div>
-                  </Card>
-                  <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] bg-white/80 dark:bg-black/80 backdrop-blur-sm border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                        <Eye size={18} weight="duotone" className="text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <div className="text-3xl font-bold text-foreground">
-                        {sortedOpenJobs.filter(j => j.bids.length === 0).length}
-                      </div>
-                    </div>
-                    <div className="text-sm font-medium text-muted-foreground">No Bids Yet</div>
-                  </Card>
+                {/* Quick Stats Inline */}
+                <div className="flex flex-wrap items-center gap-6 pt-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                    <span className="text-sm font-medium text-muted-foreground">
+                      <span className="font-bold text-foreground">{sortedOpenJobs.length}</span> active jobs
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                    <span className="text-sm font-medium text-muted-foreground">
+                      <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids yet
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                    <span className="text-sm font-medium text-muted-foreground">
+                      <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => {
+                        const jobAge = Date.now() - new Date(j.createdAt).getTime()
+                        const fifteenMinutes = 15 * 60 * 1000
+                        return jobAge <= fifteenMinutes && j.size === 'small' && j.bids.length === 0
+                      }).length}</span> fresh opportunities
+                    </span>
+                  </div>
                 </div>
+              </div>
+              
+              {/* Enhanced Stats Cards */}
+              <div className="flex gap-4 lg:flex-col lg:gap-3">
+                <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] border-border hover:border-primary/40 transition-colors">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Wrench size={18} weight="duotone" className="text-primary" />
+                    </div>
+                    <div className="text-3xl font-bold text-foreground">{sortedOpenJobs.length}</div>
+                  </div>
+                  <div className="text-sm font-medium text-muted-foreground">Active Jobs</div>
+                </Card>
+                <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] border-border hover:border-primary/40 transition-colors">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
+                      <Eye size={18} weight="duotone" className="text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div className="text-3xl font-bold text-foreground">
+                      {sortedOpenJobs.filter(j => j.bids.length === 0).length}
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium text-muted-foreground">No Bids Yet</div>
+                </Card>
               </div>
             </div>
           </div>
 
           {/* Enhanced Filter & View Controls */}
           <div className="space-y-4">
-            <Card className="p-5 bg-white/50 dark:bg-black/50 backdrop-blur-sm border-border/50">
+            <Card className="p-5 border-border">
               <div className="flex flex-col lg:flex-row lg:items-center gap-4">
                 {/* Job Size Filters */}
                 <div className="flex items-center gap-4 flex-1">
@@ -581,7 +578,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   </div>
                   
                   <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
-                    <TabsList className="grid grid-cols-4 w-full lg:w-auto bg-muted/50">
+                    <TabsList className="grid grid-cols-4 w-full lg:w-auto bg-muted">
                       <TabsTrigger value="all" className="text-xs sm:text-sm">All</TabsTrigger>
                       <TabsTrigger value="small" className="text-xs sm:text-sm">🟢 Small</TabsTrigger>
                       <TabsTrigger value="medium" className="text-xs sm:text-sm">🟡 Medium</TabsTrigger>
@@ -594,7 +591,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <div className="flex items-center gap-3 lg:border-l lg:pl-4">
                   <span className="text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
                   <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
-                    <TabsList className="bg-muted/50">
+                    <TabsList className="bg-muted">
                       <TabsTrigger value="list" className="gap-2">
                         <List weight="duotone" size={16} />
                         <span className="hidden sm:inline">List</span>
@@ -632,12 +629,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 </div>
               ) : sortedOpenJobs.length === 0 ? (
                 <div className="col-span-full">
-                  <Card className="p-16 text-center bg-gradient-to-br from-muted/50 to-muted/20 border-border/50">
+                  <Card className="p-16 text-center border-border">
                     <div className="max-w-md mx-auto space-y-4">
-                      <div className="relative inline-block">
-                        <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
-                        <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl" />
-                      </div>
+                      <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
                       <div>
                         <h2 className="text-3xl font-bold mb-2 text-foreground">No Jobs Available</h2>
                         <p className="text-muted-foreground text-lg">
