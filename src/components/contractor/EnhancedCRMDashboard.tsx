@@ -128,8 +128,10 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
     ]
   }, [filteredCustomers])
 
+  // Get customer interactions (sorted by date, newest first)
   const getCustomerInteractions = (customerId: string) => {
     return (interactions || []).filter(i => i.customerId === customerId)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   }
 
   const getLeadScoreColor = (score: number) => {
@@ -163,12 +165,6 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       leads: myCustomers.filter(c => c.status === 'lead').length,
     }
   }, [myCustomers, interactions])
-
-  // Get customer interactions
-  const getCustomerInteractions = (customerId: string) => {
-    return (interactions || []).filter(i => i.customerId === customerId)
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  }
 
   const handleSaveNotes = () => {
     if (!selectedCustomer) return
