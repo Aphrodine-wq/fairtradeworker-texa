@@ -32,6 +32,7 @@ export function TaxHelper({ user }: { user: User }) {
   const [forms, setForms] = useKV<TaxForm[]>("tax-forms", [])
   const [income, setIncome] = useState(0)
   const [year, setYear] = useState(new Date().getFullYear())
+  const isPro = user.isPro || false
 
   const totalDeductions = useMemo(() => 
     deductions.reduce((sum, d) => sum + d.amount, 0), 
@@ -122,7 +123,7 @@ export function TaxHelper({ user }: { user: User }) {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">
                   ${income.toLocaleString()}
@@ -130,7 +131,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Income</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   ${totalDeductions.toLocaleString()}
@@ -138,7 +139,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Deductions</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   ${taxableIncome.toLocaleString()}
@@ -146,7 +147,7 @@ export function TaxHelper({ user }: { user: User }) {
                 <div className="text-sm text-sm text-muted-foreground mt-1">Taxable Income</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">
                   ${estimatedTax.toLocaleString()}
@@ -252,7 +253,7 @@ export function TaxHelper({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="calculator" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card glass={isPro}>
                 <CardHeader>
                   <CardTitle>Tax Calculator</CardTitle>
                   <CardDescription>Estimate your tax liability for {year}</CardDescription>

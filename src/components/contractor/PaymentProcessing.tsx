@@ -24,6 +24,7 @@ export function PaymentProcessing({ user }: { user: User }) {
   const [transactions] = useKV<Transaction[]>("payment-transactions", [])
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
   const [methodFilter, setMethodFilter] = useState<'all' | 'card' | 'ach'>('all')
+  const isPro = user.isPro || false
 
   const myInvoices = useMemo(() => 
     (invoices || []).filter(inv => inv.contractorId === user.id),

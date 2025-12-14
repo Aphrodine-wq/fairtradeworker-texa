@@ -265,7 +265,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
       )}
 
       {!breakdown && (
-        <Card className="p-12 text-center border-dashed border-2">
+        <Card className="p-12 text-center border-2 border-black dark:border-white border-dashed">
           <Calculator size={48} className="mx-auto mb-4 text-muted-foreground" />
           <p className="text-muted-foreground">
             Enter your job details above to see the cost breakdown

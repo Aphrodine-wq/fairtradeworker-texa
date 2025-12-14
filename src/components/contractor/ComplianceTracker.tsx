@@ -26,6 +26,7 @@ interface ComplianceItem {
 export function ComplianceTracker({ user }: { user: User }) {
   const [items, setItems] = useKV<ComplianceItem[]>("compliance-items", [])
   const [showAddDialog, setShowAddDialog] = useState(false)
+  const isPro = user.isPro || false
   const [newItem, setNewItem] = useState<Partial<ComplianceItem>>({
     type: 'license',
     name: '',

@@ -33,6 +33,7 @@ export function DocumentManager({ user }: { user: User }) {
   const [searchQuery, setSearchQuery] = useState("")
   const [showNewFolderDialog, setShowNewFolderDialog] = useState(false)
   const [newFolderName, setNewFolderName] = useState("")
+  const isPro = user.isPro || false
 
   const currentFolder = useMemo(() => 
     folders.find(f => f.id === currentFolderId) || null,
