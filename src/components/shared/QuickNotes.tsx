@@ -153,12 +153,32 @@ export function QuickNotes({ user }: QuickNotesProps) {
     toast.success("Note updated")
   }
 
-  const handleDeleteNote = (noteId: string) => {
-    if (confirm("Delete this note?")) {
+  const [deletingNoteId, setDeletingNoteId] = useState<string | null>(null)
+
+  const handleDeleteNote = useCallback(async (noteId: string) => {
+    if (deletingNoteId) return
+
+    const note = notes.find(n => n.id === noteId)
+    const confirmed = window.confirm(
+      note
+        ? `Are you sure you want to delete "${note.title}"? This action cannot be undone.`
+        : "Are you sure you want to delete this note? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingNoteId(noteId)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
       setNotes(notes.filter(n => n.id !== noteId))
-      toast.success("Note deleted")
+      toast.success("Note deleted successfully")
+    } catch (error) {
+      console.error("Error deleting note:", error)
+      toast.error('Failed to delete note. Please try again.')
+    } finally {
+      setDeletingNoteId(null)
     }
-  }
+  }, [notes, deletingNoteId])
 
   const getCategoryColor = (cat: string) => {
     return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border border-black/20 dark:border-white/20"

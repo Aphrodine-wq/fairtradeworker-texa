@@ -151,7 +151,36 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
     }
   }, [formData, photos, updates, job.id, user.id, user.fullName, onUpdate])
 
-  const handleDelete = (updateId: string) => {
+  const [deletingUpdateId, setDeletingUpdateId] = useState<string | null>(null)
+
+  const handleDelete = useCallback(async (updateId: string) => {
+    if (deletingUpdateId) return
+
+    const update = updates.find(u => u.id === updateId)
+    const confirmed = window.confirm(
+      update
+        ? `Are you sure you want to delete the update "${update.title}"? This action cannot be undone.`
+        : "Are you sure you want to delete this update? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingUpdateId(updateId)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const updatedUpdates = updates.filter(u => u.id !== updateId)
+      onUpdate({
+        ...job,
+        projectUpdates: updatedUpdates
+      })
+      toast.success("Update deleted successfully")
+    } catch (error) {
+      console.error("Error deleting update:", error)
+      toast.error('Failed to delete update. Please try again.')
+    } finally {
+      setDeletingUpdateId(null)
+    }
+  }, [updates, deletingUpdateId, job, onUpdate])
     const filtered = updates.filter(u => u.id !== updateId)
     onUpdate(filtered)
     toast.success('Update deleted')

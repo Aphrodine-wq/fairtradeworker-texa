@@ -174,7 +174,36 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
     }
   }, [formData, expenses, milestone, totalExpenses, onUpdateMilestone])
 
-  const handleDeleteExpense = (expenseId: string) => {
+  const [deletingExpenseId, setDeletingExpenseId] = useState<string | null>(null)
+
+  const handleDeleteExpense = useCallback(async (expenseId: string) => {
+    if (deletingExpenseId) return
+
+    const expense = expenses.find(e => e.id === expenseId)
+    const confirmed = window.confirm(
+      expense
+        ? `Are you sure you want to delete the expense "${expense.description}"? This action cannot be undone.`
+        : "Are you sure you want to delete this expense? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingExpenseId(expenseId)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const updatedExpenses = expenses.filter(e => e.id !== expenseId)
+      onUpdateMilestone({
+        ...milestone,
+        expenses: updatedExpenses
+      })
+      toast.success("Expense deleted successfully")
+    } catch (error) {
+      console.error("Error deleting expense:", error)
+      toast.error('Failed to delete expense. Please try again.')
+    } finally {
+      setDeletingExpenseId(null)
+    }
+  }, [expenses, deletingExpenseId, milestone, onUpdateMilestone])
     const updatedMilestone = {
       ...milestone,
       expenses: expenses.filter(exp => exp.id !== expenseId)
@@ -522,8 +551,13 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                                   size="sm"
                                   onClick={() => handleDeleteExpense(expense.id)}
                                   className="h-8 w-8 p-0"
+                                  disabled={deletingExpenseId === expense.id}
                                 >
-                                  <Trash size={16} weight="bold" className="text-red-600" />
+                                  {deletingExpenseId === expense.id ? (
+                                    <CircleNotch size={16} weight="bold" className="text-red-600 animate-spin" />
+                                  ) : (
+                                    <Trash size={16} weight="bold" className="text-red-600" />
+                                  )}
                                 </Button>
                               </TableCell>
                             )}

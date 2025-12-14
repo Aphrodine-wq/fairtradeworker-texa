@@ -179,11 +179,33 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
     toast.success('Trade contractor updated')
   }
 
-  const handleDelete = (tradeId: string) => {
-    const updated = trades.filter(t => t.id !== tradeId)
-    onUpdate(updated)
-    toast.success('Trade contractor removed')
-  }
+  const [deletingTradeId, setDeletingTradeId] = useState<string | null>(null)
+
+  const handleDelete = useCallback(async (tradeId: string) => {
+    if (deletingTradeId) return
+
+    const trade = trades.find(t => t.id === tradeId)
+    const confirmed = window.confirm(
+      trade
+        ? `Are you sure you want to remove "${trade.contractorName}" from this project? This action cannot be undone.`
+        : "Are you sure you want to remove this contractor? This action cannot be undone."
+    )
+    if (!confirmed) return
+
+    setDeletingTradeId(tradeId)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      const updated = trades.filter(t => t.id !== tradeId)
+      onUpdate(updated)
+      toast.success('Trade contractor removed successfully')
+    } catch (error) {
+      console.error("Error removing trade contractor:", error)
+      toast.error('Failed to remove contractor. Please try again.')
+    } finally {
+      setDeletingTradeId(null)
+    }
+  }, [trades, deletingTradeId, onUpdate])
 
   const handleStatusChange = (tradeId: string, newStatus: TradeContractor['status']) => {
     const updated = trades.map(t => {
