@@ -154,7 +154,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
     const acceptedBid = job.bids.find(bid => bid.status === 'accepted')
     
     return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all">
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -215,7 +215,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               {job.photos.slice(0, 4).map((photo, idx) => (
                 <div
                   key={idx}
-                  className="aspect-square rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+                  className="aspect-square rounded-none border-2 border-black dark:border-white overflow-hidden cursor-pointer hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all"
                   onClick={() => handlePhotoClick(job.photos || [], idx)}
                 >
                   <img
@@ -251,7 +251,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         )}
         
         {job.milestones && job.milestones.length > 0 && (
-          <div className="p-3 bg-muted/50 rounded-lg">
+          <div className="p-3 bg-white dark:bg-black border-2 border-black dark:border-white rounded-none">
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm text-muted-foreground flex items-center gap-1">
                 <ChartBar size={14} weight="fill" />
@@ -424,7 +424,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                               <User weight="fill" className="text-primary" size={20} />
                             </div>
                             <CardTitle className="text-base">{bid.contractorName}</CardTitle>
@@ -478,7 +478,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column - Payment Summary */}
               <div className="space-y-4">
-                <Card className="bg-muted/50">
+                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white">
                   <CardContent className="pt-6 space-y-3">
                     <div className="flex justify-between text-base">
                       <span className="text-muted-foreground">Contractor/Subcontractor bid:</span>

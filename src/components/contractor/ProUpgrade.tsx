@@ -102,7 +102,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
             <div className="grid md:grid-cols-2 gap-6">
               {features.map((feature, idx) => (
                 <div key={idx} className="flex gap-4">
-                  <div className="shrink-0 w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent">
+                  <div className="shrink-0 w-12 h-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff] text-black dark:text-white">
                     {feature.icon}
                   </div>
                   <div>

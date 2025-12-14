@@ -234,7 +234,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {activeJobs.length} active
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -249,7 +249,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {contractorsByTier.pro} PRO members
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-secondary/20 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Users className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -277,7 +277,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <p className="text-3xl font-bold mt-1">{territoryHealth}/100</p>
                   <Progress value={territoryHealth} className="mt-2 h-1" />
                 </div>
-                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                   <Target className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -286,7 +286,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
           {/* Revenue Share Highlight */}
           {operatorRevenue > 0 && (
-            <Card className="p-6 bg-primary/5 border-primary/20">
+            <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Your Territory Earnings</p>
@@ -325,15 +325,15 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <Card className="p-4 bg-muted/50">
+                <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
                   <p className="text-sm text-muted-foreground mb-1">Homeowners</p>
                   <p className="text-2xl font-bold">{territoryHomeowners.length}</p>
                 </Card>
-                <Card className="p-4 bg-muted/50">
+                <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
                   <p className="text-sm text-muted-foreground mb-1">Avg Response</p>
                   <p className="text-2xl font-bold">{avgResponseTime}m</p>
                 </Card>
-                <Card className="p-4 bg-muted/50">
+                <Card className="p-4 bg-white dark:bg-black border-2 border-black dark:border-white">
                   <p className="text-sm text-muted-foreground mb-1">Completion Rate</p>
                   <p className="text-2xl font-bold">
                     {territoryJobs.length > 0 
@@ -382,7 +382,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <div className="space-y-3">
                     {topContractors.map((contractor, index) => (
                       <div key={contractor.id} className="flex items-center gap-3">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center font-bold text-sm">
+                        <div className="h-8 w-8 rounded-none bg-black dark:bg-white border-2 border-black dark:border-white flex items-center justify-center font-black uppercase text-sm shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
                           {index + 1}
                         </div>
                         <div className="flex-1 min-w-0">

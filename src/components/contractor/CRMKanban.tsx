@@ -21,10 +21,10 @@ export function CRMKanban({ user }: CRMKanbanProps) {
   }, [customers, user.id])
 
   const columns: { status: CRMCustomerStatus; title: string; color: string; bgColor: string }[] = [
-    { status: 'lead', title: 'Leads', color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-50 dark:bg-blue-950/20' },
-    { status: 'active', title: 'Active', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-50 dark:bg-green-950/20' },
-    { status: 'completed', title: 'Completed', color: 'text-purple-600 dark:text-purple-400', bgColor: 'bg-purple-50 dark:bg-purple-950/20' },
-    { status: 'advocate', title: 'Advocates', color: 'text-amber-600 dark:text-amber-400', bgColor: 'bg-amber-50 dark:bg-amber-950/20' },
+    { status: 'lead', title: 'Leads', color: 'text-black dark:text-white', bgColor: 'bg-white dark:bg-black' },
+    { status: 'active', title: 'Active', color: 'text-black dark:text-white', bgColor: 'bg-[#00FF00] dark:bg-[#00FF00]' },
+    { status: 'completed', title: 'Completed', color: 'text-black dark:text-white', bgColor: 'bg-white dark:bg-black' },
+    { status: 'advocate', title: 'Advocates', color: 'text-black dark:text-white', bgColor: 'bg-white dark:bg-black' },
   ]
 
   const handleDragStart = (customer: CRMCustomer) => {
@@ -111,19 +111,19 @@ export function CRMKanban({ user }: CRMKanbanProps) {
               onDragOver={(e) => handleDragOver(e, column.status)}
               onDragLeave={handleDragLeave}
             >
-              <div className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
+              <div className={`flex items-center justify-between p-4 rounded-none border-2 transition-all ${
                 isDragOver 
-                  ? 'border-primary bg-primary/10 dark:bg-primary/20' 
-                  : 'border-black/10 dark:border-white/10 bg-white dark:bg-black'
+                  ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black' 
+                  : 'border-black dark:border-white bg-white dark:bg-black'
               }`}>
                 <h3 className={`font-semibold ${column.color}`}>{column.title}</h3>
-                <Badge variant="secondary" className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                <Badge variant="secondary" className="bg-white dark:bg-black border-2 border-black dark:border-white">
                   {columnCustomers.length}
                 </Badge>
               </div>
 
-              <div className={`flex flex-col gap-3 min-h-[300px] p-2 rounded-lg transition-all ${
-                isDragOver ? column.bgColor : ''
+              <div className={`flex flex-col gap-3 min-h-[300px] p-2 rounded-none border-2 border-black dark:border-white transition-all ${
+                isDragOver ? column.bgColor : 'bg-white dark:bg-black'
               }`}>
                 {columnCustomers.map((customer) => {
                   const isDragging = draggedCustomer?.id === customer.id
@@ -134,9 +134,9 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                       draggable
                       onDragStart={() => handleDragStart(customer)}
                       onDragEnd={handleDragEnd}
-                      className={`cursor-move transition-all duration-200 hover:shadow-lg hover:scale-[1.02] ${
+                      className={`cursor-move transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:scale-[1.02] ${
                         isDragging ? 'opacity-50 scale-95' : ''
-                      } bg-white dark:bg-black border-black/10 dark:border-white/10`}
+                      } bg-white dark:bg-black border-2 border-black dark:border-white`}
                     >
                       <CardHeader className="p-4 pb-2">
                         <CardTitle className="text-base font-semibold text-black dark:text-white">
@@ -195,9 +195,9 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                 })}
 
                 {columnCustomers.length === 0 && (
-                  <div className={`flex items-center justify-center p-8 text-sm text-muted-foreground border-2 border-dashed rounded-lg transition-all ${
-                    isDragOver 
-                      ? 'border-primary bg-primary/5 dark:bg-primary/10' 
+                  <div className={`flex items-center justify-center p-8 text-sm text-black dark:text-white border-2 border-dashed rounded-none transition-all font-mono ${
+                      isDragOver 
+                        ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black'
                       : 'border-black/10 dark:border-white/10'
                   }`}>
                     {isDragOver ? 'Drop here!' : 'Drop customers here'}

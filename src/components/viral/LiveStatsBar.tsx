@@ -114,7 +114,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
   ]
 
   return (
-    <div className="rounded-2xl mx-auto max-w-2xl my-8 relative z-10" style={{ backgroundColor: bgColor }}>
+    <div className="rounded-none border-2 border-black dark:border-white mx-auto max-w-2xl my-8 relative z-10 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]" style={{ backgroundColor: bgColor }}>
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
@@ -122,19 +122,19 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
             <motion.div 
               key={stat.label} 
               className={cn(
-                "flex-1 px-6 py-3 rounded-xl bg-card border-0 flex items-center gap-3"
+                "flex-1 px-6 py-3 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center gap-3 shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
               )}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.3 }}
             >
-              <div className={cn("p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10", stat.color)}>
+              <div className={cn("p-2 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]", stat.color)}>
                 <Icon size={24} weight="bold" className="text-black dark:text-white" />
               </div>
               <div>
                 <motion.div 
                   className={cn(
-                    "text-2xl font-bold text-black dark:text-white"
+                    "text-2xl font-black font-mono text-black dark:text-white"
                   )}
                   key={stat.value}
                   initial={{ scale: 1.1 }}

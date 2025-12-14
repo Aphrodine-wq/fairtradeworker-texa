@@ -94,7 +94,7 @@ function DropdownMenuCheckboxItem({
     <DropdownMenuPrimitive.CheckboxItem
       data-slot="dropdown-menu-checkbox-item"
       className={cn(
-        "focus:bg-white dark:focus:bg-black focus:text-black dark:focus:text-white relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black relative flex cursor-default items-center gap-2 rounded-none py-1.5 pr-2 pl-8 text-sm font-mono outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       checked={checked}
@@ -130,7 +130,7 @@ function DropdownMenuRadioItem({
     <DropdownMenuPrimitive.RadioItem
       data-slot="dropdown-menu-radio-item"
       className={cn(
-        "focus:bg-white dark:focus:bg-black focus:text-black dark:focus:text-white relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black relative flex cursor-default items-center gap-2 rounded-none py-1.5 pr-2 pl-8 text-sm font-mono outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
@@ -213,7 +213,7 @@ function DropdownMenuSubTrigger({
       data-slot="dropdown-menu-sub-trigger"
       data-inset={inset}
       className={cn(
-        "focus:bg-white dark:focus:bg-black focus:text-black dark:focus:text-white data-[state=open]:bg-white dark:data-[state=open]:bg-black data-[state=open]:text-black dark:data-[state=open]:text-white flex cursor-default items-center rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[inset]:pl-8",
+        "focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black data-[state=open]:bg-black dark:data-[state=open]:bg-white data-[state=open]:text-white dark:data-[state=open]:text-black flex cursor-default items-center rounded-none px-2 py-1.5 text-sm font-mono outline-hidden select-none data-[inset]:pl-8",
         className
       )}
       {...props}
