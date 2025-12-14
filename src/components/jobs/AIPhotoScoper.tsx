@@ -596,7 +596,7 @@ Generate a complete, professional scope document now.`
               </div>
             )}
 
-            <div className="bg-primary/10 border-2 border-primary rounded-lg p-4">
+            <div className="bg-white dark:bg-black border-2 border-black dark:border-white rounded-none p-4 shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
               <p className="text-sm text-foreground text-center font-medium">
                 💰 Fast, accurate, and powered by AI
               </p>

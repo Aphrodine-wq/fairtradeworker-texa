@@ -54,13 +54,13 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black dark:bg-white flex items-center justify-center"
           onClick={handleBackdropClick}
         >
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-4 right-4 z-10 text-white hover:bg-white/10 rounded-full h-12 w-12"
+            className="absolute top-4 right-4 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-none border-2 border-white dark:border-black h-12 w-12"
             onClick={onClose}
           >
             <X size={28} weight="bold" />
@@ -71,7 +71,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 rounded-full h-12 w-12"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-none border-2 border-white dark:border-black h-12 w-12"
                 onClick={handlePrevious}
               >
                 <CaretLeft size={32} weight="bold" />
@@ -80,7 +80,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/10 rounded-full h-12 w-12"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-none border-2 border-white dark:border-black h-12 w-12"
                 onClick={handleNext}
               >
                 <CaretRight size={32} weight="bold" />
