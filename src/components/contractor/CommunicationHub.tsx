@@ -84,7 +84,7 @@ export function CommunicationHub({ user }: { user: User }) {
               <span className="text-black dark:text-white">Communication Hub</span>
             </h1>
             <p className="text-muted-foreground text-lg">
-              Real-time messaging, video calls, and file sharing
+              Real-time messaging, video calls, and file sharing. Stay connected with customers and team members.
             </p>
           </div>
 

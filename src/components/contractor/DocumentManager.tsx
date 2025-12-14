@@ -112,7 +112,7 @@ export function DocumentManager({ user }: { user: User }) {
                 <span className="text-black dark:text-white">Document Manager</span>
               </h1>
               <p className="text-muted-foreground text-lg">
-                Organize, upload, and share your business documents
+                Organize, upload, and share your business documents. Supports PDF, images, and office files.
               </p>
             </div>
             <div className="flex gap-3">
