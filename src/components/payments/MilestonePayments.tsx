@@ -60,71 +60,90 @@ export function MilestonePaymentDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Pay Milestone</DialogTitle>
-          <DialogDescription>
-            Approve and pay for completed work
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+        <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <DialogHeader className="text-left">
+            <DialogTitle className="text-2xl">Pay Milestone</DialogTitle>
+            <DialogDescription>
+              Approve and pay for completed work
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
-        <div className="space-y-6">
-          <Card className="border border-black/10 dark:border-white/10 bg-white dark:bg-black">
-            <CardContent className="pt-6 space-y-4">
-              <div>
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h3 className="font-semibold text-lg">{milestone.name}</h3>
-                    <p className="text-sm text-muted-foreground">{milestone.description}</p>
+        <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Left Column - Summary */}
+          <div className="space-y-4">
+            <Card className="border border-black/10 dark:border-white/10 bg-white dark:bg-black">
+              <CardContent className="pt-6 space-y-4">
+                <div>
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <h3 className="font-semibold text-base">{milestone.name}</h3>
+                      <p className="text-sm text-muted-foreground">{milestone.description}</p>
+                    </div>
+                    <Badge variant="outline" className="ml-2 text-xs">
+                      {milestone.percentage}%
+                    </Badge>
                   </div>
-                  <Badge variant="outline" className="ml-2">
-                    {milestone.percentage}%
-                  </Badge>
+                  <p className="text-xs text-muted-foreground">
+                    Job: {jobTitle} • Contractor: {contractorName}
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  Job: {jobTitle} • Contractor: {contractorName}
-                </p>
-              </div>
 
-              <Separator />
-
-              <div className="space-y-2">
-                {milestone.photos && milestone.photos.length > 0 && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <CheckCircle className="text-black dark:text-white" size={16} weight="fill" />
-                    <span>{milestone.photos.length} verification photos attached</span>
-                  </div>
-                )}
-                {milestone.notes && (
-                  <div className="p-3 bg-background rounded-lg border text-sm">
-                    <p className="text-muted-foreground mb-1 font-medium">Completion Notes:</p>
-                    <p>{milestone.notes}</p>
-                  </div>
-                )}
-              </div>
-
-              <Separator />
-
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Milestone Amount</span>
-                  <span className="font-semibold">${breakdown.jobAmount.toFixed(2)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Platform Fee</span>
-                  <span className="text-sm">${breakdown.platformFee.toFixed(2)}</span>
-                </div>
                 <Separator />
-                <div className="flex items-center justify-between text-base font-bold">
-                  <span>Total Payment</span>
-                  <span>${breakdown.homeownerTotal.toFixed(2)}</span>
+
+                <div className="space-y-2">
+                  {milestone.photos && milestone.photos.length > 0 && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="text-black dark:text-white" size={16} weight="fill" />
+                      <span>{milestone.photos.length} verification photos attached</span>
+                    </div>
+                  )}
+                  {milestone.notes && (
+                    <div className="p-3 bg-background rounded-lg border text-xs">
+                      <p className="text-muted-foreground mb-1 font-medium">Completion Notes:</p>
+                      <p>{milestone.notes}</p>
+                    </div>
+                  )}
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Milestone Amount</span>
+                    <span className="font-semibold">${breakdown.jobAmount.toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Platform Fee</span>
+                    <span className="text-sm">${breakdown.platformFee.toFixed(2)}</span>
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between text-base font-bold">
+                    <span>Total Payment</span>
+                    <span>${breakdown.homeownerTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="p-4 bg-muted/50 rounded-lg space-y-2">
+              <div className="flex items-start gap-2">
+                <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={16} weight="fill" />
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <p className="font-medium text-foreground">Payment Protection</p>
+                  <p>
+                    Funds are held securely and only released to the contractor after you approve the milestone completion.
+                    You have 48 hours to dispute if work doesn't meet expectations.
+                  </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <div className="space-y-3">
-            <p className="text-sm font-medium">Payment Method</p>
+          {/* Right Column - Payment Method */}
+          <div className="space-y-4">
+            <p className="text-base font-medium">Payment Method</p>
             
             <button
               type="button"
@@ -135,14 +154,14 @@ export function MilestonePaymentDialog({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CreditCard size={24} className="text-muted-foreground" />
+                  <CreditCard size={20} className="text-muted-foreground" />
                   <div>
-                    <p className="font-semibold">Visa •••• 4242</p>
+                    <p className="font-semibold text-sm">Visa •••• 4242</p>
                     <p className="text-xs text-muted-foreground">Expires 12/25</p>
                   </div>
                 </div>
                 {paymentMethod === 'saved' && (
-                  <CheckCircle size={20} weight="fill" className="text-primary" />
+                  <CheckCircle size={18} weight="fill" className="text-primary" />
                 )}
               </div>
             </button>
@@ -156,46 +175,35 @@ export function MilestonePaymentDialog({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CreditCard size={24} className="text-muted-foreground" />
+                  <CreditCard size={20} className="text-muted-foreground" />
                   <div>
-                    <p className="font-semibold">Use a different card</p>
+                    <p className="font-semibold text-sm">Use a different card</p>
                     <p className="text-xs text-muted-foreground">Add new payment method</p>
                   </div>
                 </div>
                 {paymentMethod === 'new' && (
-                  <CheckCircle size={20} weight="fill" className="text-primary" />
+                  <CheckCircle size={18} weight="fill" className="text-primary" />
                 )}
               </div>
             </button>
           </div>
+        </div>
 
-          <div className="p-4 bg-muted/50 rounded-lg space-y-2">
-            <div className="flex items-start gap-2">
-              <CheckCircle className="text-primary flex-shrink-0 mt-0.5" size={18} weight="fill" />
-              <div className="text-xs text-muted-foreground space-y-1">
-                <p className="font-medium text-foreground">Payment Protection</p>
-                <p>
-                  Funds are held securely and only released to the contractor after you approve the milestone completion.
-                  You have 48 hours to dispute if work doesn't meet expectations.
-                </p>
-              </div>
-            </div>
-          </div>
-
+        <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
           <div className="flex gap-3">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={processing}
-              className="flex-1"
+              className="flex-1 h-11"
             >
               Review Later
             </Button>
             <Button
               onClick={handlePayment}
               disabled={processing}
-              className="flex-1"
+              className="flex-1 h-11"
             >
               {processing ? (
                 <>

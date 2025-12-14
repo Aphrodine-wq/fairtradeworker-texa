@@ -369,53 +369,46 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                         </CardContent>
                       </Card>
                     </DialogTrigger>
-                    <DialogContent className="dark:bg-black dark:border-white/20">
-                      <DialogHeader>
-                        <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
-                        <DialogDescription className="dark:text-white/70">
-                          Complete customer profile and interaction history
-                        </DialogDescription>
-                      </DialogHeader>
-                      
-                      <Tabs defaultValue="overview" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 dark:bg-black dark:border-white/10">
-                          <TabsTrigger value="overview" className="dark:text-white dark:data-[state=active]:bg-black">
-                            Overview
-                          </TabsTrigger>
-                          <TabsTrigger value="interactions" className="dark:text-white dark:data-[state=active]:bg-black">
-                            Interactions
-                          </TabsTrigger>
-                          <TabsTrigger value="notes" className="dark:text-white dark:data-[state=active]:bg-black">
-                            Notes
-                          </TabsTrigger>
-                        </TabsList>
+                    <DialogContent className="dark:bg-black dark:border-white/20 overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+                      {/* Header */}
+                      <div className="px-8 pt-6 pb-4 border-b dark:border-white/10 flex-shrink-0">
+                        <DialogHeader className="text-left">
+                          <DialogTitle className="dark:text-white text-2xl">{customer.name}</DialogTitle>
+                          <DialogDescription className="dark:text-white/70">
+                            Complete customer profile and interaction history
+                          </DialogDescription>
+                        </DialogHeader>
+                      </div>
 
-                        <TabsContent value="overview" className="space-y-4 mt-4">
-                          <div className="grid grid-cols-2 gap-4">
+                      {/* Main Content - Column Layout */}
+                      <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 gap-4 p-6">
+                        {/* Left Column - Overview */}
+                        <div className="lg:col-span-1 space-y-4 overflow-hidden flex flex-col">
+                          <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 space-y-4">
                             <div className="space-y-2">
-                              <Label className="dark:text-white">Contact</Label>
-                              <div className="flex items-center gap-2 p-3 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10">
+                              <Label className="dark:text-white text-sm">Contact</Label>
+                              <div className="flex items-center gap-2 p-2 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10">
                                 {customer.invitedVia === 'email' ? (
                                   <>
-                                    <EnvelopeSimple weight="duotone" size={20} className="dark:text-white" />
-                                    <span className="dark:text-white">{customer.email}</span>
+                                    <EnvelopeSimple weight="duotone" size={18} className="dark:text-white" />
+                                    <span className="dark:text-white text-sm">{customer.email}</span>
                                   </>
                                 ) : (
                                   <>
-                                    <DeviceMobile weight="duotone" size={20} className="dark:text-white" />
-                                    <span className="dark:text-white">{customer.phone}</span>
+                                    <DeviceMobile weight="duotone" size={18} className="dark:text-white" />
+                                    <span className="dark:text-white text-sm">{customer.phone}</span>
                                   </>
                                 )}
                               </div>
                             </div>
 
                             <div className="space-y-2">
-                              <Label className="dark:text-white">Status</Label>
+                              <Label className="dark:text-white text-sm">Status</Label>
                               <Select
                                 value={customer.status}
                                 onValueChange={(value) => handleUpdateStatus(customer.id, value as CRMCustomer['status'])}
                               >
-                                <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20">
+                                <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20 h-9">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -426,94 +419,141 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 </SelectContent>
                               </Select>
                             </div>
-                          </div>
 
-                          <div className="space-y-2">
-                            <Label className="dark:text-white">Customer Information</Label>
-                            <div className="grid grid-cols-2 gap-4 text-sm">
-                              <div>
-                                <span className="text-muted-foreground dark:text-white/70">Lifetime Value:</span>
-                                <span className="ml-2 font-semibold text-primary dark:text-white">
-                                  ${customer.lifetimeValue.toLocaleString()}
-                                </span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground dark:text-white/70">Source:</span>
-                                <span className="ml-2 font-semibold dark:text-white capitalize">
-                                  {customer.source.replace('_', ' ')}
-                                </span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground dark:text-white/70">Added:</span>
-                                <span className="ml-2 dark:text-white">{formatDate(customer.createdAt)}</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground dark:text-white/70">Last Contact:</span>
-                                <span className="ml-2 dark:text-white">{formatDate(customer.lastContact)}</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          {customer.tags && customer.tags.length > 0 && (
                             <div className="space-y-2">
-                              <Label className="dark:text-white">Tags</Label>
-                              <div className="flex flex-wrap gap-2">
-                                {customer.tags.map((tag, idx) => (
-                                  <Badge key={idx} variant="outline" className="dark:border-white/20 dark:text-white/80">
-                                    <Tag weight="duotone" size={12} className="mr-1" />
-                                    {tag}
-                                  </Badge>
-                                ))}
+                              <Label className="dark:text-white text-sm">Customer Information</Label>
+                              <div className="grid grid-cols-1 gap-2 text-xs">
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground dark:text-white/70">Lifetime Value:</span>
+                                  <span className="font-semibold dark:text-white">${customer.lifetimeValue.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground dark:text-white/70">Source:</span>
+                                  <span className="font-semibold dark:text-white capitalize">{customer.source.replace('_', ' ')}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground dark:text-white/70">Added:</span>
+                                  <span className="dark:text-white">{formatDate(customer.createdAt)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-muted-foreground dark:text-white/70">Last Contact:</span>
+                                  <span className="dark:text-white">{formatDate(customer.lastContact)}</span>
+                                </div>
                               </div>
                             </div>
-                          )}
-                        </TabsContent>
 
-                        <TabsContent value="interactions" className="space-y-4 mt-4">
-                          <div className="flex items-center justify-between">
-                            <Label className="dark:text-white">Interaction History</Label>
+                            {customer.tags && customer.tags.length > 0 && (
+                              <div className="space-y-2">
+                                <Label className="dark:text-white text-sm">Tags</Label>
+                                <div className="flex flex-wrap gap-1">
+                                  {customer.tags.map((tag, idx) => (
+                                    <Badge key={idx} variant="outline" className="dark:border-white/20 dark:text-white/80 text-xs">
+                                      <Tag weight="duotone" size={10} className="mr-1" />
+                                      {tag}
+                                    </Badge>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Notes Section */}
+                          <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-1 overflow-hidden flex flex-col">
+                            <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                              <Label className="flex items-center gap-2 dark:text-white text-sm">
+                                <Note weight="duotone" size={16} />
+                                Notes
+                              </Label>
+                              {!isEditingNotes && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => setIsEditingNotes(true)}
+                                  className="dark:text-white dark:hover:bg-black h-8 text-xs"
+                                >
+                                  Edit
+                                </Button>
+                              )}
+                            </div>
+                            {isEditingNotes ? (
+                              <div className="flex-1 flex flex-col space-y-2">
+                                <Textarea
+                                  id="customer-notes"
+                                  placeholder="Add notes..."
+                                  value={notes}
+                                  onChange={(e) => setNotes(e.target.value)}
+                                  className="flex-1 dark:bg-black dark:text-white dark:border-white/20 text-sm resize-none"
+                                />
+                                <div className="flex gap-2 flex-shrink-0">
+                                  <Button onClick={handleSaveNotes} size="sm" className="h-8 text-xs">Save</Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setNotes(customer.notes || "")
+                                      setIsEditingNotes(false)
+                                    }}
+                                    className="dark:bg-black dark:text-white dark:border-white/20 h-8 text-xs"
+                                  >
+                                    Cancel
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="flex-1 text-xs p-3 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10 dark:text-white overflow-hidden">
+                                {customer.notes || "No notes yet. Click Edit to add notes."}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Column - Interactions */}
+                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 overflow-hidden flex flex-col">
+                          <div className="flex items-center justify-between mb-4 flex-shrink-0">
+                            <Label className="dark:text-white text-base font-semibold">Interaction History</Label>
                             <Button
                               size="sm"
                               onClick={() => setShowAddInteraction(true)}
+                              className="h-9 text-xs"
                             >
-                              <Plus size={16} className="mr-2" />
+                              <Plus size={14} className="mr-2" />
                               Add Interaction
                             </Button>
                           </div>
 
-                          <div className="space-y-3 max-h-[400px] overflow-y-auto">
+                          <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-3">
                             {getCustomerInteractions(customer.id).length === 0 ? (
-                              <div className="text-center py-8 text-muted-foreground dark:text-white/70">
-                                <Clock size={32} weight="duotone" className="mx-auto mb-2 opacity-50" />
-                                <p>No interactions recorded yet</p>
+                              <div className="col-span-2 text-center py-8 text-muted-foreground dark:text-white/70">
+                                <Clock size={24} weight="duotone" className="mx-auto mb-2 opacity-50" />
+                                <p className="text-sm">No interactions recorded yet</p>
                               </div>
                             ) : (
                               getCustomerInteractions(customer.id).map((interaction) => {
                                 const Icon = getInteractionIcon(interaction.type)
                                 return (
-                                  <Card key={interaction.id} className="p-4 dark:bg-black dark:border-white/10">
-                                    <div className="flex items-start gap-3">
-                                      <div className="p-2 rounded-lg bg-white dark:bg-black border border-black/10 dark:border-white/10">
-                                        <Icon weight="duotone" size={20} className="text-black dark:text-white" />
+                                  <Card key={interaction.id} className="p-3 dark:bg-black dark:border-white/10">
+                                    <div className="flex items-start gap-2">
+                                      <div className="p-1.5 rounded bg-white dark:bg-black border border-black/10 dark:border-white/10 flex-shrink-0">
+                                        <Icon weight="duotone" size={16} className="text-black dark:text-white" />
                                       </div>
-                                      <div className="flex-1">
+                                      <div className="flex-1 min-w-0">
                                         <div className="flex items-start justify-between mb-1">
-                                          <h4 className="font-semibold dark:text-white">{interaction.title}</h4>
-                                          <span className="text-xs text-muted-foreground dark:text-white/60">
+                                          <h4 className="font-semibold dark:text-white text-sm truncate">{interaction.title}</h4>
+                                          <span className="text-xs text-muted-foreground dark:text-white/60 ml-2 flex-shrink-0">
                                             {formatDateTime(interaction.date)}
                                           </span>
                                         </div>
                                         {interaction.description && (
-                                          <p className="text-sm text-muted-foreground dark:text-white/70 mb-2">
+                                          <p className="text-xs text-muted-foreground dark:text-white/70 mb-1 line-clamp-2">
                                             {interaction.description}
                                           </p>
                                         )}
                                         {interaction.nextAction && (
-                                          <div className="flex items-center gap-2 text-xs text-black dark:text-white/80">
-                                            <Circle weight="fill" size={8} />
-                                            Next: {interaction.nextAction}
+                                          <div className="flex items-center gap-1 text-xs text-black dark:text-white/80">
+                                            <Circle weight="fill" size={6} />
+                                            <span className="truncate">Next: {interaction.nextAction}</span>
                                             {interaction.nextActionDate && (
-                                              <span className="text-muted-foreground dark:text-white/60">
+                                              <span className="text-muted-foreground dark:text-white/60 ml-1">
                                                 ({formatDate(interaction.nextActionDate)})
                                               </span>
                                             )}
@@ -526,68 +566,18 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                               })
                             )}
                           </div>
-                        </TabsContent>
+                        </div>
+                      </div>
 
-                        <TabsContent value="notes" className="space-y-4 mt-4">
-                          <div className="flex items-center justify-between">
-                            <Label className="flex items-center gap-2 dark:text-white">
-                              <Note weight="duotone" size={20} />
-                              Notes
-                            </Label>
-                            {!isEditingNotes && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setIsEditingNotes(true)}
-                                className="dark:text-white dark:hover:bg-black"
-                              >
-                                Edit
-                              </Button>
-                            )}
-                          </div>
-                          {isEditingNotes ? (
-                            <>
-                              <Textarea
-                                id="customer-notes"
-                                placeholder="Add notes about this customer..."
-                                value={notes}
-                                onChange={(e) => setNotes(e.target.value)}
-                                rows={6}
-                                className="dark:bg-black dark:text-white dark:border-white/20"
-                              />
-                              <div className="flex gap-2">
-                                <Button onClick={handleSaveNotes} size="sm">
-                                  Save Notes
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setNotes(customer.notes || "")
-                                    setIsEditingNotes(false)
-                                  }}
-                                  className="dark:bg-black dark:text-white dark:border-white/20"
-                                >
-                                  Cancel
-                                </Button>
-                              </div>
-                            </>
-                          ) : (
-                            <div className="text-sm p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 min-h-[120px] dark:text-white">
-                              {customer.notes || "No notes yet. Click Edit to add notes about this customer."}
-                            </div>
-                          )}
-                        </TabsContent>
-                      </Tabs>
-
-                      <div className="pt-4 border-t dark:border-white/10">
+                      {/* Footer */}
+                      <div className="px-8 py-4 border-t dark:border-white/10 flex-shrink-0">
                         <Button
                           variant="destructive"
                           size="sm"
                           onClick={() => handleDeleteCustomer(customer.id, customer.name)}
-                          className="dark:bg-black dark:hover:bg-black/80"
+                          className="dark:bg-black dark:hover:bg-black/80 h-9 text-xs"
                         >
-                          <Trash weight="bold" className="mr-2" />
+                          <Trash weight="bold" className="mr-2" size={14} />
                           Remove Customer
                         </Button>
                       </div>
@@ -630,30 +620,50 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                                 </CardHeader>
                               </Card>
                             </DialogTrigger>
-                            <DialogContent className="dark:bg-black dark:border-white/20">
-                              <DialogHeader>
-                                <DialogTitle className="dark:text-white">{customer.name}</DialogTitle>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <div className="space-y-2">
-                                  <Label className="dark:text-white">Move to Stage</Label>
-                                  <Select
-                                    value={customer.status}
-                                    onValueChange={(value) => handleUpdateStatus(customer.id, value as CRMCustomer['status'])}
-                                  >
-                                    <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20">
-                                      <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      <SelectItem value="lead">Lead</SelectItem>
-                                      <SelectItem value="active">Active</SelectItem>
-                                      <SelectItem value="completed">Completed</SelectItem>
-                                      <SelectItem value="advocate">Advocate</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                            <DialogContent className="dark:bg-black dark:border-white/20 overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+                              <div className="px-8 pt-6 pb-4 border-b dark:border-white/10 flex-shrink-0">
+                                <DialogHeader className="text-left">
+                                  <DialogTitle className="dark:text-white text-2xl">{customer.name}</DialogTitle>
+                                </DialogHeader>
+                              </div>
+                              <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                  <div className="space-y-2">
+                                    <Label className="dark:text-white">Move to Stage</Label>
+                                    <Select
+                                      value={customer.status}
+                                      onValueChange={(value) => handleUpdateStatus(customer.id, value as CRMCustomer['status'])}
+                                    >
+                                      <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20 h-10">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem value="lead">Lead</SelectItem>
+                                        <SelectItem value="active">Active</SelectItem>
+                                        <SelectItem value="completed">Completed</SelectItem>
+                                        <SelectItem value="advocate">Advocate</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                  <div className="text-sm text-muted-foreground dark:text-white/70">
+                                    Last contact: {formatDate(customer.lastContact)}
+                                  </div>
+                                  {customer.lifetimeValue > 0 && (
+                                    <div className="text-sm">
+                                      <span className="text-muted-foreground dark:text-white/70">Lifetime Value: </span>
+                                      <span className="font-semibold dark:text-white">${customer.lifetimeValue.toLocaleString()}</span>
+                                    </div>
+                                  )}
                                 </div>
-                                <div className="text-sm text-muted-foreground dark:text-white/70">
-                                  Last contact: {formatDate(customer.lastContact)}
+                                <div className="space-y-4">
+                                  {customer.notes && (
+                                    <div>
+                                      <Label className="dark:text-white text-sm mb-2 block">Notes</Label>
+                                      <div className="text-sm p-3 bg-white dark:bg-black rounded border border-black/10 dark:border-white/10 dark:text-white">
+                                        {customer.notes}
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </DialogContent>
@@ -755,69 +765,62 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
       {/* Add Interaction Dialog */}
       {selectedCustomer && (
         <Dialog open={showAddInteraction} onOpenChange={setShowAddInteraction}>
-          <DialogContent className="dark:bg-black dark:border-white/20">
-            <DialogHeader>
-              <DialogTitle className="dark:text-white">Add Interaction</DialogTitle>
-              <DialogDescription className="dark:text-white/70">
-                Record a new interaction with {selectedCustomer.name}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label className="dark:text-white">Type</Label>
-                <Select
-                  value={newInteraction.type}
-                  onValueChange={(value) => setNewInteraction({ ...newInteraction, type: value as any })}
-                >
-                  <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="call">Phone Call</SelectItem>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="meeting">Meeting</SelectItem>
-                    <SelectItem value="note">Note</SelectItem>
-                    <SelectItem value="bid">Bid Submitted</SelectItem>
-                    <SelectItem value="payment">Payment Received</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label className="dark:text-white">Title *</Label>
-                <Input
-                  value={newInteraction.title}
-                  onChange={(e) => setNewInteraction({ ...newInteraction, title: e.target.value })}
-                  placeholder="Brief description of interaction"
-                  className="dark:bg-black dark:text-white dark:border-white/20"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="dark:text-white">Description</Label>
-                <Textarea
-                  value={newInteraction.description}
-                  onChange={(e) => setNewInteraction({ ...newInteraction, description: e.target.value })}
-                  placeholder="Detailed notes about the interaction..."
-                  rows={4}
-                  className="dark:bg-black dark:text-white dark:border-white/20"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+          <DialogContent className="dark:bg-black dark:border-white/20 overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+            <div className="px-8 pt-6 pb-4 border-b dark:border-white/10 flex-shrink-0">
+              <DialogHeader className="text-left">
+                <DialogTitle className="dark:text-white text-2xl">Add Interaction</DialogTitle>
+                <DialogDescription className="dark:text-white/70">
+                  Record a new interaction with {selectedCustomer.name}
+                </DialogDescription>
+              </DialogHeader>
+            </div>
+            <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column */}
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label className="dark:text-white">Date</Label>
+                  <Label className="dark:text-white text-sm">Type</Label>
+                  <Select
+                    value={newInteraction.type}
+                    onValueChange={(value) => setNewInteraction({ ...newInteraction, type: value as any })}
+                  >
+                    <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20 h-10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="call">Phone Call</SelectItem>
+                      <SelectItem value="email">Email</SelectItem>
+                      <SelectItem value="meeting">Meeting</SelectItem>
+                      <SelectItem value="note">Note</SelectItem>
+                      <SelectItem value="bid">Bid Submitted</SelectItem>
+                      <SelectItem value="payment">Payment Received</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="dark:text-white text-sm">Title *</Label>
+                  <Input
+                    value={newInteraction.title}
+                    onChange={(e) => setNewInteraction({ ...newInteraction, title: e.target.value })}
+                    placeholder="Brief description of interaction"
+                    className="dark:bg-black dark:text-white dark:border-white/20 h-10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="dark:text-white text-sm">Date</Label>
                   <Input
                     type="date"
                     value={newInteraction.date}
                     onChange={(e) => setNewInteraction({ ...newInteraction, date: e.target.value })}
-                    className="dark:bg-black dark:text-white dark:border-white/20"
+                    className="dark:bg-black dark:text-white dark:border-white/20 h-10"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label className="dark:text-white">Outcome</Label>
+                  <Label className="dark:text-white text-sm">Outcome</Label>
                   <Select
                     value={newInteraction.outcome}
                     onValueChange={(value) => setNewInteraction({ ...newInteraction, outcome: value as any })}
                   >
-                    <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20">
+                    <SelectTrigger className="dark:bg-black dark:text-white dark:border-white/20 h-10">
                       <SelectValue placeholder="Select outcome" />
                     </SelectTrigger>
                     <SelectContent>
@@ -828,37 +831,52 @@ export function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
                   </Select>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label className="dark:text-white">Next Action</Label>
-                <Input
-                  value={newInteraction.nextAction}
-                  onChange={(e) => setNewInteraction({ ...newInteraction, nextAction: e.target.value })}
-                  placeholder="What should happen next?"
-                  className="dark:bg-black dark:text-white dark:border-white/20"
-                />
+
+              {/* Right Column */}
+              <div className="space-y-4 flex flex-col">
+                <div className="space-y-2">
+                  <Label className="dark:text-white text-sm">Description</Label>
+                  <Textarea
+                    value={newInteraction.description}
+                    onChange={(e) => setNewInteraction({ ...newInteraction, description: e.target.value })}
+                    placeholder="Detailed notes about the interaction..."
+                    className="flex-1 dark:bg-black dark:text-white dark:border-white/20 resize-none"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="dark:text-white text-sm">Next Action</Label>
+                  <Input
+                    value={newInteraction.nextAction}
+                    onChange={(e) => setNewInteraction({ ...newInteraction, nextAction: e.target.value })}
+                    placeholder="What should happen next?"
+                    className="dark:bg-black dark:text-white dark:border-white/20 h-10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="dark:text-white text-sm">Next Action Date</Label>
+                  <Input
+                    type="date"
+                    value={newInteraction.nextActionDate}
+                    onChange={(e) => setNewInteraction({ ...newInteraction, nextActionDate: e.target.value })}
+                    className="dark:bg-black dark:text-white dark:border-white/20 h-10"
+                  />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label className="dark:text-white">Next Action Date</Label>
-                <Input
-                  type="date"
-                  value={newInteraction.nextActionDate}
-                  onChange={(e) => setNewInteraction({ ...newInteraction, nextActionDate: e.target.value })}
-                  className="dark:bg-black dark:text-white dark:border-white/20"
-                />
-              </div>
-              <div className="flex gap-2 pt-4">
-                <Button
-                  onClick={handleAddInteraction}
-                  className="flex-1"
-                >
-                  Add Interaction
-                </Button>
+            </div>
+            <div className="px-8 py-4 border-t dark:border-white/10 flex-shrink-0">
+              <div className="flex gap-3 justify-end">
                 <Button
                   variant="outline"
                   onClick={() => setShowAddInteraction(false)}
-                  className="dark:bg-black dark:text-white dark:border-white/20"
+                  className="dark:bg-black dark:text-white dark:border-white/20 h-10"
                 >
                   Cancel
+                </Button>
+                <Button
+                  onClick={handleAddInteraction}
+                  className="h-10"
+                >
+                  Add Interaction
                 </Button>
               </div>
             </div>

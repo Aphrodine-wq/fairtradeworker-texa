@@ -369,14 +369,17 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
 
       {/* Field Dialog */}
       <Dialog open={showFieldDialog} onOpenChange={setShowFieldDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingField ? 'Edit Field' : 'Create Custom Field'}</DialogTitle>
-            <DialogDescription>
-              Add custom fields to track additional customer information
-            </DialogDescription>
-          </DialogHeader>
-          <FieldForm
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">{editingField ? 'Edit Field' : 'Create Custom Field'}</DialogTitle>
+              <DialogDescription>
+                Add custom fields to track additional customer information
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="flex-1 overflow-hidden p-6">
+            <FieldForm
             field={editingField}
             onSave={(field) => {
               if (editingField) {
@@ -390,19 +393,23 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
               setEditingField(null)
             }}
           />
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* View Dialog */}
       <Dialog open={showViewDialog} onOpenChange={setShowViewDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingView ? 'Edit View' : 'Create Custom View'}</DialogTitle>
-            <DialogDescription>
-              Create custom views to organize and filter your customers
-            </DialogDescription>
-          </DialogHeader>
-          <ViewForm
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">{editingView ? 'Edit View' : 'Create Custom View'}</DialogTitle>
+              <DialogDescription>
+                Create custom views to organize and filter your customers
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="flex-1 overflow-hidden p-6">
+            <ViewForm
             view={editingView}
             availableFields={allFields}
             onSave={(view) => {
@@ -423,19 +430,23 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
               setEditingView(null)
             }}
           />
+          </div>
         </DialogContent>
       </Dialog>
 
       {/* Workflow Dialog */}
       <Dialog open={showWorkflowDialog} onOpenChange={setShowWorkflowDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingWorkflow ? 'Edit Workflow' : 'Create Automation Workflow'}</DialogTitle>
-            <DialogDescription>
-              Automate actions based on triggers and conditions
-            </DialogDescription>
-          </DialogHeader>
-          <WorkflowForm
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">{editingWorkflow ? 'Edit Workflow' : 'Create Automation Workflow'}</DialogTitle>
+              <DialogDescription>
+                Automate actions based on triggers and conditions
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="flex-1 overflow-hidden p-6">
+            <WorkflowForm
             workflow={editingWorkflow}
             onSave={(workflow) => {
               if (editingWorkflow) {
@@ -454,6 +465,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
               setEditingWorkflow(null)
             }}
           />
+          </div>
         </DialogContent>
       </Dialog>
     </div>
@@ -485,78 +497,88 @@ function FieldForm({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label>Field Name</Label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g., Company Name, Industry, etc."
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label>Field Type</Label>
-        <Select value={type} onValueChange={(v) => setType(v as CustomField['type'])}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="text">Text</SelectItem>
-            <SelectItem value="number">Number</SelectItem>
-            <SelectItem value="date">Date</SelectItem>
-            <SelectItem value="select">Dropdown</SelectItem>
-            <SelectItem value="textarea">Text Area</SelectItem>
-            <SelectItem value="checkbox">Checkbox</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {type === 'select' && (
-        <div className="space-y-2">
-          <Label>Options</Label>
-          <div className="flex gap-2">
+    <div className="h-full flex flex-col">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-base">Field Name</Label>
             <Input
-              value={newOption}
-              onChange={(e) => setNewOption(e.target.value)}
-              placeholder="Add option..."
-              onKeyPress={(e) => e.key === 'Enter' && handleAddOption()}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g., Company Name, Industry, etc."
+              className="h-11"
             />
-            <Button type="button" onClick={handleAddOption}>
-              <Plus size={16} />
-            </Button>
           </div>
-          {options.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
-              {options.map((opt, idx) => (
-                <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-muted rounded-full">
-                  <span>{opt}</span>
-                  <button
-                    onClick={() => setOptions(options.filter((_, i) => i !== idx))}
-                    className="text-red-600"
-                  >
-                    <X size={14} />
-                  </button>
+
+          <div className="space-y-2">
+            <Label className="text-base">Field Type</Label>
+            <Select value={type} onValueChange={(v) => setType(v as CustomField['type'])}>
+              <SelectTrigger className="h-11">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="text">Text</SelectItem>
+                <SelectItem value="number">Number</SelectItem>
+                <SelectItem value="date">Date</SelectItem>
+                <SelectItem value="select">Dropdown</SelectItem>
+                <SelectItem value="textarea">Text Area</SelectItem>
+                <SelectItem value="checkbox">Checkbox</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <Switch checked={required} onCheckedChange={setRequired} />
+              <Label>Required Field</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Switch checked={visible} onCheckedChange={setVisible} />
+              <Label>Visible by Default</Label>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-4">
+          {type === 'select' && (
+            <div className="space-y-2">
+              <Label className="text-base">Options</Label>
+              <div className="flex gap-2">
+                <Input
+                  value={newOption}
+                  onChange={(e) => setNewOption(e.target.value)}
+                  placeholder="Add option..."
+                  onKeyPress={(e) => e.key === 'Enter' && handleAddOption()}
+                  className="h-11"
+                />
+                <Button type="button" onClick={handleAddOption} className="h-11">
+                  <Plus size={16} />
+                </Button>
+              </div>
+              {options.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {options.map((opt, idx) => (
+                    <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-muted rounded-full">
+                      <span className="text-sm">{opt}</span>
+                      <button
+                        onClick={() => setOptions(options.filter((_, i) => i !== idx))}
+                        className="text-red-600"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
           )}
         </div>
-      )}
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Switch checked={required} onCheckedChange={setRequired} />
-          <Label>Required Field</Label>
-        </div>
-        <div className="flex items-center gap-2">
-          <Switch checked={visible} onCheckedChange={setVisible} />
-          <Label>Visible by Default</Label>
-        </div>
       </div>
 
-      <div className="flex gap-2 justify-end">
-        <Button variant="outline" onClick={onCancel}>
+      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+        <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
         <Button onClick={() => onSave({
@@ -566,7 +588,7 @@ function FieldForm({
           required,
           visible,
           order: field?.order || 100,
-        })}>
+        })} className="h-11">
           <FloppyDisk size={16} className="mr-2" />
           {field ? 'Update' : 'Create'} Field
         </Button>
@@ -592,54 +614,64 @@ function ViewForm({
   const [layout, setLayout] = useState<CustomView['layout']>(view?.layout || 'list')
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label>View Name</Label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g., Active Leads, High Value Customers"
-        />
-      </div>
+    <div className="h-full flex flex-col">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-base">View Name</Label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g., Active Leads, High Value Customers"
+              className="h-11"
+            />
+          </div>
 
-      <div className="space-y-2">
-        <Label>Fields to Display</Label>
-        <div className="max-h-48 overflow-y-auto space-y-2 border rounded-lg p-3">
-          {availableFields.map((field) => (
-            <div key={field.id} className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={selectedFields.includes(field.id)}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setSelectedFields([...selectedFields, field.id])
-                  } else {
-                    setSelectedFields(selectedFields.filter(id => id !== field.id))
-                  }
-                }}
-              />
-              <Label className="font-normal">{field.name}</Label>
+          <div className="space-y-2">
+            <Label className="text-base">Layout</Label>
+            <Select value={layout} onValueChange={(v) => setLayout(v as CustomView['layout'])}>
+              <SelectTrigger className="h-11">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="list">List</SelectItem>
+                <SelectItem value="grid">Grid</SelectItem>
+                <SelectItem value="table">Table</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-base">Fields to Display</Label>
+            <div className="h-full space-y-2 border rounded-lg p-3 grid grid-cols-2 gap-2">
+              {availableFields.map((field) => (
+                <div key={field.id} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedFields.includes(field.id)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedFields([...selectedFields, field.id])
+                      } else {
+                        setSelectedFields(selectedFields.filter(id => id !== field.id))
+                      }
+                    }}
+                    className="w-4 h-4"
+                  />
+                  <Label className="font-normal text-sm">{field.name}</Label>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Layout</Label>
-        <Select value={layout} onValueChange={(v) => setLayout(v as CustomView['layout'])}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="list">List</SelectItem>
-            <SelectItem value="grid">Grid</SelectItem>
-            <SelectItem value="table">Table</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex gap-2 justify-end">
-        <Button variant="outline" onClick={onCancel}>
+      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+        <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
         <Button onClick={() => onSave({
@@ -649,7 +681,7 @@ function ViewForm({
           filters: view?.filters || {},
           sortBy: view?.sortBy || 'createdAt',
           sortOrder: view?.sortOrder || 'desc',
-        })}>
+        })} className="h-11">
           <FloppyDisk size={16} className="mr-2" />
           {view ? 'Update' : 'Create'} View
         </Button>
@@ -673,42 +705,51 @@ function WorkflowForm({
   const [active, setActive] = useState(workflow?.active ?? true)
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label>Workflow Name</Label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="e.g., Auto-follow up on new leads"
-        />
+    <div className="h-full flex flex-col">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column */}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-base">Workflow Name</Label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g., Auto-follow up on new leads"
+              className="h-11"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-base">Trigger</Label>
+            <Select value={trigger} onValueChange={(v) => setTrigger(v as CustomWorkflow['trigger'])}>
+              <SelectTrigger className="h-11">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="status_change">Status Change</SelectItem>
+                <SelectItem value="new_customer">New Customer Added</SelectItem>
+                <SelectItem value="interaction">New Interaction</SelectItem>
+                <SelectItem value="date">Date-based</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Switch checked={active} onCheckedChange={setActive} />
+            <Label>Active</Label>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-4">
+          <div className="text-sm text-muted-foreground p-4 bg-muted/50 rounded-lg">
+            Advanced workflow configuration coming soon. For now, basic triggers are available.
+          </div>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Trigger</Label>
-        <Select value={trigger} onValueChange={(v) => setTrigger(v as CustomWorkflow['trigger'])}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="status_change">Status Change</SelectItem>
-            <SelectItem value="new_customer">New Customer Added</SelectItem>
-            <SelectItem value="interaction">New Interaction</SelectItem>
-            <SelectItem value="date">Date-based</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Switch checked={active} onCheckedChange={setActive} />
-        <Label>Active</Label>
-      </div>
-
-      <div className="text-sm text-muted-foreground">
-        Advanced workflow configuration coming soon. For now, basic triggers are available.
-      </div>
-
-      <div className="flex gap-2 justify-end">
-        <Button variant="outline" onClick={onCancel}>
+      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+        <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
         <Button onClick={() => onSave({
@@ -717,7 +758,7 @@ function WorkflowForm({
           active,
           conditions: workflow?.conditions || {},
           actions: workflow?.actions || [],
-        })}>
+        })} className="h-11">
           <FloppyDisk size={16} className="mr-2" />
           {workflow ? 'Update' : 'Create'} Workflow
         </Button>

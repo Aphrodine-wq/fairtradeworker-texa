@@ -507,152 +507,158 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0">
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
           {/* Header Section - Fixed */}
-          <div className="px-8 pt-8 pb-6 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogHeader className="text-left">
-              <DialogTitle className="text-3xl font-bold text-black dark:text-white mb-2">
+              <DialogTitle className="text-2xl md:text-3xl font-bold text-black dark:text-white mb-1">
                 Submit Your Bid
               </DialogTitle>
-              <DialogDescription className="text-lg text-muted-foreground">
+              <DialogDescription className="text-base text-muted-foreground">
                 {selectedJob?.title}
               </DialogDescription>
             </DialogHeader>
           </div>
 
-          {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6">
-            {selectedJob && (
-              <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-6">
-                <BidIntelligence
-                  jobCategory={selectedJob.title}
-                  jobPriceLow={selectedJob.aiScope.priceLow}
-                  jobPriceHigh={selectedJob.aiScope.priceHigh}
-                  contractorWinRate={user.winRate}
-                />
-              </div>
-            )}
-
-            {selectedJob && myScheduledJobs.length > 0 && (
-              <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4">
-                <DriveTimeWarning
-                  targetJob={selectedJob}
-                  scheduledJobs={myScheduledJobs}
-                  user={user}
-                />
-              </div>
-            )}
-
-            {selectedJob && (
-              <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4">
-                <div className="mb-3">
-                  <h3 className="text-lg font-semibold text-black dark:text-white">Questions & Answers</h3>
-                  <p className="text-sm text-muted-foreground">Review questions from other contractors</p>
-                </div>
-                <div className="max-h-[300px] overflow-y-auto">
-                  <JobQA job={selectedJob} currentUser={user} isContractor={true} />
-                </div>
-              </div>
-            )}
-            
-            {/* Main Bid Form */}
-            <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-6 space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold text-black dark:text-white mb-4">Your Bid Details</h3>
-              </div>
-
-              {/* Bid Templates Dropdown */}
-              {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
-                <div className="space-y-3">
-                  <Label className="text-base font-medium text-black dark:text-white">Load Template (Optional)</Label>
-                  <Select onValueChange={handleTemplateSelect}>
-                    <SelectTrigger className="h-12 text-base bg-white dark:bg-black border-black/10 dark:border-white/20">
-                      <SelectValue placeholder="Choose a saved template..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {bidTemplates
-                        .filter(t => t.contractorId === user.id)
-                        .map((template) => (
-                          <SelectItem key={template.id} value={template.id}>
-                            {template.name}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
+          {/* Main Content Area - Column Layout - No Scroll */}
+          <div className="flex-1 overflow-hidden px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {/* Left Column - Job Info & Intelligence */}
+            <div className="lg:col-span-1 space-y-4 overflow-hidden flex flex-col">
+              {selectedJob && (
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-shrink-0">
+                  <BidIntelligence
+                    jobCategory={selectedJob.title}
+                    jobPriceLow={selectedJob.aiScope.priceLow}
+                    jobPriceHigh={selectedJob.aiScope.priceHigh}
+                    contractorWinRate={user.winRate}
+                  />
                 </div>
               )}
 
-              <div className="space-y-3">
-                <Label htmlFor="bidAmount" className="text-base font-medium text-black dark:text-white">
-                  Bid Amount ($)
-                </Label>
-                <Input
-                  id="bidAmount"
-                  type="number"
-                  placeholder="Enter your bid amount"
-                  value={bidAmount}
-                  onChange={(e) => setBidAmount(e.target.value)}
-                  className="h-12 text-lg bg-white dark:bg-black border-black/10 dark:border-white/20"
-                />
-                {selectedJob && (
-                  <p className="text-sm text-muted-foreground mt-2">
-                    💡 Estimated range: <span className="font-semibold">${selectedJob.aiScope.priceLow.toLocaleString()}</span> - <span className="font-semibold">${selectedJob.aiScope.priceHigh.toLocaleString()}</span>
-                  </p>
-                )}
-              </div>
+              {selectedJob && myScheduledJobs.length > 0 && (
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-3 flex-shrink-0">
+                  <DriveTimeWarning
+                    targetJob={selectedJob}
+                    scheduledJobs={myScheduledJobs}
+                    user={user}
+                  />
+                </div>
+              )}
 
-              <div className="space-y-3">
-                <Label htmlFor="bidMessage" className="text-base font-medium text-black dark:text-white">
-                  Message to Homeowner
-                </Label>
-                <Textarea
-                  id="bidMessage"
-                  placeholder="Tell the homeowner about your experience, approach, and why you're the best fit for this job..."
-                  value={bidMessage}
-                  onChange={(e) => setBidMessage(e.target.value)}
-                  rows={8}
-                  className="text-base bg-white dark:bg-black border-black/10 dark:border-white/20 resize-y min-h-[200px]"
-                />
-                <p className="text-sm text-muted-foreground">
-                  💬 A compelling message helps you stand out and win more jobs
-                </p>
-              </div>
-
-              {/* Save as Template Option */}
-              {user.role === 'contractor' && bidMessage.trim() && (
-                <div className="space-y-4 p-5 rounded-lg border-2 border-black/10 dark:border-white/20 bg-white dark:bg-black">
-                  <div className="flex items-center space-x-3">
-                    <input
-                      type="checkbox"
-                      id="saveTemplate"
-                      checked={saveAsTemplate}
-                      onChange={(e) => setSaveAsTemplate(e.target.checked)}
-                      className="w-5 h-5 rounded cursor-pointer"
-                    />
-                    <Label htmlFor="saveTemplate" className="text-base font-medium cursor-pointer text-black dark:text-white">
-                      Save this message as a template for future bids
-                    </Label>
+              {selectedJob && (
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-1 overflow-hidden flex flex-col">
+                  <div className="mb-2 flex-shrink-0">
+                    <h3 className="text-base font-semibold text-black dark:text-white">Questions & Answers</h3>
+                    <p className="text-xs text-muted-foreground">Review questions from other contractors</p>
                   </div>
-                  {saveAsTemplate && (
-                    <div className="space-y-2 pl-8">
-                      <Label className="text-sm text-muted-foreground">Template Name</Label>
-                      <Input
-                        placeholder="e.g., 'My standard intro message'"
-                        value={templateName}
-                        onChange={(e) => setTemplateName(e.target.value)}
-                        className="h-11 bg-white dark:bg-black border-black/10 dark:border-white/20"
-                      />
+                  <div className="flex-1 overflow-hidden">
+                    <JobQA job={selectedJob} currentUser={user} isContractor={true} />
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Right Column - Bid Form (2/3 width) */}
+            <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-6 overflow-hidden flex flex-col">
+              <h3 className="text-xl font-semibold text-black dark:text-white mb-4 flex-shrink-0">Your Bid Details</h3>
+              
+              <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Left Side of Form */}
+                <div className="space-y-4">
+                  {/* Bid Templates Dropdown */}
+                  {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-black dark:text-white">Load Template (Optional)</Label>
+                      <Select onValueChange={handleTemplateSelect}>
+                        <SelectTrigger className="h-10 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20">
+                          <SelectValue placeholder="Choose a saved template..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {bidTemplates
+                            .filter(t => t.contractorId === user.id)
+                            .map((template) => (
+                              <SelectItem key={template.id} value={template.id}>
+                                {template.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bidAmount" className="text-sm font-medium text-black dark:text-white">
+                      Bid Amount ($)
+                    </Label>
+                    <Input
+                      id="bidAmount"
+                      type="number"
+                      placeholder="Enter your bid amount"
+                      value={bidAmount}
+                      onChange={(e) => setBidAmount(e.target.value)}
+                      className="h-10 text-base bg-white dark:bg-black border-black/10 dark:border-white/20"
+                    />
+                    {selectedJob && (
+                      <p className="text-xs text-muted-foreground">
+                        💡 Range: <span className="font-semibold">${selectedJob.aiScope.priceLow.toLocaleString()}</span> - <span className="font-semibold">${selectedJob.aiScope.priceHigh.toLocaleString()}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Save as Template Option */}
+                  {user.role === 'contractor' && bidMessage.trim() && (
+                    <div className="space-y-3 p-4 rounded-lg border-2 border-black/10 dark:border-white/20 bg-white dark:bg-black">
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="saveTemplate"
+                          checked={saveAsTemplate}
+                          onChange={(e) => setSaveAsTemplate(e.target.checked)}
+                          className="w-4 h-4 rounded cursor-pointer"
+                        />
+                        <Label htmlFor="saveTemplate" className="text-sm font-medium cursor-pointer text-black dark:text-white">
+                          Save as template
+                        </Label>
+                      </div>
+                      {saveAsTemplate && (
+                        <div className="space-y-2">
+                          <Label className="text-xs text-muted-foreground">Template Name</Label>
+                          <Input
+                            placeholder="e.g., 'My standard intro'"
+                            value={templateName}
+                            onChange={(e) => setTemplateName(e.target.value)}
+                            className="h-9 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20"
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
+
+                {/* Right Side of Form - Message */}
+                <div className="space-y-2 flex flex-col">
+                  <Label htmlFor="bidMessage" className="text-sm font-medium text-black dark:text-white">
+                    Message to Homeowner
+                  </Label>
+                  <Textarea
+                    id="bidMessage"
+                    placeholder="Tell the homeowner about your experience, approach, and why you're the best fit..."
+                    value={bidMessage}
+                    onChange={(e) => setBidMessage(e.target.value)}
+                    className="flex-1 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20 resize-none"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    💬 A compelling message helps you stand out
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Footer Section - Fixed */}
-          <div className="px-8 py-6 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black">
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogFooter className="flex-col sm:flex-row gap-3 sm:justify-between">
-              <div className="flex items-center gap-2 text-base font-medium text-black dark:text-white">
+              <div className="flex items-center gap-2 text-sm font-medium text-black dark:text-white">
                 <span className="text-green-600 dark:text-green-400">✓</span>
                 <span>Free bidding • $0 fee • Keep 100%</span>
               </div>
@@ -660,13 +666,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <Button 
                   variant="outline" 
                   onClick={() => setDialogOpen(false)}
-                  className="h-11 px-6 text-base border-black/10 dark:border-white/20"
+                  className="h-10 px-6 text-sm border-black/10 dark:border-white/20"
                 >
                   Cancel
                 </Button>
                 <Button 
                   onClick={handleSubmitBid}
-                  className="h-11 px-8 text-base font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
+                  className="h-10 px-8 text-sm font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
                 >
                   Submit Bid – $0 Fee
                 </Button>

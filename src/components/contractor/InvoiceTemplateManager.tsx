@@ -318,17 +318,19 @@ export function InvoiceTemplateManager({ user, onApplyTemplate }: InvoiceTemplat
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              {editingTemplate ? 'Edit Template' : 'Create Invoice Template'}
-            </DialogTitle>
-            <DialogDescription>
-              Save common line-item configurations for quick invoice creation
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">
+                {editingTemplate ? 'Edit Template' : 'Create Invoice Template'}
+              </DialogTitle>
+              <DialogDescription>
+                Save common line-item configurations for quick invoice creation
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-          <div className="space-y-6">
+          <div className="flex-1 overflow-hidden p-6">
             <div className="grid gap-4">
               <div className="space-y-2">
                 <Label htmlFor="template-name">Template Name *</Label>
@@ -468,15 +470,18 @@ export function InvoiceTemplateManager({ user, onApplyTemplate }: InvoiceTemplat
             </Card>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog}>
-              Cancel
-            </Button>
-            <Button onClick={handleSaveTemplate}>
-              <FloppyDisk className="mr-2" weight="bold" />
-              {editingTemplate ? 'Update Template' : 'Save Template'}
-            </Button>
-          </DialogFooter>
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogFooter className="gap-3">
+              <Button variant="outline" onClick={handleCloseDialog} className="h-11">
+                Cancel
+              </Button>
+              <Button onClick={handleSaveTemplate} className="h-11">
+                <FloppyDisk className="mr-2" weight="bold" />
+                {editingTemplate ? 'Update Template' : 'Save Template'}
+              </Button>
+            </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

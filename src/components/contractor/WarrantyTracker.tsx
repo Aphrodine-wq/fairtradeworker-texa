@@ -161,12 +161,14 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                 Add Warranty
               </Button>
             </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Warranty</DialogTitle>
-              </DialogHeader>
+            <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+              <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                <DialogHeader className="text-left">
+                  <DialogTitle className="text-2xl">Add New Warranty</DialogTitle>
+                </DialogHeader>
+              </div>
               
-              <div className="space-y-4 py-4">
+              <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="customerName">Customer Name *</Label>
                   <Input
@@ -231,14 +233,17 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                 </div>
               </div>
 
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleAddWarranty}>
-                  Add Warranty
-                </Button>
-              </DialogFooter>
+              </div>
+              <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                <DialogFooter className="gap-3">
+                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleAddWarranty} className="h-11">
+                    Add Warranty
+                  </Button>
+                </DialogFooter>
+              </div>
             </DialogContent>
           </Dialog>
         </div>

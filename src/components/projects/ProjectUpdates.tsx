@@ -234,114 +234,128 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
       </CardContent>
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Post Project Update</DialogTitle>
-            <DialogDescription>
-              Share progress, issues, or general information about the project
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Post Project Update</DialogTitle>
+              <DialogDescription>
+                Share progress, issues, or general information about the project
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-          <div className="space-y-4">
-            <div>
-              <Label>Update Type *</Label>
-              <Select value={formData.type} onValueChange={(value: ProjectUpdate['type']) => setFormData({ ...formData, type: value })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="progress">Progress Update</SelectItem>
-                  <SelectItem value="issue">Issue/Problem</SelectItem>
-                  <SelectItem value="milestone">Milestone Reached</SelectItem>
-                  <SelectItem value="general">General Info</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label>Title *</Label>
-              <Input
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="e.g., Framing Complete"
-              />
-            </div>
-
-            <div>
-              <Label>Description *</Label>
-              <Textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Provide details about this update..."
-                rows={4}
-              />
-            </div>
-
-            <div>
-              <Label>Visibility</Label>
-              <Select value={formData.visibility} onValueChange={(value: ProjectUpdate['visibility']) => setFormData({ ...formData, visibility: value })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Everyone</SelectItem>
-                  <SelectItem value="homeowner">Homeowner Only</SelectItem>
-                  <SelectItem value="contractors">Contractors Only</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <Label className="flex items-center gap-2">
-                <Camera size={18} />
-                Photos (optional)
-              </Label>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileUpload}
-                className="mt-2 block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
-              </p>
-            </div>
-
-            {photos.length > 0 && (
-              <div className="grid grid-cols-3 gap-2">
-                {photos.map((photo, i) => (
-                  <div key={i} className="relative">
-                    <img
-                      src={photo}
-                      alt={`Upload ${i + 1}`}
-                      className="w-full h-32 object-cover rounded border"
-                    />
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="absolute top-1 right-1 h-6 w-6 p-0"
-                      onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
-                    >
-                      <Trash size={14} />
-                    </Button>
-                  </div>
-                ))}
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Update Type *</Label>
+                <Select value={formData.type} onValueChange={(value: ProjectUpdate['type']) => setFormData({ ...formData, type: value })}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="progress">Progress Update</SelectItem>
+                    <SelectItem value="issue">Issue/Problem</SelectItem>
+                    <SelectItem value="milestone">Milestone Reached</SelectItem>
+                    <SelectItem value="general">General Info</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            )}
 
-            <div className="flex gap-2 pt-4">
+              <div>
+                <Label className="text-base">Title *</Label>
+                <Input
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  placeholder="e.g., Framing Complete"
+                  className="h-11"
+                />
+              </div>
+
+              <div>
+                <Label className="text-base">Visibility</Label>
+                <Select value={formData.visibility} onValueChange={(value: ProjectUpdate['visibility']) => setFormData({ ...formData, visibility: value })}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Everyone</SelectItem>
+                    <SelectItem value="homeowner">Homeowner Only</SelectItem>
+                    <SelectItem value="contractors">Contractors Only</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="flex items-center gap-2 text-base">
+                  <Camera size={18} />
+                  Photos (optional)
+                </Label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileUpload}
+                  className="mt-2 block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer h-11"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Description *</Label>
+                <Textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Provide details about this update..."
+                  className="flex-1 resize-none"
+                />
+              </div>
+
+              {photos.length > 0 && (
+                <div>
+                  <Label className="text-base mb-2 block">Uploaded Photos</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {photos.map((photo, i) => (
+                      <div key={i} className="relative">
+                        <img
+                          src={photo}
+                          alt={`Upload ${i + 1}`}
+                          className="w-full h-24 object-cover rounded border"
+                        />
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          className="absolute top-1 right-1 h-6 w-6 p-0"
+                          onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
+                        >
+                          <Trash size={12} />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 onClick={() => {
                   setShowAddDialog(false)
                   resetForm()
                 }}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Cancel
               </Button>
-              <Button onClick={handleAdd} className="flex-1">
+              <Button onClick={handleAdd} className="flex-1 h-11">
                 <Plus className="mr-2" size={16} />
                 Post Update
               </Button>

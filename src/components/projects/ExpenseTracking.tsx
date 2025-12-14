@@ -183,48 +183,66 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                     Add Expense
                   </Button>
                 </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Add Expense</DialogTitle>
-                    <DialogDescription>
-                      Log a new expense for this milestone
-                    </DialogDescription>
-                  </DialogHeader>
+                <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+                  <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                    <DialogHeader className="text-left">
+                      <DialogTitle className="text-2xl">Add Expense</DialogTitle>
+                      <DialogDescription>
+                        Log a new expense for this milestone
+                      </DialogDescription>
+                    </DialogHeader>
+                  </div>
 
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="category">Category</Label>
-                      <Select 
-                        value={formData.category} 
-                        onValueChange={(value) => setFormData(prev => ({ ...prev, category: value as MilestoneExpense['category'] }))}
-                      >
-                        <SelectTrigger id="category">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="materials">Materials</SelectItem>
-                          <SelectItem value="labor">Labor</SelectItem>
-                          <SelectItem value="equipment">Equipment</SelectItem>
-                          <SelectItem value="permits">Permits</SelectItem>
-                          <SelectItem value="travel">Travel</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="description">Description *</Label>
-                      <Input
-                        id="description"
-                        placeholder="e.g., 2x4 lumber, paint, electrician labor"
-                        value={formData.description}
-                        onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-4">
+                  <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Left Column */}
+                    <div className="space-y-4">
                       <div>
-                        <Label htmlFor="quantity">Quantity</Label>
+                        <Label htmlFor="category" className="text-base">Category</Label>
+                        <Select 
+                          value={formData.category} 
+                          onValueChange={(value) => setFormData(prev => ({ ...prev, category: value as MilestoneExpense['category'] }))}
+                        >
+                          <SelectTrigger id="category" className="h-11">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="materials">Materials</SelectItem>
+                            <SelectItem value="labor">Labor</SelectItem>
+                            <SelectItem value="equipment">Equipment</SelectItem>
+                            <SelectItem value="permits">Permits</SelectItem>
+                            <SelectItem value="travel">Travel</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="description" className="text-base">Description *</Label>
+                        <Input
+                          id="description"
+                          placeholder="e.g., 2x4 lumber, paint, electrician labor"
+                          value={formData.description}
+                          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                          className="h-11"
+                        />
+                      </div>
+
+                      <div>
+                        <Label htmlFor="vendor" className="text-base">Vendor</Label>
+                        <Input
+                          id="vendor"
+                          placeholder="e.g., Home Depot, Lowe's"
+                          value={formData.vendor}
+                          onChange={(e) => setFormData(prev => ({ ...prev, vendor: e.target.value }))}
+                          className="h-11"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Middle Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="quantity" className="text-base">Quantity</Label>
                         <Input
                           id="quantity"
                           type="number"
@@ -232,10 +250,11 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                           step="0.01"
                           value={formData.quantity}
                           onChange={(e) => updateQuantity(parseFloat(e.target.value) || 0)}
+                          className="h-11"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="unitCost">Unit Cost</Label>
+                        <Label htmlFor="unitCost" className="text-base">Unit Cost</Label>
                         <Input
                           id="unitCost"
                           type="number"
@@ -244,10 +263,11 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                           placeholder="0.00"
                           value={formData.unitCost}
                           onChange={(e) => updateUnitCost(parseFloat(e.target.value) || 0)}
+                          className="h-11"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="amount">Total Amount *</Label>
+                        <Label htmlFor="amount" className="text-base">Total Amount *</Label>
                         <Input
                           id="amount"
                           type="number"
@@ -256,68 +276,64 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
                           placeholder="0.00"
                           value={formData.amount}
                           onChange={(e) => setFormData(prev => ({ ...prev, amount: parseFloat(e.target.value) || 0 }))}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="vendor">Vendor</Label>
-                        <Input
-                          id="vendor"
-                          placeholder="e.g., Home Depot, Lowe's"
-                          value={formData.vendor}
-                          onChange={(e) => setFormData(prev => ({ ...prev, vendor: e.target.value }))}
+                          className="h-11"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="date">Date</Label>
+                        <Label htmlFor="date" className="text-base">Date</Label>
                         <Input
                           id="date"
                           type="date"
                           value={formData.date}
                           onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
+                          className="h-11"
                         />
                       </div>
                     </div>
 
-                    <div>
-                      <Label htmlFor="notes">Notes</Label>
-                      <Textarea
-                        id="notes"
-                        placeholder="Additional details about this expense"
-                        value={formData.notes}
-                        onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                        rows={2}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="receipt">Receipt Photo (Optional)</Label>
-                      <div className="mt-2">
-                        <Input
-                          id="receipt"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileUpload}
+                    {/* Right Column */}
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="notes" className="text-base">Notes</Label>
+                        <Textarea
+                          id="notes"
+                          placeholder="Additional details about this expense"
+                          value={formData.notes}
+                          onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+                          className="flex-1 resize-none"
                         />
-                        {receiptPreview && (
-                          <div className="mt-2">
-                            <img 
-                              src={receiptPreview} 
-                              alt="Receipt preview" 
-                              className="w-full max-w-xs rounded border"
-                            />
-                          </div>
-                        )}
+                      </div>
+
+                      <div>
+                        <Label htmlFor="receipt" className="text-base">Receipt Photo (Optional)</Label>
+                        <div className="mt-2">
+                          <Input
+                            id="receipt"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileUpload}
+                            className="h-11"
+                          />
+                          {receiptPreview && (
+                            <div className="mt-2">
+                              <img 
+                                src={receiptPreview} 
+                                alt="Receipt preview" 
+                                className="w-full rounded border"
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-4">
-                      <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm(); }}>
+                  </div>
+                  <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                    <div className="flex justify-end gap-3">
+                      <Button variant="outline" onClick={() => { setShowAddDialog(false); resetForm(); }} className="h-11">
                         Cancel
                       </Button>
-                      <Button onClick={handleAddExpense}>
+                      <Button onClick={handleAddExpense} className="h-11">
                         Add Expense
                       </Button>
                     </div>

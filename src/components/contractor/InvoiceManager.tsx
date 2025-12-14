@@ -409,15 +409,17 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
       </Tabs>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create New Invoice</DialogTitle>
-            <DialogDescription>
-              Build a professional invoice with line items, tax calculation, and payment terms
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Create New Invoice</DialogTitle>
+              <DialogDescription>
+                Build a professional invoice with line items, tax calculation, and payment terms
+              </DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-6 py-4">
+          <div className="flex-1 overflow-hidden p-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="job">Select Job</Label>
@@ -629,27 +631,30 @@ export function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
             </Card>
           </div>
 
-          <DialogFooter>
-            <div className="flex items-center justify-between w-full">
-              <Button 
-                variant="outline" 
-                onClick={handleSaveAsTemplate}
-                className="mr-auto"
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogFooter>
+              <div className="flex items-center justify-between w-full gap-3">
+                <Button
+                  variant="outline"
+                  onClick={handleSaveAsTemplate}
+                  className="h-11"
               >
                 <FloppyDisk className="mr-2" weight="bold" size={16} />
                 Save as Template
               </Button>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={handleCloseDialog}>
+                <Button variant="outline" onClick={handleCloseDialog} className="h-11">
                   Cancel
                 </Button>
-                <Button onClick={handleCreateInvoice}>
+                <Button onClick={handleCreateInvoice} className="h-11">
                   <Receipt className="mr-2" weight="bold" />
                   {isProForma ? 'Create Pro Forma' : 'Create & Send'}
                 </Button>
               </div>
             </div>
           </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 

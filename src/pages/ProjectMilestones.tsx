@@ -529,72 +529,81 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </div>
       
       <Dialog open={!!selectedMilestone && !showDisputeDialog && !showEditDialog} onOpenChange={(open) => !open && setSelectedMilestone(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Request Milestone Payment</DialogTitle>
-            <DialogDescription>
-              {selectedMilestone?.name} • ${selectedMilestone?.amount.toLocaleString()}
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Request Milestone Payment</DialogTitle>
+              <DialogDescription>
+                {selectedMilestone?.name} • ${selectedMilestone?.amount.toLocaleString()}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <Label className="flex items-center gap-2">
-                <Camera size={18} />
-                Upload Photos (minimum 3 required)
-              </Label>
-              <input 
-                type="file" 
-                accept="image/*" 
-                multiple 
-                onChange={handleFileUpload}
-                className="mt-2 block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
-                {photos.length < 3 && ` • ${3 - photos.length} more required`}
-              </p>
-            </div>
-            
-            {photos.length > 0 && (
-              <div className="grid grid-cols-3 gap-2">
-                {photos.map((photo, i) => (
-                  <div key={i} className="relative">
-                    <img 
-                      src={photo} 
-                      alt={`Upload ${i + 1}`}
-                      className="w-full h-32 object-cover rounded border"
-                    />
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="absolute top-1 right-1 h-6 w-6 p-0"
-                      onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
-                    >
-                      <Trash size={14} />
-                    </Button>
-                  </div>
-                ))}
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column - Photos */}
+            <div className="space-y-4">
+              <div>
+                <Label className="flex items-center gap-2 text-base">
+                  <Camera size={18} />
+                  Upload Photos (minimum 3 required)
+                </Label>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  multiple 
+                  onChange={handleFileUpload}
+                  className="mt-2 block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 cursor-pointer h-11"
+                />
+                <p className="text-xs text-muted-foreground mt-2">
+                  {photos.length} photo{photos.length !== 1 ? 's' : ''} uploaded
+                  {photos.length < 3 && ` • ${3 - photos.length} more required`}
+                </p>
               </div>
-            )}
-            
-            <div>
-              <Label className="flex items-center gap-2">
-                <FileText size={18} />
-                Completion Notes
-              </Label>
-              <Textarea 
-                placeholder="Describe the work completed for this milestone..."
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={4}
-                className="mt-2"
-              />
+              
+              {photos.length > 0 && (
+                <div className="grid grid-cols-2 gap-2">
+                  {photos.map((photo, i) => (
+                    <div key={i} className="relative">
+                      <img 
+                        src={photo} 
+                        alt={`Upload ${i + 1}`}
+                        className="w-full h-24 object-cover rounded border"
+                      />
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="absolute top-1 right-1 h-6 w-6 p-0"
+                        onClick={() => setPhotos(photos.filter((_, idx) => idx !== i))}
+                      >
+                        <Trash size={12} />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             
+            {/* Right Column - Notes */}
+            <div className="space-y-4">
+              <div className="flex flex-col h-full">
+                <Label className="flex items-center gap-2 text-base mb-2">
+                  <FileText size={18} />
+                  Completion Notes
+                </Label>
+                <Textarea 
+                  placeholder="Describe the work completed for this milestone..."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  className="flex-1 resize-none"
+                />
+              </div>
+            </div>
+            
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
             <Button 
               onClick={handleRequestPayment} 
-              className="w-full"
+              className="w-full h-11"
               disabled={photos.length < 3}
             >
               <Upload className="mr-2" size={18} />
@@ -605,43 +614,47 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </Dialog>
       
       <Dialog open={showDisputeDialog} onOpenChange={setShowDisputeDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Question Milestone</DialogTitle>
-            <DialogDescription>
-              {selectedMilestone?.name} • ${selectedMilestone?.amount.toLocaleString()}
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Question Milestone</DialogTitle>
+              <DialogDescription>
+                {selectedMilestone?.name} • ${selectedMilestone?.amount.toLocaleString()}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <Label className="flex items-center gap-2">
-                <ChatCircle size={18} />
-                What&apos;s your concern?
-              </Label>
-              <Textarea 
-                placeholder="Explain the issue or ask for clarification..."
-                value={disputeReason}
-                onChange={(e) => setDisputeReason(e.target.value)}
-                rows={4}
-                className="mt-2"
-              />
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <div>
+                <Label className="flex items-center gap-2 text-base">
+                  <ChatCircle size={18} />
+                  What&apos;s your concern?
+                </Label>
+                <Textarea 
+                  placeholder="Explain the issue or ask for clarification..."
+                  value={disputeReason}
+                  onChange={(e) => setDisputeReason(e.target.value)}
+                  className="mt-2 flex-1 resize-none"
+                />
+              </div>
             </div>
-            
-            <div className="flex gap-2">
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <div className="flex gap-3">
               <Button 
                 variant="outline" 
                 onClick={() => {
                   setShowDisputeDialog(false)
                   setSelectedMilestone(null)
                 }}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleDispute}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Submit Question
               </Button>
@@ -651,66 +664,75 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </Dialog>
       
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Milestone</DialogTitle>
-            <DialogDescription>Update milestone details</DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Edit Milestone</DialogTitle>
+              <DialogDescription>Update milestone details</DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <Label>Milestone Name</Label>
-              <Input 
-                value={editForm.name}
-                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                placeholder="e.g., Contract Signing"
-              />
-            </div>
-            
-            <div>
-              <Label>Description</Label>
-              <Textarea 
-                value={editForm.description}
-                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                placeholder="e.g., Agreement executed"
-                rows={3}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <div>
-                <Label>Amount ($)</Label>
+                <Label className="text-base">Milestone Name</Label>
                 <Input 
-                  type="number"
-                  value={editForm.amount}
-                  onChange={(e) => setEditForm({ ...editForm, amount: Number(e.target.value) })}
+                  value={editForm.name}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  placeholder="e.g., Contract Signing"
+                  className="h-11"
                 />
               </div>
               
               <div>
-                <Label>Percentage (%)</Label>
+                <Label className="text-base">Amount ($)</Label>
                 <Input 
                   type="number"
-                  value={editForm.percentage}
-                  onChange={(e) => setEditForm({ ...editForm, percentage: Number(e.target.value) })}
+                  value={editForm.amount}
+                  onChange={(e) => setEditForm({ ...editForm, amount: Number(e.target.value) })}
+                  className="h-11"
                 />
               </div>
             </div>
             
-            <div className="flex gap-2">
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Description</Label>
+                <Textarea 
+                  value={editForm.description}
+                  onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                  placeholder="e.g., Agreement executed"
+                  className="flex-1 resize-none"
+                />
+              </div>
+              
+              <div>
+                <Label className="text-base">Percentage (%)</Label>
+                <Input 
+                  type="number"
+                  value={editForm.percentage}
+                  onChange={(e) => setEditForm({ ...editForm, percentage: Number(e.target.value) })}
+                  className="h-11"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <div className="flex gap-3">
               <Button 
                 variant="outline" 
                 onClick={() => {
                   setShowEditDialog(false)
                   setSelectedMilestone(null)
                 }}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleEditMilestone}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Save Changes
               </Button>
@@ -720,66 +742,75 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </Dialog>
       
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Milestone</DialogTitle>
-            <DialogDescription>Create a new milestone for this project</DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Add Milestone</DialogTitle>
+              <DialogDescription>Create a new milestone for this project</DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-4">
-            <div>
-              <Label>Milestone Name *</Label>
-              <Input 
-                value={newMilestone.name}
-                onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
-                placeholder="e.g., Contract Signing"
-              />
-            </div>
-            
-            <div>
-              <Label>Description</Label>
-              <Textarea 
-                value={newMilestone.description}
-                onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
-                placeholder="e.g., Agreement executed"
-                rows={3}
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <div>
-                <Label>Amount ($) *</Label>
+                <Label className="text-base">Milestone Name *</Label>
                 <Input 
-                  type="number"
-                  value={newMilestone.amount || ''}
-                  onChange={(e) => setNewMilestone({ ...newMilestone, amount: Number(e.target.value) })}
+                  value={newMilestone.name}
+                  onChange={(e) => setNewMilestone({ ...newMilestone, name: e.target.value })}
+                  placeholder="e.g., Contract Signing"
+                  className="h-11"
                 />
               </div>
               
               <div>
-                <Label>Percentage (%)</Label>
+                <Label className="text-base">Amount ($) *</Label>
                 <Input 
                   type="number"
-                  value={newMilestone.percentage || ''}
-                  onChange={(e) => setNewMilestone({ ...newMilestone, percentage: Number(e.target.value) })}
+                  value={newMilestone.amount || ''}
+                  onChange={(e) => setNewMilestone({ ...newMilestone, amount: Number(e.target.value) })}
+                  className="h-11"
                 />
               </div>
             </div>
             
-            <div className="flex gap-2">
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Description</Label>
+                <Textarea 
+                  value={newMilestone.description}
+                  onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
+                  placeholder="e.g., Agreement executed"
+                  className="flex-1 resize-none"
+                />
+              </div>
+              
+              <div>
+                <Label className="text-base">Percentage (%)</Label>
+                <Input 
+                  type="number"
+                  value={newMilestone.percentage || ''}
+                  onChange={(e) => setNewMilestone({ ...newMilestone, percentage: Number(e.target.value) })}
+                  className="h-11"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <div className="flex gap-3">
               <Button 
                 variant="outline" 
                 onClick={() => {
                   setShowAddDialog(false)
                   setNewMilestone({ name: '', description: '', amount: 0, percentage: 0 })
                 }}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleAddMilestone}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 <Plus className="mr-2" size={16} />
                 Add Milestone
@@ -790,23 +821,27 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       </Dialog>
       
       <Dialog open={!!selectedExpenseMilestone} onOpenChange={(open) => !open && setSelectedExpenseMilestone(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Expense Tracking - {selectedExpenseMilestone?.name}</DialogTitle>
-            <DialogDescription>
-              Track materials, labor, and other costs for this milestone
-            </DialogDescription>
-          </DialogHeader>
-          {selectedExpenseMilestone && (
-            <ExpenseTracking
-              milestone={selectedExpenseMilestone}
-              onUpdateMilestone={(updated) => {
-                handleUpdateMilestone(updated)
-                setSelectedExpenseMilestone(updated)
-              }}
-              canEdit={isContractor}
-            />
-          )}
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Expense Tracking - {selectedExpenseMilestone?.name}</DialogTitle>
+              <DialogDescription>
+                Track materials, labor, and other costs for this milestone
+              </DialogDescription>
+            </DialogHeader>
+          </div>
+          <div className="flex-1 overflow-hidden p-6">
+            {selectedExpenseMilestone && (
+              <ExpenseTracking
+                milestone={selectedExpenseMilestone}
+                onUpdateMilestone={(updated) => {
+                  handleUpdateMilestone(updated)
+                  setSelectedExpenseMilestone(updated)
+                }}
+                canEdit={isContractor}
+              />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>

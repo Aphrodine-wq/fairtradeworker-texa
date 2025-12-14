@@ -236,104 +236,116 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
       )}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create Follow-Up Sequence</DialogTitle>
-            <DialogDescription>
-              Build an automated sequence that runs when customers are added to your CRM
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Create Follow-Up Sequence</DialogTitle>
+              <DialogDescription>
+                Build an automated sequence that runs when customers are added to your CRM
+              </DialogDescription>
+            </DialogHeader>
+          </div>
           
-          <div className="space-y-6 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="sequence-name">Sequence Name</Label>
-              <Input
-                id="sequence-name"
-                placeholder="e.g., Post-Job Follow-Up"
-                value={sequenceName}
-                onChange={(e) => setSequenceName(e.target.value)}
-              />
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>Follow-Up Steps</Label>
-                <Button variant="outline" size="sm" onClick={handleAddStep}>
-                  <Plus className="mr-2" size={16} />
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Sequence Info */}
+            <div className="lg:col-span-1 space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="sequence-name" className="text-base">Sequence Name</Label>
+                <Input
+                  id="sequence-name"
+                  placeholder="e.g., Post-Job Follow-Up"
+                  value={sequenceName}
+                  onChange={(e) => setSequenceName(e.target.value)}
+                  className="h-11"
+                />
+              </div>
+              <div className="flex items-center justify-center">
+                <Button variant="outline" size="lg" onClick={handleAddStep} className="w-full">
+                  <Plus className="mr-2" size={18} />
                   Add Step
                 </Button>
               </div>
+            </div>
 
-              {steps.map((step, index) => (
-                <Card key={index} className="p-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">Step {index + 1}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleRemoveStep(index)}
-                      >
-                        <Trash size={16} />
-                      </Button>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Day</Label>
-                        <Input
-                          type="number"
-                          min="1"
-                          value={step.day}
-                          onChange={(e) => handleUpdateStep(index, 'day', parseInt(e.target.value))}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Action</Label>
-                        <Select
-                          value={step.action}
-                          onValueChange={(value) => handleUpdateStep(index, 'action', value)}
+            {/* Right Columns - Steps Grid */}
+            <div className="lg:col-span-2 overflow-hidden">
+              {steps.length === 0 ? (
+                <div className="text-center py-16 text-muted-foreground">
+                  <Calendar size={48} weight="duotone" className="mx-auto mb-4 opacity-50" />
+                  <p className="text-lg">Click "Add Step" to create your first follow-up step</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full overflow-hidden">
+                  {steps.map((step, index) => (
+                    <Card key={index} className="p-4 flex flex-col">
+                      <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                        <span className="font-semibold text-base">Step {index + 1}</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveStep(index)}
+                          className="h-8 w-8 p-0"
                         >
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="sms">SMS</SelectItem>
-                            <SelectItem value="email">Email</SelectItem>
-                          </SelectContent>
-                        </Select>
+                          <Trash size={14} />
+                        </Button>
                       </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <Label>Message</Label>
-                      <Textarea
-                        placeholder="Enter your message..."
-                        value={step.message}
-                        onChange={(e) => handleUpdateStep(index, 'message', e.target.value)}
-                        rows={3}
-                      />
-                    </div>
-                  </div>
-                </Card>
-              ))}
+                      <div className="flex-1 space-y-3">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-1">
+                            <Label className="text-xs">Day</Label>
+                            <Input
+                              type="number"
+                              min="1"
+                              value={step.day}
+                              onChange={(e) => handleUpdateStep(index, 'day', parseInt(e.target.value))}
+                              className="h-9 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-xs">Action</Label>
+                            <Select
+                              value={step.action}
+                              onValueChange={(value) => handleUpdateStep(index, 'action', value)}
+                            >
+                              <SelectTrigger className="h-9 text-sm">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="sms">SMS</SelectItem>
+                                <SelectItem value="email">Email</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
 
-              {steps.length === 0 && (
-                <div className="text-center py-8 text-muted-foreground">
-                  Click "Add Step" to create your first follow-up step
+                        <div className="space-y-1 flex-1 flex flex-col">
+                          <Label className="text-xs">Message</Label>
+                          <Textarea
+                            placeholder="Enter your message..."
+                            value={step.message}
+                            onChange={(e) => handleUpdateStep(index, 'message', e.target.value)}
+                            className="flex-1 text-sm resize-none"
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
                 </div>
               )}
             </div>
           </div>
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>
-              Create Sequence
-            </Button>
-          </DialogFooter>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogFooter className="gap-3">
+              <Button variant="outline" onClick={() => setDialogOpen(false)} className="h-11">
+                Cancel
+              </Button>
+              <Button onClick={handleSave} className="h-11">
+                Create Sequence
+              </Button>
+            </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

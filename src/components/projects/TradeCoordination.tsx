@@ -347,28 +347,32 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
           resetForm()
         }
       }}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
-            <DialogDescription>
-              {editingTrade ? 'Update contractor/subcontractor details' : 'Add a new contractor/subcontractor to this project'}
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
+              <DialogDescription>
+                {editingTrade ? 'Update contractor/subcontractor details' : 'Add a new contractor/subcontractor to this project'}
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Left Column */}
+            <div className="space-y-4">
               <div>
-                <Label>Contractor Name *</Label>
+                <Label className="text-base">Contractor Name *</Label>
                 <Input
                   value={formData.contractorName}
                   onChange={(e) => setFormData({ ...formData, contractorName: e.target.value })}
                   placeholder="e.g., Mike's Electric"
+                  className="h-11"
                 />
               </div>
               <div>
-                <Label>Trade *</Label>
+                <Label className="text-base">Trade *</Label>
                 <Select value={formData.trade} onValueChange={(value) => setFormData({ ...formData, trade: value })}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11">
                     <SelectValue placeholder="Select trade" />
                   </SelectTrigger>
                   <SelectContent>
@@ -378,53 +382,60 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-
-            <div>
-              <Label>Role</Label>
-              <Select value={formData.role} onValueChange={(value: 'lead' | 'sub') => setFormData({ ...formData, role: value })}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="lead">Lead Contractor (manages project and subcontractors)</SelectItem>
-                  <SelectItem value="sub">Subcontractor (specialty work)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Phone</Label>
+                <Label className="text-base">Role</Label>
+                <Select value={formData.role} onValueChange={(value: 'lead' | 'sub') => setFormData({ ...formData, role: value })}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="lead">Lead Contractor</SelectItem>
+                    <SelectItem value="sub">Subcontractor</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Middle Column */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Phone</Label>
                 <Input
                   type="tel"
                   value={formData.contactPhone}
                   onChange={(e) => setFormData({ ...formData, contactPhone: e.target.value })}
                   placeholder="(555) 123-4567"
+                  className="h-11"
                 />
               </div>
               <div>
-                <Label>Email</Label>
+                <Label className="text-base">Email</Label>
                 <Input
                   type="email"
                   value={formData.contactEmail}
                   onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                   placeholder="contractor@example.com"
+                  className="h-11"
                 />
               </div>
             </div>
 
-            <div>
-              <Label>Notes</Label>
-              <Textarea
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Any additional notes about this contractor..."
-                rows={3}
-              />
+            {/* Right Column */}
+            <div className="space-y-4">
+              <div>
+                <Label className="text-base">Notes</Label>
+                <Textarea
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Any additional notes about this contractor..."
+                  className="flex-1 resize-none"
+                />
+              </div>
             </div>
 
-            <div className="flex gap-2 pt-4">
+          </div>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 onClick={() => {
@@ -432,13 +443,13 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
                   setEditingTrade(null)
                   resetForm()
                 }}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 Cancel
               </Button>
               <Button
                 onClick={editingTrade ? handleUpdate : handleAdd}
-                className="flex-1"
+                className="flex-1 h-11"
               >
                 {editingTrade ? 'Save Changes' : 'Add Trade'}
               </Button>

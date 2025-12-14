@@ -400,60 +400,63 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       </div>
 
       <Dialog open={!!selectedJob && !paymentDialogOpen} onOpenChange={(open) => !open && setSelectedJob(null)}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Bids for {selectedJob?.title}</DialogTitle>
-            <DialogDescription>
-              Review and accept the best bid for your job
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Bids for {selectedJob?.title}</DialogTitle>
+              <DialogDescription>
+                Review and accept the best bid for your job
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
           {selectedJob && (
-            <div className="space-y-4">
+            <div className="flex-1 overflow-hidden p-6">
               {sortedBids(selectedJob).length === 0 ? (
-                <div className="text-center py-8">
-                  <ChatCircle size={48} className="mx-auto text-muted-foreground mb-3" weight="duotone" />
-                  <p className="text-muted-foreground">No bids yet. Check back soon!</p>
+                <div className="text-center py-16">
+                  <ChatCircle size={64} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
+                  <p className="text-lg text-muted-foreground">No bids yet. Check back soon!</p>
                 </div>
               ) : (
-                sortedBids(selectedJob).map((bid) => (
-                  <Card key={bid.id} className={bid.status === 'accepted' ? 'border-2 border-primary' : ''}>
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                            <User weight="fill" className="text-primary" size={20} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full overflow-hidden">
+                  {sortedBids(selectedJob).map((bid) => (
+                    <Card key={bid.id} className={bid.status === 'accepted' ? 'border-2 border-primary' : 'flex flex-col'}>
+                      <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                              <User weight="fill" className="text-primary" size={20} />
+                            </div>
+                            <CardTitle className="text-base">{bid.contractorName}</CardTitle>
                           </div>
-                          <div>
-                            <CardTitle className="text-lg">{bid.contractorName}</CardTitle>
-                            {bid.status === 'accepted' && (
-                              <Badge className="mt-1" variant="default">
-                                <CheckCircle weight="fill" className="mr-1" size={12} />
-                                Accepted
-                              </Badge>
-                            )}
-                          </div>
+                          {bid.status === 'accepted' && (
+                            <Badge variant="default" className="text-xs">
+                              <CheckCircle weight="fill" className="mr-1" size={10} />
+                              Accepted
+                            </Badge>
+                          )}
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-primary">${bid.amount}</div>
+                        <div className="text-left">
+                          <div className="text-xl font-bold text-primary">${bid.amount}</div>
                           <div className="text-xs text-muted-foreground">+ $20 platform fee</div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm">{bid.message}</p>
-                      {bid.status === 'pending' && selectedJob.status === 'open' && (
-                        <Button 
-                          onClick={() => handleAcceptBid(selectedJob, bid)} 
-                          className="w-full mt-4"
-                        >
-                          <CreditCard weight="fill" className="mr-2" size={18} />
-                          Accept & Pay ${bid.amount + 20}
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))
+                      </CardHeader>
+                      <CardContent className="flex-1 flex flex-col">
+                        <p className="text-sm mb-4 line-clamp-4 flex-1">{bid.message}</p>
+                        {bid.status === 'pending' && selectedJob.status === 'open' && (
+                          <Button 
+                            onClick={() => handleAcceptBid(selectedJob, bid)} 
+                            className="w-full"
+                            size="sm"
+                          >
+                            <CreditCard weight="fill" className="mr-2" size={16} />
+                            Accept & Pay ${bid.amount + 20}
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               )}
             </div>
           )}
@@ -461,58 +464,69 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       </Dialog>
 
       <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Complete Payment</DialogTitle>
-            <DialogDescription>
-              Pay contractor/subcontractor and $20 platform fee. Contractor/Subcontractor keeps 100% of their bid.
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-2xl">Complete Payment</DialogTitle>
+              <DialogDescription>
+                Pay contractor/subcontractor and $20 platform fee. Contractor/Subcontractor keeps 100% of their bid.
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
           {selectedBid && (
-            <div className="space-y-4">
-              <Card className="bg-muted/50">
-                <CardContent className="pt-6 space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Contractor/Subcontractor bid:</span>
-                    <span className="font-semibold">${selectedBid.amount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Platform fee:</span>
-                    <span className="font-semibold">$20</span>
-                  </div>
-                  <div className="flex justify-between pt-2 border-t">
-                    <span className="font-bold">Total:</span>
-                    <span className="font-bold text-primary text-lg">${selectedBid.amount + 20}</span>
-                  </div>
-                </CardContent>
-              </Card>
+            <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Left Column - Payment Summary */}
+              <div className="space-y-4">
+                <Card className="bg-muted/50">
+                  <CardContent className="pt-6 space-y-3">
+                    <div className="flex justify-between text-base">
+                      <span className="text-muted-foreground">Contractor/Subcontractor bid:</span>
+                      <span className="font-semibold">${selectedBid.amount.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-base">
+                      <span className="text-muted-foreground">Platform fee:</span>
+                      <span className="font-semibold">$20</span>
+                    </div>
+                    <div className="flex justify-between pt-3 border-t text-lg">
+                      <span className="font-bold">Total:</span>
+                      <span className="font-bold text-primary text-xl">${(selectedBid.amount + 20).toLocaleString()}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="card-number">Card Number (Simulated)</Label>
-                <Input
-                  id="card-number"
-                  placeholder="4242 4242 4242 4242"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
-                  maxLength={16}
-                />
-                <p className="text-xs text-muted-foreground">
-                  Demo mode: Enter any 16-digit number
-                </p>
+              {/* Right Column - Payment Form */}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="card-number" className="text-base">Card Number (Simulated)</Label>
+                  <Input
+                    id="card-number"
+                    placeholder="4242 4242 4242 4242"
+                    value={cardNumber}
+                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                    maxLength={16}
+                    className="h-12 text-lg"
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    Demo mode: Enter any 16-digit number
+                  </p>
+                </div>
               </div>
             </div>
           )}
 
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setPaymentDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handlePayment}>
-              <CreditCard weight="fill" className="mr-2" size={18} />
-              Complete Payment
-            </Button>
-          </DialogFooter>
+          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+            <DialogFooter className="gap-3">
+              <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="h-11">
+                Cancel
+              </Button>
+              <Button onClick={handlePayment} className="h-11">
+                <CreditCard weight="fill" className="mr-2" size={18} />
+                Complete Payment
+              </Button>
+            </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
 
