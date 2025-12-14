@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -21,8 +21,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Plus, Calendar, EnvelopeSimple, DeviceMobile, Trash, Play, Pause } from "@phosphor-icons/react"
+import { Plus, Calendar, EnvelopeSimple, DeviceMobile, Trash, Play, Pause, CircleNotch } from "@phosphor-icons/react"
 import { toast } from "sonner"
+import { safeInput } from "@/lib/utils"
 import type { User, FollowUpSequence, FollowUpStep } from "@/lib/types"
 
 interface FollowUpSequencesProps {
@@ -66,38 +67,81 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
     setSteps(steps.filter((_, i) => i !== index))
   }
 
-  const handleSave = () => {
+  const [isSaving, setIsSaving] = useState(false)
+  const [errors, setErrors] = useState<{
+    name?: string
+    steps?: string
+  }>({})
+
+  const handleSave = useCallback(async () => {
+    setErrors({})
+    
+    // Validation
     if (!sequenceName.trim()) {
+      setErrors({ name: "Sequence name is required" })
       toast.error("Please enter a sequence name")
+      return
+    } else if (sequenceName.trim().length < 3) {
+      setErrors({ name: "Sequence name must be at least 3 characters" })
+      toast.error("Sequence name must be at least 3 characters")
       return
     }
 
     if (steps.length === 0) {
+      setErrors({ steps: "Add at least one follow-up step" })
       toast.error("Add at least one follow-up step")
       return
     }
 
-    if (steps.some(s => !s.message.trim())) {
+    const invalidSteps = steps.filter(s => !s.message.trim())
+    if (invalidSteps.length > 0) {
+      setErrors({ steps: "All steps must have a message" })
       toast.error("All steps must have a message")
       return
     }
 
-    const newSequence: FollowUpSequence = {
-      id: `seq-${Date.now()}`,
-      contractorId: user.id,
-      name: sequenceName,
-      steps: steps.map((step, i) => ({
-        ...step,
-        id: `step-${Date.now()}-${i}`
-      })),
-      active: true,
-      createdAt: new Date().toISOString()
+    // Validate step delays
+    const invalidDelays = steps.filter(s => {
+      const delayNum = parseInt(s.delay.replace(/\D/g, ''))
+      return isNaN(delayNum) || delayNum <= 0
+    })
+    if (invalidDelays.length > 0) {
+      setErrors({ steps: "All steps must have valid delays" })
+      toast.error("All steps must have valid delays")
+      return
     }
 
-    setSequences((current) => [...(current || []), newSequence])
-    toast.success(`Sequence "${sequenceName}" created!`)
-    setDialogOpen(false)
-  }
+    setIsSaving(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
+
+      const newSequence: FollowUpSequence = {
+        id: `seq-${Date.now()}`,
+        contractorId: user.id,
+        name: safeInput(sequenceName.trim()),
+        steps: steps.map((step, i) => ({
+          ...step,
+          id: `step-${Date.now()}-${i}`,
+          message: safeInput(step.message.trim())
+        })),
+        active: true,
+        createdAt: new Date().toISOString()
+      }
+
+      setSequences((current) => [...(current || []), newSequence])
+      toast.success(`Sequence "${sequenceName}" created!`)
+      setDialogOpen(false)
+      setSequenceName("")
+      setSteps([])
+      setErrors({})
+    } catch (error) {
+      console.error("Error saving sequence:", error)
+      toast.error("Failed to save sequence. Please try again.")
+    } finally {
+      setIsSaving(false)
+    }
+  }, [sequenceName, steps, setSequences, user.id])
 
   const toggleSequenceActive = (sequenceId: string) => {
     setSequences((current) =>
@@ -251,14 +295,36 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             {/* Left Column - Sequence Info */}
             <div className="lg:col-span-1 space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="sequence-name" className="text-base">Sequence Name</Label>
+                <Label htmlFor="sequence-name" className="text-base">Sequence Name *</Label>
                 <Input
                   id="sequence-name"
                   placeholder="e.g., Post-Job Follow-Up"
                   value={sequenceName}
-                  onChange={(e) => setSequenceName(e.target.value)}
-                  className="h-11"
+                  onChange={(e) => {
+                    setSequenceName(safeInput(e.target.value))
+                    if (errors.name) setErrors(prev => ({ ...prev, name: undefined }))
+                  }}
+                  onBlur={() => {
+                    if (sequenceName && sequenceName.trim().length < 3) {
+                      setErrors(prev => ({ ...prev, name: "Sequence name must be at least 3 characters" }))
+                    }
+                  }}
+                  className={`h-11 ${errors.name ? "border-[#FF0000]" : ""}`}
+                  disabled={isSaving}
+                  required
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "sequence-name-error" : undefined}
                 />
+                {errors.name && (
+                  <p id="sequence-name-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                    {errors.name}
+                  </p>
+                )}
+                {errors.steps && (
+                  <p className="text-sm text-[#FF0000] font-mono" role="alert">
+                    {errors.steps}
+                  </p>
+                )}
               </div>
               <div className="flex items-center justify-center">
                 <Button variant="outline" size="lg" onClick={handleAddStep} className="w-full">
@@ -342,8 +408,19 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
               <Button variant="outline" onClick={() => setDialogOpen(false)} className="h-11">
                 Cancel
               </Button>
-              <Button onClick={handleSave} className="h-11">
-                Create Sequence
+              <Button 
+                onClick={handleSave} 
+                className="h-11 border-2 border-black dark:border-white"
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <>
+                    <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Sequence"
+                )}
               </Button>
             </DialogFooter>
           </div>

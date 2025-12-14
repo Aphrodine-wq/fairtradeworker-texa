@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useCallback } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -82,16 +82,36 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
     return [...defaultFields, ...(customFields || [])].sort((a, b) => a.order - b.order)
   }, [customFields])
 
-  const handleCreateField = (field: Omit<CustomField, 'id'>) => {
-    const newField: CustomField = {
-      ...field,
-      id: `field-${Date.now()}`,
+  const handleCreateField = useCallback((field: Omit<CustomField, 'id'>) => {
+    // Validation
+    if (!field.name.trim()) {
+      toast.error("Field name is required")
+      return
     }
-    setCustomFields((current) => [...(current || []), newField])
-    toast.success(`Field "${field.name}" created!`)
-    setShowFieldDialog(false)
-    setEditingField(null)
-  }
+    if (field.name.trim().length < 2) {
+      toast.error("Field name must be at least 2 characters")
+      return
+    }
+    if (field.type === 'select' && (!field.options || field.options.length === 0)) {
+      toast.error("Select fields must have at least one option")
+      return
+    }
+
+    try {
+      const newField: CustomField = {
+        ...field,
+        id: `field-${Date.now()}`,
+        name: field.name.trim()
+      }
+      setCustomFields((current) => [...(current || []), newField])
+      toast.success(`Field "${field.name}" created!`)
+      setShowFieldDialog(false)
+      setEditingField(null)
+    } catch (error) {
+      console.error("Error creating field:", error)
+      toast.error("Failed to create field. Please try again.")
+    }
+  }, [setCustomFields])
 
   const handleUpdateField = (id: string, updates: Partial<CustomField>) => {
     setCustomFields((current) =>
@@ -106,27 +126,67 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
     toast.success("Field deleted!")
   }
 
-  const handleCreateView = (view: Omit<CustomView, 'id'>) => {
-    const newView: CustomView = {
-      ...view,
-      id: `view-${Date.now()}`,
+  const handleCreateView = useCallback((view: Omit<CustomView, 'id'>) => {
+    // Validation
+    if (!view.name.trim()) {
+      toast.error("View name is required")
+      return
     }
-    setCustomViews((current) => [...(current || []), newView])
-    toast.success(`View "${view.name}" created!`)
-    setShowViewDialog(false)
-    setEditingView(null)
-  }
+    if (view.name.trim().length < 2) {
+      toast.error("View name must be at least 2 characters")
+      return
+    }
+    if (!view.fields || view.fields.length === 0) {
+      toast.error("View must include at least one field")
+      return
+    }
 
-  const handleCreateWorkflow = (workflow: Omit<CustomWorkflow, 'id'>) => {
-    const newWorkflow: CustomWorkflow = {
-      ...workflow,
-      id: `workflow-${Date.now()}`,
+    try {
+      const newView: CustomView = {
+        ...view,
+        id: `view-${Date.now()}`,
+        name: view.name.trim()
+      }
+      setCustomViews((current) => [...(current || []), newView])
+      toast.success(`View "${view.name}" created!`)
+      setShowViewDialog(false)
+      setEditingView(null)
+    } catch (error) {
+      console.error("Error creating view:", error)
+      toast.error("Failed to create view. Please try again.")
     }
-    setCustomWorkflows((current) => [...(current || []), newWorkflow])
-    toast.success(`Workflow "${workflow.name}" created!`)
-    setShowWorkflowDialog(false)
-    setEditingWorkflow(null)
-  }
+  }, [setCustomViews])
+
+  const handleCreateWorkflow = useCallback((workflow: Omit<CustomWorkflow, 'id'>) => {
+    // Validation
+    if (!workflow.name.trim()) {
+      toast.error("Workflow name is required")
+      return
+    }
+    if (workflow.name.trim().length < 2) {
+      toast.error("Workflow name must be at least 2 characters")
+      return
+    }
+    if (!workflow.actions || workflow.actions.length === 0) {
+      toast.error("Workflow must have at least one action")
+      return
+    }
+
+    try {
+      const newWorkflow: CustomWorkflow = {
+        ...workflow,
+        id: `workflow-${Date.now()}`,
+        name: workflow.name.trim()
+      }
+      setCustomWorkflows((current) => [...(current || []), newWorkflow])
+      toast.success(`Workflow "${workflow.name}" created!`)
+      setShowWorkflowDialog(false)
+      setEditingWorkflow(null)
+    } catch (error) {
+      console.error("Error creating workflow:", error)
+      toast.error("Failed to create workflow. Please try again.")
+    }
+  }, [setCustomWorkflows])
 
   return (
     <div className="space-y-6">
