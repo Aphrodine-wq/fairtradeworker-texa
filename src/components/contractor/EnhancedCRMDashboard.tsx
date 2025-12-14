@@ -1,4 +1,4 @@
-import { useState, useMemo, memo, useCallback } from "react"
+import { useState, useMemo, memo, useCallback, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -23,6 +23,7 @@ import {
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import { InstantInvite } from "./InstantInvite"
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import type { User, CRMCustomer, CRMInteraction } from "@/lib/types"
 
 interface PipelineStage {
@@ -36,17 +37,26 @@ interface CRMDashboardProps {
 }
 
 export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }: CRMDashboardProps) {
-  const [customers, setCustomers] = useKV<CRMCustomer[]>("crm-customers", [])
-  const [interactions, setInteractions] = useKV<CRMInteraction[]>("crm-interactions", [])
+  const [customers, setCustomers, customersLoading] = useKV<CRMCustomer[]>("crm-customers", [])
+  const [interactions, setInteractions, interactionsLoading] = useKV<CRMInteraction[]>("crm-interactions", [])
   const [selectedCustomer, setSelectedCustomer] = useState<CRMCustomer | null>(null)
   const [notes, setNotes] = useState("")
   const [isEditingNotes, setIsEditingNotes] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [viewMode, setViewMode] = useState<'list' | 'pipeline' | 'analytics'>('list')
+  const [isInitializing, setIsInitializing] = useState(true)
   
   // Use glass for Pro users
   const isPro = user.isPro || false
+
+  // Simulate initial loading
+  useEffect(() => {
+    if (!customersLoading && !interactionsLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [customersLoading, interactionsLoading])
   const [newInteraction, setNewInteraction] = useState<Partial<CRMInteraction>>({
     type: 'note',
     title: '',
@@ -353,7 +363,12 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
           <>
             {viewMode === 'list' && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredCustomers.map((customer) => (
+                {isInitializing ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <SkeletonLoader key={i} variant="card" />
+                  ))
+                ) : (
+                  filteredCustomers.map((customer) => (
                   <Dialog key={customer.id}>
                     <DialogTrigger asChild>
                       <Card
@@ -638,7 +653,8 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                       </div>
                     </DialogContent>
                   </Dialog>
-                ))}
+                  ))
+                )}
               </div>
             )}
 
