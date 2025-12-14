@@ -46,8 +46,10 @@ export function createPrivateJobFromCall(
     description: call.extraction.description,
     address: call.extraction.propertyAddress || '',
     zipCode: extractZipCode(call.extraction.propertyAddress),
-    category: mapIssueTypeToCategory(call.extraction.issueType),
-    status: 'open',
+    size: 'medium' as const,
+    status: 'open' as const,
+    tradesRequired: [],
+    permitRequired: false,
     createdAt: call.createdAt,
     isPrivate: true, // Flag for private jobs (bypass marketplace)
     source: 'ai_receptionist',
@@ -170,10 +172,22 @@ export function useReceptionistJobs(contractorId: string) {
 }
 
 /**
+ * Hook to get caller history for context-aware conversations
+ */
+export function useCallerHistory(callerPhone: string, contractorId: string) {
+  const [jobs] = useLocalKV<Job[]>(`jobs`, [])
+  
+  return useMemo(() => {
+    return getCallerHistorySync(callerPhone, contractorId, jobs || [])
+  }, [callerPhone, contractorId, jobs])
+}
+
+/**
  * Get caller history for context-aware conversations
  * This is a pure function that works with job data
+ * NOTE: For use in components, prefer useCallerHistory hook
  */
-export function getCallerHistory(
+export function getCallerHistorySync(
   callerPhone: string,
   contractorId: string,
   allJobs: Job[]
