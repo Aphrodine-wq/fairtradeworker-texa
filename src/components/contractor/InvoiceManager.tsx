@@ -22,6 +22,110 @@ interface InvoiceManagerProps {
   onNavigate: (page: string) => void
 }
 
+function SaveTemplateDialog({ 
+  open, 
+  onOpenChange, 
+  lineItems, 
+  taxRate, 
+  customNotes,
+  user 
+}: {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  lineItems: InvoiceLineItem[]
+  taxRate: number
+  customNotes: string
+  user: User
+}) {
+  const [templates, setTemplates] = useKV<InvoiceTemplate[]>("invoice-templates", [])
+  const [templateName, setTemplateName] = useState("")
+  const [templateDescription, setTemplateDescription] = useState("")
+
+  const handleSave = () => {
+    if (!templateName.trim()) {
+      toast.error("Please enter a template name")
+      return
+    }
+
+    const newTemplate: InvoiceTemplate = {
+      id: `tpl-${Date.now()}`,
+      contractorId: user.id,
+      name: templateName.trim(),
+      description: templateDescription.trim() || undefined,
+      lineItems: lineItems.map(item => ({ ...item })),
+      taxRate,
+      customNotes: customNotes.trim() || undefined,
+      useCount: 0,
+      createdAt: new Date().toISOString()
+    }
+
+    setTemplates((current) => [...(current || []), newTemplate])
+    toast.success(`Template "${templateName}" saved!`)
+    
+    setTemplateName("")
+    setTemplateDescription("")
+    onOpenChange(false)
+  }
+
+  const handleClose = () => {
+    setTemplateName("")
+    setTemplateDescription("")
+    onOpenChange(false)
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Save as Template</DialogTitle>
+          <DialogDescription>
+            Save these line items as a reusable template
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="save-template-name">Template Name *</Label>
+            <Input
+              id="save-template-name"
+              placeholder="e.g., Standard Plumbing Service"
+              value={templateName}
+              onChange={(e) => setTemplateName(e.target.value)}
+              autoFocus
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="save-template-description">Description (Optional)</Label>
+            <Textarea
+              id="save-template-description"
+              placeholder="Brief description..."
+              value={templateDescription}
+              onChange={(e) => setTemplateDescription(e.target.value)}
+              rows={2}
+            />
+          </div>
+
+          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
+            {customNotes && ', custom notes'}
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>
+            <FloppyDisk className="mr-2" weight="bold" />
+            Save Template
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }: InvoiceManagerProps) {
   const [invoices, setInvoices] = useKV<Invoice[]>("invoices", [])
   const [jobs] = useKV<Job[]>("jobs", [])
@@ -674,109 +778,5 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
         user={user}
       />
     </div>
-  )
-})
-
-function SaveTemplateDialog({ 
-  open, 
-  onOpenChange, 
-  lineItems, 
-  taxRate, 
-  customNotes,
-  user 
-}: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  lineItems: InvoiceLineItem[]
-  taxRate: number
-  customNotes: string
-  user: User
-}) {
-  const [templates, setTemplates] = useKV<InvoiceTemplate[]>("invoice-templates", [])
-  const [templateName, setTemplateName] = useState("")
-  const [templateDescription, setTemplateDescription] = useState("")
-
-  const handleSave = () => {
-    if (!templateName.trim()) {
-      toast.error("Please enter a template name")
-      return
-    }
-
-    const newTemplate: InvoiceTemplate = {
-      id: `tpl-${Date.now()}`,
-      contractorId: user.id,
-      name: templateName.trim(),
-      description: templateDescription.trim() || undefined,
-      lineItems: lineItems.map(item => ({ ...item })),
-      taxRate,
-      customNotes: customNotes.trim() || undefined,
-      useCount: 0,
-      createdAt: new Date().toISOString()
-    }
-
-    setTemplates((current) => [...(current || []), newTemplate])
-    toast.success(`Template "${templateName}" saved!`)
-    
-    setTemplateName("")
-    setTemplateDescription("")
-    onOpenChange(false)
-  }
-
-  const handleClose = () => {
-    setTemplateName("")
-    setTemplateDescription("")
-    onOpenChange(false)
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Save as Template</DialogTitle>
-          <DialogDescription>
-            Save these line items as a reusable template
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="save-template-name">Template Name *</Label>
-            <Input
-              id="save-template-name"
-              placeholder="e.g., Standard Plumbing Service"
-              value={templateName}
-              onChange={(e) => setTemplateName(e.target.value)}
-              autoFocus
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="save-template-description">Description (Optional)</Label>
-            <Textarea
-              id="save-template-description"
-              placeholder="Brief description..."
-              value={templateDescription}
-              onChange={(e) => setTemplateDescription(e.target.value)}
-              rows={2}
-            />
-          </div>
-
-          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
-            <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
-            {customNotes && ', custom notes'}
-          </div>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button onClick={handleSave}>
-            <FloppyDisk className="mr-2" weight="bold" />
-            Save Template
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-      </Dialog>
   )
 })
