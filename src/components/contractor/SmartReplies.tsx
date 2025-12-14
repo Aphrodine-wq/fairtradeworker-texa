@@ -28,6 +28,7 @@ interface SmartRepliesProps {
   messageContext?: string
   onSelectReply: (reply: string) => void
   contractorId: string
+  user?: { isPro?: boolean }
 }
 
 const DEFAULT_REPLIES: SmartReply[] = [
@@ -89,12 +90,13 @@ const DEFAULT_REPLIES: SmartReply[] = [
   }
 ]
 
-export function SmartReplies({ messageContext, onSelectReply, contractorId }: SmartRepliesProps) {
+export function SmartReplies({ messageContext, onSelectReply, contractorId, user }: SmartRepliesProps) {
   const [replies, setReplies] = useKV<SmartReply[]>('smart-replies', DEFAULT_REPLIES)
   const [analytics, setAnalytics] = useKV<ReplyAnalytics[]>('reply-analytics', [])
   const [customReply, setCustomReply] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<SmartReply['category']>('bidding')
   const [showSharedLibrary, setShowSharedLibrary] = useState(false)
+  const isPro = user?.isPro || false
 
   const sentiment = useMemo(() => {
     return messageContext ? detectMessageSentiment(messageContext) : 'neutral'
@@ -177,7 +179,7 @@ export function SmartReplies({ messageContext, onSelectReply, contractorId }: Sm
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ChatCircle weight="duotone" className="text-primary" size={24} />
@@ -372,7 +374,7 @@ export function SmartReplies({ messageContext, onSelectReply, contractorId }: Sm
         </Card>
       )}
 
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendUp weight="duotone" className="text-primary" size={24} />

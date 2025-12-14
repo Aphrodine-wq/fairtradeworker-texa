@@ -23,6 +23,7 @@ interface GamificationProps {
 }
 
 export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
+  const isPro = user.isPro || false
   const completedJobs = jobs.filter(job => 
     job.status === 'completed' && 
     job.bids.some(bid => bid.contractorId === user.id && bid.status === 'accepted')
@@ -111,7 +112,7 @@ export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
         </Badge>
       </div>
 
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-primary" />
@@ -135,7 +136,7 @@ export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Fire className="h-5 w-5 text-orange-500" />
@@ -170,7 +171,7 @@ export function GamificationDashboard({ user, jobs, bids }: GamificationProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className={`border-2 border-black dark:border-white ${achievement.unlocked ? 'bg-[#00FF00] dark:bg-[#00FF00]' : 'bg-white dark:bg-black'}`}>
+                <Card className={`${achievement.unlocked ? 'bg-[#00FF00] dark:bg-[#00FF00]' : ''}`} glass={!achievement.unlocked && isPro}>
                   <CardContent className="p-4">
                     <div className="flex items-start gap-4">
                       <div className={`

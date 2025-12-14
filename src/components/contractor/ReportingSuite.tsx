@@ -12,6 +12,7 @@ export function ReportingSuite({ user }: { user: User }) {
   const [invoices] = useKV<Invoice[]>("invoices", [])
   const [reportType, setReportType] = useState<'financial' | 'performance' | 'operational'>('financial')
   const [period, setPeriod] = useState<'week' | 'month' | 'quarter' | 'year'>('month')
+  const isPro = user.isPro || false
 
   const myJobs = useMemo(() => 
     (jobs || []).filter(j => 
@@ -148,7 +149,7 @@ export function ReportingSuite({ user }: { user: User }) {
 
             <TabsContent value="financial" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-2">
                       <CurrencyDollar size={24} weight="duotone" className="text-green-600 dark:text-green-400" />
@@ -160,7 +161,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     <div className="text-sm text-muted-foreground">Total Revenue</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-2">
                       <FileText size={24} className="text-yellow-600 dark:text-yellow-400" />
@@ -171,7 +172,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     <div className="text-sm text-muted-foreground">Pending Revenue</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {financialReport.invoiceCount}
@@ -182,7 +183,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       ${financialReport.avgInvoiceValue.toLocaleString()}
@@ -195,7 +196,7 @@ export function ReportingSuite({ user }: { user: User }) {
 
             <TabsContent value="performance" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {performanceReport.winRate.toFixed(1)}%
@@ -206,7 +207,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {performanceReport.completedJobs}
@@ -217,7 +218,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     </div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       ${performanceReport.avgJobValue.toLocaleString()}
@@ -230,7 +231,7 @@ export function ReportingSuite({ user }: { user: User }) {
 
             <TabsContent value="operational" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {operationalReport.avgResponseTime}m
@@ -238,7 +239,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     <div className="text-sm text-muted-foreground">Avg Response Time</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {operationalReport.totalCustomers}
@@ -246,7 +247,7 @@ export function ReportingSuite({ user }: { user: User }) {
                     <div className="text-sm text-muted-foreground">Total Customers</div>
                   </CardContent>
                 </Card>
-                <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+                <Card glass={isPro}>
                   <CardContent className="p-6">
                     <div className="text-2xl font-bold text-black dark:text-white">
                       {operationalReport.repeatCustomers}

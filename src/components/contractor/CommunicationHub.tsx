@@ -33,6 +33,7 @@ export function CommunicationHub({ user }: { user: User }) {
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null)
   const [newMessage, setNewMessage] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const isPro = user.isPro || false
 
   const currentConversation = useMemo(() => 
     conversations.find(c => c.id === selectedConversation) || null,
@@ -89,7 +90,7 @@ export function CommunicationHub({ user }: { user: User }) {
           </div>
 
           {/* Main Communication Interface */}
-          <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+          <Card glass={isPro}>
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-3 h-[600px]">
                 {/* Conversations List */}

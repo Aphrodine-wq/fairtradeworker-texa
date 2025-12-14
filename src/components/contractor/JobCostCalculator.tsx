@@ -25,11 +25,16 @@ interface CostBreakdown {
   effectiveHourlyRate: number
 }
 
-export function JobCostCalculator() {
+interface JobCostCalculatorProps {
+  user?: { isPro?: boolean }
+}
+
+export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
   const [bidAmount, setBidAmount] = useState<string>("")
   const [estimatedHours, setEstimatedHours] = useState<string>("")
   const [materialsCost, setMaterialsCost] = useState<string>("")
   const [overheadPercent, setOverheadPercent] = useState<string>("15")
+  const isPro = user?.isPro || false
 
   const breakdown = useMemo((): CostBreakdown | null => {
     const bid = parseFloat(bidAmount)
@@ -99,7 +104,7 @@ export function JobCostCalculator() {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]">
+      <Card className="p-6" glass={isPro}>
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
             <Calculator weight="fill" className="text-primary-foreground" size={24} />
@@ -177,7 +182,7 @@ export function JobCostCalculator() {
       </Card>
 
       {breakdown && (
-        <Card className="p-6 border-2 border-primary/30">
+        <Card className="p-6" glass={isPro}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-xl font-bold">Cost Breakdown</h3>
             <Button 

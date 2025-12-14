@@ -12,6 +12,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
   const [jobs] = useKV<any[]>("jobs", [])
   const [period, setPeriod] = useState<'month' | 'quarter' | 'year'>('month')
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null)
+  const isPro = user.isPro || false
 
   // Get all expenses from all milestones
   const allExpenses = useMemo(() => {
@@ -79,7 +80,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">
                   ${totalExpenses.toLocaleString()}
@@ -87,7 +88,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Expenses</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   ${taxDeductibleTotal.toLocaleString()}
@@ -95,7 +96,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Tax Deductible</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   {allExpenses.length}
@@ -103,7 +104,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Total Expenses</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <Card glass={isPro}>
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                   {Object.keys(expensesByCategory).length}
@@ -122,7 +123,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
             </TabsList>
 
             <TabsContent value="expenses" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card glass={isPro}>
                 <CardHeader>
                   <CardTitle>Select Milestone</CardTitle>
                   <CardDescription>Choose a milestone to track expenses</CardDescription>
@@ -167,7 +168,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="reports" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card glass={isPro}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
@@ -213,7 +214,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
             </TabsContent>
 
             <TabsContent value="tax" className="mt-6">
-              <Card className="bg-white dark:bg-black border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Card glass={isPro}>
                 <CardHeader>
                   <CardTitle>Tax Integration</CardTitle>
                   <CardDescription>Export expenses for tax filing</CardDescription>
