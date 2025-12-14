@@ -129,7 +129,8 @@ export default async function handler(
 async function matchContractorToNumber(phoneNumber: string): Promise<string | null> {
   // TODO: Query contractor database for matching Twilio number
   // For now, return mock - will be replaced with actual DB lookup
-    const contractors = JSON.parse((process as any).env?.CONTRACTOR_PHONES || '{}')
+  const env = typeof process !== 'undefined' ? (process as any).env : {}
+  const contractors = JSON.parse(env.CONTRACTOR_PHONES || '{}')
   return contractors[phoneNumber] || null
 }
 
@@ -143,7 +144,7 @@ async function transcribeRecording(recordingUrl: string): Promise<string | null>
     const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${(process as any).env?.OPENAI_API_KEY || ''}`,
+        'Authorization': `Bearer ${typeof process !== 'undefined' ? ((process as any).env?.OPENAI_API_KEY || '') : ''}`,
         'Content-Type': 'multipart/form-data'
       },
       body: JSON.stringify({

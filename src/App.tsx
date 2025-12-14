@@ -551,6 +551,72 @@ function App() {
             <CrewDispatcher user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'lead-import':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <LeadImportAutoBid user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'quote-builder':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <QuoteTemplateBuilder user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'seasonal-forecast':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SeasonalDemandForecast user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'priority-alerts':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <PriorityJobAlerts user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'multi-invoice':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <MultiJobInvoicing user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'bid-analytics':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <AdvancedBidAnalytics user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'custom-fields':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CustomFieldsTags user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'export':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ExportEverything user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'profit-calc':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProfitCalculator user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'insurance-verify':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <InsuranceCertVerification user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'pro-filters':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProOnlyFilters user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
