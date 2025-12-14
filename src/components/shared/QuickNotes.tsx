@@ -6,11 +6,397 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Note, Plus, Trash, Star, StarHalf, PushPin, MagnifyingGlass, Calendar, Tag
+import { 
+  Note, 
+  Plus, 
+  Trash,
+  Star,
+  StarHalf,
+  PushPin,
+  MagnifyingGlass,
+  Calendar,
+  Tag
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
-import type { User } from "@/lib/types" interface QuickNote { id: string title: string content: string category: string isPinned: boolean tags: string[] createdAt: string updatedAt: string
-} interface QuickNotesProps { user: User
-} const NOTE_CATEGORIES = [ { value: "job", label: "Job Related", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }, { value: "customer", label: "Customer Info", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }, { value: "material", label: "Materials", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }, { value: "reminder", label: "Reminder", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }, { value: "idea", label: "Idea", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }, { value: "other", label: "Other", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }
-] export function QuickNotes({ user }: QuickNotesProps) { const [notes, setNotes] = useKV<QuickNote[]>(`quick-notes-${user.id}`, []) const [isAddDialogOpen, setIsAddDialogOpen] = useState(false) const [searchQuery, setSearchQuery] = useState("") const [filterCategory, setFilterCategory] = useState<string | null>(null) // Form state const [title, setTitle] = useState("") const [content, setContent] = useState("") const [category, setCategory] = useState("other") const [tags, setTags] = useState("") const filteredNotes = useMemo(() => { if (!notes) return [] let filtered = notes // Filter by category if (filterCategory) { filtered = filtered.filter(n => n.category === filterCategory) } // Filter by search if (searchQuery.trim()) { const query = searchQuery.toLowerCase() filtered = filtered.filter(n => n.title.toLowerCase().includes(query) || n.content.toLowerCase().includes(query) || n.tags.some(tag => tag.toLowerCase().includes(query)) ) } // Sort: pinned first, then by updated date return filtered.sort((a, b) => { if (a.isPinned && !b.isPinned) return -1 if (!a.isPinned && b.isPinned) return 1 return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime() }) }, [notes, searchQuery, filterCategory]) const pinnedCount = useMemo(() => notes?.filter(n => n.isPinned).length || 0, [notes] ) const handleAddNote = () => { if (!title.trim()) { toast.error("Please enter a title") return } const newNote: QuickNote = { id: `note-${Date.now()}`, title: title.trim(), content: content.trim(), category, isPinned: false, tags: tags.split(',').map(t => t.trim()).filter(Boolean), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() } setNotes([...(notes || []), newNote]) // Reset form setTitle("") setContent("") setCategory("other") setTags("") setIsAddDialogOpen(false) toast.success("Note added!") } const handleTogglePin = (noteId: string) => { setNotes(notes.map(n => n.id === noteId ? { ...n, isPinned: !n.isPinned, updatedAt: new Date().toISOString() } : n )) toast.success("Note updated") } const handleDeleteNote = (noteId: string) => { if (confirm("Delete this note?")) { setNotes(notes.filter(n => n.id !== noteId)) toast.success("Note deleted") } } const getCategoryColor = (cat: string) => { return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-2 border-black dark:border-white" } const getCategoryLabel = (cat: string) => { return NOTE_CATEGORIES.find(c => c.value === cat)?.label || "Other" } const getTimeAgo = (date: string) => { const now = new Date() const then = new Date(date) const seconds = Math.floor((now.getTime() - then.getTime()) / 1000) if (seconds < 60) return "just now" if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago` if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago` if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago` return then.toLocaleDateString() } return ( <div className="space-y-6"> <Card className="p-6 bg-white dark:bg-black border-2 border-black dark:border-white"> <div className="flex items-center justify-between mb-4"> <div className="flex items-center gap-3"> <div className="w-12 h-12 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"> <Note weight="fill" className="text-black dark:text-white" size={24} /> </div> <div> <h2 className="text-2xl font-bold">Quick Notes</h2> <p className="text-sm text-black dark:text-white"> Capture important information on the go </p> </div> </div> <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}> <DialogTrigger asChild> <Button> <Plus size={16} className="mr-2" /> New Note </Button> </DialogTrigger> <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]"> <div className="px-8 pt-6 pb-4 border-2 border-black dark:border-white flex-shrink-0"> <DialogHeader className="text-left"> <DialogTitle className="text-2xl">Add Quick Note</DialogTitle> </DialogHeader> </div> <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6"> <div className="space-y-2"> <Label htmlFor="title">Title *</Label> <Input id="title" placeholder="What's this about?" value={title} onChange={(e) => setTitle(e.target.value)} /> </div> <div className="space-y-2"> <Label htmlFor="content">Content</Label> <textarea id="content" className="w-full min-h-[100px] px-3 py-2 border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]" placeholder="Your note..." value={content} onChange={(e) => setContent(e.target.value)} /> </div> <div className="space-y-2"> <Label htmlFor="category">Category</Label> <select id="category" className="w-full px-3 py-2 border rounded-md" value={category} onChange={(e) => setCategory(e.target.value)} > {NOTE_CATEGORIES.map(cat => ( <option key={cat.value} value={cat.value}> {cat.label} </option> ))} </select> </div> <div className="space-y-2"> <Label htmlFor="tags">Tags (comma separated)</Label> <Input id="tags" placeholder="urgent, follow-up, important" value={tags} onChange={(e) => setTags(e.target.value)} /> </div> </div> <div className="px-8 py-4 border-2 border-black dark:border-white flex-shrink-0"> <DialogFooter className="gap-3"> <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11"> Cancel </Button> <Button onClick={handleAddNote} className="h-11"> Add Note </Button> </DialogFooter> </div> </DialogContent> </Dialog> </div> <div className="grid gap-4 md:grid-cols-3 mt-6"> <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"> <p className="text-sm text-black dark:text-white mb-1">Total Notes</p> <p className="text-3xl font-bold text-black dark:text-white">{notes?.length || 0}</p> </div> <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"> <p className="text-sm text-black dark:text-white mb-1">Pinned</p> <p className="text-3xl font-bold text-black dark:text-white">{pinnedCount}</p> </div> <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"> <p className="text-sm text-black dark:text-white mb-1">This Week</p> <p className="text-3xl font-bold text-black dark:text-white"> {notes?.filter(n => { const weekAgo = new Date() weekAgo.setDate(weekAgo.getDate() - 7) return new Date(n.createdAt) > weekAgo }).length || 0} </p> </div> </div> <div className="mt-6 space-y-3"> <div className="relative"> <MagnifyingGlass size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white" /> <Input placeholder="Search notes..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-10" /> </div> <div className="flex gap-2 flex-wrap"> <Button size="sm" variant={filterCategory === null ? "default" : "outline"} onClick={() => setFilterCategory(null)} > All </Button> {NOTE_CATEGORIES.map(cat => ( <Button key={cat.value} size="sm" variant={filterCategory === cat.value ? "default" : "outline"} onClick={() => setFilterCategory(cat.value)} > {cat.label} </Button> ))} </div> </div> </Card> {filteredNotes.length === 0 ? ( <Card className="p-12 text-center border-dashed border-2"> <Note size={48} className="mx-auto mb-4 text-black dark:text-white" /> <p className="text-lg font-medium mb-2"> {searchQuery || filterCategory ? "No notes found" : "No notes yet"} </p> <p className="text-black dark:text-white mb-4"> {searchQuery || filterCategory ? "Try a different search or filter" : "Start capturing important information"} </p> {!searchQuery && !filterCategory && ( <Button onClick={() => setIsAddDialogOpen(true)}> <Plus size={16} className="mr-2" /> Add Your First Note </Button> )} </Card> ) : ( <div className="grid gap-3 md:grid-cols-2"> {filteredNotes.map(note => ( <Card key={note.id} className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-2 border-black dark:border-white ${ note.isPinned ? 'border-2 border-black dark:border-white bg-white dark:bg-black' : '' }`} > <div className="flex items-start justify-between mb-3"> <div className="flex-1"> <div className="flex items-center gap-2 mb-2"> {note.isPinned && ( <PushPin size={16} className="text-black dark:text-white" weight="fill" /> )} <h3 className="font-bold">{note.title}</h3> </div> <Badge className={`${getCategoryColor(note.category)} text-black dark:text-white text-xs`}> {getCategoryLabel(note.category)} </Badge> </div> <div className="flex gap-1"> <Button size="sm" variant="ghost" onClick={() => handleTogglePin(note.id)} > <PushPin size={16} weight={note.isPinned ? "fill" : "regular"} className={note.isPinned ? "text-black dark:text-white" : ""} /> </Button> <Button size="sm" variant="ghost" onClick={() => handleDeleteNote(note.id)} > <Trash size={16} /> </Button> </div> </div> {note.content && ( <p className="text-sm text-black dark:text-white mb-3 line-clamp-3"> {note.content} </p> )} {note.tags.length > 0 && ( <div className="flex gap-1 flex-wrap mb-3"> {note.tags.map((tag, i) => ( <Badge key={i} variant="outline" className="text-xs"> <Tag size={12} className="mr-1" /> {tag} </Badge> ))} </div> )} <div className="flex items-center gap-2 text-xs text-black dark:text-white"> <Calendar size={12} /> {getTimeAgo(note.updatedAt)} </div> </Card> ))} </div> )} <Card className="p-4 bg-muted/50"> <p className="text-sm text-black dark:text-white"> <strong>💡 Quick Tips:</strong> Use notes to track job details, customer preferences, material specs, or anything you need to remember. Pin important notes to keep them at the top! </p> </Card> </div> )
+import type { User } from "@/lib/types"
+
+interface QuickNote {
+  id: string
+  title: string
+  content: string
+  category: string
+  isPinned: boolean
+  tags: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+interface QuickNotesProps {
+  user: User
+}
+
+const NOTE_CATEGORIES = [
+  { value: "job", label: "Job Related", color: "bg-white dark:bg-black border-2 border-black dark:border-white" },
+  { value: "customer", label: "Customer Info", color: "bg-white dark:bg-black border-2 border-black dark:border-white" },
+  { value: "material", label: "Materials", color: "bg-white dark:bg-black border-2 border-black dark:border-white" },
+  { value: "reminder", label: "Reminder", color: "bg-white dark:bg-black border-2 border-black dark:border-white" },
+  { value: "idea", label: "Idea", color: "bg-white dark:bg-black border-2 border-black dark:border-white" },
+  { value: "other", label: "Other", color: "bg-white dark:bg-black border-2 border-black dark:border-white" }
+]
+
+export function QuickNotes({ user }: QuickNotesProps) {
+  const [notes, setNotes] = useKV<QuickNote[]>(`quick-notes-${user.id}`, [])
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [filterCategory, setFilterCategory] = useState<string | null>(null)
+  
+  // Form state
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState("")
+  const [category, setCategory] = useState("other")
+  const [tags, setTags] = useState("")
+
+  const filteredNotes = useMemo(() => {
+    if (!notes) return []
+    
+    let filtered = notes
+
+    // Filter by category
+    if (filterCategory) {
+      filtered = filtered.filter(n => n.category === filterCategory)
+    }
+
+    // Filter by search
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(n => 
+        n.title.toLowerCase().includes(query) ||
+        n.content.toLowerCase().includes(query) ||
+        n.tags.some(tag => tag.toLowerCase().includes(query))
+      )
+    }
+
+    // Sort: pinned first, then by updated date
+    return filtered.sort((a, b) => {
+      if (a.isPinned && !b.isPinned) return -1
+      if (!a.isPinned && b.isPinned) return 1
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    })
+  }, [notes, searchQuery, filterCategory])
+
+  const pinnedCount = useMemo(() => 
+    notes?.filter(n => n.isPinned).length || 0,
+    [notes]
+  )
+
+  const handleAddNote = () => {
+    if (!title.trim()) {
+      toast.error("Please enter a title")
+      return
+    }
+
+    const newNote: QuickNote = {
+      id: `note-${Date.now()}`,
+      title: title.trim(),
+      content: content.trim(),
+      category,
+      isPinned: false,
+      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+
+    setNotes([...(notes || []), newNote])
+    
+    // Reset form
+    setTitle("")
+    setContent("")
+    setCategory("other")
+    setTags("")
+    setIsAddDialogOpen(false)
+
+    toast.success("Note added!")
+  }
+
+  const handleTogglePin = (noteId: string) => {
+    setNotes(notes.map(n => 
+      n.id === noteId ? { ...n, isPinned: !n.isPinned, updatedAt: new Date().toISOString() } : n
+    ))
+    toast.success("Note updated")
+  }
+
+  const handleDeleteNote = (noteId: string) => {
+    if (confirm("Delete this note?")) {
+      setNotes(notes.filter(n => n.id !== noteId))
+      toast.success("Note deleted")
+    }
+  }
+
+  const getCategoryColor = (cat: string) => {
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-2 border-black dark:border-white"
+  }
+
+  const getCategoryLabel = (cat: string) => {
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.label || "Other"
+  }
+
+  const getTimeAgo = (date: string) => {
+    const now = new Date()
+    const then = new Date(date)
+    const seconds = Math.floor((now.getTime() - then.getTime()) / 1000)
+    
+    if (seconds < 60) return "just now"
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`
+    if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`
+    return then.toLocaleDateString()
+  }
+
+  return (
+    <div className="space-y-6">
+      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-none bg-white dark:bg-black border-2 border-black dark:border-white flex items-center justify-center shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+              <Note weight="fill" className="text-black dark:text-white" size={24} />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold">Quick Notes</h2>
+              <p className="text-sm text-muted-foreground">
+                Capture important information on the go
+              </p>
+            </div>
+          </div>
+          
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus size={16} className="mr-2" />
+                New Note
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+              <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                <DialogHeader className="text-left">
+                  <DialogTitle className="text-2xl">Add Quick Note</DialogTitle>
+                </DialogHeader>
+              </div>
+              
+              <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title *</Label>
+                  <Input
+                    id="title"
+                    placeholder="What's this about?"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="content">Content</Label>
+                  <textarea
+                    id="content"
+                    className="w-full min-h-[100px] px-3 py-2 border-2 border-black dark:border-white rounded-none font-mono shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]"
+                    placeholder="Your note..."
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="category">Category</Label>
+                  <select
+                    id="category"
+                    className="w-full px-3 py-2 border rounded-md"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    {NOTE_CATEGORIES.map(cat => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tags (comma separated)</Label>
+                  <Input
+                    id="tags"
+                    placeholder="urgent, follow-up, important"
+                    value={tags}
+                    onChange={(e) => setTags(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                <DialogFooter className="gap-3">
+                  <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleAddNote} className="h-11">
+                    Add Note
+                  </Button>
+                </DialogFooter>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3 mt-6">
+          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <p className="text-sm text-muted-foreground mb-1">Total Notes</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{notes?.length || 0}</p>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <p className="text-sm text-muted-foreground mb-1">Pinned</p>
+            <p className="text-3xl font-bold text-black dark:text-white">{pinnedCount}</p>
+          </div>
+
+          <div className="p-4 bg-white dark:bg-black rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]">
+            <p className="text-sm text-muted-foreground mb-1">This Week</p>
+            <p className="text-3xl font-bold text-black dark:text-white">
+              {notes?.filter(n => {
+                const weekAgo = new Date()
+                weekAgo.setDate(weekAgo.getDate() - 7)
+                return new Date(n.createdAt) > weekAgo
+              }).length || 0}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 space-y-3">
+          <div className="relative">
+            <MagnifyingGlass 
+              size={20} 
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" 
+            />
+            <Input
+              placeholder="Search notes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+
+          <div className="flex gap-2 flex-wrap">
+            <Button
+              size="sm"
+              variant={filterCategory === null ? "default" : "outline"}
+              onClick={() => setFilterCategory(null)}
+            >
+              All
+            </Button>
+            {NOTE_CATEGORIES.map(cat => (
+              <Button
+                key={cat.value}
+                size="sm"
+                variant={filterCategory === cat.value ? "default" : "outline"}
+                onClick={() => setFilterCategory(cat.value)}
+              >
+                {cat.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </Card>
+
+      {filteredNotes.length === 0 ? (
+        <Card className="p-12 text-center border-dashed border-2">
+          <Note size={48} className="mx-auto mb-4 text-muted-foreground" />
+          <p className="text-lg font-medium mb-2">
+            {searchQuery || filterCategory ? "No notes found" : "No notes yet"}
+          </p>
+          <p className="text-muted-foreground mb-4">
+            {searchQuery || filterCategory 
+              ? "Try a different search or filter" 
+              : "Start capturing important information"}
+          </p>
+          {!searchQuery && !filterCategory && (
+            <Button onClick={() => setIsAddDialogOpen(true)}>
+              <Plus size={16} className="mr-2" />
+              Add Your First Note
+            </Button>
+          )}
+        </Card>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {filteredNotes.map(note => (
+            <Card 
+              key={note.id} 
+              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-2 border-black dark:border-white ${
+                note.isPinned ? 'border-2 border-black dark:border-white bg-white dark:bg-black' : ''
+              }`}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    {note.isPinned && (
+                      <PushPin size={16} className="text-black dark:text-white" weight="fill" />
+                    )}
+                    <h3 className="font-bold">{note.title}</h3>
+                  </div>
+                  <Badge className={`${getCategoryColor(note.category)} text-black dark:text-white text-xs`}>
+                    {getCategoryLabel(note.category)}
+                  </Badge>
+                </div>
+
+                <div className="flex gap-1">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleTogglePin(note.id)}
+                  >
+                    <PushPin 
+                      size={16} 
+                      weight={note.isPinned ? "fill" : "regular"}
+                      className={note.isPinned ? "text-black dark:text-white" : ""}
+                    />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => handleDeleteNote(note.id)}
+                  >
+                    <Trash size={16} />
+                  </Button>
+                </div>
+              </div>
+
+              {note.content && (
+                <p className="text-sm text-muted-foreground mb-3 line-clamp-3">
+                  {note.content}
+                </p>
+              )}
+
+              {note.tags.length > 0 && (
+                <div className="flex gap-1 flex-wrap mb-3">
+                  {note.tags.map((tag, i) => (
+                    <Badge key={i} variant="outline" className="text-xs">
+                      <Tag size={12} className="mr-1" />
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Calendar size={12} />
+                {getTimeAgo(note.updatedAt)}
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Card className="p-4 bg-muted/50">
+        <p className="text-sm text-muted-foreground">
+          <strong>💡 Quick Tips:</strong> Use notes to track job details, customer preferences, 
+          material specs, or anything you need to remember. Pin important notes to keep them at the top!
+        </p>
+      </Card>
+    </div>
+  )
 }
