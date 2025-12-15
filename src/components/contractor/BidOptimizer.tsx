@@ -131,9 +131,6 @@ Provide JSON response:
       setPrediction(mockPrediction)
       toast.success("Bid analysis complete!")
     } catch (error) {
-      toast.error("Analysis failed")
-      console.error(error)
-    } catch (error) {
       console.error("Error analyzing bid:", error)
       toast.error("Analysis failed. Please try again.")
     } finally {

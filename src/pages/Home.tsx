@@ -112,14 +112,14 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             </Button>
           </div>
 
-          <Card className="mt-12 p-6 bg-white dark:bg-black border-2 border-black dark:border-white">
+          <Card className="mt-12 p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
             <p className="text-2xl md:text-3xl font-bold text-black dark:text-white">
               Jobs posted today: <span className="text-black dark:text-white">{todayJobs.length}</span>
             </p>
           </Card>
 
           {onDemoLogin && (
-            <Card className="mt-8 p-6 border-2 border-black dark:border-white bg-white dark:bg-black">
+            <Card className="mt-8 p-6 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Play weight="fill" className="text-black dark:text-white" size={24} />
@@ -168,8 +168,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             How it works
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-6 space-y-4 bg-white dark:bg-black border-2 border-black dark:border-white">
-              <div className="w-12 h-12 border-2 border-black dark:border-white bg-white dark:bg-black flex items-center justify-center">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+              <div className="w-12 h-12 border border-black/20 dark:border-white/20 bg-white dark:bg-black flex items-center justify-center">
                 <House weight="fill" className="text-black dark:text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Post Your Job</h3>
@@ -177,8 +177,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
               </p>
             </Card>
-            <Card className="p-6 space-y-4 bg-white dark:bg-black border-2 border-black dark:border-white">
-              <div className="w-12 h-12 border-2 border-black dark:border-white bg-white dark:bg-black flex items-center justify-center">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+              <div className="w-12 h-12 border border-black/20 dark:border-white/20 bg-white dark:bg-black flex items-center justify-center">
                 <Hammer weight="fill" className="text-black dark:text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Get Bids</h3>
@@ -186,8 +186,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                 Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
               </p>
             </Card>
-            <Card className="p-6 space-y-4 bg-white dark:bg-black border-2 border-black dark:border-white">
-              <div className="w-12 h-12 border-2 border-black dark:border-white bg-white dark:bg-black flex items-center justify-center">
+            <Card className="p-6 space-y-4 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+              <div className="w-12 h-12 border border-black/20 dark:border-white/20 bg-white dark:bg-black flex items-center justify-center">
                 <MapTrifold weight="fill" className="text-black dark:text-white" size={24} />
               </div>
               <h3 className="text-xl font-semibold text-black dark:text-white">Fair Pricing</h3>

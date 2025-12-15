@@ -598,3 +598,264 @@ export interface BidTemplate {
   lastUsed?: string
   createdAt: string
 }
+
+// Enterprise CRM Types
+export interface AILeadScore {
+  customerId: string
+  score: number
+  factors: {
+    engagement: number
+    value: number
+    timing: number
+    behavior: number
+  }
+  prediction: 'hot' | 'warm' | 'cold'
+  nextBestAction?: string
+  confidence: number
+  updatedAt: string
+}
+
+export interface NextBestAction {
+  id: string
+  customerId: string
+  action: 'call' | 'email' | 'meeting' | 'quote' | 'follow-up' | 'nurture'
+  priority: 'high' | 'medium' | 'low'
+  reason: string
+  suggestedTime?: string
+  estimatedValue: number
+  aiConfidence: number
+  createdAt: string
+}
+
+export interface SentimentAnalysis {
+  interactionId: string
+  sentiment: 'positive' | 'neutral' | 'negative'
+  score: number // -1 to 1
+  keywords: string[]
+  topics: string[]
+  urgency: 'high' | 'medium' | 'low'
+  analyzedAt: string
+}
+
+export interface CustomDashboard {
+  id: string
+  contractorId: string
+  name: string
+  widgets: DashboardWidget[]
+  layout: 'grid' | 'single' | 'custom'
+  isDefault: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface DashboardWidget {
+  id: string
+  type: 'chart' | 'metric' | 'table' | 'list' | 'map'
+  title: string
+  config: Record<string, any>
+  position: { x: number; y: number; w: number; h: number }
+}
+
+export interface SalesForecast {
+  id: string
+  contractorId: string
+  period: 'week' | 'month' | 'quarter' | 'year'
+  startDate: string
+  endDate: string
+  forecastedRevenue: number
+  confidence: number
+  factors: {
+    pipeline: number
+    historical: number
+    seasonality: number
+    market: number
+  }
+  createdAt: string
+}
+
+export interface CRMIntegration {
+  id: string
+  contractorId: string
+  type: 'erp' | 'ecommerce' | 'marketing' | 'finance' | 'accounting' | 'crm'
+  name: string
+  provider: string
+  status: 'connected' | 'disconnected' | 'error'
+  config: Record<string, any>
+  lastSync?: string
+  syncDirection: 'one-way' | 'two-way'
+  createdAt: string
+}
+
+export interface IntegrationSync {
+  id: string
+  integrationId: string
+  direction: 'inbound' | 'outbound'
+  entityType: 'customer' | 'order' | 'invoice' | 'product'
+  entityId: string
+  status: 'pending' | 'success' | 'error'
+  error?: string
+  syncedAt: string
+}
+
+export interface CustomObject {
+  id: string
+  contractorId: string
+  name: string
+  label: string
+  fields: CustomField[]
+  relationships: CustomRelationship[]
+  permissions: CustomObjectPermissions
+  createdAt: string
+}
+
+export interface CustomField {
+  id: string
+  name: string
+  label: string
+  type: 'text' | 'number' | 'date' | 'boolean' | 'select' | 'multiselect' | 'relationship'
+  required: boolean
+  defaultValue?: any
+  options?: string[]
+  validation?: Record<string, any>
+}
+
+export interface CustomRelationship {
+  id: string
+  targetObject: string
+  type: 'one-to-one' | 'one-to-many' | 'many-to-many'
+  field: string
+}
+
+export interface CustomObjectPermissions {
+  read: string[]
+  write: string[]
+  delete: string[]
+}
+
+export interface Territory {
+  id: string
+  contractorId: string
+  name: string
+  type: 'geographic' | 'product' | 'hybrid'
+  boundaries: TerritoryBoundary[]
+  assignedUsers: string[]
+  rules: TerritoryRule[]
+  createdAt: string
+}
+
+export interface TerritoryBoundary {
+  type: 'zipcode' | 'city' | 'state' | 'radius' | 'custom'
+  value: string | number
+  coordinates?: { lat: number; lng: number; radius?: number }
+}
+
+export interface TerritoryRule {
+  field: string
+  operator: 'equals' | 'contains' | 'greater-than' | 'less-than'
+  value: any
+}
+
+export interface Workflow {
+  id: string
+  contractorId: string
+  name: string
+  trigger: WorkflowTrigger
+  steps: WorkflowStep[]
+  approvals: WorkflowApproval[]
+  active: boolean
+  createdAt: string
+}
+
+export interface WorkflowTrigger {
+  type: 'event' | 'schedule' | 'condition'
+  event?: string
+  schedule?: string
+  condition?: Record<string, any>
+}
+
+export interface WorkflowStep {
+  id: string
+  type: 'action' | 'condition' | 'approval' | 'notification'
+  config: Record<string, any>
+  nextStepId?: string
+  onError?: string
+}
+
+export interface WorkflowApproval {
+  id: string
+  stepId: string
+  approvers: string[]
+  requiredApprovals: number
+  timeout?: number
+  escalation?: string
+}
+
+export interface DataWarehouse {
+  id: string
+  contractorId: string
+  name: string
+  tables: WarehouseTable[]
+  lastSync: string
+  size: number
+  createdAt: string
+}
+
+export interface WarehouseTable {
+  name: string
+  schema: Record<string, string>
+  rowCount: number
+  lastUpdated: string
+}
+
+export interface EncryptionConfig {
+  enabled: boolean
+  algorithm: string
+  keyRotation: number // days
+  lastRotation: string
+}
+
+export interface ComplianceAudit {
+  id: string
+  contractorId: string
+  type: 'gdpr' | 'ccpa' | 'hipaa' | 'pci'
+  status: 'compliant' | 'non-compliant' | 'pending'
+  findings: ComplianceFinding[]
+  lastAudit: string
+  nextAudit: string
+}
+
+export interface ComplianceFinding {
+  id: string
+  severity: 'critical' | 'high' | 'medium' | 'low'
+  description: string
+  recommendation: string
+  resolved: boolean
+}
+
+export interface Sandbox {
+  id: string
+  contractorId: string
+  name: string
+  environment: 'development' | 'staging' | 'testing'
+  data: Record<string, any>
+  lastReset: string
+  createdAt: string
+}
+
+export interface MobileSync {
+  id: string
+  deviceId: string
+  contractorId: string
+  lastSync: string
+  pendingChanges: PendingChange[]
+  offlineMode: boolean
+}
+
+export interface PendingChange {
+  id: string
+  entityType: string
+  entityId: string
+  action: 'create' | 'update' | 'delete'
+  data: Record<string, any>
+  timestamp: string
+}

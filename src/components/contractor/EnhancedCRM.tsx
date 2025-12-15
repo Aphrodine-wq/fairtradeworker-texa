@@ -2,11 +2,23 @@ import { useMemo, useEffect, useState } from "react"
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock, Gear } from "@phosphor-icons/react"
+import { 
+  Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock, Gear,
+  Brain, BarChart, Plug, Shield, MapTrifold, FlowArrow, PuzzlePiece, Database, DeviceMobile
+} from "@phosphor-icons/react"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
 import { CRMKanban } from "./CRMKanban"
 import { FollowUpSequences } from "./FollowUpSequences"
 import { CustomizableCRM } from "./CustomizableCRM"
+import { AIInsightsCRM } from "./AIInsightsCRM"
+import { AdvancedAnalyticsCRM } from "./AdvancedAnalyticsCRM"
+import { IntegrationHub } from "./IntegrationHub"
+import { EnterpriseSecurity } from "./EnterpriseSecurity"
+import { TerritoryManager } from "./TerritoryManager"
+import { AdvancedWorkflows } from "./AdvancedWorkflows"
+import { CustomObjectsBuilder } from "./CustomObjectsBuilder"
+import { DataWarehouse } from "./DataWarehouse"
+import { MobileCRM } from "./MobileCRM"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
@@ -99,70 +111,169 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
           </div>
 
           {/* Main Tabs */}
-          <Tabs defaultValue="customers" className="w-full">
-            {isInitializing ? (
-              <div className="space-y-6">
-                <SkeletonLoader variant="text" className="h-8 w-64" />
-                <SkeletonLoader variant="card" className="h-32" />
-                <SkeletonLoader variant="card" className="h-32" />
-                <SkeletonLoader variant="card" className="h-32" />
-              </div>
-            ) : (
-              <>
-            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
-              <TabsTrigger 
-                value="customers" 
-                className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-              >
-                <Users weight="duotone" size={18} />
-                <span className="hidden sm:inline">Customers</span>
-                <span className="sm:hidden">List</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="kanban" 
-                className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-              >
-                <Kanban weight="duotone" size={18} />
-                <span className="hidden sm:inline">Kanban</span>
-                <span className="sm:hidden">Board</span>
-              </TabsTrigger>
-              <TabsTrigger 
-                value="followups" 
-                className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-              >
-                <Calendar weight="duotone" size={18} />
-                <span className="hidden sm:inline">Follow-Ups</span>
-                <span className="sm:hidden">Auto</span>
-                {!user.isPro && <span className="ml-1">🔒</span>}
-              </TabsTrigger>
-              <TabsTrigger 
-                value="customize" 
-                className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-              >
-                <Gear weight="duotone" size={18} />
-                <span className="hidden sm:inline">Customize</span>
-                <span className="sm:hidden">Settings</span>
-              </TabsTrigger>
-            </TabsList>
+          {isInitializing ? (
+            <div className="space-y-6">
+              <SkeletonLoader variant="text" className="h-8 w-64" />
+              <SkeletonLoader variant="card" className="h-32" />
+              <SkeletonLoader variant="card" className="h-32" />
+              <SkeletonLoader variant="card" className="h-32" />
+            </div>
+          ) : (
+            <Tabs defaultValue="customers" className="w-full">
+              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-6 lg:grid-cols-9 bg-white dark:bg-black border border-black/10 dark:border-white/10 overflow-x-auto">
+                <TabsTrigger 
+                  value="customers" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Users weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Customers</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="kanban" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Kanban weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Kanban</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="followups" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Calendar weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Follow-Ups</span>
+                  {!user.isPro && <span className="ml-1">🔒</span>}
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="ai" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Brain weight="duotone" size={18} />
+                  <span className="hidden lg:inline">AI Insights</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="analytics" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <BarChart weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Analytics</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="integrations" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Plug weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Integrations</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="security" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Shield weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Security</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="territories" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <MapTrifold weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Territories</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="workflows" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <FlowArrow weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Workflows</span>
+                </TabsTrigger>
+              </TabsList>
 
-            <TabsContent value="customers" className="mt-6">
-              <EnhancedCRMDashboard user={user} />
-            </TabsContent>
+              <TabsContent value="customers" className="mt-6">
+                <EnhancedCRMDashboard user={user} />
+              </TabsContent>
 
-            <TabsContent value="kanban" className="mt-6">
-              <CRMKanban user={user} />
-            </TabsContent>
+              <TabsContent value="kanban" className="mt-6">
+                <CRMKanban user={user} />
+              </TabsContent>
 
-            <TabsContent value="followups" className="mt-6">
-              <FollowUpSequences user={user} />
-            </TabsContent>
+              <TabsContent value="followups" className="mt-6">
+                <FollowUpSequences user={user} />
+              </TabsContent>
 
-            <TabsContent value="customize" className="mt-6">
-              <CustomizableCRM user={user} />
-            </TabsContent>
-          </Tabs>
-          </>
-            )}
+              <TabsContent value="ai" className="mt-6">
+                <AIInsightsCRM user={user} />
+              </TabsContent>
+
+              <TabsContent value="analytics" className="mt-6">
+                <AdvancedAnalyticsCRM user={user} />
+              </TabsContent>
+
+              <TabsContent value="integrations" className="mt-6">
+                <IntegrationHub user={user} />
+              </TabsContent>
+
+              <TabsContent value="security" className="mt-6">
+                <EnterpriseSecurity user={user} />
+              </TabsContent>
+
+              <TabsContent value="territories" className="mt-6">
+                <TerritoryManager user={user} />
+              </TabsContent>
+
+              <TabsContent value="workflows" className="mt-6">
+                <AdvancedWorkflows user={user} />
+              </TabsContent>
+            </Tabs>
+
+            {/* Additional Enterprise Features in Secondary Tabs */}
+            <Tabs defaultValue="customize" className="w-full mt-6">
+              <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                <TabsTrigger 
+                  value="customize" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Gear weight="duotone" size={18} />
+                  <span className="hidden sm:inline">Customize</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="objects" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <PuzzlePiece weight="duotone" size={18} />
+                  <span className="hidden sm:inline">Custom Objects</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="warehouse" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Database weight="duotone" size={18} />
+                  <span className="hidden sm:inline">Data Warehouse</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="mobile" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <DeviceMobile weight="duotone" size={18} />
+                  <span className="hidden sm:inline">Mobile</span>
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="customize" className="mt-6">
+                <CustomizableCRM user={user} />
+              </TabsContent>
+
+              <TabsContent value="objects" className="mt-6">
+                <CustomObjectsBuilder user={user} />
+              </TabsContent>
+
+              <TabsContent value="warehouse" className="mt-6">
+                <DataWarehouse user={user} />
+              </TabsContent>
+
+              <TabsContent value="mobile" className="mt-6">
+                <MobileCRM user={user} />
+              </TabsContent>
+            </Tabs>
+          )}
         </div>
       </div>
     </div>

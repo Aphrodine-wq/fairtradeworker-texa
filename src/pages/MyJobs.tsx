@@ -595,17 +595,6 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                     </p>
                   )}
                 </div>
-                    id="card-number"
-                    placeholder="4242 4242 4242 4242"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
-                    maxLength={16}
-                    className="h-12 text-lg"
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    Demo mode: Enter any 16-digit number
-                  </p>
-                </div>
               </div>
             </div>
           )}
