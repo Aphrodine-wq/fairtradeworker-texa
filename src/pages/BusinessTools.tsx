@@ -27,6 +27,7 @@ import {
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { GlassNav, HeroSection, StatsSection, GlassCard, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { cn } from "@/lib/utils"
 
 interface BusinessToolsProps {
   user: User
@@ -208,12 +209,18 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                     return (
                       <Card
                         key={tool.id}
-                        className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50"
+                        className={cn(
+                          "hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50",
+                          tool.isPro && "bg-green-50/30 dark:bg-green-950/20 border-green-200/40 dark:border-green-800/40"
+                        )}
                         onClick={() => handleToolClick(tool.id)}
                       >
                         <CardHeader>
                           <div className="flex items-start justify-between">
-                            <div className="p-3 rounded-lg bg-white/60 dark:bg-black/40">
+                            <div className={cn(
+                              "p-3 rounded-lg",
+                              tool.isPro ? "bg-green-100/50 dark:bg-green-900/30" : "bg-white/60 dark:bg-black/40"
+                            )}>
                               <Icon size={32} weight="duotone" />
                             </div>
                             <div className="flex flex-col gap-1 items-end">
