@@ -160,7 +160,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
     } finally {
       setIsSubmitting(false)
     }
-  }
+  }, [formData, trades, job.id, onUpdate, resetForm])
 
   const handleUpdate = () => {
     if (!editingTrade) return
