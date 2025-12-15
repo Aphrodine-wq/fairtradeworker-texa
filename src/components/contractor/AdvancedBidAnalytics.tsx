@@ -243,7 +243,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
-                  <p className="text-sm text-muted-foreground">Fast Response (< 1hr)</p>
+                  <p className="text-sm text-muted-foreground">Fast Response (&lt; 1hr)</p>
                   <p className="text-2xl font-bold">{analytics.fastWinRate.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
@@ -253,7 +253,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
                 <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
-                  <p className="text-sm text-muted-foreground">Slow (> 4hr)</p>
+                  <p className="text-sm text-muted-foreground">Slow (&gt; 4hr)</p>
                   <p className="text-2xl font-bold">{analytics.slowWinRate.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
