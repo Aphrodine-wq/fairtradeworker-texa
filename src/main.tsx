@@ -10,6 +10,29 @@ import "./main.css"
 import "./styles/theme.css"
 import "./index.css"
 
+// Theme initialization script - prevents FOUC
+const initTheme = () => {
+  const stored = localStorage.getItem('theme')
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  const isDark = stored === 'dark' || (!stored && prefersDark)
+  
+  // Add no-transitions class to prevent flash
+  document.documentElement.classList.add('no-transitions')
+  
+  if (isDark) {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+  
+  // Remove no-transitions after a frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.remove('no-transitions')
+    })
+  })
+}
+
 // Initialize theme color on load
 function initializeThemeColor() {
   const saved = localStorage.getItem('theme')
@@ -26,6 +49,7 @@ function initializeThemeColor() {
   }
 }
 
+initTheme()
 initializeThemeColor()
 
 // Global handler for chunk load errors

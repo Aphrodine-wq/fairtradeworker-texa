@@ -42,7 +42,7 @@ export function ExportEverything({ user }: ExportEverythingProps) {
     setSelectedTypes(newSelected)
   }
 
-  const exportData = () => {
+  const exportData = async () => {
     if (selectedTypes.size === 0) {
       toast.error("Select at least one data type")
       return
@@ -51,7 +51,98 @@ export function ExportEverything({ user }: ExportEverythingProps) {
     if (format === 'csv') {
       exportCSV()
     } else {
-      toast.info("PDF export coming soon")
+      await exportPDF()
+    }
+  }
+
+  const exportPDF = async () => {
+    try {
+      const { generatePDF } = await import('@/lib/pdf')
+      const content: Array<{ type: 'text' | 'table', data: any }> = []
+
+      if (selectedTypes.has('jobs')) {
+        content.push({
+          type: 'text',
+          data: { text: 'JOBS', fontSize: 16 }
+        })
+        content.push({
+          type: 'table',
+          data: {
+            columns: [
+              { header: 'ID', dataKey: 'id', width: 30 },
+              { header: 'Title', dataKey: 'title', width: 80 },
+              { header: 'Status', dataKey: 'status', width: 30 },
+              { header: 'Amount', dataKey: 'amount', width: 30 }
+            ],
+            rows: jobs.map(j => ({
+              id: j.id.substring(0, 8),
+              title: j.title,
+              status: j.status,
+              amount: `$${j.bids?.[0]?.amount || 0}`
+            }))
+          }
+        })
+      }
+
+      if (selectedTypes.has('bids')) {
+        content.push({
+          type: 'text',
+          data: { text: '\n\nBIDS', fontSize: 16 }
+        })
+        content.push({
+          type: 'table',
+          data: {
+            columns: [
+              { header: 'Job ID', dataKey: 'jobId', width: 30 },
+              { header: 'Amount', dataKey: 'amount', width: 30 },
+              { header: 'Status', dataKey: 'status', width: 30 }
+            ],
+            rows: bids.map(b => ({
+              jobId: b.jobId.substring(0, 8),
+              amount: `$${b.amount}`,
+              status: b.status
+            }))
+          }
+        })
+      }
+
+      if (selectedTypes.has('invoices')) {
+        content.push({
+          type: 'text',
+          data: { text: '\n\nINVOICES', fontSize: 16 }
+        })
+        content.push({
+          type: 'table',
+          data: {
+            columns: [
+              { header: 'ID', dataKey: 'id', width: 30 },
+              { header: 'Amount', dataKey: 'amount', width: 30 },
+              { header: 'Status', dataKey: 'status', width: 30 },
+              { header: 'Due Date', dataKey: 'dueDate', width: 40 }
+            ],
+            rows: invoices.map(i => ({
+              id: i.id.substring(0, 8),
+              amount: `$${i.total || i.amount || 0}`,
+              status: i.status,
+              dueDate: i.dueDate ? new Date(i.dueDate).toLocaleDateString() : 'N/A'
+            }))
+          }
+        })
+      }
+
+      await generatePDF(content, `export-${Date.now()}.pdf`, {
+        title: 'FairTradeWorker Data Export',
+        author: user.fullName
+      })
+      toast.success("PDF export downloaded!")
+    } catch (error: any) {
+      console.error('PDF export failed:', error)
+      if (error.message?.includes('jsPDF')) {
+        toast.error("PDF generation requires jsPDF library. Falling back to CSV.")
+        exportCSV()
+      } else {
+        toast.error("PDF export failed. Try CSV format instead.")
+      }
     }
   }
 

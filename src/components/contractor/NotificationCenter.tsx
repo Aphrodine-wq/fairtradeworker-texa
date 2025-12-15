@@ -32,14 +32,21 @@ export function NotificationCenter({ user }: { user: User }) {
       filtered = filtered.filter(n => n.priority === 'high')
     }
     if (searchQuery) {
-      filtered = filtered.filter(n => 
+      filtered = filtered.filter(n =>
         n.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         n.message.toLowerCase().includes(searchQuery.toLowerCase())
       )
     }
-    return filtered.sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
+    
+    // Smart sorting: prioritize urgent and recent notifications
+    return filtered.sort((a, b) => {
+      // Urgent/high priority first
+      if (a.priority === 'high' && b.priority !== 'high') return -1
+      if (a.priority !== 'high' && b.priority === 'high') return 1
+      
+      // Then by recency
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
   }, [notifications, filter, searchQuery])
 
   const unreadCount = useMemo(() => 

@@ -98,6 +98,11 @@ export interface Bid {
   message: string
   status: 'pending' | 'accepted' | 'rejected'
   createdAt: string
+  isLightningBid?: boolean
+  responseTimeMinutes?: number
+  isBoosted?: boolean // Bid boost feature
+  boostedUntil?: string // Boost expiration timestamp
+  boostCount?: number // Number of boosts used on this job (max 2)
   responseTimeMinutes?: number
   isLightningBid?: boolean
   selectedTimeSlot?: string

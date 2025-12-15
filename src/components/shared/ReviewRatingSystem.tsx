@@ -3,7 +3,7 @@
  * Free Feature - Post-job ratings → display on profiles + sort higher
  */
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,11 +13,14 @@ import {
   Star,
   Camera,
   Upload,
-  CheckCircle
+  CheckCircle,
+  TrendUp,
+  TrendDown
 } from "@phosphor-icons/react"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import type { User, Job } from "@/lib/types"
 import { toast } from "sonner"
+import { analyzeReviewSentiment } from "@/lib/reviewSentiment"
 
 interface Review {
   id: string
@@ -65,6 +68,14 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
     input.click()
   }
 
+  // Analyze sentiment as user types
+  const sentiment = useMemo(() => {
+    if (reviewText.trim() && rating > 0) {
+      return analyzeReviewSentiment(reviewText, rating)
+    }
+    return null
+  }, [reviewText, rating])
+
   const submitReview = () => {
     if (rating === 0) {
       toast.error("Please select a rating")
@@ -88,7 +99,15 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
     }
 
     setReviews([...reviews, newReview])
-    toast.success("Review submitted!")
+    
+    // Show sentiment feedback
+    if (sentiment) {
+      if (sentiment.overall === 'positive') {
+        toast.success("Great review! Your positive feedback helps contractors grow.")
+      } else if (sentiment.overall === 'negative' && sentiment.improvement.length > 0) {
+        toast.info("Thank you for your honest feedback. Your insights help improve service quality.")
+      }
+    }
     
     if (onComplete) {
       onComplete()
@@ -133,6 +152,31 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
             placeholder="Tell others about your experience..."
             className="mt-2 min-h-[150px]"
           />
+          {sentiment && reviewText.trim().length > 20 && (
+            <div className="mt-2 p-3 border border-black/20 dark:border-white/20 rounded-md bg-white dark:bg-black">
+              <div className="flex items-center gap-2 mb-2">
+                {sentiment.overall === 'positive' ? (
+                  <TrendUp className="h-4 w-4 text-green-600 dark:text-green-400" />
+                ) : sentiment.overall === 'negative' ? (
+                  <TrendDown className="h-4 w-4 text-red-600 dark:text-red-400" />
+                ) : null}
+                <span className="text-sm font-medium">
+                  {sentiment.overall === 'positive' && 'Positive review detected'}
+                  {sentiment.overall === 'negative' && 'Constructive feedback detected'}
+                  {sentiment.overall === 'neutral' && 'Review analyzed'}
+                </span>
+              </div>
+              {sentiment.strength.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {sentiment.strength.map((strength, idx) => (
+                    <Badge key={idx} variant="outline" className="text-xs">
+                      {strength}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

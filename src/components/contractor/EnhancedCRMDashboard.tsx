@@ -320,24 +320,29 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
       <div className="space-y-6">
 
         {/* Search and Filter - Always visible when customers exist */}
+        {/* FIXED: Filter Section - No Scroll Wheel */}
         {myCustomers.length > 0 && (
           <Card className="p-4" glass={isPro}>
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
+            <div className="flex flex-wrap gap-2">
+              <div className="flex-1 min-w-[200px] relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
                 <Input
                   placeholder="Search by name, email, phone, notes, or tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20"
+                  className="pl-10 h-10 border-2 border-black dark:border-white rounded-none bg-white dark:bg-black"
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full md:w-[200px] bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20">
+                <SelectTrigger className="w-[140px] h-10 border-2 border-black dark:border-white rounded-none bg-white dark:bg-black">
                   <Funnel weight="duotone" className="mr-2" size={16} />
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder="Status" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent 
+                  className="border-2 border-black dark:border-white rounded-none bg-white dark:bg-black max-h-[300px] overflow-hidden"
+                  position="popper"
+                  sideOffset={4}
+                >
                   <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="lead">Leads</SelectItem>
                   <SelectItem value="active">Active</SelectItem>

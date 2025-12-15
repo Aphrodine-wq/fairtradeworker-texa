@@ -346,3 +346,82 @@
     background-position: 100% 0%;
   }
 }
+
+/* ===========================================
+   GLOBAL DARK/LIGHT MODE TRANSITION FIX
+   =========================================== */
+
+/* Smooth color transitions for ALL elements */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+/* Disable transitions on page load to prevent flash */
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}
+
+/* Root variables with transitions */
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --border-color: #000000;
+  --shadow-color: #000000;
+  --accent-green: #00FF00;
+  --accent-red: #FF0000;
+  --accent-yellow: #FFFF00;
+}
+
+.dark {
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --border-color: #FFFFFF;
+  --shadow-color: #FFFFFF;
+}
+
+/* Apply variables to common elements */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Fix for elements that don't inherit properly */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Fix dialog/modal backgrounds */
+.dark [role="dialog"],
+.dark [data-radix-popper-content-wrapper] {
+  background-color: var(--bg-primary);
+}
+
+/* Fix dropdown menus */
+.dark [role="menu"],
+.dark [role="listbox"] {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+}
+
+/* Prevent FOUC (Flash of Unstyled Content) */
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}

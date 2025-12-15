@@ -27,16 +27,76 @@ export function CompletionCard({
   const cardRef = useRef<HTMLDivElement>(null)
 
   const handleShare = async () => {
-    // In a real implementation, this would:
-    // 1. Convert the card to a canvas/image
-    // 2. Use Web Share API or download
-    // For now, we'll just show a success message
-    toast.success("Share feature coming soon! Screenshot this card to share.")
+    try {
+      // Try Web Share API first (mobile-friendly)
+      if (navigator.share && cardRef.current) {
+        // Create a simple text share for now
+        await navigator.share({
+          title: `Job Completed: ${jobTitle}`,
+          text: `Check out this completed job: ${jobTitle} by ${contractorName}. Rating: ${rating}/5 stars. Amount: $${amount}`,
+        })
+        toast.success("Shared successfully!")
+        return
+      }
+
+      // Fallback: Copy link to clipboard
+      if (navigator.clipboard) {
+        const shareText = `Job Completed: ${jobTitle} by ${contractorName}. Rating: ${rating}/5 stars. Amount: $${amount}`
+        await navigator.clipboard.writeText(shareText)
+        toast.success("Share text copied to clipboard!")
+      } else {
+        toast.info("Use your device's share feature to share this card")
+      }
+    } catch (error: any) {
+      // User cancelled share
+      if (error.name !== 'AbortError') {
+        console.error('Share failed:', error)
+        toast.error("Share failed. Try copying the text manually.")
+      }
+    }
   }
 
   const handleDownload = async () => {
-    // In a real implementation, this would download the card as an image
-    toast.success("Download feature coming soon! Screenshot this card for now.")
+    try {
+      // Try to use html2canvas if available, otherwise fallback
+      try {
+        const html2canvas = (await import('html2canvas')).default
+        if (!cardRef.current) {
+          toast.error("Card not found")
+          return
+        }
+
+        const canvas = await html2canvas(cardRef.current, {
+          backgroundColor: '#ffffff',
+          scale: 2,
+          logging: false
+        })
+
+        // Convert to blob and download
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            toast.error("Failed to generate image")
+            return
+          }
+
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `job-completion-${Date.now()}.png`
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
+          URL.revokeObjectURL(url)
+          toast.success("Image downloaded!")
+        })
+      } catch (importError) {
+        // html2canvas not installed, use fallback
+        toast.info("Image download requires html2canvas. Install with: npm install html2canvas. For now, use your browser's screenshot feature.")
+      }
+    } catch (error) {
+      console.error('Download failed:', error)
+      toast.error("Download failed. Use your browser's screenshot feature.")
+    }
   }
 
   const formattedDate = (() => {

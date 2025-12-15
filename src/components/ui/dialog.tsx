@@ -56,14 +56,24 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-white dark:bg-black data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-[98vw] max-w-[98vw] h-[95vh] translate-x-[-50%] translate-y-[-50%] gap-6 rounded-lg border border-black/20 dark:border-white/20 p-12 md:p-16 lg:p-20 shadow-lg duration-200 overflow-hidden flex flex-col",
+          "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
+          "w-full max-w-lg max-h-[90vh] overflow-y-auto",
+          "border-4 border-black dark:border-white",
+          "bg-white dark:bg-black",
+          "shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff]",
+          "p-6",
+          "duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+          "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+          "data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]",
+          "data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]",
           className
         )}
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="ring-offset-background focus:ring-black/10 dark:focus:ring-white/10 data-[state=open]:bg-white dark:data-[state=open]:bg-black data-[state=open]:text-black dark:data-[state=open]:text-white absolute top-4 right-4 rounded-md border border-black/20 dark:border-white/20 opacity-100 transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 p-2">
-          <XIcon />
+        <DialogPrimitive.Close className="absolute right-4 top-4 border-2 border-black dark:border-white p-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+          <XIcon className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>

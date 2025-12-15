@@ -542,6 +542,23 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 </div>
               </div>
             </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => {
+                // Navigate to portfolio - add route if needed or use business-tools with portfolio tab
+                onNavigate('business-tools')
+                // Could also add a portfolio page route
+              }}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Briefcase className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <p className="font-semibold">Portfolio</p>
+                  <p className="text-sm text-muted-foreground">Showcase your work</p>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>

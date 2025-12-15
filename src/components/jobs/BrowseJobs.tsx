@@ -18,7 +18,7 @@ import { JobMap } from "./JobMap"
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 
@@ -446,11 +446,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
   const handleBidClick = useCallback((job: Job) => {
     setSelectedJob(job)
-    setBidAmount("")
-    setBidMessage("")
-    setSaveAsTemplate(false)
-    setTemplateName("")
-    setDialogOpen(true)
+      setBidAmount("")
+      setBidMessage("")
+      setSaveAsTemplate(false)
+      setTemplateName("")
+      setBidBoost(false)
+      setDialogOpen(true)
   }, [])
 
   const handlePhotoClick = useCallback((photos: string[]) => {
@@ -468,6 +469,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }, [bidTemplates])
 
   const [isSubmittingBid, setIsSubmittingBid] = useState(false)
+  const [bidBoost, setBidBoost] = useState(false)
 
   const handleSubmitBid = useCallback(async () => {
     if (!selectedJob || isSubmittingBid) return
@@ -523,6 +525,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       const responseTimeMinutes = Math.round((bidTime - jobTime) / 1000 / 60)
       const isLightning = responseTimeMinutes <= 10
     
+    // Check existing boosts on this job (max 2 per job)
+    const existingBoosts = selectedJob.bids.filter(b => b.isBoosted && b.boostedUntil && new Date(b.boostedUntil) > new Date()).length
+    const canBoost = bidBoost && existingBoosts < 2
+    
     const newBid: Bid = {
       id: `bid-${Date.now()}`,
       jobId: selectedJob.id,
@@ -533,7 +539,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       status: 'pending',
       createdAt: new Date().toISOString(),
       responseTimeMinutes,
-      isLightningBid: isLightning
+      isLightningBid: isLightning,
+      isBoosted: canBoost,
+      boostedUntil: canBoost ? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() : undefined,
+      boostCount: canBoost ? existingBoosts + 1 : 0
     }
 
     setJobs((currentJobs) => 
@@ -544,7 +553,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       )
     )
 
-      if (isLightning && selectedJob.bids.length < 3) {
+      if (canBoost) {
+        toast.success("Bid boosted! Your bid will appear at the top for 24 hours. $5 charge will be processed.")
+      } else if (isLightning && selectedJob.bids.length < 3) {
         toast.success(`⚡ Lightning bid! You responded in ${responseTimeMinutes} minutes!`)
       } else {
         toast.success("Bid submitted successfully!")
@@ -554,6 +565,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       setSelectedJob(null)
       setBidAmount("")
       setBidMessage("")
+      setBidBoost(false)
     } catch (error) {
       console.error("Error submitting bid:", error)
       toast.error("Failed to submit bid. Please try again.")
@@ -853,6 +865,43 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     )}
                   </div>
 
+                  {/* Bid Boost Option */}
+                  {user.role === 'contractor' && selectedJob && (
+                    (() => {
+                      const existingBoosts = selectedJob.bids.filter(b => b.isBoosted && b.boostedUntil && new Date(b.boostedUntil) > new Date()).length
+                      const canBoost = existingBoosts < 2
+                      
+                      return (
+                        <div className="space-y-3 p-4 rounded-lg border-2 border-yellow-400 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="bidBoost"
+                              checked={bidBoost}
+                              onChange={(e) => setBidBoost(e.target.checked)}
+                              disabled={!canBoost}
+                              className="w-4 h-4 rounded cursor-pointer disabled:opacity-50"
+                            />
+                            <Label htmlFor="bidBoost" className="text-sm font-medium cursor-pointer text-black dark:text-white flex items-center gap-2">
+                              <Sparkle weight="fill" size={16} className="text-yellow-600 dark:text-yellow-400" />
+                              Boost this bid - $5
+                            </Label>
+                          </div>
+                          {bidBoost && (
+                            <p className="text-xs text-black dark:text-white">
+                              ⭐ Your bid will appear at the top of the list for 24 hours. Max 2 boosts per job.
+                            </p>
+                          )}
+                          {!canBoost && (
+                            <p className="text-xs text-muted-foreground">
+                              This job already has 2 boosted bids. Boost unavailable.
+                            </p>
+                          )}
+                        </div>
+                      )
+                    })()
+                  )}
+
                   {/* Save as Template Option */}
                   {user.role === 'contractor' && bidMessage.trim() && (
                     <div className="space-y-3 p-4 rounded-lg border border-black/20/10 dark:border-white/20 bg-white dark:bg-black">
@@ -929,7 +978,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       Submitting...
                     </>
                   ) : (
-                    "Submit Bid – $0 Fee"
+                    <>
+                      {bidBoost && <Sparkle weight="fill" size={16} className="mr-2 text-yellow-400" />}
+                      Submit Bid{bidBoost ? ' + Boost ($5)' : ' – $0 Fee'}
+                    </>
                   )}
                 </Button>
               </div>

@@ -30,7 +30,23 @@ function PopoverContent({
         align={align}
         sideOffset={sideOffset}
         className={cn(
-          "bg-white dark:bg-black text-black dark:text-white data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-lg border border-black/20 dark:border-white/20 p-4 shadow-md outline-hidden",
+          "z-50 w-72 overflow-hidden",
+          "border-2 border-black dark:border-white",
+          "bg-white dark:bg-black",
+          "text-black dark:text-white",
+          "shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]",
+          "p-4",
+          /* Viewport containment */
+          "max-h-[calc(100vh-2rem)]",
+          "overflow-y-auto",
+          "outline-none",
+          "data-[state=open]:animate-in data-[state=closed]:animate-out",
+          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+          "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+          "data-[side=bottom]:slide-in-from-top-2",
+          "data-[side=left]:slide-in-from-right-2",
+          "data-[side=right]:slide-in-from-left-2",
+          "data-[side=top]:slide-in-from-bottom-2",
           className
         )}
         {...props}

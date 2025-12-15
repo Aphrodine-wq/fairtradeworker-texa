@@ -240,8 +240,51 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
             <CardHeader>
               <CardTitle>Performance Trends</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-black dark:text-white">Coming soon: Time-series charts showing win rate trends over time</p>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Fast Response (< 1hr)</p>
+                  <p className="text-2xl font-bold">{analytics.fastWinRate.toFixed(1)}%</p>
+                  <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Medium (1-4hr)</p>
+                  <p className="text-2xl font-bold">{analytics.mediumWinRate.toFixed(1)}%</p>
+                  <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Slow (> 4hr)</p>
+                  <p className="text-2xl font-bold">{analytics.slowWinRate.toFixed(1)}%</p>
+                  <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Avg Response</p>
+                  <p className="text-2xl font-bold">{Math.round(analytics.avgResponseTime)}m</p>
+                  <p className="text-xs text-muted-foreground mt-1">Minutes</p>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 border border-black/20 dark:border-white/20 rounded-md bg-white dark:bg-black">
+                <p className="text-sm font-semibold mb-3">Key Insights</p>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-start gap-2">
+                    <TrendingUp className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5" />
+                    <span>Faster responses significantly improve win rates</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Target className="h-4 w-4 text-primary mt-0.5" />
+                    <span>Average bid amount: ${analytics.avgBidAmount.toLocaleString()}</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Clock className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5" />
+                    <span>Response time is a key competitive factor</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="text-xs text-muted-foreground mt-4">
+                <p>💡 Tip: Responding within 1 hour increases your win rate by {Math.round(analytics.fastWinRate - analytics.slowWinRate)}% compared to responses over 4 hours.</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

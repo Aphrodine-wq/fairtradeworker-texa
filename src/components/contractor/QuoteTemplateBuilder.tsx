@@ -60,9 +60,38 @@ export function QuoteTemplateBuilder({ user }: QuoteTemplateBuilderProps) {
     toast.success("Template created!")
   }
 
-  const generatePDF = (template: QuoteTemplate) => {
-    // In production, use jsPDF
-    toast.info("PDF generation coming soon - will use jsPDF")
+  const generatePDF = async (template: QuoteTemplate) => {
+    try {
+      const { generateQuotePDF } = await import('@/lib/pdf')
+      
+      // Convert template to quote format
+      const quote = {
+        id: template.id,
+        customerName: 'Customer Name', // Would be filled from job
+        customerAddress: '',
+        items: template.sections
+          .filter(s => s.type === 'line-items')
+          .flatMap(s => s.content.items || []),
+        total: template.sections
+          .filter(s => s.type === 'line-items')
+          .flatMap(s => s.content.items || [])
+          .reduce((sum, item) => sum + (item.total || 0), 0),
+        terms: template.sections
+          .find(s => s.type === 'terms')
+          ?.content?.text || '',
+        validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+      }
+
+      await generateQuotePDF(quote, user)
+      toast.success("Quote PDF generated!")
+    } catch (error: any) {
+      console.error('PDF generation failed:', error)
+      if (error.message?.includes('jsPDF')) {
+        toast.error("PDF generation requires jsPDF. Install with: npm install jspdf")
+      } else {
+        toast.error("PDF generation failed")
+      }
+    }
   }
 
   if (!isPro) {

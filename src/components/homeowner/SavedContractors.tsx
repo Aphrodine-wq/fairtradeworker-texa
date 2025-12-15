@@ -1,7 +1,9 @@
 import { useState, useMemo } from "react"
+import { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
   Heart, 
@@ -13,7 +15,8 @@ import {
   EnvelopeSimple,
   Trash,
   Lightning,
-  CheckCircle
+  CheckCircle,
+  X
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import type { User, Job } from "@/lib/types"
@@ -42,6 +45,9 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
     []
   )
   const [jobs] = useKV<Job[]>("jobs", [])
+  const [users] = useKV<User[]>("users", [])
+  const [contactDialogOpen, setContactDialogOpen] = useState(false)
+  const [selectedContractor, setSelectedContractor] = useState<{ contractorId: string; contractorName: string } | null>(null)
 
   const enrichedContractors = useMemo(() => {
     if (!savedContractors || !jobs) return []
@@ -247,7 +253,13 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
                     <Button 
                       size="sm"
                       variant="outline"
-                      onClick={() => toast.info("Contact info coming soon!")}
+                      onClick={() => {
+                        setSelectedContractor({
+                          contractorId: contractor.contractorId,
+                          contractorName: contractor.contractorName
+                        })
+                        setContactDialogOpen(true)
+                      }}
                     >
                       <Phone size={16} className="mr-2" />
                       Contact
@@ -274,6 +286,104 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
           No need to browse bids - just click "Quick Hire" and they'll see your new job first!
         </p>
       </Card>
+
+      {/* Contact Dialog */}
+      <Dialog open={contactDialogOpen} onOpenChange={setContactDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Contact {selectedContractor?.contractorName}</DialogTitle>
+            <DialogDescription>
+              Contact information for this contractor
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {selectedContractor && (() => {
+              const contractorUser = users?.find(u => u.id === selectedContractor.contractorId)
+              
+              if (!contractorUser) {
+                return (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <p>Contact information not available. Use Quick Hire to reach out through the platform.</p>
+                  </div>
+                )
+              }
+
+              return (
+                <div className="space-y-4">
+                  {contractorUser.companyEmail && (
+                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                      <div className="flex items-center gap-3 mb-2">
+                        <EnvelopeSimple size={20} className="text-black dark:text-white" />
+                        <span className="font-semibold">Email</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <a 
+                          href={`mailto:${contractorUser.companyEmail}`}
+                          className="text-primary hover:underline"
+                        >
+                          {contractorUser.companyEmail}
+                        </a>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            window.location.href = `mailto:${contractorUser.companyEmail}`
+                          }}
+                        >
+                          Send Email
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {contractorUser.companyPhone && (
+                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Phone size={20} className="text-black dark:text-white" />
+                        <span className="font-semibold">Phone</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <a 
+                          href={`tel:${contractorUser.companyPhone}`}
+                          className="text-primary hover:underline"
+                        >
+                          {contractorUser.companyPhone}
+                        </a>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => {
+                            window.location.href = `tel:${contractorUser.companyPhone}`
+                          }}
+                        >
+                          Call
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {!contractorUser.companyEmail && !contractorUser.companyPhone && (
+                    <div className="text-center py-4 text-muted-foreground">
+                      <p>No contact information available.</p>
+                      <p className="text-sm mt-2">Use Quick Hire to reach out through the platform.</p>
+                    </div>
+                  )}
+
+                  {contractorUser.companyAddress && (
+                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Hammer size={20} className="text-black dark:text-white" />
+                        <span className="font-semibold">Business Address</span>
+                      </div>
+                      <p className="text-sm">{contractorUser.companyAddress}</p>
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

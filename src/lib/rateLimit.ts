@@ -191,28 +191,74 @@ export interface RedisRateLimiter {
 }
 
 /**
- * Redis implementation (placeholder - to be implemented when Redis is added)
+ * Redis implementation - uses Redis client when available, falls back to localStorage
  */
 export class RedisRateLimiterImpl implements RedisRateLimiter {
-  // This will be implemented when Redis is integrated
+  private redis: import('./redis').RedisClient | null = null
+
+  constructor() {
+    // Try to get Redis client (will use localStorage mock if not available)
+    try {
+      const { getRedisClient } = require('./redis')
+      this.redis = getRedisClient()
+    } catch {
+      // Redis not available, will use fallback
+    }
+  }
+
   async checkLimit(
     userId: string | null,
     endpoint: string,
     limit: RateLimitConfig
   ): Promise<RateLimitResult> {
-    // TODO: Implement Redis-based rate limiting
-    // const key = `ratelimit:${userId || 'anonymous'}:${endpoint}`
-    // const count = await redis.incr(key)
-    // if (count === 1) {
-    //   await redis.expire(key, Math.ceil(limit.window / 1000))
-    // }
-    // return {
-    //   allowed: count <= limit.max,
-    //   remaining: Math.max(0, limit.max - count),
-    //   resetAt: Date.now() + limit.window
-    // }
+    const key = `ratelimit:${userId || 'anonymous'}:${endpoint}`
+    const now = Date.now()
+    const resetAt = now + limit.window
+    const ttl = Math.ceil(limit.window / 1000) // Convert to seconds
+
+    if (this.redis) {
+      try {
+        // Use Redis for rate limiting
+        const count = await this.redis.incr(key)
+        
+        // Set expiration on first increment
+        if (count === 1) {
+          await this.redis.expire(key, ttl)
+        }
+
+        const allowed = count <= limit.max
+        const remaining = Math.max(0, limit.max - count)
+
+        if (!allowed) {
+          const existing = await this.redis.get(key)
+          const record = existing ? JSON.parse(existing) : null
+          const retryAfter = record?.resetAt 
+            ? Math.ceil((record.resetAt - now) / 1000)
+            : ttl
+
+          return {
+            allowed: false,
+            remaining: 0,
+            resetAt,
+            retryAfter
+          }
+        }
+
+        // Store reset time for retry calculation
+        await this.redis.set(`ratelimit:meta:${key}`, JSON.stringify({ resetAt }), ttl)
+
+        return {
+          allowed: true,
+          remaining,
+          resetAt
+        }
+      } catch (error) {
+        console.warn('Redis rate limit failed, falling back to client-side:', error)
+        // Fall through to client-side fallback
+      }
+    }
     
-    // Fallback to client-side for now
+    // Fallback to client-side rate limiting
     return checkRateLimit(endpoint, userId ? { id: userId } as User : null)
   }
 }

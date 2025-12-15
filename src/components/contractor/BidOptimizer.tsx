@@ -75,6 +75,30 @@ export function BidOptimizer({ user, currentJob }: BidOptimizerProps) {
     )
   }, [jobs, user.id])
 
+  const myBids = useMemo(() => {
+    const allBids: Bid[] = []
+    ;(jobs || []).forEach(job => {
+      const jobBids = job.bids?.filter(b => b.contractorId === user.id) || []
+      allBids.push(...jobBids)
+    })
+    return allBids
+  }, [jobs, user.id])
+
+  const wonBids = useMemo(() => 
+    myBids.filter(b => b.status === 'accepted'),
+    [myBids]
+  )
+
+  const lostBids = useMemo(() => 
+    myBids.filter(b => b.status === 'rejected'),
+    [myBids]
+  )
+
+  const winRate = useMemo(() => {
+    if (myBids.length === 0) return 0
+    return (wonBids.length / myBids.length) * 100
+  }, [myBids.length, wonBids.length])
+
   const analyzeBid = useCallback(async () => {
     if (!currentJob) {
       toast.error("Please select a job to analyze")
@@ -404,8 +428,47 @@ Provide JSON response:
             <CardHeader>
               <CardTitle>Bid History & Performance</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-black dark:text-white">Coming soon: Detailed analytics of all bids and win rates</p>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Total Bids</p>
+                  <p className="text-2xl font-bold">{myBids.length}</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Won</p>
+                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">{wonBids.length}</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Lost</p>
+                  <p className="text-2xl font-bold text-red-600 dark:text-red-400">{lostBids.length}</p>
+                </div>
+                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <p className="text-sm text-muted-foreground">Win Rate</p>
+                  <p className="text-2xl font-bold">{winRate.toFixed(1)}%</p>
+                </div>
+              </div>
+              
+              <div className="mt-6">
+                <h4 className="font-semibold mb-3">Recent Bids</h4>
+                <div className="space-y-2">
+                  {myBids.slice(0, 10).map(bid => {
+                    const job = jobs.find(j => j.id === bid.jobId)
+                    return (
+                      <div key={bid.id} className="p-3 border border-black/20 dark:border-white/20 rounded-md flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-sm">{job?.title || 'Unknown Job'}</p>
+                          <p className="text-xs text-muted-foreground">
+                            ${bid.amount.toLocaleString()} • {new Date(bid.createdAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Badge variant={bid.status === 'accepted' ? 'default' : bid.status === 'rejected' ? 'destructive' : 'secondary'}>
+                          {bid.status}
+                        </Badge>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

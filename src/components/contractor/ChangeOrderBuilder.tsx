@@ -35,6 +35,8 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
   const [additionalCost, setAdditionalCost] = useState<number>(0)
   const [photos, setPhotos] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
+  const [selectedJob, setSelectedJob] = useState<Job | undefined>(job)
+  const [reason, setReason] = useState("")
 
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -123,9 +125,44 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
     setPhotos([])
   }
 
-  const generatePDF = () => {
-    // Generate PDF using jsPDF
-    toast.info("PDF generation coming soon")
+  const generatePDF = async () => {
+    if (!job && !selectedJob) {
+      toast.error("Select a job first")
+      return
+    }
+    
+    const currentJob = job || selectedJob
+    if (!description.trim()) {
+      toast.error("Enter a description first")
+      return
+    }
+
+    try {
+      const { generatePDF } = await import('@/lib/pdf')
+      
+      const content = [
+        {
+          type: 'text' as const,
+          data: {
+            text: `CHANGE ORDER\n\nJob: ${currentJob?.title || 'N/A'}\nDate: ${new Date().toLocaleDateString()}\n\nDescription:\n${description}\n\nAdditional Cost: $${additionalCost.toFixed(2)}\n\n${reason ? `Reason: ${reason}\n\n` : ''}This change order modifies the original contract and requires customer approval.`,
+            fontSize: 12
+          }
+        }
+      ]
+
+      await generatePDF(content, `change-order-${Date.now()}.pdf`, {
+        title: `Change Order - ${currentJob?.title || 'Job'}`,
+        author: user.fullName
+      })
+      toast.success("Change order PDF generated!")
+    } catch (error: any) {
+      console.error('PDF generation failed:', error)
+      if (error.message?.includes('jsPDF')) {
+        toast.error("PDF generation requires jsPDF. Install with: npm install jspdf")
+      } else {
+        toast.error("PDF generation failed")
+      }
+    }
   }
 
   if (!isPro) {

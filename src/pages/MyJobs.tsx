@@ -20,7 +20,8 @@ import {
   CreditCard,
   Package,
   ChartBar,
-  CircleNotch
+  CircleNotch,
+  Sparkle
 } from "@phosphor-icons/react"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { CompletionCard } from "@/components/jobs/CompletionCard"
@@ -209,8 +210,18 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
 
   const sortedBids = (job: Job) => {
     return [...job.bids].sort((a, b) => {
+      // Accepted bids always first
       if (a.status === 'accepted') return -1
       if (b.status === 'accepted') return 1
+      
+      // Boosted bids come next (within 24 hours)
+      const aIsBoosted = a.isBoosted && a.boostedUntil && new Date(a.boostedUntil) > new Date()
+      const bIsBoosted = b.isBoosted && b.boostedUntil && new Date(b.boostedUntil) > new Date()
+      
+      if (aIsBoosted && !bIsBoosted) return -1
+      if (!aIsBoosted && bIsBoosted) return 1
+      
+      // Then sort by amount (lowest first)
       return a.amount - b.amount
     })
   }
@@ -492,8 +503,11 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full overflow-hidden">
-                  {sortedBids(selectedJob).map((bid) => (
-                    <Card key={bid.id} className={bid.status === 'accepted' ? 'border-2 border-primary' : 'flex flex-col'}>
+                  {sortedBids(selectedJob).map((bid) => {
+                    const isBoosted = bid.isBoosted && bid.boostedUntil && new Date(bid.boostedUntil) > new Date()
+                    
+                    return (
+                    <Card key={bid.id} className={bid.status === 'accepted' ? 'border-2 border-primary' : isBoosted ? 'border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-950/20' : 'flex flex-col'}>
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
@@ -502,12 +516,20 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                             </div>
                             <CardTitle className="text-base">{bid.contractorName}</CardTitle>
                           </div>
-                          {bid.status === 'accepted' && (
-                            <Badge variant="default" className="text-xs">
-                              <CheckCircle weight="fill" className="mr-1" size={10} />
-                              Accepted
-                            </Badge>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {isBoosted && (
+                              <Badge variant="secondary" className="text-xs bg-yellow-400 text-black border-yellow-500">
+                                <Sparkle weight="fill" className="mr-1" size={10} />
+                                Boosted
+                              </Badge>
+                            )}
+                            {bid.status === 'accepted' && (
+                              <Badge variant="default" className="text-xs">
+                                <CheckCircle weight="fill" className="mr-1" size={10} />
+                                Accepted
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                         <div className="text-left">
                           <div className="text-xl font-bold text-primary">${bid.amount}</div>
@@ -528,7 +550,8 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                         )}
                       </CardContent>
                     </Card>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>

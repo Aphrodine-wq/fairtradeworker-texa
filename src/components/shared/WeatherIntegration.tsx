@@ -36,6 +36,26 @@ export function WeatherIntegration({ zipCode, jobType }: WeatherIntegrationProps
       return
     }
 
+    // Check cache first (6-hour cache)
+    const cacheKey = `weather-${zipCode || 'default'}`
+    const cached = localStorage.getItem(cacheKey)
+    
+    if (cached) {
+      try {
+        const { data, timestamp } = JSON.parse(cached)
+        const cacheAge = Date.now() - timestamp
+        const cacheDuration = 6 * 60 * 60 * 1000 // 6 hours
+        
+        if (cacheAge < cacheDuration) {
+          setWeather(data)
+          setLoading(false)
+          return
+        }
+      } catch (error) {
+        console.error('Weather cache parse error:', error)
+      }
+    }
+
     // Free Open-Meteo API (no key required)
     const fetchWeather = async () => {
       try {
@@ -66,14 +86,35 @@ export function WeatherIntegration({ zipCode, jobType }: WeatherIntegrationProps
         const code = current.weather_code
         const weatherInfo = weatherCodes[code] || { icon: 'cloud', condition: 'Unknown' }
 
-        setWeather({
+        const weatherData = {
           temp: Math.round(current.temperature_2m),
           condition: weatherInfo.condition,
           precipitation: current.precipitation || 0,
           icon: weatherInfo.icon
-        })
+        }
+        
+        setWeather(weatherData)
+        
+        // Cache weather data for 6 hours
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify({
+            data: weatherData,
+            timestamp: Date.now()
+          }))
+        } catch (error) {
+          console.error('Failed to cache weather:', error)
+        }
       } catch (error) {
         console.error('Weather fetch failed:', error)
+        // Use cached data even if expired as fallback
+        if (cached) {
+          try {
+            const { data } = JSON.parse(cached)
+            setWeather(data)
+          } catch {
+            // Ignore parse errors
+          }
+        }
       } finally {
         setLoading(false)
       }
