@@ -676,7 +676,7 @@ export interface SalesForecast {
 export interface CRMIntegration {
   id: string
   contractorId: string
-  type: 'erp' | 'ecommerce' | 'marketing' | 'finance' | 'accounting' | 'crm'
+  type: 'erp' | 'ecommerce' | 'marketing' | 'finance' | 'accounting' | 'crm' | 'pm'
   name: string
   provider: string
   status: 'connected' | 'disconnected' | 'error'

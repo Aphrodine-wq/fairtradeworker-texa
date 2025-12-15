@@ -24,14 +24,15 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
   const [syncs, setSyncs] = useKV<IntegrationSync[]>("crm-integration-syncs", [])
   const [isConnecting, setIsConnecting] = useState(false)
   const [showConnectDialog, setShowConnectDialog] = useState(false)
-  const [selectedType, setSelectedType] = useState<CRMIntegration['type']>('erp')
+  const [selectedType, setSelectedType] = useState<CRMIntegration['type']>('accounting')
 
   const availableIntegrations = [
+    { type: 'accounting' as const, name: 'Accounting Software', icon: CreditCard, providers: ['QuickBooks', 'Xero', 'Sage', 'FreshBooks'], priority: true },
+    { type: 'pm' as const, name: 'Project Management', icon: Database, providers: ['Procore', 'Buildertrend', 'CoConstruct', 'JobNimbus'], priority: true },
+    { type: 'finance' as const, name: 'Finance & Accounting', icon: CreditCard, providers: ['QuickBooks', 'Xero', 'Sage', 'FreshBooks'] },
     { type: 'erp' as const, name: 'ERP Systems', icon: Database, providers: ['SAP', 'Oracle', 'Microsoft Dynamics', 'NetSuite'] },
     { type: 'ecommerce' as const, name: 'E-Commerce', icon: ShoppingCart, providers: ['Shopify', 'WooCommerce', 'BigCommerce', 'Magento'] },
     { type: 'marketing' as const, name: 'Marketing Automation', icon: ChartBar, providers: ['HubSpot', 'Mailchimp', 'Marketo', 'Pardot'] },
-    { type: 'finance' as const, name: 'Finance & Accounting', icon: CreditCard, providers: ['QuickBooks', 'Xero', 'Sage', 'FreshBooks'] },
-    { type: 'accounting' as const, name: 'Accounting Software', icon: CreditCard, providers: ['QuickBooks', 'Xero', 'Sage', 'FreshBooks'] },
     { type: 'crm' as const, name: 'Other CRMs', icon: Plug, providers: ['Salesforce', 'HubSpot CRM', 'Zoho', 'Pipedrive'] }
   ]
 
@@ -118,7 +119,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
             Integration Hub
           </h2>
           <p className="text-muted-foreground mt-1">
-            Connect ERP, e-commerce, marketing automation, and finance systems
+            Connect QuickBooks, Procore, and other construction-specific tools
           </p>
         </div>
         <Dialog open={showConnectDialog} onOpenChange={setShowConnectDialog}>
@@ -270,11 +271,53 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
         </div>
       )}
 
+      {/* Construction-Specific Integrations */}
+      <div className="space-y-4">
+        <h3 className="font-semibold text-lg text-black dark:text-white">Construction-Specific Integrations</h3>
+        <div className="grid md:grid-cols-2 gap-4">
+          {availableIntegrations
+            .filter(int => int.priority)
+            .map(integration => {
+              const Icon = integration.icon
+              const isConnected = integrations.some(i => i.type === integration.type)
+
+              return (
+                <Card 
+                  key={integration.type}
+                  className={`bg-white dark:bg-black border-2 ${isConnected ? 'border-green-500' : 'border-black/20 dark:border-white/20'} ${
+                    isConnected ? 'opacity-60' : 'cursor-pointer hover:shadow-md transition-all'
+                  }`}
+                  onClick={() => !isConnected && setShowConnectDialog(true)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Icon weight="duotone" size={32} className="text-black dark:text-white" />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-black dark:text-white">{integration.name}</h3>
+                        {isConnected && (
+                          <Badge variant="default" className="mt-1 text-xs">Connected</Badge>
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      {integration.providers.map(provider => (
+                        <div key={provider} className="text-sm text-muted-foreground">
+                          • {provider}
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+        </div>
+      </div>
+
       {/* Available Integrations */}
       <div className="space-y-4">
-        <h3 className="font-semibold text-lg text-black dark:text-white">Available Integrations</h3>
+        <h3 className="font-semibold text-lg text-black dark:text-white">All Available Integrations</h3>
         <div className="grid md:grid-cols-3 gap-4">
-          {availableIntegrations.map(integration => {
+          {availableIntegrations.filter(int => !int.priority).map(integration => {
             const Icon = integration.icon
             const isConnected = integrations.some(i => i.type === integration.type)
 

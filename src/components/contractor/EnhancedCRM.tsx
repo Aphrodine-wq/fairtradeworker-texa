@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
   Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock, Gear,
-  Brain, BarChart, Plug, Shield, MapTrifold, FlowArrow, PuzzlePiece, Database, DeviceMobile
+  Brain, BarChart, Plug, Shield, MapTrifold, FlowArrow, PuzzlePiece, Database, DeviceMobile,
+  Funnel, FileText, Calculator, Users as UsersIcon
 } from "@phosphor-icons/react"
 import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
 import { CRMKanban } from "./CRMKanban"
@@ -19,6 +20,11 @@ import { AdvancedWorkflows } from "./AdvancedWorkflows"
 import { CustomObjectsBuilder } from "./CustomObjectsBuilder"
 import { DataWarehouse } from "./DataWarehouse"
 import { MobileCRM } from "./MobileCRM"
+import { ConstructionPipeline } from "./ConstructionPipeline"
+import { ConstructionDocuments } from "./ConstructionDocuments"
+import { ConstructionFinancials } from "./ConstructionFinancials"
+import { ConstructionCollaboration } from "./ConstructionCollaboration"
+import { ConstructionReporting } from "./ConstructionReporting"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
@@ -63,7 +69,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <span className="text-black dark:text-white">CRM</span>
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Manage your customers, track relationships, and grow your business
+              Construction CRM: Manage projects, bids, documents, finances, and team collaboration
             </p>
           </div>
 
@@ -119,8 +125,43 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <SkeletonLoader variant="card" className="h-32" />
             </div>
           ) : (
-            <Tabs defaultValue="customers" className="w-full">
-              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-5 lg:grid-cols-9 bg-white dark:bg-black border border-black/10 dark:border-white/10 overflow-x-auto">
+            <Tabs defaultValue="pipeline" className="w-full">
+              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-6 lg:grid-cols-12 bg-white dark:bg-black border border-black/10 dark:border-white/10 overflow-x-auto">
+                <TabsTrigger 
+                  value="pipeline" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Funnel weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Pipeline</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="documents" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <FileText weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Documents</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="financials" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Calculator weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Financials</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="collaboration" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <UsersIcon weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Team</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="reporting" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <ChartLine weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Reports</span>
+                </TabsTrigger>
                 <TabsTrigger 
                   value="customers" 
                   className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
@@ -214,6 +255,26 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                   <span className="hidden lg:inline">Mobile</span>
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="pipeline" className="mt-6">
+                <ConstructionPipeline user={user} />
+              </TabsContent>
+
+              <TabsContent value="documents" className="mt-6">
+                <ConstructionDocuments user={user} />
+              </TabsContent>
+
+              <TabsContent value="financials" className="mt-6">
+                <ConstructionFinancials user={user} />
+              </TabsContent>
+
+              <TabsContent value="collaboration" className="mt-6">
+                <ConstructionCollaboration user={user} />
+              </TabsContent>
+
+              <TabsContent value="reporting" className="mt-6">
+                <ConstructionReporting user={user} />
+              </TabsContent>
 
               <TabsContent value="customers" className="mt-6">
                 <EnhancedCRMDashboard user={user} />
