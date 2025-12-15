@@ -181,10 +181,6 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
       setDeletingUpdateId(null)
     }
   }, [updates, deletingUpdateId, job, onUpdate])
-    const filtered = updates.filter(u => u.id !== updateId)
-    onUpdate(filtered)
-    toast.success('Update deleted')
-  }
 
   const resetForm = () => {
     setFormData({

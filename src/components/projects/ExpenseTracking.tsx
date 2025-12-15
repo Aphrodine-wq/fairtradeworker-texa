@@ -204,14 +204,6 @@ export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: Expen
       setDeletingExpenseId(null)
     }
   }, [expenses, deletingExpenseId, milestone, onUpdateMilestone])
-    const updatedMilestone = {
-      ...milestone,
-      expenses: expenses.filter(exp => exp.id !== expenseId)
-    }
-
-    onUpdateMilestone(updatedMilestone)
-    toast.success('Expense deleted')
-  }
 
   const resetForm = () => {
     setFormData({

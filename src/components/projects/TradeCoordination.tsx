@@ -147,7 +147,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
         contactPhone: formData.contactPhone ? safeInput(formData.contactPhone.trim()) : undefined,
         contactEmail: formData.contactEmail ? safeInput(formData.contactEmail.trim().toLowerCase()) : undefined,
         notes: formData.notes ? safeInput(formData.notes.trim()) : undefined,
-      invitedAt: new Date().toISOString()
+        invitedAt: new Date().toISOString()
     }
 
     onUpdate([...trades, newTrade])
