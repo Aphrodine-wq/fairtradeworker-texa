@@ -148,12 +148,18 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
         contactEmail: formData.contactEmail ? safeInput(formData.contactEmail.trim().toLowerCase()) : undefined,
         notes: formData.notes ? safeInput(formData.notes.trim()) : undefined,
         invitedAt: new Date().toISOString()
-    }
+      }
 
-    onUpdate([...trades, newTrade])
-    setShowAddDialog(false)
-    resetForm()
-    toast.success(`${formData.contractorName} added to project`)
+      onUpdate([...trades, newTrade])
+      setShowAddDialog(false)
+      resetForm()
+      toast.success(`${formData.contractorName} added to project`)
+    } catch (error) {
+      console.error("Error adding trade contractor:", error)
+      toast.error('Failed to add trade contractor. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleUpdate = () => {
