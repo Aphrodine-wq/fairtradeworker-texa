@@ -1,0 +1,418 @@
+/* ===========================================
+   FairTradeWorker - Enhanced Global Theme Transition Fix
+   =========================================== */
+
+/* ============================================
+   1. ENHANCED TRANSITION SYSTEM
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Performance optimization - disable transitions during heavy operations */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  transition-duration: 0ms !important;
+}
+
+/* ============================================
+   2. ENHANCED BRUTALIST THEME VARIABLES
+   ============================================ */
+
+:root {
+  /* Light mode (default) */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #E5E5E5;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-tertiary: #666666;
+  --border-color: #000000;
+  --shadow-color: #000000;
+  
+  /* Accent colors */
+  --accent-green: #00FF00;
+  --accent-red: #FF0000;
+  --accent-yellow: #FFFF00;
+  
+  /* Border widths for brutalist style */
+  --border-thin: 2px;
+  --border-thick: 4px;
+  
+  /* Shadows */
+  --shadow-sm: 2px 2px 0 var(--shadow-color);
+  --shadow-md: 4px 4px 0 var(--shadow-color);
+  --shadow-lg: 8px 8px 0 var(--shadow-color);
+  
+  /* Spacing (pixel-perfect for brutalist) */
+  --spacing-xxs: 1px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+}
+
+.dark {
+  --bg-primary: #000000;
+  --bg-secondary: #111111;
+  --bg-tertiary: #222222;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-tertiary: #999999;
+  --border-color: #FFFFFF;
+  --shadow-color: #FFFFFF;
+}
+
+/* ============================================
+   3. UTILITY CLASSES FOR BRUTALIST DESIGN
+   ============================================ */
+
+/* Border utilities */
+.border-brutal {
+  border-width: var(--border-thin);
+  border-style: solid;
+  border-color: var(--border-color);
+}
+
+.border-brutal-thick {
+  border-width: var(--border-thick);
+  border-style: solid;
+  border-color: var(--border-color);
+}
+
+/* Shadow utilities */
+.shadow-brutal-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-brutal-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-brutal-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Color utilities */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-tertiary { background-color: var(--bg-tertiary); }
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+
+/* Accent color utilities */
+.bg-green { background-color: var(--accent-green); }
+.bg-red { background-color: var(--accent-red); }
+.bg-yellow { background-color: var(--accent-yellow); }
+.text-green { color: var(--accent-green); }
+.text-red { color: var(--accent-red); }
+.text-yellow { color: var(--accent-yellow); }
+
+/* ============================================
+   4. ENHANCED COMPONENT FIXES
+   ============================================ */
+
+/* Glass card fix (if you're using glass morphism) */
+.glass-card {
+  background-color: var(--bg-primary);
+  backdrop-filter: blur(0px); /* Brutalist - no blur */
+  border: var(--border-thick) solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loading states */
+.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ============================================
+   5. ANIMATION SYSTEM
+   ============================================ */
+
+/* Keyframe animations */
+@keyframes brutal-pulse {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(2px, 2px); }
+}
+
+@keyframes brutal-bounce {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(4px, 0); }
+  50% { transform: translate(4px, 4px); }
+  75% { transform: translate(0, 4px); }
+}
+
+/* Animation utilities */
+.animate-brutal-pulse {
+  animation: brutal-pulse 0.5s ease-in-out;
+}
+
+.animate-brutal-bounce {
+  animation: brutal-bounce 0.6s ease-in-out;
+}
+
+/* ============================================
+   6. RESPONSIVE ENHANCEMENTS
+   ============================================ */
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  * {
+    transition-duration: 100ms; /* Faster on mobile */
+  }
+  
+  /* Touch-friendly adjustments */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: #000000;
+    --shadow-color: #000000;
+  }
+  
+  .dark {
+    --border-color: #FFFFFF;
+    --shadow-color: #FFFFFF;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   7. PRINT STYLING
+   ============================================ */
+
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border-color: black !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   8. DEBUGGING UTILITIES
+   ============================================ */
+
+/* Theme debugging - add to body to see theme vars */
+.debug-theme::before {
+  content: "Theme Debug";
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: var(--accent-red);
+  color: var(--text-primary);
+  padding: var(--spacing-xs);
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ============================================
+   9. PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+
+/* Contain expensive painting operations */
+.contain-paint {
+  contain: paint;
+}
+
+/* Optimize for GPU acceleration */
+.gpu-accelerate {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* ============================================
+   10. ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* High contrast focus indicators */
+.focus-brutal {
+  outline: var(--border-thick) solid var(--accent-green);
+  outline-offset: 2px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   11. DARK MODE TRANSITION SMOOTHING
+   ============================================ */
+
+/* Smooth dark mode transition */
+html {
+  transition: color 150ms, background-color 150ms;
+}
+
+/* ============================================
+   12. COMPONENT STATE ENHANCEMENTS
+   ============================================ */
+
+/* Disabled states */
+.disabled,
+:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Active states */
+.is-active {
+  background-color: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Error states */
+.is-error {
+  border-color: var(--accent-red) !important;
+  box-shadow: 0 0 0 var(--border-thin) var(--accent-red) !important;
+}
+
+/* Success states */
+.is-success {
+  border-color: var(--accent-green) !important;
+  box-shadow: 0 0 0 var(--border-thin) var(--accent-green) !important;
+}
+
+/* Warning states */
+.is-warning {
+  border-color: var(--accent-yellow) !important;
+  box-shadow: 0 0 0 var(--border-thin) var(--accent-yellow) !important;
+}
+
+/* ============================================
+   13. RADIX UI COMPONENT FIXES
+   ============================================ */
+
+/* Dropdown menus */
+[data-radix-popper-content-wrapper],
+[role="menu"],
+[role="listbox"] {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+/* Dialogs and modals */
+[role="dialog"],
+[data-radix-dialog-content] {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+/* Tooltips */
+[data-radix-tooltip-content],
+[role="tooltip"] {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+/* Popovers */
+[data-radix-popover-content] {
+  background-color: var(--bg-primary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+/* ============================================
+   14. FORM ELEMENT CONSISTENCY
+   ============================================ */
+
+input,
+textarea,
+select {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: var(--border-thin) solid var(--border-color);
+  outline-offset: 2px;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   15. SCROLLBAR STYLING
+   ============================================ */
+
+/* Custom scrollbars that match brutalist aesthetic */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border: var(--border-thin) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-primary);
+  border: var(--border-thin) solid var(--border-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-primary) var(--bg-secondary);
+}

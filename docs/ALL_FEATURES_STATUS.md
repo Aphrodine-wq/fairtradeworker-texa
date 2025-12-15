@@ -55,7 +55,7 @@
 - ✅ **Construction Financials** - Job profitability, budget tracking, payments
 - ✅ **Construction Collaboration** - Office/field team communication, tasks
 - ✅ **Construction Reporting** - Project lifecycle, profitability, forecasting
-- ✅ **AI Insights CRM** - Predictive lead scoring, next-best-action, sentiment
+- ✅ **AI Insights CRM** - Predictive lead scoring, next-best-action, sentiment; hosted-first AI with routing/classification + embeddings/RAG + Claude scoping
 - ✅ **Advanced Analytics** - Deep reporting, custom dashboards, forecasting
 - ✅ **Integration Hub** - QuickBooks, Procore, Buildertrend, CoConstruct
 - ✅ **Enterprise Security** - Encryption, compliance (GDPR/CCPA/HIPAA/PCI), sandboxes
@@ -64,7 +64,7 @@
 - ✅ **Custom Objects Builder** - Build custom objects, fields, relationships
 - ✅ **Data Warehouse** - High-volume data storage and analytics
 - ✅ **Mobile CRM** - Offline-capable mobile CRM with sync
-- ✅ **Follow-Up Sequences** - Automated SMS/email campaigns (Pro)
+- ✅ **Follow-Up Sequences** - Automated SMS/email campaigns (Pro); smart follow-ups powered by hosted background LLMs
 - ✅ **Smart Replies** - Context-aware quick responses
 - ✅ **Automation Runner** - Background processing every 60s
 - ✅ **Daily Briefing** - Morning overview and end-of-day summary
@@ -103,6 +103,7 @@
 - ✅ **Materials Marketplace** - Browse materials with bulk discounts (UI ready)
 - ✅ **Fee Comparison Cards** - Prominent display of zero fees
 - ✅ **Competitor Comparison** - Side-by-side feature matrix
+- ✅ **Revenue CTAs (config-driven)** - Affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory (flags + graceful fallbacks; see `docs/AI_CONFIG.md`)
 
 ### Territory & Operator System
 - ✅ **Territory Map** - Interactive Texas county map (254 counties)

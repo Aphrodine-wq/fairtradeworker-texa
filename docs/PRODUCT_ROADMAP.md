@@ -4,6 +4,16 @@
 
 ---
 
+## Current Phase Update (Hosted-First AI + Revenue CTAs Live)
+- Hosted-first AI stack implemented: routing/classification, embeddings + RAG, enhanced Claude scoping, CRM intelligence, smart follow-ups, contractor matching (see `docs/AI_CONFIG.md`).
+- Revenue CTAs live (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory. Flags and fallbacks prevent hard dependency on keys/links.
+
+## Next Steps (Near-Term)
+- Partner integrations: insurance/financing providers; finalize affiliate partners and API/white-label pricing.
+- Resilience: feature flags, rate limits/budget guardrails, Claude fallback to open source, observability hooks.
+- Legal/Compliance: affiliate disclosures, AI disclaimers, ToS/contractor agreements, operator royalty terms.
+- Optional self-host path: swap hosted inference/vector endpoints with local (Ollama + Chroma/Milvus) via config.
+
 ## Part 1: AI Receptionist (Flagship Pro Feature)
 
 **TL;DR VERDICT: YES, DO IT — IT'S A PRO MONETIZATION NUCLEAR WEAPON**

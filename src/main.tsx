@@ -8,6 +8,7 @@ import { registerSW } from './lib/serviceWorker.ts'
 
 import "./main.css"
 import "./styles/theme.css"
+import "./styles/theme-transitions.css"
 import "./index.css"
 
 // Theme initialization script - prevents FOUC

@@ -7,6 +7,10 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 ## 📊 IMPLEMENTATION STATUS
 
 **Current Platform State:** Production-ready with 95% feature completion
+**Latest Updates (hosted-first AI + monetization CTAs):**
+- Hosted-first AI stack with routing/classification, embeddings + RAG context, enhanced Claude scoping, CRM intelligence, smart follow-ups, contractor matching (see `docs/AI_CONFIG.md`).
+- Revenue CTAs live (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
+- Feature flags and graceful fallbacks for missing keys/links.
 
 ### Code Statistics
 - **Total Files:** 178 TypeScript files
@@ -41,6 +45,7 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 - OpenAI GPT-4 Vision + Whisper API (integration-ready)
 - Twilio SMS service (integration-ready)
 - SendGrid email service (integration-ready)
+- Partner integrations for insurance/financing; finalize affiliate partners and API/white-label plans.
 
 See `FINAL_STATUS.md` for complete feature documentation.
 

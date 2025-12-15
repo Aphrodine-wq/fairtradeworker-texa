@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useMemo, lazy, Suspense } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
+import { revenueConfig } from '@/lib/revenueConfig'
 import { 
   CreditCard, 
   ArrowsClockwise, 
@@ -15,7 +16,8 @@ import {
   Receipt,
   ChartBar
 } from '@phosphor-icons/react'
-import { ContractorPayouts } from './ContractorPayouts'
+const ContractorPayouts = lazy(() => import('./ContractorPayouts').then(mod => ({ default: mod.ContractorPayouts })))
+import { revenueConfig } from '@/lib/revenueConfig'
 import type { User, Invoice, Job } from '@/lib/types'
 
 interface PaymentDashboardProps {
@@ -36,7 +38,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
     savedInFees: 18420
   }
 
-  const recentTransactions = [
+  const recentTransactions = useMemo(() => [
     {
       id: '1',
       type: 'payout' as const,
@@ -82,7 +84,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
       description: 'Cancelled Service Call',
       method: 'card'
     }
-  ]
+  ], [])
 
   return (
     <div className="space-y-6">
@@ -170,6 +172,60 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
               </CardContent>
             </Card>
           </div>
+
+          {/* Revenue CTAs */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Save & Earn</CardTitle>
+              <CardDescription>Affiliate links, protection, financing, and donations</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-3 md:grid-cols-2">
+              {revenueConfig.affiliates.enabled && revenueConfig.affiliates.materialsUrl && (
+                <Button asChild variant="outline" className="justify-start h-auto py-3 text-left">
+                  <a href={revenueConfig.affiliates.materialsUrl} target="_blank" rel="noreferrer">
+                    Materials & tools (affiliate)
+                    <span className="block text-xs text-muted-foreground">Tracked links; may include commission</span>
+                  </a>
+                </Button>
+              )}
+
+              {revenueConfig.affiliates.enabled && revenueConfig.affiliates.toolsUrl && (
+                <Button asChild variant="outline" className="justify-start h-auto py-3 text-left">
+                  <a href={revenueConfig.affiliates.toolsUrl} target="_blank" rel="noreferrer">
+                    Recommended tools (affiliate)
+                    <span className="block text-xs text-muted-foreground">Curated contractor stack</span>
+                  </a>
+                </Button>
+              )}
+
+              {revenueConfig.insurance.enabled && revenueConfig.insurance.referralUrl && (
+                <Button asChild variant="outline" className="justify-start h-auto py-3 text-left">
+                  <a href={revenueConfig.insurance.referralUrl} target="_blank" rel="noreferrer">
+                    Contractor insurance options
+                    <span className="block text-xs text-muted-foreground">{revenueConfig.insurance.disclosure || 'Affiliate link'}</span>
+                  </a>
+                </Button>
+              )}
+
+              {revenueConfig.financing.enabled && revenueConfig.financing.referralUrl && (
+                <Button asChild variant="outline" className="justify-start h-auto py-3 text-left">
+                  <a href={revenueConfig.financing.referralUrl} target="_blank" rel="noreferrer">
+                    Homeowner financing
+                    <span className="block text-xs text-muted-foreground">{revenueConfig.financing.disclosure || 'Affiliate link'}</span>
+                  </a>
+                </Button>
+              )}
+
+              {revenueConfig.donations.enabled && revenueConfig.donations.donateUrl && (
+                <Button asChild variant="outline" className="justify-start h-auto py-3 text-left">
+                  <a href={revenueConfig.donations.donateUrl} target="_blank" rel="noreferrer">
+                    Support Fair Trade
+                    <span className="block text-xs text-muted-foreground">Keep contractor fees at $0</span>
+                  </a>
+                </Button>
+              )}
+            </CardContent>
+          </Card>
 
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
@@ -284,7 +340,9 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
         </TabsContent>
 
         <TabsContent value="payouts">
-          <ContractorPayouts user={user} />
+          <Suspense fallback={<Card className="p-6">Loading payouts…</Card>}>
+            <ContractorPayouts user={user} />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="transactions" className="space-y-6">

@@ -1,6 +1,6 @@
 
-import { useState, useMemo, memo, useCallback, useEffect } from "react"
-import { SkeletonGrid, JobCardSkeleton } from "@/components/ui/SkeletonLoader"
+import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense } from "react"
+import { SkeletonGrid } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,15 +12,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
-import { LightningBadge } from "./LightningBadge"
 import { DriveTimeWarning } from "./DriveTimeWarning"
-import { JobMap } from "./JobMap"
+const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap })))
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
+import { revenueConfig } from "@/lib/revenueConfig"
 
 interface BrowseJobsProps {
   user: User
@@ -353,6 +353,18 @@ const JobCard = memo(function JobCard({
           >
             Place Bid • $0 Fee
           </Button>
+          {revenueConfig.premiumLead.enabled && revenueConfig.premiumLead.ctaUrl && userRole === 'contractor' && (
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="w-full justify-center text-xs"
+            >
+              <a href={revenueConfig.premiumLead.ctaUrl} target="_blank" rel="noreferrer">
+                Premium lead access {revenueConfig.premiumLead.priceHint ? `• ${revenueConfig.premiumLead.priceHint}` : ''}
+              </a>
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -374,6 +386,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
+  const [visibleCount, setVisibleCount] = useState(50)
 
   const myScheduledJobs = useMemo(() => {
     return (jobs || []).filter(job =>
@@ -443,6 +456,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
   }, [jobs, sizeFilter, user.role])
+
+  const visibleJobs = useMemo(() => {
+    return sortedOpenJobs.slice(0, visibleCount)
+  }, [sortedOpenJobs, visibleCount])
 
   const handleBidClick = useCallback((job: Job) => {
     setSelectedJob(job)
@@ -687,11 +704,11 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   <span className="text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
                   <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
                     <TabsList className="bg-muted">
-                      <TabsTrigger value="list" className="gap-2">
+                      <TabsTrigger value="list" className="gap-2" aria-label="View jobs as list">
                         <List weight="duotone" size={16} />
                         <span className="hidden sm:inline">List</span>
                       </TabsTrigger>
-                      <TabsTrigger value="map" className="gap-2">
+                      <TabsTrigger value="map" className="gap-2" aria-label="View jobs on map">
                         <MapTrifold weight="duotone" size={16} />
                         <span className="hidden sm:inline">Map</span>
                       </TabsTrigger>
@@ -720,7 +737,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
             <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch'}>
               {viewMode === 'map' ? (
                 <div className="rounded-xl overflow-hidden border border-border shadow-lg">
-                  <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+                  <Suspense fallback={<Card className="p-8 text-center">Loading map…</Card>}>
+                    <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+                  </Suspense>
                 </div>
               ) : sortedOpenJobs.length === 0 ? (
                 <div className="col-span-full">
@@ -748,18 +767,32 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     </div>
                   </Card>
                 </div>
-              ) : (isLoadingJobs || jobsLoading) && sortedOpenJobs.length === 0 ? (
+              ) : isLoadingJobs && sortedOpenJobs.length === 0 ? (
                 <SkeletonGrid count={6} columns={3} />
               ) : (
-                sortedOpenJobs.map(job => (
-                  <JobCard
-                    userRole={user.role}
-                    key={job.id}
-                    job={job}
-                    onViewPhotos={handlePhotoClick}
-                    onPlaceBid={handleBidClick}
-                  />
-                ))
+                <>
+                  {visibleJobs.map(job => (
+                    <JobCard
+                      userRole={user.role}
+                      key={job.id}
+                      job={job}
+                      onViewPhotos={handlePhotoClick}
+                      onPlaceBid={handleBidClick}
+                    />
+                  ))}
+                  {visibleCount < sortedOpenJobs.length && (
+                    <div className="col-span-full flex justify-center">
+                      <Button
+                        variant="outline"
+                        onClick={() => setVisibleCount((c) => c + 50)}
+                        className="h-10 px-6 text-sm"
+                        aria-label="Load more jobs"
+                      >
+                        Load more jobs ({sortedOpenJobs.length - visibleCount} remaining)
+                      </Button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

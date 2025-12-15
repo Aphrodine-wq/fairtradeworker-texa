@@ -83,14 +83,20 @@ This model ensures contractors maximize their income while the platform remains 
 
 ---
 
-## 🛠️ TECH STACK
+## 🛠️ TECH STACK & AI
 
 - **Frontend:** React 19 + TypeScript
 - **Styling:** Tailwind CSS
 - **UI Components:** shadcn/ui
 - **Build Tool:** Vite
 - **Testing:** Vitest
-- **AI:** Smart Claude Tiering (Haiku for simple jobs, Sonnet for complex projects)
+- **AI (hosted-first):** Smart Claude Tiering (Haiku/Sonnet) with pre-routing + RAG context and open-source helpers for background/CRM tasks (see Super README + `docs/AI_CONFIG.md`)
+
+## 🧠 NEW AI & REVENUE HIGHLIGHTS
+- Hosted-first AI stack with routing/classification, embeddings + RAG, and enhanced scoping.
+- CRM intelligence (lead scoring, sentiment, CLV), smart follow-ups, contractor matching.
+- Revenue CTAs added (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
+- Config and flags documented in `docs/AI_CONFIG.md`. Full details in `docs/SUPER_ULTRA_MEGA_BIG_README.md`.
 
 ---
 

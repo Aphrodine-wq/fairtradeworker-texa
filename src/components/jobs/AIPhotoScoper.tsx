@@ -1,12 +1,13 @@
 import { useState, useCallback } from 'react'
 import { safeInput } from '@/lib/utils'
-import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle } from '@phosphor-icons/react'
+import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle, LinkSimple, Heart } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
 import { toast } from 'sonner'
+import { revenueConfig } from '@/lib/revenueConfig'
 
 interface ProjectInfo {
   name: string
@@ -826,20 +827,74 @@ Generate a complete, professional scope document now.`
               </div>
             </CardHeader>
             <CardContent>
-              <div className="bg-muted rounded-lg p-5 min-h-[700px] max-h-[700px] overflow-y-auto border-2 border-border">
-                {scope ? (
-                  <pre className="text-foreground text-sm leading-relaxed whitespace-pre-wrap font-mono">{scope}</pre>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-center">
-                    <div className="mb-4">
-                      <FileText className="w-16 h-16 text-muted-foreground mx-auto" />
+              <div className="space-y-4">
+                <div className="bg-muted rounded-lg p-5 min-h-[500px] max-h-[700px] overflow-y-auto border-2 border-border">
+                  {scope ? (
+                    <pre className="text-foreground text-sm leading-relaxed whitespace-pre-wrap font-mono">{scope}</pre>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                      <div className="mb-4">
+                        <FileText className="w-16 h-16 text-muted-foreground mx-auto" />
+                      </div>
+                      <p className="text-foreground text-lg font-semibold mb-2">
+                        Your scope will appear here
+                      </p>
+                      <p className="text-muted-foreground text-sm">
+                        Upload photos and project info, then click generate
+                      </p>
                     </div>
-                    <p className="text-foreground text-lg font-semibold mb-2">
-                      Your scope will appear here
-                    </p>
-                    <p className="text-muted-foreground text-sm">
-                      Upload photos and project info, then click generate
-                    </p>
+                  )}
+                </div>
+
+                {scope && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {revenueConfig.affiliates.enabled && revenueConfig.affiliates.materialsUrl && (
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="justify-start h-auto py-3 flex items-start gap-2 text-left"
+                      >
+                        <a href={revenueConfig.affiliates.materialsUrl} target="_blank" rel="noreferrer">
+                          <LinkSimple className="w-4 h-4 mt-1" />
+                          <span>
+                            Materials & tools (affiliate)
+                            <span className="block text-xs text-muted-foreground">Order with tracked links to save time</span>
+                          </span>
+                        </a>
+                      </Button>
+                    )}
+
+                    {revenueConfig.affiliates.enabled && revenueConfig.affiliates.toolsUrl && (
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="justify-start h-auto py-3 flex items-start gap-2 text-left"
+                      >
+                        <a href={revenueConfig.affiliates.toolsUrl} target="_blank" rel="noreferrer">
+                          <LinkSimple className="w-4 h-4 mt-1" />
+                          <span>
+                            Recommended tools (affiliate)
+                            <span className="block text-xs text-muted-foreground">Curated contractor gear</span>
+                          </span>
+                        </a>
+                      </Button>
+                    )}
+
+                    {revenueConfig.donations.enabled && revenueConfig.donations.donateUrl && (
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="justify-start h-auto py-3 flex items-start gap-2 text-left"
+                      >
+                        <a href={revenueConfig.donations.donateUrl} target="_blank" rel="noreferrer">
+                          <Heart className="w-4 h-4 mt-1 text-red-500" weight="fill" />
+                          <span>
+                            Support Fair Trade
+                            <span className="block text-xs text-muted-foreground">Keep the platform zero-fee for contractors</span>
+                          </span>
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 )}
               </div>
