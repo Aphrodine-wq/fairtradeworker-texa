@@ -3,7 +3,7 @@
  * Allows users to reorder and toggle navigation items
  */
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowCounterClockwise } from '@phosphor-icons/react'
@@ -30,6 +30,11 @@ export function NavigationCustomizer({
 }: NavigationCustomizerProps) {
   const [items, setItems] = useState<NavItem[]>(currentNav)
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+
+  // keep dialog state in sync with latest nav when reopened
+  useEffect(() => {
+    setItems(currentNav)
+  }, [currentNav])
 
   const handleToggle = (id: string, visible: boolean) => {
     const updated = items.map(item => 

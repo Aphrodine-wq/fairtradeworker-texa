@@ -1,9 +1,11 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 import { FeeComparison } from "./FeeComparison"
 import { FeeSavingsDashboard } from "./FeeSavingsDashboard"
 import { AvailabilityCalendar } from "./AvailabilityCalendar"
@@ -30,6 +32,10 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
   const [jobs] = useKV<Job[]>("jobs", [])
   const [invoices] = useKV<Invoice[]>("invoices", [])
   const [currentUser, setCurrentUser] = useKV<User | null>("current-user", null)
+  const [statusFilter, setStatusFilter] = useState<"all" | "open" | "in-progress" | "completed">("all")
+  const [timeRange, setTimeRange] = useState<"all" | "7d" | "30d" | "90d">("all")
+  const [priorityOnly, setPriorityOnly] = useState(false)
+  const [regionFilter, setRegionFilter] = useState<"all" | "local" | "travel">("all")
 
   const handleUserUpdate = (updates: Partial<User>) => {
     if (currentUser) {
@@ -47,8 +53,28 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
     }
   }
 
+  const filteredJobs = useMemo(() => {
+    const now = Date.now()
+    const rangeMs =
+      timeRange === "7d" ? 7 * 24 * 60 * 60 * 1000 :
+      timeRange === "30d" ? 30 * 24 * 60 * 60 * 1000 :
+      timeRange === "90d" ? 90 * 24 * 60 * 60 * 1000 : null
+
+    return (jobs || []).filter(job => {
+      if (statusFilter !== "all" && job.status !== statusFilter) return false
+      if (priorityOnly && !job.isUrgent && !(job as any).isPriority) return false
+      if (regionFilter === "local" && (job as any).distanceMiles && (job as any).distanceMiles > 50) return false
+      if (regionFilter === "travel" && (job as any).distanceMiles && (job as any).distanceMiles <= 50) return false
+      if (rangeMs) {
+        const created = new Date(job.createdAt).getTime()
+        if (now - created > rangeMs) return false
+      }
+      return true
+    })
+  }, [jobs, statusFilter, timeRange, priorityOnly, regionFilter])
+
   const { myBids, acceptedBids, thisMonthEarnings, totalEarnings, feesSaved, yearlyStats } = useMemo(() => {
-    const bids = (jobs || []).flatMap(job =>
+    const bids = (filteredJobs || []).flatMap(job =>
       job.bids.filter(bid => bid.contractorId === user.id)
     )
     
@@ -91,7 +117,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         averageJobValue
       }
     }
-  }, [jobs, invoices, user.id, user.referralEarnings])
+  }, [filteredJobs, invoices, user.id, user.referralEarnings])
 
   return (
     <div className="container mx-auto px-4 md:px-8 py-12">
