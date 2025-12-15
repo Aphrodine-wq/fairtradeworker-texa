@@ -468,7 +468,6 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }, [bidTemplates])
 
   const [isSubmittingBid, setIsSubmittingBid] = useState(false)
-  const [isLoadingJobs, setIsLoadingJobs] = useState(false)
 
   const handleSubmitBid = useCallback(async () => {
     if (!selectedJob || isSubmittingBid) return
