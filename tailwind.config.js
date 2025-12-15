@@ -116,6 +116,30 @@ const defaultTheme = {
         overlay: "var(--color-bg-overlay)",
       },
       "focus-ring": "var(--color-focus-ring)",
+      primary: {
+        50: '#f0f9ff',
+        100: '#e0f2fe',
+        200: '#bae6fd',
+        300: '#7dd3fc',
+        400: '#38bdf8',
+        500: '#0ea5e9',
+        600: '#0284c7',
+        700: '#0369a1',
+        800: '#075985',
+        900: '#0c4a6e',
+      },
+      secondary: {
+        50: '#f0fdfa',
+        100: '#ccfbf1',
+        200: '#99f6e4',
+        300: '#5eead4',
+        400: '#2dd4bf',
+        500: '#14b8a6',
+        600: '#0d9488',
+        700: '#0f766e',
+        800: '#115e59',
+        900: '#134e4a',
+      },
     },
     borderRadius: {
       none: "0px", // DEFAULT - 94% of elements
@@ -139,6 +163,16 @@ const defaultTheme = {
     backdropBlur: {
       none: '0',
       xs: '2px', // Pro glass only
+    },
+    keyframes: {
+      pulseDot: {
+        '0%': { boxShadow: '0 0 0 0 rgba(16, 185, 129, 0.7)' },
+        '70%': { boxShadow: '0 0 0 10px rgba(16, 185, 129, 0)' },
+        '100%': { boxShadow: '0 0 0 0 rgba(16, 185, 129, 0)' },
+      },
+    },
+    animation: {
+      'pulse-dot': 'pulseDot 2s infinite',
     },
   },
   spacing: {
@@ -184,4 +218,38 @@ const defaultTheme = {
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: { ...defaultTheme, ...theme },
+  plugins: [
+    function({ addUtilities }) {
+      addUtilities({
+        '.glass-card': {
+          background: 'rgba(255, 255, 255, 0.12)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
+        },
+        '.glass-navbar': {
+          background: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+        },
+        '.hover-lift': {
+          transition: 'all 0.3s ease',
+        },
+        '.hover-lift:hover': {
+          transform: 'translateY(-5px)',
+          boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)',
+        },
+        '.pulse-dot': {
+          display: 'inline-block',
+          width: '10px',
+          height: '10px',
+          borderRadius: '50%',
+          backgroundColor: '#10b981',
+          animation: 'pulseDot 2s infinite',
+        },
+      })
+    }
+  ],
 };

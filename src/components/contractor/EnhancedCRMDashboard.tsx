@@ -319,37 +319,37 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
 
       <div className="space-y-6">
 
-        {/* Search and Filter - Always visible when customers exist */}
-        {/* FIXED: Filter Section - No Scroll Wheel */}
+        {/* Search and Filter - full-width surface (no cramped dropdown) */}
         {myCustomers.length > 0 && (
-          <Card className="p-4" glass={isPro}>
-            <div className="flex flex-wrap gap-2">
-              <div className="flex-1 min-w-[200px] relative">
+          <Card className="p-5" glass={isPro}>
+            <div className="grid gap-4 md:grid-cols-[1.5fr,1fr] lg:grid-cols-[2fr,1fr]">
+              <div className="relative">
                 <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} weight="duotone" />
                 <Input
                   placeholder="Search by name, email, phone, notes, or tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-10 border-2 border-black dark:border-white rounded-none bg-white dark:bg-black"
+                  className="pl-10 h-11 border-2 border-black dark:border-white rounded-lg bg-white dark:bg-black"
                 />
               </div>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[140px] h-10 border-2 border-black dark:border-white rounded-none bg-white dark:bg-black">
-                  <Funnel weight="duotone" className="mr-2" size={16} />
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent 
-                  className="border-2 border-black dark:border-white rounded-none bg-white dark:bg-black max-h-[300px] overflow-hidden"
-                  position="popper"
-                  sideOffset={4}
-                >
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="lead">Leads</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="advocate">Advocates</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                {[
+                  { label: "All", value: "all" },
+                  { label: "Leads", value: "lead" },
+                  { label: "Active", value: "active" },
+                  { label: "Completed", value: "completed" },
+                  { label: "Advocates", value: "advocate" },
+                ].map((option) => (
+                  <Button
+                    key={option.value}
+                    variant={statusFilter === option.value ? "default" : "outline"}
+                    className="justify-center h-11 text-sm"
+                    onClick={() => setStatusFilter(option.value)}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </Card>
         )}

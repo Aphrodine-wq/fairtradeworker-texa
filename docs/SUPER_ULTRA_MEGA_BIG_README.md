@@ -12,6 +12,11 @@ This document is the authoritative, always-updated system map for FairTradeWorke
 - Feature Inventory (one-line descriptions)
 - AI & Automation Stack
 - FairTradeWorker AI Architecture – Open Source Enhancement Strategy
+- Architecture Deep Dive (Hosted-First + Resilience)
+- Role-Based Flows & UI Surfaces
+- Financial Expansion (50-Year Detail)
+- Operations, Flags, Legal & Compliance
+- Testing, Rollout, and Observability
 - Update Instructions
 
 ---
@@ -440,6 +445,109 @@ src/lib/matching/
 
 ---
 
+# Architecture Deep Dive (Hosted-First + Resilience)
+- **Service slices (front-of-house)**: React 19 SPA (Vite), AI entrypoint (`src/lib/ai.ts`), scoping surfaces (Photo Scoper, Browse Jobs), payments/invoices, CRM, operator dashboards.
+- **Service slices (back-of-house, logical)**: Routing/classification (open source), embeddings/RAG, Claude scoping, CRM intelligence, automation runner, matching, revenue CTAs/config, navigation preferences.
+- **Data & storage**: Spark KV for demo persistence; vector DB (Chroma/Milvus/Qdrant/pgvector) for scopes/materials/contractors; object storage for media; Postgres (planned) for transactional; Redis L1; semantic cache L3.
+- **Caching tiers**: L1 in-memory (classification/embeddings), L2 Redis (scopes, embeddings, contractors/materials), L3 semantic cache (vector similarity), CDN/edge for static.
+- **Resilience**: Circuit breakers, bulkheads, timeouts, retries, stale-on-failure for caches, budget guardrails for AI, feature flags for AI/revenue endpoints, open-source fallback for Claude.
+- **Observability**: Metrics (latency, token spend, cache hit rates), logs (structured), traces (route → AI → RAG), alerts (budget, latency, DLQ depth), audit trails for AI prompts/outputs.
+- **Security**: Key management (env vars), PII minimization in prompts, output filters for safety, role-based navigation, affiliate disclosure text baked into CTAs, rate limits.
+- **Delivery**: Vercel for deploys, Vite build, CI-friendly `npm run build` gate; lint pending eslint.config migration.
+- **Runbook shards (examples)**:
+  - AI outage: flip flag to OSS-only routing + cached scopes; throttle scope requests; notify ops.
+  - Vector DB degraded: bypass L3 semantic cache, fall back to defaults; enqueue reindex; alert on miss spikes.
+  - Claude budget breach: drop to Haiku-only for simple jobs, increase cache TTL, pause non-critical automations.
+  - Navigation schema drift: reset to defaults, log reset, prompt user to re-save preferences.
+
+```
+flowchart LR
+  Edge[CDN/Edge] --> App[React App]
+  App --> Router[Open-Source Router\n(intent/complexity/spam)]
+  Router --> RAG[RAG Context\n(vector DB)]
+  Router --> Claude[Claude Scoping\nHaiku/Sonnet]
+  RAG --> Claude
+  Claude --> CacheL2[Redis L2]
+  Router --> CacheL1[In-memory L1]
+  App --> CRM[CRM Intel\nlead score/sentiment/CLV]
+  App --> Auto[Automation Runner\nfollow-ups, invoices]
+  App --> Matching[Contractor Matching\nembeddings + scores]
+  Claude --> SemCache[L3 Semantic Cache]
+  Auto --> Queue[Queues/Workers]
+```
+
+---
+
+# Role-Based Flows & UI Surfaces
+- **Homeowner journey**: Post job → AI scope preview (Haiku/Sonnet) → pay flat fee → receive bids → select contractor → invoices/payments → feedback → referrals/donations.
+- **Contractor journey**: Browse with load-more + filters → AI scope + materials/tools CTAs → place bids → premium lead upsell → CRM dashboard (list/pipeline/analytics) with spread filters → invoices + payouts → Pro upgrade → referrals.
+- **Operator journey**: Navigation customization, territory map, revenue dashboards (fees, Pro, boosts, processing, royalties), speed metrics, observability hooks for latency/budget.
+- **AI surfaces**: Photo Scoper, Browse Jobs cards, Payment Dashboard CTAs, CRM insights (lead score/sentiment/CLV), smart follow-ups, contractor matching recommendations.
+- **Revenue surfaces**: Affiliate materials/tools in scopes/dashboards, insurance/financing links, donations, premium lead access button, API/tools directory links; all flag/config-driven.
+- **Navigation customization**: Drag/reorder/toggle with saved preferences; dialog stays in sync with current nav.
+- **End-to-end UI mapping (selected)**:
+  - Job intake: `PhotoScoper` (media upload, AI scope preview) → `PaymentDashboard` (fee capture).
+  - Discovery: `BrowseJobs` (virtualized load-more, list/map toggle, premium lead CTA).
+  - CRM: `EnhancedCRMDashboard` (list/pipeline/analytics views, full-width search + button filters).
+  - Payments: `PaymentDashboard` CTAs (affiliate/insurance/financing/donations); invoices in `InvoiceManager`.
+  - Operator: `CompanyRevenueDashboard`, territory map, navigation customizer dialog.
+- **Journeys with AI touchpoints**:
+  - Scope quality: pre-route → RAG → Claude; cache hits lower cost/latency.
+  - Follow-ups: sentiment → next-best-action → scheduled send with pause-on-reply.
+  - Matching: embed job + contractor profiles → composite scoring → surfaced in bids/CRM notes.
+
+---
+
+# Financial Expansion (50-Year Detail)
+- **Revenue waterfalls** (per job): platform fee $20 + boost attach (10–40% × $15) + processing share (2.9% of GMV) + affiliate/insurance/financing referrals + premium leads + donations + API/license share (where applicable).
+- **Contractor ARPA sketch**: ((platform fees from their jobs × royalty-adjusted) + Pro + boosts attributable + affiliate lift) / active contractor; monitor per phase.
+- **Per-decade recalibration**: Refresh attach rates, CPI indexing (2–3%/yr), invoice averages, royalty %, processing spread, and GMV share; rerun pessimistic/base/aggressive bands.
+- **Infra cost anchors**: $1–2k/mo (seed) → $5–10k (scale-up) → $15–40k (national) → $40–120k (global); tie to caching hit rates, media load, vector query volume, AI token budgets.
+- **Risked ranges**: Track downside with -5pp Pro/-10pp boost and invoice -20%; upside with +5pp Pro/+10pp boost and invoice +20%; present both net and gross (royalty/processing separated).
+- **GMV sensitivity**: GMV = jobs × avg invoice; processing share scales linearly; royalties tied to platform fees only; Pro and boosts scale with contractor base/attach.
+- **Decade snapshots (base case mix)**:
+  - Years 1–5: Platform + boosts + processing dominate; affiliates/insurance early placements; API/directory negligible.
+  - Years 5–15: Processing overtakes platform fees; Pro MRR stabilizes; boosts ~20–30%; referrals (insurance/financing) meaningful.
+  - Years 15–30: API/white-label begins contributing (if launched); tools directory recurring; price indexation lifts all core lines.
+  - Years 30–50: Steady-state indexation; attach rates mature; margin lift from infra efficiency and higher-value SKUs (priority boosts, enterprise APIs).
+- **Illustrative revenue mix per 100k jobs/day (base)**:
+  - Platform fees: ~$730M/yr (100k × $20 × 365).
+  - Boosts @25%: ~$137M/yr (25k × $15 × 365).
+  - Pro @30% of 200k contractors @ $50/mo: ~$36M/yr.
+  - Processing 2.9% on $1,200 GMV: ~$1.27B/yr.
+  - Affiliate/materials/tools @6% on $400 spend, 15% click, 10% conv: ~$79M/yr.
+  - Insurance/financing referrals (10%/12% attach @ $100/$75): ~$685M/yr.
+  - Premium leads ($15, 15% of non-winners @ 3.5 bids/job): ~$226M/yr.
+  - API/tools directory (conservative) + donations: upside/long-tail.
+
+---
+
+# Operations, Flags, Legal & Compliance
+- **Feature flags**: AI routing, embeddings, RAG, revenue CTAs (affiliate/insurance/financing/donations/API/tools), premium leads, nav customization; default-safe fallbacks.
+- **A/B testing hooks**: Pricing ladders (Pro $50 vs $59), boost tiers ($9/$15/$19), CTA placements, prompt variants, cache TTLs; measure attach, conversion, latency, token cost.
+- **Legal/Compliance**: Affiliate disclosures near CTAs; financing/insurance partner disclosures; AI output disclaimer (“not a guaranteed quote”); ToS for contractor vs platform; arbitration clause; data privacy (PII minimization, encryption in transit, least-privilege).
+- **SLAs**: 99.9% → 99.95% target; support tiers for Pro/operators; RCA within 48h; publish error budgets tied to release cadence.
+- **Incident playbooks**: AI outage → fallback to cached scopes + open-source models; payment outage → queue invoices, retry; vector DB outage → disable semantic cache, fall back to defaults; navigation schema drift → reset to defaults with warning toast.
+- **Governance rhythm**: Monthly flag reviews, quarterly pricing/attach re-baselines, semiannual DR drills, annual compliance/privacy reviews, key rotations quarterly.
+- **Data lifecycle**: Minimize retention for PII; expire AI prompt logs; purge old media; anonymize analytics; separate prod vs. demo keys and storage.
+- **Partner management**: Vendor scorecards (uptime, pricing, DPAs), dual providers for payments/LLM where feasible, exit plans for each critical vendor.
+
+---
+
+# Testing, Rollout, and Observability
+- **Validation**: Prompt regression harness (cost/latency/quality), RAG retrieval accuracy checks, cache hit-rate targets (L1 >40%, L2 >60% with promotions), contract tests for providers.
+- **Performance**: Load tests for job/bid flows, CRM list/pipeline rendering with virtualization/windowing, map lazy-load, payment dashboard CTAs, nav customizer state sync.
+- **Rollout**: Dark launch behind flags → canary (5–10%) → full rollout; keep rollback toggles for AI providers, vector endpoints, and revenue CTAs.
+- **Observability checklist**: Metrics (latency, error rate, token spend, cache hits, DLQ depth), logs (structured per request with correlation IDs), traces (router → RAG → Claude), alerts (budget exceed, latency SLO breach, cache miss spike, vector error rate).
+- **Data quality**: Spot-check scopes vs historical outcomes; monitor pricing sanity (within 3σ of historical); validate CRM lead scores vs conversion; audit affiliate click tracking.
+- **Test matrix (examples)**:
+  - Functional: scopes (simple/complex/multi-trade), bids, payments, CRM filters (no scroll), navigation customization save/reset.
+  - Reliability: cache promotions/demotions, semantic cache toggle, Claude fallback to OSS, budget thresholds.
+  - UI/UX: keyboard navigation, focus states, dark/light contrast, map lazy-load Suspense, list/map toggle ARIA labels.
+  - Revenue: CTA visibility by flag, link integrity, disclosures present, premium lead button only for contractors.
+  - Performance targets: scopes <3s P95 simple; list render smooth with 200+ items; map render under Suspense; CRM filters apply <500ms on 5k rows (target).
+
+---
 # FairTradeWorker Revenue Expansion Deep-Dive
 
 ## Executive Summary

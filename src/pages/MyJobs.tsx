@@ -11,12 +11,10 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { 
   Briefcase, 
-  CurrencyDollar, 
   User, 
   ChatCircle, 
   CheckCircle, 
   Clock,
-  X,
   CreditCard,
   Package,
   ChartBar,
@@ -29,6 +27,7 @@ import type { Job, Bid, User as UserType, Invoice } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { getMilestoneProgress } from "@/lib/milestones"
 import { Progress } from "@/components/ui/progress"
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 
 interface MyJobsProps {
   user: UserType
@@ -36,19 +35,21 @@ interface MyJobsProps {
 }
 
 export function MyJobs({ user, onNavigate }: MyJobsProps) {
-  const [jobs, setJobs, jobsLoading] = useKV<Job[]>("jobs", [])
-  const [invoices, setInvoices, invoicesLoading] = useKV<Invoice[]>("invoices", [])
+  const [jobs, setJobs] = useKV<Job[]>("jobs", [])
+  const [, setInvoices] = useKV<Invoice[]>("invoices", [])
+  const jobsLoading = false
   const [isInitializing, setIsInitializing] = useState(true)
   // Homeowner pages don't use glass (free tier)
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
 
   // Simulate initial loading
   useEffect(() => {
-    if (!jobsLoading && !invoicesLoading) {
+    if (!jobsLoading) {
       const timer = setTimeout(() => setIsInitializing(false), 500)
       return () => clearTimeout(timer)
     }
-  }, [jobsLoading, invoicesLoading])
+    return undefined
+  }, [jobsLoading])
   const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false)
   const [cardNumber, setCardNumber] = useState("")
@@ -387,12 +388,24 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
   )}
 
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12">
-      <div className="max-w-6xl mx-auto space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>
-          <p className="text-muted-foreground mt-1">Manage your posted jobs and contractor bids</p>
-        </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "My Jobs", href: "#", active: true },
+          { label: "Free Tools", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div>
+            <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>
+            <p className="text-muted-foreground mt-1">Manage your posted jobs and contractor bids</p>
+          </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           <Card>
@@ -661,11 +674,9 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>🎉 Job Complete!</DialogTitle>
-            <DialogDescription>
-              Share your success story on social media
-            </DialogDescription>
+            <DialogDescription>Share your success story on social media</DialogDescription>
           </DialogHeader>
-          
+
           {completedJob && (() => {
             const acceptedBid = completedJob.bids.find(b => b.status === 'accepted')
             return (
@@ -673,7 +684,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                 jobTitle={completedJob.title}
                 contractorName={acceptedBid?.contractorName || 'Contractor'}
                 amount={acceptedBid?.amount || 0}
-                rating={completedJob.rating || 5}
+                rating={(completedJob as any).rating || 5}
                 beforePhoto={completedJob.beforePhotos?.[0]}
                 afterPhoto={completedJob.afterPhotos?.[0]}
                 createdAt={completedJob.createdAt}
@@ -682,6 +693,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
           })()}
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   )
 }

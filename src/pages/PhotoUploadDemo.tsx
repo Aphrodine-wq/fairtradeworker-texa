@@ -4,134 +4,78 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle } from '@phosphor-icons/react'
 import type { UploadedPhoto } from '@/hooks/usePhotoUpload'
+import { GlassNav, HeroSection, GlassCard, ThemePersistenceToggle } from '@/components/ui/MarketingSections'
 
 export function PhotoUploadDemo() {
   const [uploadedPhotos, setUploadedPhotos] = useState<UploadedPhoto[]>([])
-
-  const completedPhotos = uploadedPhotos.filter(p => p.status === 'complete')
+  const completedPhotos = uploadedPhotos.filter((p) => p.status === 'complete')
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">Real-Time Photo Upload</h1>
-          <p className="text-muted-foreground">
-            Upload photos with live progress tracking, automatic retry, and error handling
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: 'FairTradeWorker' }}
+        links={[{ label: 'Home', href: '#' }, { label: 'Photo Upload', href: '#', active: true }]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+
+      <div className="pt-20 pb-12 px-4 max-w-5xl mx-auto space-y-6">
+        <HeroSection
+          title="Real-time photo uploads"
+          subtitle="Live progress, retries, and status—ready for AI scoping and documentation."
+        />
 
         <div className="grid gap-4 md:grid-cols-3">
-          <Card>
+          <GlassCard className="p-4">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Total Uploaded</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{uploadedPhotos.length}</div>
             </CardContent>
-          </Card>
+          </GlassCard>
 
-          <Card>
+          <GlassCard className="p-4">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Completed</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
                 <div className="text-2xl font-bold">{completedPhotos.length}</div>
-                {completedPhotos.length > 0 && (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                )}
+                {completedPhotos.length > 0 && <CheckCircle className="w-5 h-5 text-green-600" />}
               </div>
             </CardContent>
-          </Card>
+          </GlassCard>
 
-          <Card>
+          <GlassCard className="p-4">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium">Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <Badge variant={completedPhotos.length === uploadedPhotos.length && uploadedPhotos.length > 0 ? "default" : "secondary"}>
-                {uploadedPhotos.length === 0 ? 'No uploads' : 
-                 completedPhotos.length === uploadedPhotos.length ? 'All complete' : 
-                 'Uploading...'}
+              <Badge variant={completedPhotos.length === uploadedPhotos.length && uploadedPhotos.length > 0 ? 'default' : 'secondary'}>
+                {uploadedPhotos.length === 0
+                  ? 'No uploads'
+                  : completedPhotos.length === uploadedPhotos.length
+                  ? 'All complete'
+                  : 'Uploading...'}
               </Badge>
             </CardContent>
-          </Card>
+          </GlassCard>
         </div>
 
-        <Card>
+        <GlassCard className="p-6">
           <CardHeader>
-            <CardTitle>Upload Photos</CardTitle>
-            <CardDescription>
-              Drag and drop or click to upload. Maximum 20 photos, 10MB each.
-            </CardDescription>
+            <CardTitle>Upload files</CardTitle>
+            <CardDescription>Track progress in real time with retries and completion markers.</CardDescription>
           </CardHeader>
           <CardContent>
-            <PhotoUploader
-              maxPhotos={20}
-              maxSize={10 * 1024 * 1024}
-              onPhotosChange={setUploadedPhotos}
-            />
+            <PhotoUploader onUploadComplete={(photos) => setUploadedPhotos(photos)} />
           </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Compact Mode</CardTitle>
-            <CardDescription>
-              A space-saving version for forms and inline use
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <PhotoUploader
-              compact
-              maxPhotos={10}
-              maxSize={5 * 1024 * 1024}
-            />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Features</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Real-time progress tracking</strong> - See upload progress for each photo with animated progress bars</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Automatic retry</strong> - Failed uploads can be retried with one click</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Drag and drop support</strong> - Drag files directly onto the upload area</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>File validation</strong> - Automatic checks for file size and type</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Image metadata extraction</strong> - Automatically reads dimensions and file size</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Multiple photos at once</strong> - Select and upload multiple files simultaneously</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Preview before upload</strong> - See thumbnails of all selected photos</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span><strong>Remove photos</strong> - Delete individual photos before or after upload</span>
-              </li>
-            </ul>
-          </CardContent>
-        </Card>
+        </GlassCard>
       </div>
     </div>
   )
 }
+
+export default PhotoUploadDemo

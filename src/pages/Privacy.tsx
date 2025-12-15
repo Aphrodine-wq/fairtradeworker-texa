@@ -1,10 +1,23 @@
 import { Card } from "@/components/ui/card"
 import { Shield, Lock, Eye, Database, UserCircle } from "@phosphor-icons/react"
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 
 export function PrivacyPage() {
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 max-w-4xl">
-      <div className="space-y-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "Privacy", href: "#", active: true },
+          { label: "Terms", href: "#" },
+          { label: "Contact", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="pt-20 pb-16 px-4 md:px-8 max-w-4xl mx-auto space-y-8">
         {/* Hero Section */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">
