@@ -405,7 +405,7 @@ Generate a complete, professional scope document now.`
     } finally {
       setLoading(false)
     }
-  }
+  }, [photos, projectInfo])
 
   const downloadScope = () => {
     const blob = new Blob([scope], { type: 'text/plain' })
