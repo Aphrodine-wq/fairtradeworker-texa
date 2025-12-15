@@ -1,8 +1,12 @@
 /* ========================================
-   AI SERVICE - CLAUDE HAIKU OPTIMIZED
-   Cost: ~$0.25/1M input, $1.25/1M output
-   vs GPT-4 Vision: ~$10/1M input
+   AI SERVICE - SMART CLAUDE TIERING
+   Simple jobs = Haiku (cheap) - $0.00025/call
+   Complex jobs = Sonnet (smart) - $0.003/call
+   Automatic job-based model selection
    ======================================== */
+
+import { getJobScope, type JobData } from './ai/smartClaude';
+import { smartCallWithBudget } from './ai/budgetController';
 
 interface AIConfig {
   model: string
@@ -167,6 +171,12 @@ function generateCacheKey(description: string): string {
   return normalized.substring(0, 100)
 }
 
+function extractTitle(description: string): string {
+  // Extract first line or first 50 chars as title
+  const firstLine = description.split('\n')[0]
+  return firstLine.substring(0, 50).trim() || 'Untitled Job'
+}
+
 export async function fakeAIScope(file: File): Promise<{
   scope: string
   priceLow: number
@@ -208,52 +218,36 @@ export async function fakeAIScope(file: File): Promise<{
       }
     }
 
-    // Determine complexity
-    const complexity = determineComplexity({ description: fileContent })
-    const config = AI_CONFIG[complexity]
+    // Use Smart Claude Tiering System
+    const jobData: JobData = {
+      description: fileContent,
+      title: extractTitle(fileContent),
+    }
     
+    // Determine if simple job for budget tracking
+    const isSimple = determineComplexity({ description: fileContent }) !== 'complex'
+    
+    // Call with smart tiering and budget control (tracks internally)
+    const scopeResult = await smartCallWithBudget(
+      isSimple,
+      () => getJobScope(jobData)
+    )
+    
+    // Track usage stats
     usageStats.totalCalls++
-    if (config.model.includes('haiku')) {
+    if (isSimple) {
       usageStats.haikuCalls++
     } else {
       usageStats.sonnetCalls++
     }
     
-    const promptText = `You are an expert home services estimator analyzing jobs in Texas. Based on the job information below, provide a detailed scope, realistic price range, and materials list.
-
-Job Information:
-${fileContent}
-
-Return a JSON object with this exact structure:
-{
-  "scope": "Clear 1-2 sentence description of work to be done",
-  "priceLow": <number>,
-  "priceHigh": <number>,
-  "materials": ["material1", "material2", "material3"],
-  "confidenceScore": <number 1-100>
-}
-
-Guidelines:
-- Prices realistic for Texas (labor $50-100/hr, materials at cost+25%)
-- Include 3-6 key materials
-- Confidence score: 90+ if detailed info, 60-89 if some ambiguity, <60 if very unclear
-- Keep scope professional and specific`
-
-    // Use existing spark.llm for now (would be replaced with Claude API in production)
-    const response = await window.spark.llm(promptText, "gpt-4o-mini", true)
-    const parsed = JSON.parse(response)
-    
-    if (!parsed.scope || typeof parsed.priceLow !== 'number' || typeof parsed.priceHigh !== 'number' || !Array.isArray(parsed.materials)) {
-      throw new Error('Invalid AI response format')
-    }
-    
     const result = {
-      scope: parsed.scope,
-      priceLow: Math.round(parsed.priceLow),
-      priceHigh: Math.round(parsed.priceHigh),
-      materials: parsed.materials.slice(0, 6),
-      confidenceScore: parsed.confidenceScore || 75,
-      aiModel: config.model,
+      scope: scopeResult.scope,
+      priceLow: scopeResult.priceLow,
+      priceHigh: scopeResult.priceHigh,
+      materials: scopeResult.materials.slice(0, 6),
+      confidenceScore: 85, // Default confidence for AI-generated scopes
+      aiModel: scopeResult.model || 'claude-3-haiku-20240307',
       cached: false,
     }
     

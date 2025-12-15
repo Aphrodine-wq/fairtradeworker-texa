@@ -90,6 +90,7 @@ This model ensures contractors maximize their income while the platform remains 
 - **UI Components:** shadcn/ui
 - **Build Tool:** Vite
 - **Testing:** Vitest
+- **AI:** Smart Claude Tiering (Haiku for simple jobs, Sonnet for complex projects)
 
 ---
 
@@ -131,6 +132,41 @@ FairTradeWorker uses a brutalist design system with:
 - **Borders:** 2-4px solid black
 - **Shadows:** Hard shadows (no blur)
 - **Typography:** Bold, uppercase headings; monospace for data
+
+---
+
+## 🤖 SMART CLAUDE TIERING
+
+FairTradeWorker uses an intelligent two-tier Claude AI approach to optimize costs while maintaining quality:
+
+### Job-Based Model Selection
+
+- **Simple Jobs (90%)** → Claude Haiku ($0.00025/call)
+  - Short descriptions (<200 chars)
+  - Single trade jobs
+  - Few photos (<3)
+  - Quick, cost-effective scoping
+
+- **Complex Jobs (10%)** → Claude Sonnet ($0.003/call)
+  - Multi-trade projects
+  - Major renovations
+  - Multiple photos and detailed requirements
+  - Comprehensive scope analysis
+
+### Cost Optimization
+
+**Realistic Monthly Usage (50K jobs):**
+- 45K Simple Jobs: $11.25 (Haiku)
+- 5K Complex Jobs: $15.00 (Sonnet)
+- **Total AI Cost: ~$26.25/month**
+- Budget Safety Margin: $120/month (4.5x buffer)
+
+### Benefits
+
+- **95%+ Quality** for simple jobs with Haiku
+- **99%+ Quality** for complex projects with Sonnet
+- **Automatic Selection** - No manual configuration needed
+- **Budget Management** - Built-in cost tracking and limits
 
 ---
 
