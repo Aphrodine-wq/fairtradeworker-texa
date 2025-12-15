@@ -120,7 +120,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
             </div>
           ) : (
             <Tabs defaultValue="customers" className="w-full">
-              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-6 lg:grid-cols-9 bg-white dark:bg-black border border-black/10 dark:border-white/10 overflow-x-auto">
+              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-5 lg:grid-cols-9 bg-white dark:bg-black border border-black/10 dark:border-white/10 overflow-x-auto">
                 <TabsTrigger 
                   value="customers" 
                   className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
@@ -185,6 +185,34 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                   <FlowArrow weight="duotone" size={18} />
                   <span className="hidden lg:inline">Workflows</span>
                 </TabsTrigger>
+                <TabsTrigger 
+                  value="customize" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Gear weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Customize</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="objects" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <PuzzlePiece weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Objects</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="warehouse" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <Database weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Warehouse</span>
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="mobile" 
+                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                >
+                  <DeviceMobile weight="duotone" size={18} />
+                  <span className="hidden lg:inline">Mobile</span>
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="customers" className="mt-6">
@@ -222,40 +250,6 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <TabsContent value="workflows" className="mt-6">
                 <AdvancedWorkflows user={user} />
               </TabsContent>
-            </Tabs>
-
-            {/* Additional Enterprise Features in Secondary Tabs */}
-            <Tabs defaultValue="customize" className="w-full mt-6">
-              <TabsList className="grid w-full max-w-4xl mx-auto grid-cols-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
-                <TabsTrigger 
-                  value="customize" 
-                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-                >
-                  <Gear weight="duotone" size={18} />
-                  <span className="hidden sm:inline">Customize</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="objects" 
-                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-                >
-                  <PuzzlePiece weight="duotone" size={18} />
-                  <span className="hidden sm:inline">Custom Objects</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="warehouse" 
-                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-                >
-                  <Database weight="duotone" size={18} />
-                  <span className="hidden sm:inline">Data Warehouse</span>
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="mobile" 
-                  className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
-                >
-                  <DeviceMobile weight="duotone" size={18} />
-                  <span className="hidden sm:inline">Mobile</span>
-                </TabsTrigger>
-              </TabsList>
 
               <TabsContent value="customize" className="mt-6">
                 <CustomizableCRM user={user} />
