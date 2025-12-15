@@ -17,22 +17,40 @@ import {
 } from "@phosphor-icons/react"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import type { User, Job } from "@/lib/types"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 
 interface ClientPortalProps {
   user: User
-  job: Job
+  job?: Job
 }
 
 export function ClientPortal({ user, job }: ClientPortalProps) {
   const isPro = user.isPro || false
   const [portalLinks, setPortalLinks] = useLocalKV<Record<string, string>>("portal-links", {})
+  const [jobs] = useLocalKV<Job[]>("jobs", [])
+  
+  // If no job provided, use first in-progress job or first job
+  const selectedJob = job || jobs.find(j => j.status === 'in-progress') || jobs[0]
+  
+  if (!selectedJob) {
+    return (
+      <div className="min-h-screen w-full bg-white dark:bg-black flex items-center justify-center">
+        <Card glass={isPro}>
+          <CardHeader>
+            <CardTitle>Client Portal</CardTitle>
+            <CardDescription>No jobs available. Create a job first to generate portal links.</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    )
+  }
 
-  const portalToken = portalLinks[job.id] || `token-${job.id}-${Date.now()}`
+  const portalToken = portalLinks[selectedJob.id] || `token-${selectedJob.id}-${Date.now()}`
   const portalUrl = `https://fairtradeworker.com/client/${portalToken}`
 
   const generateLink = () => {
-    setPortalLinks({ ...portalLinks, [job.id]: portalToken })
+    setPortalLinks({ ...portalLinks, [selectedJob.id]: portalToken })
     toast.success("Portal link generated!")
   }
 
@@ -65,10 +83,10 @@ export function ClientPortal({ user, job }: ClientPortalProps) {
   return (
     <Card glass={isPro}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Link weight="duotone" size={24} />
-          Client Portal for {job.title}
-        </CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Link weight="duotone" size={24} />
+            Client Portal for {selectedJob.title}
+          </CardTitle>
         <CardDescription>
           Share this link with your client to view job progress, milestones, and invoices
         </CardDescription>

@@ -160,9 +160,33 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
                 id="date"
                 type="date"
                 value={newSlot.date}
-                onChange={(e) => setNewSlot({ ...newSlot, date: e.target.value })}
+                onChange={(e) => {
+                  setNewSlot({ ...newSlot, date: e.target.value })
+                  if (errors.date) setErrors(prev => ({ ...prev, date: undefined }))
+                }}
+                onBlur={() => {
+                  if (newSlot.date) {
+                    const slotDate = new Date(newSlot.date)
+                    const today = new Date()
+                    today.setHours(0, 0, 0, 0)
+                    slotDate.setHours(0, 0, 0, 0)
+                    if (slotDate < today) {
+                      setErrors(prev => ({ ...prev, date: "Cannot add slots in the past" }))
+                    }
+                  }
+                }}
                 min={new Date().toISOString().split('T')[0]}
+                className={errors.date ? "border-[#FF0000]" : ""}
+                disabled={isAdding}
+                required
+                aria-invalid={!!errors.date}
+                aria-describedby={errors.date ? "date-error" : undefined}
               />
+              {errors.date && (
+                <p id="date-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                  {errors.date}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="startTime">Start Time</Label>
@@ -170,8 +194,21 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
                 id="startTime"
                 type="time"
                 value={newSlot.startTime}
-                onChange={(e) => setNewSlot({ ...newSlot, startTime: e.target.value })}
+                onChange={(e) => {
+                  setNewSlot({ ...newSlot, startTime: e.target.value })
+                  if (errors.startTime) setErrors(prev => ({ ...prev, startTime: undefined }))
+                }}
+                className={errors.startTime ? "border-[#FF0000]" : ""}
+                disabled={isAdding}
+                required
+                aria-invalid={!!errors.startTime}
+                aria-describedby={errors.startTime ? "start-time-error" : undefined}
               />
+              {errors.startTime && (
+                <p id="start-time-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                  {errors.startTime}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="endTime">End Time</Label>
@@ -179,13 +216,44 @@ export function AvailabilityCalendar({ user }: AvailabilityCalendarProps) {
                 id="endTime"
                 type="time"
                 value={newSlot.endTime}
-                onChange={(e) => setNewSlot({ ...newSlot, endTime: e.target.value })}
+                onChange={(e) => {
+                  setNewSlot({ ...newSlot, endTime: e.target.value })
+                  if (errors.endTime) setErrors(prev => ({ ...prev, endTime: undefined }))
+                }}
+                onBlur={() => {
+                  if (newSlot.startTime && newSlot.endTime && newSlot.startTime >= newSlot.endTime) {
+                    setErrors(prev => ({ ...prev, endTime: "End time must be after start time" }))
+                  }
+                }}
+                className={errors.endTime ? "border-[#FF0000]" : ""}
+                disabled={isAdding}
+                required
+                aria-invalid={!!errors.endTime}
+                aria-describedby={errors.endTime ? "end-time-error" : undefined}
               />
+              {errors.endTime && (
+                <p id="end-time-error" className="text-sm text-[#FF0000] font-mono mt-1" role="alert">
+                  {errors.endTime}
+                </p>
+              )}
             </div>
           </div>
-          <Button onClick={handleAddSlot}>
-            <Plus className="mr-2" weight="bold" />
-            Add Slot
+          <Button 
+            onClick={handleAddSlot}
+            disabled={isAdding || !newSlot.date || !newSlot.startTime || !newSlot.endTime}
+            className="border-2 border-black dark:border-white"
+          >
+            {isAdding ? (
+              <>
+                <CircleNotch className="mr-2 animate-spin" weight="bold" />
+                Adding...
+              </>
+            ) : (
+              <>
+                <Plus className="mr-2" weight="bold" />
+                Add Slot
+              </>
+            )}
           </Button>
         </div>
 

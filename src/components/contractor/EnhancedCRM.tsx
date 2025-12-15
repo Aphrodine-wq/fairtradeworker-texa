@@ -1,4 +1,5 @@
-import { useMemo } from "react"
+import { useMemo, useEffect, useState } from "react"
+import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, Calendar, Kanban, TrendUp, CurrencyDollar, ChartLine, Target, Clock, Gear } from "@phosphor-icons/react"
@@ -91,6 +92,15 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
 
           {/* Main Tabs */}
           <Tabs defaultValue="customers" className="w-full">
+            {isInitializing ? (
+              <div className="space-y-6">
+                <SkeletonLoader variant="text" className="h-8 w-64" />
+                <SkeletonLoader variant="card" className="h-32" />
+                <SkeletonLoader variant="card" className="h-32" />
+                <SkeletonLoader variant="card" className="h-32" />
+              </div>
+            ) : (
+              <>
             <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
               <TabsTrigger 
                 value="customers" 
@@ -143,6 +153,8 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <CustomizableCRM user={user} />
             </TabsContent>
           </Tabs>
+          </>
+            )}
         </div>
       </div>
     </div>
