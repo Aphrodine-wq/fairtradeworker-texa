@@ -101,8 +101,8 @@ const callClaudeHaiku = async (jobData: JobData): Promise<ScopeResult> => {
   try {
     // Use Spark LLM with cheaper model for simple jobs
     // In production with Anthropic SDK: use claude-3-haiku-20240307
-    if (typeof window !== 'undefined' && window.spark?.llm) {
-      const response = await window.spark.llm(prompt, "gpt-4o-mini", true);
+    if (typeof window !== 'undefined' && (window as any).spark?.llm) {
+      const response = await (window as any).spark.llm(prompt, "gpt-4o-mini", true);
       return parseHaikuResponse(response, jobData);
     }
     
@@ -124,8 +124,8 @@ const callClaudeSonnet = async (jobData: JobData): Promise<ScopeResult> => {
   try {
     // Use Spark LLM with more capable model for complex jobs
     // In production with Anthropic SDK: use claude-3-5-sonnet-20241022
-    if (typeof window !== 'undefined' && window.spark?.llm) {
-      const response = await window.spark.llm(prompt, "gpt-4o", true);
+    if (typeof window !== 'undefined' && (window as any).spark?.llm) {
+      const response = await (window as any).spark.llm(prompt, "gpt-4o", true);
       return parseSonnetResponse(response, jobData);
     }
     
