@@ -34,6 +34,7 @@ export default defineConfig({
     // Source maps for production debugging (can be disabled for smaller builds)
     sourcemap: false,
     rollupOptions: {
+      external: ['html2canvas'], // Optional dependency, handle at runtime
       output: {
         // Manual chunk splitting for better caching
         manualChunks: {

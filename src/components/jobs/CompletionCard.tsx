@@ -59,40 +59,43 @@ export function CompletionCard({
   const handleDownload = async () => {
     try {
       // Try to use html2canvas if available, otherwise fallback
-      try {
-        const html2canvas = (await import('html2canvas')).default
-        if (!cardRef.current) {
-          toast.error("Card not found")
+      // Using dynamic import with string literal to make it truly optional
+      const html2canvasModule = await import('html2canvas').catch(() => null)
+      
+      if (!html2canvasModule) {
+        toast.info("Image download requires html2canvas package. For now, use your browser's screenshot feature (Ctrl+Shift+S or Cmd+Shift+S).")
+        return
+      }
+
+      const html2canvas = html2canvasModule.default
+      if (!cardRef.current) {
+        toast.error("Card not found")
+        return
+      }
+
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false
+      })
+
+      // Convert to blob and download
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          toast.error("Failed to generate image")
           return
         }
 
-        const canvas = await html2canvas(cardRef.current, {
-          backgroundColor: '#ffffff',
-          scale: 2,
-          logging: false
-        })
-
-        // Convert to blob and download
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            toast.error("Failed to generate image")
-            return
-          }
-
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = `job-completion-${Date.now()}.png`
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
-          URL.revokeObjectURL(url)
-          toast.success("Image downloaded!")
-        })
-      } catch (importError) {
-        // html2canvas not installed, use fallback
-        toast.info("Image download requires html2canvas. Install with: npm install html2canvas. For now, use your browser's screenshot feature.")
-      }
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `job-completion-${Date.now()}.png`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        toast.success("Image downloaded!")
+      })
     } catch (error) {
       console.error('Download failed:', error)
       toast.error("Download failed. Use your browser's screenshot feature.")
