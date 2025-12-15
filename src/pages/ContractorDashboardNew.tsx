@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 import { 
   Briefcase, 
   Lightning, 
@@ -204,8 +205,19 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen bg-background p-[1pt]">
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <GlassNav
+          brand={{ name: "FairTradeWorker" }}
+          links={[
+            { label: "Home", href: "#" },
+            { label: "Contractor Dashboard", href: "#", active: true },
+            { label: "Business Tools", href: "#" },
+          ]}
+          primaryLabel="Post Job"
+        >
+          <ThemePersistenceToggle />
+        </GlassNav>
+        <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <SkeletonLoader variant="text" className="h-10 w-64" />
@@ -227,8 +239,19 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
   }
 
   return (
-    <div className="min-h-screen bg-background p-[1pt]">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "Contractor Dashboard", href: "#", active: true },
+          { label: "Business Tools", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>

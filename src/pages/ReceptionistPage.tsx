@@ -5,6 +5,7 @@
 
 import { ReceptionistCRM } from "@/components/contractor/ReceptionistCRM"
 import type { User } from "@/lib/types"
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 
 interface ReceptionistPageProps {
   user: User
@@ -12,10 +13,20 @@ interface ReceptionistPageProps {
 
 export function ReceptionistPage({ user }: ReceptionistPageProps) {
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-black">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "Receptionist", href: "#", active: true },
+          { label: "Operator Dashboard", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-20 pb-12">
         <div className="space-y-6">
-          {/* Header */}
           <div className="text-center">
             <h1 className="text-4xl font-bold flex items-center justify-center gap-3 mb-2">
               <span className="text-black dark:text-white">AI Receptionist</span>
@@ -24,8 +35,6 @@ export function ReceptionistPage({ user }: ReceptionistPageProps) {
               24/7 AI-powered phone answering that never misses a call. Automatically creates private jobs and onboards callers to your platform.
             </p>
           </div>
-
-          {/* Main Component */}
           <ReceptionistCRM user={user} />
         </div>
       </div>

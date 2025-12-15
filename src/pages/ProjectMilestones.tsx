@@ -38,6 +38,7 @@ import { TradeCoordination } from '@/components/projects/TradeCoordination'
 import { ProjectUpdates } from '@/components/projects/ProjectUpdates'
 import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
 import { BudgetTracking } from '@/components/projects/BudgetTracking'
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 import { ExpenseTracking } from '@/components/projects/ExpenseTracking'
 
 interface ProjectMilestonesProps {
@@ -409,8 +410,19 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
   }
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "Project Milestones", href: "#", active: true },
+          { label: "My Jobs", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="max-w-5xl mx-auto px-4 py-8 pt-20">
         <div className="mb-6">
           <Button variant="outline" onClick={onBack} className="mb-4">
             ← Back to Job

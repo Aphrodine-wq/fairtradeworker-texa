@@ -17,6 +17,7 @@ import {
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
+import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
 
 interface HomeownerDashboardProps {
   user: User
@@ -131,8 +132,19 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen bg-background p-[1pt]">
-        <div className="container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <GlassNav
+          brand={{ name: "FairTradeWorker" }}
+          links={[
+            { label: "Home", href: "#" },
+            { label: "Homeowner Dashboard", href: "#", active: true },
+            { label: "My Jobs", href: "#" },
+          ]}
+          primaryLabel="Post Job"
+        >
+          <ThemePersistenceToggle />
+        </GlassNav>
+        <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <SkeletonLoader variant="text" className="h-10 w-64" />
@@ -154,8 +166,19 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
   }
 
   return (
-    <div className="min-h-screen bg-background p-[1pt]">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <GlassNav
+        brand={{ name: "FairTradeWorker" }}
+        links={[
+          { label: "Home", href: "#" },
+          { label: "Homeowner Dashboard", href: "#", active: true },
+          { label: "My Jobs", href: "#" },
+        ]}
+        primaryLabel="Post Job"
+      >
+        <ThemePersistenceToggle />
+      </GlassNav>
+      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>
