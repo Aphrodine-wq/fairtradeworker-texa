@@ -35,17 +35,20 @@ export function HeroSection({
         <p className="max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">{subtitle}</p>
         <div className="flex justify-center gap-3 flex-wrap">
           {primaryAction && (
-            <Button asChild className="px-5 py-3 text-base">
-              <a href={primaryAction.href || "#"} onClick={primaryAction.onClick}>
-                {primaryAction.label}
-              </a>
+            <Button 
+              className="px-5 py-3 text-base"
+              onClick={primaryAction.onClick}
+            >
+              {primaryAction.label}
             </Button>
           )}
           {secondaryAction && (
-            <Button asChild variant="outline" className="px-5 py-3 text-base">
-              <a href={secondaryAction.href || "#"} onClick={secondaryAction.onClick}>
-                {secondaryAction.label}
-              </a>
+            <Button 
+              variant="outline" 
+              className="px-5 py-3 text-base"
+              onClick={secondaryAction.onClick}
+            >
+              {secondaryAction.label}
             </Button>
           )}
         </div>
