@@ -1,5 +1,5 @@
 import { memo, useState, useEffect, useCallback } from "react"
-import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List } from "@phosphor-icons/react"
+import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List, Sliders } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
+import { useNavigationPreferences } from "@/hooks/useNavigationPreferences"
+import { NavigationCustomizerDialog } from "@/components/navigation/NavigationCustomizerDialog"
+import { getNavIcon, getVisibleNavItems } from "@/lib/types/navigation"
 
 interface HeaderProps {
   user: UserType | null
@@ -33,6 +36,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
   const isMobile = useIsMobile()
   const [scrolled, setScrolled] = useState(false)
   const [activeTab, setActiveTab] = useState<string>('home')
+  const [customizerOpen, setCustomizerOpen] = useState(false)
 
   useEffect(() => {
     let ticking = false
@@ -105,9 +109,25 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             ) : (
               <>
                 {isMobile ? (
-                  <MobileNav user={user} onNavigate={onNavigate} onLogout={onLogout} activeTab={activeTab} setActiveTab={setActiveTab} />
+                  <MobileNav 
+                    user={user} 
+                    onNavigate={onNavigate} 
+                    onLogout={onLogout} 
+                    activeTab={activeTab} 
+                    setActiveTab={setActiveTab}
+                    onOpenCustomizer={() => setCustomizerOpen(true)}
+                  />
                 ) : (
-                  <DesktopNav user={user} onNavigate={onNavigate} onLogout={onLogout} activeTab={activeTab} setActiveTab={setActiveTab} />
+                  <DesktopNav 
+                    user={user} 
+                    onNavigate={onNavigate} 
+                    onLogout={onLogout} 
+                    activeTab={activeTab} 
+                    setActiveTab={setActiveTab}
+                    customizerOpen={customizerOpen}
+                    onOpenCustomizer={() => setCustomizerOpen(true)}
+                    onCloseCustomizer={() => setCustomizerOpen(false)}
+                  />
                 )}
               </>
             )}
@@ -142,119 +162,52 @@ const NavButton = memo(({ onClick, children, variant = "ghost", className = "", 
 
 NavButton.displayName = 'NavButton'
 
-const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }: NavProps) => {
+const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, customizerOpen = false, onOpenCustomizer, onCloseCustomizer }: NavProps) => {
+  const { navigation, savePreferences, resetToDefaults } = useNavigationPreferences(user)
+  const visibleNav = getVisibleNavItems(navigation)
+
   const handleNav = useCallback((page: string, tab: string) => {
     setActiveTab(tab)
     onNavigate(page)
   }, [setActiveTab, onNavigate])
 
+  const handleSavePreferences = useCallback((prefs: any) => {
+    savePreferences(prefs.items)
+  }, [savePreferences])
+
   return (
     <>
       <div className="flex items-center gap-0.5">
-        {user!.role === 'homeowner' && (
-          <>
-            <NavButton 
-              onClick={() => handleNav('dashboard', 'dashboard')} 
-              isActive={activeTab === 'dashboard'}
-              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
+        {visibleNav.map((item) => {
+          const Icon = getNavIcon(item.iconName)
+          const isActive = activeTab === item.id || activeTab === item.page
+          
+          if (item.category === 'action') {
+            return (
+              <Button
+                key={item.id}
+                onClick={() => handleNav(item.page, item.id)}
+                className="min-h-[44px] ml-1 bg-foreground text-background hover:bg-foreground/90 transition-all font-bold px-4"
+              >
+                {Icon && <Icon weight="fill" className="mr-1.5" size={16} />}
+                {item.label}
+              </Button>
+            )
+          }
+          
+          return (
+            <NavButton
+              key={item.id}
+              onClick={() => handleNav(item.page, item.id)}
+              isActive={isActive}
+              icon={Icon ? <Icon size={16} weight={isActive ? 'fill' : 'regular'} /> : undefined}
             >
-              Dashboard
+              {item.label}
             </NavButton>
-            <NavButton 
-              onClick={() => handleNav('my-jobs', 'jobs')} 
-              isActive={activeTab === 'jobs'}
-              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
-            >
-              My Jobs
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('business-tools', 'tools')} 
-              isActive={activeTab === 'tools'}
-              icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
-            >
-              Business Tools
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('photo-scoper', 'scoper')} 
-              isActive={activeTab === 'scoper'}
-              icon={<Camera size={16} weight={activeTab === 'scoper' ? 'fill' : 'regular'} />}
-            >
-              Scoper
-            </NavButton>
-            <Button 
-              onClick={() => handleNav('post-job', 'post')} 
-              className="min-h-[44px] ml-1 bg-foreground text-background hover:bg-foreground/90 transition-all font-bold px-4"
-            >
-              <Lightning weight="fill" className="mr-1.5" size={16} />
-              Post Job
-            </Button>
-          </>
-        )}
-        {user!.role === 'contractor' && (
-          <>
-            <NavButton 
-              onClick={() => handleNav('browse-jobs', 'browse')} 
-              isActive={activeTab === 'browse'}
-              icon={<Hammer size={16} weight={activeTab === 'browse' ? 'fill' : 'regular'} />}
-            >
-              Browse
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('dashboard', 'dashboard')} 
-              isActive={activeTab === 'dashboard'}
-              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
-            >
-              Dashboard
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('crm', 'crm')} 
-              isActive={activeTab === 'crm'}
-              icon={<Users size={16} weight={activeTab === 'crm' ? 'fill' : 'regular'} />}
-            >
-              CRM
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('business-tools', 'tools')} 
-              isActive={activeTab === 'tools'}
-              icon={<Sparkle size={16} weight={activeTab === 'tools' ? 'fill' : 'regular'} />}
-            >
-              Business Tools
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('photo-scoper', 'scoper')} 
-              isActive={activeTab === 'scoper'}
-              icon={<Camera size={16} weight={activeTab === 'scoper' ? 'fill' : 'regular'} />}
-            >
-              Scoper
-            </NavButton>
-          </>
-        )}
-        {user!.role === 'operator' && (
-          <>
-            <NavButton 
-              onClick={() => handleNav('dashboard', 'dashboard')} 
-              isActive={activeTab === 'dashboard'}
-              icon={<ChartLine size={16} weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />}
-            >
-              Dashboard
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('browse-jobs', 'jobs')} 
-              isActive={activeTab === 'jobs'}
-              icon={<Briefcase size={16} weight={activeTab === 'jobs' ? 'fill' : 'regular'} />}
-            >
-              Browse Jobs
-            </NavButton>
-            <NavButton 
-              onClick={() => handleNav('territory-map', 'territory')} 
-              isActive={activeTab === 'territory'}
-              icon={<MapPin size={16} weight={activeTab === 'territory' ? 'fill' : 'regular'} />}
-            >
-              Territories
-            </NavButton>
-          </>
-        )}
+          )
+        })}
       </div>
+      
       
       <div className="h-5 w-px bg-border/50 mx-1.5" />
       
@@ -289,6 +242,18 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          {onOpenCustomizer && (
+            <>
+              <DropdownMenuItem 
+                onClick={onOpenCustomizer}
+                className="cursor-pointer"
+              >
+                <Sliders className="mr-2 h-4 w-4" />
+                <span>Customize Navigation</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem onClick={onLogout} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">
             <SignOut className="mr-2 h-4 w-4" />
             <span>Log Out</span>
@@ -301,14 +266,26 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }
 
 DesktopNav.displayName = 'DesktopNav'
 
-const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }: NavProps) => {
+const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, onOpenCustomizer }: NavProps) => {
   const [open, setOpen] = useState(false)
+  const [customizerOpen, setCustomizerOpen] = useState(false)
+  const { navigation, savePreferences, resetToDefaults } = useNavigationPreferences(user)
+  const visibleNav = getVisibleNavItems(navigation)
   
   const handleNav = useCallback((page: string, tab: string) => {
     setActiveTab(tab)
     onNavigate(page)
     setOpen(false)
   }, [setActiveTab, onNavigate])
+
+  const handleOpenCustomizerClick = useCallback(() => {
+    setOpen(false) // Close mobile menu
+    if (onOpenCustomizer) {
+      onOpenCustomizer()
+    } else {
+      setCustomizerOpen(true)
+    }
+  }, [onOpenCustomizer])
 
   return (
     <>
@@ -342,123 +319,46 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
               )}
             </div>
 
-            {user!.role === 'homeowner' && (
-              <>
-                <Button 
-                  variant={activeTab === 'dashboard' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('dashboard', 'dashboard')}
+            {visibleNav.map((item) => {
+              const Icon = getNavIcon(item.iconName)
+              const isActive = activeTab === item.id || activeTab === item.page
+              
+              if (item.category === 'action') {
+                return (
+                  <Button
+                    key={item.id}
+                    onClick={() => handleNav(item.page, item.id)}
+                    className="justify-start min-h-[44px] bg-foreground text-background hover:bg-foreground/90 mt-2"
+                  >
+                    {Icon && <Icon size={20} className="mr-3" weight="fill" />}
+                    {item.label}
+                  </Button>
+                )
+              }
+              
+              return (
+                <Button
+                  key={item.id}
+                  variant={isActive ? 'secondary' : 'ghost'}
+                  onClick={() => handleNav(item.page, item.id)}
                   className="justify-start min-h-[44px]"
                 >
-                  <ChartLine size={20} className="mr-3" weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />
-                  Dashboard
+                  {Icon && <Icon size={20} className="mr-3" weight={isActive ? 'fill' : 'regular'} />}
+                  {item.label}
                 </Button>
-                <Button 
-                  variant={activeTab === 'jobs' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('my-jobs', 'jobs')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Briefcase size={20} className="mr-3" weight={activeTab === 'jobs' ? 'fill' : 'regular'} />
-                  My Jobs
-                </Button>
-                <Button 
-                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('business-tools', 'tools')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
-                  Business Tools
-                </Button>
-                <Button 
-                  variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('photo-scoper', 'scoper')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Camera size={20} className="mr-3" weight={activeTab === 'scoper' ? 'fill' : 'regular'} />
-                  Photo Scoper
-                </Button>
-                <Button 
-                  onClick={() => handleNav('post-job', 'post')}
-                  className="justify-start min-h-[44px] bg-foreground text-background hover:bg-foreground/90 mt-2"
-                >
-                  <Lightning size={20} className="mr-3" weight="fill" />
-                  Post New Job
-                </Button>
-              </>
-            )}
+              )
+            })}
 
-            {user!.role === 'contractor' && (
-              <>
-                <Button 
-                  variant={activeTab === 'browse' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('browse-jobs', 'browse')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Hammer size={20} className="mr-3" weight={activeTab === 'browse' ? 'fill' : 'regular'} />
-                  Browse Jobs
-                </Button>
-                <Button 
-                  variant={activeTab === 'dashboard' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('dashboard', 'dashboard')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <ChartLine size={20} className="mr-3" weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />
-                  Dashboard
-                </Button>
-                <Button 
-                  variant={activeTab === 'crm' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('crm', 'crm')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Users size={20} className="mr-3" weight={activeTab === 'crm' ? 'fill' : 'regular'} />
-                  CRM
-                </Button>
-                <Button 
-                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('business-tools', 'tools')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
-                  Business Tools
-                </Button>
-                <Button 
-                  variant={activeTab === 'scoper' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('photo-scoper', 'scoper')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Camera size={20} className="mr-3" weight={activeTab === 'scoper' ? 'fill' : 'regular'} />
-                  Photo Scoper
-                </Button>
-              </>
-            )}
-
-            {user!.role === 'operator' && (
-              <>
-                <Button 
-                  variant={activeTab === 'dashboard' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('dashboard', 'dashboard')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <ChartLine size={20} className="mr-3" weight={activeTab === 'dashboard' ? 'fill' : 'regular'} />
-                  Dashboard
-                </Button>
-                <Button 
-                  variant={activeTab === 'territory' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('territory-map', 'territory')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <MapPin size={20} className="mr-3" weight={activeTab === 'territory' ? 'fill' : 'regular'} />
-                  Territory Map
-                </Button>
-                <Button 
-                  variant={activeTab === 'tools' ? 'secondary' : 'ghost'} 
-                  onClick={() => handleNav('business-tools', 'tools')}
-                  className="justify-start min-h-[44px]"
-                >
-                  <Sparkle size={20} className="mr-3" weight={activeTab === 'tools' ? 'fill' : 'regular'} />
-                  Business Tools
-                </Button>
-              </>
-            )}
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                onClick={handleOpenCustomizerClick}
+                className="justify-start min-h-[44px] mt-2"
+              >
+                <Sliders size={20} className="mr-3" />
+                Customize Navigation
+              </Button>
+            </SheetClose>
 
             <div className="h-px bg-border my-4" />
             
@@ -473,6 +373,16 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab }:
           </div>
         </SheetContent>
       </Sheet>
+      
+      {/* Mobile Navigation Customizer Dialog */}
+      <NavigationCustomizerDialog
+        user={user!}
+        open={customizerOpen}
+        onOpenChange={setCustomizerOpen}
+        currentNav={navigation}
+        onSave={handleSavePreferences}
+        onReset={resetToDefaults}
+      />
     </>
   )
 })
