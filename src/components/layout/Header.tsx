@@ -24,7 +24,8 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import { useNavigationPreferences } from "@/hooks/useNavigationPreferences"
 import { NavigationCustomizerDialog } from "@/components/navigation/NavigationCustomizerDialog"
-import { getNavIcon, getVisibleNavItems } from "@/lib/types/navigation"
+import { getNavIcon } from "@/lib/types/navigation"
+import { getVisibleNavItems } from "@/lib/utils/navigation-utils"
 
 interface HeaderProps {
   user: UserType | null
