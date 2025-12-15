@@ -6,15 +6,7 @@ import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
-import {
-  GlassNav,
-  HeroSection,
-  StatsSection,
-  FeatureSection,
-  PricingSection,
-  RatingSection,
-  ThemePersistenceToggle,
-} from "@/components/ui/MarketingSections"
+import { HeroSection, StatsSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
@@ -32,21 +24,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[
-          { label: "Dashboard", href: "#", active: true },
-          { label: "Marketplace", href: "#" },
-          { label: "CRM", href: "#" },
-          { label: "Analytics", href: "#" },
-        ]}
-        primaryLabel="Post Job"
-        onPrimaryClick={() => onNavigate("post-job")}
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-
-      <div className="pt-20 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pt-10 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <HeroSection
           title="Zero-Fee Home Services Marketplace"
           subtitle="Contractors keep 100% of earnings. Homeowners pay a flat job fee."
