@@ -34,7 +34,20 @@ export async function generatePDF(
 ): Promise<void> {
   try {
     // Dynamic import of jsPDF (will work if installed)
-    const { jsPDF } = await import('jspdf')
+    // Using catch to make it truly optional for build
+    const jspdfModule = await import('jspdf').catch(() => null)
+    if (!jspdfModule) {
+      // Fallback: download as text file
+      const blob = new Blob([typeof content === 'string' ? content : JSON.stringify(content, null, 2)], { type: 'text/plain' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = filename.replace('.pdf', '.txt')
+      a.click()
+      URL.revokeObjectURL(url)
+      throw new Error('PDF generation requires jsPDF package. Install with: npm install jspdf. Content downloaded as text file instead.')
+    }
+    const { jsPDF } = jspdfModule
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -103,8 +116,12 @@ export async function generatePDF(
     }
 
     doc.save(filename)
-  } catch (error) {
+  } catch (error: any) {
     console.error('PDF generation failed:', error)
+    // If error already handled (fallback already done), rethrow
+    if (error.message && error.message.includes('requires jsPDF')) {
+      throw error
+    }
     // Fallback: download as text file
     const blob = new Blob([typeof content === 'string' ? content : JSON.stringify(content, null, 2)], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
@@ -113,7 +130,7 @@ export async function generatePDF(
     a.download = filename.replace('.pdf', '.txt')
     a.click()
     URL.revokeObjectURL(url)
-    throw new Error('PDF generation requires jsPDF. Install with: npm install jspdf')
+    throw new Error('PDF generation failed. Content downloaded as text file instead.')
   }
 }
 
