@@ -10,10 +10,18 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Milestone, MilestoneExpense } from "@/lib/types"
 
 export function EnhancedExpenseTracking({ user }: { user: User }) {
-  const [jobs] = useKV<any[]>("jobs", [])
+  const [jobs, , jobsLoading] = useKV<any[]>("jobs", [])
   const [period, setPeriod] = useState<'month' | 'quarter' | 'year'>('month')
   const [selectedMilestone, setSelectedMilestone] = useState<Milestone | null>(null)
+  const [isInitializing, setIsInitializing] = useState(true)
   const isPro = user.isPro || false
+  
+  useEffect(() => {
+    if (!jobsLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [jobsLoading])
 
   // Get all expenses from all milestones
   const allExpenses = useMemo(() => {
@@ -63,6 +71,24 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
     })
     return all
   }, [jobs])
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen w-full bg-white dark:bg-black">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8">
+          <div className="space-y-6">
+            <SkeletonLoader variant="text" className="h-10 w-64 mx-auto" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <SkeletonLoader key={i} variant="card" className="h-32" />
+              ))}
+            </div>
+            <SkeletonLoader variant="card" className="h-96" />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen w-full bg-white dark:bg-black">

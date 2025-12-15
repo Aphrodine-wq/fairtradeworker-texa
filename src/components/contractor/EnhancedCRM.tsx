@@ -16,6 +16,14 @@ interface EnhancedCRMProps {
 
 export function EnhancedCRM({ user }: EnhancedCRMProps) {
   const [customers, , customersLoading] = useKV<CRMCustomer[]>("crm-customers", [])
+  const [isInitializing, setIsInitializing] = useState(true)
+  
+  useEffect(() => {
+    if (!customersLoading) {
+      const timer = setTimeout(() => setIsInitializing(false), 500)
+      return () => clearTimeout(timer)
+    }
+  }, [customersLoading])
   
   const { myCustomers, activeCustomers, totalLTV, conversionRate } = useMemo(() => {
     const mine = (customers || []).filter(c => c.contractorId === user.id)
