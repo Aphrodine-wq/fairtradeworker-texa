@@ -40,8 +40,10 @@ FairTradeWorker is a marketplace platform that connects homeowners with contract
 ### For Contractors
 - **Zero Fees** - Keep 100% of every job
 - **Job Matching** - Browse and bid on projects in your area
+- **Construction CRM** - Industry-specific CRM with pipeline, documents, financials, collaboration, and reporting
 - **Business Tools** - Free CRM, invoicing, expense tracking, and more
 - **Pro Features** - Advanced tools available with subscription
+- **Enterprise CRM** - AI insights, advanced analytics, integrations (QuickBooks, Procore), security, workflows
 
 ### For Homeowners
 - **Flat Fee** - Simple pricing, no surprises

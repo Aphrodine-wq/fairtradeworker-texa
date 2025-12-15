@@ -3,7 +3,7 @@
 **Purpose:** Comprehensive documentation of the entire codebase structure, architecture, and implementation details for AI-assisted development and quality improvements.
 
 **Last Updated:** December 2025  
-**Codebase:** 178 TypeScript files, 39,700+ lines of code
+**Codebase:** 273 TypeScript files, 45,000+ lines of code
 
 ---
 
@@ -100,11 +100,31 @@ fairtradeworker-texa-main/
     - Feedback.tsx - Error states, toasts, confirmations
 
 #### Contractor Components (`src/components/contractor/`)
-80+ contractor-specific tools and features:
+95+ contractor-specific tools and features:
+
+**Construction CRM (NEW - December 2025):**
+- **ConstructionPipeline.tsx** - Project & bid pipeline (leads → bids → projects)
+- **ConstructionDocuments.tsx** - Construction document management (contracts, blueprints, change orders)
+- **ConstructionFinancials.tsx** - Job profitability, budget tracking, payment management
+- **ConstructionCollaboration.tsx** - Office/field team communication and task management
+- **ConstructionReporting.tsx** - Construction-specific reporting and forecasting
+
+**Enterprise CRM Features:**
+- **AIInsightsCRM.tsx** - AI-powered lead scoring, next-best-action, sentiment analysis
+- **AdvancedAnalyticsCRM.tsx** - Deep reporting, custom dashboards, sales forecasting
+- **IntegrationHub.tsx** - QuickBooks, Procore, and other integrations
+- **EnterpriseSecurity.tsx** - Encryption, compliance (GDPR/CCPA/HIPAA/PCI), sandboxes
+- **TerritoryManager.tsx** - Geographic and product-based territory management
+- **AdvancedWorkflows.tsx** - Multi-level approvals, complex automation workflows
+- **CustomObjectsBuilder.tsx** - Build custom objects, fields, and relationships
+- **DataWarehouse.tsx** - High-volume data storage and warehousing
+- **MobileCRM.tsx** - Mobile CRM with offline access and sync
 
 **Core Business Tools:**
 - **InvoiceManager.tsx** - Invoice creation and management
-- **EnhancedCRM.tsx** - Customer relationship management
+- **EnhancedCRM.tsx** - Customer relationship management (main hub)
+- **EnhancedCRMDashboard.tsx** - CRM dashboard with customer list
+- **CRMKanban.tsx** - Visual Kanban board for pipeline management
 - **EnhancedExpenseTracking.tsx** - Expense tracking
 - **DocumentManager.tsx** - Document storage and management
 - **TaxHelper.tsx** - Tax preparation assistance
@@ -827,6 +847,20 @@ See `docs/` directory for:
 
 **Sales & CRM Category:**
 - ✅ CRM (`EnhancedCRM.tsx`) - Route: `crm`
+- ✅ Construction Pipeline (`ConstructionPipeline.tsx`) - Route: `crm` (pipeline tab)
+- ✅ Construction Documents (`ConstructionDocuments.tsx`) - Route: `crm` (documents tab)
+- ✅ Construction Financials (`ConstructionFinancials.tsx`) - Route: `crm` (financials tab)
+- ✅ Construction Collaboration (`ConstructionCollaboration.tsx`) - Route: `crm` (collaboration tab)
+- ✅ Construction Reporting (`ConstructionReporting.tsx`) - Route: `crm` (reporting tab)
+- ✅ AI Insights (`AIInsightsCRM.tsx`) - Route: `crm` (ai tab)
+- ✅ Advanced Analytics (`AdvancedAnalyticsCRM.tsx`) - Route: `crm` (analytics tab)
+- ✅ Integrations (`IntegrationHub.tsx`) - Route: `crm` (integrations tab) - QuickBooks, Procore
+- ✅ Enterprise Security (`EnterpriseSecurity.tsx`) - Route: `crm` (security tab)
+- ✅ Territory Management (`TerritoryManager.tsx`) - Route: `crm` (territories tab)
+- ✅ Advanced Workflows (`AdvancedWorkflows.tsx`) - Route: `crm` (workflows tab)
+- ✅ Custom Objects (`CustomObjectsBuilder.tsx`) - Route: `crm` (objects tab)
+- ✅ Data Warehouse (`DataWarehouse.tsx`) - Route: `crm` (warehouse tab)
+- ✅ Mobile CRM (`MobileCRM.tsx`) - Route: `crm` (mobile tab)
 - ✅ Lead Management (`EnhancedCRM.tsx` - leads tab) - Route: `leads`
 - ✅ AI Receptionist (`ReceptionistCRM.tsx`) - Route: `receptionist`
 - ✅ AI Bid Optimizer (`BidOptimizer.tsx`) - Route: `bid-optimizer`
