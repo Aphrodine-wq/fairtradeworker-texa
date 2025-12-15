@@ -10,59 +10,9 @@ export function GlassCard({ className, ...props }: React.ComponentProps<typeof C
   return <Card className={cn("glass-card", className)} {...props} />
 }
 
-export function GlassNav({
-  brand,
-  links,
-  onPrimaryClick,
-  primaryLabel = "Post Job",
-  children,
-}: {
-  brand?: { name: string; dotClassName?: string }
-  links?: NavLink[]
-  primaryLabel?: string
-  onPrimaryClick?: () => void
-  children?: React.ReactNode
-}) {
-  return (
-    <nav className="glass-navbar fixed w-full z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <div className={cn("h-8 w-8 rounded-full bg-primary-500", brand?.dotClassName)} />
-              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
-                {brand?.name || "FairTradeWorker"}
-              </span>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {(links || []).map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href || "#"}
-                  className={cn(
-                    "inline-flex items-center px-1 pt-1 text-sm font-medium border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-gray-200",
-                    link.active && "border-b-2 border-primary-500 text-gray-900 dark:text-white"
-                  )}
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={onPrimaryClick}
-              className="relative inline-flex items-center px-4 py-2 text-sm font-medium rounded-md bg-primary-600 text-white shadow-sm hover:bg-primary-700 focus:ring-primary-500"
-            >
-              <span className="pulse-dot mr-2" aria-hidden="true" />
-              {primaryLabel}
-            </Button>
-            {children}
-          </div>
-        </div>
-      </div>
-    </nav>
-  )
+export function GlassNav({ children }: { brand?: any; links?: NavLink[]; primaryLabel?: string; onPrimaryClick?: () => void; children?: React.ReactNode }) {
+  // GlassNav is disabled; return children only to avoid duplicate navigation bars
+  return <>{children}</>
 }
 
 export function HeroSection({
