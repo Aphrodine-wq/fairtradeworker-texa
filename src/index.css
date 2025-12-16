@@ -302,11 +302,17 @@
     border-color: transparent !important;
   }
   
-  /* Dark mode: make the borders visible */
-  .dark [class*="border-white/20"],
-  .dark [class*="border-white/10"],
-  .dark [class*="border-white/5"] {
+  /* Dark mode: make the borders visible with appropriate opacity */
+  .dark [class*="border-white/20"] {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .dark [class*="border-white/10"] {
     border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  .dark [class*="border-white/5"] {
+    border-color: rgba(255, 255, 255, 0.05) !important;
   }
   
   .dark [class*="border-black/20"],
