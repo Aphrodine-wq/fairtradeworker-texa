@@ -45,7 +45,7 @@ export function Footer({ onNavigate }: FooterProps) {
             </p>
             <button
               onClick={() => onNavigate && onNavigate('donate')}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all text-sm font-semibold"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#00FF00] text-black rounded-lg shadow-lg hover:shadow-xl transition-all text-sm font-semibold hover:bg-[#00DD00] border-2 border-black dark:border-white"
             >
               ❤️ Donate to Platform
             </button>
