@@ -774,9 +774,11 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   <>
                     <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
                     Submitting...
+                  </>
                 ) : (
                   <>
                     Submit Question
+                  </>
                 )}
               </Button>
             </div>
@@ -1001,10 +1003,12 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   <>
                     <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
                     Adding...
+                  </>
                 ) : (
                   <>
                     <Plus className="mr-2" size={16} />
                     Add Milestone
+                  </>
                 )}
               </Button>
             </div>
@@ -1203,6 +1207,7 @@ function MilestoneTimeline({
                         <Pencil className="mr-1" size={16} />
                         Edit
                       </Button>
+                    </>
                   )}
                   
                   {userRole === 'contractor' && milestone.status === 'disputed' && (
@@ -1231,6 +1236,7 @@ function MilestoneTimeline({
                         <CheckCircle className="mr-1" size={16} />
                         Approve & Pay
                       </Button>
+                    </>
                   )}
                 </div>
                 
@@ -1407,6 +1413,7 @@ function MilestoneList({
                       <Pencil className="mr-1" size={16} />
                       Edit
                     </Button>
+                  </>
                 )}
                 
                 {userRole === 'contractor' && milestone.status === 'disputed' && (
@@ -1435,6 +1442,7 @@ function MilestoneList({
                       <CheckCircle className="mr-1" size={16} />
                       Approve & Pay
                     </Button>
+                  </>
                 )}
               </div>
               
