@@ -186,7 +186,7 @@ const JobCard = memo(function JobCard({
 
       {/* Hero Image Section */}
       {photos.length > 0 && photos[0] ? (
-        <div className="relative h-48 overflow-hidden bg-muted">
+        <div className="relative h-64 overflow-hidden bg-muted">
           <button
             onClick={() => onViewPhotos(photos)}
             className="relative w-full h-full group/image"
@@ -209,46 +209,60 @@ const JobCard = memo(function JobCard({
                 target.style.opacity = '1'
               }}
             />
-            <div className="absolute inset-0 bg-black/60 opacity-100 group-hover/image:opacity-80 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
             
             {/* Overlay Info */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-              <div className="flex items-center justify-between mb-2">
+            <div className="absolute inset-0 p-5 flex flex-col justify-between text-white">
+              {/* Top Section - Badges */}
+              <div className="flex items-center justify-between">
                 <Badge 
                   variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
-                  className="backdrop-blur-sm bg-white/20 text-white border-white/30"
+                  className="backdrop-blur-sm bg-white/20 text-white border-white/30 text-sm py-1 px-3"
                 >
                   {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
                 </Badge>
                 {photos.length > 1 && (
-                  <Badge variant="outline" className="backdrop-blur-sm bg-white/20 text-white border-white/30">
-                    <Images size={12} className="mr-1" weight="duotone" />
+                  <Badge variant="outline" className="backdrop-blur-sm bg-white/20 text-white border-white/30 text-sm py-1 px-3">
+                    <Images size={14} className="mr-1" weight="duotone" />
                     {photos.length} photos
                   </Badge>
                 )}
               </div>
-              <div className="flex items-center gap-3 text-xs font-medium">
-                <div className="flex items-center gap-1 backdrop-blur-sm bg-white/20 px-2 py-1 rounded-md">
-                  <CurrencyDollar size={14} weight="duotone" />
-                  <span>${job.aiScope.priceLow.toLocaleString()}-${job.aiScope.priceHigh.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center gap-1 backdrop-blur-sm bg-white/20 px-2 py-1 rounded-md">
-                  <span>{job.bids.length}</span>
-                  <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
+              
+              {/* Bottom Section - Title, Price, and Bid Button */}
+              <div className="space-y-3">
+                <h3 className="text-xl font-bold text-white line-clamp-2 drop-shadow-lg">
+                  {job.title}
+                </h3>
+                <div className="flex items-center gap-3 text-sm font-medium">
+                  <div className="flex items-center gap-1 backdrop-blur-sm bg-white/20 px-3 py-1.5 rounded-md">
+                    <CurrencyDollar size={16} weight="duotone" />
+                    <span>${job.aiScope.priceLow.toLocaleString()}-${job.aiScope.priceHigh.toLocaleString()}</span>
+                  </div>
+                  <div className="flex items-center gap-1 backdrop-blur-sm bg-white/20 px-3 py-1.5 rounded-md">
+                    <span>{job.bids.length}</span>
+                    <span>{job.bids.length === 1 ? 'bid' : 'bids'}</span>
+                  </div>
                 </div>
               </div>
             </div>
             
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div className="bg-white/20 backdrop-blur-md rounded-full p-4">
-                <Images size={32} className="text-white" weight="bold" />
-              </div>
+            {/* Hover Overlay with Bid Button */}
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onPlaceBid(job)
+                }}
+                className="bg-white text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-[#00FF00] transition-colors shadow-2xl"
+              >
+                Place Bid • $0 Fee
+              </button>
             </div>
           </button>
         </div>
       ) : (
-        <div className="relative h-32 bg-muted flex items-center justify-center">
+        <div className="relative h-48 bg-muted flex items-center justify-center">
           <div className="text-center">
             <Wrench size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
             <div className="text-xs text-muted-foreground">No photos available</div>
@@ -968,25 +982,25 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh] max-w-[95vw] lg:max-w-[1400px]">
           {/* Header Section - Fixed */}
           <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogHeader className="text-left">
-              <DialogTitle className="text-2xl md:text-3xl font-bold text-black dark:text-white mb-1">
+              <DialogTitle className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
                 Submit Your Bid
               </DialogTitle>
-              <DialogDescription className="text-base text-muted-foreground">
+              <DialogDescription className="text-lg text-muted-foreground">
                 {selectedJob?.title}
               </DialogDescription>
             </DialogHeader>
           </div>
 
           {/* Main Content Area - Column Layout - No Scroll */}
-          <div className="flex-1 overflow-hidden px-8 py-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="flex-1 overflow-hidden px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Left Column - Job Info & Intelligence */}
-            <div className="lg:col-span-1 space-y-4 overflow-hidden flex flex-col">
+            <div className="lg:col-span-1 space-y-5 overflow-hidden flex flex-col">
               {selectedJob && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-shrink-0">
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-5 flex-shrink-0">
                   <BidIntelligence
                     jobCategory={selectedJob.title}
                     jobPriceLow={selectedJob.aiScope.priceLow}
@@ -997,7 +1011,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               )}
 
               {selectedJob && myScheduledJobs.length > 0 && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-3 flex-shrink-0">
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-shrink-0">
                   <DriveTimeWarning
                     targetJob={selectedJob}
                     scheduledJobs={myScheduledJobs}
@@ -1007,10 +1021,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               )}
 
               {selectedJob && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-1 overflow-hidden flex flex-col">
-                  <div className="mb-2 flex-shrink-0">
-                    <h3 className="text-base font-semibold text-black dark:text-white">Questions & Answers</h3>
-                    <p className="text-xs text-muted-foreground">Review questions from other contractors</p>
+                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-5 flex-1 overflow-hidden flex flex-col">
+                  <div className="mb-3 flex-shrink-0">
+                    <h3 className="text-lg font-semibold text-black dark:text-white">Questions & Answers</h3>
+                    <p className="text-sm text-muted-foreground">Review questions from other contractors</p>
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <JobQA job={selectedJob} currentUser={user} isContractor={true} />
@@ -1020,18 +1034,18 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
             </div>
             
             {/* Right Column - Bid Form (2/3 width) */}
-            <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-6 overflow-hidden flex flex-col">
-              <h3 className="text-xl font-semibold text-black dark:text-white mb-4 flex-shrink-0">Your Bid Details</h3>
+            <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-8 overflow-hidden flex flex-col">
+              <h3 className="text-2xl font-semibold text-black dark:text-white mb-6 flex-shrink-0">Your Bid Details</h3>
               
-              <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left Side of Form */}
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {/* Bid Templates Dropdown */}
                   {user.role === 'contractor' && bidTemplates.filter(t => t.contractorId === user.id).length > 0 && (
                     <div className="space-y-2">
-                      <Label className="text-sm font-medium text-black dark:text-white">Load Template (Optional)</Label>
+                      <Label className="text-base font-medium text-black dark:text-white">Load Template (Optional)</Label>
                       <Select onValueChange={handleTemplateSelect}>
-                        <SelectTrigger className="h-10 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20">
+                        <SelectTrigger className="h-12 text-base bg-white dark:bg-black border-black/10 dark:border-white/20">
                           <SelectValue placeholder="Choose a saved template..." />
                         </SelectTrigger>
                         <SelectContent>
@@ -1048,7 +1062,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   )}
 
                   <div className="space-y-2">
-                    <Label htmlFor="bidAmount" className="text-sm font-medium text-black dark:text-white">
+                    <Label htmlFor="bidAmount" className="text-base font-medium text-black dark:text-white">
                       Bid Amount ($)
                     </Label>
                     <Input
@@ -1057,10 +1071,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       placeholder="Enter your bid amount"
                       value={bidAmount}
                       onChange={(e) => setBidAmount(e.target.value)}
-                      className="h-10 text-base bg-white dark:bg-black border-black/10 dark:border-white/20"
+                      className="h-12 text-lg bg-white dark:bg-black border-black/10 dark:border-white/20"
                     />
                     {selectedJob && (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-sm text-muted-foreground">
                         💡 Range: <span className="font-semibold">${selectedJob.aiScope.priceLow.toLocaleString()}</span> - <span className="font-semibold">${selectedJob.aiScope.priceHigh.toLocaleString()}</span>
                       </p>
                     )}
@@ -1073,7 +1087,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       const canBoost = existingBoosts < 2
                       
                       return (
-                        <div className="space-y-3 p-4 rounded-lg border-2 border-yellow-400 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
+                        <div className="space-y-3 p-5 rounded-lg border-2 border-yellow-400 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-950/20">
                           <div className="flex items-center space-x-2">
                             <input
                               type="checkbox"
@@ -1081,20 +1095,20 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                               checked={bidBoost}
                               onChange={(e) => setBidBoost(e.target.checked)}
                               disabled={!canBoost}
-                              className="w-4 h-4 rounded cursor-pointer disabled:opacity-50"
+                              className="w-5 h-5 rounded cursor-pointer disabled:opacity-50"
                             />
-                            <Label htmlFor="bidBoost" className="text-sm font-medium cursor-pointer text-black dark:text-white flex items-center gap-2">
-                              <Sparkle weight="fill" size={16} className="text-yellow-600 dark:text-yellow-400" />
+                            <Label htmlFor="bidBoost" className="text-base font-medium cursor-pointer text-black dark:text-white flex items-center gap-2">
+                              <Sparkle weight="fill" size={18} className="text-yellow-600 dark:text-yellow-400" />
                               Boost this bid - $5
                             </Label>
                           </div>
                           {bidBoost && (
-                            <p className="text-xs text-black dark:text-white">
+                            <p className="text-sm text-black dark:text-white">
                               ⭐ Your bid will appear at the top of the list for 24 hours. Max 2 boosts per job.
                             </p>
                           )}
                           {!canBoost && (
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-sm text-muted-foreground">
                               This job already has 2 boosted bids. Boost unavailable.
                             </p>
                           )}
@@ -1105,27 +1119,27 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
                   {/* Save as Template Option */}
                   {user.role === 'contractor' && bidMessage.trim() && (
-                    <div className="space-y-3 p-4 rounded-lg border border-black/20/10 dark:border-white/20 bg-white dark:bg-black">
+                    <div className="space-y-3 p-5 rounded-lg border border-black/20/10 dark:border-white/20 bg-white dark:bg-black">
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"
                           id="saveTemplate"
                           checked={saveAsTemplate}
                           onChange={(e) => setSaveAsTemplate(e.target.checked)}
-                          className="w-4 h-4 rounded cursor-pointer"
+                          className="w-5 h-5 rounded cursor-pointer"
                         />
-                        <Label htmlFor="saveTemplate" className="text-sm font-medium cursor-pointer text-black dark:text-white">
+                        <Label htmlFor="saveTemplate" className="text-base font-medium cursor-pointer text-black dark:text-white">
                           Save as template
                         </Label>
                       </div>
                       {saveAsTemplate && (
                         <div className="space-y-2">
-                          <Label className="text-xs text-muted-foreground">Template Name</Label>
+                          <Label className="text-sm text-muted-foreground">Template Name</Label>
                           <Input
                             placeholder="e.g., 'My standard intro'"
                             value={templateName}
                             onChange={(e) => setTemplateName(e.target.value)}
-                            className="h-9 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20"
+                            className="h-11 text-base bg-white dark:bg-black border-black/10 dark:border-white/20"
                           />
                         </div>
                       )}
@@ -1135,7 +1149,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
                 {/* Right Side of Form - Message */}
                 <div className="space-y-2 flex flex-col">
-                  <Label htmlFor="bidMessage" className="text-sm font-medium text-black dark:text-white">
+                  <Label htmlFor="bidMessage" className="text-base font-medium text-black dark:text-white">
                     Message to Homeowner
                   </Label>
                   <Textarea
@@ -1143,9 +1157,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     placeholder="Tell the homeowner about your experience, approach, and why you're the best fit..."
                     value={bidMessage}
                     onChange={(e) => setBidMessage(e.target.value)}
-                    className="flex-1 text-sm bg-white dark:bg-black border-black/10 dark:border-white/20 resize-none"
+                    className="flex-1 text-base bg-white dark:bg-black border-black/10 dark:border-white/20 resize-none min-h-[200px]"
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     💬 A compelling message helps you stand out
                   </p>
                 </div>
@@ -1154,9 +1168,9 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </div>
 
           {/* Footer Section - Fixed */}
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
-            <DialogFooter className="flex-col sm:flex-row gap-3 sm:justify-between">
-              <div className="flex items-center gap-2 text-sm font-medium text-black dark:text-white">
+          <div className="px-8 py-5 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
+            <DialogFooter className="flex-col sm:flex-row gap-4 sm:justify-between">
+              <div className="flex items-center gap-2 text-base font-medium text-black dark:text-white">
                 <span className="text-green-600 dark:text-green-400">✓</span>
                 <span>Free bidding • $0 fee • Keep 100%</span>
               </div>
@@ -1164,23 +1178,23 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <Button 
                   variant="outline" 
                   onClick={() => setDialogOpen(false)}
-                  className="h-10 px-6 text-sm border-black/10 dark:border-white/20"
+                  className="h-12 px-8 text-base border-black/10 dark:border-white/20"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleSubmitBid}
                   disabled={isSubmittingBid}
-                  className="h-10 px-8 text-sm font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-12 px-10 text-base font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmittingBid ? (
                     <>
-                      <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
+                      <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
                       Submitting...
                     </>
                   ) : (
                     <>
-                      {bidBoost && <Sparkle weight="fill" size={16} className="mr-2 text-yellow-400" />}
+                      {bidBoost && <Sparkle weight="fill" size={18} className="mr-2 text-yellow-400" />}
                       Submit Bid{bidBoost ? ' + Boost ($5)' : ' – $0 Fee'}
                     </>
                   )}
