@@ -6,11 +6,11 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { ArrowCounterClockwise } from '@phosphor-icons/react'
+import { ArrowCounterClockwise, Plus } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { DraggableNavItem } from './DraggableNavItem'
 import type { NavItem, NavigationPreferences } from '@/lib/types/navigation'
-import { validateNavigation } from '@/lib/types/navigation'
+import { validateNavigation, getAvailableBusinessTools, getNavIcon } from '@/lib/types/navigation'
 import type { User } from '@/lib/types'
 
 interface NavigationCustomizerProps {
@@ -111,6 +111,24 @@ export function NavigationCustomizer({
     [items]
   )
 
+  // Get available business tools that aren't already in navigation
+  const availableTools = useMemo(() => {
+    const allTools = getAvailableBusinessTools(user.role)
+    const currentIds = new Set(items.map(item => item.id))
+    return allTools.filter(tool => !currentIds.has(tool.id))
+  }, [user.role, items])
+
+  const handleAddTool = (tool: Omit<NavItem, 'visible' | 'order'>) => {
+    const maxOrder = Math.max(...items.map(item => item.order), 0)
+    const newItem: NavItem = {
+      ...tool,
+      visible: true,
+      order: maxOrder + 1
+    }
+    setItems([...items, newItem])
+    toast.success(`Added ${tool.label} to navigation`)
+  }
+
   return (
     <Card className="border-4 border-black dark:border-white bg-white dark:bg-black shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff]">
       <CardHeader>
@@ -135,7 +153,7 @@ export function NavigationCustomizer({
         </div>
 
         {/* Navigation Items */}
-        <div className="space-y-2 max-h-[500px] overflow-y-auto">
+        <div className="space-y-2 max-h-[400px] overflow-y-auto">
           {items.map((item, index) => (
             <DraggableNavItem
               key={item.id}
@@ -150,6 +168,48 @@ export function NavigationCustomizer({
             />
           ))}
         </div>
+
+        {/* Available Business Tools to Add */}
+        {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'homeowner') && (
+          <div className="border-t-2 border-black dark:border-white pt-4">
+            <h3 className="text-lg font-semibold mb-3 text-black dark:text-white">
+              Add Business Tools to Navigation
+            </h3>
+            <div className="space-y-2">
+              {availableTools.map((tool) => {
+                const Icon = getNavIcon(tool.iconName)
+                return (
+                  <div
+                    key={tool.id}
+                    className="border-2 border-black dark:border-white bg-white dark:bg-black p-3 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-3">
+                      {Icon && (
+                        <Icon 
+                          size={20} 
+                          className="text-black dark:text-white"
+                          weight="regular"
+                        />
+                      )}
+                      <span className="font-medium text-black dark:text-white">
+                        {tool.label}
+                      </span>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleAddTool(tool)}
+                      className="border-2 border-black dark:border-white"
+                    >
+                      <Plus size={16} className="mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex gap-3 pt-4 border-t-2 border-black dark:border-white">

@@ -17,7 +17,17 @@ interface FreeToolsPageProps {
 }
 
 function FreeToolsPageComponent({ user, onNavigate }: FreeToolsPageProps) {
-  const [activeTool, setActiveTool] = useState<string | null>(null)
+  // Support initial tool selection from URL or navigation
+  const [activeTool, setActiveTool] = useState<string | null>(() => {
+    // Check URL hash for tool parameter
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const toolId = window.location.hash.replace('#', '')
+      if (['cost-calculator', 'warranty-tracker', 'quick-notes', 'saved-contractors'].includes(toolId)) {
+        return toolId
+      }
+    }
+    return null
+  })
 
   const handleToolSelect = (toolId: string) => {
     setActiveTool(toolId)

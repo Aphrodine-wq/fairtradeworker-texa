@@ -11,9 +11,14 @@ import {
   Sparkle, 
   Camera, 
   MapPin,
-  Lightning
+  Lightning,
+  Calculator,
+  ShieldCheck,
+  Note,
+  Heart
 } from '@phosphor-icons/react'
 import type { Icon } from '@phosphor-icons/react'
+import type { UserRole } from './types'
 
 export interface NavItem {
   id: string                    // Unique identifier (e.g., 'dashboard', 'browse-jobs')
@@ -42,11 +47,70 @@ const iconMap: Record<string, typeof ChartLine> = {
   'Camera': Camera,
   'MapPin': MapPin,
   'Lightning': Lightning,
+  'Calculator': Calculator,
+  'ShieldCheck': ShieldCheck,
+  'Note': Note,
+  'Heart': Heart,
 }
 
 export function getNavIcon(iconName?: string) {
   if (!iconName) return undefined
   return iconMap[iconName]
+}
+
+/**
+ * Get available business tools that can be added to navigation
+ * These are tools from the Free Tools Hub that can be pinned to nav
+ */
+export function getAvailableBusinessTools(role: UserRole): Array<Omit<NavItem, 'visible' | 'order'>> {
+  const contractorTools: Array<Omit<NavItem, 'visible' | 'order'>> = [
+    {
+      id: 'cost-calculator',
+      label: 'Cost Calculator',
+      page: 'business-tools',
+      category: 'secondary',
+      iconName: 'Calculator'
+    },
+    {
+      id: 'warranty-tracker',
+      label: 'Warranty Tracker',
+      page: 'business-tools',
+      category: 'secondary',
+      iconName: 'ShieldCheck'
+    },
+    {
+      id: 'quick-notes',
+      label: 'Quick Notes',
+      page: 'business-tools',
+      category: 'secondary',
+      iconName: 'Note'
+    }
+  ]
+
+  const homeownerTools: Array<Omit<NavItem, 'visible' | 'order'>> = [
+    {
+      id: 'saved-contractors',
+      label: 'Saved Contractors',
+      page: 'business-tools',
+      category: 'secondary',
+      iconName: 'Heart'
+    },
+    {
+      id: 'quick-notes',
+      label: 'Quick Notes',
+      page: 'business-tools',
+      category: 'secondary',
+      iconName: 'Note'
+    }
+  ]
+
+  if (role === 'contractor') {
+    return contractorTools
+  } else if (role === 'homeowner') {
+    return homeownerTools
+  }
+  
+  return [] // Operators don't have business tools
 }
 
 // Default navigation configurations per role

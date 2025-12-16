@@ -163,7 +163,7 @@ export function PricingSection({
     },
     {
       name: "Contractor Pro",
-      price: "$29",
+      price: "$50",
       description: "Advanced tools to grow",
       features: ["Priority placement", "CRM & Analytics", "Smart invoicing", "AI scope assistance"],
       ctaLabel: "Upgrade to Pro"
