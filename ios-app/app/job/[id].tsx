@@ -173,7 +173,7 @@ export default function JobDetailsScreen() {
           )}
 
           {/* Description */}
-          <Card variant="outlined" padding="md" style={styles.section}>
+          <Card variant="elevated" padding="md" style={styles.section}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>{job.description}</Text>
           </Card>
@@ -226,7 +226,7 @@ export default function JobDetailsScreen() {
               </Card>
             ) : (
               job.bids.map((bid) => (
-                <Card key={bid.id} variant="outlined" padding="md" style={styles.bidCard}>
+                <Card key={bid.id} variant="elevated" padding="md" style={styles.bidCard}>
                   <View style={styles.bidHeader}>
                     <View>
                       <Text style={styles.bidContractor}>{bid.contractorName}</Text>
