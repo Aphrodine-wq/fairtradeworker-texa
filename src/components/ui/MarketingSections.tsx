@@ -193,7 +193,7 @@ export function PricingSection({
               <ul className="mt-6 space-y-3">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <span className="text-[#00FF00] text-lg">✓</span>
+                    <span className="text-[#00FF00] text-lg" aria-hidden="true">✓</span>
                     <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
                   </li>
                 ))}
