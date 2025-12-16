@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { CheckCircle } from '@phosphor-icons/react'
 import type { UploadedPhoto } from '@/hooks/usePhotoUpload'
-import { GlassNav, HeroSection, GlassCard, ThemePersistenceToggle } from '@/components/ui/MarketingSections'
+import { GlassNav, HeroSection, GlassCard } from '@/components/ui/MarketingSections'
 
 export function PhotoUploadDemo() {
   const [uploadedPhotos, setUploadedPhotos] = useState<UploadedPhoto[]>([])
@@ -15,10 +15,7 @@ export function PhotoUploadDemo() {
       <GlassNav
         brand={{ name: 'FairTradeWorker' }}
         links={[{ label: 'Home', href: '#' }, { label: 'Photo Upload', href: '#', active: true }]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
 
       <div className="pt-20 pb-12 px-4 max-w-5xl mx-auto space-y-6">
         <HeroSection

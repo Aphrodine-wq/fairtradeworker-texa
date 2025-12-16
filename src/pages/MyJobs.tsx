@@ -27,7 +27,7 @@ import type { Job, Bid, User as UserType, Invoice } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { getMilestoneProgress } from "@/lib/milestones"
 import { Progress } from "@/components/ui/progress"
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav } from "@/components/ui/MarketingSections"
 
 interface MyJobsProps {
   user: UserType
@@ -396,10 +396,8 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
           { label: "My Jobs", href: "#", active: true },
           { label: "Free Tools", href: "#" },
         ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
+
       <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
         <div className="max-w-6xl mx-auto space-y-8">
           <div>
@@ -649,7 +647,6 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                   <>
                     <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
                     Processing...
-                  </>
                 ) : (
                   <>
                     <CreditCard weight="fill" className="mr-2" size={18} />

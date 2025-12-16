@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
 import { CircleNotch } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
-import { GlassNav, HeroSection, GlassCard, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
 
 interface LoginPageProps {
   onNavigate: (page: string) => void
@@ -74,9 +74,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
           { label: "Signup", href: "#" },
         ]}
         primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+      />
 
       <div className="pt-20 pb-16 px-4">
         <HeroSection
