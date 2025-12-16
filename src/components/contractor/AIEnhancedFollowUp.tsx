@@ -152,7 +152,7 @@ export function AIEnhancedFollowUp({ user }: AIEnhancedFollowUpProps) {
     if (!sequence || sequence.steps.length === 0) return
 
     const newFollowUp: ActiveFollowUp = {
-      id: `followup-${Date.now()}`,
+      id: crypto?.randomUUID?.() || `followup-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       sequenceId,
       jobId,
       customerId,
@@ -184,7 +184,7 @@ export function AIEnhancedFollowUp({ user }: AIEnhancedFollowUpProps) {
     }
 
     const sequence: FollowUpSequence = {
-      id: `seq-${Date.now()}`,
+      id: crypto?.randomUUID?.() || `seq-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       contractorId: user.id,
       name: newSequence.name,
       trigger: newSequence.trigger || 'ai_call',
@@ -214,7 +214,7 @@ export function AIEnhancedFollowUp({ user }: AIEnhancedFollowUpProps) {
 
   const addStep = () => {
     const newStep: FollowUpStep = {
-      id: `step-${Date.now()}`,
+      id: crypto?.randomUUID?.() || `step-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       delay: 1,
       channel: 'sms',
       templateType: 'ai_personalized',

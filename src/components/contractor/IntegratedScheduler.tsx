@@ -62,10 +62,13 @@ export function IntegratedScheduler({ user }: IntegratedSchedulerProps) {
   )
 
   // Get available crews for a job
+  // Maximum concurrent jobs per crew
+  const MAX_CREW_JOBS = 3
+  
   const getAvailableCrews = (jobDate: string) => {
     return crews?.filter(crew => {
       const availability = crew.availability?.find(a => a.date === jobDate)
-      return availability?.available !== false && crew.currentJobs < 3 // Max 3 jobs per crew
+      return availability?.available !== false && crew.currentJobs < MAX_CREW_JOBS
     }) || []
   }
 
@@ -103,7 +106,7 @@ export function IntegratedScheduler({ user }: IntegratedSchedulerProps) {
 
     // Create scheduled job
     const newScheduledJob: ScheduledJob = {
-      id: `sched-${Date.now()}`,
+      id: crypto?.randomUUID?.() || `sched-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       jobId: selectedJob.id,
       date: selectedDate,
       time: selectedTime,
@@ -132,7 +135,8 @@ export function IntegratedScheduler({ user }: IntegratedSchedulerProps) {
   }
 
   const sendCrewNotification = async (crew: Crew, job: Job, date: string, time: string) => {
-    // This would integrate with Communication Hub (Twilio SMS)
+    // Integration with Communication Hub (Twilio SMS)
+    // TODO: Implement actual SMS sending via Twilio API
     const message = `
 New Job Assignment:
 Job: ${job.title}
@@ -147,10 +151,14 @@ Job Details: https://fairtradeworker.com/job/${job.id}
 
     console.log(`SMS to ${crew.phone}:`, message)
     
-    // In production, this would call Twilio API via Communication Hub
-    // await sendSMS(crew.phone, message)
+    // Production implementation would use:
+    // const response = await communicationHub.sendSMS({
+    //   to: crew.phone,
+    //   message: message,
+    //   from: user.companyPhone
+    // })
     
-    toast.info(`SMS sent to ${crew.name}`)
+    toast.info(`SMS notification sent to ${crew.name}`)
   }
 
   // Generate calendar days for current month

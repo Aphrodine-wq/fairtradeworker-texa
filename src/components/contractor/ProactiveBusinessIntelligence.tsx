@@ -65,8 +65,11 @@ export function ProactiveBusinessIntelligence({ user }: BusinessIntelligenceProp
     })
 
     // Find highest and lowest margin job types
+    // Minimum jobs required for reliable analysis
+    const MIN_JOBS_FOR_ANALYSIS = 3
+    
     const marginAnalysis = Object.entries(jobTypeMargins)
-      .filter(([_, data]) => data.count >= 3) // Need at least 3 jobs for reliable data
+      .filter(([_, data]) => data.count >= MIN_JOBS_FOR_ANALYSIS)
       .map(([type, data]) => ({
         type,
         margin: data.revenue > 0 ? ((data.revenue - data.expenses) / data.revenue) * 100 : 0,

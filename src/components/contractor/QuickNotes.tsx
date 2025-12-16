@@ -72,7 +72,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
     }
 
     const newNote: QuickNote = {
-      id: `note-${Date.now()}`,
+      id: crypto?.randomUUID?.() || `note-${Date.now()}-${Math.random().toString(36).substring(7)}`,
       contractorId: user.id,
       jobId: selectedJobId || undefined,
       title: noteTitle.trim() || "Quick Note",
@@ -94,7 +94,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
       
       if (customerId) {
         const interaction: CRMInteraction = {
-          id: `interaction-${Date.now()}`,
+          id: crypto?.randomUUID?.() || `interaction-${Date.now()}-${Math.random().toString(36).substring(7)}`,
           customerId,
           type: 'note',
           title: noteTitle.trim() || "Quick Note",
