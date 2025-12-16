@@ -17,7 +17,7 @@ import {
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav } from "@/components/ui/MarketingSections"
 
 interface HomeownerDashboardProps {
   user: User
@@ -141,9 +141,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
             { label: "My Jobs", href: "#" },
           ]}
           primaryLabel="Post Job"
-        >
-          <ThemePersistenceToggle />
-        </GlassNav>
+        />
         <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -175,9 +173,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
           { label: "My Jobs", href: "#" },
         ]}
         primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+      />
       <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
@@ -198,7 +194,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Active Jobs</p>
                   <p className="text-3xl font-bold mt-1">{activeJobs.length}</p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white flex items-center justify-center shadow-sm">
                   <Wrench className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -212,7 +208,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                     {openJobs.reduce((sum, j) => sum + j.bids.length, 0)}
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -224,7 +220,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Completed</p>
                   <p className="text-3xl font-bold mt-1">{completedJobs.length}</p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white flex items-center justify-center shadow-sm">
                   <CheckCircle className="h-6 w-6 text-accent-foreground" />
                 </div>
               </div>
@@ -236,7 +232,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                   <p className="text-sm text-muted-foreground">Total Spent</p>
                   <p className="text-3xl font-bold mt-1">${totalSpent.toLocaleString()}</p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white flex items-center justify-center shadow-sm">
                   <CurrencyDollar className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -288,7 +284,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
                                   <span className="text-muted-foreground">Progress</span>
                                   <span className="font-medium">{completedMilestones}/{totalMilestones} milestones</span>
                                 </div>
-                                <div className="h-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md overflow-hidden">
+                                <div className="h-4 bg-white dark:bg-black rounded-md overflow-hidden">
                                   <div 
                                     className="h-full bg-primary transition-all duration-300"
                                     style={{ width: `${progress}%` }}
@@ -335,7 +331,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
               </Card>
 
               {pendingPayments > 0 && (
-                <Card className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card className="p-6 bg-white dark:bg-black">
                   <div className="flex items-start gap-3">
                     <Clock className="h-5 w-5 text-accent-foreground mt-0.5" />
                     <div>
