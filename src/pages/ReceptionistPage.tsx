@@ -5,7 +5,7 @@
 
 import { ReceptionistCRM } from "@/components/contractor/ReceptionistCRM"
 import type { User } from "@/lib/types"
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav } from "@/components/ui/MarketingSections"
 
 interface ReceptionistPageProps {
   user: User
@@ -21,10 +21,8 @@ export function ReceptionistPage({ user }: ReceptionistPageProps) {
           { label: "Receptionist", href: "#", active: true },
           { label: "Operator Dashboard", href: "#" },
         ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
+
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-20 pb-12">
         <div className="space-y-6">
           <div className="text-center">

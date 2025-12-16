@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card"
 import { Gavel, Handshake, ShieldCheck, FileText } from "@phosphor-icons/react"
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav } from "@/components/ui/MarketingSections"
 
 export function TermsPage() {
   return (
@@ -13,10 +13,8 @@ export function TermsPage() {
           { label: "Privacy", href: "#" },
           { label: "Contact", href: "#" },
         ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
+
       <div className="pt-20 pb-16 px-4 md:px-8 max-w-4xl mx-auto space-y-8">
         {/* Hero Section */}
         <div className="text-center space-y-4">

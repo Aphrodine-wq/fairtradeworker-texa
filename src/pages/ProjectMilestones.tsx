@@ -38,7 +38,7 @@ import { TradeCoordination } from '@/components/projects/TradeCoordination'
 import { ProjectUpdates } from '@/components/projects/ProjectUpdates'
 import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
 import { BudgetTracking } from '@/components/projects/BudgetTracking'
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav } from "@/components/ui/MarketingSections"
 import { ExpenseTracking } from '@/components/projects/ExpenseTracking'
 
 interface ProjectMilestonesProps {
@@ -418,10 +418,8 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           { label: "Project Milestones", href: "#", active: true },
           { label: "My Jobs", href: "#" },
         ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
+
       <div className="max-w-5xl mx-auto px-4 py-8 pt-20">
         <div className="mb-6">
           <Button variant="outline" onClick={onBack} className="mb-4">
@@ -719,12 +717,10 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                 </>
               ) : (
                 <>
-                  <CurrencyDollar className="mr-2" size={18} />
-                  Request Payment
+                  <Upload className="mr-2" size={18} />
+                  Submit for Approval
                 </>
               )}
-              <Upload className="mr-2" size={18} />
-              Submit for Approval
             </Button>
           </div>
         </DialogContent>
@@ -778,11 +774,9 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   <>
                     <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
                     Submitting...
-                  </>
                 ) : (
                   <>
                     Submit Question
-                  </>
                 )}
               </Button>
             </div>
@@ -1007,12 +1001,10 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   <>
                     <CircleNotch size={16} className="mr-2 animate-spin" weight="bold" />
                     Adding...
-                  </>
                 ) : (
                   <>
                     <Plus className="mr-2" size={16} />
                     Add Milestone
-                  </>
                 )}
               </Button>
             </div>
@@ -1211,7 +1203,6 @@ function MilestoneTimeline({
                         <Pencil className="mr-1" size={16} />
                         Edit
                       </Button>
-                    </>
                   )}
                   
                   {userRole === 'contractor' && milestone.status === 'disputed' && (
@@ -1240,7 +1231,6 @@ function MilestoneTimeline({
                         <CheckCircle className="mr-1" size={16} />
                         Approve & Pay
                       </Button>
-                    </>
                   )}
                 </div>
                 
@@ -1417,7 +1407,6 @@ function MilestoneList({
                       <Pencil className="mr-1" size={16} />
                       Edit
                     </Button>
-                  </>
                 )}
                 
                 {userRole === 'contractor' && milestone.status === 'disputed' && (
@@ -1446,7 +1435,6 @@ function MilestoneList({
                       <CheckCircle className="mr-1" size={16} />
                       Approve & Pay
                     </Button>
-                  </>
                 )}
               </div>
               

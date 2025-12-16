@@ -304,9 +304,9 @@
    11. DARK MODE TRANSITION SMOOTHING
    ============================================ */
 
-/* Smooth dark mode transition */
+/* Smooth dark mode transition - synced with button */
 html {
-  transition: color 150ms, background-color 150ms;
+  transition: color 5s, background-color 5s;
 }
 
 /* ============================================
@@ -356,7 +356,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 150ms, border-color 150ms, color 150ms;
+  transition: background-color 5s, border-color 5s, color 5s;
 }
 
 /* Dialogs and modals */
@@ -365,7 +365,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 150ms, border-color 150ms, color 150ms;
+  transition: background-color 5s, border-color 5s, color 5s;
 }
 
 /* Tooltips */
@@ -374,7 +374,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 150ms, border-color 150ms, color 150ms;
+  transition: background-color 5s, border-color 5s, color 5s;
 }
 
 /* Popovers */
@@ -382,7 +382,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 150ms, border-color 150ms, color 150ms;
+  transition: background-color 5s, border-color 5s, color 5s;
 }
 
 /* ============================================
@@ -395,7 +395,7 @@ select {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   border-color: var(--border-color);
-  transition: background-color 150ms, border-color 150ms, color 150ms;
+  transition: background-color 5s, border-color 5s, color 5s;
 }
 
 input:focus,

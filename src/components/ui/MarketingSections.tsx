@@ -145,43 +145,73 @@ export function PricingSection({
   onPurchase?: () => void
   onNavigate?: (page: string) => void
 }) {
+  const pricingTiers = [
+    {
+      name: "Homeowner",
+      price: "$15",
+      description: "Pay per job posted",
+      features: ["Post unlimited jobs", "Access to verified contractors", "Secure messaging", "Basic support"],
+      ctaLabel: "Post a Job"
+    },
+    {
+      name: "Contractor Free",
+      price: "$0",
+      description: "Start winning jobs for free",
+      features: ["Browse jobs", "Submit bids", "Basic profile", "100% of earnings"],
+      ctaLabel: "Sign Up Free",
+      highlighted: true
+    },
+    {
+      name: "Contractor Pro",
+      price: "$29",
+      description: "Advanced tools to grow",
+      features: ["Priority placement", "CRM & Analytics", "Smart invoicing", "AI scope assistance"],
+      ctaLabel: "Upgrade to Pro"
+    }
+  ]
+
   return (
     <div className="mb-12">
       <div className="text-center mb-10 space-y-2">
-        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Simple Pricing</h2>
-        <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">Transparent pricing with no hidden fees</p>
+        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Simple, Transparent Pricing</h2>
+        <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">Choose the plan that works for you</p>
       </div>
-      <div className="flex justify-center">
-          <GlassCard className="pricing-card w-full max-w-md">
-          <div className="px-6 py-8 sm:p-10 sm:pb-6">
-            <div className="grid items-center justify-center w-full grid-cols-1 text-left gap-4">
-              <div>
-                <h2 className="text-lg font-medium tracking-tighter text-gray-600 dark:text-gray-300 lg:text-3xl">
-                  {tierLabel}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {pricingTiers.map((tier) => (
+          <GlassCard key={tier.name} className={`pricing-card ${tier.highlighted ? 'ring-2 ring-[#00FF00]' : ''}`}>
+            <div className="px-6 py-8">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {tier.name}
                 </h2>
-                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{description}</p>
-              </div>
-              <div>
-                <p>
-                  <span className="text-5xl font-light tracking-tight text-black dark:text-white">{price}</span>
-                  <span className="text-base font-medium text-gray-500 dark:text-gray-400"> /mo </span>
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{tier.description}</p>
+                <p className="mt-4">
+                  <span className="text-5xl font-bold text-black dark:text-white">{tier.price}</span>
+                  <span className="text-base font-medium text-gray-500 dark:text-gray-400">{tier.price === "$0" ? "" : "/mo"}</span>
                 </p>
               </div>
+              <ul className="mt-6 space-y-3">
+                {tier.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2">
+                    <span className="text-[#00FF00] text-lg" aria-hidden="true">✓</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-          <div className="flex px-6 pb-8 sm:px-8">
-            <Button
-              className="w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:border-black hover:text-black focus-visible:outline-black text-sm focus-visible:ring-black dark:text-white dark:bg-white dark:border-white dark:hover:bg-transparent dark:hover:border-white dark:hover:text-white"
-              onClick={() => {
-                if (onNavigate) return onNavigate('purchase')
-                if (onPurchase) return onPurchase()
-                return undefined
-              }}
-            >
-              {ctaLabel}
-            </Button>
-          </div>
-        </GlassCard>
+            <div className="px-6 pb-8">
+              <Button
+                className="w-full px-6 py-2.5 text-center duration-200 bg-black text-white rounded-lg hover:bg-gray-800 focus-visible:outline-black text-sm dark:bg-white dark:text-black dark:hover:bg-gray-200"
+                onClick={() => {
+                  if (onPurchase) return onPurchase()
+                  return undefined
+                }}
+              >
+                {tier.ctaLabel}
+              </Button>
+            </div>
+          </GlassCard>
+        ))}
       </div>
     </div>
   )

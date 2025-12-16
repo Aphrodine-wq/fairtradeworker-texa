@@ -9,7 +9,7 @@ import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
 import { CircleNotch } from "@phosphor-icons/react"
 import type { User, UserRole } from "@/lib/types"
-import { GlassNav, HeroSection, GlassCard, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { GlassNav, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
 
 interface SignupPageProps {
   onNavigate: (page: string) => void
@@ -111,10 +111,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
           { label: "Signup", href: "#", active: true },
           { label: "Login", href: "#" },
         ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
+        primaryLabel="Post Job" />
 
       <div className="pt-20 pb-16 px-4">
         <HeroSection
