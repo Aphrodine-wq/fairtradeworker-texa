@@ -5,7 +5,7 @@ interface AboutPageProps {
   onNavigate?: (page: string) => void
 }
 
-export function AboutPage({ onNavigate }: AboutPageProps = {}) {
+export function AboutPage({ onNavigate }: AboutPageProps) {
   const stats = [
     { label: "Contractors onboarded", value: "4,800+", icon: Hammer },
     { label: "Homeowners served", value: "12,000+", icon: House },

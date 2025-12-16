@@ -8,7 +8,7 @@ interface DonatePageProps {
   onNavigate?: (page: string) => void
 }
 
-export function DonatePage({ onNavigate }: DonatePageProps = {}) {
+export function DonatePage({ onNavigate }: DonatePageProps) {
   const handleDonate = (amount: number) => {
     toast.success(`Thank you for your ${amount > 0 ? `$${amount}` : ''} donation!`, {
       description: "Your support helps us keep the platform fee-free for contractors."
