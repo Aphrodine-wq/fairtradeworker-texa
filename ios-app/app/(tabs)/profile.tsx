@@ -141,7 +141,7 @@ export default function ProfileScreen() {
 
         {/* Company Info (for contractors) */}
         {currentUser.role === 'contractor' && currentUser.companyName && (
-          <Card variant="outlined" padding="md" style={styles.companyCard}>
+          <Card variant="elevated" padding="md" style={styles.companyCard}>
             <View style={styles.cardHeader}>
               <Ionicons name="business" size={24} color={Colors.primary} />
               <Text style={styles.cardTitle}>Company Info</Text>

@@ -29,7 +29,7 @@ export function JobCard({ job, onPress, showBidCount = true, variant = 'default'
       <Card 
         variant="elevated" 
         padding={variant === 'compact' ? 'sm' : 'md'}
-        style={[styles.card, isRecent && job.size === 'small' && styles.freshBorder]}
+        style={styles.card}
       >
         {/* Header */}
         <View style={styles.header}>
@@ -104,10 +104,6 @@ export function JobCard({ job, onPress, showBidCount = true, variant = 'default'
 const styles = StyleSheet.create({
   card: {
     marginBottom: Spacing.md,
-  },
-  freshBorder: {
-    borderWidth: 2,
-    borderColor: Colors.primary,
   },
   header: {
     flexDirection: 'row',

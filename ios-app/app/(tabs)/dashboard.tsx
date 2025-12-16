@@ -92,7 +92,7 @@ export default function DashboardScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Your Jobs</Text>
             {myJobs.length === 0 ? (
-              <Card variant="outlined" padding="lg">
+              <Card variant="elevated" padding="lg">
                 <Text style={styles.emptyText}>
                   You haven't posted any jobs yet. Post your first job to get started!
                 </Text>
@@ -207,14 +207,14 @@ export default function DashboardScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Recent Activity</Text>
             {pendingBids.length === 0 ? (
-              <Card variant="outlined" padding="lg">
+              <Card variant="elevated" padding="lg">
                 <Text style={styles.emptyText}>
                   No pending bids. Browse jobs to find new opportunities!
                 </Text>
               </Card>
             ) : (
               pendingBids.slice(0, 3).map((bid) => (
-                <Card key={bid.id} variant="outlined" padding="md" style={styles.bidCard}>
+                <Card key={bid.id} variant="elevated" padding="md" style={styles.bidCard}>
                   <View style={styles.bidHeader}>
                     <Text style={styles.bidJobTitle}>{bid.job.title}</Text>
                     <Badge label="Pending" variant="warning" size="sm" />
@@ -275,7 +275,7 @@ export default function DashboardScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>My Territories</Text>
             {myTerritories.length === 0 ? (
-              <Card variant="outlined" padding="lg">
+              <Card variant="elevated" padding="lg">
                 <Text style={styles.emptyText}>
                   You haven't claimed any territories yet.
                 </Text>
@@ -297,7 +297,7 @@ export default function DashboardScreen() {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Available Territories</Text>
             {availableTerritories.slice(0, 3).map((territory) => (
-              <Card key={territory.id} variant="outlined" padding="md" style={styles.territoryCard}>
+              <Card key={territory.id} variant="elevated" padding="md" style={styles.territoryCard}>
                 <View style={styles.territoryHeader}>
                   <Ionicons name="location-outline" size={24} color={Colors.textSecondary} />
                   <Text style={styles.territoryName}>{territory.countyName}</Text>

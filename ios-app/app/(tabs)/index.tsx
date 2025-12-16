@@ -65,7 +65,7 @@ export default function HomeScreen() {
           </View>
 
           {/* Stats Card */}
-          <Card variant="outlined" padding="md" style={styles.statsCard}>
+          <Card variant="elevated" padding="md" style={styles.statsCard}>
             <Text style={styles.statsLabel}>Jobs posted today:</Text>
             <Text style={styles.statsValue}>{todayJobs.length}</Text>
           </Card>

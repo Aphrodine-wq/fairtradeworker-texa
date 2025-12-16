@@ -8,10 +8,10 @@ import {
   TextStyle,
   TouchableOpacityProps,
 } from 'react-native';
-import { Colors, Spacing, BorderRadius, Typography } from '@/src/constants/theme';
+import { Colors, Spacing, BorderRadius, Typography, Shadows } from '@/src/constants/theme';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'success';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 interface ButtonProps extends TouchableOpacityProps {
   title: string;
@@ -77,7 +77,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: Spacing.sm,
-    borderRadius: BorderRadius.md,
+    borderRadius: BorderRadius.lg,
+    // All buttons get 3D shadow effect
+    ...Shadows.button3D,
   },
   
   // Sizes
@@ -96,8 +98,13 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.lg,
     minHeight: 56,
   },
+  size_xl: {
+    paddingHorizontal: Spacing.xxl,
+    paddingVertical: Spacing.xl,
+    minHeight: 64,
+  },
   
-  // Variants
+  // Variants - NO BORDERS on outline, shadow-based depth
   variant_primary: {
     backgroundColor: Colors.primary,
   },
@@ -105,12 +112,19 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.secondary,
   },
   variant_outline: {
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: Colors.primary,
+    backgroundColor: Colors.surface,
+    // NO border - using shadow for depth instead
   },
   variant_ghost: {
     backgroundColor: 'transparent',
+    shadowOpacity: 0, // Ghost buttons have no shadow
+    elevation: 0,
+  },
+  variant_destructive: {
+    backgroundColor: Colors.error,
+  },
+  variant_success: {
+    backgroundColor: Colors.success,
   },
   
   // Disabled state
@@ -132,6 +146,9 @@ const styles = StyleSheet.create({
   text_lg: {
     fontSize: Typography.fontSize.lg,
   },
+  text_xl: {
+    fontSize: Typography.fontSize.xl,
+  },
   
   // Text variants
   textVariant_primary: {
@@ -145,6 +162,12 @@ const styles = StyleSheet.create({
   },
   textVariant_ghost: {
     color: Colors.primary,
+  },
+  textVariant_destructive: {
+    color: Colors.textInverse,
+  },
+  textVariant_success: {
+    color: Colors.textInverse,
   },
   
   textDisabled: {
