@@ -14,6 +14,8 @@
  * - Graceful degradation when services are unavailable
  */
 
+import crypto from 'crypto'
+
 // @ts-ignore - Vercel serverless function types
 interface VercelRequest {
   method?: string
@@ -367,7 +369,6 @@ async function validateTwilioWebhook(req: VercelRequest): Promise<boolean> {
     
     // Validate signature using Twilio's algorithm
     // See: https://www.twilio.com/docs/usage/webhooks/webhooks-security
-    const crypto = require('crypto')
     const params = req.body || {}
     
     // Sort parameters and create validation string
@@ -378,7 +379,7 @@ async function validateTwilioWebhook(req: VercelRequest): Promise<boolean> {
     // Create HMAC SHA1 signature
     const expectedSignature = crypto
       .createHmac('sha1', authToken)
-      .update(Buffer.from(data, 'utf-8'))
+      .update(data, 'utf-8')
       .digest('base64')
     
     const isValid = signature === expectedSignature
