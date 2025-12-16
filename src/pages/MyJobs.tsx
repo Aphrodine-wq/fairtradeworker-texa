@@ -647,6 +647,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                   <>
                     <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
                     Processing...
+                  </>
                 ) : (
                   <>
                     <CreditCard weight="fill" className="mr-2" size={18} />
