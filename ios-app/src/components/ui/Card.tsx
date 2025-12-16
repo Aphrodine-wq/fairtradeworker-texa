@@ -3,7 +3,7 @@ import { View, StyleSheet, ViewProps } from 'react-native';
 import { Colors, Spacing, BorderRadius, Shadows } from '@/src/constants/theme';
 
 interface CardProps extends ViewProps {
-  variant?: 'elevated' | 'outlined' | 'filled';
+  variant?: 'elevated' | 'glass' | 'filled';
   padding?: 'none' | 'sm' | 'md' | 'lg';
 }
 
@@ -31,22 +31,22 @@ export function Card({
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: BorderRadius.lg,
+    borderRadius: BorderRadius.xl,
     overflow: 'hidden',
   },
   
-  // Variants
+  // Variants - NO BORDERS, shadow-based depth
   variant_elevated: {
     backgroundColor: Colors.surface,
-    ...Shadows.md,
+    ...Shadows.lg,
   },
-  variant_outlined: {
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.border,
+  variant_glass: {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    ...Shadows.lg,
   },
   variant_filled: {
     backgroundColor: Colors.surfaceSecondary,
+    ...Shadows.md,
   },
   
   // Padding
