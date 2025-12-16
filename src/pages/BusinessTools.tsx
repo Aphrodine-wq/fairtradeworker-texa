@@ -24,6 +24,13 @@ import {
   Calculator,
   Note,
   Heart,
+  Microphone,
+  MapPin,
+  Swap,
+  Ruler,
+  WifiSlash,
+  Image,
+  CalendarDots,
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { HeroSection, StatsSection, GlassCard } from "@/components/ui/MarketingSections"
@@ -73,6 +80,14 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
         { id: "change-order", title: "Change Order Generator", description: "Photo → AI scope → PDF change order → digital approval.", icon: FileText, status: "new", category: "operations", isPro: true },
         { id: "crew-dispatcher", title: "Crew Dispatcher", description: "Assign subs by skill/availability/location + SMS check-ins.", icon: Users, status: "new", category: "operations", isPro: true },
         { id: "follow-up", title: "Follow-Up Automator", description: "Sequences with AI personalization from transcripts; boosts win rate.", icon: Calendar, status: "enhanced", category: "sales", isPro: true },
+        // New Zero-Cost Defensible Features
+        { id: "voice-bids", title: "Voice Bid Recorder", description: "Record voice bids, AI extracts price/timeline/materials automatically.", icon: Microphone, status: "new", category: "sales" },
+        { id: "neighborhood-alerts", title: "Neighborhood Job Alerts", description: "Get alerts when multiple jobs cluster in your area - route efficiently.", icon: MapPin, status: "new", category: "sales" },
+        { id: "skill-trading", title: "Skill Trading Marketplace", description: "Barter skills with other contractors using trade credits.", icon: Swap, status: "new", category: "operations" },
+        { id: "material-calc", title: "Smart Material Calculator", description: "AI estimates materials from room dimensions or photos.", icon: Ruler, status: "new", category: "operations" },
+        { id: "offline-mode", title: "Offline Field Mode", description: "Work offline on job sites - photos, notes, checklists sync later.", icon: WifiSlash, status: "new", category: "operations" },
+        { id: "project-stories", title: "Project Story Generator", description: "Auto-generate shareable before/after stories for social media.", icon: Image, status: "new", category: "sales" },
+        { id: "seasonal-clubs", title: "Seasonal Maintenance Clubs", description: "Bid on neighborhood group maintenance - guaranteed volume.", icon: CalendarDots, status: "new", category: "sales" },
       ]
     : []
 
@@ -132,6 +147,14 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
       "quick-notes": "free-tools",
       "saved-contractors": "free-tools",
       "project-budget-calculator": "free-tools",
+      // New Zero-Cost Defensible Features
+      "voice-bids": "voice-bids",
+      "neighborhood-alerts": "neighborhood-alerts",
+      "skill-trading": "skill-trading",
+      "material-calc": "material-calc",
+      "offline-mode": "offline-mode",
+      "project-stories": "project-stories",
+      "seasonal-clubs": "seasonal-clubs",
     }
     onNavigate(routeMap[toolId] || toolId)
   }

@@ -13,7 +13,11 @@ import {
   TrendUp,
   Users,
   Calendar,
-  Plus
+  Plus,
+  ChatCircleDots,
+  CalendarDots,
+  Camera,
+  Image
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
@@ -405,6 +409,57 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
               </div>
             </Card>
           )}
+
+          {/* New Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="p-6 hover:border-primary/50 transition-all cursor-pointer bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30"
+              onClick={() => onNavigate('sms-scope')}>
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <ChatCircleDots className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-black dark:text-white">SMS Photo Scoper</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Text a photo of your project, get instant AI analysis & quotes
+                  </p>
+                  <Badge variant="secondary" className="mt-2">New</Badge>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-all cursor-pointer bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/30 dark:to-green-900/30"
+              onClick={() => onNavigate('seasonal-clubs')}>
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+                  <CalendarDots className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-black dark:text-white">Seasonal Maintenance Clubs</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Join neighbors for group discounts on HVAC, gutter cleaning & more
+                  </p>
+                  <Badge variant="default" className="mt-2 bg-green-500">Save 25%</Badge>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-all cursor-pointer bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/30"
+              onClick={() => onNavigate('project-stories')}>
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <Image className="h-6 w-6 text-purple-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-black dark:text-white">Project Stories</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Auto-generate shareable before/after transformation stories
+                  </p>
+                  <Badge variant="secondary" className="mt-2">Viral</Badge>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

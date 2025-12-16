@@ -209,7 +209,33 @@ const ClientPortal = lazy(() => retryImport(() =>
   import("@/components/contractor/ClientPortal").then(m => ({ default: m.ClientPortal }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell'
+// New Zero-Cost Defensible Feature Set Components
+const VoiceBidRecorder = lazy(() => retryImport(() =>
+  import("@/components/contractor/VoiceBidRecorder").then(m => ({ default: m.VoiceBidRecorder }))
+))
+const NeighborhoodJobAlerts = lazy(() => retryImport(() =>
+  import("@/components/contractor/NeighborhoodJobAlerts").then(m => ({ default: m.NeighborhoodJobAlerts }))
+))
+const SkillTradingMarketplace = lazy(() => retryImport(() =>
+  import("@/components/contractor/SkillTradingMarketplace").then(m => ({ default: m.SkillTradingMarketplace }))
+))
+const SmartMaterialCalculator = lazy(() => retryImport(() =>
+  import("@/components/contractor/SmartMaterialCalculator").then(m => ({ default: m.SmartMaterialCalculator }))
+))
+const OfflineFieldMode = lazy(() => retryImport(() =>
+  import("@/components/contractor/OfflineFieldMode").then(m => ({ default: m.OfflineFieldMode }))
+))
+const ProjectStoryGenerator = lazy(() => retryImport(() =>
+  import("@/components/viral/ProjectStoryGenerator").then(m => ({ default: m.ProjectStoryGenerator }))
+))
+const SeasonalMaintenanceClubs = lazy(() => retryImport(() =>
+  import("@/components/homeowner/SeasonalMaintenanceClubs").then(m => ({ default: m.SeasonalMaintenanceClubs }))
+))
+const SMSPhotoScope = lazy(() => retryImport(() =>
+  import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
+))
+
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -682,6 +708,60 @@ function App() {
             <ReceptionistUpsell user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      
+      // New Zero-Cost Defensible Feature Set Routes
+      case 'voice-bids':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <VoiceBidRecorder user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'neighborhood-alerts':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <NeighborhoodJobAlerts userId={currentUser.id} userZipCode="78749" />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'skill-trading':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SkillTradingMarketplace userId={currentUser.id} userRating={4.8} userSkills={['plumbing', 'hvac']} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'material-calc':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SmartMaterialCalculator />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'offline-mode':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <OfflineFieldMode userId={currentUser.id} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'project-stories':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProjectStoryGenerator userId={currentUser.id} userRole={currentUser.role} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'seasonal-clubs':
+        return currentUser?.role === 'homeowner' ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SeasonalMaintenanceClubs userId={currentUser.id} userRole="homeowner" userZipCode="78749" userNeighborhood="Oak Hill" />
+          </Suspense>
+        ) : (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SeasonalMaintenanceClubs userId={currentUser.id} userRole="contractor" userZipCode="78749" userNeighborhood="Oak Hill" />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'sms-scope':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <SMSPhotoScope userPhone={currentUser?.phone} />
+          </Suspense>
+        )
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
