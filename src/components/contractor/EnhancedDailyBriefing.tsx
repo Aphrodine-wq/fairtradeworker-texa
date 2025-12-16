@@ -339,7 +339,8 @@ export function EnhancedDailyBriefing({ user, scheduledJobs, onNavigate }: Enhan
                 </p>
                 <div 
                   className={`h-16 rounded-md border border-black/20 dark:border-white/20 ${getDensityColor(day.density)} flex items-center justify-center cursor-pointer transition-all hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] shadow-sm`}
-                  onClick={() => {}}
+                  onClick={() => onNavigate('calendar')}
+                  title="View calendar"
                 >
                   <p className="text-sm font-bold text-white">{day.jobCount || '-'}</p>
                 </div>
