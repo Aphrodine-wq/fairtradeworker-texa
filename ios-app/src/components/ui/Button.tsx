@@ -7,7 +7,6 @@ import {
   ViewStyle,
   TextStyle,
   TouchableOpacityProps,
-  Animated,
 } from 'react-native';
 import { Colors, Spacing, BorderRadius, Typography, Shadows } from '@/src/constants/theme';
 

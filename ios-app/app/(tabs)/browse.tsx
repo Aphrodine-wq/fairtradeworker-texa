@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { JobCard } from '@/src/components/jobs/JobCard';
 import { useAppStore } from '@/src/store';
 import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
-import type { JobSize } from '@/src/types';
+import type { JobSize, Job } from '@/src/types';
 
 type FilterOption = 'all' | JobSize;
 
@@ -22,7 +22,7 @@ function JobCarousel({
   jobs, 
   onJobPress 
 }: { 
-  jobs: any[]; 
+  jobs: Job[]; 
   onJobPress: (jobId: string) => void;
 }) {
   return (
