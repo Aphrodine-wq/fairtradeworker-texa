@@ -5,15 +5,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  /* Base styles - ALL buttons */
+  /* Base styles - Simple, clean, effective */
   [
     "inline-flex items-center justify-center gap-2",
-      "font-semibold text-sm",
-      "rounded-lg",
-      "transition-all duration-150 ease-out",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-      "disabled:pointer-events-none disabled:opacity-60",
-      "active:translate-y-[3px] active:shadow-none",
+    "font-medium text-sm",
+    "rounded-md",
+    "border-2",
+    "transition-all duration-200 ease-out",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+    "disabled:pointer-events-none disabled:opacity-50",
+    "hover:scale-[1.02]",
+    "active:scale-[0.98]",
     "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0",
   ],
   {
@@ -21,45 +23,53 @@ const buttonVariants = cva(
       variant: {
         default: [
           "bg-black text-white dark:bg-white dark:text-black",
-          "shadow-[0_6px_0_0_rgba(0,0,0,0.3),0_10px_20px_-5px_rgba(0,0,0,0.2)] dark:shadow-[0_6px_0_0_rgba(255,255,255,0.2),0_10px_20px_-5px_rgba(255,255,255,0.1)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_10px_0_0_rgba(0,0,0,0.3),0_15px_25px_-5px_rgba(0,0,0,0.25)] dark:hover:shadow-[0_10px_0_0_rgba(255,255,255,0.2),0_15px_25px_-5px_rgba(255,255,255,0.15)]",
+          "border-black dark:border-white",
+          "hover:bg-gray-800 dark:hover:bg-gray-100",
+          "focus-visible:ring-black dark:focus-visible:ring-white",
         ],
         destructive: [
           "bg-red-600 text-white",
-          "shadow-[0_6px_0_0_rgba(185,28,28,1),0_10px_20px_-5px_rgba(239,68,68,0.3)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_10px_0_0_rgba(185,28,28,1),0_15px_25px_-5px_rgba(239,68,68,0.4)]",
+          "border-red-600",
+          "hover:bg-red-700",
+          "focus-visible:ring-red-600",
         ],
         outline: [
-          "bg-white dark:bg-black",
+          "bg-transparent",
           "text-black dark:text-white",
-          "shadow-[0_4px_0_0_rgba(0,0,0,0.05),0_8px_15px_-5px_rgba(0,0,0,0.1)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_rgba(0,0,0,0.08),0_12px_20px_-5px_rgba(0,0,0,0.15)]",
+          "border-black dark:border-white",
+          "hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black",
+          "focus-visible:ring-black dark:focus-visible:ring-white",
         ],
         secondary: [
-          "bg-gray-100 dark:bg-gray-800 text-black dark:text-white",
-          "shadow-[0_4px_0_0_rgba(0,0,0,0.08),0_8px_15px_-5px_rgba(0,0,0,0.1)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_8px_0_0_rgba(0,0,0,0.1),0_12px_20px_-5px_rgba(0,0,0,0.15)]",
+          "bg-gray-100 text-black dark:bg-gray-800 dark:text-white",
+          "border-gray-300 dark:border-gray-600",
+          "hover:bg-gray-200 dark:hover:bg-gray-700",
+          "focus-visible:ring-gray-400",
         ],
         ghost: [
           "bg-transparent",
           "text-black dark:text-white",
+          "border-transparent",
           "hover:bg-gray-100 dark:hover:bg-gray-800",
-          "hover:translate-y-[-1px]",
         ],
         link: [
           "bg-transparent",
           "text-black dark:text-white",
+          "border-transparent",
           "underline-offset-4 hover:underline",
+          "hover:scale-100",
         ],
         success: [
-          "bg-green-500 text-white",
-          "shadow-[0_6px_0_0_rgba(22,101,52,1),0_10px_20px_-5px_rgba(34,197,94,0.3)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_10px_0_0_rgba(22,101,52,1),0_15px_25px_-5px_rgba(34,197,94,0.4)]",
+          "bg-green-600 text-white",
+          "border-green-600",
+          "hover:bg-green-700",
+          "focus-visible:ring-green-600",
         ],
         warning: [
           "bg-yellow-500 text-black",
-          "shadow-[0_6px_0_0_rgba(161,98,7,1),0_10px_20px_-5px_rgba(234,179,8,0.3)]",
-          "hover:translate-y-[-2px] hover:shadow-[0_10px_0_0_rgba(161,98,7,1),0_15px_25px_-5px_rgba(234,179,8,0.4)]",
+          "border-yellow-600",
+          "hover:bg-yellow-600",
+          "focus-visible:ring-yellow-500",
         ],
       },
       size: {
@@ -67,7 +77,7 @@ const buttonVariants = cva(
         sm: "h-8 px-3 text-xs",
         lg: "h-12 px-6 text-base",
         xl: "h-14 px-8 text-lg",
-        icon: "h-10 w-10",
+        icon: "h-10 w-10 p-0",
       },
     },
     defaultVariants: {
