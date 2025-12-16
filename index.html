@@ -45,11 +45,23 @@
     <link rel="apple-touch-startup-image" href="/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" />
     <link rel="apple-touch-startup-image" href="/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" />
     
-    <!-- Preconnect for performance -->
+    <!-- DNS Prefetch & Preconnect for performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" as="style">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="/src/main.css" as="style">
     <link href="/src/main.css" rel="stylesheet" />
+    
+    <!-- Prefetch likely next routes -->
+    <link rel="prefetch" href="/src/pages/Login.tsx" as="script">
+    <link rel="prefetch" href="/src/pages/Signup.tsx" as="script">
 </head>
 
 <body>

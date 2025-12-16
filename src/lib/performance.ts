@@ -216,6 +216,24 @@ export function measurePerformance<T>(
   return result
 }
 
+// Measure async operation performance
+export async function measureAsync<T>(
+  name: string,
+  operation: () => Promise<T>
+): Promise<T> {
+  const start = performance.now()
+  try {
+    const result = await operation()
+    const duration = performance.now() - start
+    performanceMonitor.recordMetric(name, duration)
+    return result
+  } catch (error) {
+    const duration = performance.now() - start
+    performanceMonitor.recordMetric(`${name}:error`, duration)
+    throw error
+  }
+}
+
 // Virtual scrolling helper
 export interface VirtualScrollItem {
   id: string

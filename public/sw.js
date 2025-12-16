@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'ftw-v1.0.7';
+const CACHE_VERSION = 'ftw-v1.0.8';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 const IMAGE_CACHE = `${CACHE_VERSION}-images`;
@@ -7,15 +7,14 @@ const API_CACHE = `${CACHE_VERSION}-api`;
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/src/main.tsx',
-  '/src/main.css',
-  '/src/index.css',
-  '/src/App.tsx',
+  '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;500;600&display=swap'
 ];
 
-const MAX_CACHE_SIZE = 100;
-const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000;
+// Increased cache limits for better performance
+const MAX_CACHE_SIZE = 150;
+const IMAGE_CACHE_SIZE = 50;
+const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 self.addEventListener('install', (event) => {
   console.log('[SW] Installing service worker...');
@@ -57,29 +56,43 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Handle different resource types with optimized strategies
   if (url.origin === location.origin) {
-    if (request.url.includes('/src/assets/')) {
-      event.respondWith(cacheFirstStrategy(request, IMAGE_CACHE));
-    } else if (request.url.endsWith('.js') || request.url.endsWith('.css') || request.url.endsWith('.tsx')) {
-      event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE));
-    } else if (request.url.includes('/api/') || request.url.includes('spark.kv')) {
-      event.respondWith(networkFirstStrategy(request, API_CACHE));
-    } else {
-      event.respondWith(staleWhileRevalidate(request, STATIC_CACHE));
+    // Images and media - cache first with longer TTL
+    if (request.url.match(/\.(png|jpg|jpeg|svg|gif|webp|ico)$/)) {
+      event.respondWith(cacheFirstStrategy(request, IMAGE_CACHE, IMAGE_CACHE_SIZE));
     }
-  } else if (url.origin.includes('fonts.googleapis.com') || url.origin.includes('fonts.gstatic.com')) {
+    // JavaScript and CSS chunks - stale while revalidate for instant loads
+    else if (request.url.match(/\.(js|css)$/)) {
+      event.respondWith(staleWhileRevalidate(request, DYNAMIC_CACHE));
+    }
+    // API calls - network first for fresh data
+    else if (request.url.includes('/api/') || request.url.includes('spark.kv')) {
+      event.respondWith(networkFirstStrategy(request, API_CACHE));
+    }
+    // HTML pages - network first to ensure fresh content
+    else {
+      event.respondWith(networkFirstStrategy(request, STATIC_CACHE));
+    }
+  }
+  // External resources (fonts, CDN assets)
+  else if (url.origin.includes('fonts.googleapis.com') || url.origin.includes('fonts.gstatic.com')) {
     event.respondWith(cacheFirstStrategy(request, STATIC_CACHE));
-  } else {
+  }
+  // Other external resources
+  else {
     event.respondWith(networkFirstStrategy(request, DYNAMIC_CACHE));
   }
 });
 
-async function cacheFirstStrategy(request, cacheName) {
+async function cacheFirstStrategy(request, cacheName, maxSize = MAX_CACHE_SIZE) {
   try {
     const cache = await caches.open(cacheName);
     const cachedResponse = await cache.match(request);
     
     if (cachedResponse) {
+      // Return cached response immediately, update in background
+      fetchAndCache(request, cacheName, maxSize);
       return cachedResponse;
     }
 
@@ -87,7 +100,7 @@ async function cacheFirstStrategy(request, cacheName) {
     
     if (networkResponse && networkResponse.status === 200) {
       cache.put(request, networkResponse.clone());
-      await limitCacheSize(cacheName, MAX_CACHE_SIZE);
+      await limitCacheSize(cacheName, maxSize);
     }
     
     return networkResponse;
@@ -101,6 +114,20 @@ async function cacheFirstStrategy(request, cacheName) {
       status: 503,
       statusText: 'Service Unavailable'
     });
+  }
+}
+
+// Background fetch and cache update
+async function fetchAndCache(request, cacheName, maxSize) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, networkResponse.clone());
+      await limitCacheSize(cacheName, maxSize);
+    }
+  } catch (error) {
+    // Silent fail for background updates
   }
 }
 

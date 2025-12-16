@@ -1,6 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, PluginOption } from "vite";
+import { visualizer } from 'rollup-plugin-visualizer';
 
 import sparkPlugin from "@github/spark/spark-vite-plugin";
 import createIconImportProxy from "@github/spark/vitePhosphorIconProxyPlugin";
@@ -16,65 +17,125 @@ export default defineConfig({
     // DO NOT REMOVE
     createIconImportProxy() as PluginOption,
     sparkPlugin() as PluginOption,
-  ],
+    // Bundle analyzer (only in analyze mode)
+    process.env.ANALYZE ? visualizer({
+      open: true,
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }) as PluginOption : undefined,
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': resolve(projectRoot, 'src')
     }
   },
+  server: {
+    // Enable compression in dev mode
+    headers: {
+      'Cache-Control': 'public, max-age=0',
+    },
+  },
+  preview: {
+    // Configure preview server with headers
+    headers: {
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
+  },
   build: {
     // Target modern browsers for better optimization
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
-    // Enable minification
+    // Enable minification with esbuild (faster than terser)
     minify: 'esbuild',
     // Configure chunk size warning limit
     chunkSizeWarningLimit: 600,
-    // CSS code splitting
+    // CSS code splitting for better caching
     cssCodeSplit: true,
-    // Source maps for production debugging (can be disabled for smaller builds)
+    // Disable source maps in production for smaller builds
     sourcemap: false,
+    // Enable CSS minification
+    cssMinify: true,
+    // Improve tree shaking
+    modulePreload: {
+      polyfill: false, // Don't include polyfill if targeting modern browsers
+    },
     rollupOptions: {
       external: ['jspdf'], // Optional dependency, handled at runtime
       output: {
-        // Manual chunk splitting for better caching
-        manualChunks: {
-          // Vendor chunks
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-radix': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-tooltip',
-            '@radix-ui/react-select',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-slider',
-            '@radix-ui/react-progress',
-            '@radix-ui/react-scroll-area',
-          ],
-          'vendor-charts': ['recharts', 'd3'],
-          'vendor-forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-utils': ['date-fns', 'clsx', 'class-variance-authority', 'tailwind-merge'],
+        // Manual chunk splitting for optimal caching and parallel loading
+        manualChunks: (id) => {
+          // Core React libraries
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor-react';
+          }
+          // Radix UI components
+          if (id.includes('node_modules/@radix-ui')) {
+            return 'vendor-radix';
+          }
+          // Charts and visualization (lazy load)
+          if (id.includes('node_modules/recharts') || id.includes('node_modules/d3')) {
+            return 'vendor-charts';
+          }
+          // Form libraries
+          if (id.includes('node_modules/react-hook-form') || 
+              id.includes('node_modules/@hookform') || 
+              id.includes('node_modules/zod')) {
+            return 'vendor-forms';
+          }
+          // Animation library
+          if (id.includes('node_modules/framer-motion')) {
+            return 'vendor-motion';
+          }
+          // Utility libraries
+          if (id.includes('node_modules/date-fns') || 
+              id.includes('node_modules/clsx') || 
+              id.includes('node_modules/class-variance-authority') ||
+              id.includes('node_modules/tailwind-merge')) {
+            return 'vendor-utils';
+          }
+          // UI component libraries
+          if (id.includes('node_modules/cmdk') || 
+              id.includes('node_modules/sonner') ||
+              id.includes('node_modules/vaul')) {
+            return 'vendor-ui';
+          }
+          // Icons
+          if (id.includes('node_modules/lucide-react') || 
+              id.includes('node_modules/@phosphor-icons') ||
+              id.includes('node_modules/@heroicons')) {
+            return 'vendor-icons';
+          }
+          // Other vendor dependencies
+          if (id.includes('node_modules')) {
+            return 'vendor-misc';
+          }
         },
-        // Optimize chunk file names
+        // Optimize chunk and asset file names with content hash for better caching
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
       },
     },
   },
-  // Optimize dependencies
+  // Optimize dependencies - prebundle for faster dev server start
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'framer-motion',
-      'recharts',
       'date-fns',
       'clsx',
+      'class-variance-authority',
+      'tailwind-merge',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-tooltip',
+    ],
+    exclude: [
+      // Exclude heavy dependencies to be dynamically imported
+      'recharts',
+      'd3',
     ],
   },
   // Performance optimizations

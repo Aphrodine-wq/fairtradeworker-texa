@@ -35,3 +35,6 @@ pids
 
 .vercel
 .env*.local
+
+# Performance analysis
+dist/stats.html
