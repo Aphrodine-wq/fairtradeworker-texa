@@ -5,6 +5,7 @@ import "@github/spark/spark"
 import App from './App.tsx'
 import { ErrorFallback } from './ErrorFallback.tsx'
 import { registerSW } from './lib/serviceWorker.ts'
+import { performanceMonitor } from './lib/performance.ts'
 
 import "./main.css"
 import "./styles/theme.css"
@@ -72,6 +73,18 @@ if (typeof window !== 'undefined') {
 }
 
 registerSW()
+
+// Log performance metrics on page load (dev mode only)
+if (process.env.NODE_ENV === 'development') {
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const metrics = performanceMonitor.getMetrics()
+      if (metrics.length > 0) {
+        console.log('[Performance] Metrics:', metrics)
+      }
+    }, 1000)
+  })
+}
 
 createRoot(document.getElementById('root')!).render(
   <ErrorBoundary FallbackComponent={ErrorFallback}>
