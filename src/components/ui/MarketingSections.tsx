@@ -113,16 +113,16 @@ export function FeatureSection({ features }: { features: Feature[] }) {
           Everything you need to manage your home services business
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
         {features.map((feature) => {
           const Icon = feature.icon || featureIconMap[feature.title.toLowerCase()] || Sparkle
           return (
-            <GlassCard key={feature.title} className="feature-card p-6 hover-lift">
-              <div className="feature-icon h-12 w-12 rounded-md bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-                <Icon className="text-gray-600 dark:text-gray-300 text-xl" />
+            <GlassCard key={feature.title} className="feature-card p-6 hover-lift text-center">
+              <div className="feature-icon h-14 w-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 mx-auto">
+                <Icon className="text-gray-600 dark:text-gray-300 text-2xl" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">{feature.title}</h3>
-              <p className="mt-2 text-gray-500 dark:text-gray-400">{feature.description}</p>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+              <p className="mt-2 text-gray-500 dark:text-gray-400 text-sm">{feature.description}</p>
             </GlassCard>
           )
         })}
@@ -136,13 +136,14 @@ export function PricingSection({
   price = "$25",
   description = "Suitable to grow steadily.",
   ctaLabel = "Get started",
-  ctaHref = "#",
+  onPurchase,
 }: {
   tierLabel?: string
   price?: string
   description?: string
   ctaLabel?: string
-  ctaHref?: string
+  onPurchase?: () => void
+  onNavigate?: (page: string) => void
 }) {
   return (
     <div className="mb-12">
@@ -151,7 +152,7 @@ export function PricingSection({
         <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">Transparent pricing with no hidden fees</p>
       </div>
       <div className="flex justify-center">
-        <GlassCard className="pricing-card w-full max-w-md">
+          <GlassCard className="pricing-card w-full max-w-md">
           <div className="px-6 py-8 sm:p-10 sm:pb-6">
             <div className="grid items-center justify-center w-full grid-cols-1 text-left gap-4">
               <div>
@@ -169,12 +170,16 @@ export function PricingSection({
             </div>
           </div>
           <div className="flex px-6 pb-8 sm:px-8">
-            <a
-              className="flex items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:border-black hover:text-black focus-visible:outline-black text-sm focus-visible:ring-black dark:text-white dark:bg-white dark:border-white dark:hover:bg-transparent dark:hover:border-white dark:hover:text-white"
-              href={ctaHref}
+            <Button
+              className="w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:border-black hover:text-black focus-visible:outline-black text-sm focus-visible:ring-black dark:text-white dark:bg-white dark:border-white dark:hover:bg-transparent dark:hover:border-white dark:hover:text-white"
+              onClick={() => {
+                if (onNavigate) return onNavigate('purchase')
+                if (onPurchase) return onPurchase()
+                return undefined
+              }}
             >
               {ctaLabel}
-            </a>
+            </Button>
           </div>
         </GlassCard>
       </div>

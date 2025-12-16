@@ -1,5 +1,5 @@
 
-import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense } from "react"
+import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense, useRef } from "react"
 import { SkeletonGrid } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -17,10 +17,74 @@ const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap 
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle, CaretLeft, CaretRight } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { revenueConfig } from "@/lib/revenueConfig"
+
+// Carousel Lane component with scroll arrows
+function CarouselLane({ children }: { children: React.ReactNode }) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 10)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
+  }, [])
+
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    el.addEventListener('scroll', checkScroll)
+    checkScroll()
+    return () => el.removeEventListener('scroll', checkScroll)
+  }, [checkScroll])
+
+  const scroll = (direction: 'left' | 'right') => {
+    const el = scrollRef.current
+    if (!el) return
+    const scrollAmount = 380 // Width of one card + gap
+    el.scrollBy({ left: direction === 'left' ? -scrollAmount : scrollAmount, behavior: 'smooth' })
+  }
+
+  return (
+    <div className="relative group">
+      {/* Left Arrow */}
+      {canScrollLeft && (
+        <button
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 -translate-x-4"
+          aria-label="Scroll left"
+        >
+          <CaretLeft size={28} weight="bold" className="text-gray-800 dark:text-white" />
+        </button>
+      )}
+      
+      {/* Scrollable Content */}
+      <div 
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory scrollbar-hide" 
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+      
+      {/* Right Arrow */}
+      {canScrollRight && (
+        <button
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110 translate-x-4"
+          aria-label="Scroll right"
+        >
+          <CaretRight size={28} weight="bold" className="text-gray-800 dark:text-white" />
+        </button>
+      )}
+    </div>
+  )
+}
 
 interface BrowseJobsProps {
   user: User
@@ -254,19 +318,19 @@ const JobCard = memo(function JobCard({
       <CardContent className="space-y-4 pt-0 flex-grow flex flex-col">
         {/* AI Scope Section */}
         {job.aiScope && (
-          <div className="border-2 border-black dark:border-white p-4 bg-white dark:bg-black space-y-3">
-            <div className="flex items-center gap-2 border-b-2 border-black dark:border-white pb-2">
-              <div className="p-2 border-2 border-black dark:border-white bg-white dark:bg-black">
-                <Wrench weight="bold" size={18} className="text-black dark:text-white" />
+          <div className="rounded-lg p-4 bg-gray-50 dark:bg-gray-900 space-y-3">
+            <div className="flex items-center gap-2 pb-2 border-b border-gray-200 dark:border-gray-700">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Wrench weight="bold" size={18} className="text-primary" />
               </div>
-              <span className="text-sm font-black uppercase tracking-wide text-black dark:text-white">AI SCOPE</span>
+              <span className="text-sm font-bold uppercase tracking-wide text-gray-900 dark:text-white">AI SCOPE</span>
             </div>
-            <p className="text-sm leading-relaxed text-black dark:text-white font-mono">{job.aiScope.scope}</p>
-            <div className="flex items-center gap-3 pt-2 border-t-2 border-black dark:border-white">
-              <CurrencyDollar weight="bold" size={20} className="text-[#00FF00]" />
+            <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">{job.aiScope.scope}</p>
+            <div className="flex items-center gap-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <CurrencyDollar weight="bold" size={20} className="text-green-600 dark:text-green-400" />
               <div>
-                <div className="text-xs font-mono uppercase text-black/70 dark:text-white/70">ESTIMATED RANGE</div>
-                <div className="text-lg font-black text-black dark:text-white">
+                <div className="text-xs uppercase text-gray-500 dark:text-gray-400">ESTIMATED RANGE</div>
+                <div className="text-lg font-bold text-gray-900 dark:text-white">
                   ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
                 </div>
               </div>
@@ -720,81 +784,185 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </div>
 
           {/* Jobs Grid/List Section */}
-          <div className="space-y-6">
-            {/* Results Header */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">
-                  {sizeFilter === 'all' ? 'All Jobs' : `${getJobSizeLabel(sizeFilter as JobSize)} Jobs`}
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Showing <span className="font-semibold text-foreground">{sortedOpenJobs.length}</span> {sortedOpenJobs.length === 1 ? 'job' : 'jobs'}
-                </p>
+          <div className="space-y-8">
+            {viewMode === 'map' ? (
+              <div className="rounded-xl overflow-hidden border border-border shadow-lg">
+                <Suspense fallback={<Card className="p-8 text-center">Loading map…</Card>}>
+                  <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
+                </Suspense>
               </div>
-            </div>
-
-            {/* Jobs Grid/Map */}
-            <div className={viewMode === 'map' ? '' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-stretch'}>
-              {viewMode === 'map' ? (
-                <div className="rounded-xl overflow-hidden border border-border shadow-lg">
-                  <Suspense fallback={<Card className="p-8 text-center">Loading map…</Card>}>
-                    <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
-                  </Suspense>
-                </div>
-              ) : sortedOpenJobs.length === 0 ? (
-                <div className="col-span-full">
-                  <Card className="p-16 text-center border-border">
-                    <div className="max-w-md mx-auto space-y-4">
-                      <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
-                      <div>
-                        <h2 className="text-3xl font-bold mb-2 text-foreground">No Jobs Available</h2>
-                        <p className="text-muted-foreground text-lg">
-                          {sizeFilter === 'all' 
-                            ? "We'll notify you when new opportunities arrive!"
-                            : `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters. Try a different size.`
-                          }
-                        </p>
-                      </div>
-                      {sizeFilter !== 'all' && (
-                        <Button 
-                          onClick={() => setSizeFilter('all')}
-                          variant="outline"
-                          className="mt-4"
-                        >
-                          View All Jobs
-                        </Button>
-                      )}
-                    </div>
-                  </Card>
-                </div>
-              ) : isLoadingJobs && sortedOpenJobs.length === 0 ? (
-                <SkeletonGrid count={6} columns={3} />
-              ) : (
-                <>
-                  {visibleJobs.map(job => (
-                    <JobCard
-                      userRole={user.role}
-                      key={job.id}
-                      job={job}
-                      onViewPhotos={handlePhotoClick}
-                      onPlaceBid={handleBidClick}
-                    />
-                  ))}
-                  {visibleCount < sortedOpenJobs.length && (
-                    <div className="col-span-full flex justify-center">
-                      <Button
-                        variant="outline"
-                        onClick={() => setVisibleCount((c) => c + 50)}
-                        className="h-10 px-6 text-sm"
-                        aria-label="Load more jobs"
-                      >
-                        Load more jobs ({sortedOpenJobs.length - visibleCount} remaining)
-                      </Button>
-                    </div>
+            ) : sortedOpenJobs.length === 0 ? (
+              <Card className="p-16 text-center border-border">
+                <div className="max-w-md mx-auto space-y-4">
+                  <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
+                  <div>
+                    <h2 className="text-3xl font-bold mb-2 text-foreground">No Jobs Available</h2>
+                    <p className="text-muted-foreground text-lg">
+                      {sizeFilter === 'all' 
+                        ? "We'll notify you when new opportunities arrive!"
+                        : `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters. Try a different size.`
+                      }
+                    </p>
+                  </div>
+                  {sizeFilter !== 'all' && (
+                    <Button 
+                      onClick={() => setSizeFilter('all')}
+                      variant="outline"
+                      className="mt-4"
+                    >
+                      View All Jobs
+                    </Button>
                   )}
-                </>
-              )}
-            </div>
+                </div>
+              </Card>
+            ) : isLoadingJobs && sortedOpenJobs.length === 0 ? (
+              <SkeletonGrid count={6} columns={3} />
+            ) : (
+              <>
+                {/* Netflix-style Horizontal Lanes */}
+                {/* Fresh Jobs Lane */}
+                {(() => {
+                  const freshJobs = sortedOpenJobs.filter(j => {
+                    const jobAge = Date.now() - new Date(j.createdAt).getTime()
+                    return jobAge <= 15 * 60 * 1000 && j.bids.length === 0
+                  })
+                  if (freshJobs.length === 0) return null
+                  return (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <Sparkle size={24} weight="fill" className="text-green-500" />
+                        <h3 className="text-xl font-bold text-foreground">🔥 Fresh Jobs — Be First to Bid</h3>
+                        <Badge variant="success" className="ml-2">{freshJobs.length} new</Badge>
+                      </div>
+                      <CarouselLane>
+                        {freshJobs.map(job => (
+                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
+                            <JobCard
+                              userRole={user.role}
+                              job={job}
+                              onViewPhotos={handlePhotoClick}
+                              onPlaceBid={handleBidClick}
+                            />
+                          </div>
+                        ))}
+                      </CarouselLane>
+                    </div>
+                  )
+                })()}
+
+                {/* Small Jobs Lane */}
+                {(() => {
+                  const smallJobs = sortedOpenJobs.filter(j => j.size === 'small')
+                  if (smallJobs.length === 0 || sizeFilter !== 'all') return null
+                  return (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl font-bold text-foreground">🟢 Quick Jobs</h3>
+                        <span className="text-sm text-muted-foreground">Under $500 • Fast turnaround</span>
+                      </div>
+                      <CarouselLane>
+                        {smallJobs.slice(0, 10).map(job => (
+                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
+                            <JobCard
+                              userRole={user.role}
+                              job={job}
+                              onViewPhotos={handlePhotoClick}
+                              onPlaceBid={handleBidClick}
+                            />
+                          </div>
+                        ))}
+                      </CarouselLane>
+                    </div>
+                  )
+                })()}
+
+                {/* Medium Jobs Lane */}
+                {(() => {
+                  const mediumJobs = sortedOpenJobs.filter(j => j.size === 'medium')
+                  if (mediumJobs.length === 0 || sizeFilter !== 'all') return null
+                  return (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl font-bold text-foreground">🟡 Standard Projects</h3>
+                        <span className="text-sm text-muted-foreground">$500 - $2,000</span>
+                      </div>
+                      <CarouselLane>
+                        {mediumJobs.slice(0, 10).map(job => (
+                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
+                            <JobCard
+                              userRole={user.role}
+                              job={job}
+                              onViewPhotos={handlePhotoClick}
+                              onPlaceBid={handleBidClick}
+                            />
+                          </div>
+                        ))}
+                      </CarouselLane>
+                    </div>
+                  )
+                })()}
+
+                {/* Large Jobs Lane */}
+                {(() => {
+                  const largeJobs = sortedOpenJobs.filter(j => j.size === 'large')
+                  if (largeJobs.length === 0 || sizeFilter !== 'all') return null
+                  return (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl font-bold text-foreground">🔴 Major Projects</h3>
+                        <span className="text-sm text-muted-foreground">$2,000+ • Multi-day</span>
+                      </div>
+                      <CarouselLane>
+                        {largeJobs.slice(0, 10).map(job => (
+                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
+                            <JobCard
+                              userRole={user.role}
+                              job={job}
+                              onViewPhotos={handlePhotoClick}
+                              onPlaceBid={handleBidClick}
+                            />
+                          </div>
+                        ))}
+                      </CarouselLane>
+                    </div>
+                  )
+                })()}
+
+                {/* Filtered View - Grid */}
+                {sizeFilter !== 'all' && (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-xl font-bold text-foreground">
+                        {getJobSizeLabel(sizeFilter as JobSize)} Jobs
+                      </h3>
+                      <span className="text-sm text-muted-foreground">{sortedOpenJobs.length} results</span>
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {visibleJobs.map(job => (
+                        <JobCard
+                          userRole={user.role}
+                          key={job.id}
+                          job={job}
+                          onViewPhotos={handlePhotoClick}
+                          onPlaceBid={handleBidClick}
+                        />
+                      ))}
+                    </div>
+                    {visibleCount < sortedOpenJobs.length && (
+                      <div className="flex justify-center pt-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setVisibleCount((c) => c + 50)}
+                          className="h-10 px-6 text-sm"
+                        >
+                          Load more ({sortedOpenJobs.length - visibleCount} remaining)
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </div>

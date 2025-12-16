@@ -15,9 +15,8 @@ function Card({ className, glass = false, ...props }: CardProps) {
         data-slot="card"
         className={cn(
           "bg-glass-light dark:bg-glass-dark backdrop-blur-xs",
-          "text-black dark:text-white flex flex-col gap-5 rounded-lg py-5",
-          "border border-black/10 dark:border-white/10",
-          "shadow-sm hover:shadow-md",
+          "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
+          "shadow-lg hover:shadow-xl",
           "transition-all duration-200",
           "hover:-translate-y-0.5",
           "relative overflow-hidden group",
@@ -33,7 +32,7 @@ function Card({ className, glass = false, ...props }: CardProps) {
     <div
       data-slot="card"
       className={cn(
-        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-lg py-5 border border-black/10 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-200 relative overflow-hidden group",
+        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-xl py-5 shadow-lg hover:shadow-xl transition-all duration-200 relative overflow-hidden group",
         className
       )}
       {...props}

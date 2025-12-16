@@ -64,12 +64,12 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-150",
         scrolled 
-          ? "bg-white dark:bg-black border-b border-black/20 dark:border-white/20 shadow-sm" 
-          : "bg-white dark:bg-black border-b border-black/20 dark:border-white/20"
+          ? "bg-white dark:bg-black shadow-sm" 
+          : "bg-white dark:bg-black"
       )}
     >
-      <div className="container mx-auto px-4 md:px-8">
-        <div className="flex h-14 items-center justify-between">
+      <div className="container mx-auto px-4 md:px-8 relative">
+        <div className="flex h-14 items-center justify-between relative">
           <button 
             onClick={handleHomeClick}
             className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
@@ -88,7 +88,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             </div>
           </button>
 
-          <nav className="flex items-center gap-1.5">
+          <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5">
             {!user ? (
               <>
                 <ThemeToggle />
@@ -210,7 +210,7 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
       </div>
       
       
-      <div className="h-5 w-px bg-border/50 mx-1.5" />
+      {/* divider removed per request */}
       
       <ThemeToggle />
       

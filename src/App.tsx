@@ -93,6 +93,7 @@ const ProjectMilestones = lazy(() => retryImport(() =>
 const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
 ))
+const PurchasePage = lazy(() => retryImport(() => import("@/pages/Purchase").then(m => ({ default: m.PurchasePage }))))
 const AboutPage = lazy(() => retryImport(() =>
   import("@/pages/About").then(m => ({ default: m.AboutPage }))
 ))
@@ -208,7 +209,7 @@ const ClientPortal = lazy(() => retryImport(() =>
   import("@/components/contractor/ClientPortal").then(m => ({ default: m.ClientPortal }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -439,6 +440,12 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <PhotoScoperPage />
+          </Suspense>
+        )
+      case 'purchase':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <PurchasePage onNavigate={handleNavigate} />
           </Suspense>
         )
       case 'about':

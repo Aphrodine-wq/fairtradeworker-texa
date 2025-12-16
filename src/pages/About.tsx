@@ -1,5 +1,5 @@
 import { Heart, Shield, Hammer, House, MapTrifold, Zap, Gauge, Lightning } from "@phosphor-icons/react"
-import { GlassNav, HeroSection, StatsSection, GlassCard, FeatureSection, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { HeroSection, StatsSection, GlassCard, FeatureSection } from "@/components/ui/MarketingSections"
 
 export function AboutPage() {
   const stats = [
@@ -47,20 +47,7 @@ export function AboutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[
-          { label: "Home", href: "#" },
-          { label: "About", href: "#", active: true },
-          { label: "Marketplace", href: "#" },
-          { label: "Contact", href: "#" },
-        ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-
-      <div className="pt-20 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="pt-10 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <HeroSection
           title="Built for fair, zero-fee home services"
           subtitle="We connect homeowners and contractors with transparent pricing, AI-powered scoping, and a marketplace where quality—not fees—wins."

@@ -10,7 +10,7 @@
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 150ms;
+  transition-duration: 5s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -201,6 +201,31 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Remove empty/brutalist placeholder menus that appear during transitions */
+.empty-menu,
+.brutalist-placeholder,
+.floating-menu {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Browse Jobs - Netflix-like horizontal scroller */
+.browse-grid {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.browse-grid > * {
+  flex: 0 0 320px;
+  scroll-snap-align: start;
+}
+
+/* Center key marketing content */
+.marketing-center { text-align: center; margin-left: auto; margin-right: auto; }
 
 /* ============================================
    7. PRINT STYLING

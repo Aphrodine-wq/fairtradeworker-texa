@@ -29,7 +29,7 @@ export function Footer({ onNavigate }: FooterProps) {
   }
 
   return (
-    <footer className="border-t-4 border-black dark:border-white bg-white dark:bg-black">
+    <footer className="bg-white dark:bg-black">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
@@ -43,6 +43,12 @@ export function Footer({ onNavigate }: FooterProps) {
             <p className="mt-4 text-sm font-mono">
               Zero fees. 100% fair.
             </p>
+            <button
+              onClick={() => onNavigate && onNavigate('donate')}
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg shadow-lg hover:shadow-xl transition-all text-sm font-semibold"
+            >
+              ❤️ Donate to Platform
+            </button>
           </div>
 
           {/* Company Links */}
@@ -106,12 +112,12 @@ export function Footer({ onNavigate }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t-2 border-black dark:border-white">
+        <div className="mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm font-mono">
               © {currentYear} FairTradeWorker. All rights reserved.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <a
                 href="https://twitter.com/fairtradeworker"
                 target="_blank"

@@ -133,11 +133,23 @@ src/
 
 ## 🎨 DESIGN SYSTEM
 
-FairTradeWorker uses a brutalist design system with:
-- **Colors:** Black, white, green, red, yellow only
-- **Borders:** 2-4px solid black
-- **Shadows:** Hard shadows (no blur)
-- **Typography:** Bold, uppercase headings; monospace for data
+FairTradeWorker uses a modern shadow-based design system (updated December 16, 2025):
+
+### Visual Philosophy
+- **Depth:** Shadow-based (no borders) - `shadow-lg hover:shadow-xl`
+- **Cards:** Rounded corners (`rounded-xl`), elevated appearance
+- **Buttons:** 3D effects with layered shadows, hover transforms
+- **Colors:** Clean grayscale with accent colors
+
+### Theme Transitions
+- **Duration:** 5-second smooth transitions
+- **Implementation:** CSS transitions on all color properties
+- **Dark Mode:** Full support with proper contrast
+
+### Key Components
+- **Netflix-style Browse Jobs:** Horizontal scrolling lanes with carousel arrows
+- **3D Buttons:** Layered shadow system with hover lift effect
+- **Cards:** Borderless with shadow depth
 
 ---
 

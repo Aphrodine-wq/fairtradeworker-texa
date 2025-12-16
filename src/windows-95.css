@@ -1,0 +1,363 @@
+/* ============================================================
+   90S WINDOWS STYLE - PLAIN & UTILITARIAN
+   ============================================================ */
+
+@import 'tailwindcss';
+
+:root {
+  /* Windows 95/98 Palette */
+  --bg-main: #c0c0c0;        /* Classic gray */
+  --bg-light: #dfdfdf;       /* Lighter gray */
+  --bg-dark: #808080;        /* Dark gray */
+  --border-light: #ffffff;   /* Light border */
+  --border-dark: #808080;    /* Dark border */
+  --text: #000000;           /* Black text */
+  --text-light: #dfdfdf;     /* Light text */
+  --button-face: #c0c0c0;    /* Button color */
+  --focus: #000080;          /* Windows blue */
+
+  /* Font */
+  --font: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif, system-ui;
+  --font-size: 11px;
+  --font-weight: normal;
+
+  /* Spacing */
+  --space: 4px;
+
+  /* No animations - instant */
+  --duration: 0ms;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: var(--font);
+  font-size: var(--font-size);
+  background-color: var(--bg-main);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+body {
+  padding: var(--space);
+}
+
+/* Windows-style buttons (3D inset/raised) */
+button, 
+.btn,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  font-family: var(--font);
+  font-size: var(--font-size);
+  background-color: var(--button-face);
+  color: var(--text);
+  border: 2px outset var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+  padding: 4px 12px;
+  cursor: default;
+  min-width: 75px;
+  min-height: 23px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:active,
+.btn:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active {
+  border-style: inset;
+  border-left-color: var(--border-dark);
+  border-top-color: var(--border-dark);
+  border-right-color: var(--border-light);
+  border-bottom-color: var(--border-light);
+}
+
+button:focus,
+.btn:focus,
+input[type="button"]:focus {
+  outline: 1px dotted var(--text);
+  outline-offset: -4px;
+}
+
+/* Text inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+textarea,
+select {
+  font-family: var(--font);
+  font-size: var(--font-size);
+  background-color: #ffffff;
+  color: var(--text);
+  border: 2px inset var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+  padding: 3px 4px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+/* Fieldset - Windows panel style */
+fieldset {
+  border: 2px groove var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+  padding: 8px;
+  margin: 8px 0;
+}
+
+legend {
+  background-color: var(--bg-main);
+  padding: 0 2px;
+}
+
+/* Headings - plain */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: bold;
+  margin: 8px 0;
+  padding: 0;
+}
+
+h1 { font-size: 14px; }
+h2 { font-size: 13px; }
+h3 { font-size: 12px; }
+
+/* Paragraphs */
+p {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+/* Links - blue and underlined */
+a {
+  color: #0000ff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: var(--font-size);
+}
+
+a:visited {
+  color: #800080;
+}
+
+a:active {
+  color: #ff0000;
+}
+
+/* Panels/Cards - inset style like Windows dialogs */
+.panel,
+.card {
+  background-color: var(--bg-main);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  padding: 2px;
+  margin: 4px 0;
+}
+
+.panel-content,
+.card-content {
+  background-color: var(--bg-light);
+  padding: 4px;
+  border: 1px solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+}
+
+/* Status bar style */
+.status-bar {
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-light);
+  border-left: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 2px;
+  font-size: 11px;
+  display: flex;
+  gap: 2px;
+}
+
+.status-item {
+  border-left: 1px solid var(--border-light);
+  border-top: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-dark);
+  border-bottom: 1px solid var(--border-dark);
+  padding: 2px 4px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Windows-style scrollbars */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--bg-main);
+  border: 2px inset var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--bg-main);
+  border: 2px outset var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-light);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: var(--bg-main);
+}
+
+/* Tab bar style */
+.tab-bar {
+  display: flex;
+  gap: 2px;
+  background-color: var(--bg-main);
+  border-bottom: 2px solid var(--border-dark);
+  padding: 2px;
+}
+
+.tab {
+  background-color: var(--bg-light);
+  border: 2px solid;
+  border-color: var(--border-light) var(--border-dark) var(--border-dark) var(--border-light);
+  border-bottom: none;
+  padding: 4px 16px;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: var(--font-size);
+}
+
+.tab.active {
+  background-color: var(--bg-main);
+  border-bottom: 2px solid var(--bg-main);
+  padding-bottom: 2px;
+}
+
+/* Dialog-style container */
+.dialog {
+  background-color: var(--bg-main);
+  border: 2px outset var(--border-light);
+  border-right-color: var(--border-dark);
+  border-bottom-color: var(--border-dark);
+  box-shadow: 1px 1px 0px #ffffff inset, 1px 1px 0px #808080;
+  padding: 2px;
+}
+
+.dialog-title {
+  background: linear-gradient(90deg, #000080, #1084d7);
+  color: #ffffff;
+  padding: 2px 4px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18px;
+}
+
+.dialog-content {
+  background-color: var(--bg-main);
+  padding: 4px;
+}
+
+.dialog-buttons {
+  background-color: var(--bg-main);
+  border-top: 1px solid var(--border-light);
+  padding: 4px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+/* Checkboxes and radios */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--focus);
+  cursor: default;
+  margin: 0 4px 0 0;
+}
+
+/* Select dropdown */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M3 5h10l-5 5-5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 2px center;
+  padding-right: 20px;
+}
+
+/* No animations or transitions */
+* {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Utility classes */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.mt { margin-top: 4px; }
+.mb { margin-bottom: 4px; }
+.ml { margin-left: 4px; }
+.mr { margin-right: 4px; }
+
+.p { padding: 4px; }
+.pt { padding-top: 4px; }
+.pb { padding-bottom: 4px; }
+.pl { padding-left: 4px; }
+.pr { padding-right: 4px; }
+
+/* Table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 4px 0;
+}
+
+td, th {
+  border: 1px solid var(--bg-dark);
+  padding: 2px 4px;
+  text-align: left;
+}
+
+th {
+  background-color: var(--bg-light);
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f0f0f0;
+}

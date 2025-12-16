@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { FreeToolsHub } from "@/components/shared/FreeToolsHub"
-import { GlassNav, ThemePersistenceToggle, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
+import { HeroSection, GlassCard } from "@/components/ui/MarketingSections"
 
 // Lazy load heavy components
 const JobCostCalculator = lazy(() => import("@/components/contractor/JobCostCalculator").then((m) => ({ default: m.JobCostCalculator })))
@@ -65,15 +65,7 @@ function FreeToolsPageComponent({ user, onNavigate }: FreeToolsPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[{ label: "Home", href: "#" }, { label: "Free Tools", href: "#", active: true }]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-
-      <div className="pt-20 pb-12 px-4 max-w-6xl mx-auto space-y-6">
+      <div className="pt-10 pb-12 px-4 max-w-6xl mx-auto space-y-6">
         <HeroSection
           title="Free tools for every role"
           subtitle="Scope, calculate, track, and organize—no fees, ever."

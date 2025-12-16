@@ -27,7 +27,7 @@ import {
 } from "@phosphor-icons/react"
 import type { User, Job, Territory } from "@/lib/types"
 import { useMemo, useState, useEffect } from "react"
-import { GlassNav, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+
 
 interface OperatorDashboardProps {
   user: User
@@ -231,18 +231,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <GlassNav
-          brand={{ name: "FairTradeWorker" }}
-          links={[
-            { label: "Home", href: "#" },
-            { label: "Operator Dashboard", href: "#", active: true },
-            { label: "Territories", href: "#" },
-          ]}
-          primaryLabel="Post Job"
-        >
-          <ThemePersistenceToggle />
-        </GlassNav>
-        <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
+        <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <SkeletonLoader variant="text" className="h-10 w-64" />
@@ -265,18 +254,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[
-          { label: "Home", href: "#" },
-          { label: "Operator Dashboard", href: "#", active: true },
-          { label: "Territories", href: "#" },
-        ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
+      <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>

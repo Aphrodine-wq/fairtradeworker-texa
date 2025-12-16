@@ -26,7 +26,7 @@ import {
   Heart,
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
-import { GlassNav, HeroSection, StatsSection, GlassCard, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { HeroSection, StatsSection, GlassCard } from "@/components/ui/MarketingSections"
 import { cn } from "@/lib/utils"
 
 interface BusinessToolsProps {
@@ -138,19 +138,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[
-          { label: "Home", href: "#" },
-          { label: "Business Tools", href: "#", active: true },
-          { label: "Free Tools", href: "#" },
-        ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-
-      <div className="pt-20 pb-12 px-4 md:px-6 lg:px-8">
+      <div className="pt-10 pb-12 px-4 md:px-6 lg:px-8">
         <HeroSection
           title="All-in-one toolkit for contractors and operators"
           subtitle="Finance, CRM, operations, and automation—most tools are free; PRO unlocks AI-powered growth."

@@ -16,7 +16,7 @@ import {
 import { useState, useCallback } from "react"
 import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
-import { GlassNav, HeroSection, StatsSection, GlassCard, ThemePersistenceToggle } from "@/components/ui/MarketingSections"
+import { HeroSection, StatsSection, GlassCard } from "@/components/ui/MarketingSections"
 
 export function ContactPage() {
   const [formData, setFormData] = useState({
@@ -110,20 +110,7 @@ export function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <GlassNav
-        brand={{ name: "FairTradeWorker" }}
-        links={[
-          { label: "Home", href: "#" },
-          { label: "Contact", href: "#", active: true },
-          { label: "Marketplace", href: "#" },
-          { label: "About", href: "#" },
-        ]}
-        primaryLabel="Post Job"
-      >
-        <ThemePersistenceToggle />
-      </GlassNav>
-
-      <div className="pt-20 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="pt-10 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <HeroSection
           title="We’re here to help"
           subtitle="Questions, support, or partnership inquiries—reach us via email, phone, or chat."

@@ -52,35 +52,35 @@ export function WorkflowAutomation({ user }: WorkflowAutomationProps) {
   ]
 
   return (
-    <div className="w-full bg-white dark:bg-black min-h-screen p-[1pt]">
+    <div className="w-full bg-gray-50 dark:bg-gray-900 min-h-screen p-[1pt]">
       <div className="w-full px-4 md:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Header */}
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-2">
-              <Gear weight="duotone" size={48} className="text-black dark:text-white" />
-              <h1 className="text-4xl md:text-5xl font-bold text-black dark:text-white">
+              <Gear weight="duotone" size={48} className="text-primary" />
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
                 Workflow Automation
               </h1>
             </div>
-            <p className="text-black dark:text-white text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
               Automate repetitive tasks and workflows to save time and reduce errors
             </p>
           </div>
 
           {/* Automation Status */}
-          <Card className="border-2 border-black dark:border-white">
+          <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-black dark:text-white">Automation Status</CardTitle>
-                  <CardDescription className="text-black/70 dark:text-white/70">
+                  <CardTitle className="text-gray-900 dark:text-white">Automation Status</CardTitle>
+                  <CardDescription className="text-gray-500 dark:text-gray-400">
                     Background automations run every 30 minutes
                   </CardDescription>
                 </div>
                 <Badge 
                   variant={automationsEnabled ? "default" : "secondary"}
-                  className={automationsEnabled ? "bg-[#00FF00] text-black" : ""}
+                  className={automationsEnabled ? "bg-green-500 text-white" : ""}
                 >
                   {automationsEnabled ? "Active" : "Paused"}
                 </Badge>
@@ -91,7 +91,6 @@ export function WorkflowAutomation({ user }: WorkflowAutomationProps) {
                 <Button
                   onClick={() => setAutomationsEnabled(!automationsEnabled)}
                   variant={automationsEnabled ? "outline" : "default"}
-                  className="border-2 border-black dark:border-white"
                 >
                   {automationsEnabled ? (
                     <>
@@ -105,7 +104,7 @@ export function WorkflowAutomation({ user }: WorkflowAutomationProps) {
                     </>
                   )}
                 </Button>
-                <div className="flex items-center gap-2 text-sm text-black/70 dark:text-white/70">
+                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                   <Zap size={16} weight="bold" />
                   <span>Last checked: Just now</span>
                 </div>
@@ -115,29 +114,29 @@ export function WorkflowAutomation({ user }: WorkflowAutomationProps) {
 
           {/* Active Automations */}
           <div>
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-4">Active Automations</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Active Automations</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {automationFeatures.map((automation) => (
-                <Card key={automation.id} className="border-2 border-black dark:border-white">
+                <Card key={automation.id}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg text-black dark:text-white">
+                      <CardTitle className="text-lg text-gray-900 dark:text-white">
                         {automation.name}
                       </CardTitle>
                       <Badge 
                         variant="outline" 
-                        className="bg-[#00FF00]/20 border-[#00FF00] text-black dark:text-white"
+                        className="bg-green-100 dark:bg-green-900/30 border-green-500 text-green-700 dark:text-green-400"
                       >
                         <CheckCircle size={12} className="mr-1" weight="fill" />
                         Active
                       </Badge>
                     </div>
-                    <CardDescription className="text-black/70 dark:text-white/70">
+                    <CardDescription className="text-gray-500 dark:text-gray-400">
                       {automation.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex items-center gap-2 text-sm text-black/70 dark:text-white/70">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                       <Clock size={14} weight="bold" />
                       <span>Last run: {automation.lastRun}</span>
                     </div>
@@ -148,13 +147,13 @@ export function WorkflowAutomation({ user }: WorkflowAutomationProps) {
           </div>
 
           {/* Info Card */}
-          <Card className="border-2 border-black dark:border-white bg-[#FFFF00]/10">
+          <Card className="bg-yellow-50 dark:bg-yellow-900/20">
             <CardContent className="p-6">
               <div className="flex items-start gap-3">
-                <Zap size={24} weight="bold" className="text-black dark:text-white flex-shrink-0 mt-1" />
+                <Zap size={24} weight="bold" className="text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold text-black dark:text-white mb-2">How It Works</h3>
-                  <p className="text-sm text-black/80 dark:text-white/80">
+                  <h3 className="font-bold text-gray-900 dark:text-white mb-2">How It Works</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">
                     Automations run in the background every 30 minutes. They check for triggers (like overdue invoices, 
                     scheduled follow-ups, etc.) and execute actions automatically. You can pause automations at any time, 
                     but they'll resume on the next check cycle.

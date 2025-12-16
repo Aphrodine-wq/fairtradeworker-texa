@@ -22,6 +22,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
     return jobs.filter((job) => new Date(job.createdAt).toDateString() === today)
   }, [jobs])
 
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="pt-10 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +37,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           stats={[
             { label: "Total Users", value: "12,402", icon: House },
             { label: "Jobs Completed", value: "8,291", icon: Hammer, tone: "green" },
-            { label: "Total Revenue", value: "$1.2M", icon: CurrencyDollar },
+            { label: "Fees Saved vs Traditional", value: "$892K", icon: CurrencyDollar },
             { label: "Avg. Rating", value: "4.8", icon: MapTrifold },
           ]}
         />
@@ -56,7 +57,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           <Button
             size="lg"
             variant="ghost"
-            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black border border-black/10 dark:border-white/20"
+            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black shadow-lg hover:shadow-xl"
             onClick={() => onNavigate("signup", "homeowner")}
           >
             <House weight="fill" className="mr-3" size={24} />
@@ -65,7 +66,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           <Button
             size="lg"
             variant="ghost"
-            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black border border-black/10 dark:border-white/20"
+            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black shadow-lg hover:shadow-xl"
             onClick={() => onNavigate("signup", "contractor")}
           >
             <Hammer weight="fill" className="mr-3" size={24} />
@@ -74,7 +75,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           <Button
             size="lg"
             variant="ghost"
-            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black border border-black/10 dark:border-white/20"
+            className="text-lg px-8 py-6 h-auto bg-white dark:bg-black shadow-lg hover:shadow-xl"
             onClick={() => onNavigate("signup", "operator")}
           >
             <MapTrifold weight="fill" className="mr-3" size={24} />
@@ -116,7 +117,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
         <LiveStatsBar jobs={jobs || []} />
 
-        <PricingSection />
+        <PricingSection onPurchase={() => onNavigate("purchase")} />
         <RatingSection />
       </div>
     </div>
