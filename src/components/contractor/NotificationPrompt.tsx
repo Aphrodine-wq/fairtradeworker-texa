@@ -5,6 +5,99 @@ import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { usePushNotifications } from '@/hooks/usePushNotifications';
 import { useKV } from '@github/spark/hooks';
-import type { User } from '@/lib/types'; interface NotificationPromptProps { user: User;
-} export function NotificationPrompt({ user }: NotificationPromptProps) { const { isSupported, isSubscribing, permission, isSubscribed, requestPermission, subscribe, testNotification, } = usePushNotifications(user); const [dismissed, setDismissed] = useKV<boolean>( `notification-prompt-dismissed-${user.id}`, false ); const [showPrompt, setShowPrompt] = useState(false); useEffect(() => { const shouldShow = isSupported && !isSubscribed && !dismissed && permission !== 'denied'; setShowPrompt(shouldShow); }, [isSupported, isSubscribed, dismissed, permission]); const handleEnable = async () => { if (permission !== 'granted') { const granted = await requestPermission(); if (!granted) { toast.error('Notification permission denied'); return; } } const success = await subscribe(); if (success) { toast.success('Push notifications enabled! 🎉'); await testNotification(); setShowPrompt(false); } else { toast.error('Failed to enable notifications'); } }; const handleDismiss = async () => { await setDismissed(true); setShowPrompt(false); }; if (!showPrompt || user.role !== 'contractor') { return null; } return ( <Card className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm animate-fadeIn"> <div className="flex items-start gap-3"> <div className="w-10 h-10 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 shadow-sm"> <Bell className="w-5 h-5 text-black dark:text-white" /> </div> <div className="flex-1 min-w-0"> <div className="flex items-center gap-2 mb-1"> <h3 className="font-heading font-semibold">Never Miss a Job</h3> <Zap className="w-4 h-4 text-black dark:text-white" /> </div> <p className="text-sm text-black dark:text-white mb-3"> Get instant alerts for new jobs near you. Contractors who respond in under 15 minutes win 2.3x more bids. </p> <div className="flex items-center gap-2"> <Button onClick={handleEnable} disabled={isSubscribing} size="sm" className="gap-2" > {isSubscribing ? ( <> <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-md animate-spin" /> Enabling... </> ) : ( <> <Bell className="w-4 h-4" /> Enable Notifications </> )} </Button> <Button onClick={handleDismiss} variant="ghost" size="sm" > Maybe Later </Button> </div> </div> <Button onClick={handleDismiss} variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8" > <X className="w-4 h-4" /> </Button> </div> </Card> );
+import type { User } from '@/lib/types';
+
+interface NotificationPromptProps {
+  user: User;
+}
+
+export function NotificationPrompt({ user }: NotificationPromptProps) {
+  const {
+    isSupported,
+    isSubscribing,
+    permission,
+    isSubscribed,
+    requestPermission,
+    subscribe,
+    testNotification,
+  } = usePushNotifications(user);
+
+  const [dismissed, setDismissed] = useKV<boolean>(
+    `notification-prompt-dismissed-${user.id}`,
+    false
+  );
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  useEffect(() => {
+    const shouldShow = isSupported && !isSubscribed && !dismissed && permission !== 'denied';
+    setShowPrompt(shouldShow);
+  }, [isSupported, isSubscribed, dismissed, permission]);
+
+  const handleEnable = async () => {
+    if (permission !== 'granted') {
+      const granted = await requestPermission();
+      if (!granted) {
+        toast.error('Notification permission denied');
+        return;
+      }
+    }
+
+    const success = await subscribe();
+    if (success) {
+      toast.success('Push notifications enabled! 🎉');
+      await testNotification();
+      setShowPrompt(false);
+    } else {
+      toast.error('Failed to enable notifications');
+    }
+  };
+
+  const handleDismiss = async () => {
+    await setDismissed(true);
+    setShowPrompt(false);
+  };
+
+  if (!showPrompt || user.role !== 'contractor') {
+    return null;
+  }
+
+  return (
+    <Card className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm animate-fadeIn">
+      <div className="flex items-start gap-3">
+        <div className="w-10 h-10 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 shadow-sm">
+          <Bell className="w-5 h-5 text-black dark:text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-heading font-semibold">Never Miss a Job</h3>
+            <Zap className="w-4 h-4 text-black dark:text-white" />
+          </div>
+          <p className="text-sm text-black dark:text-white mb-3">
+            Get instant alerts for new jobs near you. Contractors who respond in under 15 minutes win 2.3x more bids.
+          </p>
+          <div className="flex items-center gap-2">
+            <Button onClick={handleEnable} disabled={isSubscribing} size="sm" className="gap-2">
+              {isSubscribing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-md animate-spin" />
+                  Enabling...
+                </>
+              ) : (
+                <>
+                  <Bell className="w-4 h-4" />
+                  Enable Notifications
+                </>
+              )}
+            </Button>
+            <Button onClick={handleDismiss} variant="ghost" size="sm">
+              Maybe Later
+            </Button>
+          </div>
+        </div>
+        <Button onClick={handleDismiss} variant="ghost" size="icon" className="flex-shrink-0 h-8 w-8">
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+    </Card>
+  );
 }
