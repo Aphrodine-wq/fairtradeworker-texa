@@ -336,15 +336,70 @@ export default async function handler(
 
 /**
  * Validate Twilio webhook signature for security
+ * CRITICAL: Prevents unauthorized webhook calls and data manipulation
  */
 async function validateTwilioWebhook(req: VercelRequest): Promise<boolean> {
-  // TODO: Implement Twilio signature validation
-  // const signature = req.headers?.['x-twilio-signature']
-  // const url = `https://${req.headers?.host}${req.url}`
-  // return twilio.validateRequest(authToken, signature, url, req.body)
-  
-  // For now, return true (but MUST be implemented in production)
-  return true
+  try {
+    const env = typeof process !== 'undefined' ? (process as any).env : {}
+    const authToken = env.TWILIO_AUTH_TOKEN
+    const signature = req.headers?.['x-twilio-signature']
+    
+    if (!authToken) {
+      await logError(
+        new Error('TWILIO_AUTH_TOKEN not configured'),
+        { step: 'webhook_validation' }
+      )
+      return false
+    }
+    
+    if (!signature) {
+      await logError(
+        new Error('Missing Twilio signature header'),
+        { step: 'webhook_validation' }
+      )
+      return false
+    }
+    
+    // Construct full URL
+    const protocol = req.headers?.['x-forwarded-proto'] || 'https'
+    const host = req.headers?.host || req.headers?.['x-forwarded-host']
+    const url = `${protocol}://${host}/api/receptionist/inbound`
+    
+    // Validate signature using Twilio's algorithm
+    // See: https://www.twilio.com/docs/usage/webhooks/webhooks-security
+    const crypto = require('crypto')
+    const params = req.body || {}
+    
+    // Sort parameters and create validation string
+    const data = Object.keys(params)
+      .sort()
+      .reduce((acc, key) => acc + key + params[key], url)
+    
+    // Create HMAC SHA1 signature
+    const expectedSignature = crypto
+      .createHmac('sha1', authToken)
+      .update(Buffer.from(data, 'utf-8'))
+      .digest('base64')
+    
+    const isValid = signature === expectedSignature
+    
+    if (!isValid) {
+      await logError(
+        new Error('Invalid Twilio webhook signature'),
+        { 
+          step: 'webhook_validation',
+          receivedSignature: signature.substring(0, 10) + '...',
+          url
+        }
+      )
+    }
+    
+    return isValid
+  } catch (error) {
+    await logError(error as Error, { step: 'webhook_validation' })
+    // Fail closed - reject if validation fails
+    return false
+  }
 }
 
 /**
@@ -840,7 +895,7 @@ async function sendOnboardingSMS(
       {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${Buffer.from(`${accountSid}:${authToken}`).toString('base64')}`,
+          'Authorization': `Basic ${btoa(`${accountSid}:${authToken}`)}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({

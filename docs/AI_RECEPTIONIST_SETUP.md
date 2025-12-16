@@ -302,19 +302,29 @@ If everything fails:
 
 ## Security
 
-### Webhook Validation
-Always validate Twilio webhook signatures:
+### Webhook Validation ✅ IMPLEMENTED
+All webhook requests are validated using Twilio's signature verification:
 
 ```typescript
-import twilio from 'twilio'
-
-const isValid = twilio.validateRequest(
-  authToken,
-  twilioSignature,
-  url,
-  params
-)
+// Twilio sends X-Twilio-Signature header with each webhook
+// We verify it matches HMAC-SHA1 of request URL + parameters
+const isValid = validateTwilioWebhook(req)
+if (!isValid) {
+  // Reject unauthorized requests
+  return 403 Forbidden
+}
 ```
+
+**How it works:**
+1. Twilio signs each webhook with your AUTH_TOKEN
+2. We recreate the signature using the same algorithm
+3. If signatures match, request is authentic
+4. If not, request is rejected (prevents spoofing)
+
+**Configuration:**
+- Ensure `TWILIO_AUTH_TOKEN` is set in environment variables
+- Webhook validation happens automatically on every request
+- Failed validations are logged and alerted
 
 ### Data Privacy
 - Store call recordings securely (encrypted at rest)
