@@ -62,55 +62,7 @@ export default defineConfig({
     rollupOptions: {
       external: ['jspdf'], // Optional dependency, handled at runtime
       output: {
-        // Manual chunk splitting for optimal caching and parallel loading
-        manualChunks: (id) => {
-          // Core React libraries
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
-            return 'vendor-react';
-          }
-          // Radix UI components
-          if (id.includes('node_modules/@radix-ui')) {
-            return 'vendor-radix';
-          }
-          // Charts and visualization (lazy load)
-          if (id.includes('node_modules/recharts') || id.includes('node_modules/d3')) {
-            return 'vendor-charts';
-          }
-          // Form libraries
-          if (id.includes('node_modules/react-hook-form') || 
-              id.includes('node_modules/@hookform') || 
-              id.includes('node_modules/zod')) {
-            return 'vendor-forms';
-          }
-          // Animation library
-          if (id.includes('node_modules/framer-motion')) {
-            return 'vendor-motion';
-          }
-          // Utility libraries
-          if (id.includes('node_modules/date-fns') || 
-              id.includes('node_modules/clsx') || 
-              id.includes('node_modules/class-variance-authority') ||
-              id.includes('node_modules/tailwind-merge')) {
-            return 'vendor-utils';
-          }
-          // UI component libraries
-          if (id.includes('node_modules/cmdk') || 
-              id.includes('node_modules/sonner') ||
-              id.includes('node_modules/vaul')) {
-            return 'vendor-ui';
-          }
-          // Icons
-          if (id.includes('node_modules/lucide-react') || 
-              id.includes('node_modules/@phosphor-icons') ||
-              id.includes('node_modules/@heroicons')) {
-            return 'vendor-icons';
-          }
-          // Other vendor dependencies
-          if (id.includes('node_modules')) {
-            return 'vendor-misc';
-          }
-        },
-        // Optimize chunk and asset file names with content hash for better caching
+        // Rely on Rollup's default chunking to avoid cross-chunk circular deps
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',

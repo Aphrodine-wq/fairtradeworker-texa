@@ -6,7 +6,11 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/:path((?!assets/).*)",
+      "source": "/_spark/(.*)",
+      "destination": "/api/_spark/$1"
+    },
+    {
+      "source": "/:path((?!assets/|sw\\.js|manifest\\.json|favicon\\.ico|robots\\.txt|_spark/).*)",
       "destination": "/index.html"
     }
   ],
