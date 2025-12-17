@@ -26,7 +26,7 @@ import {
   SlidersHorizontal
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice, Bid } from "@/lib/types"
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, memo } from "react"
 import { DashboardCustomizer } from "@/components/dashboard/DashboardCustomizer"
 
 interface ContractorDashboardNewProps {
@@ -34,7 +34,7 @@ interface ContractorDashboardNewProps {
   onNavigate: (page: string) => void
 }
 
-export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboardNewProps) {
+export const ContractorDashboardNew = memo(function ContractorDashboardNew({ user, onNavigate }: ContractorDashboardNewProps) {
   const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
   const [invoices, , invoicesLoading] = useKV<Invoice[]>("invoices", [])
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -215,17 +215,17 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-8 pt-8 pb-12 max-w-7xl">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-3xl font-bold">Welcome back, {user.fullName.split(' ')[0]}</h1>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-4xl font-bold text-black dark:text-white">Welcome back, {user.fullName.split(' ')[0]}</h1>
                 {user.isPro && (
-                  <Badge className="bg-primary">PRO</Badge>
+                  <Badge className="bg-primary text-white">PRO</Badge>
                 )}
               </div>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-muted-foreground text-base">
                 {currentTime.toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -234,35 +234,35 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 })}
               </p>
             </div>
-            <Button onClick={() => onNavigate('browse-jobs')} size="lg">
+            <Button onClick={() => onNavigate('browse-jobs')} size="lg" className="w-full sm:w-auto">
               <Fire className="mr-2" />
               Browse FRESH Jobs
             </Button>
           </div>
 
           {/* Key Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="p-6" glass={isPro}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="p-6 hover:shadow-lg transition-shadow" glass={isPro}>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Active Jobs</p>
-                  <p className="text-3xl font-bold mt-1">{activeJobs.length}</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Active Jobs</p>
+                  <p className="text-4xl font-bold mt-2 text-black dark:text-white">{activeJobs.length}</p>
+                  <p className="text-sm text-muted-foreground mt-2">
                     {todaySchedule.length} scheduled today
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <Briefcase className="h-6 w-6 text-primary" />
+                <div className="h-14 w-14 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <Briefcase className="h-7 w-7 text-primary" weight="duotone" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6" glass={isPro}>
+            <Card className="p-6 hover:shadow-lg transition-shadow" glass={isPro}>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">This Month</p>
-                  <p className="text-3xl font-bold mt-1">${monthlyEarnings.toLocaleString()}</p>
-                  <p className="text-xs text-accent-foreground mt-1">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">This Month</p>
+                  <p className="text-4xl font-bold mt-2 text-black dark:text-white">${monthlyEarnings.toLocaleString()}</p>
+                  <p className="text-sm text-accent-foreground mt-2 font-medium">
                     {completedJobs.filter(j => {
                       const jobDate = new Date(j.createdAt)
                       const now = new Date()
@@ -270,36 +270,36 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     }).length} jobs completed
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
-                  <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
+                <div className="h-14 w-14 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
+                  <CurrencyDollar className="h-7 w-7 text-accent-foreground" weight="duotone" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6" glass={isPro}>
+            <Card className="p-6 hover:shadow-lg transition-shadow" glass={isPro}>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Win Rate</p>
-                  <p className="text-3xl font-bold mt-1">{winRate.toFixed(0)}%</p>
-                  <p className="text-xs text-muted-foreground mt-1">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Win Rate</p>
+                  <p className="text-4xl font-bold mt-2 text-black dark:text-white">{winRate.toFixed(0)}%</p>
+                  <p className="text-sm text-muted-foreground mt-2">
                     {wonBids.length} of {myBids.length} bids
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <Target className="h-6 w-6 text-secondary-foreground" />
+                <div className="h-14 w-14 rounded-lg bg-secondary/20 flex items-center justify-center flex-shrink-0">
+                  <Target className="h-7 w-7 text-secondary-foreground" weight="duotone" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6" glass={isPro}>
+            <Card className="p-6 hover:shadow-lg transition-shadow" glass={isPro}>
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Performance</p>
-                  <p className="text-3xl font-bold mt-1">{performanceScore}/100</p>
-                  <Progress value={performanceScore} className="mt-2 h-1" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Performance</p>
+                  <p className="text-4xl font-bold mt-2 text-black dark:text-white">{performanceScore}/100</p>
+                  <Progress value={performanceScore} className="mt-3 h-2" />
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <ChartLine className="h-6 w-6 text-primary" />
+                <div className="h-14 w-14 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center flex-shrink-0">
+                  <ChartLine className="h-7 w-7 text-primary" weight="duotone" />
                 </div>
               </div>
             </Card>
@@ -331,10 +331,10 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* FRESH Jobs */}
-            <Card className="lg:col-span-2 p-6">
+            <Card className="lg:col-span-2 p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-semibold text-black dark:text-white">FRESH Jobs</h2>
+                  <h2 className="text-2xl font-bold text-black dark:text-white">FRESH Jobs</h2>
                   <Badge variant="destructive" className="animate-pulse">
                     <Lightning className="h-3 w-3 mr-1" />
                     {freshJobs.length} New
@@ -583,6 +583,6 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
       </div>
     </div>
   )
-}
+})
 
 export default ContractorDashboardNew

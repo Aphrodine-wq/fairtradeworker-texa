@@ -75,7 +75,7 @@ function FreeToolsPageComponent({ user, onNavigate }: FreeToolsPageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-12 px-4 max-w-6xl mx-auto space-y-6">
+      <div className="pt-10 pb-12 px-4 max-w-7xl mx-auto space-y-6">
         <HeroSection
           title="Free tools for every role"
           subtitle="Scope, calculate, track, and organize—no fees, ever."

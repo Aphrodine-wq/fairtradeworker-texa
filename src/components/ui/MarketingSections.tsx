@@ -148,7 +148,7 @@ export function PricingSection({
   const pricingTiers = [
     {
       name: "Homeowner",
-      price: "Free",
+      price: "$0",
       description: "Sign up free, pay per job posted",
       features: ["Post unlimited jobs", "Access to verified contractors", "Secure messaging", "Basic support"],
       ctaLabel: "Post a Job"

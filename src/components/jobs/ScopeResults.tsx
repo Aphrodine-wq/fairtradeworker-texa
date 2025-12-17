@@ -32,7 +32,7 @@ export function ScopeResults({ title, aiScope, onPost, onBack }: ScopeResultsPro
   }
   
   return (
-    <div className="container mx-auto px-4 md:px-8 py-12 max-w-3xl">
+    <div className="container mx-auto px-4 md:px-8 py-12 max-w-7xl">
       <Card className="border border-black/20/10 dark:border-white/10">
         <CardHeader>
           <div className="flex items-center gap-3 mb-2">
