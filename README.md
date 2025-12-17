@@ -118,6 +118,29 @@ npm run build
 
 ---
 
+## 🚀 DEPLOYMENT
+
+[![Deploy to Vercel](https://github.com/Aphrodine-wq/fairtradeworker-texa/actions/workflows/deploy-vercel.yml/badge.svg)](https://github.com/Aphrodine-wq/fairtradeworker-texa/actions/workflows/deploy-vercel.yml)
+
+### Manual Deployment to Vercel
+
+This project supports one-click manual deployments to Vercel via GitHub Actions:
+
+1. Go to the [Actions tab](https://github.com/Aphrodine-wq/fairtradeworker-texa/actions)
+2. Select **"Deploy to Vercel"** workflow
+3. Click **"Run workflow"**
+4. Choose environment (`production` or `preview`)
+5. Click **"Run workflow"** to deploy
+
+The deployment workflow will:
+- ✅ Build the project with Vite
+- ✅ Deploy to Vercel
+- ✅ Provide the deployment URL in the workflow summary
+
+For detailed deployment instructions, see [.github/workflows/README.md](.github/workflows/README.md).
+
+---
+
 ## 📁 PROJECT STRUCTURE
 
 ```
