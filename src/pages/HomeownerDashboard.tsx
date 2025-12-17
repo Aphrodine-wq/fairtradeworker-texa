@@ -22,7 +22,7 @@ import {
 import type { User, Job, Invoice } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
 import { GlassNav } from "@/components/ui/MarketingSections"
-import { HomeownerProDashboard } from "@/components/homeowner/HomeownerProDashboard""
+import { HomeownerProDashboard } from "@/components/homeowner/HomeownerProDashboard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface HomeownerDashboardProps {
