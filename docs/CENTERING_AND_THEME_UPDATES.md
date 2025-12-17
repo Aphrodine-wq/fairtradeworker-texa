@@ -18,7 +18,7 @@ Applied consistent centering across all pages and synchronized theme toggle anim
 
 ### 3. Pricing Fix
 - **File**: `src/components/ui/MarketingSections.tsx`
-- **Change**: Updated Contractor Pro pricing from $29/month to $50/month
+- **Change**: Updated Contractor Pro pricing from $29/month to $59/month
 - **Impact**: Home screen pricing now matches actual subscription price
 
 ## Technical Details

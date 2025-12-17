@@ -132,6 +132,24 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <LiveStatsBar jobs={jobs || []} />
 
         <PricingSection user={currentUser} onNavigate={onNavigate} />
+        
+        {/* Pricing CTA Section */}
+        <Card className="mb-12 p-8 glass-card text-center">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            Simple, Transparent Pricing
+          </h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+            See our complete pricing plans, feature comparison, and FAQs
+          </p>
+          <Button
+            size="lg"
+            className="h-14 px-8 text-lg font-semibold"
+            onClick={() => onNavigate("pricing")}
+          >
+            View Full Pricing Details
+          </Button>
+        </Card>
+        
         <RatingSection />
       </div>
     </div>

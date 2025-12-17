@@ -127,7 +127,7 @@ This Session: Iteration 15
 5. ✅ Get notified of accepted bids
 6. ✅ Manage CRM (instant invites)
 7. ✅ Create invoices
-8. ✅ Upgrade to Pro ($39/mo)
+8. ✅ Upgrade to Pro ($59/mo)
 9. ✅ Invite other tradesmen (referral system)
 10. ✅ Track referral earnings
 
@@ -295,7 +295,7 @@ This Session: Iteration 15
 10. ✅ Contractor dashboard (stats, tabs, earnings)
 11. ✅ CRM (instant email/SMS invites)
 12. ✅ Invoices (create, send, track)
-13. ✅ Pro upgrade ($39/mo with features)
+13. ✅ Pro upgrade ($59/mo with features)
 14. ✅ Territory map (254 Texas counties)
 15. ✅ Referral systems (homeowner + contractor)
 16. ✅ Speed metrics dashboard

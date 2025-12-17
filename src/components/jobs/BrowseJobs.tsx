@@ -463,7 +463,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
-  const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
+  const [viewMode, setViewMode] = useState<'list' | 'map' | 'table'>('list')
   const [visibleCount, setVisibleCount] = useState(50)
 
   const myScheduledJobs = useMemo(() => {
@@ -780,11 +780,15 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 {/* View Mode Toggle */}
                 <div className="flex items-center gap-3 md:border-l md:pl-4">
                   <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
-                  <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
+                  <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table')}>
                     <TabsList className="bg-muted/50 h-auto p-1">
-                      <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as list">
+                      <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as grid">
                         <List weight="duotone" size={16} />
-                        <span className="hidden sm:inline">List</span>
+                        <span className="hidden sm:inline">Grid</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="table" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as table">
+                        <Eye weight="duotone" size={16} />
+                        <span className="hidden sm:inline">Table</span>
                       </TabsTrigger>
                       <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs on map">
                         <MapTrifold weight="duotone" size={16} />
@@ -797,14 +801,119 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
             </Card>
           </div>
 
-          {/* Jobs Grid/List Section */}
-          <div className="space-y-8">
+          {/* Jobs Grid/List/Table Section */}
+          <div className="space-y-4">
             {viewMode === 'map' ? (
               <div className="rounded-xl overflow-hidden border border-border shadow-lg">
                 <Suspense fallback={<Card className="p-8 text-center">Loading map…</Card>}>
                   <JobMap jobs={sortedOpenJobs} onJobClick={handleBidClick} />
                 </Suspense>
               </div>
+            ) : viewMode === 'table' ? (
+              /* Compact Table View - Maximum Information Density */
+              <Card className="overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted/30 border-b border-border">
+                      <tr>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-foreground">Job</th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-foreground">Size</th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-foreground">Price Range</th>
+                        <th className="text-center py-3 px-4 text-xs font-semibold text-foreground">Bids</th>
+                        <th className="text-left py-3 px-4 text-xs font-semibold text-foreground">Posted</th>
+                        <th className="text-center py-3 px-4 text-xs font-semibold text-foreground">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedOpenJobs.slice(0, visibleCount).map((job, idx) => {
+                        const jobAge = Date.now() - new Date(job.createdAt).getTime()
+                        const isFresh = jobAge <= 15 * 60 * 1000 && job.bids.length === 0
+                        return (
+                          <tr 
+                            key={job.id} 
+                            className={cn(
+                              "border-b border-border/50 hover:bg-muted/20 transition-colors cursor-pointer",
+                              idx % 2 === 0 && "bg-muted/10"
+                            )}
+                            onClick={() => handleBidClick(job)}
+                          >
+                            <td className="py-3 px-4">
+                              <div className="flex items-start gap-3">
+                                {job.photos && job.photos[0] && (
+                                  <img 
+                                    src={job.photos[0]} 
+                                    alt={job.title}
+                                    className="w-16 h-16 rounded object-cover flex-shrink-0"
+                                  />
+                                )}
+                                <div className="min-w-0 flex-1">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="font-semibold text-sm text-foreground line-clamp-1">{job.title}</h3>
+                                    {isFresh && (
+                                      <Badge variant="success" className="text-xs px-1.5 py-0">Fresh</Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-muted-foreground line-clamp-2">{job.description}</p>
+                                  {job.location && (
+                                    <p className="text-xs text-muted-foreground mt-1">{job.location}</p>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4">
+                              <Badge variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'} className="text-xs">
+                                {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
+                              </Badge>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="text-sm font-semibold text-foreground">
+                                ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              <div className="flex items-center justify-center gap-1">
+                                <Users size={14} weight="duotone" className="text-muted-foreground" />
+                                <span className="text-sm font-medium text-foreground">{job.bids.length}</span>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="text-xs text-muted-foreground">
+                                {new Date(job.createdAt).toLocaleDateString()}
+                              </div>
+                              <div className="text-xs text-muted-foreground">
+                                {Math.round(jobAge / (1000 * 60))}m ago
+                              </div>
+                            </td>
+                            <td className="py-3 px-4">
+                              <Button
+                                size="sm"
+                                className="w-full text-xs h-8"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  handleBidClick(job)
+                                }}
+                              >
+                                Bid Now
+                              </Button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+                {sortedOpenJobs.length > visibleCount && (
+                  <div className="p-4 border-t border-border text-center">
+                    <Button
+                      variant="outline"
+                      onClick={() => setVisibleCount(prev => prev + 50)}
+                      className="text-sm"
+                    >
+                      Load More ({sortedOpenJobs.length - visibleCount} remaining)
+                    </Button>
+                  </div>
+                )}
+              </Card>
             ) : sortedOpenJobs.length === 0 ? (
               <Card className="p-12 md:p-16 text-center border-border bg-white/50 dark:bg-black/50 backdrop-blur-sm">
                 <div className="max-w-md mx-auto space-y-6">
@@ -837,157 +946,28 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               </div>
             ) : (
               <>
-                {/* Netflix-style Horizontal Lanes with Better Visual Separation */}
-                {/* Fresh Jobs Lane */}
-                {(() => {
-                  const freshJobs = sortedOpenJobs.filter(j => {
-                    const jobAge = Date.now() - new Date(j.createdAt).getTime()
-                    return jobAge <= 15 * 60 * 1000 && j.bids.length === 0
-                  })
-                  if (freshJobs.length === 0) return null
-                  return (
-                    <div className="space-y-4 pb-6 border-b border-border/50">
-                      <div className="flex items-center gap-3 px-2">
-                        <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
-                          <Sparkle size={20} weight="fill" className="text-green-600 dark:text-green-400" />
-                        </div>
-                        <h3 className="text-lg md:text-xl font-bold text-foreground">🔥 Fresh Jobs — Be First to Bid</h3>
-                        <Badge variant="success" className="ml-2 text-xs">{freshJobs.length} new</Badge>
-                      </div>
-                      <CarouselLane>
-                        {freshJobs.map(job => (
-                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
-                            <JobCard
-                              userRole={user.role}
-                              job={job}
-                              onViewPhotos={handlePhotoClick}
-                              onPlaceBid={handleBidClick}
-                            />
-                          </div>
-                        ))}
-                      </CarouselLane>
+                {/* Compact Grid View - More Jobs Per Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {sortedOpenJobs.slice(0, visibleCount).map(job => (
+                    <div key={job.id} className="h-full">
+                      <JobCard
+                        userRole={user.role}
+                        job={job}
+                        onViewPhotos={handlePhotoClick}
+                        onPlaceBid={handleBidClick}
+                      />
                     </div>
-                  )
-                })()}
-
-                {/* Small Jobs Lane */}
-                {(() => {
-                  const smallJobs = sortedOpenJobs.filter(j => j.size === 'small')
-                  if (smallJobs.length === 0 || sizeFilter !== 'all') return null
-                  return (
-                    <div className="space-y-4 pb-6 border-b border-border/50">
-                      <div className="flex items-center gap-3 px-2">
-                        <div className="p-2 rounded-lg bg-green-50 dark:bg-green-950/20">
-                          <span className="text-xl">🟢</span>
-                        </div>
-                        <h3 className="text-lg md:text-xl font-bold text-foreground">Quick Jobs</h3>
-                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">Under $500 • Fast turnaround</span>
-                      </div>
-                      <CarouselLane>
-                        {smallJobs.slice(0, 10).map(job => (
-                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
-                            <JobCard
-                              userRole={user.role}
-                              job={job}
-                              onViewPhotos={handlePhotoClick}
-                              onPlaceBid={handleBidClick}
-                            />
-                          </div>
-                        ))}
-                      </CarouselLane>
-                    </div>
-                  )
-                })()}
-
-                {/* Medium Jobs Lane */}
-                {(() => {
-                  const mediumJobs = sortedOpenJobs.filter(j => j.size === 'medium')
-                  if (mediumJobs.length === 0 || sizeFilter !== 'all') return null
-                  return (
-                    <div className="space-y-4 pb-6 border-b border-border/50">
-                      <div className="flex items-center gap-3 px-2">
-                        <div className="p-2 rounded-lg bg-yellow-50 dark:bg-yellow-950/20">
-                          <span className="text-xl">🟡</span>
-                        </div>
-                        <h3 className="text-lg md:text-xl font-bold text-foreground">Standard Projects</h3>
-                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">$500 - $2,000</span>
-                      </div>
-                      <CarouselLane>
-                        {mediumJobs.slice(0, 10).map(job => (
-                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
-                            <JobCard
-                              userRole={user.role}
-                              job={job}
-                              onViewPhotos={handlePhotoClick}
-                              onPlaceBid={handleBidClick}
-                            />
-                          </div>
-                        ))}
-                      </CarouselLane>
-                    </div>
-                  )
-                })()}
-
-                {/* Large Jobs Lane */}
-                {(() => {
-                  const largeJobs = sortedOpenJobs.filter(j => j.size === 'large')
-                  if (largeJobs.length === 0 || sizeFilter !== 'all') return null
-                  return (
-                    <div className="space-y-4 pb-6">
-                      <div className="flex items-center gap-3 px-2">
-                        <div className="p-2 rounded-lg bg-red-50 dark:bg-red-950/20">
-                          <span className="text-xl">🔴</span>
-                        </div>
-                        <h3 className="text-lg md:text-xl font-bold text-foreground">Major Projects</h3>
-                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">$2,000+ • Multi-day</span>
-                      </div>
-                      <CarouselLane>
-                        {largeJobs.slice(0, 10).map(job => (
-                          <div key={job.id} className="snap-start shrink-0 w-[320px] md:w-[360px]">
-                            <JobCard
-                              userRole={user.role}
-                              job={job}
-                              onViewPhotos={handlePhotoClick}
-                              onPlaceBid={handleBidClick}
-                            />
-                          </div>
-                        ))}
-                      </CarouselLane>
-                    </div>
-                  )
-                })()}
-
-                {/* Filtered View - Grid */}
-                {sizeFilter !== 'all' && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-bold text-foreground">
-                        {getJobSizeLabel(sizeFilter as JobSize)} Jobs
-                      </h3>
-                      <span className="text-sm text-muted-foreground">{sortedOpenJobs.length} results</span>
-                    </div>
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {visibleJobs.map(job => (
-                        <JobCard
-                          userRole={user.role}
-                          key={job.id}
-                          job={job}
-                          onViewPhotos={handlePhotoClick}
-                          onPlaceBid={handleBidClick}
-                        />
-                      ))}
-                    </div>
-                    {visibleCount < sortedOpenJobs.length && (
-                      <div className="flex justify-center pt-4">
-                        <Button
-                          variant="outline"
-                          onClick={() => setVisibleCount((c) => c + 50)}
-                          className="h-10 px-6 text-sm"
-                        >
-                          Load more ({sortedOpenJobs.length - visibleCount} remaining)
-                        </Button>
-                      </div>
-                    )}
+                  ))}
+                </div>
+                {sortedOpenJobs.length > visibleCount && (
+                  <div className="text-center pt-6">
+                    <Button
+                      variant="outline"
+                      onClick={() => setVisibleCount(prev => prev + 50)}
+                      className="text-sm"
+                    >
+                      Load More ({sortedOpenJobs.length - visibleCount} remaining)
+                    </Button>
                   </div>
                 )}
               </>
@@ -997,62 +977,193 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh] max-w-[95vw] lg:max-w-[1400px]">
+        <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[98vh] max-w-[98vw] lg:max-w-[1800px] xl:max-w-[95vw]">
           {/* Header Section - Fixed */}
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
+          <div className="px-10 pt-8 pb-6 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogHeader className="text-left">
-              <DialogTitle className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-2">
+              <DialogTitle className="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-3">
                 Submit Your Bid
               </DialogTitle>
-              <DialogDescription className="text-lg text-muted-foreground">
+              <DialogDescription className="text-xl text-muted-foreground">
                 {selectedJob?.title}
               </DialogDescription>
+              {selectedJob && (
+                <div className="flex items-center gap-4 mt-4">
+                  <Badge variant="outline" className="text-sm px-3 py-1">
+                    {getJobSizeEmoji(selectedJob.size)} {getJobSizeLabel(selectedJob.size)}
+                  </Badge>
+                  <Badge variant="outline" className="text-sm px-3 py-1">
+                    <CurrencyDollar size={14} className="mr-1" weight="duotone" />
+                    ${selectedJob.aiScope.priceLow.toLocaleString()} - ${selectedJob.aiScope.priceHigh.toLocaleString()}
+                  </Badge>
+                  <Badge variant="outline" className="text-sm px-3 py-1">
+                    <Users size={14} className="mr-1" weight="duotone" />
+                    {selectedJob.bids.length} {selectedJob.bids.length === 1 ? 'bid' : 'bids'}
+                  </Badge>
+                </div>
+              )}
             </DialogHeader>
           </div>
 
-          {/* Main Content Area - Column Layout - No Scroll */}
-          <div className="flex-1 overflow-hidden px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Left Column - Job Info & Intelligence */}
-            <div className="lg:col-span-1 space-y-5 overflow-hidden flex flex-col">
-              {selectedJob && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-5 flex-shrink-0">
-                  <BidIntelligence
-                    jobCategory={selectedJob.title}
-                    jobPriceLow={selectedJob.aiScope.priceLow}
-                    jobPriceHigh={selectedJob.aiScope.priceHigh}
-                    contractorWinRate={user.winRate}
-                  />
-                </div>
+          {/* Main Content Area - Column Layout - Scrollable */}
+          <div className="flex-1 overflow-y-auto px-10 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column - Job Info & Intelligence (4 columns) */}
+            <div className="lg:col-span-4 space-y-6">
+              {/* Job Photos Preview */}
+              {selectedJob && selectedJob.photos && selectedJob.photos.length > 0 && (
+                <Card className="overflow-hidden">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                      <Images size={20} weight="duotone" className="text-primary" />
+                      Job Photos ({selectedJob.photos.length})
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedJob.photos.slice(0, 4).map((photo, idx) => (
+                        <div key={idx} className="aspect-square rounded-lg overflow-hidden border border-black/10 dark:border-white/10">
+                          <img 
+                            src={photo} 
+                            alt={`Job photo ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            onClick={() => handlePhotoClick(selectedJob.photos || [])}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    {selectedJob.photos.length > 4 && (
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-3"
+                        onClick={() => handlePhotoClick(selectedJob.photos || [])}
+                      >
+                        View All {selectedJob.photos.length} Photos
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
               )}
 
+              {/* Expanded Job Details */}
+              {selectedJob && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                      <Wrench size={20} weight="duotone" className="text-primary" />
+                      Job Details
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">Description</h4>
+                      <p className="text-sm text-foreground leading-relaxed">{selectedJob.description}</p>
+                    </div>
+                    {selectedJob.aiScope?.scope && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-muted-foreground mb-1">AI Scope Analysis</h4>
+                        <p className="text-sm text-foreground leading-relaxed">{selectedJob.aiScope.scope}</p>
+                      </div>
+                    )}
+                    {selectedJob.location && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-muted-foreground mb-1">Location</h4>
+                        <p className="text-sm text-foreground">{selectedJob.location}</p>
+                      </div>
+                    )}
+                    {selectedJob.aiScope?.materials && selectedJob.aiScope.materials.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold text-muted-foreground mb-2">Materials Needed</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedJob.aiScope.materials.map((material, idx) => (
+                            <Badge key={idx} variant="outline" className="text-xs">
+                              <Package size={12} className="mr-1" weight="duotone" />
+                              {material}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">Posted</h4>
+                      <p className="text-sm text-foreground">
+                        {new Date(selectedJob.createdAt).toLocaleDateString()} at {new Date(selectedJob.createdAt).toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Enhanced Bid Intelligence */}
+              {selectedJob && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">Bid Intelligence</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <BidIntelligence
+                      jobCategory={selectedJob.title}
+                      jobPriceLow={selectedJob.aiScope.priceLow}
+                      jobPriceHigh={selectedJob.aiScope.priceHigh}
+                      contractorWinRate={user.winRate}
+                    />
+                    <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Your Win Rate</span>
+                        <span className="font-semibold text-foreground">{(user.winRate || 0).toFixed(1)}%</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Competition Level</span>
+                        <span className="font-semibold text-foreground">
+                          {selectedJob.bids.length === 0 ? 'Low' : selectedJob.bids.length < 3 ? 'Medium' : 'High'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Recommended Bid Range</span>
+                        <span className="font-semibold text-foreground">
+                          ${Math.round(selectedJob.aiScope.priceLow * 0.95).toLocaleString()} - ${Math.round(selectedJob.aiScope.priceHigh * 0.98).toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Drive Time Warning */}
               {selectedJob && myScheduledJobs.length > 0 && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-4 flex-shrink-0">
-                  <DriveTimeWarning
-                    targetJob={selectedJob}
-                    scheduledJobs={myScheduledJobs}
-                    user={user}
-                  />
-                </div>
+                <Card>
+                  <CardContent className="p-5">
+                    <DriveTimeWarning
+                      targetJob={selectedJob}
+                      scheduledJobs={myScheduledJobs}
+                      user={user}
+                    />
+                  </CardContent>
+                </Card>
               )}
 
+              {/* Questions & Answers */}
               {selectedJob && (
-                <div className="bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-5 flex-1 overflow-hidden flex flex-col">
-                  <div className="mb-3 flex-shrink-0">
-                    <h3 className="text-lg font-semibold text-black dark:text-white">Questions & Answers</h3>
-                    <p className="text-sm text-muted-foreground">Review questions from other contractors</p>
-                  </div>
-                  <div className="flex-1 overflow-hidden">
+                <Card className="flex-1">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">Questions & Answers</CardTitle>
+                    <CardDescription>Review questions from other contractors</CardDescription>
+                  </CardHeader>
+                  <CardContent>
                     <JobQA job={selectedJob} currentUser={user} isContractor={true} />
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               )}
             </div>
             
-            {/* Right Column - Bid Form (2/3 width) */}
-            <div className="lg:col-span-2 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 p-8 overflow-hidden flex flex-col">
-              <h3 className="text-2xl font-semibold text-black dark:text-white mb-6 flex-shrink-0">Your Bid Details</h3>
-              
-              <div className="flex-1 overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Right Column - Bid Form (8 columns) */}
+            <div className="lg:col-span-8 space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold text-black dark:text-white">Your Bid Details</CardTitle>
+                  <CardDescription className="text-base">Fill out the form below to submit your bid</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left Side of Form */}
                 <div className="space-y-5">
                   {/* Bid Templates Dropdown */}
@@ -1178,38 +1289,45 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     💬 A compelling message helps you stand out
                   </p>
                 </div>
-              </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
           {/* Footer Section - Fixed */}
-          <div className="px-8 py-5 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
-            <DialogFooter className="flex-col sm:flex-row gap-4 sm:justify-between">
-              <div className="flex items-center gap-2 text-base font-medium text-black dark:text-white">
-                <span className="text-green-600 dark:text-green-400">✓</span>
-                <span>Free bidding • $0 fee • Keep 100%</span>
+          <div className="px-10 py-6 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
+            <DialogFooter className="flex-col sm:flex-row gap-6 sm:justify-between items-start sm:items-center">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-lg font-semibold text-black dark:text-white">
+                  <span className="text-green-600 dark:text-green-400 text-xl">✓</span>
+                  <span>Free bidding • $0 fee • Keep 100%</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  No hidden fees. No commission. You keep every dollar you earn.
+                </p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-4 w-full sm:w-auto">
                 <Button 
                   variant="outline" 
                   onClick={() => setDialogOpen(false)}
-                  className="h-12 px-8 text-base border-black/10 dark:border-white/20"
+                  className="h-14 px-10 text-lg font-semibold border-black/10 dark:border-white/20 flex-1 sm:flex-none"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleSubmitBid}
                   disabled={isSubmittingBid}
-                  className="h-12 px-10 text-base font-semibold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-14 px-12 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-none"
                 >
                   {isSubmittingBid ? (
                     <>
-                      <CircleNotch size={18} className="mr-2 animate-spin" weight="bold" />
+                      <CircleNotch size={20} className="mr-2 animate-spin" weight="bold" />
                       Submitting...
                     </>
                   ) : (
                     <>
-                      {bidBoost && <Sparkle weight="fill" size={18} className="mr-2 text-yellow-400" />}
+                      {bidBoost && <Sparkle weight="fill" size={20} className="mr-2 text-yellow-400" />}
                       Submit Bid{bidBoost ? ' + Boost ($5)' : ' – $0 Fee'}
                     </>
                   )}

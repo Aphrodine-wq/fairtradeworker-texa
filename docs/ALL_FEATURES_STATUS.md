@@ -115,7 +115,7 @@
 - ✅ **Authentication** - Email/password signup and login
 - ✅ **Role Selection** - Homeowner/Contractor/Operator
 - ✅ **Demo Mode** - Three pre-configured demo accounts
-- ✅ **Pro Subscription** - $39/mo upgrade system
+- ✅ **Pro Subscription** - $59/mo upgrade system
 - ✅ **Company Settings** - Logo, address, tax ID management
 
 ### UI/UX Enhancements

@@ -56,17 +56,16 @@ export function NavigationCustomizerDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="sr-only">Customize Navigation</DialogTitle>
-        </DialogHeader>
-        <NavigationCustomizer
-          user={user}
-          currentNav={currentNav}
-          onSave={handleSave}
-          onReset={handleReset}
-          onClose={() => onOpenChange(false)}
-        />
+      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto p-0">
+        <div className="p-6 md:p-8">
+          <NavigationCustomizer
+            user={user}
+            currentNav={currentNav}
+            onSave={handleSave}
+            onReset={handleReset}
+            onClose={() => onOpenChange(false)}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   )

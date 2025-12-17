@@ -60,11 +60,11 @@ FairTradeWorker generates revenue through multiple streams while keeping contrac
 ### Primary Revenue Streams
 
 1. **Homeowner Posting Fees**
-   - Flat fee per job posting
+   - Tiered platform fee: $15 flat for quick fixes, 3% for standard jobs, 2.5% for major projects with extended draw schedules
    - Simple, transparent pricing
 
 2. **Pro Subscriptions**
-   - Monthly subscription for contractors ($50/month)
+   - Monthly subscription for contractors ($59/month)
    - Access to advanced business tools and AI features
    - Optional upgrade for power users
 

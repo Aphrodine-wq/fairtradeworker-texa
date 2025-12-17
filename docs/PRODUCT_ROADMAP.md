@@ -18,7 +18,7 @@
 
 **TL;DR VERDICT: YES, DO IT — IT'S A PRO MONETIZATION NUCLEAR WEAPON**
 
-Price at $50/month total Pro tier (or $39 base + $11 add-on). Makes Pro feel like an "unfair advantage" package. Most contractors spend $200-500/month on answering services or miss calls entirely.
+Price at $59/month total Pro tier (or $39 base + $11 add-on). Makes Pro feel like an "unfair advantage" package. Most contractors spend $200-500/month on answering services or miss calls entirely.
 
 ### Core Value Proposition
 
@@ -69,7 +69,7 @@ When someone calls the contractor's business number:
 
 #### 3. Calendar Sync & Auto-Scheduling
 **Effort:** 3 days (build on existing availability calendar)  
-**Impact:** Turns inquiries into booked appointments while caller is on the line. Alone justifies $50/month.
+**Impact:** Turns inquiries into booked appointments while caller is on the line. Alone justifies $59/month.
 
 **Implementation:** AI checks calendar slots real-time → offers times → books on confirmation → adds to calendar + sends confirmation text with FTW job link.
 
@@ -95,7 +95,7 @@ When someone calls the contractor's business number:
 
 ---
 
-## Part 2: Flagship Pro Features ($50/month)
+## Part 2: Flagship Pro Features ($59/month)
 
 Five additional flagship features that make Pro feel like a full virtual office.
 
@@ -168,7 +168,7 @@ Five additional flagship features that make Pro feel like a full virtual office.
 
 ---
 
-## Part 4: Additional Pro Features ($39/month Tier)
+## Part 4: Additional Pro Features ($59/month Tier)
 
 20 more features that create unfair advantages for power users:
 

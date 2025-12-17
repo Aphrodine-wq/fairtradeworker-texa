@@ -161,7 +161,7 @@ This document verifies that every feature described in the PRD and previous prom
 #### H. Pro Upgrade ✅
 - ✅ **Access**: `ContractorDashboard` → Upgrade button OR Pro Upgrade page
 - ✅ **Feature comparison**: Clear benefits display
-- ✅ **Pricing**: $39/month
+- ✅ **Pricing**: $59/month
 - ✅ **Instant payouts**: 30 min vs. 3 days
 - ✅ **Auto-reminders**: Automated invoice follow-ups
 - ✅ **Follow-up sequences**: Customer automation

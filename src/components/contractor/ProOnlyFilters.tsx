@@ -83,7 +83,7 @@ export function ProOnlyFilters({ user, onFiltersChange }: ProOnlyFiltersProps) {
             </div>
           </div>
           <Button onClick={() => window.location.href = '/pro-upgrade'} className="w-full">
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>

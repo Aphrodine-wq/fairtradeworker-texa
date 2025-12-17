@@ -73,7 +73,7 @@ export function ClientPortal({ user, job }: ClientPortalProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>

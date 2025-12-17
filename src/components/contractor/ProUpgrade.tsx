@@ -59,7 +59,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
         paymentType="subscription"
-        amount={39}
+        amount={59}
         title="Pro Subscription"
         description="Monthly subscription to Pro features"
         user={user}
@@ -123,7 +123,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
         <Card className="border-2 border-primary">
           <CardHeader className="text-center pb-8">
             <CardTitle className="text-5xl font-bold mb-2">
-              $39<span className="text-2xl text-muted-foreground">/mo</span>
+              $59<span className="text-2xl text-muted-foreground">/mo</span>
             </CardTitle>
             <CardDescription className="text-base text-black dark:text-white">
               Cancel anytime, no commitment • 30-day money-back guarantee
@@ -155,7 +155,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
                 onClick={handleUpgrade}
               >
                 <Crown weight="fill" className="mr-2" size={24} />
-                Start Pro – $39/mo
+                Start Pro – $59/mo
               </Button>
             </div>
 
@@ -196,7 +196,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
         open={paymentOpen}
         onClose={() => setPaymentOpen(false)}
         paymentType="subscription"
-        amount={39}
+        amount={59}
         title="Pro Subscription"
         description="Monthly subscription to Pro features"
         user={user}

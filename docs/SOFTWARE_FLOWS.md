@@ -390,7 +390,7 @@ User Clicks Notification
 - Track expenses
 - Use business tools (most free)
 - Build portfolio
-- Access Pro features ($50/month)
+- Access Pro features ($59/month)
 
 ### Operators
 - Claim territories

@@ -148,7 +148,7 @@ Last updated: Session 22 - Feature Completion
 - ✅ Active user count with Pro conversion rate
 - ✅ Revenue breakdown by source:
   - Platform fees ($20 per job)
-  - Pro subscriptions ($39/mo per Pro contractor)
+  - Pro subscriptions ($59/mo per Pro contractor)
   - Processing fees (2.9% of invoice value)
   - Territory royalties (10% to operators)
 - ✅ Pro contractors list with subscription dates
@@ -167,7 +167,7 @@ Last updated: Session 22 - Feature Completion
 
 **Metrics Tracked:**
 - **Platform Fees**: Completed jobs × $20
-- **Pro Subs**: Pro contractors × $39/mo
+- **Pro Subs**: Pro contractors × $59/mo
 - **Processing**: Total invoice value × 2.9%
 - **Royalties**: Platform fees × 10% (paid to operators)
 - **Net Revenue**: Total - Royalties
@@ -320,7 +320,7 @@ useEffect(() => {
 ### Revenue Model (Implemented):
 ```
 Platform Fees:    $20 per completed job
-Pro Subscriptions: $39/mo per contractor
+Pro Subscriptions: $59/mo per contractor
 Processing Fees:   2.9% of invoice value
 Territory Royalty: 10% of platform fees to operators
 

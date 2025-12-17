@@ -186,7 +186,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button>Upgrade to Pro - $39/mo</Button>
+            <Button>Upgrade to Pro - $59/mo</Button>
           </CardContent>
         </Card>
       )}

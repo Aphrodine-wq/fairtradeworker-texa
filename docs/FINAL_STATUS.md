@@ -62,7 +62,7 @@ Last updated: December 12, 2025
 ### ✅ 3. PAYMENT SYSTEM (COMPLETE - SIMULATED)
 - $20 flat platform fee
 - Contractors keep 100% of bid
-- Pro subscription ($39/mo)
+- Pro subscription ($59/mo)
 - Same-day payout (Pro feature)
 - Payment flow UI complete
 
@@ -216,7 +216,7 @@ Last updated: December 12, 2025
 
 **Revenue Breakdown:**
 - Platform fees ($20 × completed jobs)
-- Pro subscriptions ($39/mo × Pro contractors)
+- Pro subscriptions ($59/mo × Pro contractors)
 - Processing fees (2.9% of invoiced)
 - Territory royalties (10% to operators)
 - Percentage breakdown

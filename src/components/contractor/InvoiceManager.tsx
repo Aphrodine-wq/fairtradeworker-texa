@@ -435,7 +435,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => onNavigate('pro-upgrade')}>Upgrade to Pro - $39/mo</Button>
+            <Button onClick={() => onNavigate('pro-upgrade')}>Upgrade to Pro - $59/mo</Button>
           </CardContent>
         </Card>
       )}

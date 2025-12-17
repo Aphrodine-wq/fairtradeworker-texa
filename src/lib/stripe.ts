@@ -48,6 +48,12 @@ export interface StripePaymentResult {
 export const STRIPE_FEE_PERCENTAGE = 0.029
 export const STRIPE_FEE_FIXED = 0.30
 
+// Subscription pricing constants - single source of truth
+export const CONTRACTOR_PRO_PRICE = 59
+export const CONTRACTOR_PRO_LABEL = "$59/mo"
+export const HOMEOWNER_PRO_PRICE = 25
+export const HOMEOWNER_PRO_LABEL = "$25/mo"
+
 export function calculateStripeFee(amount: number): number {
   return (amount * STRIPE_FEE_PERCENTAGE) + STRIPE_FEE_FIXED
 }

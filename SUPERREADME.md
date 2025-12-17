@@ -135,7 +135,7 @@ FairTradeWorker is a **zero-fee home services marketplace** that connects homeow
   - Break-Even: 4,000 jobs = $80,000
 
 ##### 2. Pro Subscriptions
-- **Amount:** $39/month per contractor
+- **Amount:** $59/month per contractor
 - **Target Conversion:** 15% of contractors by month 6
 - **Features Included:**
   - Unlimited CRM contacts (free tier: 50 contacts)
@@ -150,8 +150,8 @@ FairTradeWorker is a **zero-fee home services marketplace** that connects homeow
   - Priority support
 - **Visibility Boost:** Pro contractors get 15% higher visibility in bid rankings
 - **Projected Revenue:**
-  - Month 3: 385 Pro contractors = $15,015
-  - Month 6: 1,025 Pro contractors = $39,975
+  - Month 3: 385 Pro contractors = $22,715
+  - Month 6: 1,025 Pro contractors = $60,475
 
 ##### 3. Payment Processing Fees
 - **Amount:** 2.9% of invoice value
@@ -334,9 +334,9 @@ Month 12: $350,000 (Projected)
 **Per Contractor Economics:**
 - Average jobs per contractor/month: 0.6
 - Revenue per contractor: $17.42 × 0.6 = $10.45
-- Pro subscription (15%): $39 × 0.15 = $5.85
-- **Total Revenue per Contractor: $16.30/month**
-- **Lifetime Value (24 months): $391.20**
+- Pro subscription (15%): $59 × 0.15 = $8.85
+- **Total Revenue per Contractor: $19.30/month**
+- **Lifetime Value (24 months): $463.20**
 
 **Customer Acquisition Cost (CAC):**
 - Marketing spend: $5,000/month
@@ -491,7 +491,7 @@ Month 12: $350,000 (Projected)
 - **Revenue Dashboard:** Monthly/yearly revenue
 - **Invoice Insights:** Profitability metrics (Pro)
 
-#### Pro Features ($39/month)
+#### Pro Features ($59/month)
 - **Unlimited CRM:** No 50-contact limit
 - **Instant Payouts:** 30-minute payouts vs 3 days
 - **No-Show Protection:** $50 credit for verified no-shows

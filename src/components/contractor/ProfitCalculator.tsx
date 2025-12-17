@@ -51,7 +51,7 @@ export function ProfitCalculator({ user, job, bidAmount: initialBid }: ProfitCal
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>

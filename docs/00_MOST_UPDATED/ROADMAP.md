@@ -32,7 +32,7 @@
 - [x] Contractor dashboard with earnings summary
 - [x] CRM system with customer management
 - [x] Invoice manager with one-tap creation
-- [x] Pro upgrade system ($50/month - updated December 2025)
+- [x] Pro upgrade system ($59/month - updated December 2025)
 - [x] Repeat customer engine
 - [x] Smart scheduler with calendar view
 - [x] Custom navigation with business tools
@@ -389,7 +389,7 @@
 - [ ] 60% usage of Smart Replies
 
 ### Revenue
-- [ ] $39/month Pro subscriptions (target 15% of contractors)
+- [ ] $59/month Pro subscriptions (target 15% of contractors)
 - [ ] Bid Boost: $5k/month by month 6
 - [ ] Materials Marketplace: $15k/month by month 9
 - [ ] FTW Verified: $8k/month by month 12

@@ -52,7 +52,7 @@ flowchart LR
 ## Revenue Model & Projections (50-Year Outlook)
 **Current pricing assumptions (base):**
 - Homeowner/platform fee: **$20 per completed job**.
-- Pro subscription: **$50/mo** per contractor (advanced tools & AI).
+- Pro subscription: **$59/mo** per contractor (advanced tools & AI).
 - Premium visibility: **$15/job** boost (featured/priority listing).
 - Processing fee share: **2.9%** of invoice value (payments pass-through).
 - Operator royalty: **10%** of platform fees (territory operators).
@@ -513,7 +513,7 @@ flowchart LR
 - **Illustrative revenue mix per 100k jobs/day (base)**:
   - Platform fees: ~$730M/yr (100k × $20 × 365).
   - Boosts @25%: ~$137M/yr (25k × $15 × 365).
-  - Pro @30% of 200k contractors @ $50/mo: ~$36M/yr.
+  - Pro @30% of 200k contractors @ $59/mo: ~$36M/yr.
   - Processing 2.9% on $1,200 GMV: ~$1.27B/yr.
   - Affiliate/materials/tools @6% on $400 spend, 15% click, 10% conv: ~$79M/yr.
   - Insurance/financing referrals (10%/12% attach @ $100/$75): ~$685M/yr.
@@ -583,7 +583,7 @@ flowchart LR
 
 ### 5) White-Label/API Access
 - Model: tiered API pricing (freemium + premium).
-- Scale (conservative): 10k active integrations; $50/month each.
+- Scale (conservative): 10k active integrations; $59/month each.
 - Annual Revenue: **~$6B** (high-end potential; adjust per adoption).
 - Advantages: leverages AI infra; ecosystem lock-in; high-margin software licensing.
 
@@ -644,7 +644,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ## Executive Overview
 - **Purpose**: Be the definitive, living blueprint for revenue, scaling, operations, and risk across 50 years.
 - **Scope**: Pricing knobs, scenario bands, CAGR paths, cost/margin models, org growth, infra/ops playbooks, risks, AI roadmap, and update instructions.
-- **Assumptions**: Base pricing from current model (platform $20/job, Pro $50/mo, boost $15/job, processing 2.9%, royalty 10% on platform fees, avg invoice $1,200). Adjust per geography and inflation as needed.
+- **Assumptions**: Base pricing from current model (platform $20/job, Pro $59/mo, boost $15/job, processing 2.9%, royalty 10% on platform fees, avg invoice $1,200). Adjust per geography and inflation as needed.
 - **Versioning**: Every major release should refresh: (1) pricing, (2) attach rates, (3) job/volume forecasts, (4) infra/ops budgets, (5) AI model mix/pricing.
 - **Reference docs**: `docs/SCALING_300K_USERS.md`, `docs/IMPLEMENTATION_300K_USERS.md`, `docs/COMPLETE_FEATURES.md`, `docs/COMPLETE_SOFTWARE_STRUCTURE.md`, `README.md`.
 
@@ -652,7 +652,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 
 ## Pricing & Revenue Inputs (Knobs to Tune)
 - Platform fee per completed job: default $20 (adjust per market; consider CPI indexing).
-- Pro subscription: $50/mo per contractor (volume/enterprise tiers optional).
+- Pro subscription: $59/mo per contractor (volume/enterprise tiers optional).
 - Boost/featured listing: $15/job (promo tiers possible: $9, $19 A/B).
 - Processing share: 2.9% of invoice value (pass-through; margin impact modeled separately).
 - Operator royalty: 10% of platform fees to territory operators.

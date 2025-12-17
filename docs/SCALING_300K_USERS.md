@@ -822,7 +822,7 @@ lifecycle_rules:
 ### 9.2 Revenue Requirements
 
 **To cover $7,000/month infrastructure:**
-- 300 Pro contractors @ $39/month = $11,700/month ✅
+- 300 Pro contractors @ $59/month = $11,700/month ✅
 - 15% Pro conversion rate achievable (see PRD)
 - Additional revenue from Bid Boost, Materials, FTW Verified
 - **Profitability**: Achievable at scale with Pro adoption

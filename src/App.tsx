@@ -111,6 +111,9 @@ const PrivacyPage = lazy(() => retryImport(() =>
 const TermsPage = lazy(() => retryImport(() =>
   import("@/pages/Terms").then(m => ({ default: m.TermsPage }))
 ))
+const PricingPage = lazy(() => retryImport(() =>
+  import("@/pages/Pricing").then(m => ({ default: m.PricingPage }))
+))
 const FreeToolsPage = lazy(() => retryImport(() =>
   import("@/pages/FreeToolsPage").then(m => ({ default: m.FreeToolsPage }))
 ))
@@ -243,7 +246,7 @@ const SMSPhotoScope = lazy(() => retryImport(() =>
   import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -516,6 +519,12 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <TermsPage />
+          </Suspense>
+        )
+      case 'pricing':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <PricingPage user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         )
       case 'donate':
@@ -835,11 +844,6 @@ function App() {
       )}
       <OfflineIndicator />
       <main className="flex-1 pt-16 w-full bg-white dark:bg-black overflow-x-hidden">
-        {currentPage !== 'home' && breadcrumbs.length > 0 && (
-          <div className="container mx-auto px-4 md:px-8 pt-6">
-            <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
-          </div>
-        )}
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={<LoadingFallback />}>
             {renderPage()}

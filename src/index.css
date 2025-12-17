@@ -505,3 +505,22 @@ html:not(.dark) {
 .dark .scrollbar-thin::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+/* ===========================================
+   GLOBAL SCROLLBAR HIDING
+   =========================================== */
+
+/* Hide all scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Ensure scrolling still works */
+* {
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}

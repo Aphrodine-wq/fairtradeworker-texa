@@ -162,7 +162,7 @@ All targets validated through architecture design:
 **Expected Revenue** (15% Pro conversion at 300k users):
 - 300,000 users × 10% contractors = 30,000 contractors
 - 30,000 × 15% Pro = 4,500 Pro subscribers
-- 4,500 × $39/month × 12 months = $2,106,000/year
+- 4,500 × $59/month × 12 months = $2,106,000/year
 
 **Additional Revenue Streams**:
 - Bid Boost: $5k/month by Month 6

@@ -99,7 +99,7 @@ This document tracks recent implementation updates, improvements, and feature ad
 **Status**: ✅ Complete
 
 #### Change Made
-- Updated Contractor Pro pricing from $29/month to $50/month on home screen
+- Updated Contractor Pro pricing from $29/month to $59/month on home screen
 
 #### Technical Details
 - **File Modified**: `src/components/ui/MarketingSections.tsx`

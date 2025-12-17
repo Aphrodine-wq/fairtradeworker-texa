@@ -48,7 +48,7 @@
 - Contractor keeps: `100% of bid amount`
 - Platform earns: `$20 fee per job`
 
-**Pro Upgrade ($39/mo):**
+**Pro Upgrade ($59/mo):**
 - Same-day payout (30 min via Stripe Instant Payout)
 - Auto-invoice reminders
 - No-show protection ($25-50 payouts)
