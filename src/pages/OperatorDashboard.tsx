@@ -30,6 +30,7 @@ import {
 import type { User, Job, Territory } from "@/lib/types"
 import { useMemo, useState, useEffect } from "react"
 import { OperatorProductivityDashboard } from "@/components/operator/OperatorProductivityDashboard"
+import { OperatorCRM } from "@/components/operator/OperatorCRM"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
@@ -263,6 +264,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="productivity">Productivity Tools</TabsTrigger>
+            <TabsTrigger value="crm">Operator CRM</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -409,6 +411,14 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
               user={user} 
               jobs={territoryJobs}
               contractors={territoryContractors}
+            />
+          </TabsContent>
+
+          <TabsContent value="crm">
+            <OperatorCRM 
+              jobs={territoryJobs}
+              contractors={territoryContractors}
+              homeowners={territoryHomeowners}
             />
           </TabsContent>
         </Tabs>

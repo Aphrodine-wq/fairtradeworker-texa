@@ -45,7 +45,7 @@ export function PostMyJobButton({ onNavigate }: PostMyJobButtonProps) {
       >
         <Button
           size="lg"
-          className="post-job-button-glow text-3xl px-20 py-12 h-auto bg-black dark:bg-white text-white dark:text-black font-bold shadow-2xl relative overflow-hidden"
+          className="post-job-button-glow text-2xl px-14 py-8 h-auto bg-black dark:bg-white text-white dark:text-black font-bold shadow-xl relative overflow-hidden"
           onClick={handleMainButtonClick}
         >
           <motion.span

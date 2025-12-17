@@ -306,7 +306,7 @@ const JobCard = memo(function JobCard({
             
             {/* Social Proof Indicators */}
             {viewingCount > 0 && (
-              <Badge variant="outline" className="text-xs animate-pulse bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+              <Badge variant="outline" className="text-xs animate-pulse bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800">
                 <Eye size={12} className="mr-1" weight="duotone" />
                 {viewingCount} viewing
               </Badge>
@@ -711,10 +711,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       <span className="font-bold text-green-600 dark:text-green-400">{sortedOpenJobs.length}</span> active
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/30">
+                    <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                     <span className="text-sm font-semibold text-foreground">
-                      <span className="font-bold text-blue-600 dark:text-blue-400">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids
+                      <span className="font-bold text-amber-700 dark:text-amber-400">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids
                     </span>
                   </div>
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/30">
@@ -741,10 +741,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   </div>
                   <div className="text-xs md:text-sm font-medium text-muted-foreground">Active Jobs</div>
                 </Card>
-                <Card className="px-5 py-4 min-w-[140px] lg:min-w-[180px] border-border hover:border-blue-500/50 hover:shadow-md transition-all">
+                <Card className="px-5 py-4 min-w-[140px] lg:min-w-[180px] border-border hover:border-emerald-500/50 hover:shadow-md transition-all">
                   <div className="flex items-center gap-3 mb-1.5">
-                    <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
-                      <Eye size={18} weight="duotone" className="text-blue-600 dark:text-blue-400" />
+                    <div className="p-2 rounded-lg bg-emerald-100 dark:bg-emerald-900/50">
+                      <Eye size={18} weight="duotone" className="text-emerald-600 dark:text-emerald-400" />
                     </div>
                     <div className="text-2xl md:text-3xl font-bold text-foreground">
                       {sortedOpenJobs.filter(j => j.bids.length === 0).length}

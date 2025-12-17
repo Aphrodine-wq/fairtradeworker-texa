@@ -58,6 +58,14 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
     }
   }, [customers, user.id])
 
+  if (customersLoading) {
+    return (
+      <div className="w-full bg-white dark:bg-black py-12 text-center text-muted-foreground">
+        Loading CRM…
+      </div>
+    )
+  }
+
   return (
     <div className="w-full bg-white dark:bg-black">
       <div className="w-full px-4 md:px-6 lg:px-8 py-8">

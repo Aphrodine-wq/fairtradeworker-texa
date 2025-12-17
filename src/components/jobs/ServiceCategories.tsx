@@ -175,6 +175,17 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
+  const categoryStyles: Record<string, string> = {
+    emergency: "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300",
+    plumbing: "bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-300",
+    electrical: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300",
+    hvac: "bg-slate-100 dark:bg-slate-900/60 text-slate-800 dark:text-slate-200",
+    repair: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300",
+    outdoor: "bg-lime-50 dark:bg-lime-950/30 text-lime-700 dark:text-lime-300",
+    remodeling: "bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300",
+    cleaning: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-200"
+  }
+
   const handleCategoryClick = (categoryId: string) => {
     sessionStorage.setItem('selectedCategory', categoryId)
     onNavigate(`service-category/${categoryId}`)
@@ -225,11 +236,15 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
                     style={{ willChange: 'transform' }}
                   >
-                    <div className="w-14 h-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center mb-3">
+                    <div
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border border-black/10 dark:border-white/10 ${
+                        categoryStyles[category.id] || "bg-neutral-100 dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200"
+                      }`}
+                    >
                       <Icon 
                         size={28} 
                         weight="fill" 
-                        className="text-black dark:text-white" 
+                        className="text-inherit" 
                       />
                     </div>
                   </motion.div>

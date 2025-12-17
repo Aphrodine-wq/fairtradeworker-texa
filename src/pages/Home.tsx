@@ -27,11 +27,14 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full">
+    <div
+      className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full"
+      style={{ contentVisibility: "auto", containIntrinsicSize: "1200px" }}
+    >
       <div className="w-full pt-10 pb-12 px-4 sm:px-6 lg:px-8">
         <HeroSection
-          title="Fair Home Services Marketplace"
-          subtitle="Contractors keep 100% of earnings. Homeowners pay a flat job fee."
+          title="Zero-Fee Home Services Marketplace"
+          subtitle="Contractors/Subs keep 100% of earnings. Homeowners post with one simple flat job fee."
           primaryAction={{ label: "Get Started", onClick: () => onNavigate("signup") }}
           secondaryAction={{ label: "Learn More", onClick: () => onNavigate("about") }}
         />

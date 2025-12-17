@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { useEffect, useMemo, useState } from "react"
+import { motion } from "framer-motion"
 import { 
   Users, 
   Wrench, 
@@ -14,8 +14,18 @@ import {
 } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Job } from "@/lib/types"
-import { useMemo } from "react"
-import { motion } from "framer-motion"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
+import { 
+  ChartContainer, 
+  ChartLegend, 
+  ChartLegendContent, 
+  ChartTooltip, 
+  ChartTooltipContent 
+} from "@/components/ui/chart"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { containerVariants, itemVariants } from "@/lib/animations"
 
 interface AdminDashboardProps {
@@ -26,6 +36,25 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   const [users] = useKV<User[]>("users", [])
   const [jobs] = useKV<Job[]>("jobs", [])
   const [currentUser] = useKV<User | null>("current-user", null)
+  const [isSimRunning, setIsSimRunning] = useState(true)
+  const [speed, setSpeed] = useState<number>(60)
+  const [variance, setVariance] = useState<number>(35)
+
+  const generateInitialSeries = useMemo(() => {
+    const base = Date.now() - 29 * 1000
+    let current = 20000
+    return Array.from({ length: 30 }).map((_, idx) => {
+      current = Math.max(8000, current + (Math.random() - 0.4) * 1500)
+      return {
+        time: new Date(base + idx * 1000).toLocaleTimeString("en-US", {
+          minute: "2-digit",
+          second: "2-digit"
+        }),
+        value: Math.round(current)
+      }
+    })
+  }, [])
+  const [revenueSeries, setRevenueSeries] = useState(generateInitialSeries)
 
   const stats = useMemo(() => {
     const totalUsers = users?.length || 0
@@ -60,6 +89,44 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
       totalRevenue
     }
   }, [users, jobs])
+
+  const simIntervalMs = useMemo(() => {
+    const minMs = 350
+    const maxMs = 2000
+    return Math.round(maxMs - ((speed / 100) * (maxMs - minMs)))
+  }, [speed])
+
+  useEffect(() => {
+    if (!isSimRunning) return
+    const id = setInterval(() => {
+      setRevenueSeries((prev) => {
+        const last = prev[prev.length - 1]?.value ?? 20000
+        const baseDrift = 300
+        const noise = (Math.random() - 0.5) * variance * 40
+        const nextValue = Math.max(5000, last + baseDrift + noise)
+        const nextPoint = {
+          time: new Date().toLocaleTimeString("en-US", {
+            minute: "2-digit",
+            second: "2-digit"
+          }),
+          value: Math.round(nextValue)
+        }
+        return [...prev.slice(-29), nextPoint]
+      })
+    }, simIntervalMs)
+    return () => clearInterval(id)
+  }, [isSimRunning, variance, simIntervalMs])
+
+  const latestRevenue = revenueSeries[revenueSeries.length - 1]?.value ?? 0
+  const avgGrowth = useMemo(() => {
+    if (revenueSeries.length < 2) return 0
+    const first = revenueSeries[0].value
+    const last = revenueSeries[revenueSeries.length - 1].value
+    return ((last - first) / Math.max(first, 1)) * 100
+  }, [revenueSeries])
+  const projectedRunRate = useMemo(() => {
+    return latestRevenue * 12
+  }, [latestRevenue])
 
   const recentJobs = useMemo(() => {
     return jobs?.slice(0, 5).sort((a, b) => 
@@ -96,6 +163,133 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
               Admin Mode
             </Badge>
           </div>
+        </motion.div>
+
+        {/* Revenue Simulation (Admin-only) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-8"
+        >
+          <Card className="border border-black/10 dark:border-white/10">
+            <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <div>
+                <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                  <ChartLine size={20} weight="duotone" />
+                  Revenue Simulation (Admin Demo)
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Links all outcomes into one chart. Control speed & variance for testing.
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Badge variant="outline" className="text-xs">
+                  <Clock className="mr-1" size={14} />
+                  {simIntervalMs} ms interval
+                </Badge>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setIsSimRunning((r) => !r)}
+                >
+                  {isSimRunning ? "Pause" : "Resume"}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                <div className="lg:col-span-3">
+                  <ChartContainer
+                    config={{
+                      revenue: {
+                        label: "Revenue",
+                        color: "hsl(140, 80%, 45%)"
+                      }
+                    }}
+                    className="rounded-xl border border-border bg-white/80 dark:bg-black/80 p-3"
+                  >
+                    <LineChart data={revenueSeries} margin={{ left: 12, right: 12, top: 10, bottom: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
+                      <XAxis
+                        dataKey="time"
+                        tick={{ fontSize: 10 }}
+                        tickLine={false}
+                        axisLine={false}
+                        minTickGap={20}
+                      />
+                      <YAxis
+                        tick={{ fontSize: 10 }}
+                        tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                        width={60}
+                        tickLine={false}
+                        axisLine={false}
+                      />
+                      <ChartTooltip
+                        content={
+                          <ChartTooltipContent
+                            labelFormatter={(label) => <span className="font-semibold text-xs">{label}</span>}
+                            formatter={(value) => [`$${Number(value).toLocaleString()}`, "Revenue"]}
+                          />
+                        }
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="var(--color-revenue)"
+                        strokeWidth={3}
+                        dot={false}
+                        isAnimationActive={false}
+                      />
+                      <ChartLegend content={<ChartLegendContent />} />
+                    </LineChart>
+                  </ChartContainer>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="p-4 rounded-lg border border-border bg-muted/50">
+                    <p className="text-sm text-muted-foreground mb-1">Latest point</p>
+                    <p className="text-2xl font-semibold">${latestRevenue.toLocaleString()}</p>
+                    <p className="text-xs text-green-600 dark:text-green-400">
+                      {avgGrowth >= 0 ? "+" : ""}
+                      {avgGrowth.toFixed(1)}% over window
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg border border-border bg-muted/50">
+                    <p className="text-sm text-muted-foreground mb-1">Projected run rate</p>
+                    <p className="text-xl font-semibold">${projectedRunRate.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Assumes latest point x12</p>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs font-medium">
+                      <span>Speed</span>
+                      <span>{speed}</span>
+                    </div>
+                    <Slider
+                      value={[speed]}
+                      min={1}
+                      max={100}
+                      step={1}
+                      onValueChange={([v]) => setSpeed(v)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs font-medium">
+                      <span>Variance</span>
+                      <span>{variance}</span>
+                    </div>
+                    <Slider
+                      value={[variance]}
+                      min={5}
+                      max={100}
+                      step={1}
+                      onValueChange={([v]) => setVariance(v)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* Stats Grid */}
@@ -135,7 +329,7 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                 </div>
                 <div className="mt-4 flex gap-4 text-xs">
                   <span className="text-green-600 dark:text-green-400">Open: {stats.openJobs}</span>
-                  <span className="text-blue-600 dark:text-blue-400">In Progress: {stats.inProgressJobs}</span>
+                  <span className="text-amber-600 dark:text-amber-400">In Progress: {stats.inProgressJobs}</span>
                 </div>
               </CardContent>
             </Card>
