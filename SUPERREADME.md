@@ -221,7 +221,7 @@ FairTradeWorker is a **zero-fee home services marketplace** that connects homeow
 | Revenue Source | Month 3 | Month 6 | Break-Even | Annual (Month 6) |
 |----------------|---------|---------|------------|-----------------|
 | **Platform Fees** | $50,000 | $120,000 | $80,000 | $1,440,000 |
-| **Pro Subscriptions** | $15,015 | $39,975 | $27,000 | $479,700 |
+| **Pro Subscriptions** | $22,715 | $60,465 | $40,000 | $725,580 |
 | **Processing Fees** | $7,975 | $14,993 | $10,000 | $179,916 |
 | **Bid Boosts** | $2,000 | $3,000 | $2,000 | $36,000 |
 | **Materials Marketplace** | $1,500 | $3,000 | $2,000 | $36,000 |
@@ -1099,7 +1099,7 @@ npm run lint         # Lint code
 
 ##### 🚀 Impact Overview
 
-**If Added to Pro Tier ($39/mo) - RECOMMENDED**
+**If Added to Pro Tier ($59/mo) - RECOMMENDED**
 
 **What You'd Be Offering:**
 - AI answers contractor's business calls 24/7
@@ -1110,7 +1110,7 @@ npm run lint         # Lint code
 
 **Market Context:**
 - Current AI receptionists cost $200-500/month (Ruby, Smith.ai, Dialpad)
-- You'd be offering it at $39/month (8-12x cheaper)
+- You'd be offering it at $59/month (3-8x cheaper)
 - **PLUS** all the other Pro features
 
 ##### 💰 Revenue Impact (Month 12 Projections)
@@ -1124,7 +1124,7 @@ npm run lint         # Lint code
 | **Churn Rate** | 8% | 2% | -75% |
 
 **Why Conversion Jumps to 45%:**
-1. No-brainer ROI: $39 vs $200-500 elsewhere
+1. No-brainer ROI: $59 vs $200-500 elsewhere
 2. Contractors currently lose 30-40% of leads when they can't answer
 3. One captured job pays for 6+ months of Pro
 4. CRM integration is automatic (competitors make you manually enter)
@@ -1177,12 +1177,12 @@ You'd be the ONLY platform with this.
 **Monthly Cost Per Pro Contractor:**
 - Average contractor: 50 calls/month
 - Cost: 50 × $0.20 = $10/month
-- **Revenue: $39/month**
-- **Profit: $29/month** (74% margin)
+- **Revenue: $59/month**
+- **Profit: $49/month** (83% margin)
 
 **Even heavy users work:**
 - 200 calls/month = $40 in costs
-- Still profitable at $39/month price
+- Still profitable at $59/month price
 
 ##### 📈 Growth Projections With AI Receptionist
 
@@ -1205,7 +1205,7 @@ You'd be the ONLY platform with this.
 ##### 🎁 Alternative Pricing Strategies
 
 **Option A: Include in Pro (RECOMMENDED)**
-- **Price:** $39/month  
+- **Price:** $59/month  
 - **Why:** Makes Pro irresistible, extreme value perception  
 - **Pro Conversion:** 45%+
 
@@ -1216,7 +1216,7 @@ You'd be the ONLY platform with this.
 - **Pro Conversion:** 25% Pro, 15% Pro Voice
 
 **Option C: Add-On**
-- **Price:** Pro $39 + Voice $29 = $68 total  
+- **Price:** Pro $59 + Voice $29 = $88 total  
 - **Why:** Modular pricing, upsell opportunity  
 - **Risk:** Feels nickel-and-dimed
 
@@ -1598,7 +1598,7 @@ By Month 18, contractors will say:
 
 **Major Feature Launch: Pro Subscription**
 
-**Pro Features ($39/month):**
+**Pro Features ($59/month):**
 1. Unlimited CRM contacts (vs. 50 free)
 2. Invoice Insights dashboard
 3. Auto-invoice reminders
@@ -2341,7 +2341,7 @@ Even if platform stops growing, $1B/year is <15% of EBITDA. Sustainable forever.
 ✅ Basic CRM (50 contacts free)
 ✅ Invoice system
 ✅ **AI Receptionist** (game-changer)
-✅ Pro subscription ($39/mo)
+✅ Pro subscription ($59/mo)
 
 **Year 2**
 ✅ Materials marketplace
@@ -2646,7 +2646,7 @@ Even if platform stops growing, $1B/year is <15% of EBITDA. Sustainable forever.
 
 **Platform Fee:** $20 flat fee charged to homeowner only when job is completed.
 
-**Pro Subscription:** $39/month subscription for contractors with advanced features.
+**Pro Subscription:** $59/month subscription for contractors with advanced features.
 
 **Territory Operator:** User who manages and earns royalties from a specific Texas county.
 

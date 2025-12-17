@@ -314,7 +314,7 @@ export function UnifiedPaymentScreen({
                         <p className="font-semibold text-sm mb-1 text-foreground">Zero-Fee Guarantee</p>
                         <p className="text-xs text-muted-foreground leading-relaxed">
                           Contractor receives <span className="font-semibold text-foreground">${breakdown.contractorPayout.toFixed(2)}</span> in full. No platform fees deducted.
-                        </p>
+                    </p>
                       </div>
                     </div>
                   </div>
@@ -434,114 +434,161 @@ export function UnifiedPaymentScreen({
 
               {paymentMethodType === 'saved' && hasSavedMethods && (
                 <div className="space-y-3 mb-6">
-                  {userSavedMethods.map((method) => (
-                    <Card
-                      key={method.id}
-                      className={`cursor-pointer border-2 transition-all hover:shadow-md ${
-                        selectedSavedMethod === method.id
-                          ? 'border-primary shadow-lg bg-primary/5 dark:bg-primary/10'
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                      onClick={() => setSelectedSavedMethod(method.id)}
-                    >
-                      <CardContent className="pt-5 pb-5 flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className={`p-2.5 rounded-lg ${
-                            selectedSavedMethod === method.id 
-                              ? 'bg-primary/20' 
-                              : 'bg-muted'
-                          }`}>
-                            <CreditCard size={22} weight={selectedSavedMethod === method.id ? "fill" : "regular"} className={selectedSavedMethod === method.id ? "text-primary" : "text-muted-foreground"} />
+                  {userSavedMethods.map((method) => {
+                    const getPaymentIcon = () => {
+                      if (method.type === 'ach') {
+                        return <Bank size={22} weight={selectedSavedMethod === method.id ? "fill" : "regular"} className={selectedSavedMethod === method.id ? "text-primary" : "text-muted-foreground"} />
+                      }
+                      // Card brand icons
+                      const brand = method.card?.brand.toLowerCase() || 'card'
+                      return <CreditCard size={22} weight={selectedSavedMethod === method.id ? "fill" : "regular"} className={selectedSavedMethod === method.id ? "text-primary" : "text-muted-foreground"} />
+                    }
+                    
+                    return (
+                      <Card
+                        key={method.id}
+                        className={`cursor-pointer border-2 transition-all hover:shadow-md ${
+                          selectedSavedMethod === method.id
+                            ? 'border-primary shadow-lg bg-primary/5 dark:bg-primary/10'
+                            : 'border-border hover:border-primary/50'
+                        }`}
+                        onClick={() => setSelectedSavedMethod(method.id)}
+                      >
+                        <CardContent className="pt-5 pb-5 flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className={`p-2.5 rounded-lg ${
+                              selectedSavedMethod === method.id 
+                                ? 'bg-primary/20' 
+                                : 'bg-muted'
+                            }`}>
+                              {getPaymentIcon()}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-base text-foreground">
+                                {method.type === 'ach' 
+                                  ? `${method.bankAccount?.bankName || 'Bank Account'} •••• ${method.bankAccount?.last4}`
+                                  : `${method.card?.brand.toUpperCase()} •••• ${method.card?.last4}`
+                                }
+                              </p>
+                              <p className="text-sm text-muted-foreground mt-0.5">
+                                {method.type === 'ach' 
+                                  ? 'Bank Account'
+                                  : `Expires ${String(method.card?.expMonth).padStart(2, '0')}/${String(method.card?.expYear).slice(-2)}`
+                                }
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-semibold text-base text-foreground">
-                              {method.card?.brand.toUpperCase()} •••• {method.card?.last4}
-                            </p>
-                            <p className="text-sm text-muted-foreground mt-0.5">
-                              Expires {String(method.card?.expMonth).padStart(2, '0')}/{String(method.card?.expYear).slice(-2)}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
                           {method.isDefault && (
-                            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">Default</Badge>
+                              <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">Default</Badge>
+                            )}
+                            {selectedSavedMethod === method.id && (
+                              <CheckCircle size={20} weight="fill" className="text-primary" />
                           )}
-                          {selectedSavedMethod === method.id && (
-                            <CheckCircle size={20} weight="fill" className="text-primary" />
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })}
                 </div>
               )}
 
               {paymentMethodType === 'new' && (
-                <Card className="border-2 border-border bg-card/50">
-                  <CardContent className="pt-6 space-y-5">
+                <div className="space-y-4">
+                  <div className="flex gap-2 mb-4">
+                    <Button
+                      variant={paymentMethodType === 'new' ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setPaymentMethodType('new')}
+                      className="flex-1"
+                    >
+                      <CreditCard size={16} className="mr-2" />
+                      Credit/Debit Card
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        toast.info('Bank transfer option coming soon')
+                      }}
+                      className="flex-1"
+                    >
+                      <Bank size={16} className="mr-2" />
+                      Bank Transfer
+                    </Button>
+                  </div>
+                  
+                  <Card className="border-2 border-border bg-card/50">
+                    <CardContent className="pt-6 space-y-5">
                     <div>
-                      <Label htmlFor="card-number" className="text-sm font-semibold mb-2 block">Card Number</Label>
-                      <div className="relative">
-                        <Input
-                          id="card-number"
-                          placeholder="1234 5678 9012 3456"
-                          value={cardNumber}
-                          onChange={handleCardNumberChange}
-                          maxLength={19}
-                          className="h-12 text-base font-medium tracking-wider pl-4 pr-12"
-                        />
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                          <CreditCard size={20} className="text-muted-foreground" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="expiry" className="text-sm font-semibold mb-2 block">Expiry Date</Label>
-                        <Input
-                          id="expiry"
-                          placeholder="MM/YY"
-                          value={expiry}
-                          onChange={handleExpiryChange}
-                          maxLength={5}
-                          className="h-12 text-base font-medium"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="cvc" className="text-sm font-semibold mb-2 block">CVC</Label>
-                        <Input
-                          id="cvc"
-                          placeholder="123"
-                          value={cvc}
-                          onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                          maxLength={4}
-                          className="h-12 text-base font-medium"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <Label htmlFor="zip" className="text-sm font-semibold mb-2 block">Billing Zip Code</Label>
+                        <Label htmlFor="card-number" className="text-sm font-semibold mb-2 block">Card Number</Label>
+                        <div className="relative">
                       <Input
-                        id="zip"
-                        placeholder="12345"
-                        value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                        id="card-number"
+                        placeholder="1234 5678 9012 3456"
+                        value={cardNumber}
+                        onChange={handleCardNumberChange}
+                        maxLength={19}
+                            className="h-12 text-base font-medium tracking-wider pl-4 pr-12"
+                      />
+                          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                            {/* Payment method icons */}
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs font-semibold text-muted-foreground">VISA</span>
+                              <span className="text-xs font-semibold text-muted-foreground">MC</span>
+                              <span className="text-xs font-semibold text-muted-foreground">AMEX</span>
+                            </div>
+                            <CreditCard size={20} className="text-muted-foreground" />
+                          </div>
+                        </div>
+                    </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <Label htmlFor="expiry" className="text-sm font-semibold mb-2 block">Expiry Date</Label>
+                      <Input
+                        id="expiry"
+                        placeholder="MM/YY"
+                        value={expiry}
+                        onChange={handleExpiryChange}
                         maxLength={5}
-                        className="h-12 text-base font-medium"
+                          className="h-12 text-base font-medium"
                       />
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg border border-border/50">
-                      <input
-                        type="checkbox"
-                        id="save-card"
-                        checked={saveCard}
-                        onChange={(e) => setSaveCard(e.target.checked)}
-                        className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary"
+                    <div>
+                        <Label htmlFor="cvc" className="text-sm font-semibold mb-2 block">CVC</Label>
+                      <Input
+                        id="cvc"
+                        placeholder="123"
+                        value={cvc}
+                        onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                        maxLength={4}
+                          className="h-12 text-base font-medium"
                       />
+                    </div>
+                  </div>
+                  <div>
+                      <Label htmlFor="zip" className="text-sm font-semibold mb-2 block">Billing Zip Code</Label>
+                    <Input
+                      id="zip"
+                      placeholder="12345"
+                      value={zipCode}
+                      onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                      maxLength={5}
+                        className="h-12 text-base font-medium"
+                    />
+                  </div>
+                    <div className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg border border-border/50">
+                    <input
+                      type="checkbox"
+                      id="save-card"
+                      checked={saveCard}
+                      onChange={(e) => setSaveCard(e.target.checked)}
+                        className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary"
+                    />
                       <Label htmlFor="save-card" className="font-medium text-sm cursor-pointer text-foreground">
                         Save card securely for future payments
-                      </Label>
-                    </div>
+                    </Label>
+                  </div>
                   </CardContent>
                 </Card>
               )}
@@ -572,7 +619,7 @@ export function UnifiedPaymentScreen({
                       <span className="text-muted-foreground">Stripe Protected</span>
                     </div>
                   </div>
-                </div>
+            </div>
               </CardContent>
             </Card>
           </div>

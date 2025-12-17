@@ -107,13 +107,34 @@
 }
 
 @layer base {
-  /* Ultra-smooth theme transition for entire page */
+  /* Ultra-smooth theme transition with sophisticated easing and layer-based transitions */
+  /* Layer 1: Background colors transition first */
+  html,
+  body,
+  [class*="bg-"] {
+    transition-property: background-color;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 0.6s;
+  }
+
+  /* Layer 2: Text colors transition slightly after */
+  [class*="text-"],
+  body {
+    transition-property: color;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 0.65s;
+    transition-delay: 0.02s;
+  }
+
+  /* Layer 3: Borders and other elements transition last */
+  [class*="border-"],
   *,
   *::before,
   *::after {
-    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, text-decoration-color, outline-color;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 0.8s;
+    transition-property: border-color, fill, stroke, opacity, box-shadow, text-decoration-color, outline-color;
+    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-duration: 0.7s;
+    transition-delay: 0.03s;
   }
 
   /* Override for immediate transitions (like hover) */
@@ -122,7 +143,8 @@
   input:focus,
   textarea:focus,
   select:focus {
-    transition-duration: 0.2s;
+    transition-duration: 0.2s !important;
+    transition-delay: 0s !important;
   }
 
   body {
@@ -130,22 +152,11 @@
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Smooth fade for page content */
   html {
-    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /* Ensure all theme-dependent elements transition smoothly */
-  [class*="bg-"],
-  [class*="text-"],
-  [class*="border-"] {
-    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 0.8s;
+    /* Background transition handled above */
   }
   
   h1, h2, h3, h4, h5, h6 {

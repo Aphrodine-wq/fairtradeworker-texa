@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Skeleton } from "@/components/ui/skeleton"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { DriveTimeWarning } from "./DriveTimeWarning"
 const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap })))
@@ -21,6 +22,7 @@ import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Time
 import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { revenueConfig } from "@/lib/revenueConfig"
+import { cn } from "@/lib/utils"
 
 // Carousel Lane component with scroll arrows
 function CarouselLane({ children }: { children: React.ReactNode }) {
@@ -147,9 +149,14 @@ const JobCard = memo(function JobCard({
 
   const photos = useMemo(() => {
     const jobPhotos = job.photos || []
-    // Filter out empty/null/undefined photos
-    return jobPhotos.filter((photo): photo is string => Boolean(photo && photo.trim()))
+    // Filter out empty/null/undefined photos and ensure they're valid URLs
+    return jobPhotos.filter((photo): photo is string => 
+      Boolean(photo && typeof photo === 'string' && photo.trim() && (photo.startsWith('http') || photo.startsWith('data:') || photo.startsWith('/'))
+    ))
   }, [job.photos])
+  
+  const [imageLoading, setImageLoading] = useState<Record<number, boolean>>({})
+  const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({})
   const materials = useMemo(() => job.aiScope?.materials || [], [job.aiScope?.materials])
 
   // Calculate recent bids (last 5 minutes)
@@ -191,24 +198,42 @@ const JobCard = memo(function JobCard({
             onClick={() => onViewPhotos(photos)}
             className="relative w-full h-full group/image"
           >
+            {imageLoading[0] && !imageErrors[0] && (
+              <Skeleton className="absolute inset-0 w-full h-full" />
+            )}
             <img
               src={photos[0]}
               alt="Job preview"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110"
+              className={cn(
+                "w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110",
+                imageLoading[0] && !imageErrors[0] && "opacity-0",
+                imageErrors[0] && "hidden"
+              )}
               loading="lazy"
+              onLoadStart={() => setImageLoading(prev => ({ ...prev, 0: true }))}
               onError={(e) => {
                 const target = e.target as HTMLImageElement
+                setImageLoading(prev => ({ ...prev, 0: false }))
+                setImageErrors(prev => ({ ...prev, 0: true }))
                 if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
                   target.src = 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'
                   target.onerror = null
                 }
               }}
               onLoad={(e) => {
-                // Image loaded successfully
                 const target = e.target as HTMLImageElement
+                setImageLoading(prev => ({ ...prev, 0: false }))
                 target.style.opacity = '1'
               }}
             />
+            {imageErrors[0] && (
+              <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                <div className="text-center">
+                  <Images size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
+                  <div className="text-xs text-muted-foreground">Photo unavailable</div>
+                </div>
+              </div>
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
             
             {/* Overlay Info */}
@@ -382,27 +407,46 @@ const JobCard = memo(function JobCard({
               <span className="text-xs font-semibold text-muted-foreground">Additional Photos</span>
             </div>
             <div className="grid grid-cols-4 gap-2">
-              {photos.slice(1, 5).map((photo, idx) => (
+              {photos.slice(1, 5).map((photo, idx) => {
+                const photoIndex = idx + 1
+                return (
                 <button
                   key={idx}
                   onClick={() => onViewPhotos(photos)}
                   className="relative aspect-square rounded-md overflow-hidden hover:ring-2 hover:ring-primary transition-all group/thumb"
                 >
+                    {imageLoading[photoIndex] && !imageErrors[photoIndex] && (
+                      <Skeleton className="absolute inset-0 w-full h-full" />
+                    )}
                   <img
                     src={photo || 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'}
                     alt={`Photo ${idx + 2}`}
-                    className="w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-200"
+                      className={cn(
+                        "w-full h-full object-cover group-hover/thumb:scale-110 transition-transform duration-200",
+                        imageLoading[photoIndex] && !imageErrors[photoIndex] && "opacity-0",
+                        imageErrors[photoIndex] && "hidden"
+                      )}
                     loading="lazy"
+                      onLoadStart={() => setImageLoading(prev => ({ ...prev, [photoIndex]: true }))}
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
-                      if (!target.src.includes('placeholder')) {
+                        setImageLoading(prev => ({ ...prev, [photoIndex]: false }))
+                        setImageErrors(prev => ({ ...prev, [photoIndex]: true }))
+                        if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
                         target.src = 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'
                         target.onerror = null
                       }
                     }}
+                      onLoad={() => setImageLoading(prev => ({ ...prev, [photoIndex]: false }))}
                   />
+                    {imageErrors[photoIndex] && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                        <Images size={20} weight="duotone" className="text-muted-foreground" />
+                      </div>
+                    )}
                 </button>
-              ))}
+                )
+              })}
             </div>
             {photos.length > 5 && (
               <button
@@ -839,12 +883,24 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                           >
                             <td className="py-3 px-4">
                               <div className="flex items-start gap-3">
-                                {job.photos && job.photos[0] && (
+                                {job.photos && job.photos[0] && job.photos[0].trim() ? (
                                   <img 
                                     src={job.photos[0]} 
                                     alt={job.title}
                                     className="w-16 h-16 rounded object-cover flex-shrink-0"
+                                    loading="lazy"
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement
+                                      if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
+                                        target.src = 'https://via.placeholder.com/64x64/cccccc/666666?text=Photo'
+                                        target.onerror = null
+                                      }
+                                    }}
                                   />
+                                ) : (
+                                  <div className="w-16 h-16 rounded bg-muted flex items-center justify-center flex-shrink-0">
+                                    <Images size={24} weight="duotone" className="text-muted-foreground" />
+                                  </div>
                                 )}
                                 <div className="min-w-0 flex-1">
                                   <div className="flex items-center gap-2 mb-1">
@@ -1015,29 +1071,36 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   <CardHeader>
                     <CardTitle className="text-lg font-semibold flex items-center gap-2">
                       <Images size={20} weight="duotone" className="text-primary" />
-                      Job Photos ({selectedJob.photos.length})
+                      Job Photos ({selectedJob.photos.filter(p => p && p.trim()).length})
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 gap-3">
-                      {selectedJob.photos.slice(0, 4).map((photo, idx) => (
-                        <div key={idx} className="aspect-square rounded-lg overflow-hidden border border-black/10 dark:border-white/10">
+                      {selectedJob.photos.filter(p => p && p.trim()).slice(0, 4).map((photo, idx) => (
+                        <div key={idx} className="aspect-square rounded-lg overflow-hidden border border-black/10 dark:border-white/10 relative group cursor-pointer" onClick={() => handlePhotoClick(selectedJob.photos?.filter(p => p && p.trim()) || [])}>
                           <img 
                             src={photo} 
                             alt={`Job photo ${idx + 1}`}
-                            className="w-full h-full object-cover"
-                            onClick={() => handlePhotoClick(selectedJob.photos || [])}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
+                            loading="lazy"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement
+                              if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
+                                target.src = 'https://via.placeholder.com/400x400/cccccc/666666?text=Photo'
+                                target.onerror = null
+                              }
+                            }}
                             />
                           </div>
                         ))}
                     </div>
-                    {selectedJob.photos.length > 4 && (
+                    {selectedJob.photos.filter(p => p && p.trim()).length > 4 && (
                         <Button
                           variant="outline"
                         className="w-full mt-3"
-                        onClick={() => handlePhotoClick(selectedJob.photos || [])}
+                        onClick={() => handlePhotoClick(selectedJob.photos?.filter(p => p && p.trim()) || [])}
                         >
-                        View All {selectedJob.photos.length} Photos
+                        View All {selectedJob.photos.filter(p => p && p.trim()).length} Photos
                         </Button>
                     )}
                   </CardContent>

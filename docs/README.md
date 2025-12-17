@@ -1,53 +1,124 @@
-# Documentation Index
+# 📚 FairTradeWorker Documentation
 
-Welcome to the FairTradeWorker documentation. This folder contains comprehensive documentation for the platform.
-
-## 📂 Quick Access
-
-### 🔥 [Most Updated Documents](./00_MOST_UPDATED/)
-**Start here for the latest information!**
-
-The most recently updated and frequently referenced documents are in the `00_MOST_UPDATED` folder:
-
-- **[IMPLEMENTATION_RECENT_UPDATES.md](./00_MOST_UPDATED/IMPLEMENTATION_RECENT_UPDATES.md)** - Latest implementation changes and features
-- **[NAVIGATION_CUSTOMIZATION_UPDATE.md](./00_MOST_UPDATED/NAVIGATION_CUSTOMIZATION_UPDATE.md)** - Navigation customization system
-- **[CENTERING_AND_THEME_UPDATES.md](./00_MOST_UPDATED/CENTERING_AND_THEME_UPDATES.md)** - Theme and layout improvements
-- **[TESTING_COMPREHENSIVE_GUIDE.md](./00_MOST_UPDATED/TESTING_COMPREHENSIVE_GUIDE.md)** - Complete testing guide
+> **The Fair Trade Platform for Construction** - Connecting homeowners with vetted contractors through transparent pricing and AI-powered tools.
 
 ---
 
-## 📁 Folder Organization
+## 🗂️ Documentation Structure
 
-The documentation is organized into the following categories:
+### 🚀 [Getting Started](getting-started/)
+- [Project Overview](getting-started/PROJECT_OVERVIEW.md) - Platform mission, features, and architecture
 
-### `00_MOST_UPDATED/` - Latest & Most Important
-- Most recently updated documents
-- Frequently referenced guides
-- Critical development information
-- Essential onboarding docs
+### 📋 [Product](product/)
+- [PRD](product/PRD.md) - Product Requirements Document
+- [Roadmap](product/ROADMAP.md) - Implementation roadmap and milestones
+- [Features](product/FEATURES.md) - Complete feature list with status
+- [Pricing](product/PRICING.md) - **Single source of truth for all pricing**
+- [Competitive Features](product/COMPETITIVE_FEATURES_ROADMAP.md) - Market differentiation
 
-### `implementation/` - Technical Implementation
-Technical details, code changes, and development notes:
-- Architecture and design patterns
-- Code implementation details
-- Performance optimizations
-- Migration guides
-- Security implementations
+### 🔧 [Technical](technical/)
+- [Architecture](technical/ARCHITECTURE.md) - System architecture and design patterns
+- [Performance](technical/PERFORMANCE.md) - Optimization guide and benchmarks
+- [Security](technical/SECURITY.md) - Security implementation and best practices
+- [AI System](technical/AI_SYSTEM.md) - AI configuration and Whisper integration
+- [Software Flows](technical/SOFTWARE_FLOWS.md) - Application flow diagrams
+- [Code Statistics](technical/LINES_OF_CODE.md) - Codebase metrics
 
-### `features/` - Feature Documentation
-Feature specifications, guides, and user-facing documentation:
-- Feature specifications
-- User guides
-- Feature roadmaps
-- Feature status tracking
+### 📖 [Guides](guides/)
+- [Testing Guide](guides/TESTING.md) - Unit, integration, and E2E testing
+- [Testing Summary](guides/TESTING_SUMMARY.md) - Test coverage overview
+- [Deployment](guides/DEPLOYMENT.md) - Vercel deployment instructions
+- [Stripe Integration](guides/STRIPE_INTEGRATION.md) - Payment setup and configuration
+- [Supabase Guide](guides/SUPABASE.md) - Database setup and migrations
+- [AI Receptionist](guides/AI_RECEPTIONIST.md) - SMS/Voice AI setup
 
-### `guides/` - Setup & How-To Guides
-Setup instructions, migration guides, and how-to documentation:
-- Setup and installation
-- Configuration guides
-- Integration guides
-- API documentation
-- Testing setup
+### 🎨 [Design](design/)
+- [Design System](design/DESIGN_SYSTEM.md) - Brutalist UI design system
+- [Themes](design/THEMES.md) - Light/dark theme implementation
+- [Navigation](design/NAVIGATION_CUSTOMIZATION_UPDATE.md) - Navigation customization
+- [Button Redesign](design/BUTTON_REDESIGN.md) - Button component updates
+
+### 💼 [Business](business/)
+- [Scaling Plan](business/SCALING_PLAN.md) - Path to 300K+ users
+- [Viral Features](business/VIRAL_FEATURES.md) - Growth and referral features
+- [Free Features](business/FREE_FEATURES_GUIDE.md) - Free tier documentation
+
+### ✨ [Features](features/)
+- [CRM Void](features/CRM_VOID.md) - Immersive space-themed CRM interface
+- [Invoice System](features/INVOICE_SYSTEM.md) - Invoice templates and payments
+- [Photo System](features/PHOTO_SYSTEM.md) - Photo upload and management
+- [Certification Wallet](features/CERTIFICATION_WALLET.md) - Contractor credentials
+- [Construction CRM](features/CONSTRUCTION_CRM_FEATURES.md) - CRM specifics
+- [Video System](features/VIDEO_SYSTEM.md) - Video messaging
+- [Push Notifications](features/PUSH_NOTIFICATIONS.md) - Notification system
+
+### 📦 [Archive](archive/)
+Historical documentation for reference:
+- [Session Logs](archive/session-logs/) - Development session notes
+- [Fixes](archive/fixes/) - Completed fix documentation
+- [Deprecated](archive/deprecated/) - Old documentation versions
+
+---
+
+## 🔑 Quick Reference
+
+### Pricing (December 2025)
+
+| Item | Price | Who Pays |
+|------|-------|----------|
+| **Pro Subscription** | **$59/month** | Contractor |
+| **Platform Fee** | $20 flat | Homeowner |
+| **Extended Draw Fee** | 2.5-3% tiered | Homeowner (large projects only) |
+| **Free Tier** | $0 | Both |
+
+> 📌 See [product/PRICING.md](product/PRICING.md) for complete pricing details.
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19 + TypeScript + Vite |
+| Styling | Tailwind CSS + Framer Motion |
+| Backend | Supabase (PostgreSQL + Auth + Storage) |
+| Payments | Stripe Connect |
+| AI | OpenAI Whisper + GPT-4 |
+| Hosting | Vercel |
+
+### Key URLs
+
+| Environment | URL |
+|-------------|-----|
+| Production | https://www.fairtradeworker.com |
+| Repository | https://github.com/Aphrodine-wq/fairtradeworker-texa |
+
+---
+
+## 📊 Codebase Statistics
+
+| Metric | Value |
+|--------|-------|
+| TypeScript Files | 320+ |
+| Lines of Code | 50,000+ |
+| Test Coverage | 85%+ |
+| Bundle Size | ~750KB gzipped |
+
+---
+
+## 🆕 Recent Updates
+
+### December 17, 2025
+- ✨ **CRM Void** - New immersive space-themed CRM with voice intake
+- 📚 **Documentation Reorganization** - Full restructure of docs folder
+- 💰 **Pricing Standardization** - Unified $59/mo Pro pricing across all docs
+
+### December 16, 2025
+- 🎨 Brutalist UI design system implementation
+- ⚡ Performance optimizations (1000x improvements)
+- 🔐 Security hardening and audit
+
+---
+
+*Last updated: December 17, 2025*
 
 ### `status/` - Status Reports
 Progress reports, completion summaries, and session notes:

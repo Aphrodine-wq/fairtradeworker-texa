@@ -22,6 +22,14 @@ export function Footer({ onNavigate }: FooterProps) {
       { label: 'Help Center', page: 'help' },
       { label: 'Blog', page: 'blog', disabled: true },
     ],
+    platformFeatures: [
+      { label: 'AI Scoping', page: 'photo-scoper' },
+      { label: 'Smart Invoicing', page: 'invoices' },
+      { label: 'Analytics Dashboard', page: 'revenue-dashboard' },
+      { label: 'CRM Suite', page: 'crm' },
+      { label: 'Boosted Listings', page: 'pricing' },
+      { label: 'Secure Payments', page: 'payments' },
+    ],
   }
 
   const handleClick = (page: string, disabled?: boolean) => {
@@ -33,7 +41,7 @@ export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="bg-white dark:bg-black">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div>
             <button
@@ -97,6 +105,27 @@ export function Footer({ onNavigate }: FooterProps) {
             <h3 className="font-black uppercase text-sm mb-4">Resources</h3>
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
+                <li key={link.page}>
+                  <button
+                    onClick={() => handleClick(link.page, link.disabled)}
+                    disabled={link.disabled}
+                    className={`text-sm font-medium hover:text-[#00FF00] transition-colors ${
+                      link.disabled ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {link.label}
+                    {link.disabled && ' (Coming Soon)'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Platform Features Links */}
+          <div>
+            <h3 className="font-black uppercase text-sm mb-4">Platform Features</h3>
+            <ul className="space-y-2">
+              {footerLinks.platformFeatures.map((link) => (
                 <li key={link.page}>
                   <button
                     onClick={() => handleClick(link.page, link.disabled)}

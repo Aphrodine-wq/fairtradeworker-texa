@@ -80,10 +80,10 @@ export function OrbitingSection({
           "relative flex flex-col items-center justify-center",
           "w-20 h-20 -ml-10 -mt-10 rounded-2xl",
           "transition-all duration-300",
-          "border backdrop-blur-md",
+          "border backdrop-blur-sm",
           isActive 
-            ? "bg-cyan-500/30 border-cyan-400 shadow-lg shadow-cyan-500/30" 
-            : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20",
+            ? "bg-primary/20 border-primary shadow-lg shadow-primary/20" 
+            : "bg-card border-border hover:bg-muted hover:border-primary/50",
           isLocked && !isPro && "opacity-50 cursor-not-allowed",
           customizable && "cursor-grab active:cursor-grabbing"
         )}
@@ -93,7 +93,7 @@ export function OrbitingSection({
         {/* Icon */}
         <div className={cn(
           "text-2xl mb-1",
-          isActive ? "text-cyan-400" : "text-white/70"
+          isActive ? "text-primary" : "text-muted-foreground"
         )}>
           {icon}
         </div>
@@ -101,31 +101,31 @@ export function OrbitingSection({
         {/* Label */}
         <span className={cn(
           "text-[10px] font-medium text-center leading-tight",
-          isActive ? "text-cyan-400" : "text-white/60"
+          isActive ? "text-primary" : "text-muted-foreground"
         )}>
           {label}
         </span>
 
         {/* Lock icon for Pro features */}
         {isLocked && !isPro && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center">
-            <Lock size={10} weight="fill" className="text-black" />
+          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-muted border border-border flex items-center justify-center">
+            <Lock size={10} weight="fill" className="text-muted-foreground" />
           </div>
         )}
 
         {/* Pro badge */}
         {isLocked && isPro && (
-          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 flex items-center justify-center">
-            <Crown size={10} weight="fill" className="text-black" />
+          <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+            <Crown size={10} weight="fill" className="text-primary-foreground" />
           </div>
         )}
 
         {/* Glow effect when active */}
         {isActive && (
           <motion.div
-            className="absolute inset-0 rounded-2xl bg-cyan-500/20"
+            className="absolute inset-0 rounded-2xl bg-primary/10"
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0.2, 0.4, 0.2] }}
+            animate={{ opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 2, repeat: Infinity }}
           />
         )}
@@ -146,7 +146,8 @@ export function OrbitingSection({
           y1={y < 0 ? Math.abs(y) + 20 : 20}
           x2={x < 0 ? 20 : Math.abs(x) + 20}
           y2={y < 0 ? 20 : Math.abs(y) + 20}
-          stroke={isActive ? 'rgba(0, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)'}
+          stroke={isActive ? 'rgba(var(--primary), 0.3)' : 'rgba(0, 0, 0, 0.1)'}
+          className={cn(isActive ? 'stroke-primary/30' : 'stroke-muted-foreground/10')}
           strokeWidth="1"
           strokeDasharray="4 4"
           initial={{ pathLength: 0 }}

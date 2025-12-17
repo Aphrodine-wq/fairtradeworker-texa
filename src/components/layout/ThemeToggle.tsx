@@ -30,8 +30,12 @@ export function ThemeToggle() {
     const newTheme = !isDark
     setIsDark(newTheme)
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
-    document.documentElement.classList.toggle('dark', newTheme)
-    updateThemeColor(newTheme)
+    
+    // Use requestAnimationFrame for smoother transition start
+    requestAnimationFrame(() => {
+      document.documentElement.classList.toggle('dark', newTheme)
+      updateThemeColor(newTheme)
+    })
   }
 
   return (
@@ -54,11 +58,11 @@ export function ThemeToggle() {
         }}
         transition={{ 
           type: "spring",
-          stiffness: 300,
-          damping: 30,
-          mass: 0.8
+          stiffness: 400,
+          damping: 35,
+          mass: 0.6
         }}
-        style={{ willChange: 'background-color, border-color' }}
+        style={{ willChange: 'background-color, border-color', transform: 'translateZ(0)' }}
       />
     </button>
   )

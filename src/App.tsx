@@ -4,6 +4,7 @@ import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
+import { LoadAnimation } from "@/components/ui/LoadAnimation"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
@@ -285,10 +286,10 @@ class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
+        <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-background">
           <div className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-4">Something went wrong</h2>
-            <p className="text-black dark:text-white mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-4">Something went wrong</h2>
+            <p className="text-muted-foreground mb-6">
               {this.state.error?.message || 'An error occurred while loading this page'}
             </p>
             <Button 
@@ -310,9 +311,10 @@ class ErrorBoundary extends Component<
 
 function LoadingFallback() {
   return (
-    <div className="flex items-center justify-center min-h-[400px] opacity-0">
-      <div className="text-center">
+    <div className="flex items-center justify-center min-h-[400px] bg-background">
+      <div className="text-center space-y-4">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+        <p className="text-sm text-muted-foreground">Loading...</p>
       </div>
     </div>
   )
@@ -328,12 +330,21 @@ function App() {
   const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
   const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   const [bidTemplates, setBidTemplates] = useLocalKV<import("@/lib/types").BidTemplate[]>("bidTemplates", [])
+  const [showLoadAnimation, setShowLoadAnimation] = useState(true)
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
   
   // Initialize iOS optimizations
   useIOSOptimizations()
+  
+  // Hide load animation after initial load (matches optimized animation duration)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoadAnimation(false)
+    }, 700)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     let mounted = true
@@ -831,6 +842,9 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-white dark:bg-black overflow-x-hidden">
+      {showLoadAnimation && (
+        <LoadAnimation onComplete={() => setShowLoadAnimation(false)} />
+      )}
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>

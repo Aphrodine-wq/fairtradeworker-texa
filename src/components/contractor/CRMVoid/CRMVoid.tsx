@@ -121,12 +121,20 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     return (sectionLayouts || []).filter(s => s.visible)
   }, [sectionLayouts])
 
+  // Prevent body scroll when CRM Void is active
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <div className={cn(
-      "relative w-full min-h-screen overflow-hidden",
-      "bg-[#050508]"
+      "fixed inset-0 w-full h-full overflow-hidden",
+      "bg-background z-50"
     )}>
-      {/* Animated starfield background */}
+      {/* Subtle background pattern */}
       <VoidBackground />
 
       {/* Header controls */}
@@ -140,7 +148,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           variant="outline"
           size="sm"
           onClick={toggleFullscreen}
-          className="bg-black/50 border-white/20 text-white hover:bg-white/10"
+          className="bg-background/80 backdrop-blur-sm border-border text-foreground hover:bg-muted"
         >
           {isFullscreen ? <ArrowsIn size={16} /> : <ArrowsOut size={16} />}
         </Button>
@@ -149,7 +157,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           <Button
             size="sm"
             onClick={() => setCustomizeMode(false)}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             Done Customizing
           </Button>
@@ -163,9 +171,9 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-cyan-500/20 border border-cyan-500/50"
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-primary/10 border border-primary/30"
           >
-            <p className="text-cyan-400 text-sm font-medium">
+            <p className="text-primary text-sm font-medium">
               🎨 Customize Mode - Drag sections to reposition
             </p>
           </motion.div>
@@ -233,9 +241,9 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
 function StatsCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 backdrop-blur-sm">
-      <p className="text-white/40 text-xs">{label}</p>
-      <p className="text-white font-semibold">{value}</p>
+    <div className="px-4 py-2 rounded-lg bg-card border border-border backdrop-blur-sm">
+      <p className="text-muted-foreground text-xs">{label}</p>
+      <p className="text-foreground font-semibold">{value}</p>
     </div>
   )
 }

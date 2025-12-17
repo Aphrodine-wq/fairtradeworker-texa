@@ -37,35 +37,46 @@ export const VoidBackground = memo(function VoidBackground() {
       }))
     }
 
-    const drawNebula = () => {
-      const centerX = canvas.width / 2
-      const centerY = canvas.height / 2
+    const drawSubtlePattern = () => {
+      // Subtle grid pattern instead of nebula
+      const gridSize = 50
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.03)'
+      ctx.lineWidth = 1
       
-      const gradient = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, Math.min(canvas.width, canvas.height) * 0.6
-      )
-      gradient.addColorStop(0, 'rgba(0, 255, 136, 0.03)')
-      gradient.addColorStop(0.3, 'rgba(0, 200, 255, 0.02)')
-      gradient.addColorStop(0.6, 'rgba(138, 43, 226, 0.015)')
-      gradient.addColorStop(1, 'transparent')
+      if (document.documentElement.classList.contains('dark')) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)'
+      }
       
-      ctx.fillStyle = gradient
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      for (let x = 0; x < canvas.width; x += gridSize) {
+        ctx.beginPath()
+        ctx.moveTo(x, 0)
+        ctx.lineTo(x, canvas.height)
+        ctx.stroke()
+      }
+      
+      for (let y = 0; y < canvas.height; y += gridSize) {
+        ctx.beginPath()
+        ctx.moveTo(0, y)
+        ctx.lineTo(canvas.width, y)
+        ctx.stroke()
+      }
     }
 
     const animate = () => {
-      ctx.fillStyle = '#050508'
+      // Use system background color
+      const isDark = document.documentElement.classList.contains('dark')
+      ctx.fillStyle = isDark ? '#000000' : '#ffffff'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-      drawNebula()
+      drawSubtlePattern()
 
-      const time = Date.now() * 0.001
+      // Minimal subtle dots instead of stars
+      const time = Date.now() * 0.0005
       starsRef.current.forEach((star, i) => {
-        const twinkle = Math.sin(time * 2 + i) * 0.3 + 0.7
-        const alpha = star.brightness * twinkle
+        const twinkle = Math.sin(time * 2 + i) * 0.2 + 0.8
+        const alpha = star.brightness * twinkle * 0.15 // Much more subtle
         
-        star.z -= 0.1
+        star.z -= 0.05
         if (star.z <= 0) {
           star.z = 1000
           star.x = Math.random() * canvas.width
@@ -79,16 +90,12 @@ export const VoidBackground = memo(function VoidBackground() {
         if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return
 
         ctx.beginPath()
-        ctx.arc(x, y, star.size * scale * 0.5, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`
+        ctx.arc(x, y, star.size * scale * 0.3, 0, Math.PI * 2)
+        const isDark = document.documentElement.classList.contains('dark')
+        ctx.fillStyle = isDark 
+          ? `rgba(255, 255, 255, ${alpha})` 
+          : `rgba(0, 0, 0, ${alpha})`
         ctx.fill()
-
-        if (star.brightness > 0.8) {
-          ctx.beginPath()
-          ctx.arc(x, y, star.size * scale * 2, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(200, 220, 255, ${alpha * 0.1})`
-          ctx.fill()
-        }
       })
 
       animationRef.current = requestAnimationFrame(animate)

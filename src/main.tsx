@@ -12,11 +12,15 @@ import "./styles/theme.css"
 import "./styles/theme-transitions.css"
 import "./index.css"
 
-// Theme initialization script - prevents FOUC
+// Theme initialization script - prevents FOUC and white screen
 const initTheme = () => {
   const stored = localStorage.getItem('theme')
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const isDark = stored === 'dark' || (!stored && prefersDark)
+  
+  // Set background color immediately to prevent white screen
+  document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff'
+  document.body.style.backgroundColor = isDark ? '#000000' : '#ffffff'
   
   // Add no-transitions class to prevent flash
   document.documentElement.classList.add('no-transitions')
@@ -31,6 +35,9 @@ const initTheme = () => {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       document.documentElement.classList.remove('no-transitions')
+      // Reset inline styles to let CSS take over
+      document.documentElement.style.backgroundColor = ''
+      document.body.style.backgroundColor = ''
     })
   })
 }

@@ -75,7 +75,7 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+          className="absolute inset-0 bg-background/80 backdrop-blur-sm"
           onClick={onClose}
         />
 
@@ -87,30 +87,29 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className={cn(
             "relative z-10 w-[90vw] max-w-6xl h-[85vh] rounded-2xl",
-            "bg-gradient-to-b from-gray-900/95 to-black/95",
-            "border border-white/10 backdrop-blur-xl",
-            "shadow-2xl shadow-cyan-500/10",
+            "bg-card border border-border",
+            "shadow-2xl shadow-primary/10",
             "flex flex-col overflow-hidden"
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="text-white/60 hover:text-white hover:bg-white/10"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted"
               >
                 <ArrowLeft size={20} />
               </Button>
-              <h2 className="text-xl font-bold text-white">{getPanelTitle()}</h2>
+              <h2 className="text-xl font-bold text-foreground">{getPanelTitle()}</h2>
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
-              className="text-white/60 hover:text-white hover:bg-white/10"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted"
             >
               <X size={20} />
             </Button>
@@ -146,16 +145,16 @@ function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (pa
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
             "p-6 rounded-xl text-left",
-            "bg-white/5 border border-white/10",
-            "hover:bg-white/10 hover:border-cyan-500/30",
+            "bg-card border border-border",
+            "hover:bg-muted hover:border-primary/50",
             "transition-all duration-200"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <div className="text-3xl mb-3">{tool.icon}</div>
-          <h3 className="font-semibold text-white mb-1">{tool.label}</h3>
-          <p className="text-sm text-white/60">{tool.description}</p>
+          <h3 className="font-semibold text-foreground mb-1">{tool.label}</h3>
+          <p className="text-sm text-muted-foreground">{tool.description}</p>
         </motion.button>
       ))}
     </div>
@@ -184,13 +183,13 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
         <div className="text-6xl mb-4">👑</div>
-        <h3 className="text-2xl font-bold text-white mb-2">Upgrade to Pro</h3>
-        <p className="text-white/60 mb-6 max-w-md">
+        <h3 className="text-2xl font-bold text-foreground mb-2">Upgrade to Pro</h3>
+        <p className="text-muted-foreground mb-6 max-w-md">
           Unlock powerful tools to grow your business faster
         </p>
         <Button
           onClick={() => onNavigate?.('pro-upgrade')}
-          className="bg-amber-500 hover:bg-amber-400 text-black font-semibold"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
         >
           Upgrade for $59/mo
         </Button>
@@ -206,16 +205,16 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
             "p-6 rounded-xl text-left",
-            "bg-amber-500/10 border border-amber-500/30",
-            "hover:bg-amber-500/20 hover:border-amber-500/50",
+            "bg-primary/10 border border-primary/30",
+            "hover:bg-primary/20 hover:border-primary/50",
             "transition-all duration-200"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <div className="text-3xl mb-3">{tool.icon}</div>
-          <h3 className="font-semibold text-white mb-1">{tool.label}</h3>
-          <p className="text-sm text-white/60">{tool.description}</p>
+          <h3 className="font-semibold text-foreground mb-1">{tool.label}</h3>
+          <p className="text-sm text-muted-foreground">{tool.description}</p>
         </motion.button>
       ))}
     </div>
@@ -250,12 +249,12 @@ function CustomizePanel() {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center">
       <div className="text-6xl mb-4">✨</div>
-      <h3 className="text-2xl font-bold text-white mb-2">Customize Mode</h3>
-      <p className="text-white/60 mb-6 max-w-md">
+      <h3 className="text-2xl font-bold text-foreground mb-2">Customize Mode</h3>
+      <p className="text-muted-foreground mb-6 max-w-md">
         Drag and reposition the orbiting sections to customize your CRM layout.
         Your changes will be saved automatically.
       </p>
-      <p className="text-cyan-400 text-sm">
+      <p className="text-primary text-sm">
         Close this panel to enter customize mode
       </p>
     </div>
@@ -265,33 +264,33 @@ function CustomizePanel() {
 function SettingsPanel() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-        <h3 className="font-semibold text-white mb-3">Display Settings</h3>
+      <div className="p-4 rounded-xl bg-card border border-border">
+        <h3 className="font-semibold text-foreground mb-3">Display Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">
-            <span className="text-white/80">Show connection lines</span>
+            <span className="text-foreground">Show connection lines</span>
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
           <label className="flex items-center justify-between">
-            <span className="text-white/80">Enable animations</span>
+            <span className="text-foreground">Enable animations</span>
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
           <label className="flex items-center justify-between">
-            <span className="text-white/80">Show star background</span>
+            <span className="text-foreground">Show background pattern</span>
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
         </div>
       </div>
 
-      <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-        <h3 className="font-semibold text-white mb-3">Voice Settings</h3>
+      <div className="p-4 rounded-xl bg-card border border-border">
+        <h3 className="font-semibold text-foreground mb-3">Voice Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">
-            <span className="text-white/80">Enable voice commands</span>
+            <span className="text-foreground">Enable voice commands</span>
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
           <label className="flex items-center justify-between">
-            <span className="text-white/80">Auto-transcribe recordings</span>
+            <span className="text-foreground">Auto-transcribe recordings</span>
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
         </div>
