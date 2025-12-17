@@ -3,6 +3,7 @@
 ## Priority 1: Type Safety Enhancements (High Impact, Low Risk)
 
 ### 1.1 Enable Stricter TypeScript Configuration
+
 **Impact**: Catch bugs at compile-time, improve IDE support
 **Risk**: Low (incremental)
 **Files**: `tsconfig.json`
@@ -28,6 +29,7 @@
 ```
 
 ### 1.2 Branded Types for IDs
+
 **Impact**: Prevent ID mixing bugs (e.g., passing jobId where userId expected)
 **Risk**: Low (can be done incrementally)
 **File**: `src/lib/types.ts`
@@ -60,6 +62,7 @@ export const jobId = (id: string): JobId => id as JobId
 ```
 
 ### 1.3 Discriminated Unions for Status Types
+
 **Impact**: Better type narrowing, catch impossible states
 **Risk**: Low
 **File**: `src/lib/types.ts`
@@ -87,6 +90,7 @@ if (job.status.type === 'in-progress') {
 ## Priority 2: Performance Optimizations (High Impact)
 
 ### 2.1 Standardize React.memo Usage
+
 **Impact**: Reduce unnecessary re-renders
 **Risk**: Low
 **Pattern**: Apply to all list item components
@@ -110,6 +114,7 @@ export const JobCard = memo(function JobCard({ job, onPlaceBid }: JobCardProps) 
 ```
 
 ### 2.2 Implement Virtual Scrolling for Long Lists
+
 **Impact**: 10-100x performance improvement for 100+ item lists
 **Risk**: Medium (requires component updates)
 **File**: `src/hooks/useVirtualList.ts` (already exists, expand usage)
@@ -141,6 +146,7 @@ return (
 ```
 
 ### 2.3 Optimize useLocalKV Hook
+
 **Impact**: Reduce localStorage read/write operations
 **Risk**: Low
 **File**: `src/hooks/useLocalKV.ts`
@@ -191,6 +197,7 @@ export function useLocalKV<T>(
 ## Priority 3: Code Organization (Medium Impact, Low Risk)
 
 ### 3.1 Create Barrel Exports
+
 **Impact**: Cleaner imports, better tree-shaking
 **Risk**: Low
 **Files**: Create index.ts files
@@ -208,6 +215,7 @@ export { Dialog, DialogContent, DialogHeader, DialogTitle } from './dialog'
 ```
 
 ### 3.2 Organize Types by Domain
+
 **Impact**: Better type discoverability, reduce circular dependencies
 **Risk**: Low
 **Files**: Split `src/lib/types.ts`
@@ -223,6 +231,7 @@ src/lib/types/
 ```
 
 ### 3.3 Create Shared Utilities Directory
+
 **Impact**: Reduce duplication, better code reuse
 **Risk**: Low
 **Files**: Create `src/lib/utils/`
@@ -257,6 +266,7 @@ export const isValidPhone = (phone: string): boolean => {
 ## Priority 4: Developer Experience (Medium Impact)
 
 ### 4.1 Enhanced Error Boundaries
+
 **Impact**: Better error handling, prevent full app crashes
 **Risk**: Low
 **File**: `src/components/ErrorBoundary.tsx`
@@ -323,6 +333,7 @@ export class ErrorBoundary extends Component<Props, State> {
 ```
 
 ### 4.2 Development-Only Performance Monitoring
+
 **Impact**: Identify performance bottlenecks during development
 **Risk**: Low (only in dev mode)
 **File**: `src/lib/dev-tools.ts`
@@ -348,6 +359,7 @@ endMeasure()
 ```
 
 ### 4.3 Type-Safe Event Handlers
+
 **Impact**: Catch event handler errors at compile time
 **Risk**: Low
 **Pattern**: Create typed event handler utilities
@@ -368,6 +380,7 @@ const handleInputChange = createEventHandler<HTMLInputElement>((e) => {
 ## Priority 5: Data Normalization (High Impact for Scalability)
 
 ### 5.1 Normalize Data Structures
+
 **Impact**: Reduce redundancy, improve update performance
 **Risk**: Medium (requires refactoring)
 **Pattern**: Separate entities from relations
@@ -404,6 +417,7 @@ export const useNormalizedStore = () => {
 ```
 
 ### 5.2 Implement Data Indexing
+
 **Impact**: Fast lookups without iterating through arrays
 **Risk**: Low
 **File**: `src/lib/indexes.ts`
@@ -430,26 +444,31 @@ const job = jobsById.get(jobId) // O(1) lookup instead of O(n)
 ## Implementation Roadmap
 
 ### Week 1: Type Safety (Low Risk, High Value)
+
 1. ✅ Enable stricter TypeScript config (1 hour)
 2. ✅ Add branded types for IDs (2 hours)
 3. ✅ Create discriminated unions for status (2 hours)
 
 ### Week 2: Performance (High Impact)
+
 1. ✅ Apply virtual scrolling to BrowseJobs (4 hours)
 2. ✅ Optimize useLocalKV with subscriptions (2 hours)
 3. ✅ Standardize React.memo usage (3 hours)
 
 ### Week 3: Code Organization (Maintainability)
+
 1. ✅ Create barrel exports (2 hours)
 2. ✅ Split types by domain (3 hours)
 3. ✅ Create shared utilities (2 hours)
 
 ### Week 4: Developer Experience
+
 1. ✅ Add error boundaries (2 hours)
 2. ✅ Add dev performance monitoring (1 hour)
 3. ✅ Type-safe event handlers (1 hour)
 
 ### Week 5-6: Scalability (As Needed)
+
 1. ⚠️ Data normalization (8 hours - only if performance issues arise)
 2. ⚠️ Data indexing (4 hours - only if needed)
 

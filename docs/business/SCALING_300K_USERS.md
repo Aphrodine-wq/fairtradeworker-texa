@@ -7,17 +7,20 @@ This document outlines the comprehensive infrastructure, performance optimizatio
 ### Growth Projections
 
 **Year 1 User Growth Trajectory:**
+
 - Month 1-3: 0 → 5,000 users (viral seeding phase)
 - Month 4-6: 5,000 → 25,000 users (growth acceleration)
 - Month 7-9: 25,000 → 100,000 users (viral scaling)
 - Month 10-12: 100,000 → 300,000 users (mainstream adoption)
 
 **Daily Active Users (DAU) at Scale:**
+
 - 300,000 total users
 - ~40% DAU ratio = 120,000 daily active users
 - Peak concurrent users: ~15,000 (assuming 12.5% concurrent during peak hours)
 
 **Transaction Volume Estimates:**
+
 - Jobs posted per day: 1,000+ (target from README)
 - Bids per day: ~5,000 (5x jobs)
 - Messages per day: ~10,000
@@ -30,6 +33,7 @@ This document outlines the comprehensive infrastructure, performance optimizatio
 ## 1. Infrastructure Architecture
 
 ### 1.1 Current State
+
 - **Frontend**: React 19 + Vite (static hosting)
 - **Storage**: Spark KV (GitHub's distributed key-value store)
 - **Assets**: Local file storage
@@ -93,6 +97,7 @@ This document outlines the comprehensive infrastructure, performance optimizatio
 ### 2.1 Spark KV Optimization
 
 **Current Usage:**
+
 - All data stored in Spark KV (distributed key-value store)
 - Keys: `users`, `jobs`, `bids`, `invoices`, `territories`, etc.
 
@@ -112,6 +117,7 @@ useKV<string[]>("bids:by-contractor:user456", []) // Bid IDs only
 ```
 
 **Key Optimization Strategies:**
+
 1. **Partition by Time**: Monthly/weekly partitions for jobs, bids
 2. **Partition by Geography**: Territory-based partitions (254 Texas counties)
 3. **Hot/Cold Separation**: Active jobs vs completed/archived
@@ -119,6 +125,7 @@ useKV<string[]>("bids:by-contractor:user456", []) // Bid IDs only
 5. **Compression**: Enable compression for large text fields (AI scopes, descriptions)
 
 **Estimated Storage Needs (Year 1):**
+
 - Users: 300,000 × 2KB = 600 MB
 - Jobs: 365,000 jobs × 10KB = 3.65 GB
 - Bids: 1,825,000 bids × 1KB = 1.8 GB
@@ -148,6 +155,7 @@ CREATE INDEX idx_territory_metrics_territory_id ON territory_metrics(territory_i
 ```
 
 **Use Cases for PostgreSQL:**
+
 - Operator dashboard aggregates (territory metrics)
 - Financial reporting and reconciliation
 - Complex analytics queries (win rate by job type, time series)
@@ -194,6 +202,7 @@ interface CacheStrategy {
 ```
 
 **Redis Memory Estimate:**
+
 - Live stats: 1 KB × 1 = 1 KB
 - Fresh jobs cache: 10 KB × 254 territories = 2.5 MB
 - Contractor stats: 2 KB × 10,000 active = 20 MB
@@ -208,18 +217,21 @@ interface CacheStrategy {
 ### 3.1 Object Storage (AWS S3 / Cloudflare R2)
 
 **Photo Storage:**
+
 - Original photos: 1,095,000 × 2MB avg = 2.19 TB/year
 - Thumbnails (300px): 1,095,000 × 50KB = 54.75 GB
 - Thumbnails (800px): 1,095,000 × 200KB = 219 GB
 - **Total photos**: ~2.46 TB/year
 
 **Video Storage:**
+
 - Videos: 104,000 × 25MB avg = 2.6 TB/year
 - Transcoded (720p): 104,000 × 10MB = 1.04 TB
 - Thumbnails: 104,000 × 5 frames × 50KB = 26 GB
 - **Total videos**: ~3.66 TB/year
 
 **Document Storage:**
+
 - Invoice PDFs: 146,000 × 100KB = 14.6 GB
 - Certificates: 10,000 contractors × 5 docs × 500KB = 25 GB
 - **Total documents**: ~40 GB
@@ -247,11 +259,13 @@ const videoUrl = `https://cdn.fairtradeworker.com/videos/${jobId}/${videoId}`;
 ```
 
 **CDN Cache Hit Ratio Target**: 95%+
+
 - Static assets (JS/CSS): 99% hit ratio
 - Photos: 90% hit ratio (high repeat views on job pages)
 - Videos: 70% hit ratio (lower repeat views)
 
 **Bandwidth Estimates:**
+
 - Photos: 120,000 DAU × 20 photos/day × 200KB = 480 GB/day
 - Videos: 20,000 video views/day × 10MB = 200 GB/day
 - Static assets: 120,000 DAU × 5MB = 600 GB/day
@@ -265,6 +279,7 @@ const videoUrl = `https://cdn.fairtradeworker.com/videos/${jobId}/${videoId}`;
 ### 4.1 Frontend Performance
 
 **Bundle Size Optimization:**
+
 ```json
 // vite.config.ts
 {
@@ -293,6 +308,7 @@ const videoUrl = `https://cdn.fairtradeworker.com/videos/${jobId}/${videoId}`;
 ```
 
 **Code Splitting Strategy:**
+
 ```typescript
 // Lazy load heavy components
 const ContractorDashboard = lazy(() => import('./pages/ContractorDashboard'));
@@ -309,6 +325,7 @@ const TerritoryMap = lazy(() => import('./components/territory/TerritoryMap'));
 ```
 
 **Image Optimization:**
+
 ```typescript
 // Use next-gen formats
 <picture>
@@ -328,6 +345,7 @@ useEffect(() => {
 ### 4.2 API Performance
 
 **Request Batching:**
+
 ```typescript
 // Batch multiple requests into one
 const batchFetch = async (requests: Request[]) => {
@@ -348,6 +366,7 @@ const dashboardData = await batchFetch([
 ```
 
 **GraphQL for Flexible Queries:**
+
 ```graphql
 # Single request for complete job details
 query JobDetails($jobId: ID!) {
@@ -384,6 +403,7 @@ query JobDetails($jobId: ID!) {
 ### 4.3 Database Query Optimization
 
 **Spark KV Query Patterns:**
+
 ```typescript
 // ❌ Bad: Load all jobs, filter in memory
 const [allJobs] = useKV<Job[]>("jobs", []);
@@ -408,6 +428,7 @@ const contractors = await fetchContractorsBatch(contractorIds);
 ```
 
 **Caching Strategy:**
+
 ```typescript
 // Implement stale-while-revalidate
 const useCachedKV = <T>(key: string, defaultValue: T, ttl: number = 60000) => {
@@ -480,6 +501,7 @@ async function checkRateLimit(userId: string, endpoint: string): Promise<boolean
 ### 5.2 DDoS Protection
 
 **CloudFlare Configuration:**
+
 - Enable "Under Attack Mode" during traffic spikes
 - Challenge pages for suspicious traffic
 - Rate limiting at edge (100 req/10s per IP)
@@ -518,6 +540,7 @@ function sanitizeInput(input: string): string {
 ### 6.1 Application Monitoring
 
 **Key Metrics to Track:**
+
 ```typescript
 // Performance metrics
 const metrics = {
@@ -548,6 +571,7 @@ const metrics = {
 ```
 
 **Alerting Thresholds:**
+
 ```yaml
 # alerts.yml
 alerts:
@@ -585,6 +609,7 @@ alerts:
 ### 6.2 Real-time Dashboards
 
 **Grafana Dashboard Panels:**
+
 1. **Traffic Overview**
    - Requests per second (line chart)
    - Active users (gauge)
@@ -610,6 +635,7 @@ alerts:
 ### 6.3 Error Tracking
 
 **Sentry Configuration:**
+
 ```typescript
 import * as Sentry from "@sentry/react";
 
@@ -646,6 +672,7 @@ Sentry.init({
 ### 7.1 Horizontal Scaling Rules
 
 **AWS Auto Scaling Group:**
+
 ```yaml
 # autoscaling-config.yml
 scaling:
@@ -716,6 +743,7 @@ setInterval(async () => {
 ### 8.1 Backup Strategy
 
 **Spark KV Backups:**
+
 ```bash
 # Daily full backups
 0 2 * * * /scripts/backup-spark-kv.sh
@@ -730,6 +758,7 @@ setInterval(async () => {
 ```
 
 **PostgreSQL Backups:**
+
 ```bash
 # Continuous archiving (WAL shipping)
 wal_level = replica
@@ -742,6 +771,7 @@ archive_command = 'aws s3 cp %p s3://ftw-backups/wal/%f'
 ```
 
 **S3 Backup:**
+
 ```yaml
 # S3 versioning enabled
 bucket: ftw-media
@@ -764,7 +794,8 @@ lifecycle_rules:
 **Recovery Point Objective (RPO)**: 1 hour
 
 **Failover Procedures:**
-1. **Database Failover**: 
+
+1. **Database Failover**:
    - Primary failure detected → automatic failover to replica
    - DNS update via Route53 health checks
    - Time: <5 minutes
@@ -811,6 +842,7 @@ lifecycle_rules:
 | | **Total (excl. Stripe)** | **~$8,841/month** |
 
 **Cost Optimization Strategies:**
+
 1. **Use CloudFlare R2 instead of S3**: Save $1,400/month on egress fees
 2. **Reserved Instances**: Save 40% on predictable compute ($237/month saved)
 3. **Spot Instances** for batch jobs: Save 70% on video transcoding
@@ -822,6 +854,7 @@ lifecycle_rules:
 ### 9.2 Revenue Requirements
 
 **To cover $7,000/month infrastructure:**
+
 - 300 Pro contractors @ $59/month = $11,700/month ✅
 - 15% Pro conversion rate achievable (see PRD)
 - Additional revenue from Bid Boost, Materials, FTW Verified
@@ -918,6 +951,7 @@ fi
 ### 11.1 Infrastructure Security
 
 **Network Security:**
+
 ```yaml
 # Security groups
 security_groups:
@@ -951,6 +985,7 @@ security_groups:
 ```
 
 **Encryption:**
+
 - Data in transit: TLS 1.3 for all connections
 - Data at rest: AES-256 encryption for databases and S3
 - Secrets management: AWS Secrets Manager / HashiCorp Vault
@@ -958,6 +993,7 @@ security_groups:
 ### 11.2 Application Security
 
 **Authentication & Authorization:**
+
 ```typescript
 // JWT token with short expiration
 const token = jwt.sign(
@@ -985,6 +1021,7 @@ const canAccessEndpoint = (user: User, endpoint: string) => {
 ```
 
 **SQL Injection Prevention:**
+
 ```typescript
 // Always use parameterized queries
 const result = await db.query(
@@ -997,6 +1034,7 @@ const result = await db.query(
 ```
 
 **XSS Prevention:**
+
 ```typescript
 // Sanitize all user input before storing
 import DOMPurify from 'isomorphic-dompurify';
@@ -1025,6 +1063,7 @@ app.use(helmet.contentSecurityPolicy({
 ## 12. Implementation Timeline
 
 ### Phase 1: Foundation (Months 1-3, 0-5k users)
+
 **Goal**: Establish core infrastructure
 
 - [ ] Week 1-2: Set up AWS/CloudFlare accounts
@@ -1037,6 +1076,7 @@ app.use(helmet.contentSecurityPolicy({
 **Infrastructure**: 2-4 instances, basic monitoring, manual scaling
 
 ### Phase 2: Growth (Months 4-6, 5k-25k users)
+
 **Goal**: Enable auto-scaling and optimization
 
 - [ ] Week 13-14: Implement auto-scaling groups
@@ -1049,6 +1089,7 @@ app.use(helmet.contentSecurityPolicy({
 **Infrastructure**: 4-8 instances, auto-scaling, Redis cache
 
 ### Phase 3: Scale (Months 7-9, 25k-100k users)
+
 **Goal**: Handle rapid growth
 
 - [ ] Week 25-26: Implement CDN optimizations
@@ -1061,6 +1102,7 @@ app.use(helmet.contentSecurityPolicy({
 **Infrastructure**: 8-16 instances, multi-region, advanced caching
 
 ### Phase 4: Optimize (Months 10-12, 100k-300k users)
+
 **Goal**: Cost optimization and reliability
 
 - [ ] Week 37-38: Cost analysis and optimization
@@ -1116,6 +1158,7 @@ app.use(helmet.contentSecurityPolicy({
 **Symptoms**: High latency, increased error rates
 
 **Actions**:
+
 1. Check monitoring dashboard for bottleneck
 2. If CPU high: Manually trigger scale-up (add 8 instances)
 3. If DB connections saturated: Increase connection pool or add read replica
@@ -1130,13 +1173,16 @@ app.use(helmet.contentSecurityPolicy({
 **Symptoms**: 500 errors, connection timeouts
 
 **Actions**:
+
 1. Check RDS Multi-AZ failover (automatic, ~2 min)
 2. If failover failed, restore from backup:
+
    ```bash
    aws rds restore-db-instance-from-db-snapshot \
      --db-instance-identifier ftw-db-restored \
      --db-snapshot-identifier ftw-db-snapshot-latest
    ```
+
 3. Update DNS to point to restored instance
 4. Replay WAL logs for lost transactions
 5. Post-mortem: Document root cause
@@ -1148,13 +1194,16 @@ app.use(helmet.contentSecurityPolicy({
 **Symptoms**: Users seeing wrong content
 
 **Actions**:
+
 1. Immediately purge CDN cache:
+
    ```bash
    curl -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
      -H "Authorization: Bearer ${CF_API_TOKEN}" \
      -H "Content-Type: application/json" \
      --data '{"purge_everything":true}'
    ```
+
 2. Identify poisoned URLs and purge selectively
 3. Review cache headers and fix if misconfigured
 4. Monitor for repeat issues
@@ -1166,6 +1215,7 @@ app.use(helmet.contentSecurityPolicy({
 ## 15. Next Steps
 
 ### Immediate Actions (Week 1)
+
 1. Review and approve this scaling plan
 2. Set up AWS and CloudFlare accounts
 3. Create infrastructure cost budget
@@ -1173,6 +1223,7 @@ app.use(helmet.contentSecurityPolicy({
 5. Schedule weekly infrastructure review meetings
 
 ### Short-term (Month 1)
+
 1. Deploy basic multi-server setup
 2. Implement monitoring and alerting
 3. Set up automated backups
@@ -1180,6 +1231,7 @@ app.use(helmet.contentSecurityPolicy({
 5. Load test with simulated 10k users
 
 ### Medium-term (Months 2-6)
+
 1. Implement auto-scaling
 2. Deploy Redis caching layer
 3. Optimize database queries
@@ -1187,6 +1239,7 @@ app.use(helmet.contentSecurityPolicy({
 5. Multi-region deployment
 
 ### Long-term (Months 7-12)
+
 1. Cost optimization initiatives
 2. Advanced caching strategies
 3. Full disaster recovery drills

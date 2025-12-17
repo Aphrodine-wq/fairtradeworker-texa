@@ -5,6 +5,7 @@
 ### ✅ Completed Features
 
 #### Core Platform
+
 - [x] User authentication with role-based access (Homeowner, Contractor, Operator)
 - [x] Demo mode with pre-populated data for all user types
 - [x] Responsive mobile-first design with 44px touch targets
@@ -14,6 +15,7 @@
 - [x] iOS-optimized performance hooks
 
 #### Job Management
+
 - [x] AI-powered job scoping (simulated)
 - [x] Multi-modal input (video, voice, photos, text, files)
 - [x] 150MB video upload with chunked transfer
@@ -23,6 +25,7 @@
 - [x] Job posting workflow (<60 seconds target)
 
 #### Contractor Features
+
 - [x] Browse jobs with size badges
 - [x] Free bidding system (no fees)
 - [x] Performance-based bid sorting
@@ -34,6 +37,7 @@
 - [x] Smart scheduler with calendar view
 
 #### Viral Growth Features
+
 - [x] Post-&-Win referral system (unique codes after job posting)
 - [x] Contractor referral goldmine (invite tradesmen, both earn $50)
 - [x] Live stats bar on homepage (jobs posted today, avg bid time)
@@ -41,18 +45,21 @@
 - [x] Referral earnings tracking
 
 #### Operator Features
+
 - [x] Territory map with Texas counties
 - [x] Territory claiming system
 - [x] Speed metrics dashboard (job-to-bid time, conversion rates)
 - [x] Revenue tracking per territory
 
 #### Payment Integration
+
 - [x] Stripe integration (simulated)
 - [x] Payment processing workflow
 - [x] Fee calculation utilities
 - [x] Milestone-based payment support
 
 #### Testing Infrastructure
+
 - [x] Vitest configuration
 - [x] Testing setup with jsdom
 - [x] Mock Spark KV for testing
@@ -66,6 +73,7 @@
 ## 🚧 In Progress
 
 ### Testing Expansion
+
 - [ ] Complete unit tests for all UI components
 - [ ] Integration tests for critical user flows
 - [ ] E2E tests for complete workflows
@@ -73,6 +81,7 @@
 - [ ] Visual regression testing
 
 ### UI/UX Enhancements
+
 - [x] 3D animated theme toggle with spring physics
 - [x] Enhanced GlassCard with smooth hover animations
 - [x] Animated counter component for stats
@@ -91,9 +100,11 @@
 ### Phase 1: Core Efficiency Features (High Priority)
 
 #### Smart Replies System
+
 **Status**: Not Started  
 **Priority**: High  
 **Description**: Context-aware message suggestions that reduce typing time from 2 minutes to 2 seconds
+
 - [ ] Message analysis engine
 - [ ] Job-stage contextual replies (bidding, scheduled, in-progress, completed)
 - [ ] Custom Quick Reply Library with categories
@@ -102,9 +113,11 @@
 - **Target**: 60% usage rate on contractor messages
 
 #### Job Photo Auto-Organize
+
 **Status**: Not Started  
 **Priority**: High  
 **Description**: Automatic photo organization by job stage without manual effort
+
 - [ ] Automatic tagging by job stage (Before/Progress/After)
 - [ ] Smart photo prompts at key moments (dismissible)
 - [ ] Photo quality checks with retake suggestions
@@ -113,9 +126,11 @@
 - **Target**: 90% of jobs have organized photos
 
 #### Daily Briefing Tab
+
 **Status**: Not Started  
 **Priority**: High  
 **Description**: Morning dashboard showing everything contractor needs for the day
+
 - [ ] Today's schedule with drive times and earnings
 - [ ] Weather alerts for outdoor work
 - [ ] Smart contextual reminders from job notes
@@ -124,9 +139,11 @@
 - **Target**: 70% daily check rate
 
 #### Customer Memory Bank Integration
+
 **Status**: Partial - CRM exists  
 **Priority**: High  
 **Description**: Auto-surface past work and notes on return customers
+
 - [ ] Automatic customer timeline for all jobs
 - [ ] Quick-add context notes with voice transcription
 - [ ] Auto-surface past work on new jobs
@@ -138,9 +155,11 @@
 ### Phase 2: Business Intelligence (Medium Priority)
 
 #### Bid Insights Engine
+
 **Status**: Partial - Win/loss tracking exists  
 **Priority**: Medium  
 **Description**: Help contractors win more through data-driven insights
+
 - [ ] Personal win rate analytics dashboard with visualizations
 - [ ] Bid amount feedback after losses (anonymized)
 - [ ] "Similar Jobs" pricing guide when creating bids
@@ -149,9 +168,11 @@
 - **Target**: 15% win rate improvement over 3 months
 
 #### Route Builder & Optimizer
+
 **Status**: Not Started  
 **Priority**: Medium  
 **Description**: Maximize efficiency by clustering jobs geographically
+
 - [ ] Geographic job clustering with proximity groups
 - [ ] Route Efficiency Score (0-100) with color coding
 - [ ] Anchor Job System for location-locked big jobs
@@ -162,9 +183,11 @@
 - **Target**: 2+ hours weekly drive time savings
 
 #### Invoice Profitability Analysis
+
 **Status**: Partial - Basic invoicing exists  
 **Priority**: Medium  
 **Description**: Help contractors identify most profitable work
+
 - [ ] Simple earnings view (week/month/year)
 - [ ] Job profitability with effective hourly rate
 - [ ] Trend visualization (weekly/monthly charts)
@@ -174,9 +197,11 @@
 - **Target**: Contractors focus on profitable work types
 
 #### Review Automation System
+
 **Status**: Not Started  
 **Priority**: Medium  
 **Description**: Increase review collection without manual asks
+
 - [ ] Automatic requests 3 days after job completion
 - [ ] One-tap star rating for homeowners
 - [ ] Context-aware response templates by rating (5★, 4★, 3★ or below)
@@ -189,9 +214,11 @@
 ### Phase 3: Protection & Operations (Medium-Low Priority)
 
 #### Scope Creep Documenter
+
 **Status**: Not Started  
 **Priority**: Medium  
 **Description**: Protect contractors from unpaid extra work
+
 - [ ] One-tap documentation flow with instant camera
 - [ ] Voice note transcription with timestamps
 - [ ] Auto-generated professional change orders
@@ -201,9 +228,11 @@
 - **Target**: 95% of documented changes approved; 60% dispute reduction
 
 #### Weather Integration
+
 **Status**: Not Started  
 **Priority**: Medium-Low  
 **Description**: Reduce weather-related no-shows and inefficiencies
+
 - [ ] Weather warnings on scheduled outdoor jobs
 - [ ] Automatic reschedule suggestions with pre-written messages
 - [ ] Weather-smart job browsing (prioritize indoor on bad days)
@@ -212,9 +241,11 @@
 - **Target**: 60% weather-related no-shows eliminated
 
 #### Truck Inventory Tracker
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Never forget parts on the truck
+
 - [ ] "What's On My Truck" checklist with quantities
 - [ ] Job-based parts checklist from AI scope
 - [ ] Restock reminders at thresholds
@@ -223,9 +254,11 @@
 - **Target**: 50% reduction in "forgot the part" delays
 
 #### Certification Auto-Management
+
 **Status**: Not Started  
 **Priority**: Medium  
 **Description**: Never let credentials lapse
+
 - [ ] Certification Wallet for all credentials
 - [ ] Automatic expiration alerts (60/30/7 days)
 - [ ] Skills-based job matching integration
@@ -238,9 +271,11 @@
 ### Phase 4: Advanced Features (Low Priority)
 
 #### Lightning Round Bidding
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Gamify fast responses for small jobs
+
 - [ ] First 3 bids within 10 min get bolt icon ⚡
 - [ ] Sticky top slot for first bid within 15 min (2 hour duration)
 - [ ] "3 contractors responded in under 10 minutes" trust builder
@@ -248,9 +283,11 @@
 - **Target**: 85% of small jobs get bid within 15 minutes
 
 #### Payment Plans for Large Jobs
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Make large jobs more accessible to homeowners
+
 - [ ] Enable payment plans for jobs >$1K
 - [ ] 2, 3, or 4 payment options
 - [ ] Contractor receives full payment immediately (platform fronts)
@@ -259,9 +296,11 @@
 - **Target**: 20% of large jobs use payment plans
 
 #### Tip Jar Feature
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Enable homeowners to tip for exceptional work
+
 - [ ] Optional tip toggle on invoices
 - [ ] 5%, 10%, 15% quick buttons + custom amount
 - [ ] Tip added to contractor earnings
@@ -269,9 +308,11 @@
 - **Target**: 8-12% increase in contractor earnings
 
 #### Bid Boost (Monetization)
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Optional paid feature to feature bid at top
+
 - [ ] $5-20 to feature bid at top for duration
 - [ ] Limited to 2 boosted bids per job (prevent pay-to-win)
 - [ ] "Featured" star badge on boosted bids
@@ -279,9 +320,11 @@
 - **Target**: $5k/month revenue by month 6
 
 #### Materials Marketplace
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Help contractors save on materials while earning commission
+
 - [ ] Integration with supplier APIs (Ferguson, HD Pro)
 - [ ] Real-time pricing with 10-15% bulk discount
 - [ ] Materials list from AI scope auto-populated
@@ -290,9 +333,11 @@
 - **Target**: $15k/month revenue by month 9
 
 #### FTW Verified Certification
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Premium contractor verification program
+
 - [ ] Background check authorization flow
 - [ ] Proof of insurance verification
 - [ ] Trade license validation
@@ -304,9 +349,11 @@
 - **Target**: $8k/month revenue by month 12
 
 #### Territory Operator Tiers
+
 **Status**: Not Started  
 **Priority**: Low  
 **Description**: Incentivize operators to grow territories
+
 - [ ] Bronze (1 county): 10% share, standard support
 - [ ] Silver (3-5): 12% share, priority support, training webinars
 - [ ] Gold (6-10): 15% share, dedicated manager, strategy calls
@@ -316,9 +363,11 @@
 - **Target**: Average territory grows from 8 to 25 contractors in 6 months
 
 #### Mobile App (iOS & Android)
+
 **Status**: React Native structure exists in ios-app/  
 **Priority**: Low  
 **Description**: Native mobile apps for better performance
+
 - [ ] Quick Capture mode for job posting (<47 seconds)
 - [ ] Smart Watch notifications for FRESH jobs
 - [ ] Offline mode for rural contractors
@@ -332,6 +381,7 @@
 ## 🐛 Known Issues & Technical Debt
 
 ### Critical
+
 - [ ] No actual AI integration (currently simulated with 2-second delays)
 - [ ] Stripe integration is simulated, needs real payment processing
 - [ ] No real-time notifications (WebSocket or similar needed)
@@ -339,6 +389,7 @@
 - [ ] No email service integration for notifications
 
 ### High Priority
+
 - [ ] Test coverage below 50% (needs expansion)
 - [ ] No error boundaries for all lazy-loaded components
 - [ ] Large bundle size (343KB for index-CERMnDrX.js)
@@ -347,6 +398,7 @@
 - [ ] No internationalization (i18n) support
 
 ### Medium Priority
+
 - [ ] Photo uploads not optimized (no compression or resize)
 - [ ] No image CDN integration
 - [ ] Video processing is simulated (needs actual transcoding)
@@ -355,6 +407,7 @@
 - [ ] No analytics tracking integrated
 
 ### Low Priority
+
 - [ ] No PWA manifest for install prompt
 - [ ] Missing SEO meta tags
 - [ ] No social media preview cards (Open Graph)
@@ -367,6 +420,7 @@
 ## 🎯 Success Metrics to Track
 
 ### User Growth
+
 - [ ] 0 → 1,000 jobs/day in 120 days
 - [ ] Contractor wait-list in 6 months
 - [ ] Operator counties sold out in 9 months
@@ -374,6 +428,7 @@
 - [ ] 15% contractor Pro conversion by month 6
 
 ### Engagement
+
 - [ ] Job-to-first-bid time <15 min average
 - [ ] 0.7 new jobs per posted job (referral K-factor)
 - [ ] 35%+ contractor invite conversion
@@ -382,6 +437,7 @@
 - [ ] 60% usage of Smart Replies
 
 ### Revenue
+
 - [ ] $59/month Pro subscriptions (target 15% of contractors)
 - [ ] Bid Boost: $5k/month by month 6
 - [ ] Materials Marketplace: $15k/month by month 9
@@ -389,6 +445,7 @@
 - [ ] Territory transfers: 5% commission on sales
 
 ### Quality
+
 - [ ] 4.5+ contractor satisfaction score
 - [ ] 80% agreement: "Platform helps me run my business"
 - [ ] 78% invoice collection within 7 days (85% for Pro)
@@ -400,6 +457,7 @@
 ## 🛠️ Infrastructure Needs
 
 ### Immediate
+
 - [ ] Production Spark KV instance
 - [ ] Stripe production account setup
 - [ ] AWS S3 or similar for video/photo storage
@@ -407,6 +465,7 @@
 - [ ] Error tracking (Sentry or similar)
 
 ### Short-term
+
 - [ ] OpenAI API integration for real AI scoping
 - [ ] Twilio or similar for SMS sending
 - [ ] SendGrid or similar for email notifications
@@ -415,6 +474,7 @@
 - [ ] Map tiles for territory visualization
 
 ### Long-term
+
 - [ ] Redis for caching and real-time features
 - [ ] PostgreSQL for structured data (if scaling beyond KV)
 - [ ] WebSocket server for real-time notifications
@@ -427,6 +487,7 @@
 ## 📚 Documentation Needs
 
 ### Developer Documentation
+
 - [ ] API documentation (endpoints, schemas)
 - [ ] Component library with Storybook
 - [ ] Contributing guidelines
@@ -435,6 +496,7 @@
 - [ ] Testing guide and best practices
 
 ### User Documentation
+
 - [ ] Homeowner guide (how to post jobs)
 - [ ] Contractor guide (how to bid, use CRM, create invoices)
 - [ ] Operator guide (territory management)
@@ -443,6 +505,7 @@
 - [ ] Video tutorials for key workflows
 
 ### Business Documentation
+
 - [ ] Privacy policy
 - [ ] Terms of service
 - [ ] Contractor agreement
@@ -455,6 +518,7 @@
 ## 🚀 Deployment Checklist
 
 ### Pre-launch
+
 - [ ] Complete security audit
 - [ ] Load testing (1000+ concurrent users)
 - [ ] Accessibility audit (WCAG 2.1 AA)
@@ -467,6 +531,7 @@
 - [ ] Backup and disaster recovery plan
 
 ### Launch
+
 - [ ] Domain registration and DNS setup
 - [ ] SSL certificate installation
 - [ ] Production environment deployment
@@ -477,6 +542,7 @@
 - [ ] Marketing site live
 
 ### Post-launch
+
 - [ ] User feedback collection system
 - [ ] A/B testing framework
 - [ ] Feature flag system
@@ -490,6 +556,7 @@
 ## 💡 Innovation Opportunities
 
 ### AI/ML Enhancements
+
 - [ ] Price prediction model trained on completed jobs
 - [ ] Contractor matching algorithm based on job type and location
 - [ ] Fraud detection for suspicious activity
@@ -498,6 +565,7 @@
 - [ ] Voice command assistant for hands-free operation
 
 ### Platform Extensions
+
 - [ ] API for third-party integrations
 - [ ] Zapier integration for automation
 - [ ] QuickBooks integration for accounting
@@ -506,6 +574,7 @@
 - [ ] Marketplace for add-on tools and services
 
 ### Community Features
+
 - [ ] Contractor forums and knowledge sharing
 - [ ] Best practices library
 - [ ] Mentorship matching (experienced ↔ new contractors)
@@ -518,6 +587,7 @@
 ## 📝 Notes
 
 ### Design Philosophy
+
 - **Mobile-first**: Everything designed for thumb operation
 - **Speed**: Sub-100ms interactions throughout
 - **Clarity**: DuoTone color system (Electric Blue + Charcoal only)
@@ -525,6 +595,7 @@
 - **Trust**: Glass morphism, professional typography, clear pricing
 
 ### Core Values (Immutable)
+
 1. Free job posting (always $0)
 2. Free job bidding (always $0)
 3. Open marketplace (no paywalls)
@@ -532,6 +603,7 @@
 5. Contractors keep 100% of earnings
 
 ### Technology Stack
+
 - **Frontend**: React 19 + TypeScript + Vite
 - **Styling**: Tailwind CSS v4
 - **Components**: shadcn/ui with Radix UI primitives
@@ -546,6 +618,7 @@
 ## 🎓 Learning Resources
 
 For contributors new to the codebase:
+
 - Read PRD.md for complete product vision
 - Review DESIGN_SPEC.md for UI/UX guidelines
 - Check E2E_TESTING_COMPLETE.md for testing patterns

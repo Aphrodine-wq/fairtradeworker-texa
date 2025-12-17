@@ -26,7 +26,7 @@ interface SectionLayout {
   visible: boolean
 }
 
-const DEFAULT_RADIUS = 280
+const DEFAULT_RADIUS = 200 // Reduced to fit better on screen
 
 export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
@@ -110,7 +110,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setSectionLayouts(current => 
       (current || []).map(layout =>
         layout.id === id
-          ? { ...layout, angle: newAngle, radius: Math.min(Math.max(newRadius, 150), 400) }
+          ? { ...layout, angle: newAngle, radius: Math.min(Math.max(newRadius, 120), 200) } // Reduced max radius
           : layout
       )
     )
@@ -130,29 +130,13 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     return (sectionLayouts || []).filter(s => s.visible)
   }, [sectionLayouts])
 
-  // Prevent body scroll when CRM Void is active
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
-
   return (
     <div className={cn(
-<<<<<<< Updated upstream
-      "fixed inset-0 w-full h-full overflow-hidden",
-      "bg-background z-50"
-    )}>
-      {/* Subtle background pattern */}
-      <VoidBackground />
-=======
-      "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
+      "relative w-screen h-screen overflow-hidden fixed inset-0 z-50",
       "bg-white dark:bg-black"
     )}>
       {/* Simplified background - no starfield for system consistency */}
       <div className="absolute inset-0 bg-white dark:bg-black" />
->>>>>>> Stashed changes
 
       {/* Header controls */}
       <motion.div
@@ -165,11 +149,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           variant="outline"
           size="sm"
           onClick={toggleFullscreen}
-<<<<<<< Updated upstream
-          className="bg-background/80 backdrop-blur-sm border-border text-foreground hover:bg-muted"
-=======
           className="bg-white dark:bg-black border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
->>>>>>> Stashed changes
         >
           {isFullscreen ? <ArrowsIn size={16} /> : <ArrowsOut size={16} />}
         </Button>
@@ -178,11 +158,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           <Button
             size="sm"
             onClick={() => setCustomizeMode(false)}
-<<<<<<< Updated upstream
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
-=======
             className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
->>>>>>> Stashed changes
           >
             Done Customizing
           </Button>
@@ -196,51 +172,52 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-<<<<<<< Updated upstream
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-primary/10 border border-primary/30"
-          >
-            <p className="text-primary text-sm font-medium">
-=======
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-black dark:border-white"
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-transparent dark:border-white"
           >
             <p className="text-black dark:text-white text-sm font-medium">
->>>>>>> Stashed changes
               🎨 Customize Mode - Drag sections to reposition
             </p>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Main content area */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen">
-        {/* Central voice hub */}
-        <CentralVoiceHub 
-          user={user} 
-          onCustomerAdded={handleCustomerAdded}
-        />
+      {/* Main content area - ensure no scrolling and perfect centering */}
+      <div className="relative z-10 flex items-center justify-center h-screen w-screen overflow-hidden">
+        {/* Centered container for all elements */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          {/* Central voice hub */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="pointer-events-auto">
+              <CentralVoiceHub 
+                user={user} 
+                onCustomerAdded={handleCustomerAdded}
+              />
+            </div>
+          </div>
 
-        {/* Orbiting sections */}
-        {visibleSections.map((layout) => {
-          const sectionConfig = DEFAULT_SECTIONS.find(s => s.id === layout.id)
-          if (!sectionConfig) return null
-          
-          return (
-            <OrbitingSection
-              key={layout.id}
-              id={layout.id}
-              label={sectionConfig.label}
-              icon={getSectionIcon(layout.id)}
-              angle={layout.angle}
-              radius={layout.radius}
-              isActive={activeSection === layout.id}
-              isLocked={sectionConfig.requiresPro}
-              isPro={isPro}
-              onClick={() => handleSectionClick(layout.id)}
-              onDragEnd={(x, y) => handleDragEnd(layout.id, x, y)}
-              customizable={customizeMode}
-            />
-          )
-        })}
+          {/* Orbiting sections */}
+          {visibleSections.map((layout) => {
+            const sectionConfig = DEFAULT_SECTIONS.find(s => s.id === layout.id)
+            if (!sectionConfig) return null
+            
+            return (
+              <OrbitingSection
+                key={layout.id}
+                id={layout.id}
+                label={sectionConfig.label}
+                icon={getSectionIcon(layout.id)}
+                angle={layout.angle}
+                radius={Math.min(layout.radius, 200)} // Cap radius to prevent overflow
+                isActive={activeSection === layout.id}
+                isLocked={sectionConfig.requiresPro}
+                isPro={isPro}
+                onClick={() => handleSectionClick(layout.id)}
+                onDragEnd={(x, y) => handleDragEnd(layout.id, x, y)}
+                customizable={customizeMode}
+              />
+            )
+          })}
+        </div>
       </div>
 
       {/* Section panel overlay */}
@@ -255,32 +232,6 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         )}
       </AnimatePresence>
 
-      {/* Stats footer */}
-      <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <StatsCard label="Customers" value="—" />
-        <StatsCard label="Active Leads" value="—" />
-        <StatsCard label="This Month" value="$0" />
-      </motion.div>
-    </div>
-  )
-}
-
-function StatsCard({ label, value }: { label: string; value: string }) {
-  return (
-<<<<<<< Updated upstream
-    <div className="px-4 py-2 rounded-lg bg-card border border-border backdrop-blur-sm">
-      <p className="text-muted-foreground text-xs">{label}</p>
-      <p className="text-foreground font-semibold">{value}</p>
-=======
-    <div className="px-4 py-2 rounded-lg bg-white dark:bg-black border-2 border-black dark:border-white">
-      <p className="text-black/60 dark:text-white/60 text-xs">{label}</p>
-      <p className="text-black dark:text-white font-semibold">{value}</p>
->>>>>>> Stashed changes
     </div>
   )
 }

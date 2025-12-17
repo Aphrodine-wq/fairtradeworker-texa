@@ -18,6 +18,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Purpose:** Visual pipeline tracking from initial contact to project completion
 
 **Features:**
+
 - **5-Stage Pipeline:** Leads → Bidding → Won → Active → Completed
 - **Unified View:** Tracks leads, bids, and projects in one visual interface
 - **Stage Statistics:** Real-time counts and value tracking per stage
@@ -26,6 +27,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Quick Actions:** Click-through to view detailed project/bid information
 
 **Key Metrics:**
+
 - Total leads in pipeline
 - Active bids count and value
 - Won projects awaiting start
@@ -39,6 +41,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Purpose:** Centralized document management for construction projects
 
 **Document Types:**
+
 - **Contracts** - Project agreements and terms
 - **Blueprints** - Architectural and engineering drawings
 - **Change Orders** - Scope change documentation
@@ -48,6 +51,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Other** - Additional project documents
 
 **Features:**
+
 - **Project Linking** - Link documents to specific projects
 - **Type Filtering** - Filter by document type
 - **Search Functionality** - Search by name, project, or tags
@@ -57,6 +61,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Upload Management** - Easy document upload and organization
 
 **Statistics Dashboard:**
+
 - Total documents count
 - Documents by type (contracts, blueprints, change orders, etc.)
 - Documents per project
@@ -71,6 +76,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Key Features:**
 
 #### Job Profitability Tracking
+
 - **Per-Project Analysis:** Profit margin calculation for each job
 - **Expense Tracking:** Track materials, labor, and overhead per project
 - **Revenue Tracking:** Monitor payments received vs. contract value
@@ -78,6 +84,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Visual Indicators:** Color-coded profitability status (green/yellow/red)
 
 #### Budget Monitoring
+
 - **Total Budget:** Aggregate contract values across all projects
 - **Spent Tracking:** Real-time expense tracking
 - **Remaining Budget:** Calculate remaining budget per project
@@ -85,6 +92,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Progress Bars:** Visual budget utilization indicators
 
 #### Payment Tracking
+
 - **Outstanding Invoices:** Track unpaid invoices
 - **Overdue Alerts:** Highlight overdue payments
 - **Payment History:** Complete payment timeline
@@ -92,6 +100,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Total Outstanding:** Aggregate outstanding amount
 
 **Financial Metrics:**
+
 - Total Contract Value
 - Total Paid
 - Outstanding Amount
@@ -108,6 +117,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Features:**
 
 #### Task Management
+
 - **Task Creation:** Create tasks with title, description, priority, due date
 - **Assignment:** Assign tasks to team members
 - **Status Tracking:** Pending → In-Progress → Completed
@@ -116,6 +126,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Task Statistics:** Count by status (pending, in-progress, completed)
 
 #### Team Messaging
+
 - **Message Types:** All Team, Office Only, Field Only
 - **Project Linking:** Link messages to specific projects
 - **Message History:** Complete conversation history
@@ -123,11 +134,13 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Real-time Updates:** Instant message delivery
 
 #### Project Filtering
+
 - **Filter by Project:** View tasks and messages per project
 - **All Projects View:** Aggregate view across all projects
 - **Project Statistics:** Task and message counts per project
 
 **Collaboration Features:**
+
 - Office/Field team separation
 - Shared task boards
 - Role-based permissions (ready for implementation)
@@ -143,6 +156,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Report Types:**
 
 #### Project Lifecycle Metrics
+
 - **Total Projects:** Count of all projects in selected time period
 - **Completion Rate:** Percentage of projects completed
 - **Average Days to Start:** Time from bid acceptance to project start
@@ -150,6 +164,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Active vs. Completed:** Breakdown of project status
 
 #### Job Profitability Analysis
+
 - **Per-Project Profitability:** Detailed profit analysis per job
 - **Contract Value:** Original contract amount
 - **Expenses:** Total expenses per project
@@ -159,6 +174,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Sorting:** Sort by profitability (highest to lowest)
 
 #### Sales Forecasting
+
 - **Next Month Forecast:** Revenue forecast for next month
 - **Next Quarter Forecast:** Revenue forecast for next quarter
 - **Pipeline Value:** Total value of active projects
@@ -167,6 +183,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - **Forecast Factors:** Pipeline, historical, seasonality, market factors
 
 **Time Range Options:**
+
 - Last Week
 - Last Month
 - Last Quarter
@@ -193,6 +210,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
    - JobNimbus
 
 **Integration Features:**
+
 - Two-way data sync
 - Real-time synchronization
 - Sync history tracking
@@ -207,6 +225,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Purpose:** Fully-featured mobile CRM with robust offline capabilities
 
 **Mobile Features:**
+
 - Full customer management
 - View and edit interactions
 - Create and send invoices
@@ -217,6 +236,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Quick actions & shortcuts
 
 **Offline Capabilities:**
+
 - View all customer data offline
 - Create new records offline
 - Edit existing records offline
@@ -227,6 +247,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Data integrity checks
 
 **Sync Status:**
+
 - Last sync timestamp
 - Pending changes count
 - Sync direction (two-way)
@@ -240,6 +261,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ### AI Insights (`AIInsightsCRM.tsx`)
 
 **Predictive Lead Scoring:**
+
 - Multi-factor scoring algorithm
 - Engagement score (0-25)
 - Value score (0-30)
@@ -250,6 +272,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Confidence percentage
 
 **Next-Best-Action Recommendations:**
+
 - AI-recommended actions per lead
 - Action types: Call, Email, Meeting, Quote, Follow-up, Nurture
 - Priority levels: High, Medium, Low
@@ -258,6 +281,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Action reasoning
 
 **Sentiment Analysis:**
+
 - Analyze interaction sentiment (positive/neutral/negative)
 - Sentiment score (-1 to 1)
 - Keyword extraction
@@ -270,6 +294,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📊 Advanced Analytics (`AdvancedAnalyticsCRM.tsx`)
 
 **Deep-Dive Reporting:**
+
 - Customizable time ranges (week/month/quarter/year)
 - Revenue analysis by source
 - Status distribution charts
@@ -279,6 +304,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Period-over-period comparisons
 
 **Custom Dashboards:**
+
 - Widget-based dashboard builder
 - Multiple layout options (grid/single/custom)
 - Customizable metrics
@@ -286,6 +312,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Default dashboard support
 
 **Sales Forecasting:**
+
 - Period-based forecasts (week/month/quarter/year)
 - Confidence scoring
 - Factor breakdown:
@@ -296,6 +323,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Forecast history tracking
 
 **Report Types:**
+
 - Sales Performance Report
 - Customer Analysis Report
 - Pipeline Health Report
@@ -306,6 +334,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🔒 Enterprise Security (`EnterpriseSecurity.tsx`)
 
 **Data Encryption:**
+
 - AES-256 encryption algorithm
 - Data at rest encryption
 - Data in transit encryption (TLS 1.3)
@@ -313,12 +342,14 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Encryption status monitoring
 
 **Compliance Audits:**
+
 - **GDPR** - General Data Protection Regulation
 - **CCPA** - California Consumer Privacy Act
 - **HIPAA** - Health Insurance Portability and Accountability Act
 - **PCI** - Payment Card Industry Data Security Standard
 
 **Compliance Features:**
+
 - Automated compliance audits
 - Finding severity classification (Critical/High/Medium/Low)
 - Compliance recommendations
@@ -326,6 +357,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Next audit scheduling
 
 **Sandbox Environments:**
+
 - Development sandboxes
 - Staging environments
 - Testing environments
@@ -337,11 +369,13 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🗺️ Territory Management (`TerritoryManager.tsx`)
 
 **Territory Types:**
+
 - **Geographic** - Based on location (zip codes, cities, states, radius)
 - **Product** - Based on product/service type
 - **Hybrid** - Combination of geographic and product
 
 **Features:**
+
 - Boundary definition (zip codes, cities, states, custom coordinates)
 - User assignment to territories
 - Rule-based territory assignment
@@ -353,11 +387,13 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## ⚙️ Advanced Workflows (`AdvancedWorkflows.tsx`)
 
 **Workflow Types:**
+
 - **Event-Based** - Triggered by events (customer.created, invoice.paid, etc.)
 - **Scheduled** - Time-based triggers
 - **Condition-Based** - Conditional logic triggers
 
 **Workflow Features:**
+
 - Multi-step workflows
 - Conditional logic
 - Multi-level approvals
@@ -373,6 +409,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Purpose:** Build custom objects, fields, and relationships
 
 **Field Types:**
+
 - Text
 - Number
 - Date
@@ -382,6 +419,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Relationship
 
 **Features:**
+
 - Custom object creation
 - Field definition
 - Required field support
@@ -397,6 +435,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Purpose:** High-volume data storage and analytics
 
 **Features:**
+
 - Multiple warehouse support
 - Table management
 - Schema definition
@@ -407,6 +446,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Last sync tracking
 
 **Statistics:**
+
 - Total storage size
 - Total row count
 - Warehouse count
@@ -417,12 +457,14 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📈 CRM Statistics
 
 ### Overall CRM Metrics
+
 - **Total Customers** - All customers in CRM
 - **Active Customers** - Currently active customers
 - **Total LTV** - Lifetime value of all customers
 - **Conversion Rate** - Lead to customer conversion percentage
 
 ### Pipeline Metrics
+
 - **Leads** - Potential customers
 - **Bidding** - Active bids submitted
 - **Won** - Accepted bids awaiting start
@@ -434,6 +476,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🎯 Construction-Specific Workflows
 
 ### Lead to Project Conversion
+
 1. **Lead Created** → Added to CRM as lead
 2. **Bid Submitted** → Moved to bidding stage
 3. **Bid Accepted** → Converted to won project
@@ -441,6 +484,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 5. **Project Completed** → Moved to completed stage
 
 ### Document Workflow
+
 1. **Contract Upload** → Link to project
 2. **Blueprint Upload** → Link to project
 3. **Change Order Creation** → Link to project and invoice
@@ -448,6 +492,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 5. **Invoice Generation** → Link to project and payments
 
 ### Financial Workflow
+
 1. **Bid Accepted** → Contract value recorded
 2. **Project Started** → Budget allocated
 3. **Expenses Logged** → Tracked against budget
@@ -460,12 +505,14 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🔄 Integration Points
 
 ### QuickBooks Integration
+
 - **Sync Direction:** Two-way
 - **Data Types:** Customers, Invoices, Payments, Expenses
 - **Sync Frequency:** Real-time or scheduled
 - **Error Handling:** Automatic retry with logging
 
 ### Procore Integration
+
 - **Sync Direction:** Two-way
 - **Data Types:** Projects, Documents, Tasks, Team Members
 - **Sync Frequency:** Real-time
@@ -476,6 +523,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📱 Mobile App Features
 
 ### iOS & Android Support
+
 - Native mobile apps
 - Offline-first architecture
 - Push notifications
@@ -483,6 +531,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Biometric authentication support
 
 ### Offline Capabilities
+
 - Full CRM access offline
 - Create/edit/delete records
 - Queue changes for sync
@@ -494,6 +543,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🎨 User Interface
 
 ### Design System
+
 - Brutalist design system
 - Black/white color scheme
 - Clear visual hierarchy
@@ -501,6 +551,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Mobile-optimized layouts
 
 ### Navigation
+
 - Tab-based navigation
 - Quick access to all features
 - Breadcrumb navigation
@@ -512,12 +563,14 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📊 Performance Metrics
 
 ### Load Times
+
 - Initial load: < 2 seconds
 - Tab switching: < 500ms
 - Data sync: < 3 seconds
 - Report generation: < 5 seconds
 
 ### Scalability
+
 - Supports 10,000+ customers
 - Handles 1,000+ projects
 - Manages 100,000+ documents
@@ -528,6 +581,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🔐 Security Features
 
 ### Data Protection
+
 - End-to-end encryption
 - Secure data storage
 - Access control
@@ -535,6 +589,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Compliance monitoring
 
 ### User Permissions
+
 - Role-based access control
 - Field-level permissions
 - Object-level permissions
@@ -546,6 +601,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📚 API & Integration
 
 ### Available APIs
+
 - RESTful API endpoints
 - Webhook support
 - OAuth 2.0 authentication
@@ -553,6 +609,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - API documentation
 
 ### Integration Methods
+
 - Direct API integration
 - Webhook subscriptions
 - OAuth connections
@@ -564,6 +621,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 🚀 Future Enhancements
 
 ### Planned Features
+
 - Advanced AI predictions
 - Machine learning models
 - Enhanced mobile features
@@ -577,6 +635,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 ## 📞 Support & Resources
 
 ### Documentation
+
 - User guides
 - API documentation
 - Integration guides
@@ -584,6 +643,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 - Best practices
 
 ### Support Channels
+
 - In-app help
 - Email support
 - Pro support chat (Pro users)
@@ -597,6 +657,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 **Status:** ✅ Fully Implemented
 
 All construction CRM features are:
+
 - ✅ Coded and tested
 - ✅ Integrated into main CRM
 - ✅ Deployed to production

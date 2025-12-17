@@ -8,18 +8,22 @@
 ## Current Design Analysis
 
 ### Current Approach (3D Shadow-Based)
+
 The existing button.tsx uses a complex 3D shadow system with:
+
 - Multiple layered shadows for depth
 - Active state with `translate-y` movements
 - Complex shadow values like `shadow-[0_6px_0_0_rgba(0,0,0,0.3),0_10px_20px_-5px_rgba(0,0,0,0.2)]`
 - Different shadow configurations for each variant
 
 **Pros:**
+
 - Visually striking 3D effect
 - Clear hover/active states
 - Modern aesthetic
 
 **Cons:**
+
 - Complex CSS (hard to maintain)
 - Performance overhead with multiple shadows
 - Verbose class names
@@ -30,6 +34,7 @@ The existing button.tsx uses a complex 3D shadow system with:
 ## New Simplified Design
 
 ### Philosophy
+
 - **Clean & Minimal:** Simple borders and solid backgrounds
 - **Clear States:** Obvious hover/active/disabled states
 - **Performance:** Lightweight CSS
@@ -37,6 +42,7 @@ The existing button.tsx uses a complex 3D shadow system with:
 - **Consistency:** Works well with both light and dark modes
 
 ### Visual Approach
+
 1. **Base Style:**
    - Solid background colors
    - Simple border (2px)
@@ -61,6 +67,7 @@ The existing button.tsx uses a complex 3D shadow system with:
    - No pointer events
 
 ### Benefits
+
 - ✅ **Simpler code:** Easy to read and maintain
 - ✅ **Better performance:** No complex shadows or animations
 - ✅ **Still effective:** Clear visual feedback
@@ -73,6 +80,7 @@ The existing button.tsx uses a complex 3D shadow system with:
 ## Implementation Plan
 
 ### Variants to Keep
+
 1. **default** - Primary action button
 2. **destructive** - Delete/remove actions
 3. **outline** - Secondary actions
@@ -81,10 +89,12 @@ The existing button.tsx uses a complex 3D shadow system with:
 6. **link** - Text-based actions
 
 ### Variants to Add (Optional)
+
 7. **success** - Positive actions
-8. **warning** - Caution actions
+2. **warning** - Caution actions
 
 ### Sizes
+
 - **sm** - Small buttons
 - **default** - Standard buttons
 - **lg** - Large buttons

@@ -32,6 +32,7 @@ export interface User {
 ```
 
 **Benefits**:
+
 - TypeScript catches ID mismatches at compile time
 - Zero runtime overhead (compile-time only)
 - Can be adopted incrementally file-by-file
@@ -63,6 +64,7 @@ import { Button, Card, CardHeader, CardContent, Badge } from '@/components/ui'
 ```
 
 **Implementation Steps**:
+
 1. Create `src/components/ui/index.ts` (exports all UI components)
 2. Create `src/components/contractor/index.ts` (exports contractor components)
 3. Create `src/hooks/index.ts` (exports all hooks)
@@ -377,6 +379,7 @@ const openJobs = useMemo(
 ## Implementation Priority
 
 **Today (2-3 hours)**:
+
 1. ✅ Barrel exports (1 hour)
 2. ✅ Shared formatting utilities (30 min)
 3. ✅ Stricter TypeScript config (5 min)
@@ -389,6 +392,7 @@ const openJobs = useMemo(
 8. ✅ Apply virtual scrolling to BrowseJobs (2 hours)
 
 **Next Week (as needed)**:
+
 - Data normalization (only if performance issues)
 - More advanced type patterns
 - Additional optimizations

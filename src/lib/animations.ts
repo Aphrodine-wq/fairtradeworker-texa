@@ -38,9 +38,11 @@ export const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1, // Increased for smoother cascade
+      staggerChildren: 0.1,
       delayChildren: 0.1,
-      ease: [0.25, 0.46, 0.45, 0.94] // Smooth easing
+      type: "spring",
+      stiffness: 300,
+      damping: 30
     }
   }
 }
@@ -50,18 +52,20 @@ export const itemVariants = {
     opacity: 0, 
     y: 20, 
     scale: 0.95,
-    willChange: 'opacity, transform'
+    willChange: 'opacity, transform',
+    transform: 'translateZ(0)' // GPU acceleration
   },
   visible: { 
     opacity: 1, 
     y: 0, 
     scale: 1,
     willChange: 'auto',
+    transform: 'translateZ(0)',
     transition: {
       type: "spring",
-      stiffness: 300, // Reduced for smoother motion
-      damping: 30, // Maintained for controlled motion
-      mass: 0.8 // Reduced mass for faster response
+      stiffness: 300,
+      damping: 30,
+      mass: 0.8
     }
   }
 }

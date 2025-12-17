@@ -1,11 +1,13 @@
 # 150 MB Video Upload System - Implementation Guide
 
 ## Overview
+
 The FairTradeWorker Texas platform now supports advanced video uploads up to 150 MB with comprehensive analysis capabilities. This system enables homeowners to record detailed walkthrough videos of their repair needs while providing contractors with rich visual and audio context.
 
 ## Key Features
 
 ### 1. Large File Handling
+
 - **File Size**: Up to 150 MB per video
 - **Supported Formats**: MP4, MOV, MKV, WebM
 - **Chunked Upload**: 5 MB chunks using resumable upload protocol
@@ -13,6 +15,7 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 - **Pause/Resume**: Full support for pausing and resuming uploads
 
 ### 2. Upload Progress & UX
+
 - **Circular Progress Indicator**: Orange ring with percentage display
 - **Pause/Resume Controls**: Prominent buttons during upload
 - **Thumbnail Preview**: 5 frames extracted at 0%, 25%, 50%, 75%, 100% duration
@@ -20,6 +23,7 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 - **Real-time Stats**: Shows bytes uploaded and remaining
 
 ### 3. Duplicate Detection
+
 - **Hash Algorithm**: SHA-256 of first and last 1 MB
 - **Detection Window**: 24 hours
 - **User Feedback**: Toast notification suggesting to check existing jobs
@@ -28,6 +32,7 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 ### 4. Video Analysis
 
 #### Technical Metadata
+
 - Codec (H.264, VP9, etc.)
 - Bitrate (target: 1.3 Mbps)
 - Frame rate (FPS)
@@ -35,12 +40,14 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 - Color space (bt.709, bt.601)
 
 #### GPS & Device Info
+
 - GPS coordinates extracted from video metadata
 - Auto-fill job address when GPS available
 - Device make and model (e.g., "Apple iPhone 13")
 - Stored for future device-specific optimizations
 
 #### Audio Analysis
+
 - Sample rate and bit depth
 - Channel layout (stereo/mono)
 - Loudness measurement (LUFS)
@@ -50,18 +57,21 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
   - **Barely Audible**: < -40 LUFS (triggers voice note suggestion)
 
 #### Scene Detection
+
 - Scene change detection using FFmpeg threshold analysis
 - Timestamp array of significant scene cuts
 - Proves user walked around problem area
 - Confidence scores for each cut
 
 #### Motion Analysis
+
 - Motion blur scoring using PSNR between frames
 - **Shaky Detection**: < 22 dB triggers warning
 - User notification: "Retake steadier shot" (non-blocking)
 - Stored for quality metrics
 
 #### Object Recognition
+
 - Simulated computer vision detection
 - Labels: water_heater, pvc_pipe, faucet, etc.
 - Confidence scores (0-1)
@@ -69,6 +79,7 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 - Future: Enable similarity search ("show me jobs with water heaters")
 
 #### Sound Event Detection
+
 - 5-second sliding window analysis
 - Classifications: grinding, drip, hiss, click, hum, squeal
 - Each event includes:
@@ -78,6 +89,7 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
 - Displayed as colored markers on video timeline
 
 #### Audio Transcription
+
 - Whisper-style transcription (simulated)
 - Word-level timestamps (start/end in milliseconds)
 - Clickable captions that seek video playback
@@ -87,7 +99,9 @@ The FairTradeWorker Texas platform now supports advanced video uploads up to 150
   - Prioritizes Spanish-speaking contractors
 
 ### 5. Enhanced AI Scope Generation
+
 Video analysis data feeds into scope generation:
+
 ```
 Video: 2 min 14 s, 6 scene cuts, water_heater(91%), drip_sound(3×),
 transcript: "leaking from bottom",
@@ -98,16 +112,19 @@ GPS: 30.2672,-97.7431, inside garage, filmed on iPhone 13
 ### 6. Quality Warnings
 
 #### Shaky Footage
+
 - Triggers when motion blur < 22 dB
 - Non-blocking orange warning
 - Suggests: "Consider retaking with a steadier hand"
 
 #### Low Audio
+
 - Triggers when loudness < -40 LUFS
 - Shows toast: "We can't hear you well – want to add voice note?"
 - Allows additional audio recording
 
 #### Compression Suggestion
+
 - Files > 50 MB show compression toggle
 - WebCodecs in-browser compression
 - Reduces 4K → 720p @ 30fps
@@ -152,17 +169,19 @@ function JobPoster() {
 ## Storage Considerations
 
 ### Current Implementation (Demo Mode)
+
 - Files are processed but not permanently stored
 - Metadata and analysis results are retained
 - Suitable for demonstration and testing
 
 ### Production Recommendations
+
 The specification includes guidance for production deployment:
 
 1. **Storage Backend**: Supabase Storage or Cloudflare R2
 2. **Bucket Configuration**: `job-videos` bucket with lifecycle rules
 3. **CDN**: Cloudflare R2 with Dallas POP for Texas viewers
-4. **Lifecycle**: 
+4. **Lifecycle**:
    - Infrequent access after 30 days
    - Glacier after 1 year (5 min retrieval)
 5. **Capacity**: 600 GB included (~4,000 videos/month at 150 MB each)
@@ -178,6 +197,7 @@ The specification includes guidance for production deployment:
 ## Video Duration Labels
 
 Videos are automatically categorized:
+
 - **Quick**: ≤ 30 seconds (green badge)
 - **Standard**: 31-90 seconds (yellow badge)
 - **Detailed**: > 90 seconds (red badge)
@@ -185,6 +205,7 @@ Videos are automatically categorized:
 ## Privacy Modes (Spec Only)
 
 The specification includes privacy mode support:
+
 - **Public** (default): All contractors can view
 - **Private**: Only invited contractors see job
 - Stored as `is_private` flag on job record
@@ -204,9 +225,11 @@ Based on the specification, these features are planned:
 ## Bitrate Recommendations
 
 For optimal quality within 150 MB limit:
+
 - **Target Bitrate**: 1.3 Mbps
 - **Example**: 2 min 30 sec video ≈ 24 MB
 - **Recording Hint**:
+
   ```javascript
   const mediaRecorder = new MediaRecorder(stream, {
     mimeType: 'video/webm;codecs=vp9',
@@ -225,6 +248,7 @@ For optimal quality within 150 MB limit:
 ## Testing
 
 The video system can be tested with:
+
 1. Various file sizes (1 MB to 150 MB)
 2. Different video formats (MP4, MOV, MKV, WebM)
 3. Portrait and landscape orientations

@@ -11,6 +11,7 @@ This document outlines the comprehensive security measures implemented in FairTr
 **Location:** `src/lib/security.ts`
 
 **Features:**
+
 - ✅ Zod schema validation for all user inputs
 - ✅ XSS protection via input sanitization
 - ✅ HTML tag stripping
@@ -18,6 +19,7 @@ This document outlines the comprehensive security measures implemented in FairTr
 - ✅ Recursive object sanitization
 
 **Usage:**
+
 ```typescript
 import { sanitizeInput, JobPostSchema } from '@/lib/security'
 
@@ -36,6 +38,7 @@ const cleanInput = sanitizeInput(userInput)
 **Location:** `src/lib/rateLimit.ts`
 
 **Features:**
+
 - ✅ Client-side rate limiting (localStorage-based)
 - ✅ Server-side ready (Redis interface)
 - ✅ Per-user tier limits (anonymous, authenticated, pro, operator)
@@ -43,12 +46,14 @@ const cleanInput = sanitizeInput(userInput)
 - ✅ Automatic cleanup of expired records
 
 **Rate Limits:**
+
 - Anonymous: 30 requests/minute
 - Authenticated: 120 requests/minute
 - Pro: 300 requests/minute
 - Operator: 500 requests/minute
 
 **Endpoint Limits:**
+
 - POST /api/jobs: 10/hour
 - POST /api/bids: 50/hour
 - POST /api/invoices: 30/hour
@@ -56,6 +61,7 @@ const cleanInput = sanitizeInput(userInput)
 - POST /api/contractor/invite: 10/month
 
 **Usage:**
+
 ```typescript
 import { checkRateLimit } from '@/lib/rateLimit'
 
@@ -71,6 +77,7 @@ if (!result.allowed) {
 **Location:** `src/lib/security.ts`
 
 **Features:**
+
 - ✅ File type validation
 - ✅ File size limits (150MB videos, 10MB images)
 - ✅ MIME type verification
@@ -78,11 +85,13 @@ if (!result.allowed) {
 - ✅ Dangerous file blocking
 
 **Allowed Types:**
+
 - Images: JPEG, PNG, WebP
 - Videos: MP4, WebM, QuickTime
 - Documents: PDF, XLSX, TXT
 
 **Usage:**
+
 ```typescript
 import { validateFile } from '@/lib/security'
 
@@ -97,6 +106,7 @@ if (!validation.valid) {
 **Location:** `src/lib/redis.ts`
 
 **Features:**
+
 - ✅ Client-side localStorage-based cache
 - ✅ Server-side Redis interface ready
 - ✅ TTL support
@@ -104,12 +114,14 @@ if (!validation.valid) {
 - ✅ Automatic expiration
 
 **Cache Instances:**
+
 - `liveStatsCache` - Live platform statistics
 - `jobsCache` - Job listings
 - `contractorCache` - Contractor data
 - `rateLimitCache` - Rate limit tracking
 
 **Usage:**
+
 ```typescript
 import { jobsCache } from '@/lib/redis'
 
@@ -125,6 +137,7 @@ await jobsCache.set('fresh:123', jobs, 300) // 5 minutes
 **Location:** `src/lib/optimizations.ts`
 
 **Features:**
+
 - ✅ Debouncing for search inputs
 - ✅ Throttling for scroll events
 - ✅ Memoization for expensive computations
@@ -135,6 +148,7 @@ await jobsCache.set('fresh:123', jobs, 300) // 5 minutes
 - ✅ Performance monitoring
 
 **Usage:**
+
 ```typescript
 import { useDebounce, useThrottle, useLazyImage } from '@/lib/optimizations'
 
@@ -155,6 +169,7 @@ const { src, loading, error } = useLazyImage(imageUrl)
 **Location:** `src/lib/security.ts`
 
 **Headers Implemented:**
+
 - ✅ X-Content-Type-Options: nosniff
 - ✅ X-Frame-Options: DENY
 - ✅ X-XSS-Protection: 1; mode=block
@@ -167,6 +182,7 @@ const { src, loading, error } = useLazyImage(imageUrl)
 **Location:** `src/lib/securityMiddleware.ts`
 
 **Features:**
+
 - ✅ Automatic rate limiting
 - ✅ Input sanitization
 - ✅ File validation
@@ -174,6 +190,7 @@ const { src, loading, error } = useLazyImage(imageUrl)
 - ✅ React hooks for easy integration
 
 **Usage:**
+
 ```typescript
 import { secureRequest, useSecureRequest } from '@/lib/securityMiddleware'
 
@@ -250,11 +267,13 @@ await uploadFile(file) // No validation
 When implementing server-side:
 
 1. Install Redis client:
+
 ```bash
 npm install ioredis
 ```
 
-2. Update `src/lib/redis.ts`:
+1. Update `src/lib/redis.ts`:
+
 ```typescript
 import Redis from 'ioredis'
 
@@ -268,7 +287,8 @@ class ServerRedisClient implements RedisClient {
 }
 ```
 
-3. Set environment variables:
+1. Set environment variables:
+
 ```env
 REDIS_HOST=your-redis-host
 REDIS_PORT=6379
@@ -399,4 +419,3 @@ test('rate limit blocks excessive requests', async () => {
 - [Scaling to 300K Users](./SCALING_300K_USERS.md)
 - [Implementation Status](./IMPLEMENTATION_STATUS.md)
 - [Security Best Practices](https://owasp.org/www-project-top-ten/)
-

@@ -177,7 +177,7 @@ const JobCard = memo(function JobCard({
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col relative ${isFresh ? "ring-2 ring-green-500/50 ring-offset-2" : ""}`}>
       {/* Priority Lead Banner for Operators */}
       {isPriorityLead && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-[#FFFF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-black shadow-[0_2px_0_#000]">
+        <div className="absolute top-0 left-0 right-0 z-10 bg-[#FFFF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-transparent dark:border-black shadow-[0_2px_0_#000]">
           <span className="font-black text-lg">⚡</span>
           <span className="font-black text-sm uppercase">PRIORITY LEAD - 10 MIN EARLY ACCESS</span>
         </div>
@@ -185,39 +185,42 @@ const JobCard = memo(function JobCard({
       
       {/* Fresh Job Banner */}
       {isFresh && !isPriorityLead && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-[#00FF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-black shadow-[0_2px_0_#000]">
+        <div className="absolute top-0 left-0 right-0 z-10 bg-[#00FF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-transparent dark:border-black shadow-[0_2px_0_#000]">
           <span className="font-black text-lg">⚡</span>
           <span className="font-black text-sm uppercase">FRESH JOB - FIRST TO BID GETS FEATURED!</span>
         </div>
       )}
 
-      {/* Hero Image Section */}
+      {/* Hero Image Section - Improved Layout */}
       {photos.length > 0 && photos[0] ? (
-        <div className="relative h-64 overflow-hidden bg-muted">
+        <div className="relative h-72 md:h-80 overflow-hidden bg-muted group/image-container">
           <button
             onClick={() => onViewPhotos(photos)}
-            className="relative w-full h-full group/image"
+            className="relative w-full h-full block"
           >
             {imageLoading[0] && !imageErrors[0] && (
               <Skeleton className="absolute inset-0 w-full h-full" />
             )}
             <img
               src={photos[0]}
-              alt="Job preview"
+              alt={`${job.title} - Job photo`}
               className={cn(
-                "w-full h-full object-cover transition-transform duration-500 group-hover/image:scale-110",
+                "w-full h-full object-cover transition-all duration-500",
+                "group-hover/image-container:scale-105",
                 imageLoading[0] && !imageErrors[0] && "opacity-0",
                 imageErrors[0] && "hidden"
               )}
               loading="lazy"
+              decoding="async"
               onLoadStart={() => setImageLoading(prev => ({ ...prev, 0: true }))}
               onError={(e) => {
                 const target = e.target as HTMLImageElement
                 setImageLoading(prev => ({ ...prev, 0: false }))
                 setImageErrors(prev => ({ ...prev, 0: true }))
-                if (!target.src.includes('placeholder') && !target.src.includes('data:')) {
+                // Try fallback image
+                if (!target.src.includes('placeholder') && !target.src.includes('data:') && !target.dataset.fallback) {
+                  target.dataset.fallback = 'true'
                   target.src = 'https://via.placeholder.com/800x600/cccccc/666666?text=Job+Photo'
-                  target.onerror = null
                 }
               }}
               onLoad={(e) => {
@@ -227,14 +230,15 @@ const JobCard = memo(function JobCard({
               }}
             />
             {imageErrors[0] && (
-              <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                <div className="text-center">
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
+                <div className="text-center p-4">
                   <Images size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
                   <div className="text-xs text-muted-foreground">Photo unavailable</div>
                 </div>
               </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+            {/* Gradient Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
             
             {/* Overlay Info */}
             <div className="absolute inset-0 p-5 flex flex-col justify-between text-white">
@@ -273,13 +277,13 @@ const JobCard = memo(function JobCard({
             </div>
             
             {/* Hover Overlay with Bid Button */}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="absolute inset-0 bg-black/70 opacity-0 group-hover/image-container:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   onPlaceBid(job)
                 }}
-                className="bg-white text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-[#00FF00] transition-colors shadow-2xl"
+                className="bg-white text-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-[#00FF00] transition-colors shadow-2xl pointer-events-auto"
               >
                 Place Bid • $0 Fee
               </button>
@@ -287,8 +291,8 @@ const JobCard = memo(function JobCard({
           </button>
         </div>
       ) : (
-        <div className="relative h-48 bg-muted flex items-center justify-center">
-          <div className="text-center">
+        <div className="relative h-48 md:h-56 bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+          <div className="text-center p-4">
             <Wrench size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
             <div className="text-xs text-muted-foreground">No photos available</div>
           </div>
@@ -1035,7 +1039,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[98vh] max-w-[98vw] lg:max-w-[1800px] xl:max-w-[95vw]">
           {/* Header Section - Fixed */}
-          <div className="px-10 pt-8 pb-6 border-b border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
+          <div className="px-10 pt-8 pb-6 border-b border-transparent dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-4xl md:text-5xl font-extrabold text-black dark:text-white mb-3">
                 Submit Your Bid
@@ -1169,7 +1173,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     jobPriceHigh={selectedJob.aiScope.priceHigh}
                     contractorWinRate={user.winRate}
                   />
-                    <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
+                    <div className="mt-4 pt-4 border-t border-transparent dark:border-white/10 space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Your Win Rate</span>
                         <span className="font-semibold text-foreground">{(user.winRate || 0).toFixed(1)}%</span>
@@ -1234,7 +1238,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     <div className="space-y-2">
                       <Label className="text-base font-medium text-black dark:text-white">Load Template (Optional)</Label>
                       <Select onValueChange={handleTemplateSelect}>
-                        <SelectTrigger className="h-12 text-base bg-white dark:bg-black border-black/10 dark:border-white/20">
+                        <SelectTrigger className="h-12 text-base bg-white dark:bg-black border-transparent dark:border-white/20">
                           <SelectValue placeholder="Choose a saved template..." />
                         </SelectTrigger>
                         <SelectContent>
@@ -1260,7 +1264,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       placeholder="Enter your bid amount"
                       value={bidAmount}
                       onChange={(e) => setBidAmount(e.target.value)}
-                      className="h-12 text-lg bg-white dark:bg-black border-black/10 dark:border-white/20"
+                      className="h-12 text-lg bg-white dark:bg-black border-transparent dark:border-white/20"
                     />
                     {selectedJob && (
                       <p className="text-sm text-muted-foreground">
@@ -1308,7 +1312,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
 
                   {/* Save as Template Option */}
                   {user.role === 'contractor' && bidMessage.trim() && (
-                    <div className="space-y-3 p-5 rounded-lg border border-black/20/10 dark:border-white/20 bg-white dark:bg-black">
+                    <div className="space-y-3 p-5 rounded-lg border border-transparent dark:border-white/20 bg-white dark:bg-black">
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"
@@ -1346,7 +1350,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     placeholder="Tell the homeowner about your experience, approach, and why you're the best fit..."
                     value={bidMessage}
                     onChange={(e) => setBidMessage(e.target.value)}
-                    className="flex-1 text-base bg-white dark:bg-black border-black/10 dark:border-white/20 resize-none min-h-[200px]"
+                    className="flex-1 text-base bg-white dark:bg-black border-transparent dark:border-white/20 resize-none min-h-[200px]"
                   />
                   <p className="text-sm text-muted-foreground">
                     💬 A compelling message helps you stand out
@@ -1359,7 +1363,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           </div>
 
           {/* Footer Section - Fixed */}
-          <div className="px-10 py-6 border-t border-black/10 dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
+          <div className="px-10 py-6 border-t border-transparent dark:border-white/10 bg-white dark:bg-black flex-shrink-0">
             <DialogFooter className="flex-col sm:flex-row gap-6 sm:justify-between items-start sm:items-center">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-lg font-semibold text-black dark:text-white">
@@ -1374,7 +1378,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <Button 
                   variant="outline" 
                   onClick={() => setDialogOpen(false)}
-                  className="h-14 px-10 text-lg font-semibold border-black/10 dark:border-white/20 flex-1 sm:flex-none"
+                  className="h-14 px-10 text-lg font-semibold border-transparent dark:border-white/20 flex-1 sm:flex-none"
                 >
                   Cancel
                 </Button>

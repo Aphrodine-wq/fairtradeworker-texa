@@ -10,14 +10,26 @@ import {
   TrendingUp,
   Activity,
   Database,
-  Server
+  Server,
+  Timer,
+  Play,
+  Pause,
+  Calculator,
+  Download,
+  Info,
+  Lightbulb
 } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, Job } from "@/lib/types"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { 
   ChartContainer, 
   ChartLegend, 
@@ -27,6 +39,7 @@ import {
 } from "@/components/ui/chart"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { containerVariants, itemVariants } from "@/lib/animations"
+import { cn } from "@/lib/utils"
 
 interface AdminDashboardProps {
   onNavigate: (page: string) => void
@@ -39,6 +52,13 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   const [isSimRunning, setIsSimRunning] = useState(true)
   const [speed, setSpeed] = useState<number>(60)
   const [variance, setVariance] = useState<number>(35)
+  
+  // Comprehensive revenue simulation controls for investors
+  const [simulationSpeed, setSimulationSpeed] = useState<number>(1) // 1x, 2x, 5x, 10x
+  const [timeRange, setTimeRange] = useState<number>(5) // 1, 3, or 5 years
+  const [monthlyGrowthRate, setMonthlyGrowthRate] = useState<number>(10) // percentage
+  const [churnRate, setChurnRate] = useState<number>(5) // percentage
+  const [selectedScenario, setSelectedScenario] = useState<'conservative' | 'moderate' | 'aggressive'>('moderate')
 
   const generateInitialSeries = useMemo(() => {
     const base = Date.now() - 29 * 1000
@@ -165,39 +185,189 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
           </div>
         </motion.div>
 
-        {/* Revenue Simulation (Admin-only) */}
+        {/* Revenue Simulation (Admin-only) - Enhanced for Investors */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mb-8"
         >
-          <Card className="border border-black/10 dark:border-white/10">
-            <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-              <div>
-                <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
-                  <ChartLine size={20} weight="duotone" />
-                  Revenue Simulation (Admin Demo)
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Links all outcomes into one chart. Control speed & variance for testing.
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <Badge variant="outline" className="text-xs">
-                  <Clock className="mr-1" size={14} />
-                  {simIntervalMs} ms interval
-                </Badge>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setIsSimRunning((r) => !r)}
-                >
-                  {isSimRunning ? "Pause" : "Resume"}
-                </Button>
-              </div>
+          <Card className="border-2 border-transparent dark:border-white">
+            <CardHeader>
+              <CardTitle className="text-xl md:text-2xl flex items-center gap-2">
+                <Calculator size={20} weight="duotone" className="text-primary" />
+                Revenue Simulation Controls (Investor Demo)
+              </CardTitle>
+              <CardDescription>
+                Comprehensive controls to demonstrate revenue projections and growth scenarios
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+              {/* Simulation Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Simulation Speed</Label>
+                  <Select value={simulationSpeed.toString()} onValueChange={(v) => setSimulationSpeed(Number(v))}>
+                    <SelectTrigger className="bg-white dark:bg-black border-transparent dark:border-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1x Speed</SelectItem>
+                      <SelectItem value="2">2x Speed</SelectItem>
+                      <SelectItem value="5">5x Speed</SelectItem>
+                      <SelectItem value="10">10x Speed</SelectItem>
+                      <SelectItem value="25">25x Speed</SelectItem>
+                      <SelectItem value="50">50x Speed</SelectItem>
+                      <SelectItem value="100">100x Speed ⚡</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Time Range</Label>
+                  <Select value={timeRange.toString()} onValueChange={(v) => setTimeRange(Number(v))}>
+                    <SelectTrigger className="bg-white dark:bg-black border-transparent dark:border-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 Year</SelectItem>
+                      <SelectItem value="3">3 Years</SelectItem>
+                      <SelectItem value="5">5 Years</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Monthly Growth Rate</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[monthlyGrowthRate]}
+                      onValueChange={(v) => setMonthlyGrowthRate(v[0])}
+                      min={1}
+                      max={30}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={monthlyGrowthRate}
+                      onChange={(e) => setMonthlyGrowthRate(Number(e.target.value))}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={1}
+                      max={30}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Churn Rate</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[churnRate]}
+                      onValueChange={(v) => setChurnRate(v[0])}
+                      min={0}
+                      max={20}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={churnRate}
+                      onChange={(e) => setChurnRate(Number(e.target.value))}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={0}
+                      max={20}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-muted-foreground">%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Playback Controls */}
+              <div className="flex items-center justify-center gap-4 p-4 bg-muted/30 rounded-lg">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsSimRunning(!isSimRunning)}
+                  className="bg-white dark:bg-black border-transparent dark:border-white"
+                >
+                  {isSimRunning ? <Pause size={16} className="mr-2" /> : <Play size={16} className="mr-2" />}
+                  {isSimRunning ? 'Pause' : 'Play'} Simulation
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setMonthlyGrowthRate(10)
+                    setChurnRate(5)
+                    setTimeRange(5)
+                    setSimulationSpeed(1)
+                    setSpeed(60)
+                    setVariance(35)
+                  }}
+                  className="bg-white dark:bg-black border-transparent dark:border-white"
+                >
+                  Reset to Defaults
+                </Button>
+              </div>
+
+              {/* Growth Scenario Selector */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'conservative' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('conservative')
+                    setMonthlyGrowthRate(5)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Conservative</h3>
+                    <p className="text-sm mb-2">5% monthly growth</p>
+                    <p className="text-xs opacity-80">Steady, sustainable expansion</p>
+                  </CardContent>
+                </Card>
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'moderate' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('moderate')
+                    setMonthlyGrowthRate(10)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Moderate</h3>
+                    <p className="text-sm mb-2">10% monthly growth</p>
+                    <p className="text-xs opacity-80">Balanced growth strategy</p>
+                  </CardContent>
+                </Card>
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'aggressive' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('aggressive')
+                    setMonthlyGrowthRate(15)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Aggressive</h3>
+                    <p className="text-sm mb-2">15% monthly growth</p>
+                    <p className="text-xs opacity-80">Rapid market expansion</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Real-time Chart */}
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                 <div className="lg:col-span-3">
                   <ChartContainer
@@ -260,31 +430,137 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                     <p className="text-xl font-semibold">${projectedRunRate.toLocaleString()}</p>
                     <p className="text-xs text-muted-foreground">Assumes latest point x12</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs font-medium">
-                      <span>Speed</span>
-                      <span>{speed}</span>
+                  <div className="p-4 rounded-lg border border-border bg-muted/50">
+                    <p className="text-sm text-muted-foreground mb-1">Chart Speed</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs font-medium">
+                        <span>Speed</span>
+                        <span>{speed}</span>
+                      </div>
+                      <Slider
+                        value={[speed]}
+                        min={1}
+                        max={100}
+                        step={1}
+                        onValueChange={([v]) => setSpeed(v)}
+                      />
                     </div>
-                    <Slider
-                      value={[speed]}
-                      min={1}
-                      max={100}
-                      step={1}
-                      onValueChange={([v]) => setSpeed(v)}
-                    />
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs font-medium">
-                      <span>Variance</span>
-                      <span>{variance}</span>
+                  <div className="p-4 rounded-lg border border-border bg-muted/50">
+                    <p className="text-sm text-muted-foreground mb-1">Variance</p>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs font-medium">
+                        <span>Variance</span>
+                        <span>{variance}</span>
+                      </div>
+                      <Slider
+                        value={[variance]}
+                        min={5}
+                        max={100}
+                        step={1}
+                        onValueChange={([v]) => setVariance(v)}
+                      />
                     </div>
-                    <Slider
-                      value={[variance]}
-                      min={5}
-                      max={100}
-                      step={1}
-                      onValueChange={([v]) => setVariance(v)}
-                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Projected Revenue Summary */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-muted-foreground mb-1">{timeRange}-Year Total</p>
+                    <p className="text-xl font-bold text-primary">
+                      ${(() => {
+                        const baseMRR = latestRevenue || 20000
+                        const growthRate = monthlyGrowthRate / 100
+                        let total = 0
+                        let mrr = baseMRR
+                        for (let month = 1; month <= timeRange * 12; month++) {
+                          mrr *= (1 + growthRate / 12)
+                          total += mrr
+                        }
+                        return total.toLocaleString(undefined, { maximumFractionDigits: 0 })
+                      })()}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">Cumulative revenue</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-muted-foreground mb-1">Year {timeRange} MRR</p>
+                    <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                      ${(() => {
+                        const baseMRR = latestRevenue || 20000
+                        const growthRate = monthlyGrowthRate / 100
+                        let mrr = baseMRR
+                        for (let month = 1; month <= timeRange * 12; month++) {
+                          mrr *= (1 + growthRate / 12)
+                        }
+                        return mrr.toLocaleString(undefined, { maximumFractionDigits: 0 })
+                      })()}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">Monthly recurring</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-muted-foreground mb-1">Growth Rate</p>
+                    <p className="text-xl font-bold text-black dark:text-white">
+                      {monthlyGrowthRate}%
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">Per month</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-muted-foreground mb-1">Churn Rate</p>
+                    <p className="text-xl font-bold text-black dark:text-white">
+                      {churnRate}%
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">Monthly</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Quick Insights Summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-8"
+        >
+          <Card className="border-2 border-transparent dark:border-white bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-blue-600 dark:bg-blue-400">
+                  <Lightbulb size={24} className="text-white dark:text-black" weight="duotone" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-white mb-2">Quick Insights</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-600 dark:text-gray-400">Platform Health</p>
+                      <p className="font-bold text-lg text-green-600 dark:text-green-400">Excellent</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500">All systems operational</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 dark:text-gray-400">Growth Trend</p>
+                      <p className="font-bold text-lg text-blue-600 dark:text-blue-400">
+                        {avgGrowth >= 0 ? '+' : ''}{avgGrowth.toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500">Last 30 data points</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 dark:text-gray-400">User Engagement</p>
+                      <p className="font-bold text-lg text-purple-600 dark:text-purple-400">
+                        {stats.proUsers > 0 ? ((stats.proUsers / stats.totalUsers) * 100).toFixed(1) : 0}%
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500">Pro conversion rate</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -304,7 +580,19 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Users</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Users</p>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info size={14} className="text-gray-400 cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Total number of registered users across all roles (homeowners, contractors, operators)
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <p className="text-3xl font-bold text-gray-900 dark:text-white">{stats.totalUsers}</p>
                   </div>
                   <Users size={32} className="text-gray-400" weight="duotone" />
@@ -340,7 +628,19 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Revenue</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Revenue</p>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info size={14} className="text-gray-400 cursor-help" />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Cumulative revenue from completed jobs with AI scoping. Based on high-end price estimates.
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                     <p className="text-3xl font-bold text-gray-900 dark:text-white">
                       ${(stats.totalRevenue / 1000).toFixed(1)}k
                     </p>

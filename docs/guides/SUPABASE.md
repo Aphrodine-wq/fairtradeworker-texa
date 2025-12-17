@@ -3,6 +3,7 @@
 ## Overview
 
 FairTradeWorker is migrating from localStorage to Supabase for all data persistence. This provides:
+
 - Real-time synchronization across devices
 - Better security with Row Level Security (RLS)
 - Scalable database architecture
@@ -52,6 +53,7 @@ Or manually run the SQL files in `supabase/migrations/` in order through the Sup
 ### Step 1: Database Setup
 
 Run all migration files in order:
+
 1. `001_initial_schema.sql` - Core tables
 2. `002_territories.sql` - Territory tables
 3. `003_crm_tables.sql` - CRM tables
@@ -67,12 +69,14 @@ Run all migration files in order:
 Replace `useLocalKV` with `useSupabaseKV`:
 
 **Before:**
+
 ```typescript
 import { useLocalKV } from '@/hooks/useLocalKV'
 const [data, setData] = useLocalKV<DataType>("key", defaultValue)
 ```
 
 **After:**
+
 ```typescript
 import { useSupabaseKV } from '@/hooks/useSupabaseKV'
 const [data, setData, loading] = useSupabaseKV<DataType>("key", defaultValue, {
@@ -164,6 +168,7 @@ async function migrateLocalStorageToSupabase() {
 ### Connection Issues
 
 If Supabase connection fails, the hook will fall back gracefully. Check:
+
 - Environment variables are set correctly
 - Supabase project is active
 - Network connectivity
@@ -171,6 +176,7 @@ If Supabase connection fails, the hook will fall back gracefully. Check:
 ### RLS Policy Errors
 
 If you get permission errors, check:
+
 - User is authenticated
 - RLS policies are set up correctly
 - User ID matches in queries
@@ -178,6 +184,7 @@ If you get permission errors, check:
 ### Migration Errors
 
 If migrations fail:
+
 - Check SQL syntax
 - Ensure tables don't already exist
 - Run migrations in order
@@ -194,6 +201,7 @@ If migrations fail:
 ## Support
 
 For issues, check:
-- Supabase documentation: https://supabase.com/docs
+
+- Supabase documentation: <https://supabase.com/docs>
 - Migration files in `supabase/migrations/`
 - Code examples in `src/hooks/useSupabaseKV.ts`

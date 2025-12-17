@@ -10,6 +10,7 @@
 ## 📁 PROJECT STRUCTURE
 
 ### Root Directory
+
 ```
 fairtradeworker-texa-main/
 ├── src/                    # Main source code
@@ -31,6 +32,7 @@ fairtradeworker-texa-main/
 ## 🎯 CORE ARCHITECTURE
 
 ### Technology Stack
+
 - **Frontend Framework:** React 19 with TypeScript 5.7
 - **Build Tool:** Vite 7.2
 - **Styling:** Tailwind CSS v4
@@ -42,6 +44,7 @@ fairtradeworker-texa-main/
 - **Deployment:** Vercel (serverless functions)
 
 ### Design System
+
 - **Style:** Brutalist design system
 - **Colors:** #FFFFFF, #000000, #00FF00, #FF0000, #FFFF00 only
 - **Borders:** 2-4px solid black
@@ -55,12 +58,14 @@ fairtradeworker-texa-main/
 ## 📂 SOURCE CODE STRUCTURE (`src/`)
 
 ### Main Entry Points
+
 - **`main.tsx`** - React app entry point, renders App component
 - **`App.tsx`** - Main application component, routing, state management
 - **`index.css`** - Global styles
 - **`main.css`** - Additional global styles
 
 ### Pages (`src/pages/`)
+
 14 page components (4,852 lines total):
 
 1. **Home.tsx** - Landing page with role selection
@@ -82,7 +87,9 @@ fairtradeworker-texa-main/
 ### Components (`src/components/`)
 
 #### UI Components (`src/components/ui/`)
+
 55 shadcn/ui components + custom components:
+
 - Standard shadcn components: Button, Card, Dialog, Input, Select, Tabs, etc.
 - Custom components:
   - **OptimizedImage.tsx** - Image loading with lazy loading and error handling
@@ -100,9 +107,11 @@ fairtradeworker-texa-main/
     - Feedback.tsx - Error states, toasts, confirmations
 
 #### Contractor Components (`src/components/contractor/`)
+
 95+ contractor-specific tools and features:
 
 **Construction CRM (NEW - December 2025):**
+
 - **ConstructionPipeline.tsx** - Project & bid pipeline (leads → bids → projects)
 - **ConstructionDocuments.tsx** - Construction document management (contracts, blueprints, change orders)
 - **ConstructionFinancials.tsx** - Job profitability, budget tracking, payment management
@@ -110,6 +119,7 @@ fairtradeworker-texa-main/
 - **ConstructionReporting.tsx** - Construction-specific reporting and forecasting
 
 **Enterprise CRM Features:**
+
 - **AIInsightsCRM.tsx** - AI-powered lead scoring, next-best-action, sentiment analysis
 - **AdvancedAnalyticsCRM.tsx** - Deep reporting, custom dashboards, sales forecasting
 - **IntegrationHub.tsx** - QuickBooks, Procore, and other integrations
@@ -121,6 +131,7 @@ fairtradeworker-texa-main/
 - **MobileCRM.tsx** - Mobile CRM with offline access and sync
 
 **Core Business Tools:**
+
 - **InvoiceManager.tsx** - Invoice creation and management
 - **EnhancedCRM.tsx** - Customer relationship management (main hub)
 - **EnhancedCRMDashboard.tsx** - CRM dashboard with customer list
@@ -132,6 +143,7 @@ fairtradeworker-texa-main/
 - **ReportingSuite.tsx** - Business reports and analytics
 
 **Pro Features (Subscription Required):**
+
 - **BidOptimizer.tsx** - AI bid optimization
 - **ChangeOrderBuilder.tsx** - Change order generation
 - **CrewDispatcher.tsx** - Subcontractor management
@@ -149,11 +161,13 @@ fairtradeworker-texa-main/
 - **ProSupportChat.tsx** - Pro support chat
 
 **Free Tools:**
+
 - **JobCostCalculator.tsx** - Profit margin calculator
 - **WarrantyTracker.tsx** - Warranty management
 - **QuickNotes.tsx** - Note-taking tool
 
 **Additional Tools:**
+
 - **RouteBuilder.tsx** - Route optimization
 - **BidIntelligence.tsx** - Bid insights
 - **PortfolioBuilder.tsx** - Portfolio management
@@ -175,7 +189,9 @@ fairtradeworker-texa-main/
 - **ReceptionistUpsell.tsx** - Receptionist upsell page
 
 #### Jobs Components (`src/components/jobs/`)
+
 15 job-related components:
+
 - **JobPoster.tsx** - Job posting interface
 - **BrowseJobs.tsx** - Job browsing and filtering
 - **JobCard.tsx** - Individual job card display
@@ -188,12 +204,14 @@ fairtradeworker-texa-main/
 - **BidIntelligence.tsx** - Bid insights
 
 #### Homeowner Components (`src/components/homeowner/`)
+
 - **SavedContractors.tsx** - Saved contractors list
 - **JobHistory.tsx** - Job history
 - **JobDrafts.tsx** - Draft job management
 - **PhotoAnnotator.tsx** - Photo annotation tool
 
 #### Shared Components (`src/components/shared/`)
+
 - **FreeToolsHub.tsx** - Free tools hub
 - **QuickNotes.tsx** - Shared notes component
 - **MaterialsPriceChecker.tsx** - Material pricing
@@ -206,6 +224,7 @@ fairtradeworker-texa-main/
 - **WeatherIntegration.tsx** - Weather integration
 
 #### Layout Components (`src/components/layout/`)
+
 - **Header.tsx** - Main navigation header
 - **Footer.tsx** - Site footer
 - **Breadcrumb.tsx** - Breadcrumb navigation
@@ -214,9 +233,11 @@ fairtradeworker-texa-main/
 - **PageTransition.tsx** - Page transitions
 
 #### Territory Components (`src/components/territory/`)
+
 - **TerritoryMap.tsx** - Territory map interface
 
 #### Viral Components (`src/components/viral/`)
+
 - **LiveStatsBar.tsx** - Live statistics bar
 - **ReferralCodeDisplay.tsx** - Referral code UI
 - **ContractorInvite.tsx** - Contractor invitation
@@ -228,11 +249,13 @@ fairtradeworker-texa-main/
 19 utility modules (3,770 lines):
 
 ### Core Libraries
+
 - **types.ts** - TypeScript type definitions (User, Job, Bid, Invoice, etc.)
 - **utils.ts** - Utility functions (cn helper, formatters, etc.)
 - **demoData.ts** - Seed data for demo mode (jobs, users, invoices, territories)
 
 ### Feature Libraries
+
 - **ai.ts** - AI scoping logic (simulation)
 - **receptionist.ts** - AI receptionist hooks and logic
 - **receptionistUpsell.ts** - Receptionist upsell logic
@@ -244,6 +267,7 @@ fairtradeworker-texa-main/
 - **competitiveAdvantage.ts** - Competitive features
 
 ### Infrastructure Libraries
+
 - **stripe.ts** - Stripe payment integration (ready for production)
 - **redis.ts** - Redis client (if needed)
 - **security.ts** - Security utilities
@@ -252,6 +276,7 @@ fairtradeworker-texa-main/
 - **serviceWorker.ts** - Service worker logic
 
 ### Performance Libraries
+
 - **performance.ts** - Performance optimizations
 - **optimizations.ts** - General optimizations
 - **imageCompression.ts** - Image compression
@@ -259,11 +284,13 @@ fairtradeworker-texa-main/
 - **video/types.ts** - Video type definitions
 
 ### UI Libraries
+
 - **animations.ts** - Framer Motion animation variants
 - **freeFeatures.ts** - Free features logic
 - **fixColors.ts** - Color fixes
 
 ### Sorting Libraries
+
 - **sorting/leadPriority.ts** - Lead priority sorting
 
 ---
@@ -286,6 +313,7 @@ fairtradeworker-texa-main/
 15 test files (5,265 lines, 130+ test cases):
 
 ### E2E Tests (`src/tests/e2e/`)
+
 - **authentication.test.tsx** - Auth flows
 - **contractorWorkflow.test.tsx** - Contractor workflows
 - **homeownerWorkflow.test.tsx** - Homeowner workflows
@@ -295,9 +323,11 @@ fairtradeworker-texa-main/
 - **integrationWorkflows.test.tsx** - Integration tests
 
 ### Integration Tests (`src/tests/integration/`)
+
 - **paymentProcessing.test.tsx** - Payment processing
 
 ### Unit Tests (`src/tests/unit/`)
+
 - **components/LiveStatsBar.test.tsx**
 - **components/ThemeToggle.test.tsx**
 - **features/zeroCostFeatures.test.ts**
@@ -305,6 +335,7 @@ fairtradeworker-texa-main/
 - **lib/viral.test.ts**
 
 ### Test Helpers (`src/tests/helpers/`)
+
 - **testData.ts** - Test data generators
 
 ---
@@ -314,27 +345,34 @@ fairtradeworker-texa-main/
 ### Core Types (`src/lib/types.ts`)
 
 **User Types:**
+
 - `UserRole`: 'homeowner' | 'contractor' | 'operator'
 - `User`: Complete user object with profile, settings, performance metrics
 
 **Job Types:**
+
 - `JobSize`: 'small' | 'medium' | 'large'
 - `JobTier`: 'QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT'
 - `Job`: Complete job object with AI scope, bids, milestones, etc.
 
 **Bid Types:**
+
 - `Bid`: Bid object with amount, message, status
 
 **Invoice Types:**
+
 - `Invoice`: Invoice with line items, payments, status
 
 **Territory Types:**
+
 - `Territory`: Territory object with operator info
 
 **Milestone Types:**
+
 - `Milestone`: Payment milestone for large jobs
 
 **Additional Types:**
+
 - `BidTemplate`, `ReferralCode`, `ProjectUpdate`, `ScopeChange`, etc.
 
 ---
@@ -344,6 +382,7 @@ fairtradeworker-texa-main/
 ### Route Configuration (`src/App.tsx`)
 
 **Page Type Definition:**
+
 ```typescript
 type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 
   'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 
@@ -362,6 +401,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 ```
 
 **Navigation Handler:**
+
 - `handleNavigate(page: string, role?: string, jobId?: string)`
 - Updates `currentPage` state
 - Scrolls to top
@@ -369,6 +409,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 - Handles job selection
 
 **Route Protection:**
+
 - Role-based access control
 - Redirects to home if unauthorized
 - Demo mode support
@@ -378,6 +419,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 ## 💾 STATE MANAGEMENT
 
 ### Local Storage (Primary)
+
 - **Hook:** `useLocalKV<T>(key: string, defaultValue: T)`
 - **Storage:** Spark KV (production) / localStorage (development)
 - **Data Stored:**
@@ -390,11 +432,13 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
   - `users` - All users (demo mode)
 
 ### Component State
+
 - React `useState` for local component state
 - React `useMemo` for computed values
 - React `useCallback` for memoized functions
 
 ### Global State
+
 - Managed in `App.tsx` via `useState` and `useLocalKV`
 - No external state management library (Redux, Zustand, etc.)
 
@@ -403,11 +447,13 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 ## 🎨 STYLING SYSTEM
 
 ### Tailwind CSS v4
+
 - **Configuration:** `tailwind.config.js` (if exists)
 - **Custom Colors:** Defined in `src/index.css` or `src/main.css`
 - **Design Tokens:** Brutalist design system enforced
 
 ### CSS Files
+
 - **index.css** - Base styles, Tailwind imports
 - **main.css** - Additional global styles
 - **styles/glass.css** - Glass morphism styles
@@ -415,6 +461,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 - **styles/ios.css** - iOS-specific styles
 
 ### Component Styling
+
 - Utility-first Tailwind classes
 - `cn()` helper for conditional classes
 - Dark mode via `dark:` prefix
@@ -425,16 +472,19 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 ## 🔌 API INTEGRATIONS
 
 ### Backend API (`api/`)
+
 - **receptionist/inbound.ts** - Twilio webhook handler for AI receptionist
 - Serverless functions on Vercel
 
 ### External Services (Ready for Integration)
+
 - **Stripe** - Payment processing (`src/lib/stripe.ts`)
 - **OpenAI** - GPT-4 Vision + Whisper (ready in `src/lib/ai.ts`)
 - **Twilio** - SMS service (ready in `src/lib/receptionist.ts`)
 - **SendGrid** - Email service (ready for integration)
 
 ### Current Implementation
+
 - All APIs currently simulated/mocked
 - Real integrations ready to be connected
 - No backend database required (client-side only)
@@ -444,6 +494,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 ## 📊 DATA FLOW
 
 ### Job Creation Flow
+
 ```
 User Input (photos/video/audio/text)
   ↓
@@ -459,6 +510,7 @@ Displayed in BrowseJobs
 ```
 
 ### Bid Submission Flow
+
 ```
 Contractor Views Job
   ↓
@@ -476,6 +528,7 @@ Homeowner Sees Bid
 ```
 
 ### Payment Flow
+
 ```
 Job Completed
   ↓
@@ -497,6 +550,7 @@ Invoice Status Updated
 ## 🎯 KEY FEATURES BY CATEGORY
 
 ### Marketplace Features
+
 - Job posting (universal input: video/audio/photo/text)
 - AI job scoping (60-second simulation)
 - Three-tier job system (small/medium/large)
@@ -508,6 +562,7 @@ Invoice Status Updated
 - Priority leads (operators)
 
 ### Business Tools (Contractors/Operators)
+
 - **Free Tools (18):**
   - Invoice Generator
   - Expense Tracker
@@ -536,6 +591,7 @@ Invoice Status Updated
   - Follow-Up Automator
 
 ### Homeowner Features
+
 - Job posting
 - Bid review and acceptance
 - Project tracking
@@ -546,6 +602,7 @@ Invoice Status Updated
 - Free tools access
 
 ### Operator Features
+
 - Territory management
 - Territory map
 - Territory analytics
@@ -557,6 +614,7 @@ Invoice Status Updated
 ## 🧩 COMPONENT PATTERNS
 
 ### Component Structure
+
 ```typescript
 // Standard component pattern
 export function ComponentName({ prop1, prop2 }: ComponentProps) {
@@ -576,11 +634,13 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ```
 
 ### Memoization
+
 - `memo()` for expensive components
 - `useMemo()` for computed values
 - `useCallback()` for event handlers
 
 ### Lazy Loading
+
 - All pages lazy-loaded via `React.lazy()`
 - `retryImport()` wrapper for chunk load error handling
 - Suspense boundaries for loading states
@@ -590,16 +650,19 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🔐 SECURITY CONSIDERATIONS
 
 ### Client-Side Only
+
 - No backend authentication required
 - All data stored in local storage
 - Demo mode available for testing
 
 ### Data Validation
+
 - TypeScript type checking
 - Form validation in components
 - Input sanitization (where needed)
 
 ### Future Security (Production)
+
 - JWT authentication (ready for integration)
 - API rate limiting (`src/lib/rateLimit.ts`)
 - Security middleware (`src/lib/securityMiddleware.ts`)
@@ -609,12 +672,14 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 📱 RESPONSIVE DESIGN
 
 ### Breakpoints
+
 - Mobile: Default (< 768px)
 - Tablet: `md:` (768px+)
 - Desktop: `lg:` (1024px+)
 - Large Desktop: `xl:` (1280px+)
 
 ### Mobile Optimizations
+
 - `useIOSOptimizations()` hook
 - iOS-specific styles (`styles/ios.css`)
 - Touch-friendly button sizes (44px minimum)
@@ -625,22 +690,26 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🚀 PERFORMANCE OPTIMIZATIONS
 
 ### Code Splitting
+
 - Route-based code splitting
 - Component lazy loading
 - Dynamic imports for heavy components
 
 ### Image Optimization
+
 - `OptimizedImage` component
 - Lazy loading
 - Error handling
 - Placeholder fallbacks
 
 ### Data Optimization
+
 - Local storage caching
 - Memoized computations
 - Optimistic updates
 
 ### Animation Performance
+
 - Simplified animations (removed blur effects)
 - CSS transitions where possible
 - Framer Motion for complex animations
@@ -650,16 +719,19 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🧪 TESTING STRATEGY
 
 ### Test Types
+
 - **E2E Tests:** Complete user workflows
 - **Integration Tests:** Feature integration
 - **Unit Tests:** Component and utility functions
 
 ### Test Coverage
+
 - 130+ test cases
 - All user types covered
 - Critical workflows tested
 
 ### Test Data
+
 - `src/tests/helpers/testData.ts` - Test data generators
 - Demo data for realistic testing
 
@@ -668,17 +740,20 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 📝 CODE QUALITY
 
 ### TypeScript
+
 - 100% TypeScript (zero JavaScript)
 - Strict type checking
 - Comprehensive type definitions
 
 ### Code Organization
+
 - Feature-based component organization
 - Shared utilities in `lib/`
 - Reusable hooks in `hooks/`
 - Clear separation of concerns
 
 ### Best Practices
+
 - React best practices
 - Component composition
 - Custom hooks for reusable logic
@@ -689,18 +764,21 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🔄 DEPLOYMENT
 
 ### Vercel Configuration
+
 - **File:** `vercel.json`
 - Serverless functions in `api/`
 - Static site generation
 - Automatic deployments on git push
 
 ### Build Process
+
 - Vite build tool
 - TypeScript compilation
 - Code splitting
 - Asset optimization
 
 ### Environment
+
 - Production: Vercel
 - Development: Local Vite dev server
 - No separate staging environment
@@ -710,6 +788,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🎓 LEARNING RESOURCES
 
 ### Key Concepts
+
 - **Brutalist Design:** Strict design system enforcement
 - **Zero Fees:** Core business model (contractors keep 100%)
 - **AI Scoping:** 60-second job scoping simulation
@@ -717,6 +796,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 - **Territory System:** 254 Texas counties for operators
 
 ### Design Patterns
+
 - Component composition
 - Custom hooks
 - Local storage state management
@@ -728,12 +808,14 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🔮 FUTURE ENHANCEMENTS
 
 ### Production Integrations Needed
+
 - Stripe payment processing
 - OpenAI GPT-4 Vision + Whisper
 - Twilio SMS service
 - SendGrid email service
 
 ### Potential Improvements
+
 - Backend database integration
 - Real-time updates (WebSockets)
 - Advanced analytics
@@ -756,30 +838,35 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🎯 KEY FILES TO UNDERSTAND
 
 ### Entry Points
+
 1. `src/main.tsx` - App entry
 2. `src/App.tsx` - Main app component, routing
 
 ### Core Logic
+
 3. `src/lib/types.ts` - All type definitions
-4. `src/lib/demoData.ts` - Seed data
-5. `src/lib/utils.ts` - Utility functions
+2. `src/lib/demoData.ts` - Seed data
+3. `src/lib/utils.ts` - Utility functions
 
 ### Key Components
+
 6. `src/components/jobs/BrowseJobs.tsx` - Job browsing
-7. `src/components/jobs/JobPoster.tsx` - Job posting
-8. `src/pages/BusinessTools.tsx` - Business tools hub
-9. `src/components/contractor/EnhancedCRM.tsx` - CRM
-10. `src/components/contractor/InvoiceManager.tsx` - Invoicing
+2. `src/components/jobs/JobPoster.tsx` - Job posting
+3. `src/pages/BusinessTools.tsx` - Business tools hub
+4. `src/components/contractor/EnhancedCRM.tsx` - CRM
+5. `src/components/contractor/InvoiceManager.tsx` - Invoicing
 
 ### State Management
+
 11. `src/hooks/useLocalKV.ts` - Storage hook
-12. `src/App.tsx` - Global state
+2. `src/App.tsx` - Global state
 
 ---
 
 ## 💡 DEVELOPMENT NOTES
 
 ### Adding New Features
+
 1. Create component in appropriate directory
 2. Add route to `App.tsx` Page type and switch statement
 3. Add navigation link in `Header.tsx` if needed
@@ -787,6 +874,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 5. Add to BusinessTools if it's a business tool
 
 ### Adding New Business Tools
+
 1. Create component in `src/components/contractor/`
 2. Add to `BusinessTools.tsx` tools array
 3. Add route mapping in `handleToolClick`
@@ -794,6 +882,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 5. Lazy load in `App.tsx` imports
 
 ### Styling Guidelines
+
 - Follow Brutalist design system strictly
 - Use Tailwind utility classes
 - No gradients, no transparency
@@ -805,11 +894,13 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 🐛 KNOWN ISSUES & TODOS
 
 ### Current Issues
+
 - Some business tools may route back to BusinessTools (needs verification)
 - TypeScript errors in `api/receptionist/inbound.ts` (backend, doesn't affect frontend)
 - Test coverage could be expanded
 
 ### Recent Fixes (December 2025)
+
 - ✅ Image loading on job posts
 - ✅ Animation issues (removed blur effects)
 - ✅ Homepage card animations
@@ -825,6 +916,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 ## 📚 ADDITIONAL DOCUMENTATION
 
 See `docs/` directory for:
+
 - Feature implementation status
 - Technical specifications
 - Roadmaps
@@ -840,12 +932,14 @@ See `docs/` directory for:
 ### Fully Implemented Tools (Have Dedicated Components & Routes)
 
 **Finance Category:**
+
 - ✅ Invoice Generator (`InvoiceManager.tsx`) - Route: `invoices`
 - ✅ Expense Tracker (`EnhancedExpenseTracking.tsx`) - Route: `expenses`
 - ✅ Tax Helper (`TaxHelper.tsx`) - Route: `tax-helper`
 - ✅ Payment Processing (`PaymentProcessing.tsx`) - Route: `payments`
 
 **Sales & CRM Category:**
+
 - ✅ CRM (`EnhancedCRM.tsx`) - Route: `crm`
 - ✅ Construction Pipeline (`ConstructionPipeline.tsx`) - Route: `crm` (pipeline tab)
 - ✅ Construction Documents (`ConstructionDocuments.tsx`) - Route: `crm` (documents tab)
@@ -871,12 +965,14 @@ See `docs/` directory for:
 - ✅ Priority Alerts (`PriorityJobAlerts.tsx`) - Route: `priority-alerts`
 
 **Management Category:**
+
 - ✅ Document Manager (`DocumentManager.tsx`) - Route: `documents`
 - ✅ Scheduling Calendar (`EnhancedSchedulingCalendar.tsx`) - Route: `calendar`
 - ✅ Communication Hub (`CommunicationHub.tsx`) - Route: `communication`
 - ✅ Notification Center (`NotificationCenter.tsx`) - Route: `notifications`
 
 **Operations Category:**
+
 - ✅ Change Order Builder (`ChangeOrderBuilder.tsx`) - Route: `change-order`
 - ✅ Crew Dispatcher (`CrewDispatcher.tsx`) - Route: `crew-dispatcher`
 - ✅ Inventory Management (`InventoryManagement.tsx`) - Route: `inventory`
@@ -884,12 +980,15 @@ See `docs/` directory for:
 - ✅ Compliance Tracker (`ComplianceTracker.tsx`) - Route: `compliance`
 
 **Analytics Category:**
+
 - ✅ Reporting Suite (`ReportingSuite.tsx`) - Route: `reports`
 
 **Automation Category:**
+
 - ✅ Workflow Automation (`WorkflowAutomation.tsx`) - Route: `automation`
 
 **Additional Pro Tools:**
+
 - ✅ Seasonal Forecast (`SeasonalDemandForecast.tsx`) - Route: `seasonal-forecast`
 - ✅ Multi Invoice (`MultiJobInvoicing.tsx`) - Route: `multi-invoice`
 - ✅ Custom Fields (`CustomFieldsTags.tsx`) - Route: `custom-fields`
@@ -905,6 +1004,7 @@ See `docs/` directory for:
 - ✅ Receptionist Upsell (`ReceptionistUpsell.tsx`) - Route: `receptionist-upsell`
 
 ### Free Tools (Homeowners & Contractors)
+
 - ✅ Job Cost Calculator (`JobCostCalculator.tsx`) - Route: `free-tools`
 - ✅ Warranty Tracker (`WarrantyTracker.tsx`) - Route: `free-tools`
 - ✅ Quick Notes (`QuickNotes.tsx`) - Route: `free-tools`
@@ -916,6 +1016,7 @@ See `docs/` directory for:
 ## 📊 DATA MODELS
 
 ### User Model
+
 ```typescript
 interface User {
   id: string
@@ -948,6 +1049,7 @@ interface User {
 ```
 
 ### Job Model
+
 ```typescript
 interface Job {
   id: string
@@ -1007,6 +1109,7 @@ interface Job {
 ```
 
 ### Bid Model
+
 ```typescript
 interface Bid {
   id: string
@@ -1021,6 +1124,7 @@ interface Bid {
 ```
 
 ### Invoice Model
+
 ```typescript
 interface Invoice {
   id: string
@@ -1049,6 +1153,7 @@ interface Invoice {
 ### Brutalist Design Rules (STRICTLY ENFORCED)
 
 **Colors:**
+
 - Primary: #000000 (black)
 - Background: #FFFFFF (white) / #000000 (dark mode)
 - Accent: #00FF00 (green)
@@ -1057,33 +1162,39 @@ interface Invoice {
 - NO other colors allowed
 
 **Borders:**
+
 - Standard: `border-2 border-black` (2px solid black)
 - Emphasis: `border-4 border-black` (4px solid black)
 - Dark mode: `border-white` instead of `border-black`
 
 **Shadows:**
+
 - Standard: `shadow-[4px_4px_0_#000]` (hard shadow, 4px offset)
 - Large: `shadow-[8px_8px_0_#000]` (hard shadow, 8px offset)
 - Colored: `shadow-[4px_4px_0_#00FF00]` (green shadow)
 - NO soft shadows, NO blur
 
 **Typography:**
+
 - Headings: `font-black uppercase` (font-black, uppercase)
 - Data: `font-mono` (monospace)
 - Body: Default font (Inter)
 - NO italic (except for emphasis in specific cases)
 
 **Spacing:**
+
 - Consistent use of Tailwind spacing scale
 - `p-[1pt]` for container padding (1 pixel)
 - Standard padding: `p-4`, `p-6`, `p-8`
 
 **Corners:**
+
 - `rounded-none` (square corners)
 - `rounded-sm` (slight rounding, minimal use)
 - NO rounded-md, rounded-lg, etc.
 
 **Transparency:**
+
 - NO transparency
 - NO gradients
 - 100% opaque backgrounds only
@@ -1094,6 +1205,7 @@ interface Invoice {
 ## 🔄 STATE MANAGEMENT PATTERNS
 
 ### useLocalKV Hook
+
 ```typescript
 const [data, setData] = useLocalKV<DataType>("key", defaultValue)
 
@@ -1103,12 +1215,14 @@ const [currentUser, setCurrentUser] = useLocalKV<User | null>("current-user", nu
 ```
 
 **Storage Backend:**
+
 - Production: Spark KV (serverless key-value store)
 - Development: localStorage
 - Automatic persistence
 - Type-safe with TypeScript generics
 
 ### Component State Patterns
+
 ```typescript
 // Local state
 const [isOpen, setIsOpen] = useState(false)
@@ -1129,6 +1243,7 @@ const handleClick = useCallback(() => {
 ## 🧩 COMPONENT ARCHITECTURE
 
 ### Component Organization Principles
+
 1. **Feature-based grouping** - Components organized by feature area
 2. **Reusability** - Shared components in `components/shared/`
 3. **Role-specific** - Contractor/homeowner/operator components separated
@@ -1137,18 +1252,21 @@ const handleClick = useCallback(() => {
 ### Component Patterns
 
 **Page Components:**
+
 - Located in `src/pages/`
 - Handle routing and layout
 - Manage page-level state
 - Compose feature components
 
 **Feature Components:**
+
 - Located in `src/components/{category}/`
 - Self-contained features
 - Accept user prop
 - Handle their own state
 
 **UI Components:**
+
 - Located in `src/components/ui/`
 - Reusable primitives
 - Follow shadcn/ui patterns
@@ -1159,18 +1277,21 @@ const handleClick = useCallback(() => {
 ## 🚀 BUILD & DEPLOYMENT
 
 ### Build Process
+
 1. **TypeScript Compilation** - `tsc -b --noCheck`
 2. **Vite Build** - `vite build`
 3. **Code Splitting** - Automatic via Vite
 4. **Asset Optimization** - Automatic via Vite
 
 ### Vercel Configuration
+
 - **Framework:** Vite
 - **Build Command:** `npm run build`
 - **Output Directory:** `dist`
 - **Serverless Functions:** `api/` directory
 
 ### Environment Variables
+
 - Currently: None required (client-side only)
 - Future: API keys for Stripe, OpenAI, Twilio, SendGrid
 
@@ -1179,11 +1300,13 @@ const handleClick = useCallback(() => {
 ## 🧪 TESTING ARCHITECTURE
 
 ### Test Organization
+
 - **E2E Tests:** Complete user workflows
 - **Integration Tests:** Feature integration
 - **Unit Tests:** Component and utility functions
 
 ### Test Patterns
+
 ```typescript
 // E2E Test Example
 describe('Job Posting Flow', () => {
@@ -1201,6 +1324,7 @@ describe('calculateJobSize', () => {
 ```
 
 ### Test Data
+
 - `src/tests/helpers/testData.ts` - Test data generators
 - Demo data for realistic scenarios
 - Mock data for API calls
@@ -1210,11 +1334,13 @@ describe('calculateJobSize', () => {
 ## 📱 MOBILE CONSIDERATIONS
 
 ### iOS App
+
 - Separate React Native app in `ios-app/`
 - Shared types and business logic
 - Platform-specific UI components
 
 ### Web Mobile
+
 - Responsive design with Tailwind breakpoints
 - Touch-friendly interactions (44px minimum)
 - iOS-specific optimizations via `useIOSOptimizations()`
@@ -1226,22 +1352,26 @@ describe('calculateJobSize', () => {
 ### Ready for Production Integration
 
 **Stripe Payments:**
+
 - File: `src/lib/stripe.ts`
 - Payment processing ready
 - Invoice payment integration
 - Subscription management
 
 **OpenAI APIs:**
+
 - GPT-4 Vision for photo scoping
 - Whisper for audio transcription
 - File: `src/lib/ai.ts` (simulation ready)
 
 **Twilio:**
+
 - SMS notifications
 - AI Receptionist phone calls
 - File: `api/receptionist/inbound.ts`
 
 **SendGrid:**
+
 - Email notifications
 - Automated follow-ups
 - Ready for integration
@@ -1253,21 +1383,25 @@ describe('calculateJobSize', () => {
 ### Common Issues
 
 **Chunk Load Errors:**
+
 - Handled by `retryImport()` wrapper
 - Automatic page reload on failure
 - Retry logic with exponential backoff
 
 **Image Loading:**
+
 - `OptimizedImage` component handles errors
 - Placeholder fallbacks
 - Lazy loading for performance
 
 **State Persistence:**
+
 - `useLocalKV` handles storage
 - Automatic sync on changes
 - Error handling built-in
 
 ### Development Tools
+
 - React DevTools
 - TypeScript compiler
 - Vite HMR (Hot Module Replacement)
@@ -1297,24 +1431,28 @@ When adding new features:
 ## 🎯 KEY DECISIONS & RATIONALE
 
 ### Why Client-Side Only?
+
 - Faster development
 - Lower infrastructure costs
 - Better privacy (data stays local)
 - Easier to scale (static hosting)
 
 ### Why Local Storage?
+
 - No backend required
 - Works offline
 - Fast access
 - Simple implementation
 
 ### Why Brutalist Design?
+
 - Distinctive brand identity
 - Fast loading (no complex styles)
 - Accessible (high contrast)
 - Memorable user experience
 
 ### Why TypeScript 100%?
+
 - Type safety
 - Better IDE support
 - Easier refactoring
@@ -1324,22 +1462,26 @@ When adding new features:
 
 ## 🔍 CODE EXPLORATION GUIDE
 
-### To Understand Job Posting:
+### To Understand Job Posting
+
 1. Read `src/components/jobs/JobPoster.tsx`
 2. Check `src/lib/ai.ts` for scoping logic
 3. See `src/lib/demoData.ts` for job structure
 
-### To Understand Bidding:
+### To Understand Bidding
+
 1. Read `src/components/jobs/BrowseJobs.tsx`
 2. Check `JobCard` component
 3. See bid submission logic
 
-### To Understand Business Tools:
+### To Understand Business Tools
+
 1. Read `src/pages/BusinessTools.tsx`
 2. Check route mapping
 3. See individual tool components
 
-### To Understand State:
+### To Understand State
+
 1. Read `src/hooks/useLocalKV.ts`
 2. Check `src/App.tsx` for global state
 3. See component-level state patterns
@@ -1349,18 +1491,21 @@ When adding new features:
 ## 💡 DEVELOPMENT TIPS
 
 ### Performance
+
 - Use `memo()` for expensive components
 - Use `useMemo()` for computed values
 - Lazy load heavy components
 - Optimize images
 
 ### Code Quality
+
 - Follow TypeScript strict mode
 - Use meaningful variable names
 - Add comments for complex logic
 - Keep components focused
 
 ### Design Consistency
+
 - Always use Brutalist design rules
 - Use `cn()` helper for conditional classes
 - Follow existing patterns

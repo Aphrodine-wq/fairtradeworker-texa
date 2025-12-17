@@ -31,13 +31,6 @@ export function ThemeToggle() {
     setIsDark(newTheme)
     localStorage.setItem('theme', newTheme ? 'dark' : 'light')
     
-<<<<<<< Updated upstream
-    // Use requestAnimationFrame for smoother transition start
-    requestAnimationFrame(() => {
-      document.documentElement.classList.toggle('dark', newTheme)
-      updateThemeColor(newTheme)
-    })
-=======
     // Add transition state class for smoother transitions
     document.documentElement.classList.add('theme-transitioning')
     
@@ -49,7 +42,6 @@ export function ThemeToggle() {
     setTimeout(() => {
       document.documentElement.classList.remove('theme-transitioning')
     }, 600) // Match longest transition duration
->>>>>>> Stashed changes
   }
 
   return (

@@ -5,21 +5,25 @@ This folder contains database migrations for FairTradeWorker using Supabase.
 ## Setup Instructions
 
 1. **Install Supabase CLI:**
+
    ```bash
    npm install -g supabase
    ```
 
 2. **Initialize Supabase (if not already done):**
+
    ```bash
    supabase init
    ```
 
 3. **Link to your Supabase project:**
+
    ```bash
    supabase link --project-ref your-project-ref
    ```
 
 4. **Run migrations:**
+
    ```bash
    supabase db push
    ```

@@ -19,12 +19,6 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
   const [jobs] = useKV<Job[]>("jobs", [])
   const [currentUser] = useKV<User | null>("current-user", null)
 
-  const todayJobs = useMemo(() => {
-    if (!jobs || jobs.length === 0) return []
-    const today = new Date().toDateString()
-    return jobs.filter((job) => new Date(job.createdAt).toDateString() === today)
-  }, [jobs])
-
 
   return (
     <div
@@ -44,6 +38,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <ServiceCategories onNavigate={onNavigate} />
 
         <FeatureSection
+          onNavigate={onNavigate}
           features={[
             { title: "AI Scoping", description: "Smart Claude Tiering routes simple vs. complex scopes with budget guardrails.", icon: Brain },
             { title: "Smart Invoicing", description: "Automated invoices with late fees, reminders, and recurring billing.", icon: FileText },
@@ -83,12 +78,6 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
             I'm an Operator
           </Button>
         </div>
-
-        <Card className="mb-12 p-6 glass-card">
-          <p className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white text-center">
-            Jobs posted today: <span>{todayJobs.length}</span>
-          </p>
-        </Card>
 
         {onDemoLogin && (
           <Card className="mt-8 p-6 glass-card">
@@ -139,6 +128,16 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           >
             View Full Pricing Details
           </Button>
+          {currentUser && (
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-14 px-8 text-lg font-semibold mt-4"
+              onClick={() => onNavigate("pro-upgrade")}
+            >
+              Upgrade to Pro
+            </Button>
+          )}
         </Card>
         
         <RatingSection />

@@ -344,6 +344,7 @@ Based on comparable construction tech startups:
 ### 🔧 Critical Backend Integrations (Not Implemented)
 
 #### 1. Server-Side Redis
+
 **File**: `src/lib/redis.ts`  
 **Status**: 🔴 Stub only - throws errors
 
@@ -362,6 +363,7 @@ Based on comparable construction tech startups:
 **Impact**: No server-side caching, rate limiting is client-only
 
 #### 2. Real SMS Sending
+
 **File**: `src/components/contractor/IntegratedScheduler.tsx`  
 **Status**: 🔴 Console.log only
 
@@ -373,6 +375,7 @@ console.log(`SMS to ${crew.phone}:`, message)
 **Impact**: No crew notifications, job reminders, or alerts
 
 #### 3. OpenAI Integration
+
 **Files**: Multiple  
 **Status**: 🔴 Simulated with delays
 
@@ -384,6 +387,7 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 **Impact**: Photo scoping, bid suggestions, and chat AI are fake
 
 #### 4. Real Payment Processing
+
 **File**: `src/components/invoices/ClientPaymentPortal.tsx`  
 **Status**: 🔴 Mock only
 
@@ -396,57 +400,69 @@ await new Promise(resolve => setTimeout(resolve, 2000))
 ### 📋 Features Started But Not Completed
 
 #### 1. Materials Price Checker
+
 **Location**: `src/components/shared/MaterialsPriceChecker.tsx`  
 **Lines**: 200+  
 **What's Done**: UI, mock material database  
-**What's Missing**: 
+**What's Missing**:
+
 - Real supplier API integration (Ferguson, HD Pro)
 - Live pricing updates
 - Order placement
 - Delivery tracking
 
 #### 2. Weather Integration
+
 **Location**: `src/components/shared/WeatherIntegration.tsx`  
 **Lines**: 150+  
 **What's Done**: UI for weather display, alerts  
 **What's Missing**:
+
 - Actual weather API calls
 - Real geocoding (currently simplified)
 - 7-day forecast integration
 
 #### 3. Job Map
+
 **Location**: `src/components/jobs/JobMap.tsx`  
 **Lines**: 100+  
 **What's Done**: Map component structure  
 **What's Missing**:
+
 - Real geocoding for addresses
 - Route visualization
 - Clustering for multiple jobs
 
 #### 4. In-App Messaging
+
 **Location**: `src/components/shared/InAppMessaging.tsx`  
 **Lines**: 250+  
 **What's Done**: Chat UI, message display  
 **What's Missing**:
+
 - WebSocket real-time messaging
 - Push notifications
 - Read receipts
 - File attachments
 
 #### 5. Project Story Generator
+
 **Location**: `src/components/viral/ProjectStoryGenerator.tsx`  
 **Lines**: 606  
 **What's Done**: Full UI for before/after stories  
 **What's Missing**:
+
 - GPT-4 story generation
 - Image processing/watermarking
 - Social media API posting
 
 #### 6. Invoice Payment Links
+
 **Location**: `src/lib/invoiceHelpers.ts`  
 **Lines**: 150+  
 **What's Done**: Link generation logic  
 **What's Missing**:
+
 - Stripe payment links API
 - Email delivery
 - Payment status webhooks

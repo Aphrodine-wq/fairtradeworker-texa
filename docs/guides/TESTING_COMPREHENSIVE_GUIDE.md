@@ -49,6 +49,7 @@ npm run test -- --grep "navigation"
 ### Test Configuration
 
 Tests are configured in `vitest.config.ts`:
+
 - **Environment**: jsdom (for DOM testing)
 - **Framework**: Vitest with React Testing Library
 - **Mocking**: Spark KV store for data persistence
@@ -61,6 +62,7 @@ Tests are configured in `vitest.config.ts`:
 #### Component Tests
 
 **ThemeToggle.test.tsx**
+
 - Tests theme switching functionality
 - Validates 5-second transition synchronization
 - Verifies localStorage persistence
@@ -68,6 +70,7 @@ Tests are configured in `vitest.config.ts`:
 - Validates meta tag updates (theme-color, Apple status bar)
 
 **NavigationCustomizer.test.tsx**
+
 - Tests navigation item customization
 - Validates business tool addition
 - Tests drag-and-drop reordering
@@ -76,22 +79,26 @@ Tests are configured in `vitest.config.ts`:
 - Validates role-based tool availability
 
 **Button.test.tsx**
+
 - Tests button variants and sizes
 - Validates accessibility attributes
 - Tests click handlers and disabled states
 - Verifies proper ARIA labels
 
 **Card.test.tsx**
+
 - Tests card component rendering
 - Validates glass morphism styling
 - Tests hover and interaction states
 
 **Input.test.tsx**
+
 - Tests input field functionality
 - Validates form validation
 - Tests accessibility attributes
 
 **LiveStatsBar.test.tsx**
+
 - Tests live stats display
 - Validates real-time updates
 - Tests animation and transitions
@@ -99,17 +106,20 @@ Tests are configured in `vitest.config.ts`:
 #### Library Tests
 
 **sorting.test.ts**
+
 - Tests bid sorting algorithms
 - Validates performance-based sorting
 - Tests multi-criteria sorting
 
 **viral.test.ts**
+
 - Tests viral feature calculations
 - Validates referral code generation
 - Tests FRESH job indicators
 - Validates Lightning Bid mechanics
 
 **zeroCostFeatures.test.ts**
+
 - Tests free feature availability
 - Validates feature access control
 - Tests feature functionality
@@ -117,6 +127,7 @@ Tests are configured in `vitest.config.ts`:
 ### Integration Tests
 
 **paymentProcessing.test.tsx** (19 tests)
+
 - Payment method management
 - Milestone payment processing
 - Change order payments
@@ -127,6 +138,7 @@ Tests are configured in `vitest.config.ts`:
 - Payment status tracking
 
 **aiReceptionist.test.ts**
+
 - AI receptionist functionality
 - Lead capture and processing
 - CRM synchronization
@@ -135,6 +147,7 @@ Tests are configured in `vitest.config.ts`:
 ### E2E Tests
 
 **authentication.test.tsx** (20+ tests)
+
 - User signup for all roles (homeowner, contractor, operator)
 - Login with preserved user stats
 - Demo mode activation and switching
@@ -143,6 +156,7 @@ Tests are configured in `vitest.config.ts`:
 - Role-based navigation
 
 **homeownerWorkflow.test.tsx** (20+ tests)
+
 - Job posting (Quick Fix, Standard, Major Project)
 - Referral code generation and usage
 - Bid review and selection
@@ -152,6 +166,7 @@ Tests are configured in `vitest.config.ts`:
 - Payment processing
 
 **contractorWorkflow.test.tsx** (35+ tests)
+
 - Dashboard navigation and metrics
 - Job browsing and filtering
 - Bidding on all job types
@@ -164,6 +179,7 @@ Tests are configured in `vitest.config.ts`:
 - Route optimization
 
 **operatorWorkflow.test.tsx** (15+ tests)
+
 - Territory claiming and management
 - Speed metrics dashboard (traffic light indicators)
 - Job-to-bid time tracking
@@ -173,6 +189,7 @@ Tests are configured in `vitest.config.ts`:
 - Contractor network management
 
 **majorProject.test.tsx** (15+ tests)
+
 - Major project posting ($5K+)
 - Milestone structure and dependencies
 - Multi-trade coordination
@@ -182,6 +199,7 @@ Tests are configured in `vitest.config.ts`:
 - Change order management
 
 **viralFeatures.test.tsx** (25+ tests)
+
 - Post-&-Win referral system
 - FRESH job indicators (<1 hour)
 - Lightning Bid mechanics (<15 min)
@@ -192,6 +210,7 @@ Tests are configured in `vitest.config.ts`:
 - Referral earnings tracking
 
 **integrationWorkflows.test.tsx** (10+ tests)
+
 - Complete job lifecycle (posting → payment)
 - Multi-level referral chains
 - Contractor network growth
@@ -202,6 +221,7 @@ Tests are configured in `vitest.config.ts`:
 ### Audit Tests
 
 **platformAudit.test.tsx**
+
 - Security compliance checks
 - Performance benchmarks
 - Accessibility audits
@@ -241,14 +261,17 @@ export const mockJob: Job = {
 ### Helper Functions
 
 **Referral Code Generation**
+
 - `generateReferralCode(name: string, userId: string): string`
 - Generates unique referral codes for testing
 
 **Tax Calculations**
+
 - `calculateTax(amount: number, state: string): number`
 - `calculateTotal(amount: number, state: string): number`
 
 **Date Utilities**
+
 - `createDate(daysAgo: number): string`
 - `formatDate(date: string): string`
 
@@ -257,6 +280,7 @@ export const mockJob: Job = {
 ### Writing Tests
 
 1. **Descriptive Test Names**: Use clear, descriptive test names that explain what is being tested
+
    ```typescript
    // Good
    it('should toggle between light and dark themes on click and persist to localStorage', () => {
@@ -266,6 +290,7 @@ export const mockJob: Job = {
    ```
 
 2. **Arrange-Act-Assert Pattern**: Structure tests clearly
+
    ```typescript
    it('should save navigation preferences', async () => {
      // Arrange: Set up test data
@@ -282,6 +307,7 @@ export const mockJob: Job = {
    ```
 
 3. **Test Isolation**: Each test should be independent
+
    ```typescript
    beforeEach(() => {
      // Clear state before each test
@@ -291,6 +317,7 @@ export const mockJob: Job = {
    ```
 
 4. **Use WaitFor for Async Operations**: Always use `waitFor` for async state changes
+
    ```typescript
    await waitFor(() => {
      expect(screen.getByText('Success')).toBeInTheDocument()
@@ -313,6 +340,7 @@ export const mockJob: Job = {
 ### Accessibility Testing
 
 All component tests should verify:
+
 - ARIA labels are present
 - Keyboard navigation works
 - Screen reader compatibility
@@ -322,6 +350,7 @@ All component tests should verify:
 ### Performance Testing
 
 Key metrics to test:
+
 - Component render time
 - State update performance
 - Large list rendering
@@ -331,11 +360,13 @@ Key metrics to test:
 ## Continuous Integration
 
 Tests run automatically on:
+
 - Pull requests
 - Commits to main branch
 - Before deployments
 
 CI pipeline:
+
 1. Lint code
 2. Type check (TypeScript)
 3. Run all tests

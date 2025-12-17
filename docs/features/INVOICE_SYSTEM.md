@@ -11,6 +11,7 @@ Added comprehensive invoice template system and logo management for professional
 ### 1. Invoice Template System
 
 #### **Core Functionality**
+
 - **Save Templates**: Contractors can save any invoice line-item configuration as a reusable template
 - **Quick Apply**: One-click application of templates to new invoices
 - **Template Library**: Visual grid display of all saved templates
@@ -18,6 +19,7 @@ Added comprehensive invoice template system and logo management for professional
 - **Usage Tracking**: Tracks how many times each template has been used and when
 
 #### **Template Data Structure**
+
 ```typescript
 interface InvoiceTemplate {
   id: string
@@ -34,7 +36,9 @@ interface InvoiceTemplate {
 ```
 
 #### **Template Card UI**
+
 Each template displays:
+
 - Template name and description
 - Preview of first 2 line items
 - Item count badge
@@ -43,6 +47,7 @@ Each template displays:
 - Action buttons: Apply, Edit, Duplicate, Delete
 
 #### **Template Creation Flow**
+
 1. **From Invoice Dialog**: "Save as Template" button in invoice creation
 2. **From Template Manager**: "New Template" button
 3. Both flows capture:
@@ -57,6 +62,7 @@ Each template displays:
 ### 2. Logo Management
 
 #### **Company Logo Upload**
+
 - **Location**: CompanySettings component (already implemented)
 - **File Requirements**:
   - Image files only (jpg, png, svg)
@@ -66,12 +72,14 @@ Each template displays:
 - **Preview**: Live preview before saving
 
 #### **Logo Usage on Invoices**
+
 - **Toggle**: "Use company logo" checkbox in invoice creation
 - **Fallback**: Generic FairTradeWorker Texas logo for tax compliance
 - **Smart Default**: If contractor has logo → use it; otherwise → platform logo
 - **PDF Integration**: Properly sized and positioned in invoice PDF header
 
 #### **Logo Display**
+
 ```
 Invoice PDF Header:
 ┌─────────────────────────────────────┐
@@ -87,12 +95,14 @@ Invoice PDF Header:
 ### 3. Integration Points
 
 #### **InvoiceManager Component**
+
 - Added `InvoiceTemplateManager` above invoice tabs
 - "Save as Template" button in invoice creation dialog
 - Template application handler
 - Quick template save dialog
 
 #### **InvoiceTemplateManager Component** (New)
+
 - Grid layout for template cards
 - Empty state with CTA
 - Template CRUD operations
@@ -100,6 +110,7 @@ Invoice PDF Header:
 - Search and filter (future enhancement)
 
 #### **InvoicePDFGenerator Component**
+
 - Already supports `useCompanyLogo` flag
 - Renders contractor logo OR generic FairTradeWorker logo
 - Professional PDF styling with proper logo dimensions
@@ -109,6 +120,7 @@ Invoice PDF Header:
 ## 🎨 UI/UX Details
 
 ### Template Library
+
 ```
 ┌─────────────────────────────────────────────┐
 │  💾 Invoice Templates                  [+]  │
@@ -140,6 +152,7 @@ Invoice PDF Header:
 ```
 
 ### Save Template Dialog
+
 ```
 ┌───────────────────────────────────────┐
 │ Save as Template              [×]     │
@@ -170,6 +183,7 @@ Invoice PDF Header:
 ## 📊 Data Flow
 
 ### Template Creation
+
 ```
 User fills invoice → Clicks "Save as Template"
    ↓
@@ -183,6 +197,7 @@ Template appears in library
 ```
 
 ### Template Application
+
 ```
 User clicks "Apply Template" on card
    ↓
@@ -198,6 +213,7 @@ User can modify before creating invoice
 ```
 
 ### Logo on Invoice
+
 ```
 Contractor uploads logo in CompanySettings
    ↓
@@ -215,6 +231,7 @@ PDF generation uses contractor.companyLogo OR generic logo
 ## 🚀 Usage Examples
 
 ### Example 1: Standard Service Template
+
 ```typescript
 {
   name: "Standard Plumbing Repair",
@@ -230,6 +247,7 @@ PDF generation uses contractor.companyLogo OR generic logo
 ```
 
 ### Example 2: HVAC Maintenance Template
+
 ```typescript
 {
   name: "HVAC Seasonal Tune-Up",
@@ -250,6 +268,7 @@ PDF generation uses contractor.companyLogo OR generic logo
 ## 🎯 Benefits
 
 ### For Contractors
+
 ✅ **Save Time**: Create common invoices in <30 seconds instead of 5 minutes  
 ✅ **Consistency**: Standardized pricing across similar jobs  
 ✅ **Professionalism**: Company-branded invoices with logo  
@@ -257,6 +276,7 @@ PDF generation uses contractor.companyLogo OR generic logo
 ✅ **Analytics**: Track which services are most common  
 
 ### For Platform
+
 ✅ **Stickiness**: Contractors invest in building template library  
 ✅ **Speed**: Faster invoice creation = more invoices sent  
 ✅ **Quality**: Fewer pricing errors with templates  
@@ -267,12 +287,14 @@ PDF generation uses contractor.companyLogo OR generic logo
 ## 🔮 Future Enhancements
 
 ### Phase 2 (Month 3)
+
 - [ ] Template categories/tags (Plumbing, HVAC, Electrical)
 - [ ] Search/filter templates
 - [ ] Export/import templates (share between accounts)
 - [ ] Template marketplace (buy/sell common templates)
 
 ### Phase 3 (Month 6)
+
 - [ ] AI-suggested templates based on job type
 - [ ] Variable pricing in templates (${labor_rate} * ${hours})
 - [ ] Multi-currency support
@@ -283,15 +305,18 @@ PDF generation uses contractor.companyLogo OR generic logo
 ## 📝 Technical Notes
 
 ### Storage
+
 - **Templates**: Persisted in `useKV("invoice-templates")`
 - **Logos**: Base64 in user profile (consider moving to Supabase Storage for large scale)
 
 ### Performance
+
 - Templates load instantly (local KV storage)
 - Logo rendering handled by browser (no external calls)
 - PDF generation: <2 seconds including logo
 
 ### Limits
+
 - No hard limit on template count (consider adding for free tier)
 - Logo size: 2MB max (prevents storage bloat)
 - Line items per template: Unlimited
@@ -333,6 +358,7 @@ PDF generation uses contractor.companyLogo OR generic logo
 ## 🎉 Result
 
 Contractors can now:
+
 1. **Upload a company logo** in settings (one-time setup)
 2. **Create invoice templates** from common services
 3. **Apply templates** to new invoices with one click

@@ -21,11 +21,13 @@ Job Cost Estimate → Invoice Generator → Expense Tracker → Payment Processi
 ```
 
 **Key Features:**
+
 - **Estimate to Invoice**: When you win a bid, the Job Cost Calculator automatically pre-populates a draft invoice
 - **Expense to Job Costing**: Scan a receipt → assign to job → real-time P&L updates
 - **Payment to Reconciliation**: Payment received → invoice marked paid → cash flow report updated
 
 **Usage Example:**
+
 ```typescript
 import { createInvoiceFromEstimate, updateJobActualCosts, processPayment } from '@/lib/integration/FinancialSpine'
 
@@ -49,12 +51,14 @@ const { updatedInvoice, cashFlowUpdate } = processPayment(invoice, payment)
 A single dashboard that shows everything about a customer/job:
 
 **Left Sidebar:**
+
 - Contact info
 - Address
 - Job site photos
 - Tags
 
 **Main Tabs:**
+
 1. **Timeline**: Unified feed of ALL interactions
    - AI Receptionist calls with transcripts
    - SMS/Emails from Communication Hub
@@ -86,6 +90,7 @@ A single dashboard that shows everything about a customer/job:
 Drag-and-drop scheduling with automatic crew assignment and SMS notifications:
 
 **Features:**
+
 - Drag jobs from "Unscheduled" to calendar dates
 - Pop-up: "Assign Crew" → Select from available crews
 - Auto-SMS to crew lead: Job details + address + check-in link
@@ -93,6 +98,7 @@ Drag-and-drop scheduling with automatic crew assignment and SMS notifications:
 - Crew workload balancing (max 3 jobs per crew)
 
 **Workflow:**
+
 1. Drag job to calendar date
 2. System shows available crews (filtered by availability)
 3. Select crew and time
@@ -104,6 +110,7 @@ Drag-and-drop scheduling with automatic crew assignment and SMS notifications:
 Field-to-office notes that integrate with the timeline:
 
 **Features:**
+
 - Tag notes to specific jobs
 - Auto-log to customer timeline
 - Create follow-up tasks
@@ -112,6 +119,7 @@ Field-to-office notes that integrate with the timeline:
 - Searchable and filterable
 
 **Example:**
+
 ```
 Note: "Client asked about hardwood floor option"
 → Logged to job timeline
@@ -124,6 +132,7 @@ Note: "Client asked about hardwood floor option"
 #### OwnerDashboard (`src/components/contractor/OwnerDashboard.tsx`)
 
 High-level business overview:
+
 - Cash flow (30-day)
 - Upcoming scheduled jobs
 - Top leads by value
@@ -132,6 +141,7 @@ High-level business overview:
 #### ProjectManagerDashboard (`src/components/contractor/ProjectManagerDashboard.tsx`)
 
 Project-focused view:
+
 - Assigned jobs
 - Upcoming deadlines
 - Pending change orders
@@ -141,6 +151,7 @@ Project-focused view:
 #### FieldLeadDashboard (`src/components/contractor/FieldLeadDashboard.tsx`)
 
 Daily operations view:
+
 - Today's schedule
 - Driving routes
 - Job specs and checklists
@@ -154,6 +165,7 @@ Daily operations view:
 AI analyzes your business data and provides actionable insights:
 
 **Insights Generated:**
+
 1. **Profit Margin Analysis**: "Your bathroom remodels have 15% higher margins than kitchen jobs"
 2. **Crew Performance**: "Crew A completes jobs 10% faster than Crew B"
 3. **Vendor Optimization**: "Top 3 vendors account for 60% of costs - negotiate bulk discounts"
@@ -161,6 +173,7 @@ AI analyzes your business data and provides actionable insights:
 5. **Opportunity Identification**: High-value project patterns
 
 **Example Output:**
+
 ```
 🎯 High Impact Insight
 Title: Kitchen jobs are 18.5% more profitable
@@ -174,6 +187,7 @@ Recommendation: Focus marketing efforts on kitchen projects. Consider raising pr
 Forecasts inventory needs based on scheduled jobs:
 
 **Features:**
+
 - Analyzes upcoming jobs
 - Calculates projected material usage
 - Alerts when inventory will run low
@@ -181,6 +195,7 @@ Forecasts inventory needs based on scheduled jobs:
 - Prevents project delays
 
 **Example Alert:**
+
 ```
 ⚠️ Critical: Lumber Stock
 Current: 50 boards
@@ -197,12 +212,14 @@ Jobs requiring lumber:
 Intelligent follow-up sequences triggered by AI analysis:
 
 **How It Works:**
+
 1. AI Receptionist takes a call
 2. AI analyzes transcript for intent and urgency
 3. Matches against active sequences
 4. Triggers personalized follow-up campaign
 
 **Sequence Example:**
+
 ```
 Trigger: AI Call with urgency="high"
 Step 1 (1 hour): SMS "Thanks for your call about [issue]. As discussed, [context]"
@@ -211,6 +228,7 @@ Step 3 (72 hours): SMS "Have you had a chance to review our proposal?"
 ```
 
 **AI Personalization:**
+
 - Uses call transcript context
 - Adjusts tone based on urgency
 - Includes specific details mentioned in call
@@ -221,6 +239,7 @@ Step 3 (72 hours): SMS "Have you had a chance to review our proposal?"
 ### The Leaky Faucet Call (10 seconds vs. 10 minutes)
 
 **Traditional Workflow (10 minutes):**
+
 1. Answer call, take notes
 2. Manually enter lead in CRM
 3. Send follow-up email
@@ -229,6 +248,7 @@ Step 3 (72 hours): SMS "Have you had a chance to review our proposal?"
 6. Text customer with appointment time
 
 **Integrated Workflow (10 seconds):**
+
 1. **AI Receptionist** answers call, captures details
 2. **Auto-trigger:** New lead created in CRM with transcript
 3. **Notification Center:** Push notification to owner
@@ -278,26 +298,31 @@ Payment Received
 ## Integration Points
 
 ### CRM ↔ Communication Hub
+
 - Call logs → Timeline
 - SMS history → Timeline
 - Email threads → Timeline
 
 ### Scheduler ↔ Crew Dispatcher
+
 - Job assigned → SMS sent
 - Crew confirmed → Status updated
 - Job completed → Timeline updated
 
 ### Job Cost ↔ Invoice Generator
+
 - Estimate created → Invoice template ready
 - Bid won → Draft invoice auto-populated
 - Change order → Invoice updated
 
 ### Expense Tracker ↔ Job Costing
+
 - Receipt scanned → Expense categorized
 - Expense assigned to job → P&L updated
 - Real-time margin tracking
 
 ### Payment ↔ Reporting
+
 - Payment received → Invoice marked paid
 - Cash flow updated → Dashboard refreshed
 - Tax estimates recalculated
@@ -305,24 +330,28 @@ Payment Received
 ## Benefits
 
 ### For Owners
+
 - High-level visibility across entire business
 - Proactive alerts (warranty expirations, low inventory)
 - AI-powered insights for better decisions
 - Cash flow tracking in real-time
 
 ### For Project Managers
+
 - All jobs in one view
 - Automatic change order tracking
 - Crew assignment management
 - Deadline monitoring
 
 ### For Field Leads
+
 - Daily schedule with routes
 - Quick access to specs and checklists
 - One-click communication
 - Issue logging that goes directly to office
 
 ### For Everyone
+
 - No double entry
 - Automatic data flow
 - Single source of truth
@@ -331,17 +360,20 @@ Payment Received
 ## Future Enhancements
 
 ### Templates & Checklists (Planned)
+
 - QA checklists for common job types
 - Communication templates for scenarios
 - Document templates (contracts, warranties)
 
 ### Advanced Integration (Planned)
+
 - QuickBooks sync for accounting
 - Procore integration for large projects
 - Google Calendar two-way sync
 - Stripe payment automation
 
 ### Mobile Optimization (Planned)
+
 - Field Lead mobile app
 - Photo upload from job site
 - Voice-to-text for quick notes
@@ -352,18 +384,21 @@ Payment Received
 ### For Developers
 
 1. **Import Components:**
+
 ```typescript
 import { UnifiedCustomerProfile } from '@/components/contractor/UnifiedCustomerProfile'
 import { IntegratedScheduler } from '@/components/contractor/IntegratedScheduler'
 import { ProactiveBusinessIntelligence } from '@/components/contractor/ProactiveBusinessIntelligence'
 ```
 
-2. **Use Financial Spine:**
+1. **Use Financial Spine:**
+
 ```typescript
 import { createInvoiceFromEstimate } from '@/lib/integration/FinancialSpine'
 ```
 
-3. **View Demo:**
+1. **View Demo:**
+
 ```typescript
 import { DeepIntegrationDemo } from '@/pages/DeepIntegrationDemo'
 ```

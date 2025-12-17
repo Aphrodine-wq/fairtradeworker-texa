@@ -5,6 +5,7 @@ This document is the authoritative, always-updated system map for FairTradeWorke
 ---
 
 ## Table of Contents
+
 - Purpose & Update Policy
 - System Overview
 - Revenue Model & Projections
@@ -22,6 +23,7 @@ This document is the authoritative, always-updated system map for FairTradeWorke
 ---
 
 ## Purpose & Update Policy
+
 - Source of truth for what the platform is, how it makes money, and what it contains.
 - Keep in sync with every material change (features, pricing, AI models, architecture).
 - When updating: refresh revenue assumptions, regenerate LOC counts, and add/edit features.
@@ -29,6 +31,7 @@ This document is the authoritative, always-updated system map for FairTradeWorke
 ---
 
 ## System Overview
+
 - Mission: Zero-fee home services marketplace where contractors keep 100% of earnings; homeowners pay a flat job fee.
 - Frontend: React 19 + TypeScript, Vite, Tailwind, shadcn/ui.
 - AI: Smart Claude Tiering (Haiku for simple jobs, Sonnet for complex/multi-trade) with budget guardrails.
@@ -50,7 +53,9 @@ flowchart LR
 ---
 
 ## Revenue Model & Projections (50-Year Outlook)
+
 **Current pricing assumptions (base):**
+
 - Homeowner/platform fee: **$20 per completed job**.
 - Pro subscription: **$59/mo** per contractor (advanced tools & AI).
 - Premium visibility: **$15/job** boost (featured/priority listing).
@@ -59,6 +64,7 @@ flowchart LR
 - Average invoice: **$1,200** per job.
 
 **Short-term monthly projections (present-day capacity):**
+
 - Conservative: 2,000 jobs; 1,000 contractors (20% Pro = 200); 10% boosts.
   - Platform fees: $40k; Pro subs: $10k; Boosts: $3k; Processing: $69.6k; Gross: ~$122.6k; Royalties: $4k; **Net: ~$118.6k/mo**.
 - Base: 10,000 jobs; 4,000 contractors (25% Pro = 1,000); 15% boosts.
@@ -67,6 +73,7 @@ flowchart LR
   - Platform fees: $500k; Pro subs: $90k; Boosts: $75k; Processing: $870k; Gross: ~$1.535M; Royalties: $50k; **Net: ~$1.485M/mo**.
 
 **50-year scale plan (anchor milestones, yearly run-rate):**
+
 - Year 1 (0–300k users; refs: SCALING_300K_USERS.md / IMPLEMENTATION_300K_USERS.md)
   - Target: 300k users, 10% contractors (30k), 15% Pro (4.5k); ~1k jobs/day.
   - Est. run-rate: **~$12–18M/yr** (platform + Pro + boosts + processing) before royalties; infra ~$84k/yr.
@@ -87,6 +94,7 @@ flowchart LR
   - Est. annual: **$7–9B/yr**; assumes incremental pricing indexation and stable take-rates; royalties remain 10% of platform fees.
 
 **Planning guidance:**
+
 - Recompute every major release: update fees, boost price, processing %, royalty %, average invoice, Pro conversion, job volume, and geographic coverage.
 - Track attach rates separately (Pro %, boost %, payment adoption) and revisit CAGR assumptions per decade.
 - Note royalty drag (10% of platform fees) and infra/ops budgets per phase when updating.
@@ -94,7 +102,9 @@ flowchart LR
 ---
 
 ## Line-of-Code (LOC) Footprint (snapshot)
+
 Computed on current workspace (see Update Instructions for refresh):
+
 - **Grand total:** 101,821 lines
 - **docs:** 25,945 (markdown)
 - **src:** 75,051 (tsx/ts/css)
@@ -102,6 +112,7 @@ Computed on current workspace (see Update Instructions for refresh):
 - **scripts:** 465 (mjs/js)
 
 Key src breakdown:
+
 - `src/components`: 50,318 (tsx)
 - `src/pages`: 6,510 (tsx)
 - `src/lib`: 8,558 (ts)
@@ -111,7 +122,9 @@ Key src breakdown:
 ---
 
 ## Feature Inventory (one-line descriptions)
+
 **Core Platform**
+
 - Authentication & roles: Homeowner, Contractor, Operator with demo accounts.
 - Job posting: Text, photo, video, audio/file inputs with tiered job classification.
 - Marketplace & bidding: Browse, bid, performance-based sorting, fresh job indicators, sticky first bid.
@@ -120,6 +133,7 @@ Key src breakdown:
 - Payments & invoicing: Invoice manager, taxes, status badges, payment terms.
 
 **Contractor**
+
 - Dashboard: Earnings, active jobs, win rate, fresh jobs.
 - CRM: Kanban/list/timeline, customer lifetime metrics, sequences.
 - Follow-up automation: Scheduled sequences with pause-on-reply.
@@ -129,27 +143,32 @@ Key src breakdown:
 - Referral system: Contractor referral rewards and tracking.
 
 **Operator**
+
 - Territory map: 254 Texas counties, claiming workflow.
 - Speed metrics: Territory performance dashboards.
 - Company revenue dashboard: Platform fees, Pro MRR, ARR, processing, royalties, targets.
 
 **Homeowner**
+
 - Flat-fee posting: Transparent pricing to start projects.
 - Direct messaging: Contact contractors directly; track activity.
 - Project tracking: Visibility into bids and job status.
 
 **Growth & Viral**
+
 - Post-&-Win referrals: Share codes from posted jobs.
 - Contractor referral goldmine: Incentivized contractor invites.
 - Live stats bar: Real-time platform momentum display.
 - Boosted listings: Paid visibility upgrades.
 
 **Design & UX**
+
 - Brutalist/dark-mode responsive UI, WCAG-aware.
 - Photo lightbox and media viewers.
 - Smooth animations and magnetic theme toggle.
 
 **AI & Automation**
+
 - Smart Claude Tiering: Haiku for simple jobs, Sonnet for complex/multi-trade; budget-guarded calls.
 - Budget controller: $120/mo safety margin; tracks Haiku/Sonnet spend.
 - Automation Runner: Recurring invoices, late fees, reminders, CRM follow-ups on schedule.
@@ -157,16 +176,19 @@ Key src breakdown:
 - Integration stubs: Spark LLM with ready hooks for Anthropic SDK.
 
 **Analytics & Reporting**
+
 - Company revenue dashboard: Platform fees, Pro subs, processing fees, royalties, targets.
 - MRR/ARR projections and progress meters.
 - Territory and operator breakdowns.
 
 **Integration-Ready Hooks**
+
 - Stripe checkout points (Pro upgrade), Twilio/Resend email/SMS stubs, TUS video upload stubs, Supabase placeholder.
 
 ---
 
 ## AI & Automation Stack
+
 - Smart Claude Tiering (`src/lib/ai/smartClaude.ts`): job-based model selection; Haiku for short/simple, Sonnet for complex/multi-trade; Spark LLM fallback.
 - Budget Controller (`src/lib/ai/budgetController.ts`): spend limits, safety margins, call tracking per model.
 - AI entrypoint (`src/lib/ai.ts`): caching, complexity detection, runtime metrics.
@@ -178,6 +200,7 @@ Key src breakdown:
 ## FairTradeWorker AI Architecture – Open Source Enhancement Strategy
 
 ### Philosophy: The Tiered Intelligence Stack
+
 - Claude for judgment and high-stakes scoping; open source for routing, context, and background tasks.
 - Goal: reduce Claude spend, deepen intelligence (RAG), and add adaptive CRM/matching/automation.
 
@@ -219,6 +242,7 @@ Key src breakdown:
 ```
 
 ### Layer 1: Pre-Routing (Save Claude Tokens)
+
 - Models:
   - Intent: Qwen3-0.6B (CPU-fast) or Mistral 7B.
   - Complexity: Mistral 7B to decide Haiku vs Sonnet.
@@ -226,6 +250,7 @@ Key src breakdown:
   - Language detection: FastText for routing.
 
 **Implementation sketch:**
+
 ```typescript
 // src/lib/ai/openSourceRouter.ts
 interface JobClassification {
@@ -256,6 +281,7 @@ Return: {"intent": "quick_fix|standard|major_project|multi_trade", "complexity":
 **Cost impact:** ~40% of simple jobs handled by routing; Claude only sees high-judgment cases.
 
 ### Layer 2: Embedding & RAG
+
 - What to index:
   - Historical scopes (all Claude outputs).
   - Contractor specialties and performance.
@@ -265,6 +291,7 @@ Return: {"intent": "quick_fix|standard|major_project|multi_trade", "complexity":
 - Vector DB options: ChromaDB (simple), Milvus/Qdrant (scale), pgvector (Postgres-native).
 
 **RAG retrieval sketch:**
+
 ```typescript
 // src/lib/ai/ragContext.ts
 import { ChromaClient } from 'chromadb';
@@ -296,6 +323,7 @@ export async function getJobContext(jobDescription: string): Promise<RAGContext>
 ```
 
 **Enhanced scope prompt with context:**
+
 ```typescript
 // src/lib/ai/enhancedScope.ts
 export async function generateEnhancedScope(job: Job): Promise<Scope> {
@@ -334,11 +362,13 @@ Generate a detailed scope including:
 ```
 
 ### Layer 3: CRM Intelligence
+
 - Lead scoring (predictive via Mistral/Qwen).
 - Sentiment analysis on conversations.
 - Customer lifetime value prediction; surface in dashboards.
 
 **Lead scoring sketch:**
+
 ```typescript
 // src/lib/crm/leadScoring.ts
 interface LeadScore {
@@ -351,9 +381,11 @@ interface LeadScore {
 ```
 
 ### Layer 4: Smart Follow-Ups
+
 - Context-aware drafts using cheaper models (Mistral/Qwen), referencing sentiment, objections, timing.
 
 **Follow-up sketch:**
+
 ```typescript
 // src/lib/automation/smartFollowUp.ts
 export async function generateFollowUp(customer: Customer, context: ConversationContext): Promise<FollowUpMessage> {
@@ -372,9 +404,11 @@ export async function generateFollowUp(customer: Customer, context: Conversation
 ```
 
 ### Layer 5: Contractor Matching Intelligence
+
 - Semantic matching via embeddings; re-rank with ratings, response time, completion, availability.
 
 **Matching sketch:**
+
 ```typescript
 // src/lib/matching/contractorMatch.ts
 export async function findBestContractors(job: Job): Promise<ContractorMatch[]> {
@@ -401,14 +435,17 @@ export async function findBestContractors(job: Job): Promise<ContractorMatch[]> 
 ```
 
 ### Deployment Options
+
 - Self-hosted: Ollama + ChromaDB (or Milvus/Qdrant/pgvector) + React app + Claude API for scoping. Hardware: 16–32GB RAM; GPU recommended for 7B speed; cloud GPU ~$0.30–0.80/hr.
 - Hybrid cloud: Hosted APIs (Together.ai, Groq free tier, Fireworks) + Claude for scoping.
 
 ### Cost Comparison
+
 - Current (Claude-only): ~$225/mo (example mix).
 - With OSS layer: Routing on Groq (free), embeddings self-hosted, background on Together (~$3.60), Claude scoping reduced (~$90) → **~$94/mo** (~60% savings) plus deeper features.
 
 ### Implementation Roadmap
+
 - Phase 1 (Week 1–2): RAG foundation (Chroma/Milvus, BGE-M3, ingest historical scopes, inject context into `smartClaude.ts`).
 - Phase 2 (Week 3): Smart routing (Qwen/Mistral classifier), complexity scoring, update Smart Tiering to use OSS routing.
 - Phase 3 (Week 4–5): CRM intelligence (lead scoring, sentiment, CLV) surfaced in dashboards.
@@ -416,12 +453,14 @@ export async function findBestContractors(job: Job): Promise<ContractorMatch[]> 
 - Phase 5 (Week 7–8): Contractor matching (embed profiles, composite scoring, replace sorting).
 
 ### Quick Wins
+
 1. Run Ollama + Mistral 7B locally (10 minutes).
 2. Stand up ChromaDB for scope history; start ingesting Claude outputs.
 3. Use BGE-M3 embeddings for semantic search immediately.
 4. Use Groq free tier for routing to drop Claude calls quickly.
 
 ### Key Files to Modify (when implementing)
+
 ```
 src/lib/ai/
 ├── smartClaude.ts      # Add RAG context injection
@@ -446,6 +485,7 @@ src/lib/matching/
 ---
 
 # Architecture Deep Dive (Hosted-First + Resilience)
+
 - **Service slices (front-of-house)**: React 19 SPA (Vite), AI entrypoint (`src/lib/ai.ts`), scoping surfaces (Photo Scoper, Browse Jobs), payments/invoices, CRM, operator dashboards.
 - **Service slices (back-of-house, logical)**: Routing/classification (open source), embeddings/RAG, Claude scoping, CRM intelligence, automation runner, matching, revenue CTAs/config, navigation preferences.
 - **Data & storage**: Spark KV for demo persistence; vector DB (Chroma/Milvus/Qdrant/pgvector) for scopes/materials/contractors; object storage for media; Postgres (planned) for transactional; Redis L1; semantic cache L3.
@@ -479,6 +519,7 @@ flowchart LR
 ---
 
 # Role-Based Flows & UI Surfaces
+
 - **Homeowner journey**: Post job → AI scope preview (Haiku/Sonnet) → pay flat fee → receive bids → select contractor → invoices/payments → feedback → referrals/donations.
 - **Contractor journey**: Browse with load-more + filters → AI scope + materials/tools CTAs → place bids → premium lead upsell → CRM dashboard (list/pipeline/analytics) with spread filters → invoices + payouts → Pro upgrade → referrals.
 - **Operator journey**: Navigation customization, territory map, revenue dashboards (fees, Pro, boosts, processing, royalties), speed metrics, observability hooks for latency/budget.
@@ -499,6 +540,7 @@ flowchart LR
 ---
 
 # Financial Expansion (50-Year Detail)
+
 - **Revenue waterfalls** (per job): platform fee $20 + boost attach (10–40% × $15) + processing share (2.9% of GMV) + affiliate/insurance/financing referrals + premium leads + donations + API/license share (where applicable).
 - **Contractor ARPA sketch**: ((platform fees from their jobs × royalty-adjusted) + Pro + boosts attributable + affiliate lift) / active contractor; monitor per phase.
 - **Per-decade recalibration**: Refresh attach rates, CPI indexing (2–3%/yr), invoice averages, royalty %, processing spread, and GMV share; rerun pessimistic/base/aggressive bands.
@@ -523,6 +565,7 @@ flowchart LR
 ---
 
 # Operations, Flags, Legal & Compliance
+
 - **Feature flags**: AI routing, embeddings, RAG, revenue CTAs (affiliate/insurance/financing/donations/API/tools), premium leads, nav customization; default-safe fallbacks.
 - **A/B testing hooks**: Pricing ladders (Pro $50 vs $59), boost tiers ($9/$15/$19), CTA placements, prompt variants, cache TTLs; measure attach, conversion, latency, token cost.
 - **Legal/Compliance**: Affiliate disclosures near CTAs; financing/insurance partner disclosures; AI output disclaimer (“not a guaranteed quote”); ToS for contractor vs platform; arbitration clause; data privacy (PII minimization, encryption in transit, least-privilege).
@@ -535,6 +578,7 @@ flowchart LR
 ---
 
 # Testing, Rollout, and Observability
+
 - **Validation**: Prompt regression harness (cost/latency/quality), RAG retrieval accuracy checks, cache hit-rate targets (L1 >40%, L2 >60% with promotions), contract tests for providers.
 - **Performance**: Load tests for job/bid flows, CRM list/pipeline rendering with virtualization/windowing, map lazy-load, payment dashboard CTAs, nav customizer state sync.
 - **Rollout**: Dark launch behind flags → canary (5–10%) → full rollout; keep rollback toggles for AI providers, vector endpoints, and revenue CTAs.
@@ -548,14 +592,18 @@ flowchart LR
   - Performance targets: scopes <3s P95 simple; list render smooth with 200+ items; map render under Suspense; CRM filters apply <500ms on 5k rows (target).
 
 ---
+
 # FairTradeWorker Revenue Expansion Deep-Dive
 
 ## Executive Summary
+
 - Builds on the existing $7–9B/year 50-year projection with an added $2–4B+ annually via high-margin, largely passive streams layered onto existing flows.
 - Leverages current infra, AI scopes, bidding, and dashboards to insert affiliate, referral, upsell, and API monetization.
 
 ## Revenue Stream Analysis
+
 ### 1) Affiliate Partnerships for Supplies & Tools
+
 - Model: 4–10% commission on material/tool purchases.
 - Placement: tracked links in AI scopes and dashboards.
 - Scale: 300k jobs/day (109.5M/year); avg material spend $400; 15% click rate; 6% commission.
@@ -563,6 +611,7 @@ flowchart LR
 - Advantages: near-zero marginal cost; natural contractor behavior; scales with job volume.
 
 ### 2) Insurance & Financing Affiliates
+
 - Model: $50–$200 per successful referral.
 - Placement: job flows for contractor insurance and homeowner financing.
 - Adoption: Insurance 8% of jobs; Financing 12% of jobs.
@@ -570,34 +619,40 @@ flowchart LR
 - Advantages: high-value referrals; strong demand; recurring opportunities (renewals).
 
 ### 3) Lead Generation Upsell
+
 - Model: $10–$20 per premium lead access (non-winning bidders).
 - Scale: 3.5 bids/job; convert 15% of non-winners; $15 per premium lead.
 - Annual Revenue: **~$616M**.
 - Advantages: uses existing bidding infra; urgency via scarcity; high willingness to pay.
 
 ### 4) Donations / “Support Fair Trade”
+
 - Model: voluntary contributions.
 - Scale: 5M users; 2% participation; $15 avg.
 - Annual Revenue: **~$1.5M**.
 - Advantages: minimal implementation cost; goodwill-driven; scales with user base.
 
 ### 5) White-Label/API Access
+
 - Model: tiered API pricing (freemium + premium).
 - Scale (conservative): 10k active integrations; $59/month each.
 - Annual Revenue: **~$6B** (high-end potential; adjust per adoption).
 - Advantages: leverages AI infra; ecosystem lock-in; high-margin software licensing.
 
 ### 6) Sponsored Tools Directory
+
 - Model: 20–30% recurring commissions on SaaS tools.
 - Scale: 5M contractors; 10% adoption; $600 annual spend; 25% commission.
 - Annual Revenue: **~$75M**.
 - Advantages: recurring SaaS commissions; natural workflow fit; low maintenance post-setup.
 
 ## Total Revenue Impact
+
 - Conservative: **~$2.9B annually**; Aggressive: **~$4.6B annually**.
 - Uplift: 40–65% over base 50-year projection; minimal incremental infra.
 
 ## Implementation Priority
+
 1) Affiliate partnerships (immediate) – tracked links in scopes/dashboards.
 2) Donations (immediate) – simple link placement.
 3) Insurance/financing (3–6 months) – API partners; compliance review.
@@ -606,12 +661,14 @@ flowchart LR
 6) API/white-label (18–24 months) – metering, auth, pricing plans.
 
 ## Risk Mitigation
+
 - UX: non-intrusive placements.
 - Compliance: affiliate disclosures; finance/insurance regulatory review.
 - Vendor reliability: diversify partners; failover links; monitoring.
 - Scalability: automated tracking/payouts; feature flags; A/B gating.
 
 ## Synergistic Effects
+
 - More contractors → more material purchases → higher affiliate revenue.
 - More jobs → more insurance/financing → higher referral income.
 - More platform value → more external interest → higher API demand.
@@ -620,6 +677,7 @@ flowchart LR
 ---
 
 ## Update Instructions
+
 - **Revenue:** adjust pricing (platform fee, Pro price, boost price, processing %, royalty %, average invoice), set job volume + Pro conversion assumptions, recompute gross/net.
 - **LOC:** rerun LOC script from repo root:
   - `python -c "from pathlib import Path; root=Path('.'); ..."` (use the one-line script above; update totals and date).
@@ -630,6 +688,7 @@ flowchart LR
 ---
 
 ## Changelog (Current Session)
+
 - Implemented hosted-first AI stack wiring: routing/classification, embeddings + RAG context, and enhanced scoping with hosted Claude fallback.
 - Added CRM intelligence (lead scoring, sentiment, CLV), smart follow-ups, contractor matching.
 - Added revenue CTAs (affiliate materials/tools, insurance/financing, donations, premium lead upsell, API/tools directory) behind config flags.
@@ -642,6 +701,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 # Deep-Dive Expansion: Scaling & Financial Blueprint (50-Year Horizon)
 
 ## Executive Overview
+
 - **Purpose**: Be the definitive, living blueprint for revenue, scaling, operations, and risk across 50 years.
 - **Scope**: Pricing knobs, scenario bands, CAGR paths, cost/margin models, org growth, infra/ops playbooks, risks, AI roadmap, and update instructions.
 - **Assumptions**: Base pricing from current model (platform $20/job, Pro $59/mo, boost $15/job, processing 2.9%, royalty 10% on platform fees, avg invoice $1,200). Adjust per geography and inflation as needed.
@@ -651,6 +711,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ---
 
 ## Pricing & Revenue Inputs (Knobs to Tune)
+
 - Platform fee per completed job: default $20 (adjust per market; consider CPI indexing).
 - Pro subscription: $59/mo per contractor (volume/enterprise tiers optional).
 - Boost/featured listing: $15/job (promo tiers possible: $9, $19 A/B).
@@ -667,6 +728,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ## Financial Projections (50-Year Horizon)
 
 ### Milestone Snapshot (Annual Run-Rate, Base Case)
+
 | Year | Jobs/Day | Contractors | Pro % | Pro Count | Boost Attach | Annual Revenue (Range) | Notes |
 |------|----------|-------------|-------|-----------|--------------|------------------------|-------|
 | 1 | 1,000 | 30k | 15% | 4.5k | 10% | $12–18M | Seed → 300k users; infra ~$84k/yr; targets from scaling docs |
@@ -677,11 +739,13 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 | 50 | 300,000 | 5M | 30% | 1.5M | 40% | $7–9B | Steady-state; modest price indexation |
 
 ### Scenario Bands (Pessimistic / Base / Aggressive)
+
 - **Pessimistic**: Lower attach (Pro 15–20%, boost 10–15%), slower volume (half of base jobs/day), invoice avg $900. Expect ~50–60% of base revenue.
 - **Base**: Table above. Assumes steady attach improvements and modest CPI-linked price lifts.
 - **Aggressive**: Faster volume growth (1.3–1.5× base), higher attach (Pro 35%, boost 45%), invoice avg $1,500 with periodic premium SKUs. Expect 1.5–2.0× base revenue.
 
 ### CAGR Pacing Guidance
+
 - Years 1–5: Target 60–80% YoY (small base, rapid expansion).
 - Years 5–10: Target 35–45% YoY (national build-out).
 - Years 10–20: Target 20–30% YoY (international rollout, marketplace effects).
@@ -689,6 +753,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Years 30–50: Target 5–8% YoY (steady-state with pricing indexation).
 
 ### Sensitivity Levers (Recompute When Updating)
+
 - Price levers: platform fee ±$5, Pro price ±$10, boost price ±$5.
 - Volume levers: jobs/day ±25%; contractor base ±20%.
 - Attach levers: Pro conversion ±5pp; boost attach ±10pp.
@@ -697,6 +762,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Processing share: 2.5–3.5% sensitivity; note pass-through vs margin.
 
 ### Key Ratios to Track
+
 - ARPA (contractors): (Platform fee share from their jobs + Pro + boosts attributable) / contractor.
 - ARPU (users overall): Gross revenue / total users.
 - LTV:CAC placeholder: maintain >3:1 target; update CAC per GTM phase.
@@ -707,6 +773,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ## Cost & Margin Model (Phase-Based)
 
 ### Baseline Costs (Year 1 references)
+
 - Infra (Year 1): ~$84k/yr (from scaling docs) covering CDN, app servers, DB/cache, storage, monitoring.
 - Support/Success: seed team handling <5k users/mo; variable with DAU.
 - R&D: core product/AI/infra team; expect heavier ratio early.
@@ -714,6 +781,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Contingency: 10–15% buffer on infra/ops for spikes and experiments.
 
 ### Phase Budgets (Guidance, non-binding)
+
 - Foundation (0–5k users): $1–2k/mo infra; tiny team; focus on speed-to-market.
 - Growth (5k–25k): $2–5k/mo infra; add GTM spend; start observability stack maturity.
 - Scale (25k–100k): $5–10k/mo infra; add SRE; begin auto-scaling and Redis; QA automation.
@@ -722,6 +790,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Global (1M–5M+ users): $40–120k/mo infra depending on regions, media volumes, and latency targets.
 
 ### Margin Drivers
+
 - Positive: Boost uptake, Pro conversion, invoice volume growth, infra efficiency (caching, CDN, reserved capacity), automation reducing support costs.
 - Negative: Royalty drag (10% of platform fees), payment processing pass-through, high media storage/egress, GTM spend, premium support staffing.
 
@@ -730,6 +799,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ## Scaling Roadmap (Architecture & Capacity)
 
 ### Capacity Targets by Phase (daily unless noted)
+
 - Year 1: 1k jobs, 5k bids, 10k messages, 3k photos/day, 2k weekly videos, 15k peak concurrent.
 - Year 5: 5k jobs, 25k bids, 50k messages, 15k photos/day, 10k weekly videos, 60k peak concurrent.
 - Year 10: 25k jobs, 125k bids, 250k messages, 75k photos/day, 50k weekly videos, 250k peak concurrent.
@@ -738,6 +808,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Year 50: 300k jobs, 1.5M bids, 3M messages, 900k photos/day, 600k weekly videos, 3M+ peak concurrent.
 
 ### Architecture Evolution (high-level)
+
 - Phase 1: Static front-end + Spark KV, local assets; single-region.
 - Phase 2: CDN + edge caching; Redis for hot paths; object storage (S3/R2) for media; basic PostgreSQL for analytics.
 - Phase 3: Auto-scaling app tier; blue/green; queues for media/AI jobs; observability stack (metrics, tracing, logs).
@@ -745,6 +816,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - Phase 5: Global traffic steering; data sharding by region; dedicated BI/warehouse; advanced cost controls; DR across continents.
 
 ### SLO/SLI Targets (examples)
+
 - Page load: <1s P95 early; maintain <1.5s at scale.
 - API latency: <100ms P50 / <500ms P95.
 - Availability: 99.9% → 99.95% as multi-region matures.
@@ -756,6 +828,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ## Org & Operations (Phase Hiring & Processes)
 
 ### Team Shape by Phase (indicative)
+
 - Foundation (0–5k users): 4–6 eng (full-stack/infra), 1 PM, 1 design, fractional marketing, shared support.
 - Growth (5k–25k): +2–3 eng, +1 QA, +1–2 support, dedicated marketing lead, part-time data.
 - Scale (25k–100k): +SRE, +Data/Analytics, +Security, +GTM (demand gen), +CS manager.
@@ -763,6 +836,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 - National/Global: Multiple squads per domain (jobs, bids, payments, AI, growth), 24/7 on-call rotations, compliance/privacy counsel.
 
 ### Core Processes
+
 - Incident response: severity matrix, paging, RCA within 48h; track MTTR/MTBF.
 - Release management: CI/CD with canaries and feature flags; error budgets tied to release throttles.
 - QA: automated regression + performance baselines per release; chaos drills semi-annual.
@@ -772,6 +846,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ---
 
 ## Risk & Mitigation
+
 - Technical: Scaling data stores, media costs, AI latency; mitigations—caching, sharding, cost guardrails, async pipelines, circuit breakers.
 - Financial: Revenue concentration, attach-rate underperformance; mitigations—diversify SKUs, adjust pricing/discounts, strengthen boosts/Pro value.
 - Regulatory: Data privacy, payments, communications; mitigations—PII minimization, vendor DPAs, PCI scope isolation, opt-in messaging compliance.
@@ -781,6 +856,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ---
 
 ## AI & Automation Strategy
+
 - Model mix: Smart Claude Tiering (Haiku for simple, Sonnet for complex/multi-trade); consider GPT/other LLMs as backups for availability/price.
 - Budget envelopes: Maintain $120/mo safety buffer for demo; production budgets scale with revenue (set % of GMV or fixed per-job cap).
 - Prompt governance: Standard vs detailed prompts; testing harness to measure quality and cost per job type.
@@ -790,6 +866,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ---
 
 ## Update Playbook (How to Keep This Current)
+
 - Refresh pricing knobs and attach rates; rerun revenue tables (pessimistic/base/aggressive).
 - Recompute LOC snapshot and date-stamp when codebase shifts materially.
 - Update capacity targets and infra phases after major releases or new regions.
@@ -800,6 +877,7 @@ _Last refreshed: current session (LOC and revenue projections computed from the 
 ---
 
 ## Appendices
+
 - Parameters glossary: pricing, attach rates, volume assumptions, invoice averages, royalties, processing %, SLO targets.
 - Formula references: revenue = (jobs × platform fee) + (Pro subs × price) + (jobs × boost attach × boost price) + (GMV × processing share); royalties = platform fees × royalty %.
 - Source links: `docs/SCALING_300K_USERS.md`, `docs/IMPLEMENTATION_300K_USERS.md`, `README.md`, `docs/COMPLETE_FEATURES.md`, `docs/COMPLETE_SOFTWARE_STRUCTURE.md`.

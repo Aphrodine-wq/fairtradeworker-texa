@@ -23,6 +23,7 @@ Contractors keep 100% of what they earn. Always.
 ## 📈 Codebase Statistics
 
 ### Overall Metrics
+
 - **Total TypeScript Files:** 273 files
 - **Total Lines of Code:** 45,200+ lines
 - **Components:** 150+ React components
@@ -33,6 +34,7 @@ Contractors keep 100% of what they earn. Always.
 - **Test Cases:** 130+ test cases
 
 ### Code Distribution
+
 - **Contractor Components:** 95+ files (~25,000 lines)
 - **UI Components:** 55+ files (~8,000 lines)
 - **Jobs Components:** 15 files (~4,500 lines)
@@ -46,6 +48,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🏗️ Construction CRM System
 
 ### Core Features (5 Components)
+
 1. **ConstructionPipeline.tsx** (~350 lines)
    - Visual pipeline: Leads → Bidding → Won → Active → Completed
    - Stage statistics and value tracking
@@ -81,6 +84,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🚀 Enterprise CRM Features
 
 ### Advanced Features (9 Components)
+
 1. **AIInsightsCRM.tsx** (~500 lines)
    - Predictive lead scoring
    - Next-best-action recommendations
@@ -139,6 +143,7 @@ Contractors keep 100% of what they earn. Always.
 ## 💼 Business Tools
 
 ### Finance & Accounting
+
 - Invoice Manager
 - Expense Tracking
 - Tax Helper
@@ -147,6 +152,7 @@ Contractors keep 100% of what they earn. Always.
 - Profit Calculator
 
 ### Sales & Marketing
+
 - CRM System
 - Lead Management
 - AI Receptionist
@@ -157,6 +163,7 @@ Contractors keep 100% of what they earn. Always.
 - Bid Analytics
 
 ### Operations
+
 - Document Manager
 - Scheduling Calendar
 - Communication Hub
@@ -168,6 +175,7 @@ Contractors keep 100% of what they earn. Always.
 - Compliance Tracker
 
 ### Analytics & Reporting
+
 - Reporting Suite
 - Advanced Analytics
 - Construction Reporting
@@ -179,6 +187,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🎨 Design System
 
 ### Brutalist Design
+
 - **Colors:** Black (#000000), White (#FFFFFF), Green (#00FF00), Red (#FF0000), Yellow (#FFFF00)
 - **Borders:** 2-4px solid black
 - **Shadows:** Hard shadows (no blur)
@@ -186,6 +195,7 @@ Contractors keep 100% of what they earn. Always.
 - **No gradients, no transparency, 100% opaque backgrounds**
 
 ### UI Components
+
 - **shadcn/ui v4:** 55+ components
 - **Custom Components:** 20+ custom components
 - **Icons:** Phosphor Icons (1,514+ icons)
@@ -195,22 +205,26 @@ Contractors keep 100% of what they earn. Always.
 ## 🔧 Technology Stack
 
 ### Frontend
+
 - **React 19** - Latest React version
 - **TypeScript 5.7** - Full type safety
 - **Vite 7.2** - Fast build tool
 - **Tailwind CSS v4** - Utility-first styling
 
 ### State Management
+
 - **Local Storage** - via `useLocalKV` hook
 - **Spark KV** - Key-value storage
 - **React Hooks** - useState, useEffect, useMemo, useCallback
 
 ### Testing
+
 - **Vitest** - Fast unit testing
 - **React Testing Library** - Component testing
 - **E2E Tests** - End-to-end workflows
 
 ### Deployment
+
 - **Vercel** - Serverless deployment
 - **GitHub** - Version control
 - **CI/CD** - Automated deployments
@@ -220,6 +234,7 @@ Contractors keep 100% of what they earn. Always.
 ## 📱 Mobile Support
 
 ### Mobile Features
+
 - Responsive design
 - Mobile-optimized layouts
 - Touch-friendly interfaces
@@ -227,6 +242,7 @@ Contractors keep 100% of what they earn. Always.
 - Push notifications (ready)
 
 ### Mobile CRM
+
 - Full CRM access on mobile
 - Offline mode
 - Sync management
@@ -237,6 +253,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🔐 Security & Compliance
 
 ### Data Protection
+
 - AES-256 encryption
 - TLS 1.3 for data in transit
 - Secure data storage
@@ -244,6 +261,7 @@ Contractors keep 100% of what they earn. Always.
 - Audit logging
 
 ### Compliance
+
 - GDPR compliance tools
 - CCPA compliance tools
 - HIPAA compliance tools
@@ -255,12 +273,14 @@ Contractors keep 100% of what they earn. Always.
 ## 📊 Performance Metrics
 
 ### Load Times
+
 - Initial load: < 2 seconds
 - Tab switching: < 500ms
 - Data sync: < 3 seconds
 - Report generation: < 5 seconds
 
 ### Scalability
+
 - Supports 10,000+ customers
 - Handles 1,000+ projects
 - Manages 100,000+ documents
@@ -271,6 +291,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🎯 Key Differentiators
 
 ### For Contractors
+
 1. **Zero Fees** - Keep 100% of earnings
 2. **Free CRM** - Unlimited contacts (Pro: unlimited)
 3. **Construction-Specific** - Built for construction industry
@@ -278,6 +299,7 @@ Contractors keep 100% of what they earn. Always.
 5. **Mobile-First** - Full mobile CRM with offline access
 
 ### For Homeowners
+
 1. **Flat Fee** - Simple, transparent pricing
 2. **Quality Contractors** - Verified professionals
 3. **Direct Communication** - Connect directly
@@ -288,12 +310,14 @@ Contractors keep 100% of what they earn. Always.
 ## 📈 Growth Metrics
 
 ### Codebase Growth
+
 - **Initial:** ~25,000 lines
 - **Mid-Development:** ~35,000 lines
 - **Current:** ~45,200 lines
 - **Growth Rate:** +13.8% in latest update
 
 ### Feature Growth
+
 - **Initial Components:** ~50
 - **Current Components:** 95+
 - **Growth:** +90%
@@ -303,12 +327,14 @@ Contractors keep 100% of what they earn. Always.
 ## 🚀 Deployment Status
 
 ### Production
+
 - **Status:** ✅ Live
 - **Platform:** Vercel
-- **URL:** https://fairtradeworker-texa-main-rhw5pnl74-fair-trade-worker.vercel.app
+- **URL:** <https://fairtradeworker-texa-main-rhw5pnl74-fair-trade-worker.vercel.app>
 - **Last Deploy:** December 2025
 
 ### Version Control
+
 - **Repository:** GitHub
 - **Branch:** main
 - **Commits:** 100+
@@ -319,6 +345,7 @@ Contractors keep 100% of what they earn. Always.
 ## 📚 Documentation
 
 ### Available Documentation
+
 - **COMPLETE_SOFTWARE_STRUCTURE.md** - Full codebase structure
 - **CONSTRUCTION_CRM_FEATURES.md** - Construction CRM details
 - **LINES_OF_CODE.md** - LOC analysis
@@ -326,6 +353,7 @@ Contractors keep 100% of what they earn. Always.
 - **README.md** - Project overview
 
 ### Documentation Coverage
+
 - Architecture documentation: ✅ Complete
 - Feature documentation: ✅ Complete
 - API documentation: ⏳ In progress
@@ -336,12 +364,14 @@ Contractors keep 100% of what they earn. Always.
 ## 🎓 Development Practices
 
 ### Code Quality
+
 - **TypeScript:** 100% coverage
 - **Type Safety:** Strict mode enabled
 - **Linting:** ESLint configured
 - **Formatting:** Prettier configured
 
 ### Best Practices
+
 - **Component Composition:** Extensive use
 - **Memoization:** React.memo, useMemo, useCallback
 - **Code Splitting:** Lazy loading
@@ -353,6 +383,7 @@ Contractors keep 100% of what they earn. Always.
 ## 🔮 Future Roadmap
 
 ### Planned Features
+
 - Additional integrations
 - Enhanced mobile features
 - Advanced AI capabilities
@@ -361,6 +392,7 @@ Contractors keep 100% of what they earn. Always.
 - User guides
 
 ### Estimated Timeline
+
 - **Q1 2026:** Additional integrations
 - **Q2 2026:** Enhanced mobile features
 - **Q3 2026:** Advanced AI capabilities
@@ -371,6 +403,7 @@ Contractors keep 100% of what they earn. Always.
 ## 📞 Support
 
 ### Resources
+
 - Documentation: `/docs` directory
 - Code examples: In documentation
 - Best practices: Documented

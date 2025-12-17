@@ -165,6 +165,7 @@ Click the **expand icon** in the top-right corner to enter **true fullscreen mod
 The void expands. The stars grow. Your CRM becomes an immersive experience.
 
 Perfect for:
+
 - Client presentations
 - Focus work sessions
 - Showing off to other contractors

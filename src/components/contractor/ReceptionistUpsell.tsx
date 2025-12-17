@@ -9,24 +9,29 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
   Sparkles,
   DollarSign,
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Phone,
+  ArrowRight
 } from "@phosphor-icons/react"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 import type { ReceptionistCall } from "@/lib/receptionist"
 import { generateUpsells, generateInstantQuote } from "@/lib/receptionistUpsell"
 import { toast } from "sonner"
+import { AIReceptionistIntegration } from "./AIReceptionistIntegration"
 
 interface ReceptionistUpsellProps {
   user: User
+  onNavigate?: (page: string) => void
 }
 
-export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
+export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps) {
   const isPro = user?.isPro || false
   const [calls] = useLocalKV<ReceptionistCall[]>("receptionist-calls", [])
   const [upsellEnabled, setUpsellEnabled] = useLocalKV<boolean>(`receptionist-upsell-enabled-${user?.id}`, true)
@@ -69,6 +74,10 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
 
   return (
     <div className="space-y-6">
+      {/* Main Integration Component */}
+      <AIReceptionistIntegration user={user} onNavigate={onNavigate} />
+
+      {/* Upsell & Quoting Section */}
       <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

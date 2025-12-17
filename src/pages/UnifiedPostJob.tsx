@@ -66,11 +66,25 @@ export function UnifiedPostJob({ user, onNavigate }: UnifiedPostJobProps) {
   }
 
   const handleMethodSelect = (method: InputMethod) => {
-    // Map video to photos for now (as per existing implementation)
-    const mappedMethod = method === 'video' ? 'photos' : method
-    sessionStorage.setItem('postJobMethod', mappedMethod)
+    // Route to specific pages for each input method
+    sessionStorage.setItem('postJobMethod', method)
     // Keep selectedService in sessionStorage for post-job page
-    onNavigate('post-job')
+    switch (method) {
+      case 'audio':
+        onNavigate('post-job-voice')
+        break
+      case 'photos':
+        onNavigate('post-job-photo')
+        break
+      case 'video':
+        onNavigate('post-job-video')
+        break
+      case 'text':
+        onNavigate('post-job-text')
+        break
+      default:
+        onNavigate('post-job')
+    }
   }
 
   return (
