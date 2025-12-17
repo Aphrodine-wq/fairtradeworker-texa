@@ -19,7 +19,7 @@ export function Footer({ onNavigate }: FooterProps) {
     ],
     resources: [
       { label: 'Free Tools', page: 'free-tools' },
-      { label: 'Help Center', page: 'help', disabled: true },
+      { label: 'Help Center', page: 'help' },
       { label: 'Blog', page: 'blog', disabled: true },
     ],
   }

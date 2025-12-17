@@ -7,6 +7,7 @@ import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
 import { HeroSection, StatsSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
+import { DonationInterface } from "@/components/donation/DonationInterface"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
@@ -119,6 +120,10 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
         <PricingSection onPurchase={() => onNavigate("purchase")} />
         <RatingSection />
+
+        <div className="mt-12 mb-8">
+          <DonationInterface compact={false} onNavigate={onNavigate} />
+        </div>
       </div>
     </div>
   )

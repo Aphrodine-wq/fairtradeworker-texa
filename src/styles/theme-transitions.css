@@ -10,7 +10,7 @@
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 2s;
+  transition-duration: 75ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -304,9 +304,9 @@
    11. DARK MODE TRANSITION SMOOTHING
    ============================================ */
 
-/* Smooth dark mode transition - synced with button */
+/* Smooth dark mode transition - optimized to <100ms */
 html {
-  transition: color 2s, background-color 2s;
+  transition: color 75ms, background-color 75ms;
 }
 
 /* ============================================
@@ -356,7 +356,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 2s, border-color 2s, color 2s;
+  transition: background-color 75ms, border-color 75ms, color 75ms;
 }
 
 /* Dialogs and modals */
@@ -365,7 +365,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 2s, border-color 2s, color 2s;
+  transition: background-color 75ms, border-color 75ms, color 75ms;
 }
 
 /* Tooltips */
@@ -374,7 +374,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 2s, border-color 2s, color 2s;
+  transition: background-color 75ms, border-color 75ms, color 75ms;
 }
 
 /* Popovers */
@@ -382,7 +382,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 2s, border-color 2s, color 2s;
+  transition: background-color 75ms, border-color 75ms, color 75ms;
 }
 
 /* ============================================
@@ -395,7 +395,7 @@ select {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   border-color: var(--border-color);
-  transition: background-color 2s, border-color 2s, color 2s;
+  transition: background-color 75ms, border-color 75ms, color 75ms;
 }
 
 input:focus,

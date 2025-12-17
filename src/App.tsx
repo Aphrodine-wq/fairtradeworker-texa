@@ -95,6 +95,8 @@ const PhotoScoperPage = lazy(() => retryImport(() =>
 ))
 const PurchasePage = lazy(() => retryImport(() => import("@/pages/Purchase").then(m => ({ default: m.PurchasePage }))))
 const DonatePage = lazy(() => retryImport(() => import("@/pages/DonatePage").then(m => ({ default: m.DonatePage }))))
+const HelpCenter = lazy(() => retryImport(() => import("@/pages/HelpCenter").then(m => ({ default: m.HelpCenter }))))
+const HomeownerProUpgrade = lazy(() => retryImport(() => import("@/components/homeowner/HomeownerProUpgrade").then(m => ({ default: m.HomeownerProUpgrade }))))
 const AboutPage = lazy(() => retryImport(() =>
   import("@/pages/About").then(m => ({ default: m.AboutPage }))
 ))
@@ -239,7 +241,7 @@ const SMSPhotoScope = lazy(() => retryImport(() =>
   import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -508,6 +510,18 @@ function App() {
             <DonatePage onNavigate={handleNavigate} />
           </Suspense>
         )
+      case 'help':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <HelpCenter onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'homeowner-pro-upgrade':
+        return currentUser?.role === 'homeowner' ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <HomeownerProUpgrade user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'free-tools':
         // Show FreeToolsPage for homeowners, BusinessTools for contractors/operators
         if (currentUser?.role === 'homeowner') {

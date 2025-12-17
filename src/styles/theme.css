@@ -166,6 +166,9 @@
     --size-72: calc(18rem * var(--size-scale));
     --size-80: calc(20rem * var(--size-scale));
     --size-96: calc(24rem * var(--size-scale));
+    --size-100: calc(25rem * var(--size-scale));
+    --size-112: calc(28rem * var(--size-scale));
+    --size-128: calc(32rem * var(--size-scale));
 
     /* Border radii */
     --radius-factor: 1;

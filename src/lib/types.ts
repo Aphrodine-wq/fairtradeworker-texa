@@ -8,6 +8,8 @@ export interface User {
   territoryId?: number
   isPro: boolean
   proSince?: string
+  isHomeownerPro?: boolean
+  homeownerProSince?: string
   performanceScore: number
   bidAccuracy: number
   isOperator: boolean

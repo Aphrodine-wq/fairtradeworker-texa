@@ -381,12 +381,12 @@
    GLOBAL DARK/LIGHT MODE TRANSITION FIX
    =========================================== */
 
-/* Smooth color transitions for ALL elements - synced with theme toggle at 5s */
+/* Smooth color transitions for ALL elements - optimized to <100ms */
 *,
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: 5s;
+  transition-duration: 75ms;
   transition-timing-function: ease-out;
 }
 

@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { BrutalistGlassCard, GlassCardContent } from "@/components/ui/BrutalistGlassCard"
 import { Button } from "@/components/ui/button"
@@ -6,6 +7,7 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { Crown, Lightning, Bell, Shield, FileText, CheckCircle, Brain, ChartBar } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
+import { UnifiedPaymentScreen } from "@/components/payments/UnifiedPaymentScreen"
 
 interface ProUpgradeProps {
   user: User
@@ -14,8 +16,13 @@ interface ProUpgradeProps {
 
 export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
   const [users, setUsers] = useKV<User[]>("users", [])
+  const [paymentOpen, setPaymentOpen] = useState(false)
 
   const handleUpgrade = () => {
+    setPaymentOpen(true)
+  }
+
+  const handlePaymentComplete = (paymentId: string) => {
     setUsers((currentUsers) =>
       (currentUsers || []).map(u =>
         u.id === user.id
@@ -45,11 +52,24 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
                 Back to Dashboard
               </Button>
             </CardContent>
-          </Card>
-        </div>
+        </Card>
       </div>
-    )
-  }
+
+      <UnifiedPaymentScreen
+        open={paymentOpen}
+        onClose={() => setPaymentOpen(false)}
+        paymentType="subscription"
+        amount={39}
+        title="Pro Subscription"
+        description="Monthly subscription to Pro features"
+        user={user}
+        onPaymentComplete={handlePaymentComplete}
+        enableRecurring={true}
+        recurringInterval="monthly"
+      />
+    </div>
+  )
+}
 
   const features = [
     {
@@ -171,6 +191,19 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
           </CardContent>
         </Card>
       </div>
+
+      <UnifiedPaymentScreen
+        open={paymentOpen}
+        onClose={() => setPaymentOpen(false)}
+        paymentType="subscription"
+        amount={39}
+        title="Pro Subscription"
+        description="Monthly subscription to Pro features"
+        user={user}
+        onPaymentComplete={handlePaymentComplete}
+        enableRecurring={true}
+        recurringInterval="monthly"
+      />
     </div>
   )
 }

@@ -126,7 +126,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
             </div>
           ) : (
             <Tabs defaultValue="pipeline" className="w-full">
-              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-3 gap-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-4 rounded-lg">
+              <TabsList className="grid w-full grid-cols-3 gap-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-4 rounded-lg">
                 <TabsTrigger 
                   value="pipeline" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"

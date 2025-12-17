@@ -75,17 +75,9 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
             aria-label="Go to home"
           >
-            <div className="flex items-center justify-center w-9 h-9 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
-              <Wrench className="text-black dark:text-white" size={20} weight="bold" />
-            </div>
-            <div className="hidden sm:flex flex-col items-start">
-              <span className="font-heading font-bold text-base leading-none text-black dark:text-white">
-                FairTradeWorker
-              </span>
-              <span className="text-[10px] text-black dark:text-white leading-none font-semibold tracking-wide mt-0.5">
-                HOME SERVICES
-              </span>
-            </div>
+            <span className="font-heading font-bold text-xl md:text-2xl leading-none text-black dark:text-white">
+              FairTradeWorker
+            </span>
           </button>
 
           <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5">
