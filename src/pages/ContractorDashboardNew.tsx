@@ -307,7 +307,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Fee Savings Highlight */}
           {feesAvoided > 0 && (
-            <Card className="p-6" glass={isPro}>
+            <Card className="p-6" >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Fees Avoided on FairTradeWorker</p>
@@ -402,7 +402,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
             {/* Today's Focus */}
             <div className="space-y-6">
-              <Card className="p-6" glass={isPro}>
+              <Card className="p-6" >
                 <h3 className="font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                   <Calendar className="h-5 w-5 text-primary" />
                   Today's Schedule
@@ -428,7 +428,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 )}
               </Card>
 
-              <Card className="p-6" glass={isPro}>
+              <Card className="p-6" >
                 <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -458,7 +458,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </Card>
 
               {upcomingMilestones.length > 0 && (
-                <Card className="p-6" glass={isPro}>
+                <Card className="p-6" >
                   <h3 className="font-semibold mb-4">Upcoming Milestones</h3>
                   <div className="space-y-3">
                     {upcomingMilestones.map(({ job, milestone }) => (
@@ -509,7 +509,6 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     <Card
                       key={tool.id}
                       className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
-                      glass={isPro}
                       onClick={() => onNavigate(tool.page)}
                     >
                       <div className="flex items-center gap-4">
@@ -528,8 +527,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Default tools if no pinned tools */}
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-                  onClick={() => onNavigate('crm')}>
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('crm')}>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center shadow-md">
                       <Users className="h-6 w-6 text-primary" />
@@ -541,8 +539,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                   </div>
                 </Card>
 
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-                  onClick={() => onNavigate('invoices')}>
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('invoices')}>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
                       <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
@@ -554,8 +551,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                   </div>
                 </Card>
 
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-                  onClick={() => onNavigate('business-tools')}>
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('business-tools')}>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-md bg-purple-500/10 flex items-center justify-center shadow-md">
                       <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
