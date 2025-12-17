@@ -12,19 +12,22 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 - Revenue CTAs live (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
 - Feature flags and graceful fallbacks for missing keys/links.
 
-### Code Statistics
-- **Total Files:** 178 TypeScript files
-- **Total Lines:** 39,700 lines of code
-- **Components:** 120 React components (23,874 lines)
-  - 55 UI components (shadcn/ui)
-  - 29 contractor tools
+### Code Statistics (Updated December 16, 2025)
+- **Total Files:** 323+ TypeScript/TSX files
+- **Total Lines:** 50,000+ lines of code
+- **Components:** 150+ React components (~30,000 lines)
+  - 55+ UI components (shadcn/ui)
+  - 95+ contractor tools
   - 15 job-related components
-  - 4 viral growth components
+  - 5 viral growth components
   - 4 payment components
-  - 5 major project components
-- **Pages:** 14 pages (4,852 lines)
-- **Libraries:** 19 utility modules (3,770 lines)
-- **Tests:** 15 test files (5,265 lines, 130+ test cases)
+  - 8 major project components
+  - 6 layout components
+  - 10+ shared components
+- **Pages:** 15+ pages (~5,500 lines)
+- **Libraries:** 19 utility modules (~3,800 lines)
+- **Tests:** 18+ test files (~5,500 lines, 200+ test cases)
+- **Documentation:** 90+ markdown files
 - **Language:** 100% TypeScript (zero JavaScript)
 
 ### Feature Implementation Status
@@ -36,9 +39,12 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 - Milestone-based payment system
 - Viral growth mechanics (referral codes, contractor invites)
 - Territory operator system (254 Texas counties)
-- Pro subscription with automation
+- Pro subscription with automation ($50/month - updated December 2025)
+- Custom navigation builder with business tools integration
+- Theme system with 5-second synchronized transitions
+- Consistent page centering and layout improvements
 - Demo mode with 3 user types
-- Comprehensive test coverage
+- Comprehensive test coverage (200+ test cases)
 
 ⏳ **Needs Production Integration (5%):**
 - Stripe payment processing (integration-ready)

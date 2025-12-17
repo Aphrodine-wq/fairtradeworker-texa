@@ -29,7 +29,17 @@ Enhanced navigation system to allow users to add business tools to their navigat
 
 ### Files Modified
 - `src/lib/types/navigation.ts` - Added business tool definitions and helper functions
+  - Added `getAvailableBusinessTools(role: UserRole)` function
+  - Extended icon mapping for business tool icons
+  - Enhanced NavItem type support for custom items
 - `src/components/navigation/NavigationCustomizer.tsx` - Added UI for adding business tools
+  - "Add Business Tools" section with available tools
+  - Visual feedback for tool addition
+  - Integration with navigation preferences
+- `src/components/navigation/NavigationCustomizerDialog.tsx` - Dialog wrapper for customizer
+- `src/components/navigation/DraggableNavItem.tsx` - Drag-and-drop navigation item component
+- `src/hooks/useNavigationPreferences.ts` - Navigation preferences management hook
+- `src/components/layout/Header.tsx` - Integration with navigation system
 - `src/pages/BusinessTools.tsx` - Added max-width centering
 - `src/pages/FreeToolsPage.tsx` - Added URL hash support for initial tool selection
 
@@ -41,8 +51,18 @@ Enhanced navigation system to allow users to add business tools to their navigat
 5. Custom navigation is saved per-user and persists across sessions
 
 ## User Experience
-- Intuitive drag-and-drop interface
-- Visual feedback during customization
+- Intuitive drag-and-drop interface with visual feedback
+- Toggle visibility of navigation items with switches
+- Add business tools directly from available pool
 - Validation ensures at least one item is always visible
 - Changes save immediately and apply to navigation bar
 - Works for all user roles (contractor, homeowner, operator)
+- Reset to defaults option with confirmation
+- Changes persist across browser sessions
+
+## Testing
+- Comprehensive test suite in `NavigationCustomizer.test.tsx`
+- Tests for component rendering, business tool addition, visibility toggling
+- Tests for save/reset functionality
+- Role-based tool availability tests
+- Validation and error handling tests
