@@ -175,15 +175,15 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  const categoryStyles: Record<string, { bg: string; text: string }> = {
-    emergency: { bg: "bg-rose-50 dark:bg-rose-950/30", text: "text-rose-700 dark:text-rose-300" },
-    plumbing: { bg: "bg-cyan-50 dark:bg-cyan-950/30", text: "text-cyan-700 dark:text-cyan-300" },
-    electrical: { bg: "bg-amber-50 dark:bg-amber-950/30", text: "text-amber-700 dark:text-amber-300" },
-    hvac: { bg: "bg-slate-100 dark:bg-slate-900/60", text: "text-slate-800 dark:text-slate-200" },
-    repair: { bg: "bg-emerald-50 dark:bg-emerald-950/30", text: "text-emerald-700 dark:text-emerald-300" },
-    outdoor: { bg: "bg-lime-50 dark:bg-lime-950/30", text: "text-lime-700 dark:text-lime-300" },
-    remodeling: { bg: "bg-purple-50 dark:bg-purple-950/30", text: "text-purple-700 dark:text-purple-300" },
-    cleaning: { bg: "bg-amber-50 dark:bg-amber-950/30", text: "text-amber-700 dark:text-amber-200" }
+  const categoryStyles: Record<string, string> = {
+    emergency: "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300",
+    plumbing: "bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-300",
+    electrical: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-300",
+    hvac: "bg-slate-100 dark:bg-slate-900/60 text-slate-800 dark:text-slate-200",
+    repair: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300",
+    outdoor: "bg-lime-50 dark:bg-lime-950/30 text-lime-700 dark:text-lime-300",
+    remodeling: "bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300",
+    cleaning: "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-200"
   }
 
   const handleCategoryClick = (categoryId: string) => {
@@ -238,13 +238,25 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                   >
                     <div
                       className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border border-black/10 dark:border-white/10 ${
-                        categoryStyles[category.id]?.bg || "bg-neutral-100 dark:bg-neutral-900"
+                        categoryStyles[category.id] || "bg-neutral-100 dark:bg-neutral-900"
                       }`}
                     >
                       <Icon 
                         size={28} 
                         weight="fill" 
-                        className={categoryStyles[category.id]?.text || "text-neutral-800 dark:text-neutral-200"} 
+                        className={
+                          categoryStyles[category.id] 
+                            ? category.id === 'emergency' ? "text-rose-700 dark:text-rose-300" :
+                              category.id === 'plumbing' ? "text-cyan-700 dark:text-cyan-300" :
+                              category.id === 'electrical' ? "text-amber-700 dark:text-amber-300" :
+                              category.id === 'hvac' ? "text-slate-800 dark:text-slate-200" :
+                              category.id === 'repair' ? "text-emerald-700 dark:text-emerald-300" :
+                              category.id === 'outdoor' ? "text-lime-700 dark:text-lime-300" :
+                              category.id === 'remodeling' ? "text-purple-700 dark:text-purple-300" :
+                              category.id === 'cleaning' ? "text-amber-700 dark:text-amber-200" :
+                              "text-neutral-800 dark:text-neutral-200"
+                            : "text-neutral-800 dark:text-neutral-200"
+                        }
                       />
                     </div>
                   </motion.div>

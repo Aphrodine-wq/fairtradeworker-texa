@@ -192,17 +192,17 @@ export function PricingSection({
 
   const pricingTiers = [
     {
-      name: "Homeowner",
-      price: "$0",
-      description: "Sign up free, pay per job posted",
-      features: ["Post unlimited jobs", "Access to verified contractors", "Secure messaging", "Basic support"],
-      ctaLabel: "Post a Job"
+      name: "Homeowner Free",
+      price: "Free",
+      description: "Post jobs at no cost",
+      features: ["Post unlimited jobs", "Receive bids", "Basic messaging", "No fees"],
+      ctaLabel: "Get Started"
     },
     {
       name: "Homeowner Pro",
-      price: "$59",
-      description: "Premium features for homeowners",
-      features: ["Priority job listing", "Advanced analytics", "Priority contractor matching", "Dedicated support"],
+      price: "$25",
+      description: "Enhanced homeowner features",
+      features: ["Priority job placement", "Advanced project tracking", "Direct contractor messaging", "Project analytics"],
       ctaLabel: "Upgrade to Pro"
     },
     {
@@ -228,7 +228,7 @@ export function PricingSection({
         <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Simple, Transparent Pricing</h2>
         <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">Choose the plan that works for you</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
         {pricingTiers.map((tier) => (
           <GlassCard key={tier.name} className={`pricing-card ${tier.highlighted ? 'ring-2 ring-black dark:ring-white' : ''}`}>
             <div className="px-6 py-8">

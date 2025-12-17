@@ -257,6 +257,14 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
               <DropdownMenuSeparator />
             </>
           )}
+          <DropdownMenuItem 
+            onClick={() => onNavigate('settings')}
+            className="cursor-pointer"
+          >
+            <Gear className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={onLogout} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">
             <SignOut className="mr-2 h-4 w-4" />
             <span>Log Out</span>
@@ -378,24 +386,17 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
                 Customize Navigation
               </Button>
             </SheetClose>
+
+            <div className="h-px bg-border my-4" />
+
             <SheetClose asChild>
               <Button
                 variant="ghost"
-                onClick={() => handleNav('settings', 'settings')}
-                className="justify-start min-h-[44px] mt-2"
+                onClick={() => onNavigate('settings')}
+                className="justify-start min-h-[44px]"
               >
                 <Gear size={20} className="mr-3" />
                 Settings
-              </Button>
-            </SheetClose>
-            <SheetClose asChild>
-              <Button
-                variant="ghost"
-                onClick={onLogout}
-                className="justify-start min-h-[44px] mt-2 text-destructive"
-              >
-                <SignOut size={20} className="mr-3" />
-                Log Out
               </Button>
             </SheetClose>
 

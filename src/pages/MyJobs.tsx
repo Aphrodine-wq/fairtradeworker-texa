@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BackButton } from "@/components/ui/BackButton"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { 
@@ -401,14 +400,9 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
 
         <div className="w-full px-4 md:px-8 pt-20 pb-12">
           <div className="space-y-8">
-          <div className="flex items-center gap-4">
-            {onNavigate && (
-              <BackButton onClick={() => onNavigate('dashboard')} />
-            )}
-            <div>
-              <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>
-              <p className="text-muted-foreground mt-1">Manage your posted jobs and contractor bids</p>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>
+            <p className="text-muted-foreground mt-1">Manage your posted jobs and contractor bids</p>
           </div>
 
         <div className="grid md:grid-cols-3 gap-6">

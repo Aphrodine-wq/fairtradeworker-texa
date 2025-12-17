@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BackButton } from "@/components/ui/BackButton"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { DriveTimeWarning } from "./DriveTimeWarning"
 const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap })))
@@ -692,16 +691,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
               <div className="space-y-3 md:space-y-4 flex-1">
-                <div className="flex items-center gap-4">
-                  <BackButton onClick={() => window.history.length > 1 ? window.history.back() : window.location.href = '/'} />
-                  <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
-                      <Wrench size={28} weight="duotone" className="text-primary" />
-                    </div>
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight">
-                      Browse Jobs
-                    </h1>
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
+                    <Wrench size={28} weight="duotone" className="text-primary" />
                   </div>
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight">
+                    Browse Jobs
+                  </h1>
                 </div>
                 <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed">
                   Find your next project – <span className="font-bold text-primary">bid free</span>, keep <span className="font-bold text-green-600 dark:text-green-400">100%</span>
@@ -954,15 +950,15 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {sortedOpenJobs.slice(0, visibleCount).map(job => (
                     <div key={job.id} className="h-full">
-                      <JobCard
-                        userRole={user.role}
-                        job={job}
-                        onViewPhotos={handlePhotoClick}
-                        onPlaceBid={handleBidClick}
-                      />
+                            <JobCard
+                              userRole={user.role}
+                              job={job}
+                              onViewPhotos={handlePhotoClick}
+                              onPlaceBid={handleBidClick}
+                            />
+                          </div>
+                        ))}
                     </div>
-                  ))}
-                </div>
                 {sortedOpenJobs.length > visibleCount && (
                   <div className="text-center pt-6">
                     <Button
@@ -972,13 +968,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     >
                       Load More ({sortedOpenJobs.length - visibleCount} remaining)
                     </Button>
-                  </div>
+                        </div>
                 )}
               </>
             )}
-          </div>
-        </div>
-      </div>
+                      </div>
+                          </div>
+                    </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[98vh] max-w-[98vw] lg:max-w-[1800px] xl:max-w-[95vw]">
@@ -1004,10 +1000,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     <Users size={14} className="mr-1" weight="duotone" />
                     {selectedJob.bids.length} {selectedJob.bids.length === 1 ? 'bid' : 'bids'}
                   </Badge>
-                </div>
+                        </div>
               )}
             </DialogHeader>
-          </div>
+                      </div>
 
           {/* Main Content Area - Column Layout - Scrollable */}
           <div className="flex-1 overflow-y-auto px-10 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -1031,18 +1027,18 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                             alt={`Job photo ${idx + 1}`}
                             className="w-full h-full object-cover"
                             onClick={() => handlePhotoClick(selectedJob.photos || [])}
-                          />
-                        </div>
-                      ))}
+                            />
+                          </div>
+                        ))}
                     </div>
                     {selectedJob.photos.length > 4 && (
-                      <Button 
-                        variant="outline" 
+                        <Button
+                          variant="outline"
                         className="w-full mt-3"
                         onClick={() => handlePhotoClick(selectedJob.photos || [])}
-                      >
+                        >
                         View All {selectedJob.photos.length} Photos
-                      </Button>
+                        </Button>
                     )}
                   </CardContent>
                 </Card>
@@ -1072,8 +1068,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                       <div>
                         <h4 className="text-sm font-semibold text-muted-foreground mb-1">Location</h4>
                         <p className="text-sm text-foreground">{selectedJob.location}</p>
-                      </div>
-                    )}
+                  </div>
+                )}
                     {selectedJob.aiScope?.materials && selectedJob.aiScope.materials.length > 0 && (
                       <div>
                         <h4 className="text-sm font-semibold text-muted-foreground mb-2">Materials Needed</h4>
@@ -1084,15 +1080,15 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                               {material}
                             </Badge>
                           ))}
-                        </div>
-                      </div>
+          </div>
+        </div>
                     )}
                     <div>
                       <h4 className="text-sm font-semibold text-muted-foreground mb-1">Posted</h4>
                       <p className="text-sm text-foreground">
                         {new Date(selectedJob.createdAt).toLocaleDateString()} at {new Date(selectedJob.createdAt).toLocaleTimeString()}
                       </p>
-                    </div>
+      </div>
                   </CardContent>
                 </Card>
               )}
@@ -1104,17 +1100,17 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     <CardTitle className="text-lg font-semibold">Bid Intelligence</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <BidIntelligence
-                      jobCategory={selectedJob.title}
-                      jobPriceLow={selectedJob.aiScope.priceLow}
-                      jobPriceHigh={selectedJob.aiScope.priceHigh}
-                      contractorWinRate={user.winRate}
-                    />
+                  <BidIntelligence
+                    jobCategory={selectedJob.title}
+                    jobPriceLow={selectedJob.aiScope.priceLow}
+                    jobPriceHigh={selectedJob.aiScope.priceHigh}
+                    contractorWinRate={user.winRate}
+                  />
                     <div className="mt-4 pt-4 border-t border-black/10 dark:border-white/10 space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Your Win Rate</span>
                         <span className="font-semibold text-foreground">{(user.winRate || 0).toFixed(1)}%</span>
-                      </div>
+                </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">Competition Level</span>
                         <span className="font-semibold text-foreground">
@@ -1136,11 +1132,11 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               {selectedJob && myScheduledJobs.length > 0 && (
                 <Card>
                   <CardContent className="p-5">
-                    <DriveTimeWarning
-                      targetJob={selectedJob}
-                      scheduledJobs={myScheduledJobs}
-                      user={user}
-                    />
+                  <DriveTimeWarning
+                    targetJob={selectedJob}
+                    scheduledJobs={myScheduledJobs}
+                    user={user}
+                  />
                   </CardContent>
                 </Card>
               )}
@@ -1293,7 +1289,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     💬 A compelling message helps you stand out
                   </p>
                 </div>
-                  </div>
+              </div>
                 </CardContent>
               </Card>
             </div>
@@ -1305,8 +1301,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-lg font-semibold text-black dark:text-white">
                   <span className="text-green-600 dark:text-green-400 text-xl">✓</span>
-                  <span>Free bidding • $0 fee • Keep 100%</span>
-                </div>
+                <span>Free bidding • $0 fee • Keep 100%</span>
+              </div>
                 <p className="text-sm text-muted-foreground">
                   No hidden fees. No commission. You keep every dollar you earn.
                 </p>

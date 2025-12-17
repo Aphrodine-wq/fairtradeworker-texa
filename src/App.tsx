@@ -463,7 +463,7 @@ function App() {
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'crm':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
-          ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} /></Suspense>
+          ? <Suspense fallback={<LoadingFallback />}><EnhancedCRM user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'invoices':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator')
@@ -641,7 +641,7 @@ function App() {
       case 'leads':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <EnhancedCRM user={currentUser} />
+            <EnhancedCRM user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'expenses':

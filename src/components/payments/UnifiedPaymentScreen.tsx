@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { CreditCard, Bank, Lock, CheckCircle, Calendar, Clock, Repeat } from '@phosphor-icons/react'
+import { CreditCard, Bank, Lock, CheckCircle, Calendar, Clock, Repeat, Shield, ShieldCheck, LockKey, Check } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { calculatePaymentBreakdown, calculateStripeFee, type PaymentBreakdown, type PaymentMethod } from '@/lib/stripe'
 import { useLocalKV as useKV } from '@/hooks/useLocalKV'
@@ -244,76 +244,79 @@ export function UnifiedPaymentScreen({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 max-w-5xl h-[96vh] max-h-[96vh]">
-        {/* Premium Header */}
-        <div className="px-10 pt-8 pb-6 border-b border-border/50 bg-gradient-to-b from-background to-muted/20 flex-shrink-0">
-          <DialogHeader className="text-left space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <DialogTitle className="text-3xl font-extrabold tracking-tight">{getPaymentTypeLabel()}</DialogTitle>
-                <DialogDescription className="text-base mt-2 flex items-center gap-2">
-                  <Lock size={16} weight="fill" className="text-primary" />
-                  {description || 'Secure payment powered by Stripe'}
-                </DialogDescription>
+      <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 max-w-5xl h-[96vh] bg-gradient-to-br from-background via-background to-muted/20">
+        {/* Premium Header with Security Badge */}
+        <div className="relative px-8 pt-8 pb-6 border-b border-border/50 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 flex-shrink-0">
+          <div className="absolute top-4 right-8 flex items-center gap-2 px-3 py-1.5 bg-green-500/10 dark:bg-green-500/20 border border-green-500/30 rounded-full">
+            <ShieldCheck size={16} weight="fill" className="text-green-600 dark:text-green-400" />
+            <span className="text-xs font-semibold text-green-700 dark:text-green-300">SSL Secured</span>
+          </div>
+          <DialogHeader className="text-left">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
+                <LockKey size={24} weight="duotone" className="text-primary" />
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <CheckCircle size={16} weight="fill" className="text-green-600 dark:text-green-400" />
-                <span>SSL Encrypted</span>
-              </div>
+              <DialogTitle className="text-3xl font-extrabold">{getPaymentTypeLabel()}</DialogTitle>
             </div>
+            <DialogDescription className="text-base">
+              {description || 'Enterprise-grade security powered by Stripe'}
+            </DialogDescription>
           </DialogHeader>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-10 py-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="flex-1 overflow-y-auto p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Summary */}
           <div className="space-y-6">
-            <Card className="border-2 shadow-lg bg-card/50 backdrop-blur-sm">
-              <CardContent className="p-8 space-y-6">
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <h3 className="font-bold text-xl text-foreground">{title}</h3>
+            <Card className="border-2 border-border/50 shadow-lg bg-card/50 backdrop-blur-sm">
+              <CardContent className="pt-6 space-y-5">
+                <div>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl text-foreground mb-1">{title}</h3>
                       {contractorName && (
-                        <p className="text-sm text-muted-foreground">Contractor: <span className="font-medium text-foreground">{contractorName}</span></p>
+                        <div className="flex items-center gap-2 mt-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                          <p className="text-sm text-muted-foreground">Contractor: <span className="font-medium text-foreground">{contractorName}</span></p>
+                        </div>
                       )}
                     </div>
                     {tier && tier !== 'STANDARD' && (
-                      <Badge variant="secondary" className="text-xs px-3 py-1">{tier.replace('_', ' ')}</Badge>
+                      <Badge className="bg-primary/10 text-primary border-primary/20 font-semibold px-3 py-1">{tier.replace('_', ' ')}</Badge>
                     )}
                   </div>
                 </div>
 
                 <Separator className="bg-border/50" />
 
-                <div className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-base text-muted-foreground">Amount</span>
-                      <span className="font-semibold text-lg text-foreground">${breakdown.jobAmount.toFixed(2)}</span>
-                    </div>
-                    {breakdown.platformFee > 0 && (
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-base text-muted-foreground">Platform Fee</span>
-                        <span className="font-semibold text-base text-foreground">${breakdown.platformFee.toFixed(2)}</span>
-                      </div>
-                    )}
+                <div className="space-y-3 bg-muted/30 rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-muted-foreground">Subtotal</span>
+                    <span className="font-semibold text-foreground">${breakdown.jobAmount.toFixed(2)}</span>
                   </div>
+                  {breakdown.platformFee > 0 && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-muted-foreground">Platform Fee</span>
+                      <span className="font-semibold text-foreground">${breakdown.platformFee.toFixed(2)}</span>
+                    </div>
+                  )}
                   <Separator className="bg-border/50" />
-                  <div className="flex justify-between items-center pt-2">
-                    <span className="text-xl font-bold text-foreground">Total</span>
-                    <span className="text-3xl font-extrabold text-primary">${breakdown.homeownerTotal.toFixed(2)}</span>
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-lg font-bold text-foreground">Total Amount</span>
+                    <span className="text-2xl font-extrabold text-primary">${breakdown.homeownerTotal.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {paymentType === 'service' && contractorName && (
-                  <div className="p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CheckCircle size={18} weight="fill" className="text-primary" />
-                      <p className="font-semibold text-sm">Contractor receives full amount</p>
+                  <div className="p-4 bg-primary/10 dark:bg-primary/20 border border-primary/20 rounded-lg">
+                    <div className="flex items-start gap-3">
+                      <CheckCircle size={20} weight="fill" className="text-primary flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-sm mb-1 text-foreground">Zero-Fee Guarantee</p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Contractor receives <span className="font-semibold text-foreground">${breakdown.contractorPayout.toFixed(2)}</span> in full. No platform fees deducted.
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground pl-6">
-                      ${breakdown.contractorPayout.toFixed(2)} (zero fees deducted)
-                    </p>
                   </div>
                 )}
               </CardContent>
@@ -321,26 +324,24 @@ export function UnifiedPaymentScreen({
 
             {/* Installments */}
             {enableInstallments && (
-              <Card className="border-2 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <Repeat size={22} weight="duotone" className="text-primary" />
-                    <h4 className="font-bold text-lg">Installment Plan</h4>
+              <Card className="border border-black/10 dark:border-white/10">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Repeat size={20} />
+                    <h4 className="font-semibold">Installment Plan</h4>
                   </div>
                   <RadioGroup value={installmentCount?.toString() || '1'} onValueChange={(v) => setInstallmentCount(parseInt(v))}>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                        <RadioGroupItem value="1" id="install-1" />
-                        <Label htmlFor="install-1" className="font-medium cursor-pointer flex-1">Pay in full (${breakdown.homeownerTotal.toFixed(2)})</Label>
-                      </div>
-                      <div className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                        <RadioGroupItem value="2" id="install-2" />
-                        <Label htmlFor="install-2" className="font-medium cursor-pointer flex-1">2 payments (${(breakdown.homeownerTotal / 2).toFixed(2)} each)</Label>
-                      </div>
-                      <div className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                        <RadioGroupItem value="3" id="install-3" />
-                        <Label htmlFor="install-3" className="font-medium cursor-pointer flex-1">3 payments (${(breakdown.homeownerTotal / 3).toFixed(2)} each)</Label>
-                      </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="1" id="install-1" />
+                      <Label htmlFor="install-1" className="font-normal cursor-pointer">Pay in full (${breakdown.homeownerTotal.toFixed(2)})</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="2" id="install-2" />
+                      <Label htmlFor="install-2" className="font-normal cursor-pointer">2 payments (${(breakdown.homeownerTotal / 2).toFixed(2)} each)</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="3" id="install-3" />
+                      <Label htmlFor="install-3" className="font-normal cursor-pointer">3 payments (${(breakdown.homeownerTotal / 3).toFixed(2)} each)</Label>
                     </div>
                   </RadioGroup>
                 </CardContent>
@@ -349,32 +350,30 @@ export function UnifiedPaymentScreen({
 
             {/* Scheduling */}
             {enableScheduling && (
-              <Card className="border-2 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-5">
-                    <Calendar size={22} weight="duotone" className="text-primary" />
-                    <h4 className="font-bold text-lg">Schedule Payment</h4>
+              <Card className="border border-black/10 dark:border-white/10">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Calendar size={20} />
+                    <h4 className="font-semibold">Schedule Payment</h4>
                   </div>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="schedule-date" className="text-sm font-semibold">Date</Label>
+                  <div className="space-y-3">
+                    <div>
+                      <Label htmlFor="schedule-date">Date</Label>
                       <Input
                         id="schedule-date"
                         type="date"
                         value={scheduleDate}
                         onChange={(e) => setScheduleDate(e.target.value)}
                         min={format(new Date(), 'yyyy-MM-dd')}
-                        className="h-12"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="schedule-time" className="text-sm font-semibold">Time</Label>
+                    <div>
+                      <Label htmlFor="schedule-time">Time</Label>
                       <Input
                         id="schedule-time"
                         type="time"
                         value={scheduleTime}
                         onChange={(e) => setScheduleTime(e.target.value)}
-                        className="h-12"
                       />
                     </div>
                   </div>
@@ -384,21 +383,20 @@ export function UnifiedPaymentScreen({
 
             {/* Recurring */}
             {enableRecurring && (
-              <Card className="border-2 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardContent className="p-6">
+              <Card className="border border-black/10 dark:border-white/10">
+                <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Repeat size={22} weight="duotone" className="text-primary" />
+                    <div className="flex items-center gap-2">
+                      <Repeat size={20} />
                       <div>
-                        <h4 className="font-bold text-lg">Recurring Payment</h4>
-                        <p className="text-sm text-muted-foreground mt-0.5">Automatically charge every {recurringInterval}</p>
+                        <h4 className="font-semibold">Recurring Payment</h4>
+                        <p className="text-sm text-muted-foreground">Automatically charge every {recurringInterval}</p>
                       </div>
                     </div>
                     <Button
                       variant={isRecurring ? "default" : "outline"}
-                      size="default"
+                      size="sm"
                       onClick={() => setIsRecurring(!isRecurring)}
-                      className="h-10"
                     >
                       {isRecurring ? 'Enabled' : 'Enable'}
                     </Button>
@@ -410,157 +408,199 @@ export function UnifiedPaymentScreen({
 
           {/* Right Column - Payment Method */}
           <div className="space-y-6">
-            <Card className="border-2 shadow-lg bg-card/50 backdrop-blur-sm">
-              <CardContent className="p-8 space-y-6">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                    <CreditCard size={24} weight="duotone" className="text-primary" />
-                    Payment Method
-                  </h3>
-                  <p className="text-sm text-muted-foreground">Choose how you'd like to pay</p>
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-foreground">Payment Method</h3>
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Shield size={14} weight="fill" className="text-green-600 dark:text-green-400" />
+                  <span>256-bit encryption</span>
                 </div>
-                
-                {hasSavedMethods && (
-                  <RadioGroup value={paymentMethodType} onValueChange={(v) => setPaymentMethodType(v as 'saved' | 'new')}>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                        <RadioGroupItem value="saved" id="method-saved" />
-                        <Label htmlFor="method-saved" className="font-medium cursor-pointer flex-1">Use saved payment method</Label>
-                      </div>
-                      <div className="flex items-center space-x-3 p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                        <RadioGroupItem value="new" id="method-new" />
-                        <Label htmlFor="method-new" className="font-medium cursor-pointer flex-1">Add new payment method</Label>
-                      </div>
+              </div>
+              
+              {hasSavedMethods && (
+                <RadioGroup value={paymentMethodType} onValueChange={(v) => setPaymentMethodType(v as 'saved' | 'new')}>
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="saved" id="method-saved" />
+                      <Label htmlFor="method-saved" className="font-normal cursor-pointer">Use saved payment method</Label>
                     </div>
-                  </RadioGroup>
-                )}
-
-                {paymentMethodType === 'saved' && hasSavedMethods && (
-                  <div className="space-y-3">
-                    {userSavedMethods.map((method) => (
-                      <Card
-                        key={method.id}
-                        className={`cursor-pointer border-2 transition-all hover:shadow-md ${
-                          selectedSavedMethod === method.id
-                            ? 'border-primary bg-primary/5 dark:bg-primary/10 shadow-md'
-                            : 'border-border/50 hover:border-primary/50'
-                        }`}
-                        onClick={() => setSelectedSavedMethod(method.id)}
-                      >
-                        <CardContent className="p-5 flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="p-2 rounded-lg bg-muted">
-                              <CreditCard size={24} weight="duotone" className="text-primary" />
-                            </div>
-                            <div>
-                              <p className="font-semibold text-base">
-                                {method.card?.brand.toUpperCase()} •••• {method.card?.last4}
-                              </p>
-                              <p className="text-sm text-muted-foreground mt-0.5">
-                                Expires {method.card?.expMonth}/{method.card?.expYear}
-                              </p>
-                            </div>
-                          </div>
-                          {method.isDefault && (
-                            <Badge variant="secondary" className="text-xs">Default</Badge>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="new" id="method-new" />
+                      <Label htmlFor="method-new" className="font-normal cursor-pointer">Add new payment method</Label>
+                    </div>
                   </div>
-                )}
+                </RadioGroup>
+              )}
 
-                {paymentMethodType === 'new' && (
-                  <div className="space-y-5">
-                    <div className="space-y-2">
-                      <Label htmlFor="card-number" className="text-sm font-semibold">Card Number</Label>
-                      <Input
-                        id="card-number"
-                        placeholder="1234 5678 9012 3456"
-                        value={cardNumber}
-                        onChange={handleCardNumberChange}
-                        maxLength={19}
-                        className="h-12 text-base"
-                      />
+              {paymentMethodType === 'saved' && hasSavedMethods && (
+                <div className="space-y-3 mb-6">
+                  {userSavedMethods.map((method) => (
+                    <Card
+                      key={method.id}
+                      className={`cursor-pointer border-2 transition-all hover:shadow-md ${
+                        selectedSavedMethod === method.id
+                          ? 'border-primary shadow-lg bg-primary/5 dark:bg-primary/10'
+                          : 'border-border hover:border-primary/50'
+                      }`}
+                      onClick={() => setSelectedSavedMethod(method.id)}
+                    >
+                      <CardContent className="pt-5 pb-5 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className={`p-2.5 rounded-lg ${
+                            selectedSavedMethod === method.id 
+                              ? 'bg-primary/20' 
+                              : 'bg-muted'
+                          }`}>
+                            <CreditCard size={22} weight={selectedSavedMethod === method.id ? "fill" : "regular"} className={selectedSavedMethod === method.id ? "text-primary" : "text-muted-foreground"} />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-base text-foreground">
+                              {method.card?.brand.toUpperCase()} •••• {method.card?.last4}
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-0.5">
+                              Expires {String(method.card?.expMonth).padStart(2, '0')}/{String(method.card?.expYear).slice(-2)}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {method.isDefault && (
+                            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs">Default</Badge>
+                          )}
+                          {selectedSavedMethod === method.id && (
+                            <CheckCircle size={20} weight="fill" className="text-primary" />
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {paymentMethodType === 'new' && (
+                <Card className="border-2 border-border bg-card/50">
+                  <CardContent className="pt-6 space-y-5">
+                    <div>
+                      <Label htmlFor="card-number" className="text-sm font-semibold mb-2 block">Card Number</Label>
+                      <div className="relative">
+                        <Input
+                          id="card-number"
+                          placeholder="1234 5678 9012 3456"
+                          value={cardNumber}
+                          onChange={handleCardNumberChange}
+                          maxLength={19}
+                          className="h-12 text-base font-medium tracking-wider pl-4 pr-12"
+                        />
+                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                          <CreditCard size={20} className="text-muted-foreground" />
+                        </div>
+                      </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="expiry" className="text-sm font-semibold">Expiry (MM/YY)</Label>
+                      <div>
+                        <Label htmlFor="expiry" className="text-sm font-semibold mb-2 block">Expiry Date</Label>
                         <Input
                           id="expiry"
                           placeholder="MM/YY"
                           value={expiry}
                           onChange={handleExpiryChange}
                           maxLength={5}
-                          className="h-12"
+                          className="h-12 text-base font-medium"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="cvc" className="text-sm font-semibold">CVC</Label>
+                      <div>
+                        <Label htmlFor="cvc" className="text-sm font-semibold mb-2 block">CVC</Label>
                         <Input
                           id="cvc"
                           placeholder="123"
                           value={cvc}
                           onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
                           maxLength={4}
-                          className="h-12"
+                          className="h-12 text-base font-medium"
                         />
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="zip" className="text-sm font-semibold">Zip Code</Label>
+                    <div>
+                      <Label htmlFor="zip" className="text-sm font-semibold mb-2 block">Billing Zip Code</Label>
                       <Input
                         id="zip"
                         placeholder="12345"
                         value={zipCode}
                         onChange={(e) => setZipCode(e.target.value.replace(/\D/g, '').slice(0, 5))}
                         maxLength={5}
-                        className="h-12"
+                        className="h-12 text-base font-medium"
                       />
                     </div>
-                    <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg border border-border/50">
+                    <div className="flex items-center space-x-3 p-3 bg-muted/30 rounded-lg border border-border/50">
                       <input
                         type="checkbox"
                         id="save-card"
                         checked={saveCard}
                         onChange={(e) => setSaveCard(e.target.checked)}
-                        className="w-5 h-5 rounded border-2"
+                        className="w-4 h-4 rounded border-2 border-primary text-primary focus:ring-primary"
                       />
-                      <Label htmlFor="save-card" className="font-medium cursor-pointer text-sm">
-                        Save card for future payments
+                      <Label htmlFor="save-card" className="font-medium text-sm cursor-pointer text-foreground">
+                        Save card securely for future payments
                       </Label>
                     </div>
-                  </div>
-                )}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
 
-                <div className="flex items-center gap-3 p-4 bg-muted/30 rounded-lg border border-border/50">
-                  <Lock size={18} weight="fill" className="text-primary flex-shrink-0" />
-                  <span className="text-sm text-muted-foreground">Your payment information is encrypted and secure</span>
+            {/* Security Trust Indicators */}
+            <Card className="border-2 border-green-500/20 bg-green-500/5 dark:bg-green-500/10">
+              <CardContent className="pt-5 pb-5">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-green-500/20">
+                    <ShieldCheck size={20} weight="fill" className="text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-sm text-foreground mb-1">Bank-Level Security</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Your payment information is encrypted with 256-bit SSL and processed securely through Stripe. We never store your full card details.
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1.5">
+                      <Lock size={14} weight="fill" className="text-green-600 dark:text-green-400" />
+                      <span className="text-muted-foreground">PCI DSS Compliant</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Shield size={14} weight="fill" className="text-green-600 dark:text-green-400" />
+                      <span className="text-muted-foreground">Stripe Protected</span>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Premium Footer */}
-        <div className="px-10 py-6 border-t border-border/50 bg-gradient-to-b from-muted/20 to-background flex-shrink-0 flex items-center justify-between">
-          <Button variant="outline" onClick={onClose} disabled={processing} className="h-12 px-6">
+        <div className="px-8 py-6 border-t border-border/50 bg-muted/20 flex-shrink-0 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <Button 
+            variant="outline" 
+            onClick={onClose} 
+            disabled={processing}
+            className="w-full sm:w-auto border-2"
+          >
             Cancel
           </Button>
           <Button 
             onClick={handlePayment} 
             disabled={processing} 
-            className="min-w-[180px] h-12 px-8 text-base font-semibold shadow-lg"
+            className="w-full sm:w-auto min-w-[200px] h-12 text-base font-semibold bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all"
           >
             {processing ? (
               <>
                 <Clock className="animate-spin mr-2" size={18} />
-                Processing...
+                Processing Payment...
               </>
             ) : (
               <>
-                Complete Payment
-                <Lock className="ml-2" size={18} weight="fill" />
+                <Lock weight="fill" className="mr-2" size={18} />
+                Complete Secure Payment
               </>
             )}
           </Button>

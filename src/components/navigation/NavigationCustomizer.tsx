@@ -145,7 +145,7 @@ export function NavigationCustomizer({
     <div className="space-y-6">
       {/* Header Section - Similar to JobPoster */}
       <Card>
-        <CardHeader>
+      <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 mb-2">
               <div className="p-3 rounded-xl bg-primary/10 dark:bg-primary/20">
@@ -153,8 +153,8 @@ export function NavigationCustomizer({
               </div>
               <div>
                 <CardTitle className="text-3xl md:text-4xl font-extrabold text-black dark:text-white">
-                  Customize Navigation
-                </CardTitle>
+          Customize Navigation
+        </CardTitle>
                 <CardDescription className="text-base mt-1">
                   Arrange your navigation menu to match your workflow. {visibleCount} item{visibleCount !== 1 ? 's' : ''} visible.
                 </CardDescription>
@@ -193,8 +193,8 @@ export function NavigationCustomizer({
               </CardTitle>
               <CardDescription>
                 Drag to reorder • Toggle to show/hide
-              </CardDescription>
-            </CardHeader>
+        </CardDescription>
+      </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {items.map((item, index) => {
@@ -248,7 +248,7 @@ export function NavigationCustomizer({
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground">{item.page}</p>
-                      </div>
+        </div>
 
                       {/* Visibility Toggle */}
                       <button
@@ -340,7 +340,7 @@ export function NavigationCustomizer({
           </Card>
 
           {/* Available Business Tools */}
-          {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'operator' || user.role === 'homeowner') && (
+        {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'operator' || user.role === 'homeowner') && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg font-bold flex items-center gap-2">
@@ -352,25 +352,25 @@ export function NavigationCustomizer({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button
-                  variant="outline"
+              <Button
+                variant="outline"
                   className="w-full"
-                  onClick={() => setShowToolsPopup(true)}
-                >
+                onClick={() => setShowToolsPopup(true)}
+              >
                   <Plus size={18} className="mr-2" />
                   Browse Available Tools
-                </Button>
-                <BusinessToolsPopup
-                  open={showToolsPopup}
-                  onOpenChange={setShowToolsPopup}
-                  availableTools={availableTools}
-                  onAddTool={handleAddTool}
-                />
+              </Button>
+            <BusinessToolsPopup
+              open={showToolsPopup}
+              onOpenChange={setShowToolsPopup}
+              availableTools={availableTools}
+              onAddTool={handleAddTool}
+            />
               </CardContent>
             </Card>
-          )}
+        )}
 
-          {/* Actions */}
+        {/* Actions */}
           <Card>
             <CardContent className="pt-6 space-y-3">
               <Button
@@ -381,25 +381,25 @@ export function NavigationCustomizer({
                 <CheckCircle size={20} className="mr-2" weight="duotone" />
                 Save Changes
               </Button>
-              <Button
-                variant="outline"
-                onClick={handleReset}
+          <Button
+            variant="outline"
+            onClick={handleReset}
                 className="w-full"
-              >
+          >
                 <ArrowCounterClockwise size={18} className="mr-2" />
-                Reset to Defaults
-              </Button>
-              {onClose && (
-                <Button
+            Reset to Defaults
+          </Button>
+          {onClose && (
+            <Button
                   variant="ghost"
-                  onClick={onClose}
+              onClick={onClose}
                   className="w-full"
-                >
-                  Cancel
-                </Button>
-              )}
-            </CardContent>
-          </Card>
+            >
+              Cancel
+            </Button>
+          )}
+      </CardContent>
+    </Card>
         </div>
       </div>
     </div>

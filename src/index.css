@@ -16,66 +16,6 @@
   textarea {
     /* Allow borders but make them subtle */
   }
-  
-  /* Ultra-smooth theme transition */
-  :root {
-    --theme-transition-duration: 0.4s;
-    --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  /* Smooth transitions for all theme-dependent properties */
-  html {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing),
-      color var(--theme-transition-duration) var(--theme-transition-timing);
-  }
-  
-  /* Staggered transitions for different element types */
-  body {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.02s,
-      color var(--theme-transition-duration) var(--theme-transition-timing) 0.02s;
-  }
-  
-  [data-slot="card"],
-  .card,
-  [class*="Card"] {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s,
-      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s,
-      color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s;
-  }
-  
-  button,
-  [data-slot="button"],
-  [class*="Button"] {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s,
-      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s,
-      color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s;
-  }
-  
-  input,
-  select,
-  textarea {
-    transition: 
-      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s,
-      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s,
-      color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s;
-  }
-  
-  /* Text elements with slight delay for visual depth */
-  h1, h2, h3, h4, h5, h6,
-  p, span, a, li {
-    transition: 
-      color var(--theme-transition-duration) var(--theme-transition-timing) 0.1s;
-  }
-  
-  /* Borders with smooth color interpolation */
-  [class*="border"] {
-    transition: 
-      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.05s;
-  }
 }
 
 :root {
@@ -167,11 +107,45 @@
 }
 
 @layer base {
+  /* Ultra-smooth theme transition for entire page */
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, text-decoration-color, outline-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.8s;
+  }
+
+  /* Override for immediate transitions (like hover) */
+  button:hover,
+  a:hover,
+  input:focus,
+  textarea:focus,
+  select:focus {
+    transition-duration: 0.2s;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Smooth fade for page content */
+  html {
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Ensure all theme-dependent elements transition smoothly */
+  [class*="bg-"],
+  [class*="text-"],
+  [class*="border-"] {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.8s;
   }
   
   h1, h2, h3, h4, h5, h6 {

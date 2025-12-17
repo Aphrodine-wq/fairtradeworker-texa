@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { PhotoUploader } from "@/components/ui/PhotoUploader"
-import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree, Timer, Plus, Trash } from "@phosphor-icons/react"
+import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree, Timer, Plus, Trash, VideoCamera } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
@@ -30,7 +30,7 @@ interface JobPosterProps {
   onNavigate: (page: string) => void
 }
 
-type InputMethod = 'photos' | 'audio' | 'text' | null
+type InputMethod = 'photos' | 'audio' | 'video' | 'text' | null
 type ProjectType = 'kitchen-remodel' | 'bathroom-remodel' | 'roof-replacement' | 'deck-build' | 'fence-installation' | 'room-addition' | 'custom' | null
 type Step = 'tier-select' | 'project-select' | 'scope-builder' | 'select' | 'input' | 'processing' | 'results' | 'posted'
 
@@ -63,7 +63,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
   // Check for initial input method from sessionStorage
   useEffect(() => {
     const storedMethod = sessionStorage.getItem('postJobMethod')
-    if (storedMethod && (storedMethod === 'photos' || storedMethod === 'audio' || storedMethod === 'text')) {
+    if (storedMethod && (storedMethod === 'photos' || storedMethod === 'audio' || storedMethod === 'video' || storedMethod === 'text')) {
       const method = storedMethod as InputMethod
       setInputMethod(method)
       setStep('input')
@@ -570,13 +570,19 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
         </div>
       )}
 
-      {step === 'select' && (
-        <LayoutGroup>
+      <AnimatePresence mode="wait">
+        {step === 'select' && (
           <motion.div
-            layout
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            key="select"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              duration: 0.4
+            }}
           >
             <Card>
               <CardHeader>
@@ -594,94 +600,95 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                   Choose how you'd like to describe your project
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <motion.div 
-                  className="grid md:grid-cols-3 gap-4"
-                  layout
-                  initial="hidden"
-                  animate="visible"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: {
-                        staggerChildren: 0.1,
-                        delayChildren: 0.2
-                      }
-                    }
-                  }}
+              <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <motion.button
+                  onClick={() => handleMethodSelect('photos')}
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1, type: "spring", stiffness: 300 }}
                 >
-                  <motion.button
-                    layout
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.4, ease: "easeOut" }}
-                    onClick={() => handleMethodSelect('photos')}
-                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <motion.div 
+                    className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm"
+                    whileHover={{ rotate: 5, scale: 1.1 }}
                   >
-                    <motion.div 
-                      className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm"
-                      layout
-                    >
-                      <Camera weight="fill" className="text-primary-foreground" size={32} />
-                    </motion.div>
-                    <div className="text-center">
-                      <h3 className="font-semibold text-lg">Photos</h3>
-                      <p className="text-sm text-muted-foreground">Show us the issue</p>
-                    </div>
-                  </motion.button>
+                    <Camera weight="fill" className="text-primary-foreground" size={32} />
+                  </motion.div>
+                  <div className="text-center">
+                    <h3 className="font-semibold text-lg">Photos</h3>
+                    <p className="text-sm text-muted-foreground">Show us the issue</p>
+                  </div>
+                </motion.button>
 
-                  <motion.button
-                    layout
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-                    onClick={() => handleMethodSelect('audio')}
-                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <motion.button
+                  onClick={() => handleMethodSelect('audio')}
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
+                >
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center"
+                    whileHover={{ rotate: -5, scale: 1.1 }}
                   >
-                    <motion.div 
-                      className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center"
-                      layout
-                    >
-                      <Microphone weight="fill" className="text-secondary-foreground" size={32} />
-                    </motion.div>
-                    <div className="text-center">
-                      <h3 className="font-semibold text-lg">Voice</h3>
-                      <p className="text-sm text-muted-foreground">Describe it verbally</p>
-                    </div>
-                  </motion.button>
+                    <Microphone weight="fill" className="text-secondary-foreground" size={32} />
+                  </motion.div>
+                  <div className="text-center">
+                    <h3 className="font-semibold text-lg">Voice</h3>
+                    <p className="text-sm text-muted-foreground">Describe it verbally</p>
+                  </div>
+                </motion.button>
 
-                  <motion.button
-                    layout
-                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
-                    onClick={() => handleMethodSelect('text')}
-                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <motion.button
+                  onClick={() => handleMethodSelect('text')}
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
+                >
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center"
+                    whileHover={{ rotate: 5, scale: 1.1 }}
                   >
-                    <motion.div 
-                      className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center"
-                      layout
-                    >
-                      <FileText weight="fill" className="text-accent-foreground" size={32} />
-                    </motion.div>
-                    <div className="text-center">
-                      <h3 className="font-semibold text-lg">Text</h3>
-                      <p className="text-sm text-muted-foreground">Type the details</p>
-                    </div>
-                  </motion.button>
-                </motion.div>
+                    <FileText weight="fill" className="text-accent-foreground" size={32} />
+                  </motion.div>
+                  <div className="text-center">
+                    <h3 className="font-semibold text-lg">Text</h3>
+                    <p className="text-sm text-muted-foreground">Type the details</p>
+                  </div>
+                </motion.button>
+
+                <motion.button
+                  onClick={() => handleMethodSelect('video')}
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
+                >
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center"
+                    whileHover={{ rotate: -5, scale: 1.1 }}
+                  >
+                    <VideoCamera weight="fill" className="text-primary" size={32} />
+                  </motion.div>
+                  <div className="text-center">
+                    <h3 className="font-semibold text-lg">Video</h3>
+                    <p className="text-sm text-muted-foreground">Record a video</p>
+                  </div>
+                </motion.button>
               </CardContent>
             </Card>
           </motion.div>
-        </LayoutGroup>
-      )}
+        )}
+      </AnimatePresence>
 
       {step === 'input' && inputMethod && (
         <Card>
