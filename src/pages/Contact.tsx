@@ -110,7 +110,7 @@ export function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="pt-10 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <HeroSection
           title="We’re here to help"
           subtitle="Questions, support, or partnership inquiries—reach us via email, phone, or chat."

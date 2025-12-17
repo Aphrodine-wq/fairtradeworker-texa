@@ -47,7 +47,7 @@ export function AboutPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="pt-10 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <HeroSection
           title="Built for fair, zero-fee home services"
           subtitle="We connect homeowners and contractors with transparent pricing, AI-powered scoping, and a marketplace where quality—not fees—wins."

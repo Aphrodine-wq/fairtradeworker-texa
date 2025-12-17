@@ -33,7 +33,8 @@ import {
   Sparkle,
   X,
   Briefcase,
-  CurrencyDollar
+  CurrencyDollar,
+  GripVertical
 } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { useLocalKV as useKV } from '@/hooks/useLocalKV'
@@ -115,6 +116,8 @@ const getIcon = (iconName: string) => {
 export function DashboardCustomizer({ open, onClose, user, onNavigate }: DashboardCustomizerProps) {
   const [pinnedTools, setPinnedTools] = useKV<PinnedTool[]>(`dashboard-pinned-tools-${user.id}`, [])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
 
   const categories = useMemo(() => {
     const cats = ['all', ...new Set(AVAILABLE_TOOLS.map(t => t.category))]
@@ -157,17 +160,39 @@ export function DashboardCustomizer({ open, onClose, user, onNavigate }: Dashboa
     }
   }
 
-  const handleMoveTool = (toolId: string, direction: 'up' | 'down') => {
-    const index = pinnedTools.findIndex(t => t.id === toolId)
-    if (index === -1) return
+  const handleDragStart = (index: number) => {
+    setDraggingIndex(index)
+  }
+
+  const handleDragEnd = () => {
+    setDraggingIndex(null)
+    setDragOverIndex(null)
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDragOverIndex(index)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleDrop = (e: React.DragEvent, toIndex: number) => {
+    e.preventDefault()
+    if (draggingIndex === null || draggingIndex === toIndex) {
+      setDragOverIndex(null)
+      return
+    }
 
     const newTools = [...pinnedTools]
-    if (direction === 'up' && index > 0) {
-      [newTools[index - 1], newTools[index]] = [newTools[index], newTools[index - 1]]
-    } else if (direction === 'down' && index < newTools.length - 1) {
-      [newTools[index], newTools[index + 1]] = [newTools[index + 1], newTools[index]]
-    }
+    const [movedTool] = newTools.splice(draggingIndex, 1)
+    newTools.splice(toIndex, 0, movedTool)
+    
     setPinnedTools(newTools)
+    setDragOverIndex(null)
+    toast.success('Tools reordered')
   }
 
   return (
@@ -202,41 +227,48 @@ export function DashboardCustomizer({ open, onClose, user, onNavigate }: Dashboa
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {pinnedTools.map((tool, index) => {
                   const Icon = getIcon(tool.iconName)
+                  const toolDef = AVAILABLE_TOOLS.find(t => t.id === tool.id)
+                  const isDragging = draggingIndex === index
+                  const isDragOver = dragOverIndex === index
+                  
                   return (
-                    <Card key={tool.id} className="p-3 flex items-center gap-3 relative group">
+                    <Card 
+                      key={tool.id} 
+                      draggable
+                      onDragStart={(e) => {
+                        e.dataTransfer.effectAllowed = 'move'
+                        e.dataTransfer.setData('text/plain', index.toString())
+                        handleDragStart(index)
+                      }}
+                      onDragOver={(e) => handleDragOver(e, index)}
+                      onDragLeave={handleDragLeave}
+                      onDrop={(e) => handleDrop(e, index)}
+                      onDragEnd={handleDragEnd}
+                      className={cn(
+                        "p-3 flex items-center gap-3 relative group cursor-move transition-all",
+                        isDragging && "opacity-50 scale-95",
+                        isDragOver && "ring-2 ring-primary border-primary"
+                      )}
+                    >
+                      <GripVertical 
+                        size={16} 
+                        className="text-muted-foreground flex-shrink-0 cursor-grab active:cursor-grabbing"
+                        weight={isDragging ? "fill" : "regular"}
+                      />
                       <div className="h-8 w-8 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0">
                         <Icon className="h-4 w-4 text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm truncate">{tool.label}</p>
                       </div>
-                      <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {index > 0 && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6"
-                            onClick={() => handleMoveTool(tool.id, 'up')}
-                          >
-                            ↑
-                          </Button>
-                        )}
-                        {index < pinnedTools.length - 1 && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6"
-                            onClick={() => handleMoveTool(tool.id, 'down')}
-                          >
-                            ↓
-                          </Button>
-                        )}
-                      </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 flex-shrink-0"
-                        onClick={() => handleToggleTool(toolDef!)}
+                        className="h-6 w-6 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (toolDef) handleToggleTool(toolDef)
+                        }}
                       >
                         <X className="h-4 w-4" />
                       </Button>
