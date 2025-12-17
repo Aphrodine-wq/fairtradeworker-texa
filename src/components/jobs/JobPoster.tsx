@@ -206,6 +206,22 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       tier = 'STANDARD'
     }
     
+    // Get selected services from sessionStorage
+    const storedServices = sessionStorage.getItem('selectedServices')
+    let selectedServices: string[] = []
+    if (storedServices) {
+      try {
+        const services = JSON.parse(storedServices)
+        selectedServices = services.map((s: {id: string, title: string}) => s.id)
+      } catch (e) {
+        // Fallback to old single service format
+        const oldService = sessionStorage.getItem('selectedService')
+        if (oldService) {
+          selectedServices = [oldService]
+        }
+      }
+    }
+
     const newJob: Job = {
       id: `job-${Date.now()}`,
       homeownerId: user.id,
@@ -226,6 +242,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       createdAt: new Date().toISOString(),
       postedInSeconds,
       bids: [],
+      selectedServices: selectedServices.length > 0 ? selectedServices : undefined,
       milestones: tier === 'MAJOR_PROJECT' && projectScope && selectedProjectType
         ? generateMilestonesFromTemplate(
             `job-${Date.now()}`,

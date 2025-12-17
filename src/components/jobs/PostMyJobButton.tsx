@@ -27,7 +27,7 @@ export function PostMyJobButton({ onNavigate }: PostMyJobButtonProps) {
           }
         }
         .post-job-button-glow {
-          animation: smoothGlowFlicker 4s ease-in-out infinite;
+          animation: smoothGlowFlicker 2s ease-in-out infinite;
         }
       `}</style>
       <motion.div
@@ -48,7 +48,7 @@ export function PostMyJobButton({ onNavigate }: PostMyJobButtonProps) {
               scale: [1, 1.02, 1],
             }}
             transition={{
-              duration: 2,
+              duration: 1.2,
               repeat: Infinity,
               ease: "easeInOut"
             }}

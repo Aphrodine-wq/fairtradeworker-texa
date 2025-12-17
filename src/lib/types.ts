@@ -77,6 +77,7 @@ export interface Job {
   bundledTasks?: BundledTask[]
   questions?: Question[]
   viewingContractors?: string[] // Array of contractor IDs currently viewing this job
+  selectedServices?: string[] // Array of service IDs selected for this job
   // AI Receptionist fields
   isPrivate?: boolean // Private job (bypasses marketplace)
   source?: 'ai_receptionist' | 'marketplace' | 'direct'

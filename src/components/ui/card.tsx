@@ -18,7 +18,7 @@ function Card({ className, glass = false, disableHover = false, ...props }: Card
   const commonClasses = cn(
     baseClasses,
     "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
-    "shadow-lg relative overflow-hidden group",
+    "shadow-lg relative overflow-hidden group border-0",
     className
   )
 

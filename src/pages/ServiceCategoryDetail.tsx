@@ -1,8 +1,10 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { containerVariants, itemVariants, universalCardHover } from "@/lib/animations"
 import { mainCategories } from "@/components/jobs/ServiceCategories"
-import { ArrowLeft } from "@phosphor-icons/react"
+import { ArrowLeft, Check, X } from "@phosphor-icons/react"
 import { useEffect, useState } from "react"
 
 interface ServiceCategoryDetailProps {
@@ -39,10 +41,52 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
     )
   }
 
+  const [selectedServices, setSelectedServices] = useState<Array<{id: string, title: string}>>([])
+
+  useEffect(() => {
+    // Load selected services from sessionStorage
+    const stored = sessionStorage.getItem('selectedServices')
+    if (stored) {
+      try {
+        setSelectedServices(JSON.parse(stored))
+      } catch (e) {
+        // If parsing fails, check for old single service format
+        const oldService = sessionStorage.getItem('selectedService')
+        const oldTitle = sessionStorage.getItem('selectedServiceTitle')
+        if (oldService && oldTitle) {
+          setSelectedServices([{ id: oldService, title: oldTitle }])
+        }
+      }
+    }
+  }, [])
+
   const handleServiceClick = (serviceId: string, serviceTitle: string) => {
-    sessionStorage.setItem('selectedService', serviceId)
-    sessionStorage.setItem('selectedServiceTitle', serviceTitle)
-    onNavigate('unified-post-job')
+    setSelectedServices(prev => {
+      const exists = prev.find(s => s.id === serviceId)
+      let updated
+      if (exists) {
+        // Remove if already selected
+        updated = prev.filter(s => s.id !== serviceId)
+      } else {
+        // Add if not selected
+        updated = [...prev, { id: serviceId, title: serviceTitle }]
+      }
+      sessionStorage.setItem('selectedServices', JSON.stringify(updated))
+      return updated
+    })
+  }
+
+  const handleContinue = () => {
+    if (selectedServices.length > 0) {
+      onNavigate('unified-post-job')
+    }
+  }
+
+  const handleClearAll = () => {
+    setSelectedServices([])
+    sessionStorage.removeItem('selectedServices')
+    sessionStorage.removeItem('selectedService')
+    sessionStorage.removeItem('selectedServiceTitle')
   }
 
   return (
@@ -63,8 +107,32 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
             {category.title}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
-            Select a service to get started
+            Select one or more services for your project
           </p>
+          {selectedServices.length > 0 && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {selectedServices.map((service) => (
+                <Badge key={service.id} variant="secondary" className="text-sm px-3 py-1 flex items-center gap-2">
+                  {service.title}
+                  <button
+                    onClick={() => handleServiceClick(service.id, service.title)}
+                    className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5"
+                    aria-label={`Remove ${service.title}`}
+                  >
+                    <X size={12} />
+                  </button>
+                </Badge>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleClearAll}
+                className="text-xs"
+              >
+                Clear All
+              </Button>
+            </div>
+          )}
         </motion.div>
 
         <motion.div
@@ -84,7 +152,11 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
                 style={{ willChange: 'transform', transform: 'translateZ(0)' }}
               >
                 <Card
-                  className="cursor-pointer h-full border-2 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors"
+                  className={`cursor-pointer h-full border-0 hover:shadow-xl transition-all ${
+                    selectedServices.find(s => s.id === service.id) 
+                      ? 'ring-2 ring-black dark:ring-white shadow-lg' 
+                      : ''
+                  }`}
                   onClick={() => handleServiceClick(service.id, service.title)}
                 >
                   <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
@@ -102,9 +174,14 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
                         />
                       </div>
                     </motion.div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                      {service.title}
-                    </h3>
+                    <div className="flex items-center justify-center gap-2">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                        {service.title}
+                      </h3>
+                      {selectedServices.find(s => s.id === service.id) && (
+                        <Check size={20} className="text-black dark:text-white" weight="bold" />
+                      )}
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -121,11 +198,20 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
             stiffness: 300,
             damping: 30
           }}
-          className="mt-6 text-center"
+          className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
+          {selectedServices.length > 0 && (
+            <Button
+              onClick={handleContinue}
+              size="lg"
+              className="px-8"
+            >
+              Continue with {selectedServices.length} Service{selectedServices.length > 1 ? 's' : ''}
+            </Button>
+          )}
           <button
             onClick={() => onNavigate('home')}
-            className="flex items-center gap-2 mx-auto text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+            className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
           >
             <ArrowLeft size={20} />
             Back to Home

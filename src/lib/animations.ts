@@ -219,7 +219,7 @@ export const pulseGlowVariants = {
         mass: 0.5
       },
       boxShadow: {
-        duration: 2,
+        duration: 1.2,
         repeat: Infinity,
         ease: "easeInOut"
       }

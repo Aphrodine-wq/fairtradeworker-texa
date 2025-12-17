@@ -46,23 +46,42 @@ const inputMethods: Array<{
 ]
 
 export function UnifiedPostJob({ user, onNavigate }: UnifiedPostJobProps) {
-  const [selectedService, setSelectedService] = useState<string | null>(null)
-  const [selectedServiceTitle, setSelectedServiceTitle] = useState<string | null>(null)
+  const [selectedServices, setSelectedServices] = useState<Array<{id: string, title: string}>>([])
 
   useEffect(() => {
-    const service = sessionStorage.getItem('selectedService')
-    const serviceTitle = sessionStorage.getItem('selectedServiceTitle')
-    if (service && serviceTitle) {
-      setSelectedService(service)
-      setSelectedServiceTitle(serviceTitle)
+    // Load selected services from sessionStorage
+    const stored = sessionStorage.getItem('selectedServices')
+    if (stored) {
+      try {
+        setSelectedServices(JSON.parse(stored))
+      } catch (e) {
+        // Fallback to old single service format
+        const oldService = sessionStorage.getItem('selectedService')
+        const oldTitle = sessionStorage.getItem('selectedServiceTitle')
+        if (oldService && oldTitle) {
+          const services = [{ id: oldService, title: oldTitle }]
+          setSelectedServices(services)
+          sessionStorage.setItem('selectedServices', JSON.stringify(services))
+        }
+      }
     }
   }, [])
 
-  const handleClearService = () => {
+  const handleRemoveService = (serviceId: string) => {
+    const updated = selectedServices.filter(s => s.id !== serviceId)
+    setSelectedServices(updated)
+    if (updated.length > 0) {
+      sessionStorage.setItem('selectedServices', JSON.stringify(updated))
+    } else {
+      sessionStorage.removeItem('selectedServices')
+    }
+  }
+
+  const handleClearAll = () => {
+    setSelectedServices([])
+    sessionStorage.removeItem('selectedServices')
     sessionStorage.removeItem('selectedService')
     sessionStorage.removeItem('selectedServiceTitle')
-    setSelectedService(null)
-    setSelectedServiceTitle(null)
   }
 
   const handleMethodSelect = (method: InputMethod) => {
@@ -107,17 +126,25 @@ export function UnifiedPostJob({ user, onNavigate }: UnifiedPostJobProps) {
           <p className="text-lg text-gray-600 dark:text-gray-300">
             Choose how you'd like to describe your project
           </p>
-          {selectedServiceTitle && (
-            <div className="mt-4 flex items-center justify-center gap-2">
-              <Badge variant="secondary" className="text-sm px-3 py-1">
-                {selectedServiceTitle}
-              </Badge>
+          {selectedServices.length > 0 && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {selectedServices.map((service) => (
+                <Badge key={service.id} variant="secondary" className="text-sm px-3 py-1 flex items-center gap-2">
+                  {service.title}
+                  <button
+                    onClick={() => handleRemoveService(service.id)}
+                    className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5"
+                    aria-label={`Remove ${service.title}`}
+                  >
+                    <X size={12} />
+                  </button>
+                </Badge>
+              ))}
               <button
-                onClick={handleClearService}
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-                aria-label="Clear selected service"
+                onClick={handleClearAll}
+                className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
               >
-                <X size={16} />
+                Clear All
               </button>
             </div>
           )}
@@ -138,7 +165,7 @@ export function UnifiedPostJob({ user, onNavigate }: UnifiedPostJobProps) {
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
               <Card
-                className="cursor-pointer h-full border-2 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors"
+                className="cursor-pointer h-full border-0 hover:shadow-xl transition-shadow"
                 onClick={() => handleMethodSelect(method)}
               >
                 <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
