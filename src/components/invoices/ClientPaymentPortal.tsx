@@ -19,7 +19,6 @@ import type { Invoice, User } from '@/lib/types'
 import { useKV } from '@github/spark/hooks'
 import { InvoicePDFGenerator } from '@/components/contractor/InvoicePDFGenerator'
 import { generatePaymentPortalUrl } from '@/lib/invoiceHelpers'
-import { useKV } from '@github/spark/hooks'
 
 interface ClientPaymentPortalProps {
   user: User
@@ -56,11 +55,6 @@ export function ClientPaymentPortal({ user, homeownerId }: ClientPaymentPortalPr
   const clientInvoices = useMemo(() => {
     return (invoices || []).filter(inv => inv.homeownerId === homeownerId)
   }, [invoices, homeownerId])
-
-  // Get contractor info for each invoice
-  const getContractor = (contractorId: string) => {
-    return contractors?.find(c => c.id === contractorId)
-  }
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount)
