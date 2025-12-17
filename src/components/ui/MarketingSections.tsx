@@ -2,7 +2,9 @@ import React, { useMemo, useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Users, Star, Robot, FileText, ChartLine, UsersThree, Megaphone, Shield, Sparkle } from "@phosphor-icons/react"
+import { Users, Star, Robot, FileText, ChartLine, UsersThree, Megaphone, Shield, Sparkle, Brain, BarChart, Lock } from "@phosphor-icons/react"
+import { UnifiedPaymentScreen } from "@/components/payments/UnifiedPaymentScreen"
+import type { User } from "@/lib/types"
 
 type NavLink = { label: string; href?: string; active?: boolean }
 
@@ -96,6 +98,13 @@ export function StatsSection({
 type Feature = { title: string; description: string; icon?: React.ElementType }
 
 const featureIconMap: Record<string, React.ElementType> = {
+  'ai scoping': Brain,
+  'smart invoicing': FileText,
+  'analytics dashboard': ChartLine,
+  'crm suite': UsersThree,
+  'boosted listings': Megaphone,
+  'secure payments': Shield,
+  // Fallbacks
   robot: Robot,
   invoice: FileText,
   analytics: ChartLine,
@@ -115,6 +124,7 @@ export function FeatureSection({ features }: { features: Feature[] }) {
       </div>
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
         {features.map((feature) => {
+          // Use explicit icon if provided, otherwise try to match from map
           const Icon = feature.icon || featureIconMap[feature.title.toLowerCase()] || Sparkle
           return (
             <GlassCard key={feature.title} className="feature-card p-6 hover-lift text-center">
@@ -137,6 +147,8 @@ export function PricingSection({
   description = "Suitable to grow steadily.",
   ctaLabel = "Get started",
   onPurchase,
+  user,
+  onNavigate,
 }: {
   tierLabel?: string
   price?: string
@@ -144,7 +156,40 @@ export function PricingSection({
   ctaLabel?: string
   onPurchase?: () => void
   onNavigate?: (page: string) => void
+  user?: User | null
 }) {
+  const [paymentOpen, setPaymentOpen] = useState(false)
+  const [selectedTier, setSelectedTier] = useState<{ name: string; price: number } | null>(null)
+  const handlePaymentComplete = (paymentId: string) => {
+    setPaymentOpen(false)
+    setSelectedTier(null)
+    if (onNavigate) {
+      onNavigate('dashboard')
+    }
+  }
+
+  const handleTierClick = (tier: typeof pricingTiers[0]) => {
+    if (tier.name === "Contractor Pro" && tier.price !== "$0") {
+      // Extract price number from string like "$50"
+      const priceNum = parseInt(tier.price.replace('$', ''))
+      if (user) {
+        setSelectedTier({ name: tier.name, price: priceNum })
+        setPaymentOpen(true)
+      } else {
+        // If not logged in, navigate to signup
+        if (onNavigate) {
+          onNavigate('signup')
+        }
+      }
+    } else if (tier.name === "Homeowner" && onNavigate) {
+      onNavigate('signup')
+    } else if (tier.name === "Contractor Free" && onNavigate) {
+      onNavigate('signup')
+    } else if (onPurchase) {
+      onPurchase()
+    }
+  }
+
   const pricingTiers = [
     {
       name: "Homeowner",
@@ -178,7 +223,7 @@ export function PricingSection({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {pricingTiers.map((tier) => (
-          <GlassCard key={tier.name} className={`pricing-card ${tier.highlighted ? 'ring-2 ring-[#00FF00]' : ''}`}>
+          <GlassCard key={tier.name} className={`pricing-card ${tier.highlighted ? 'ring-2 ring-black dark:ring-white' : ''}`}>
             <div className="px-6 py-8">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -193,7 +238,7 @@ export function PricingSection({
               <ul className="mt-6 space-y-3">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2">
-                    <span className="text-[#00FF00] text-lg" aria-hidden="true">✓</span>
+                    <span className="text-black dark:text-white text-lg" aria-hidden="true">✓</span>
                     <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
                   </li>
                 ))}
@@ -202,10 +247,7 @@ export function PricingSection({
             <div className="px-6 pb-8">
               <Button
                 className="w-full px-6 py-2.5 text-center duration-200 bg-black text-white rounded-lg hover:bg-gray-800 focus-visible:outline-black text-sm dark:bg-white dark:text-black dark:hover:bg-gray-200"
-                onClick={() => {
-                  if (onPurchase) return onPurchase()
-                  return undefined
-                }}
+                onClick={() => handleTierClick(tier)}
               >
                 {tier.ctaLabel}
               </Button>
@@ -213,6 +255,23 @@ export function PricingSection({
           </GlassCard>
         ))}
       </div>
+      {user && selectedTier && (
+        <UnifiedPaymentScreen
+          open={paymentOpen}
+          onClose={() => {
+            setPaymentOpen(false)
+            setSelectedTier(null)
+          }}
+          paymentType="subscription"
+          amount={selectedTier.price}
+          title={`${selectedTier.name} Subscription`}
+          description="Monthly subscription to Pro features"
+          user={user}
+          onPaymentComplete={handlePaymentComplete}
+          enableRecurring={true}
+          recurringInterval="monthly"
+        />
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Heart } from "@phosphor-icons/react"
+import { Heart, FacebookLogo, InstagramLogo, TwitterLogo, LinkedinLogo } from "@phosphor-icons/react"
 
 interface FooterProps {
   onNavigate?: (page: string) => void
@@ -120,22 +120,58 @@ export function Footer({ onNavigate }: FooterProps) {
             <p className="text-sm font-mono">
               © {currentYear} FairTradeWorker. All rights reserved.
             </p>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-3 items-center">
+              <a
+                href="https://facebook.com/fairtradeworker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all group"
+                aria-label="Facebook"
+              >
+                <FacebookLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" 
+                />
+              </a>
+              <a
+                href="https://instagram.com/fairtradeworker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-950/20 transition-all group"
+                aria-label="Instagram"
+              >
+                <InstagramLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors" 
+                />
+              </a>
               <a
                 href="https://twitter.com/fairtradeworker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium hover:text-[#00FF00] transition-colors"
+                className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all group"
+                aria-label="X (Twitter)"
               >
-                Twitter
+                <TwitterLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors" 
+                />
               </a>
               <a
                 href="https://linkedin.com/company/fairtradeworker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium hover:text-[#00FF00] transition-colors"
+                className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all group"
+                aria-label="LinkedIn"
               >
-                LinkedIn
+                <LinkedinLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors" 
+                />
               </a>
             </div>
           </div>

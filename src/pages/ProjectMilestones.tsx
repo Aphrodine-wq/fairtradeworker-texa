@@ -428,7 +428,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
         ]}
         primaryLabel="Post Job" />
 
-      <div className="max-w-7xl mx-auto px-4 py-8 pt-20">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-8 pt-20">
         <div className="mb-6">
           <Button variant="outline" onClick={onBack} className="mb-4">
             ← Back to Job

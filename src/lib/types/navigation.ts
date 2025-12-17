@@ -518,6 +518,7 @@ export function mergeWithDefaults(
 ): NavItem[] {
   // Create a map of user preferences by ID
   const userMap = new Map(userItems.map(item => [item.id, item]))
+  const defaultIds = new Set(defaults.map(item => item.id))
   
   // Start with defaults
   const merged: NavItem[] = defaults.map(defaultItem => {
@@ -536,7 +537,10 @@ export function mergeWithDefaults(
     return defaultItem
   })
   
-  // Add any user items that aren't in defaults (legacy/removed items)
+  // Add any user items that aren't in defaults (newly added tools, legacy items, etc.)
+  const userOnlyItems = userItems.filter(item => !defaultIds.has(item.id))
+  merged.push(...userOnlyItems)
+  
   // Sort by order
   merged.sort((a, b) => a.order - b.order)
   

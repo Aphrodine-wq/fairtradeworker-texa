@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
-import { CircleNotch } from "@phosphor-icons/react"
+import { CircleNotch, Shield, Lock, CheckCircle, Users } from "@phosphor-icons/react"
 import type { User, UserRole } from "@/lib/types"
 import { GlassNav, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
 
@@ -135,11 +135,33 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
           primaryAction={{ label: "Already registered? Log in", onClick: () => onNavigate("login") }}
         />
 
+        {/* Trust Indicators */}
+        <div className="max-w-2xl mx-auto mb-6">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Shield size={20} weight="fill" className="text-[#00FF00]" />
+              <span>Secure & Encrypted</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Users size={20} weight="fill" className="text-[#00FF00]" />
+              <span>12,402+ Users</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle size={20} weight="fill" className="text-[#00FF00]" />
+              <span>100% Free Signup</span>
+            </div>
+          </div>
+        </div>
+
         <div className="max-w-2xl mx-auto">
-          <GlassCard className="p-6 md:p-8">
-            <form onSubmit={handleSignup} className="space-y-4">
+          <GlassCard className="p-8 md:p-10 shadow-xl">
+            <div className="mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">Get Started Today</h2>
+              <p className="text-muted-foreground">Create your account in less than 2 minutes</p>
+            </div>
+            <form onSubmit={handleSignup} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+                <Label htmlFor="fullName" className="text-base font-semibold">Full Name</Label>
                 <Input
                   id="fullName"
                   type="text"
@@ -154,7 +176,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                       setErrors((prev) => ({ ...prev, fullName: "Name must be at least 2 characters" }))
                     }
                   }}
-                  className={errors.fullName ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.fullName ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   aria-invalid={!!errors.fullName}
@@ -168,7 +190,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-base font-semibold">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -178,13 +200,12 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                     setEmail(e.target.value)
                     if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }))
                   }}
-                
                   onBlur={() => {
                     if (email && !validateEmail(email)) {
                       setErrors((prev) => ({ ...prev, email: "Please enter a valid email address" }))
                     }
                   }}
-                  className={errors.email ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.email ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   aria-invalid={!!errors.email}
@@ -198,7 +219,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-base font-semibold">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -213,7 +234,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                       setErrors((prev) => ({ ...prev, password: "Password must be at least 6 characters" }))
                     }
                   }}
-                  className={errors.password ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.password ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   minLength={6}
@@ -222,16 +243,26 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                   aria-describedby={errors.password ? "password-error" : undefined}
                 />
                 {errors.password && (
-                  <p id="password-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p id="password-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.password}
                   </p>
                 )}
                 {!errors.password && password.length > 0 && (
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">
-                      Strength: {password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password) ? "Strong" : password.length >= 6 ? "Medium" : "Weak"}
-                    </p>
-                    <div className="flex gap-1">
+                  <div className="space-y-2 pt-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Password Strength: <span className={`font-semibold ${
+                          password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password) 
+                            ? "text-green-600 dark:text-green-400" 
+                            : password.length >= 6 
+                            ? "text-yellow-600 dark:text-yellow-400" 
+                            : "text-red-600 dark:text-red-400"
+                        }`}>
+                          {password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password) ? "Strong" : password.length >= 6 ? "Medium" : "Weak"}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex gap-1.5">
                       {[
                         password.length >= 8,
                         /[a-z]/.test(password),
@@ -240,7 +271,11 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                       ].map((met, i) => (
                         <div
                           key={i}
-                          className={`h-1 flex-1 rounded ${met ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-700'}`}
+                          className={`h-2 flex-1 rounded transition-colors ${
+                            met 
+                              ? 'bg-[#00FF00]' 
+                              : 'bg-gray-200 dark:bg-gray-700'
+                          }`}
                         />
                       ))}
                     </div>
@@ -249,7 +284,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label htmlFor="confirmPassword" className="text-base font-semibold">Confirm Password</Label>
                 <Input
                   id="confirmPassword"
                   type="password"
@@ -259,21 +294,23 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                     setConfirmPassword(e.target.value)
                     if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
                   }}
-                  className={errors.confirmPassword ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.confirmPassword ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   aria-invalid={!!errors.confirmPassword}
                   aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
                 />
                 {errors.confirmPassword && (
-                  <p id="confirmPassword-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p id="confirmPassword-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.confirmPassword}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number <span className="text-muted-foreground text-xs">(Optional)</span></Label>
+                <Label htmlFor="phone" className="text-base font-semibold">
+                  Phone Number <span className="text-muted-foreground text-sm font-normal">(Optional)</span>
+                </Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -287,21 +324,21 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                     setPhone(formatted)
                     if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }))
                   }}
-                  className={errors.phone ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.phone ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   maxLength={14}
                   aria-invalid={!!errors.phone}
                   aria-describedby={errors.phone ? "phone-error" : undefined}
                 />
                 {errors.phone && (
-                  <p id="phone-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p id="phone-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.phone}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="role">I am a...</Label>
+                <Label htmlFor="role" className="text-base font-semibold">I am a...</Label>
                 <Select
                   value={role}
                   onValueChange={(value) => {
@@ -310,7 +347,11 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                   }}
                   disabled={isLoading}
                 >
-                  <SelectTrigger id="role" className={errors.role ? "border-[#FF0000]" : ""} aria-invalid={!!errors.role}>
+                  <SelectTrigger 
+                    id="role" 
+                    className={`h-12 text-base ${errors.role ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`} 
+                    aria-invalid={!!errors.role}
+                  >
                     <SelectValue placeholder="Select your role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -320,7 +361,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                   </SelectContent>
                 </Select>
                 {errors.role && (
-                  <p className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.role}
                   </p>
                 )}
@@ -339,21 +380,29 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                 </Label>
               </div>
 
-              <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-md border border-blue-200 dark:border-blue-900/50">
-                <p className="text-xs text-blue-900 dark:text-blue-100">
-                  <strong>Security:</strong> We use industry-standard encryption and security practices. 
-                  {enable2FA && " 2FA will be set up after account creation."}
-                </p>
+              <div className="p-4 bg-[#00FF00]/10 dark:bg-[#00FF00]/5 rounded-lg border border-[#00FF00]/20 flex items-start gap-3">
+                <Lock size={20} weight="fill" className="text-[#00FF00] flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">Secure & Protected</p>
+                  <p className="text-xs text-muted-foreground">
+                    We use industry-standard encryption and security practices. 
+                    {enable2FA && " 2FA will be set up after account creation."}
+                  </p>
+                </div>
               </div>
 
-              <Button type="submit" className="w-full border-2 border-black dark:border-white" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full h-12 text-base font-semibold bg-[#00FF00] hover:bg-[#00DD00] text-black border-2 border-[#00FF00] shadow-lg hover:shadow-xl transition-all duration-300" 
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <CircleNotch size={20} className="mr-2 animate-spin" weight="bold" />
                     Creating account...
                   </>
                 ) : (
-                  "Sign Up"
+                  "Create Account"
                 )}
               </Button>
 

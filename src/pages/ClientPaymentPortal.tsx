@@ -24,7 +24,7 @@ export function ClientPaymentPortalPage({ user, onNavigate }: ClientPaymentPorta
         ]}
         primaryLabel="Post Job"
       />
-      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12 max-w-7xl">
+      <div className="w-full px-4 md:px-8 pt-20 pb-12">
         <ClientPaymentPortal user={user} homeownerId={user.id} />
       </div>
     </div>

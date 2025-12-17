@@ -27,14 +27,22 @@ export function NavigationCustomizerDialog({
 }: NavigationCustomizerDialogProps) {
   const { navigation, savePreferences, resetToDefaults } = useNavigationPreferences(user)
   
+  // Use propNav if provided, otherwise use hook navigation
+  // This ensures we always have the latest navigation
   const currentNav = propNav || navigation
+  
   const handleSave = (prefs: NavigationPreferences) => {
+    console.log('[NavigationCustomizerDialog] Saving preferences:', prefs)
+    console.log('[NavigationCustomizerDialog] Items to save:', prefs.items.length)
     if (propOnSave) {
       propOnSave(prefs)
     } else {
       savePreferences(prefs.items)
     }
-    onOpenChange(false)
+    // Small delay to ensure state updates before closing
+    setTimeout(() => {
+      onOpenChange(false)
+    }, 50)
   }
   
   const handleReset = () => {

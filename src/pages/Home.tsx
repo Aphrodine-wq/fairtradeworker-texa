@@ -1,4 +1,4 @@
-import { House, Hammer, MapTrifold, Play, CurrencyDollar } from "@phosphor-icons/react"
+import { House, Hammer, MapTrifold, Play, CurrencyDollar, Shield, Brain, FileText, ChartLine, UsersThree, Megaphone, Lock } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -7,6 +7,8 @@ import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
 import { HeroSection, StatsSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
+import { PostMyJobButton } from "@/components/jobs/PostMyJobButton"
+import { ServiceCategories } from "@/components/jobs/ServiceCategories"
 
 interface HomePageProps {
   onNavigate: (page: string, role?: string) => void
@@ -15,6 +17,7 @@ interface HomePageProps {
 
 export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: HomePageProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
+  const [currentUser] = useKV<User | null>("current-user", null)
 
   const todayJobs = useMemo(() => {
     if (!jobs || jobs.length === 0) return []
@@ -24,14 +27,18 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full">
+      <div className="w-full pt-10 pb-12 px-4 sm:px-6 lg:px-8">
         <HeroSection
           title="Fair Home Services Marketplace"
           subtitle="Contractors keep 100% of earnings. Homeowners pay a flat job fee."
           primaryAction={{ label: "Get Started", onClick: () => onNavigate("signup") }}
           secondaryAction={{ label: "Learn More", onClick: () => onNavigate("about") }}
         />
+
+        <PostMyJobButton onNavigate={onNavigate} />
+
+        <ServiceCategories onNavigate={onNavigate} />
 
         <StatsSection
           stats={[
@@ -44,12 +51,12 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
         <FeatureSection
           features={[
-            { title: "AI Scoping", description: "Smart Claude Tiering routes simple vs. complex scopes with budget guardrails." },
-            { title: "Smart Invoicing", description: "Automated invoices with late fees, reminders, and recurring billing." },
-            { title: "Analytics Dashboard", description: "Real-time insights into earnings, job performance, and market trends." },
-            { title: "CRM Suite", description: "List/pipeline/analytics views with customer lifetime metrics and sequences." },
-            { title: "Boosted Listings", description: "Paid visibility upgrades to get more bids on your jobs." },
-            { title: "Secure Payments", description: "Stripe-ready payment processing with transparent fees." },
+            { title: "AI Scoping", description: "Smart Claude Tiering routes simple vs. complex scopes with budget guardrails.", icon: Brain },
+            { title: "Smart Invoicing", description: "Automated invoices with late fees, reminders, and recurring billing.", icon: FileText },
+            { title: "Analytics Dashboard", description: "Real-time insights into earnings, job performance, and market trends.", icon: ChartLine },
+            { title: "CRM Suite", description: "List/pipeline/analytics views with customer lifetime metrics and sequences.", icon: UsersThree },
+            { title: "Boosted Listings", description: "Paid visibility upgrades to get more bids on your jobs.", icon: Megaphone },
+            { title: "Secure Payments", description: "Stripe-ready payment processing with transparent fees.", icon: Shield },
           ]}
         />
 
@@ -110,6 +117,10 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
                   <MapTrifold weight="fill" className="mr-2" size={20} />
                   Demo as Operator
                 </Button>
+                <Button variant="outline" className="flex-1" onClick={() => onNavigate('admin-dashboard')}>
+                  <Shield weight="fill" className="mr-2" size={20} />
+                  Admin Dashboard
+                </Button>
               </div>
             </div>
           </Card>
@@ -117,7 +128,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
         <LiveStatsBar jobs={jobs || []} />
 
-        <PricingSection onPurchase={() => onNavigate("purchase")} />
+        <PricingSection user={currentUser} onNavigate={onNavigate} />
         <RatingSection />
       </div>
     </div>

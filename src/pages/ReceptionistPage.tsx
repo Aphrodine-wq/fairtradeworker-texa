@@ -23,7 +23,7 @@ export function ReceptionistPage({ user }: ReceptionistPageProps) {
         ]}
         primaryLabel="Post Job" />
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 pt-20 pb-12">
+      <div className="w-full px-4 md:px-6 lg:px-8 pt-20 pb-12">
         <div className="space-y-6">
           <div className="text-center">
             <h1 className="text-4xl font-bold flex items-center justify-center gap-3 mb-2">

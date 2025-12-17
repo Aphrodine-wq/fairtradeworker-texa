@@ -23,22 +23,22 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
     <nav 
       aria-label="Breadcrumb" 
       className={cn(
-        "flex items-center gap-2 text-sm px-6 py-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 shadow-sm mb-6",
+        "flex items-center gap-1.5 text-sm py-2",
         className
       )}
     >
-      <ol className="flex items-center gap-2 flex-wrap">
+      <ol className="flex items-center gap-1.5 flex-wrap">
         {items.map((item, index) => {
           const isLast = index === items.length - 1
           const isClickable = !isLast && item.page
 
           return (
-            <li key={index} className="flex items-center gap-2">
+            <li key={index} className="flex items-center gap-1.5">
               {index > 0 && (
                 <CaretRight 
-                  size={16} 
+                  size={12} 
                   weight="bold" 
-                  className="text-muted-foreground/60" 
+                  className="text-muted-foreground/40" 
                   aria-hidden="true"
                 />
               )}
@@ -46,13 +46,13 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
               {isClickable ? (
                 <motion.button
                   onClick={() => onNavigate(item.page!)}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ opacity: 0.8 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-primary/10 dark:hover:bg-primary/20 transition-colors text-muted-foreground hover:text-primary font-medium group"
+                  className="flex items-center gap-1 px-1.5 py-0.5 rounded transition-colors text-muted-foreground hover:text-foreground font-medium group"
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.icon && (
-                    <span className="text-muted-foreground group-hover:text-primary transition-colors">
+                    <span className="text-muted-foreground group-hover:text-foreground transition-colors">
                       {item.icon}
                     </span>
                   )}
@@ -61,15 +61,15 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
               ) : (
                 <span 
                   className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5",
+                    "flex items-center gap-1 px-1.5 py-0.5",
                     isLast 
-                      ? "text-foreground font-bold text-base" 
+                      ? "text-foreground font-semibold" 
                       : "text-muted-foreground font-medium"
                   )}
                   aria-current={isLast ? "page" : undefined}
                 >
                   {item.icon && (
-                    <span className={isLast ? "text-black dark:text-white" : "text-muted-foreground"}>
+                    <span className={isLast ? "text-foreground" : "text-muted-foreground"}>
                       {item.icon}
                     </span>
                   )}

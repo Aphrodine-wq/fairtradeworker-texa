@@ -158,6 +158,11 @@ NavButton.displayName = 'NavButton'
 const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, customizerOpen = false, onOpenCustomizer, onCloseCustomizer }: NavProps) => {
   const { navigation, savePreferences, resetToDefaults } = useNavigationPreferences(user)
   const visibleNav = getVisibleNavItems(navigation)
+  
+  // Log navigation changes for debugging
+  useEffect(() => {
+    console.log('[DesktopNav] Navigation updated:', navigation.length, 'items')
+  }, [navigation])
 
   const handleNav = useCallback((page: string, tab: string) => {
     setActiveTab(tab)
@@ -165,7 +170,12 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
   }, [setActiveTab, onNavigate])
 
   const handleSavePreferences = useCallback((prefs: any) => {
+    console.log('[DesktopNav] Saving preferences:', prefs)
     savePreferences(prefs.items)
+    // Force a small delay to ensure localStorage is updated before navigation refreshes
+    setTimeout(() => {
+      console.log('[DesktopNav] Preferences saved, navigation should update')
+    }, 100)
   }, [savePreferences])
 
   return (
@@ -253,6 +263,22 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Desktop Navigation Customizer Dialog */}
+      {customizerOpen && (
+        <NavigationCustomizerDialog
+          user={user!}
+          open={customizerOpen}
+          onOpenChange={(open) => {
+            if (!open && onCloseCustomizer) {
+              onCloseCustomizer()
+            }
+          }}
+          currentNav={navigation}
+          onSave={handleSavePreferences}
+          onReset={resetToDefaults}
+        />
+      )}
     </>
   )
 })

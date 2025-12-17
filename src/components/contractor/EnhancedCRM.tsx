@@ -126,133 +126,133 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
             </div>
           ) : (
             <Tabs defaultValue="pipeline" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 gap-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-4 rounded-lg">
+              <TabsList className="flex w-full flex-wrap gap-2 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-4 rounded-lg">
                 <TabsTrigger 
                   value="pipeline" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Funnel weight="duotone" size={20} />
+                  <Funnel weight="duotone" size={16} />
                   <span>Pipeline</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="documents" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <FileText weight="duotone" size={20} />
+                  <FileText weight="duotone" size={16} />
                   <span>Documents</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="financials" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Calculator weight="duotone" size={20} />
+                  <Calculator weight="duotone" size={16} />
                   <span>Financials</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="collaboration" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <UsersIcon weight="duotone" size={20} />
+                  <UsersIcon weight="duotone" size={16} />
                   <span>Team</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reporting" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <ChartLine weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Reports</span>
+                  <ChartLine weight="duotone" size={16} />
+                  <span>Reports</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customers" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Users weight="duotone" size={20} />
+                  <Users weight="duotone" size={16} />
                   <span>Customers</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="kanban" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Kanban weight="duotone" size={20} />
+                  <Kanban weight="duotone" size={16} />
                   <span>Kanban</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="followups" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Calendar weight="duotone" size={20} />
+                  <Calendar weight="duotone" size={16} />
                   <span>Follow-Ups</span>
                   {!user.isPro && <span className="ml-1">🔒</span>}
                 </TabsTrigger>
                 <TabsTrigger 
                   value="ai" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Brain weight="duotone" size={20} />
+                  <Brain weight="duotone" size={16} />
                   <span>AI Insights</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="analytics" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <BarChart weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Analytics</span>
+                  <BarChart weight="duotone" size={16} />
+                  <span>Analytics</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="integrations" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Plug weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Integrations</span>
+                  <Plug weight="duotone" size={16} />
+                  <span>Integrations</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Shield weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Security</span>
+                  <Shield weight="duotone" size={16} />
+                  <span>Security</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="territories" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <MapTrifold weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Territories</span>
+                  <MapTrifold weight="duotone" size={16} />
+                  <span>Territories</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="workflows" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <FlowArrow weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Workflows</span>
+                  <FlowArrow weight="duotone" size={16} />
+                  <span>Workflows</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customize" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Gear weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Customize</span>
+                  <Gear weight="duotone" size={16} />
+                  <span>Customize</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="objects" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <PuzzlePiece weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Objects</span>
+                  <PuzzlePiece weight="duotone" size={16} />
+                  <span>Objects</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="warehouse" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <Database weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Warehouse</span>
+                  <Database weight="duotone" size={16} />
+                  <span>Warehouse</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="mobile" 
-                  className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
+                  className="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
-                  <DeviceMobile weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Mobile</span>
+                  <DeviceMobile weight="duotone" size={16} />
+                  <span>Mobile</span>
                 </TabsTrigger>
               </TabsList>
 

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { ReactNode } from "react"
 import { motion } from "framer-motion"
+import { universalCardHover } from "@/lib/animations"
 
 interface GlassCardProps {
   children: ReactNode
@@ -36,16 +37,19 @@ export function GlassCard({ children, className, hover = true, animated = true, 
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
-      whileHover={hover ? {
-        y: -4,
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.08)',
-        transition: { duration: 0.3, ease: [0.19, 1, 0.22, 1] }
-      } : undefined}
+      transition={{ 
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.8
+      }}
+      variants={hover ? universalCardHover : undefined}
+      whileHover={hover ? "hover" : undefined}
       whileTap={hover ? { scale: 0.98 } : undefined}
+      style={{ willChange: hover ? 'transform, box-shadow' : 'auto' }}
     >
       {blueAccent && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-black dark:bg-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       )}
       {children}
     </motion.div>

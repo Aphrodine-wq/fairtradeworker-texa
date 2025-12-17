@@ -1,5 +1,5 @@
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard, Folder, Calendar, ChatCircleDots, Bell, ClipboardText, Package, CheckCircle, Phone, Target, Microphone, MapPin, Swap, Ruler, WifiSlash, Image, CalendarDots, Heart } from "@phosphor-icons/react"
+import { Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard, Folder, Calendar, ChatCircleDots, Bell, ClipboardText, Package, CheckCircle, Phone, Target, Microphone, MapPin, Swap, Ruler, WifiSlash, Image, CalendarDots, Heart, Wrench, MapTrifold, Sun, Shield, Sparkle, UserPlus } from "@phosphor-icons/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -215,7 +215,7 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 md:px-8 pt-8 pb-12 max-w-7xl">
+      <div className="w-full px-4 md:px-8 pt-8 pb-12">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
@@ -529,6 +529,32 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Default tools if no pinned tools */}
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('browse-jobs')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Wrench className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Browse Jobs</p>
+                  <p className="text-sm text-muted-foreground">Find opportunities</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('my-jobs')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Briefcase className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">My Jobs</p>
+                  <p className="text-sm text-muted-foreground">Manage projects</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
               onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
@@ -563,6 +589,71 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
                 <div>
                   <p className="font-semibold">Business Tools</p>
                   <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('dashboard')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Route Builder</p>
+                  <p className="text-sm text-muted-foreground">Optimize routes</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('dashboard')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Sun className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Daily Briefing</p>
+                  <p className="text-sm text-muted-foreground">Today's overview</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('dashboard')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Shield className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Certifications</p>
+                  <p className="text-sm text-muted-foreground">Manage credentials</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('dashboard')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <ChatCircleDots className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Smart Replies</p>
+                  <p className="text-sm text-muted-foreground">Quick responses</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('dashboard')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <UserPlus className="h-6 w-6 text-primary" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Referrals</p>
+                  <p className="text-sm text-muted-foreground">Earn rewards</p>
                 </div>
               </div>
             </Card>

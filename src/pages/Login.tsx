@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
-import { CircleNotch } from "@phosphor-icons/react"
+import { CircleNotch, Shield, Lock } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { GlassNav, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
 
@@ -85,11 +85,23 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
           primaryAction={{ label: "Create an account", onClick: () => onNavigate("signup") }}
         />
 
+        {/* Security Indicator */}
+        <div className="max-w-2xl mx-auto mb-6">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <Shield size={20} weight="fill" className="text-[#00FF00]" />
+            <span>Secure login with encrypted connection</span>
+          </div>
+        </div>
+
         <div className="max-w-2xl mx-auto">
-          <GlassCard className="p-6 md:p-8">
-            <form onSubmit={handleLogin} className="space-y-4">
+          <GlassCard className="p-8 md:p-10 shadow-xl">
+            <div className="mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">Sign In</h2>
+              <p className="text-muted-foreground">Enter your credentials to access your account</p>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-base font-semibold">Email Address</Label>
                 <Input
                   id="email"
                   type="email"
@@ -104,14 +116,14 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                       setErrors((prev) => ({ ...prev, email: "Please enter a valid email address" }))
                     }
                   }}
-                  className={errors.email ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.email ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 {errors.email && (
-                  <p id="email-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p id="email-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.email}
                   </p>
                 )}
@@ -119,11 +131,11 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="text-base font-semibold">Password</Label>
                   <button
                     type="button"
                     onClick={() => onNavigate("login")}
-                    className="text-xs text-primary hover:underline"
+                    className="text-sm text-[#00FF00] hover:underline font-medium"
                   >
                     Forgot password?
                   </button>
@@ -137,20 +149,15 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                     setPassword(e.target.value)
                     if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }))
                   }}
-                  className={errors.password ? "border-[#FF0000]" : ""}
+                  className={`h-12 text-base ${errors.password ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                   disabled={isLoading}
                   required
                   aria-invalid={!!errors.password}
                   aria-describedby={errors.password ? "password-error" : undefined}
                 />
                 {errors.password && (
-                  <p id="password-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                  <p id="password-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                     {errors.password}
-                  </p>
-                )}
-                {password.length > 0 && (
-                  <p className="text-xs text-muted-foreground">
-                    Password strength: {password.length >= 8 ? "Strong" : password.length >= 6 ? "Medium" : "Weak"}
                   </p>
                 )}
               </div>
@@ -161,7 +168,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                   id="enable-2fa"
                   checked={enable2FA}
                   onChange={(e) => setEnable2FA(e.target.checked)}
-                  className="h-4 w-4 rounded border-black dark:border-white"
+                  className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-[#00FF00]"
                 />
                 <Label htmlFor="enable-2fa" className="text-sm font-normal cursor-pointer">
                   Use two-factor authentication
@@ -169,8 +176,8 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
               </div>
 
               {enable2FA && (
-                <div className="space-y-2">
-                  <Label htmlFor="twoFactor">2FA Code</Label>
+                <div className="space-y-2 p-4 bg-[#00FF00]/10 dark:bg-[#00FF00]/5 rounded-lg border border-[#00FF00]/20">
+                  <Label htmlFor="twoFactor" className="text-base font-semibold">2FA Code</Label>
                   <Input
                     id="twoFactor"
                     type="text"
@@ -181,14 +188,14 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                       setTwoFactorCode(value)
                       if (errors.twoFactor) setErrors((prev) => ({ ...prev, twoFactor: undefined }))
                     }}
-                    className={errors.twoFactor ? "border-[#FF0000] font-mono text-center text-lg tracking-widest" : "font-mono text-center text-lg tracking-widest"}
+                    className={`h-12 text-lg font-mono text-center tracking-widest ${errors.twoFactor ? "border-[#FF0000] focus:border-[#FF0000]" : "focus:border-[#00FF00]"} transition-colors`}
                     disabled={isLoading}
                     maxLength={6}
                     aria-invalid={!!errors.twoFactor}
                     aria-describedby={errors.twoFactor ? "twoFactor-error" : undefined}
                   />
                   {errors.twoFactor && (
-                    <p id="twoFactor-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                    <p id="twoFactor-error" className="text-sm text-[#FF0000] font-medium" role="alert">
                       {errors.twoFactor}
                     </p>
                   )}
@@ -198,14 +205,18 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                 </div>
               )}
 
-              <Button type="submit" className="w-full border-2 border-black dark:border-white" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full h-12 text-base font-semibold bg-[#00FF00] hover:bg-[#00DD00] text-black border-2 border-[#00FF00] shadow-lg hover:shadow-xl transition-all duration-300" 
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <CircleNotch size={20} className="mr-2 animate-spin" weight="bold" />
                     Logging in...
                   </>
                 ) : (
-                  "Log In"
+                  "Sign In"
                 )}
               </Button>
 

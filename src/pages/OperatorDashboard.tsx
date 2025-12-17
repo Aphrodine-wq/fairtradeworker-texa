@@ -23,7 +23,9 @@ import {
   UserPlus,
   Buildings,
   Copy,
-  Check
+  Check,
+  Wrench,
+  BarChart
 } from "@phosphor-icons/react"
 import type { User, Job, Territory } from "@/lib/types"
 import { useMemo, useState, useEffect } from "react"
@@ -236,7 +238,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
+      <div className="w-full px-4 md:px-8 pt-10 pb-12">
         <Tabs defaultValue="overview" className="w-full">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -326,11 +328,79 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
             </Card>
           </div>
 
-              {/* Rest of overview content will go here - keeping existing content structure */}
-              {/* For now, placeholder to maintain structure */}
-              <div className="text-center py-8 text-muted-foreground">
-                Overview content (existing dashboard content can be added here)
+              {/* Quick Actions */}
+              <div className="space-y-3">
+                <h2 className="text-xl font-bold text-black dark:text-white">Quick Actions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('browse-jobs')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <Wrench className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Browse Jobs</p>
+                        <p className="text-sm text-muted-foreground">Find opportunities</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('territory-map')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Territory Map</p>
+                        <p className="text-sm text-muted-foreground">View coverage</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => {
+                      const tabs = document.querySelector('[value="productivity"]') as HTMLElement
+                      if (tabs) tabs.click()
+                    }}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <Target className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Productivity Tools</p>
+                        <p className="text-sm text-muted-foreground">Optimize workflow</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => setReferralDialogOpen(true)}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <UserPlus className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Referral Link</p>
+                        <p className="text-sm text-muted-foreground">Grow network</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('dashboard')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <BarChart className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Analytics</p>
+                        <p className="text-sm text-muted-foreground">View insights</p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
+              </div>
               </div>
           </TabsContent>
 

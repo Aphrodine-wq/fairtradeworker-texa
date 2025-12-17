@@ -59,6 +59,18 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
     }
   }, [step, postingStartTime])
 
+  // Check for initial input method from sessionStorage
+  useEffect(() => {
+    const storedMethod = sessionStorage.getItem('postJobMethod')
+    if (storedMethod && (storedMethod === 'photos' || storedMethod === 'audio' || storedMethod === 'text')) {
+      const method = storedMethod as InputMethod
+      setInputMethod(method)
+      setStep('input')
+      // Clear sessionStorage after reading
+      sessionStorage.removeItem('postJobMethod')
+    }
+  }, [])
+
   const handleMethodSelect = (method: InputMethod) => {
     setInputMethod(method)
     setStep('input')

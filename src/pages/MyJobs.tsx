@@ -67,7 +67,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-background p-[1pt]">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="w-full px-4 py-8">
           <div className="space-y-6">
             <SkeletonLoader variant="text" className="h-10 w-64" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -398,7 +398,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         ]}
         primaryLabel="Post Job" />
 
-        <div className="container mx-auto px-4 md:px-8 pt-20 pb-12 max-w-7xl">
+        <div className="w-full px-4 md:px-8 pt-20 pb-12">
           <div className="space-y-8">
           <div>
             <h1 className="text-3xl font-bold text-black dark:text-white">My Jobs</h1>

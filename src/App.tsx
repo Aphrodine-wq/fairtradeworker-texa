@@ -93,7 +93,9 @@ const ProjectMilestones = lazy(() => retryImport(() =>
 const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
 ))
-const PurchasePage = lazy(() => retryImport(() => import("@/pages/Purchase").then(m => ({ default: m.PurchasePage }))))
+const UnifiedPostJob = lazy(() => retryImport(() => import("@/pages/UnifiedPostJob").then(m => ({ default: m.UnifiedPostJob }))))
+const ServiceCategoryDetail = lazy(() => retryImport(() => import("@/pages/ServiceCategoryDetail").then(m => ({ default: m.ServiceCategoryDetail }))))
+const AdminDashboard = lazy(() => retryImport(() => import("@/pages/AdminDashboard").then(m => ({ default: m.AdminDashboard }))))
 const DonatePage = lazy(() => retryImport(() => import("@/pages/DonatePage").then(m => ({ default: m.DonatePage }))))
 const HelpCenter = lazy(() => retryImport(() => import("@/pages/HelpCenter").then(m => ({ default: m.HelpCenter }))))
 const HomeownerProUpgrade = lazy(() => retryImport(() => import("@/components/homeowner/HomeownerProUpgrade").then(m => ({ default: m.HomeownerProUpgrade }))))
@@ -241,7 +243,7 @@ const SMSPhotoScope = lazy(() => retryImport(() =>
   import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'purchase' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -363,7 +365,14 @@ function App() {
     if (jobId) {
       setSelectedJobId(jobId)
     }
-    setCurrentPage(page as Page)
+    // Handle service-category paths
+    if (page.startsWith('service-category/')) {
+      const categoryId = page.split('/')[1]
+      sessionStorage.setItem('selectedCategory', categoryId)
+      setCurrentPage('service-category' as Page)
+    } else {
+      setCurrentPage(page as Page)
+    }
     window.scrollTo({ top: 0, behavior: 'instant' } as ScrollToOptions)
   }, [])
 
@@ -421,6 +430,18 @@ function App() {
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
         return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'unified-post-job':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <UnifiedPostJob user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'service-category':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ServiceCategoryDetail onNavigate={handleNavigate} />
+          </Suspense>
+        )
       case 'my-jobs':
         return currentUser?.role === 'homeowner'
           ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
@@ -473,12 +494,6 @@ function App() {
             <PhotoScoperPage />
           </Suspense>
         )
-      case 'purchase':
-        return (
-          <Suspense fallback={<LoadingFallback />}>
-            <PurchasePage onNavigate={handleNavigate} />
-          </Suspense>
-        )
       case 'about':
         return (
           <Suspense fallback={<LoadingFallback />}>
@@ -513,6 +528,12 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <HelpCenter onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'admin-dashboard':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <AdminDashboard onNavigate={handleNavigate} />
           </Suspense>
         )
       case 'homeowner-pro-upgrade':

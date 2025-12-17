@@ -684,109 +684,109 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background p-[1pt]">
-      <div className="container mx-auto px-4 md:px-8 py-8">
-        <div className="max-w-7xl mx-auto space-y-8">
-          {/* Hero Header Section */}
-          <div className="space-y-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-              <div className="space-y-4">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-10">
+        <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
+          {/* Modernized Hero Header Section */}
+          <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
+              <div className="space-y-3 md:space-y-4 flex-1">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Wrench size={24} weight="duotone" className="text-primary" />
+                  <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
+                    <Wrench size={28} weight="duotone" className="text-primary" />
                   </div>
-                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight">
                     Browse Jobs
                   </h1>
                 </div>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
-                  Find your next project – <span className="font-semibold text-primary">bid free</span>, keep <span className="font-semibold text-green-600 dark:text-green-400">100%</span>
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                  Find your next project – <span className="font-bold text-primary">bid free</span>, keep <span className="font-bold text-green-600 dark:text-green-400">100%</span>
                 </p>
                 
-                {/* Quick Stats Inline */}
-                <div className="flex flex-wrap items-center gap-6 pt-2">
-                  <div className="flex items-center gap-2">
+                {/* Modernized Quick Stats */}
+                <div className="flex flex-wrap items-center gap-4 md:gap-6 pt-1">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-900/30">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      <span className="font-bold text-foreground">{sortedOpenJobs.length}</span> active jobs
+                    <span className="text-sm font-semibold text-foreground">
+                      <span className="font-bold text-green-600 dark:text-green-400">{sortedOpenJobs.length}</span> active
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30">
                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids yet
+                    <span className="text-sm font-semibold text-foreground">
+                      <span className="font-bold text-blue-600 dark:text-blue-400">{sortedOpenJobs.filter(j => j.bids.length === 0).length}</span> no bids
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900/30">
                     <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-                    <span className="text-sm font-medium text-muted-foreground">
-                      <span className="font-bold text-foreground">{sortedOpenJobs.filter(j => {
+                    <span className="text-sm font-semibold text-foreground">
+                      <span className="font-bold text-orange-600 dark:text-orange-400">{sortedOpenJobs.filter(j => {
                         const jobAge = Date.now() - new Date(j.createdAt).getTime()
                         const fifteenMinutes = 15 * 60 * 1000
                         return jobAge <= fifteenMinutes && j.size === 'small' && j.bids.length === 0
-                      }).length}</span> fresh opportunities
+                      }).length}</span> fresh
                     </span>
                   </div>
                 </div>
               </div>
               
               {/* Enhanced Stats Cards */}
-              <div className="flex gap-4 lg:flex-col lg:gap-3">
-                <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] border-border hover:border-primary/40 transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 rounded-lg bg-primary/10">
+              <div className="flex gap-3 lg:flex-col lg:gap-3">
+                <Card className="px-5 py-4 min-w-[140px] lg:min-w-[180px] border-border hover:border-primary/50 hover:shadow-md transition-all">
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
                       <Wrench size={18} weight="duotone" className="text-primary" />
                     </div>
-                    <div className="text-3xl font-bold text-foreground">{sortedOpenJobs.length}</div>
+                    <div className="text-2xl md:text-3xl font-bold text-foreground">{sortedOpenJobs.length}</div>
                   </div>
-                  <div className="text-sm font-medium text-muted-foreground">Active Jobs</div>
+                  <div className="text-xs md:text-sm font-medium text-muted-foreground">Active Jobs</div>
                 </Card>
-                <Card className="px-6 py-5 min-w-[160px] lg:min-w-[180px] border-border hover:border-primary/40 transition-colors">
-                  <div className="flex items-center gap-3 mb-2">
+                <Card className="px-5 py-4 min-w-[140px] lg:min-w-[180px] border-border hover:border-blue-500/50 hover:shadow-md transition-all">
+                  <div className="flex items-center gap-3 mb-1.5">
                     <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/50">
                       <Eye size={18} weight="duotone" className="text-blue-600 dark:text-blue-400" />
                     </div>
-                    <div className="text-3xl font-bold text-foreground">
+                    <div className="text-2xl md:text-3xl font-bold text-foreground">
                       {sortedOpenJobs.filter(j => j.bids.length === 0).length}
                     </div>
                   </div>
-                  <div className="text-sm font-medium text-muted-foreground">No Bids Yet</div>
+                  <div className="text-xs md:text-sm font-medium text-muted-foreground">No Bids Yet</div>
                 </Card>
               </div>
             </div>
           </div>
 
-          {/* Enhanced Filter & View Controls */}
-          <div className="space-y-4">
-            <Card className="p-5 border-border">
-              <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+          {/* Modernized Filter & View Controls */}
+          <div className="space-y-3">
+            <Card className="p-4 md:p-5 border-border bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+              <div className="flex flex-col md:flex-row md:items-center gap-4">
                 {/* Job Size Filters */}
-                <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center gap-3 md:gap-4 flex-1">
                   <div className="flex items-center gap-2">
-                    <Funnel weight="duotone" size={20} className="text-primary" />
-                    <span className="font-semibold text-sm text-muted-foreground hidden sm:inline">Job Size:</span>
+                    <Funnel weight="duotone" size={18} className="text-primary" />
+                    <span className="font-semibold text-xs md:text-sm text-muted-foreground hidden sm:inline">Filter:</span>
                   </div>
                   
                   <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
-                    <TabsList className="grid grid-cols-4 w-full lg:w-auto bg-muted">
-                      <TabsTrigger value="all" className="text-xs sm:text-sm">All</TabsTrigger>
-                      <TabsTrigger value="small" className="text-xs sm:text-sm">🟢 Small</TabsTrigger>
-                      <TabsTrigger value="medium" className="text-xs sm:text-sm">🟡 Medium</TabsTrigger>
-                      <TabsTrigger value="large" className="text-xs sm:text-sm">🔴 Large</TabsTrigger>
+                    <TabsList className="grid grid-cols-4 w-full md:w-auto bg-muted/50 h-auto p-1">
+                      <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">All</TabsTrigger>
+                      <TabsTrigger value="small" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟢 Small</TabsTrigger>
+                      <TabsTrigger value="medium" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟡 Medium</TabsTrigger>
+                      <TabsTrigger value="large" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🔴 Large</TabsTrigger>
                     </TabsList>
                   </Tabs>
                 </div>
                 
                 {/* View Mode Toggle */}
-                <div className="flex items-center gap-3 lg:border-l lg:pl-4">
-                  <span className="text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
+                <div className="flex items-center gap-3 md:border-l md:pl-4">
+                  <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
                   <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map')}>
-                    <TabsList className="bg-muted">
-                      <TabsTrigger value="list" className="gap-2" aria-label="View jobs as list">
+                    <TabsList className="bg-muted/50 h-auto p-1">
+                      <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as list">
                         <List weight="duotone" size={16} />
                         <span className="hidden sm:inline">List</span>
                       </TabsTrigger>
-                      <TabsTrigger value="map" className="gap-2" aria-label="View jobs on map">
+                      <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs on map">
                         <MapTrifold weight="duotone" size={16} />
                         <span className="hidden sm:inline">Map</span>
                       </TabsTrigger>
@@ -806,12 +806,14 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 </Suspense>
               </div>
             ) : sortedOpenJobs.length === 0 ? (
-              <Card className="p-16 text-center border-border">
-                <div className="max-w-md mx-auto space-y-4">
-                  <Wrench size={80} weight="duotone" className="mx-auto text-muted-foreground/50" />
-                  <div>
-                    <h2 className="text-3xl font-bold mb-2 text-foreground">No Jobs Available</h2>
-                    <p className="text-muted-foreground text-lg">
+              <Card className="p-12 md:p-16 text-center border-border bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+                <div className="max-w-md mx-auto space-y-6">
+                  <div className="p-4 rounded-full bg-muted/50 w-fit mx-auto">
+                    <Wrench size={64} weight="duotone" className="mx-auto text-muted-foreground/50" />
+                  </div>
+                  <div className="space-y-2">
+                    <h2 className="text-2xl md:text-3xl font-bold text-foreground">No Jobs Available</h2>
+                    <p className="text-muted-foreground text-base md:text-lg">
                       {sizeFilter === 'all' 
                         ? "We'll notify you when new opportunities arrive!"
                         : `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters. Try a different size.`
@@ -830,10 +832,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 </div>
               </Card>
             ) : isLoadingJobs && sortedOpenJobs.length === 0 ? (
-              <SkeletonGrid count={6} columns={3} />
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <SkeletonGrid count={6} columns={3} />
+              </div>
             ) : (
               <>
-                {/* Netflix-style Horizontal Lanes */}
+                {/* Netflix-style Horizontal Lanes with Better Visual Separation */}
                 {/* Fresh Jobs Lane */}
                 {(() => {
                   const freshJobs = sortedOpenJobs.filter(j => {
@@ -842,11 +846,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   })
                   if (freshJobs.length === 0) return null
                   return (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <Sparkle size={24} weight="fill" className="text-green-500" />
-                        <h3 className="text-xl font-bold text-foreground">🔥 Fresh Jobs — Be First to Bid</h3>
-                        <Badge variant="success" className="ml-2">{freshJobs.length} new</Badge>
+                    <div className="space-y-4 pb-6 border-b border-border/50">
+                      <div className="flex items-center gap-3 px-2">
+                        <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/30">
+                          <Sparkle size={20} weight="fill" className="text-green-600 dark:text-green-400" />
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-foreground">🔥 Fresh Jobs — Be First to Bid</h3>
+                        <Badge variant="success" className="ml-2 text-xs">{freshJobs.length} new</Badge>
                       </div>
                       <CarouselLane>
                         {freshJobs.map(job => (
@@ -869,10 +875,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   const smallJobs = sortedOpenJobs.filter(j => j.size === 'small')
                   if (smallJobs.length === 0 || sizeFilter !== 'all') return null
                   return (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-bold text-foreground">🟢 Quick Jobs</h3>
-                        <span className="text-sm text-muted-foreground">Under $500 • Fast turnaround</span>
+                    <div className="space-y-4 pb-6 border-b border-border/50">
+                      <div className="flex items-center gap-3 px-2">
+                        <div className="p-2 rounded-lg bg-green-50 dark:bg-green-950/20">
+                          <span className="text-xl">🟢</span>
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-foreground">Quick Jobs</h3>
+                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">Under $500 • Fast turnaround</span>
                       </div>
                       <CarouselLane>
                         {smallJobs.slice(0, 10).map(job => (
@@ -895,10 +904,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   const mediumJobs = sortedOpenJobs.filter(j => j.size === 'medium')
                   if (mediumJobs.length === 0 || sizeFilter !== 'all') return null
                   return (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-bold text-foreground">🟡 Standard Projects</h3>
-                        <span className="text-sm text-muted-foreground">$500 - $2,000</span>
+                    <div className="space-y-4 pb-6 border-b border-border/50">
+                      <div className="flex items-center gap-3 px-2">
+                        <div className="p-2 rounded-lg bg-yellow-50 dark:bg-yellow-950/20">
+                          <span className="text-xl">🟡</span>
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-foreground">Standard Projects</h3>
+                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">$500 - $2,000</span>
                       </div>
                       <CarouselLane>
                         {mediumJobs.slice(0, 10).map(job => (
@@ -921,10 +933,13 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   const largeJobs = sortedOpenJobs.filter(j => j.size === 'large')
                   if (largeJobs.length === 0 || sizeFilter !== 'all') return null
                   return (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-bold text-foreground">🔴 Major Projects</h3>
-                        <span className="text-sm text-muted-foreground">$2,000+ • Multi-day</span>
+                    <div className="space-y-4 pb-6">
+                      <div className="flex items-center gap-3 px-2">
+                        <div className="p-2 rounded-lg bg-red-50 dark:bg-red-950/20">
+                          <span className="text-xl">🔴</span>
+                        </div>
+                        <h3 className="text-lg md:text-xl font-bold text-foreground">Major Projects</h3>
+                        <span className="text-xs md:text-sm text-muted-foreground hidden sm:inline">$2,000+ • Multi-day</span>
                       </div>
                       <CarouselLane>
                         {largeJobs.slice(0, 10).map(job => (

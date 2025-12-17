@@ -9,8 +9,9 @@ import { Button } from '@/components/ui/button'
 import { ArrowCounterClockwise, Plus } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { DraggableNavItem } from './DraggableNavItem'
+import { BusinessToolsPopup } from './BusinessToolsPopup'
 import type { NavItem, NavigationPreferences } from '@/lib/types/navigation'
-import { validateNavigation, getAvailableBusinessTools, getNavIcon } from '@/lib/types/navigation'
+import { validateNavigation, getAvailableBusinessTools } from '@/lib/types/navigation'
 import type { User } from '@/lib/types'
 
 interface NavigationCustomizerProps {
@@ -30,6 +31,7 @@ export function NavigationCustomizer({
 }: NavigationCustomizerProps) {
   const [items, setItems] = useState<NavItem[]>(currentNav)
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+  const [showToolsPopup, setShowToolsPopup] = useState(false)
 
   // keep dialog state in sync with latest nav when reopened
   useEffect(() => {
@@ -87,13 +89,17 @@ export function NavigationCustomizer({
       return
     }
     
+    // Ensure items are sorted by order before saving
+    const sortedItems = [...items].sort((a, b) => a.order - b.order)
+    
     const prefs: NavigationPreferences = {
-      items,
+      items: sortedItems,
       version: '1.0.0',
       lastUpdated: new Date().toISOString()
     }
     
     console.log('[NavigationCustomizer] Saving preferences:', prefs)
+    console.log('[NavigationCustomizer] Items count:', sortedItems.length)
     onSave(prefs)
     toast.success('Navigation preferences saved!')
     onClose?.()
@@ -173,41 +179,28 @@ export function NavigationCustomizer({
         {/* Available Business Tools to Add */}
         {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'operator' || user.role === 'homeowner') && (
           <div className="border-t border-white/10 dark:border-white/10 pt-4">
-            <h3 className="text-lg font-semibold mb-3 text-black dark:text-white">
-              Add Business Tools to Navigation
-            </h3>
-            <div className="space-y-2">
-              {availableTools.map((tool) => {
-                const Icon = getNavIcon(tool.iconName)
-                return (
-                  <div
-                    key={tool.id}
-                    className="border border-white/10 dark:border-white/10 glass-card p-3 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
-                      {Icon && (
-                        <Icon 
-                          size={20} 
-                          className="text-black dark:text-white"
-                          weight="regular"
-                        />
-                      )}
-                      <span className="font-medium text-black dark:text-white">
-                        {tool.label}
-                      </span>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => handleAddTool(tool)}
-                    >
-                      <Plus size={16} className="mr-1" />
-                      Add
-                    </Button>
-                  </div>
-                )
-              })}
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-black dark:text-white">
+                Add Business Tools to Navigation
+              </h3>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setShowToolsPopup(true)}
+              >
+                <Plus size={16} className="mr-1" />
+                Add Business Tool
+              </Button>
             </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              {availableTools.length} tool{availableTools.length !== 1 ? 's' : ''} available
+            </p>
+            <BusinessToolsPopup
+              open={showToolsPopup}
+              onOpenChange={setShowToolsPopup}
+              availableTools={availableTools}
+              onAddTool={handleAddTool}
+            />
           </div>
         )}
 
