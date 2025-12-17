@@ -132,7 +132,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
   return (
     <div className={cn(
-      "relative w-screen h-screen overflow-hidden fixed inset-0 z-50",
+      "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
       "bg-white dark:bg-black"
     )}>
       {/* Simplified background - no starfield for system consistency */}
@@ -172,7 +172,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-transparent dark:border-white"
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-black dark:border-white"
           >
             <p className="text-black dark:text-white text-sm font-medium">
               🎨 Customize Mode - Drag sections to reposition

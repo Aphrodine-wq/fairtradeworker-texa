@@ -196,17 +196,16 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Bold rainbow color scheme for all categories
+  // Neutral color scheme - green/grey for all categories
   const categoryStyles: Record<string, string> = {
-    emergency: "bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-300",
-    plumbing: "bg-orange-100 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300",
-    electrical: "bg-yellow-100 dark:bg-yellow-950/30 text-yellow-800 dark:text-yellow-300",
-    hvac: "bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-300",
-    repair: "bg-blue-100 dark:bg-blue-950/30 text-blue-800 dark:text-blue-300",
-    outdoor: "bg-indigo-100 dark:bg-indigo-950/30 text-indigo-800 dark:text-indigo-300",
-    remodeling: "bg-violet-100 dark:bg-violet-950/30 text-violet-800 dark:text-violet-300",
-    cleaning: "bg-teal-100 dark:bg-teal-950/30 text-teal-800 dark:text-teal-300",
-    'quick-services': "bg-purple-100 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300"
+    emergency: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    plumbing: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    electrical: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    hvac: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    repair: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    outdoor: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    remodeling: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    cleaning: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
   }
 
   const handleCategoryClick = (categoryId: string) => {
@@ -273,17 +272,16 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                         weight="fill" 
                         className={
                           categoryStyles[category.id] 
-                            ? category.id === 'emergency' ? "text-red-800 dark:text-red-300" :
-                              category.id === 'plumbing' ? "text-orange-800 dark:text-orange-300" :
-                              category.id === 'electrical' ? "text-yellow-800 dark:text-yellow-300" :
-                              category.id === 'hvac' ? "text-green-800 dark:text-green-300" :
-                              category.id === 'repair' ? "text-blue-800 dark:text-blue-300" :
-                              category.id === 'outdoor' ? "text-indigo-800 dark:text-indigo-300" :
-                              category.id === 'remodeling' ? "text-violet-800 dark:text-violet-300" :
-                              category.id === 'cleaning' ? "text-teal-800 dark:text-teal-300" :
-                              category.id === 'quick-services' ? "text-purple-800 dark:text-purple-300" :
-                              "text-slate-800 dark:text-slate-200"
-                            : "text-slate-800 dark:text-slate-200"
+                            ? category.id === 'emergency' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'plumbing' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'electrical' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'hvac' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'repair' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'outdoor' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'remodeling' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'cleaning' ? "text-gray-800 dark:text-gray-200" :
+                              "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-200"
                         }
                       />
                     </div>

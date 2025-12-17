@@ -82,8 +82,8 @@ export function OrbitingSection({
           "transition-all duration-300",
           "border-2",
           isActive 
-            ? "bg-black dark:bg-white border-transparent dark:border-white shadow-lg" 
-            : "bg-white dark:bg-black border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg" 
+            : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
           isLocked && !isPro && "opacity-50 cursor-not-allowed",
           customizable && "cursor-grab active:cursor-grabbing"
         )}
@@ -92,7 +92,7 @@ export function OrbitingSection({
       >
         {/* Icon - smaller */}
         <div className={cn(
-          "text-lg mb-0.5",
+          "text-2xl mb-1",
           isActive ? "text-white dark:text-black" : "text-black dark:text-white"
         )}>
           {icon}
@@ -100,7 +100,7 @@ export function OrbitingSection({
         
         {/* Label - smaller */}
         <span className={cn(
-          "text-[9px] font-medium text-center leading-tight px-0.5",
+          "text-[10px] font-medium text-center leading-tight",
           isActive ? "text-white dark:text-black" : "text-black dark:text-white"
         )}>
           {label}
@@ -123,7 +123,7 @@ export function OrbitingSection({
         {/* Active indicator */}
         {isActive && (
           <motion.div
-            className="absolute inset-0 rounded-lg border-2 border-transparent dark:border-white"
+            className="absolute inset-0 rounded-lg border-2 border-black dark:border-white"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2 }}
@@ -147,7 +147,7 @@ export function OrbitingSection({
           x2={x < 0 ? 20 : Math.abs(x) + 20}
           y2={y < 0 ? 20 : Math.abs(y) + 20}
           stroke={isActive ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'}
-          className="dark:stroke-white/30"
+          className="dark:stroke-white/30 dark:stroke-white/10"
           strokeWidth="1"
           strokeDasharray="4 4"
           initial={{ pathLength: 0 }}
