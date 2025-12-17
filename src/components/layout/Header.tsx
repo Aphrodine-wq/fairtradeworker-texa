@@ -81,9 +81,8 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
           </button>
 
           <nav className={cn(
-            "flex items-center gap-1.5",
-            !user && "hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2",
-            user && "md:absolute md:left-1/2 md:transform md:-translate-x-1/2"
+            "flex items-center gap-1.5 md:absolute md:left-1/2 md:transform md:-translate-x-1/2",
+            !user && "hidden md:flex"
           )}>
             {!user ? (
               <>

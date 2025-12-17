@@ -1,6 +1,6 @@
 /* Mobile-specific sizing and optimizations */
 
-/* Reduce overall page sizes for mobile devices */
+/* Mobile devices generally */
 @media (max-width: 768px) {
   /* Reduce base font size slightly for mobile */
   html {
@@ -95,13 +95,6 @@
   td {
     padding: 0.5rem;
   }
-
-  /* Reduce logo size on very small screens */
-  @media (max-width: 480px) {
-    .font-heading.font-bold {
-      font-size: 1.125rem;
-    }
-  }
 }
 
 /* Extra small devices (phones in portrait) */
@@ -127,6 +120,11 @@
   .py-12 {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+  }
+
+  /* Reduce logo size on very small screens */
+  .font-heading.font-bold {
+    font-size: 1.125rem;
   }
 }
 
