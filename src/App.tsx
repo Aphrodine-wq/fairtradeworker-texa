@@ -50,6 +50,7 @@ const LoginPage = lazy(() => retryImport(() => import("@/pages/Login").then(m =>
 const SignupPage = lazy(() => retryImport(() => import("@/pages/Signup").then(m => ({ default: m.SignupPage }))))
 const MyJobs = lazy(() => retryImport(() => import("@/pages/MyJobs").then(m => ({ default: m.MyJobs }))))
 const JobPoster = lazy(() => retryImport(() => import("@/components/jobs/JobPoster").then(m => ({ default: m.JobPoster }))))
+const PostJob = lazy(() => retryImport(() => import("@/pages/PostJob").then(m => ({ default: m.PostJob }))))
 const BrowseJobs = lazy(() => retryImport(() => import("@/components/jobs/BrowseJobs").then(m => ({ default: m.BrowseJobs }))))
 
 const AutomationRunner = lazy(() => retryImport(() =>
@@ -420,7 +421,11 @@ function App() {
       case 'signup':
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
-        return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <PostJob user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'my-jobs':
         return currentUser?.role === 'homeowner'
           ? <MyJobs user={currentUser} onNavigate={handleNavigate} />
@@ -813,17 +818,17 @@ function App() {
         />
       )}
       <OfflineIndicator />
-      <main className="flex-1 pt-16 w-full bg-white dark:bg-black overflow-x-hidden">
+      <main className="flex-1 w-full bg-white dark:bg-black overflow-x-hidden">
         {currentPage !== 'home' && breadcrumbs.length > 0 && (
-          <div className="container mx-auto px-4 md:px-8 pt-6">
-            <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
-          </div>
+          <Breadcrumb items={breadcrumbs} onNavigate={handleNavigate} />
         )}
-        <ErrorBoundary onReset={() => setCurrentPage('home')}>
-          <Suspense fallback={<LoadingFallback />}>
-            {renderPage()}
-          </Suspense>
-        </ErrorBoundary>
+        <div className={currentPage !== 'home' ? 'pt-4' : 'pt-16'}>
+          <ErrorBoundary onReset={() => setCurrentPage('home')}>
+            <Suspense fallback={<LoadingFallback />}>
+              {renderPage()}
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </main>
       <Footer onNavigate={handleNavigate} />
       <Toaster position="top-center" />

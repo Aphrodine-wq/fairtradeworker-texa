@@ -23,63 +23,65 @@ const BreadcrumbComponent = ({ items, onNavigate, className }: BreadcrumbProps) 
     <nav 
       aria-label="Breadcrumb" 
       className={cn(
-        "flex items-center gap-2 text-sm px-4 py-3 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10",
+        "w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-black/5 dark:border-white/5 shadow-sm",
         className
       )}
     >
-      <ol className="flex items-center gap-2 flex-wrap">
-        {items.map((item, index) => {
-          const isLast = index === items.length - 1
-          const isClickable = !isLast && item.page
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <ol className="flex items-center gap-1.5 py-3 text-sm overflow-x-auto scrollbar-hide">
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1
+            const isClickable = !isLast && item.page
 
-          return (
-            <li key={index} className="flex items-center gap-2">
-              {index > 0 && (
-                <CaretRight 
-                  size={14} 
-                  weight="bold" 
-                  className="text-muted-foreground/50" 
-                  aria-hidden="true"
-                />
-              )}
-              
-              {isClickable ? (
-                <motion.button
-                  onClick={() => onNavigate(item.page!)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-white dark:hover:bg-black transition-colors text-muted-foreground hover:text-foreground font-medium group"
-                  aria-current={isLast ? "page" : undefined}
-                >
-                  {item.icon && (
-                    <span className="text-muted-foreground group-hover:text-foreground transition-colors">
-                      {item.icon}
-                    </span>
-                  )}
-                  <span>{item.label}</span>
-                </motion.button>
-              ) : (
-                <span 
-                  className={cn(
-                    "flex items-center gap-1.5 px-2 py-1",
-                    isLast 
-                      ? "text-foreground font-semibold" 
-                      : "text-muted-foreground font-medium"
-                  )}
-                  aria-current={isLast ? "page" : undefined}
-                >
-                  {item.icon && (
-                    <span className={isLast ? "text-black dark:text-white" : "text-muted-foreground"}>
-                      {item.icon}
-                    </span>
-                  )}
-                  <span>{item.label}</span>
-                </span>
-              )}
-            </li>
-          )
-        })}
-      </ol>
+            return (
+              <li key={index} className="flex items-center gap-1.5 shrink-0">
+                {index > 0 && (
+                  <CaretRight 
+                    size={12} 
+                    weight="bold" 
+                    className="text-muted-foreground/40 shrink-0" 
+                    aria-hidden="true"
+                  />
+                )}
+                
+                {isClickable ? (
+                  <motion.button
+                    onClick={() => onNavigate(item.page!)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-muted-foreground hover:text-foreground font-medium group"
+                    aria-current={isLast ? "page" : undefined}
+                  >
+                    {item.icon && (
+                      <span className="text-muted-foreground group-hover:text-foreground transition-colors shrink-0">
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="whitespace-nowrap">{item.label}</span>
+                  </motion.button>
+                ) : (
+                  <span 
+                    className={cn(
+                      "flex items-center gap-1.5 px-2.5 py-1.5",
+                      isLast 
+                        ? "text-foreground font-semibold" 
+                        : "text-muted-foreground font-medium"
+                    )}
+                    aria-current={isLast ? "page" : undefined}
+                  >
+                    {item.icon && (
+                      <span className={cn("shrink-0", isLast ? "text-primary" : "text-muted-foreground")}>
+                        {item.icon}
+                      </span>
+                    )}
+                    <span className="whitespace-nowrap">{item.label}</span>
+                  </span>
+                )}
+              </li>
+            )
+          })}
+        </ol>
+      </div>
     </nav>
   )
 }

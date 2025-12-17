@@ -1,14 +1,15 @@
 /**
- * Draggable navigation item component
+ * Draggable Navigation Item Component with smooth drag-and-drop
+ * Uses native HTML5 drag-and-drop API with enhanced UX
  */
 
-import { useState } from 'react'
-import { GripVertical, Eye, EyeSlash } from '@phosphor-icons/react'
+import { useState, useRef } from 'react'
+import { Card } from '@/components/ui/card'
 import { Switch } from '@/components/ui/switch'
-import { Label } from '@/components/ui/label'
-import { cn } from '@/lib/utils'
+import { GripVertical, Lock } from '@phosphor-icons/react'
 import type { NavItem } from '@/lib/types/navigation'
 import { getNavIcon } from '@/lib/types/navigation'
+import { cn } from '@/lib/utils'
 
 interface DraggableNavItemProps {
   item: NavItem
@@ -32,99 +33,146 @@ export function DraggableNavItem({
   onDrop
 }: DraggableNavItemProps) {
   const [dragOver, setDragOver] = useState(false)
+  const [isLocalDragging, setIsLocalDragging] = useState(false)
+  const dragRef = useRef<HTMLDivElement>(null)
+  
   const Icon = getNavIcon(item.iconName)
 
   const handleDragStart = (e: React.DragEvent) => {
+    setIsLocalDragging(true)
+    onDragStart(index)
+    
+    // Set drag data
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData('text/plain', index.toString())
-    onDragStart(index)
+    
+    // Create drag image with opacity
+    if (dragRef.current) {
+      const dragImage = dragRef.current.cloneNode(true) as HTMLElement
+      dragImage.style.opacity = '0.5'
+      dragImage.style.transform = 'rotate(2deg)'
+      dragImage.style.pointerEvents = 'none'
+      document.body.appendChild(dragImage)
+      e.dataTransfer.setDragImage(dragImage, e.clientX - dragRef.current.getBoundingClientRect().left, e.clientY - dragRef.current.getBoundingClientRect().top)
+      setTimeout(() => document.body.removeChild(dragImage), 0)
+    }
+  }
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    setIsLocalDragging(false)
+    setDragOver(false)
+    onDragEnd()
+    
+    // Remove drag classes
+    if (dragRef.current) {
+      dragRef.current.classList.remove('opacity-50', 'scale-95')
+    }
   }
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
+    e.stopPropagation()
     e.dataTransfer.dropEffect = 'move'
-    setDragOver(true)
-    onDragOver(index)
+    
+    if (!dragOver) {
+      setDragOver(true)
+      onDragOver(index)
+    }
   }
 
-  const handleDragLeave = () => {
-    setDragOver(false)
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    // Only set dragOver to false if we're actually leaving the element
+    const rect = dragRef.current?.getBoundingClientRect()
+    if (rect) {
+      const x = e.clientX
+      const y = e.clientY
+      if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+        setDragOver(false)
+      }
+    }
   }
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault()
-    setDragOver(false)
+    e.stopPropagation()
+    
     const fromIndex = parseInt(e.dataTransfer.getData('text/plain'))
-    onDrop(fromIndex, index)
-    onDragEnd()
+    if (!isNaN(fromIndex) && fromIndex !== index) {
+      onDrop(fromIndex, index)
+    }
+    
+    setDragOver(false)
   }
 
   return (
     <div
+      ref={dragRef}
       draggable={!item.required}
       onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      onDragEnd={onDragEnd}
       className={cn(
-        "border border-white/10 dark:border-white/10 glass-card p-4 mb-2 flex items-center gap-4 transition-all rounded-lg",
-        dragOver 
-          ? "border-yellow-400/50 dark:border-yellow-600/50 shadow-lg" 
-          : "shadow-md",
-        isDragging && "opacity-50",
-        !item.required ? "cursor-move" : "cursor-not-allowed opacity-75"
+        "transition-all duration-200 ease-out cursor-move",
+        isDragging || isLocalDragging ? "opacity-50 scale-95 rotate-1" : "",
+        dragOver && !isLocalDragging ? "scale-105 shadow-lg border-primary border-2" : "",
+        item.required ? "cursor-not-allowed" : "hover:shadow-md"
       )}
     >
-      {/* Drag Handle */}
-      <div className={`flex-shrink-0 ${item.required ? 'opacity-50' : ''}`}>
-        <GripVertical 
-          size={20} 
-          className="text-black dark:text-white"
-          weight={isDragging ? "fill" : "regular"}
-        />
-      </div>
+      <Card className={cn(
+        "p-4 flex items-center gap-4 border",
+        dragOver && !isLocalDragging ? "border-primary bg-primary/5" : "border-border"
+      )}>
+        {/* Drag Handle */}
+        <div className={cn(
+          "flex-shrink-0 cursor-grab active:cursor-grabbing",
+          item.required && "cursor-not-allowed opacity-50"
+        )}>
+          {item.required ? (
+            <Lock size={20} className="text-muted-foreground" weight="fill" />
+          ) : (
+            <GripVertical size={20} className="text-muted-foreground hover:text-foreground transition-colors" />
+          )}
+        </div>
 
-      {/* Icon */}
-      {Icon && (
+        {/* Icon */}
+        {Icon && (
+          <div className="flex-shrink-0">
+            <Icon 
+              size={20} 
+              className="text-black dark:text-white"
+              weight="regular"
+            />
+          </div>
+        )}
+
+        {/* Label */}
+        <div className="flex-1 min-w-0">
+          <div className="font-medium text-black dark:text-white truncate">
+            {item.label}
+            {item.required && (
+              <span className="ml-2 text-xs text-muted-foreground">(Required)</span>
+            )}
+          </div>
+          {item.page && (
+            <div className="text-xs text-muted-foreground truncate">
+              {item.page}
+            </div>
+          )}
+        </div>
+
+        {/* Toggle Switch */}
         <div className="flex-shrink-0">
-          <Icon 
-            size={20} 
-            className="text-black dark:text-white"
-            weight={item.visible ? "fill" : "regular"}
+          <Switch
+            checked={item.visible}
+            onCheckedChange={(checked) => onToggle(item.id, checked)}
+            disabled={item.required}
+            aria-label={`Toggle ${item.label} visibility`}
           />
         </div>
-      )}
-
-      {/* Label */}
-      <Label 
-        htmlFor={`nav-${item.id}`}
-        className="flex-1 font-semibold text-black dark:text-white cursor-pointer"
-      >
-        {item.label}
-        {item.required && (
-          <span className="ml-2 text-xs text-muted-foreground">(Required)</span>
-        )}
-      </Label>
-
-      {/* Visibility Toggle */}
-      <div className="flex items-center gap-2">
-        {item.visible ? (
-          <Eye size={16} className="text-black dark:text-white" />
-        ) : (
-          <EyeSlash size={16} className="text-muted-foreground" />
-        )}
-        <Switch
-          id={`nav-${item.id}`}
-          checked={item.visible}
-          onCheckedChange={(checked) => {
-            if (!item.required || checked) {
-              onToggle(item.id, checked)
-            }
-          }}
-          disabled={item.required && !item.visible}
-        />
-      </div>
+      </Card>
     </div>
   )
 }

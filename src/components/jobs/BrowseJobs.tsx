@@ -539,6 +539,24 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     return sortedOpenJobs.slice(0, visibleCount)
   }, [sortedOpenJobs, visibleCount])
 
+  // Debounced scroll handler for load more
+  const handleScroll = useCallback(() => {
+    const scrollPosition = window.innerHeight + window.scrollY
+    const pageHeight = document.documentElement.scrollHeight
+    const threshold = 200 // Load more when 200px from bottom
+    
+    if (scrollPosition >= pageHeight - threshold && visibleCount < sortedOpenJobs.length) {
+      setVisibleCount(prev => Math.min(prev + 50, sortedOpenJobs.length))
+    }
+  }, [visibleCount, sortedOpenJobs.length])
+
+  useEffect(() => {
+    if (viewMode === 'list') {
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll, viewMode])
+
   const handleBidClick = useCallback((job: Job) => {
     setSelectedJob(job)
       setBidAmount("")
