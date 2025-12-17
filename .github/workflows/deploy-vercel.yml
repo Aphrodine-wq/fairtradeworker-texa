@@ -69,7 +69,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment**: ${{ github.event.inputs.environment }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ steps.deploy.outputs.url }}" != "" ]; then
+          if [ -n "${{ steps.deploy.outputs.url }}" ]; then
             echo "- **Deployment URL**: ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
           fi
           echo "- **Triggered by**: @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY

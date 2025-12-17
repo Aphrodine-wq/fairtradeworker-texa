@@ -29,7 +29,7 @@ Before you can use this workflow, you need to configure the following secrets in
 
 ### Triggering a Manual Deployment
 
-1. Go to your GitHub repository: https://github.com/Aphrodine-wq/fairtradeworker-texa
+1. Go to your GitHub repository
 2. Click on the **"Actions"** tab
 3. Select **"Deploy to Vercel"** from the workflows list on the left
 4. Click the **"Run workflow"** button (top right)
