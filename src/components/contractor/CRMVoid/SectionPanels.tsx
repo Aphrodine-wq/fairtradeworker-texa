@@ -88,17 +88,22 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          transition={{ 
+            type: 'spring', 
+            stiffness: 300, 
+            damping: 30 
+          }}
           className={cn(
             "relative z-10 w-[95vw] max-w-5xl h-[80vh] max-h-[800px] rounded-lg",
-            "bg-white dark:bg-black",
-            "border-2 border-transparent dark:border-white",
-            "shadow-2xl",
-            "flex flex-col overflow-hidden"
+            "glass-card border-0",
+            "bg-white/95 dark:bg-black/95 backdrop-blur-lg",
+            "shadow-xl hover:shadow-2xl",
+            "flex flex-col overflow-hidden",
+            "transition-all duration-300"
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-3 border-b-2 border-transparent dark:border-white flex-shrink-0">
+          <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 dark:border-white/10 flex-shrink-0">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
@@ -151,10 +156,10 @@ function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (pa
           key={tool.id}
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
-            "p-6 rounded-lg text-left",
-            "bg-white dark:bg-black border-2 border-transparent dark:border-white",
-            "hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
-            "transition-all duration-200"
+            "p-6 rounded-lg text-left border-0",
+            "glass-card hover:shadow-xl",
+            "bg-white/90 dark:bg-black/90 backdrop-blur-sm",
+            "hover:scale-[1.02] transition-all duration-300"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -213,10 +218,10 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
           key={tool.id}
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
-            "p-6 rounded-lg text-left",
-            "bg-white dark:bg-black border-2 border-transparent dark:border-white",
-            "hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
-            "transition-all duration-200"
+            "p-6 rounded-lg text-left border-0",
+            "glass-card hover:shadow-xl",
+            "bg-white/90 dark:bg-black/90 backdrop-blur-sm",
+            "hover:scale-[1.02] transition-all duration-300"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -239,10 +244,10 @@ function CustomersPanel({ user }: { user: User }) {
         <button
           onClick={() => setViewMode('list')}
           className={cn(
-            "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all border-0",
             viewMode === 'list'
-              ? "bg-black dark:bg-white text-white dark:text-black"
-              : "bg-white dark:bg-black border-2 border-transparent dark:border-white text-black dark:text-white"
+              ? "bg-black dark:bg-white text-white dark:text-black shadow-md"
+              : "glass-card bg-white/90 dark:bg-black/90 backdrop-blur-sm text-black dark:text-white hover:shadow-lg"
           )}
         >
           Customer List
@@ -250,10 +255,10 @@ function CustomersPanel({ user }: { user: User }) {
         <button
           onClick={() => setViewMode('analytics')}
           className={cn(
-            "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all border-0",
             viewMode === 'analytics'
-              ? "bg-black dark:bg-white text-white dark:text-black"
-              : "bg-white dark:bg-black border-2 border-transparent dark:border-white text-black dark:text-white"
+              ? "bg-black dark:bg-white text-white dark:text-black shadow-md"
+              : "glass-card bg-white/90 dark:bg-black/90 backdrop-blur-sm text-black dark:text-white hover:shadow-lg"
           )}
         >
           Analytics
@@ -306,8 +311,8 @@ function CustomizePanel() {
 
 function SettingsPanel() {
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white">
+      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="p-4 rounded-lg glass-card border-0 bg-white/90 dark:bg-black/90 backdrop-blur-sm">
         <h3 className="font-semibold text-black dark:text-white mb-3">Display Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">
@@ -321,7 +326,7 @@ function SettingsPanel() {
         </div>
       </div>
 
-      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white">
+      <div className="p-4 rounded-lg glass-card border-0 bg-white/90 dark:bg-black/90 backdrop-blur-sm">
         <h3 className="font-semibold text-black dark:text-white mb-3">Voice Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">

@@ -13,20 +13,12 @@ export function EnhancedCRM({ user, onNavigate }: EnhancedCRMProps) {
   const [isInitializing, setIsInitializing] = useState(true)
   
   useEffect(() => {
-    if (!customersLoading) {
-      const timer = setTimeout(() => setIsInitializing(false), 500)
-      return () => clearTimeout(timer)
-    }
-  }, [customersLoading])
+    // Reduce initialization delay to render faster
+    const timer = setTimeout(() => setIsInitializing(false), 200)
+    return () => clearTimeout(timer)
+  }, [])
 
-  if (customersLoading || isInitializing) {
-    return (
-      <div className="w-full min-h-screen bg-[#050508] flex items-center justify-center">
-        <div className="text-white/60 text-lg">Loading CRM Void…</div>
-      </div>
-    )
-  }
-
-  // Render the new CRM Void interface
+  // Render immediately - don't wait for customers to load
+  // CRM Void will handle its own loading states
   return <CRMVoid user={user} onNavigate={onNavigate} />
 }

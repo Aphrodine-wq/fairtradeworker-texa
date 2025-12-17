@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react'
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Briefcase, Kanban, Crown, Users, Brain, ChartLine, 
@@ -130,6 +130,26 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     return (sectionLayouts || []).filter(s => s.visible)
   }, [sectionLayouts])
 
+  // Decorative planets state
+  const [planetAngles, setPlanetAngles] = useState<number[]>([
+    15, 75, 135, 195, 255, 315 // Initial angles for 6 decorative planets
+  ])
+  const planetAnimationRef = useRef<number | null>(null)
+
+  // Animate decorative planets
+  useEffect(() => {
+    const animate = () => {
+      setPlanetAngles(prev => prev.map(angle => (angle + 0.02) % 360))
+      planetAnimationRef.current = requestAnimationFrame(animate)
+    }
+    planetAnimationRef.current = requestAnimationFrame(animate)
+    return () => {
+      if (planetAnimationRef.current) {
+        cancelAnimationFrame(planetAnimationRef.current)
+      }
+    }
+  }, [])
+
   // Handle ESC key to exit customize mode
   useEffect(() => {
     if (!customizeMode) return
@@ -153,7 +173,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   return (
     <div className={cn(
       "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
-      "bg-white dark:bg-black"
+      "bg-transparent"
     )}>
       {/* Starfield background */}
       <VoidBackground />
@@ -226,6 +246,58 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       <div className="relative z-10 flex items-center justify-center h-screen w-screen overflow-hidden">
         {/* Centered container for all elements */}
         <div className="relative w-full h-full flex items-center justify-center">
+          {/* Decorative planets - behind sections */}
+          {planetAngles.map((angle, index) => {
+            const planetRadius = 280 + (index * 40) // Different orbital distances
+            const planetSize = 12 + (index % 3) * 4 // Varying sizes
+            const planetX = Math.cos((angle * Math.PI) / 180) * planetRadius
+            const planetY = Math.sin((angle * Math.PI) / 180) * planetRadius
+            
+            // Different colors for variety
+            const planetColors = [
+              'rgba(139, 92, 246, 0.4)', // purple
+              'rgba(59, 130, 246, 0.4)', // blue
+              'rgba(236, 72, 153, 0.4)', // pink
+              'rgba(34, 197, 94, 0.4)',  // green
+              'rgba(251, 191, 36, 0.4)', // yellow
+              'rgba(249, 115, 22, 0.4)', // orange
+            ]
+            const planetColor = planetColors[index % planetColors.length]
+            
+            return (
+              <motion.div
+                key={`planet-${index}`}
+                className="absolute pointer-events-none"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  zIndex: 5, // Behind sections but above background
+                }}
+                animate={{
+                  x: planetX,
+                  y: planetY,
+                }}
+                transition={{
+                  type: 'linear',
+                  duration: 0.1,
+                  ease: 'linear'
+                }}
+              >
+                <div
+                  className="rounded-full blur-sm"
+                  style={{
+                    width: planetSize,
+                    height: planetSize,
+                    marginLeft: -planetSize / 2,
+                    marginTop: -planetSize / 2,
+                    background: `radial-gradient(circle, ${planetColor}, ${planetColor.replace('0.4', '0.1')})`,
+                    boxShadow: `0 0 ${planetSize * 2}px ${planetColor}`,
+                  }}
+                />
+              </motion.div>
+            )
+          })}
+
           {/* Central voice hub */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="pointer-events-auto">

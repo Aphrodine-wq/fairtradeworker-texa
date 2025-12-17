@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowsOut, ArrowsIn, ArrowLeft, Planet } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
@@ -20,6 +20,7 @@ export function CRMVoidSolarSystem({ user, onNavigate, onBack }: CRMVoidSolarSys
   const [activePlanet, setActivePlanet] = useState<PlanetType | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showWelcome, setShowWelcome] = useState(true)
+  const hasPlayedRef = useRef(false)
 
   // Prevent body scroll when Solar System is active
   useEffect(() => {
@@ -30,9 +31,12 @@ export function CRMVoidSolarSystem({ user, onNavigate, onBack }: CRMVoidSolarSys
     }
   }, [])
 
-  // Hide welcome after a delay
+  // Hide welcome after a delay - prevent double execution
   useEffect(() => {
-    const timer = setTimeout(() => setShowWelcome(false), 4000)
+    if (hasPlayedRef.current) return
+    hasPlayedRef.current = true
+    
+    const timer = setTimeout(() => setShowWelcome(false), 7000) // Increased from 4000 to 7000
     return () => clearTimeout(timer)
   }, [])
 

@@ -11,7 +11,7 @@ export function Footer({ onNavigate }: FooterProps) {
     company: [
       { label: 'About', page: 'about' },
       { label: 'Contact', page: 'contact' },
-      { label: 'Careers', page: 'careers', disabled: true },
+      { label: 'Careers', page: 'careers' },
     ],
     legal: [
       { label: 'Privacy Policy', page: 'privacy' },
@@ -20,7 +20,7 @@ export function Footer({ onNavigate }: FooterProps) {
     resources: [
       { label: 'Free Tools', page: 'free-tools' },
       { label: 'Help Center', page: 'help' },
-      { label: 'Blog', page: 'blog', disabled: true },
+      { label: 'Blog', page: 'blog' },
     ],
     platformFeatures: [
       { label: 'AI Scoping', page: 'photo-scoper' },

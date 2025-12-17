@@ -115,6 +115,12 @@ const PrivacyPage = lazy(() => retryImport(() =>
 const TermsPage = lazy(() => retryImport(() =>
   import("@/pages/Terms").then(m => ({ default: m.TermsPage }))
 ))
+const CareersPage = lazy(() => retryImport(() =>
+  import("@/pages/Careers").then(m => ({ default: m.CareersPage }))
+))
+const BlogPage = lazy(() => retryImport(() =>
+  import("@/pages/Blog").then(m => ({ default: m.BlogPage }))
+))
 const PricingPage = lazy(() => retryImport(() =>
   import("@/pages/Pricing").then(m => ({ default: m.PricingPage }))
 ))
@@ -315,7 +321,7 @@ const EarnRewardsPage = lazy(() => retryImport(() =>
   import("@/pages/quick-actions/EarnRewardsPage").then(m => ({ default: m.EarnRewardsPage }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -718,6 +724,18 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <TermsPage />
+          </Suspense>
+        )
+      case 'careers':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <CareersPage onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'blog':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <BlogPage onNavigate={handleNavigate} />
           </Suspense>
         )
       case 'pricing':
