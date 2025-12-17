@@ -313,7 +313,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsContent>
           
           <TabsContent value="crm" className="mt-6">
-            <SimpleCRMDashboard user={user} />
+            <SimpleCRMDashboard user={user} onNavigate={onNavigate} />
           </TabsContent>
           
           <TabsContent value="replies" className="mt-6">

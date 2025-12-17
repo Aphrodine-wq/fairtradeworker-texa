@@ -1,5 +1,5 @@
 import { memo, useState, useEffect, useCallback } from "react"
-import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List, Sliders } from "@phosphor-icons/react"
+import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List, Sliders, Gear } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -376,6 +376,26 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
               >
                 <Sliders size={20} className="mr-3" />
                 Customize Navigation
+              </Button>
+            </SheetClose>
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                onClick={() => handleNav('settings', 'settings')}
+                className="justify-start min-h-[44px] mt-2"
+              >
+                <Gear size={20} className="mr-3" />
+                Settings
+              </Button>
+            </SheetClose>
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                onClick={onLogout}
+                className="justify-start min-h-[44px] mt-2 text-destructive"
+              >
+                <SignOut size={20} className="mr-3" />
+                Log Out
               </Button>
             </SheetClose>
 

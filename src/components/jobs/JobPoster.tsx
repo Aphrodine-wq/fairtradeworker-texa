@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -570,63 +571,116 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       )}
 
       {step === 'select' && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-2 mb-2">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setStep('tier-select')}
-              >
-                ← Back
-              </Button>
-            </div>
-            <CardTitle className="text-3xl">Post a Job</CardTitle>
-            <CardDescription className="text-base">
-              Choose how you'd like to describe your project
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-4">
-            <button
-              onClick={() => handleMethodSelect('photos')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-            >
-              <div className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                <Camera weight="fill" className="text-primary-foreground" size={32} />
-              </div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">Photos</h3>
-                <p className="text-sm text-muted-foreground">Show us the issue</p>
-              </div>
-            </button>
+        <LayoutGroup>
+          <motion.div
+            layout
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => setStep('tier-select')}
+                  >
+                    ← Back
+                  </Button>
+                </div>
+                <CardTitle className="text-3xl">Post a Job</CardTitle>
+                <CardDescription className="text-base">
+                  Choose how you'd like to describe your project
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <motion.div 
+                  className="grid md:grid-cols-3 gap-4"
+                  layout
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.1,
+                        delayChildren: 0.2
+                      }
+                    }
+                  }}
+                >
+                  <motion.button
+                    layout
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    onClick={() => handleMethodSelect('photos')}
+                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div 
+                      className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm"
+                      layout
+                    >
+                      <Camera weight="fill" className="text-primary-foreground" size={32} />
+                    </motion.div>
+                    <div className="text-center">
+                      <h3 className="font-semibold text-lg">Photos</h3>
+                      <p className="text-sm text-muted-foreground">Show us the issue</p>
+                    </div>
+                  </motion.button>
 
-            <button
-              onClick={() => handleMethodSelect('audio')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-            >
-              <div className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center">
-                <Microphone weight="fill" className="text-secondary-foreground" size={32} />
-              </div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">Voice</h3>
-                <p className="text-sm text-muted-foreground">Describe it verbally</p>
-              </div>
-            </button>
+                  <motion.button
+                    layout
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+                    onClick={() => handleMethodSelect('audio')}
+                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div 
+                      className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center"
+                      layout
+                    >
+                      <Microphone weight="fill" className="text-secondary-foreground" size={32} />
+                    </motion.div>
+                    <div className="text-center">
+                      <h3 className="font-semibold text-lg">Voice</h3>
+                      <p className="text-sm text-muted-foreground">Describe it verbally</p>
+                    </div>
+                  </motion.button>
 
-            <button
-              onClick={() => handleMethodSelect('text')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
-            >
-              <div className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center">
-                <FileText weight="fill" className="text-accent-foreground" size={32} />
-              </div>
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">Text</h3>
-                <p className="text-sm text-muted-foreground">Type the details</p>
-              </div>
-            </button>
-          </CardContent>
-        </Card>
+                  <motion.button
+                    layout
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+                    onClick={() => handleMethodSelect('text')}
+                    className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <motion.div 
+                      className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center"
+                      layout
+                    >
+                      <FileText weight="fill" className="text-accent-foreground" size={32} />
+                    </motion.div>
+                    <div className="text-center">
+                      <h3 className="font-semibold text-lg">Text</h3>
+                      <p className="text-sm text-muted-foreground">Type the details</p>
+                    </div>
+                  </motion.button>
+                </motion.div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </LayoutGroup>
       )}
 
       {step === 'input' && inputMethod && (

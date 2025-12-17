@@ -16,6 +16,66 @@
   textarea {
     /* Allow borders but make them subtle */
   }
+  
+  /* Ultra-smooth theme transition */
+  :root {
+    --theme-transition-duration: 0.4s;
+    --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Smooth transitions for all theme-dependent properties */
+  html {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing),
+      color var(--theme-transition-duration) var(--theme-transition-timing);
+  }
+  
+  /* Staggered transitions for different element types */
+  body {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.02s,
+      color var(--theme-transition-duration) var(--theme-transition-timing) 0.02s;
+  }
+  
+  [data-slot="card"],
+  .card,
+  [class*="Card"] {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s,
+      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s,
+      color var(--theme-transition-duration) var(--theme-transition-timing) 0.04s;
+  }
+  
+  button,
+  [data-slot="button"],
+  [class*="Button"] {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s,
+      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s,
+      color var(--theme-transition-duration) var(--theme-transition-timing) 0.06s;
+  }
+  
+  input,
+  select,
+  textarea {
+    transition: 
+      background-color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s,
+      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s,
+      color var(--theme-transition-duration) var(--theme-transition-timing) 0.08s;
+  }
+  
+  /* Text elements with slight delay for visual depth */
+  h1, h2, h3, h4, h5, h6,
+  p, span, a, li {
+    transition: 
+      color var(--theme-transition-duration) var(--theme-transition-timing) 0.1s;
+  }
+  
+  /* Borders with smooth color interpolation */
+  [class*="border"] {
+    transition: 
+      border-color var(--theme-transition-duration) var(--theme-transition-timing) 0.05s;
+  }
 }
 
 :root {

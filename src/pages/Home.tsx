@@ -6,7 +6,7 @@ import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
-import { HeroSection, StatsSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
+import { HeroSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
 import { PostMyJobButton } from "@/components/jobs/PostMyJobButton"
 import { ServiceCategories } from "@/components/jobs/ServiceCategories"
 
@@ -42,15 +42,6 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <PostMyJobButton onNavigate={onNavigate} />
 
         <ServiceCategories onNavigate={onNavigate} />
-
-        <StatsSection
-          stats={[
-            { label: "Total Users", value: "12,402", icon: House },
-            { label: "Jobs Completed", value: "8,291", icon: Hammer, tone: "green" },
-            { label: "Fees Saved vs Traditional", value: "$892K", icon: CurrencyDollar },
-            { label: "Avg. Rating", value: "4.8", icon: MapTrifold },
-          ]}
-        />
 
         <FeatureSection
           features={[

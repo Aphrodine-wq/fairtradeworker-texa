@@ -4,7 +4,6 @@ import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
-import { Breadcrumb, getBreadcrumbs } from "@/components/layout/Breadcrumb"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
@@ -113,6 +112,9 @@ const TermsPage = lazy(() => retryImport(() =>
 ))
 const PricingPage = lazy(() => retryImport(() =>
   import("@/pages/Pricing").then(m => ({ default: m.PricingPage }))
+))
+const SettingsPage = lazy(() => retryImport(() =>
+  import("@/pages/Settings").then(m => ({ default: m.SettingsPage }))
 ))
 const FreeToolsPage = lazy(() => retryImport(() =>
   import("@/pages/FreeToolsPage").then(m => ({ default: m.FreeToolsPage }))
@@ -246,7 +248,7 @@ const SMSPhotoScope = lazy(() => retryImport(() =>
   import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -419,11 +421,6 @@ function App() {
     return selectedJobId ? (jobs || []).find(j => j.id === selectedJobId) : null
   }, [selectedJobId, jobs])
 
-  const breadcrumbs = useMemo(() => {
-    return getBreadcrumbs(currentPage, currentUser ?? null, {
-      jobTitle: selectedJob?.title
-    })
-  }, [currentPage, currentUser, selectedJob?.title])
 
   const renderPage = useCallback(() => {
     switch (currentPage) {
@@ -527,6 +524,12 @@ function App() {
             <PricingPage user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         )
+      case 'settings':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SettingsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'donate':
         return (
           <Suspense fallback={<LoadingFallback />}>

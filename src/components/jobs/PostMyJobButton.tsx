@@ -20,16 +20,10 @@ export function PostMyJobButton({ onNavigate }: PostMyJobButtonProps) {
       <style>{`
         @keyframes smoothGlowFlicker {
           0%, 100% {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 40px rgba(255, 255, 255, 0.2);
-          }
-          25% {
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2), 0 0 16px rgba(255, 255, 255, 0.1);
           }
           50% {
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 255, 255, 0.25);
-          }
-          75% {
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3), 0 0 24px rgba(255, 255, 255, 0.15);
           }
         }
         .post-job-button-glow {

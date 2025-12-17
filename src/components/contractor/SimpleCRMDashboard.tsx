@@ -11,7 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
   Users, EnvelopeSimple, DeviceMobile, Note, Trash, MagnifyingGlass, 
-  Plus, PencilSimple, Calendar, Phone, Tag, Gear, Eye, EyeSlash
+  Plus, PencilSimple, Calendar, Phone, Tag, Gear, Eye, EyeSlash,
+  Receipt, ChartLine, FileText, CreditCard, Folder, ChatCircleDots,
+  Bell, ClipboardText, Package, ShieldCheck, CheckCircle, Lightning,
+  Target, Calculator, Sparkle, CaretDown, CaretUp
 } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import { InstantInvite } from "./InstantInvite"
@@ -20,18 +23,39 @@ import { cn } from "@/lib/utils"
 
 interface SimpleCRMDashboardProps {
   user: User
+  onNavigate?: (page: string) => void
 }
 
-export function SimpleCRMDashboard({ user }: SimpleCRMDashboardProps) {
+export function SimpleCRMDashboard({ user, onNavigate }: SimpleCRMDashboardProps) {
   const [customers, setCustomers] = useKV<CRMCustomer[]>("crm-customers", [])
   const [interactions, setInteractions] = useKV<CRMInteraction[]>("crm-interactions", [])
   const [selectedCustomer, setSelectedCustomer] = useState<CRMCustomer | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [showCustomize, setShowCustomize] = useState(false)
+  const [showBusinessTools, setShowBusinessTools] = useState(false)
   const [visibleFields, setVisibleFields] = useKV<string[]>("crm-visible-fields", [
     'name', 'email', 'phone', 'status', 'lifetimeValue', 'lastContact'
   ])
+  
+  const businessTools = [
+    { id: "invoices", label: "Invoices", icon: Receipt, page: "invoices", category: "finance" },
+    { id: "expenses", label: "Expenses", icon: ChartLine, page: "expenses", category: "finance" },
+    { id: "tax-helper", label: "Tax Helper", icon: FileText, page: "tax-helper", category: "finance" },
+    { id: "payments", label: "Payments", icon: CreditCard, page: "payments", category: "finance" },
+    { id: "documents", label: "Documents", icon: Folder, page: "documents", category: "management" },
+    { id: "calendar", label: "Calendar", icon: Calendar, page: "calendar", category: "management" },
+    { id: "communication", label: "Messages", icon: ChatCircleDots, page: "communication", category: "management" },
+    { id: "notifications", label: "Notifications", icon: Bell, page: "notifications", category: "management" },
+    { id: "leads", label: "Leads", icon: Target, page: "leads", category: "sales" },
+    { id: "reports", label: "Reports", icon: ClipboardText, page: "reports", category: "analytics" },
+    { id: "inventory", label: "Inventory", icon: Package, page: "inventory", category: "operations" },
+    { id: "quality", label: "Quality", icon: CheckCircle, page: "quality", category: "operations" },
+    { id: "compliance", label: "Compliance", icon: ShieldCheck, page: "compliance", category: "operations" },
+    { id: "automation", label: "Automation", icon: Gear, page: "automation", category: "automation" },
+    { id: "bid-optimizer", label: "Bid Optimizer", icon: Target, page: "bid-optimizer", category: "sales", isPro: true },
+    { id: "receptionist", label: "AI Receptionist", icon: Phone, page: "receptionist", category: "sales", isPro: true },
+  ]
 
   const myCustomers = (customers || []).filter(c => c.contractorId === user.id)
 
@@ -111,6 +135,81 @@ export function SimpleCRMDashboard({ user }: SimpleCRMDashboardProps) {
           Customize
         </Button>
       </div>
+
+      {/* Business Tools Quick Access */}
+      <Card className="border-2">
+        <CardHeader className="pb-3">
+          <button
+            onClick={() => setShowBusinessTools(!showBusinessTools)}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Sparkle size={20} weight="duotone" className="text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">Business Tools</CardTitle>
+                <CardDescription className="text-sm">Quick access to all your tools</CardDescription>
+              </div>
+            </div>
+            {showBusinessTools ? (
+              <CaretUp size={20} className="text-muted-foreground" />
+            ) : (
+              <CaretDown size={20} className="text-muted-foreground" />
+            )}
+          </button>
+        </CardHeader>
+        {showBusinessTools && (
+          <CardContent className="pt-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              {businessTools.map((tool) => (
+                <button
+                  key={tool.id}
+                  onClick={() => onNavigate?.(tool.page)}
+                  disabled={tool.isPro && !user.isPro}
+                  className={cn(
+                    "flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition-all",
+                    "hover:border-primary hover:shadow-md hover:scale-105",
+                    tool.isPro && !user.isPro
+                      ? "opacity-50 cursor-not-allowed border-border/50"
+                      : "border-border/50 cursor-pointer"
+                  )}
+                >
+                  <div className={cn(
+                    "p-2 rounded-lg",
+                    tool.isPro && !user.isPro
+                      ? "bg-muted"
+                      : "bg-primary/10"
+                  )}>
+                    <tool.icon 
+                      size={20} 
+                      weight="duotone" 
+                      className={tool.isPro && !user.isPro ? "text-muted-foreground" : "text-primary"} 
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-center leading-tight">
+                    {tool.label}
+                  </span>
+                  {tool.isPro && (
+                    <Sparkle size={10} weight="fill" className="text-amber-500" />
+                  )}
+                </button>
+              ))}
+            </div>
+            {onNavigate && (
+              <div className="mt-4 pt-4 border-t border-border/50">
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => onNavigate('business-tools')}
+                >
+                  View All Business Tools
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        )}
+      </Card>
 
       {/* Add Customer */}
       <InstantInvite user={user} />

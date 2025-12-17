@@ -199,6 +199,13 @@ export function PricingSection({
       ctaLabel: "Post a Job"
     },
     {
+      name: "Homeowner Pro",
+      price: "$59",
+      description: "Premium features for homeowners",
+      features: ["Priority job listing", "Advanced analytics", "Priority contractor matching", "Dedicated support"],
+      ctaLabel: "Upgrade to Pro"
+    },
+    {
       name: "Contractor Free",
       price: "$0",
       description: "Start winning jobs for free",
@@ -208,7 +215,7 @@ export function PricingSection({
     },
     {
       name: "Contractor Pro",
-      price: "$50",
+      price: "$59",
       description: "Advanced tools to grow",
       features: ["Priority placement", "CRM & Analytics", "Smart invoicing", "AI scope assistance"],
       ctaLabel: "Upgrade to Pro"

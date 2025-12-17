@@ -1,44 +1,39 @@
 import { ArrowLeft } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
-import { useCallback } from "react"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 interface BackButtonProps {
-  onClick?: () => void
-  onNavigate?: (page: string) => void
-  defaultPage?: string
+  onClick: () => void
   label?: string
   className?: string
+  variant?: "default" | "ghost" | "outline"
 }
 
 export function BackButton({ 
   onClick, 
-  onNavigate, 
-  defaultPage = 'home',
-  label = "Back", 
-  className = "" 
+  label = "Back",
+  className,
+  variant = "ghost"
 }: BackButtonProps) {
-  const handleBack = useCallback(() => {
-    if (onClick) {
-      onClick()
-    } else if (onNavigate) {
-      onNavigate(defaultPage)
-    } else {
-      // Fallback to browser history
-      if (window.history.length > 1) {
-        window.history.back()
-      }
-    }
-  }, [onClick, onNavigate, defaultPage])
-
   return (
-    <Button
-      variant="ghost"
-      onClick={handleBack}
-      className={`flex items-center gap-2 text-black dark:text-white hover:bg-white dark:hover:bg-black ${className}`}
-      aria-label={label}
+    <motion.div
+      whileHover={{ x: -2 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <ArrowLeft size={20} weight="bold" />
-      <span>{label}</span>
-    </Button>
+      <Button
+        variant={variant}
+        onClick={onClick}
+        className={cn(
+          "flex items-center gap-2 font-medium transition-all",
+          "hover:gap-3",
+          className
+        )}
+      >
+        <ArrowLeft size={18} weight="bold" />
+        <span>{label}</span>
+      </Button>
+    </motion.div>
   )
 }

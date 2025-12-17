@@ -2,6 +2,7 @@ import { memo } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { BackButton } from "@/components/ui/BackButton"
 import { 
   Check, 
   X, 
@@ -188,101 +189,210 @@ export const PricingPage = memo(function PricingPage({ user, onNavigate }: Prici
       <div className="container mx-auto px-4 md:px-8 py-12 md:py-16">
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Header */}
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="p-3 rounded-xl bg-primary/10 dark:bg-primary/20">
-                <CurrencyDollar size={32} weight="duotone" className="text-primary" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground">
-                Pricing
-              </h1>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <BackButton onClick={() => onNavigate('home')} />
             </div>
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="p-3 rounded-xl bg-primary/10 dark:bg-primary/20">
+                  <CurrencyDollar size={32} weight="duotone" className="text-primary" />
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-foreground">
+                  Pricing
+                </h1>
+              </div>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
               Simple, transparent pricing. No hidden fees. Contractors keep 100% of earnings.
             </p>
           </div>
 
-          {/* Pricing Tiers */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Free Tier */}
-            <Card className="border-2 border-border hover:border-primary/50 transition-all">
-              <CardHeader className="text-center pb-4">
-                <CardTitle className="text-2xl font-bold mb-2">Free</CardTitle>
-                <div className="space-y-1">
-                  <div className="text-4xl font-extrabold text-foreground">$0</div>
-                  <CardDescription className="text-base">Forever free</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <ul className="space-y-3">
-                  {features.slice(0, 5).map((feature) => (
-                    <li key={feature.name} className="flex items-start gap-3">
-                      <Check 
-                        size={20} 
-                        weight="bold" 
-                        className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
-                      />
-                      <div>
+          {/* Pricing Tiers - Contractors */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center justify-center gap-2">
+                <Hammer size={24} weight="duotone" className="text-primary" />
+                For Contractors
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Contractor Free Tier */}
+              <Card className="border-2 border-border hover:border-primary/50 transition-all">
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="text-2xl font-bold mb-2">Contractor Free</CardTitle>
+                  <div className="space-y-1">
+                    <div className="text-4xl font-extrabold text-foreground">$0</div>
+                    <CardDescription className="text-base">Forever free</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    {contractorFeatures.filter(f => f.free).map((feature) => (
+                      <li key={feature.name} className="flex items-start gap-3">
+                        <Check 
+                          size={20} 
+                          weight="bold" 
+                          className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
+                        />
                         <span className="font-medium text-foreground">{feature.name}</span>
-                        {feature.description && (
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className="w-full h-12 text-base font-semibold"
-                  variant="outline"
-                  onClick={() => onNavigate("signup")}
-                >
-                  Get Started Free
-                </Button>
-              </CardContent>
-            </Card>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="w-full h-12 text-base font-semibold"
+                    variant="outline"
+                    onClick={() => onNavigate("signup", "contractor")}
+                  >
+                    Get Started Free
+                  </Button>
+                </CardContent>
+              </Card>
 
-            {/* Pro Tier */}
-            <Card className="border-2 border-primary relative overflow-hidden">
-              <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold">
-                MOST POPULAR
-              </div>
-              <CardHeader className="text-center pb-4 pt-8">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Crown size={24} weight="fill" className="text-amber-600 dark:text-amber-400" />
-                  <CardTitle className="text-2xl font-bold">Pro</CardTitle>
+              {/* Contractor Pro Tier */}
+              <Card className="border-2 border-primary relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold">
+                  MOST POPULAR
                 </div>
-                <div className="space-y-1">
-                  <div className="text-4xl font-extrabold text-foreground">$59</div>
-                  <CardDescription className="text-base">per month</CardDescription>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <ul className="space-y-3">
-                  {features.map((feature) => (
-                    <li key={feature.name} className="flex items-start gap-3">
-                      <Check 
-                        size={20} 
-                        weight="bold" 
-                        className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
-                      />
-                      <div>
-                        <span className="font-medium text-foreground">{feature.name}</span>
-                        {feature.description && (
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <CardHeader className="text-center pb-4 pt-8">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Crown size={24} weight="fill" className="text-amber-600 dark:text-amber-400" />
+                    <CardTitle className="text-2xl font-bold">Contractor Pro</CardTitle>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-4xl font-extrabold text-foreground">$59</div>
+                    <CardDescription className="text-base">per month</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    {contractorFeatures.map((feature) => (
+                      <li key={feature.name} className="flex items-start gap-3">
+                        {feature.pro ? (
+                          <Check 
+                            size={20} 
+                            weight="bold" 
+                            className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
+                          />
+                        ) : (
+                          <X 
+                            size={20} 
+                            weight="bold" 
+                            className="text-muted-foreground flex-shrink-0 mt-0.5" 
+                          />
                         )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
-                  onClick={() => onNavigate(user?.isPro ? "dashboard" : "pro-upgrade")}
-                >
-                  <Sparkle weight="fill" className="mr-2" size={18} />
-                  {user?.isPro ? "Manage Subscription" : "Upgrade to Pro"}
-                </Button>
-              </CardContent>
-            </Card>
+                        <span className="font-medium text-foreground">{feature.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+                    onClick={() => onNavigate(user?.isPro ? "dashboard" : "pro-upgrade")}
+                  >
+                    <Sparkle weight="fill" className="mr-2" size={18} />
+                    {user?.isPro ? "Manage Subscription" : "Upgrade to Pro"}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Pricing Tiers - Homeowners */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center justify-center gap-2">
+                <House size={24} weight="duotone" className="text-primary" />
+                For Homeowners
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Homeowner Free Tier */}
+              <Card className="border-2 border-border hover:border-primary/50 transition-all">
+                <CardHeader className="text-center pb-4">
+                  <CardTitle className="text-2xl font-bold mb-2">Homeowner</CardTitle>
+                  <div className="space-y-1">
+                    <div className="text-4xl font-extrabold text-foreground">$0</div>
+                    <CardDescription className="text-base">Pay per job posted ($20 flat fee)</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    {homeownerFeatures.filter(f => f.free).map((feature) => (
+                      <li key={feature.name} className="flex items-start gap-3">
+                        <Check 
+                          size={20} 
+                          weight="bold" 
+                          className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
+                        />
+                        <div>
+                          <span className="font-medium text-foreground">{feature.name}</span>
+                          {feature.description && (
+                            <p className="text-sm text-muted-foreground">{feature.description}</p>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="w-full h-12 text-base font-semibold"
+                    variant="outline"
+                    onClick={() => onNavigate("signup", "homeowner")}
+                  >
+                    Get Started Free
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Homeowner Pro Tier */}
+              <Card className="border-2 border-primary relative overflow-hidden">
+                <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-4 py-1 text-xs font-bold">
+                  PREMIUM
+                </div>
+                <CardHeader className="text-center pb-4 pt-8">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Crown size={24} weight="fill" className="text-amber-600 dark:text-amber-400" />
+                    <CardTitle className="text-2xl font-bold">Homeowner Pro</CardTitle>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="text-4xl font-extrabold text-foreground">$59</div>
+                    <CardDescription className="text-base">per month</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <ul className="space-y-3">
+                    {homeownerFeatures.map((feature) => (
+                      <li key={feature.name} className="flex items-start gap-3">
+                        {feature.pro ? (
+                          <Check 
+                            size={20} 
+                            weight="bold" 
+                            className="text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" 
+                          />
+                        ) : (
+                          <X 
+                            size={20} 
+                            weight="bold" 
+                            className="text-muted-foreground flex-shrink-0 mt-0.5" 
+                          />
+                        )}
+                        <div>
+                          <span className="font-medium text-foreground">{feature.name}</span>
+                          {feature.description && (
+                            <p className="text-sm text-muted-foreground">{feature.description}</p>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    className="w-full h-12 text-base font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
+                    onClick={() => onNavigate(user?.isHomeownerPro ? "dashboard" : "homeowner-pro-upgrade")}
+                  >
+                    <Sparkle weight="fill" className="mr-2" size={18} />
+                    {user?.isHomeownerPro ? "Manage Subscription" : "Upgrade to Pro"}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* Feature Comparison Table */}

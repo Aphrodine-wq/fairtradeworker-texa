@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Lightbox } from "@/components/ui/Lightbox"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { BackButton } from "@/components/ui/BackButton"
 import { BidIntelligence } from "@/components/contractor/BidIntelligence"
 import { DriveTimeWarning } from "./DriveTimeWarning"
 const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap })))
@@ -691,13 +692,16 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           <div className="space-y-4 md:space-y-6">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6 lg:gap-8">
               <div className="space-y-3 md:space-y-4 flex-1">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
-                    <Wrench size={28} weight="duotone" className="text-primary" />
+                <div className="flex items-center gap-4">
+                  <BackButton onClick={() => window.history.length > 1 ? window.history.back() : window.location.href = '/'} />
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-primary/10 dark:bg-primary/20">
+                      <Wrench size={28} weight="duotone" className="text-primary" />
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight">
+                      Browse Jobs
+                    </h1>
                   </div>
-                  <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-foreground tracking-tight">
-                    Browse Jobs
-                  </h1>
                 </div>
                 <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl leading-relaxed">
                   Find your next project – <span className="font-bold text-primary">bid free</span>, keep <span className="font-bold text-green-600 dark:text-green-400">100%</span>
