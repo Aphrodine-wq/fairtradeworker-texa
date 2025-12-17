@@ -7,26 +7,27 @@
 export const pageVariants = {
   initial: { 
     opacity: 0, 
-    y: 20,
-    willChange: 'opacity, transform'
+    y: 10, // Reduced from 20 for less movement
+    willChange: 'opacity, transform',
+    transform: 'translate3d(0, 10px, 0)' // GPU acceleration
   },
   animate: { 
     opacity: 1, 
     y: 0,
     willChange: 'auto',
+    transform: 'translate3d(0, 0, 0)',
     transition: {
-      duration: 0.2, // Reduced from 0.3 for faster animations
+      duration: 0.12, // Faster initial load (reduced from 0.2)
       ease: [0.25, 0.46, 0.45, 0.94],
-      // Use transform3d for GPU acceleration
-      transform: 'translate3d(0, 0, 0)'
     }
   },
   exit: { 
     opacity: 0, 
-    y: -10,
+    y: -5, // Reduced from -10
     willChange: 'opacity, transform',
+    transform: 'translate3d(0, -5px, 0)',
     transition: { 
-      duration: 0.15, // Reduced from 0.2
+      duration: 0.1, // Faster exit (reduced from 0.15)
       ease: 'easeIn'
     }
   }

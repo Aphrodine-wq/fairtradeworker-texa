@@ -12,17 +12,26 @@ import "./styles/theme.css"
 import "./styles/theme-transitions.css"
 import "./index.css"
 
+<<<<<<< Updated upstream
 // Theme initialization script - prevents FOUC and white screen
+=======
+// Theme initialization script - prevents FOUC (optimized for faster load)
+>>>>>>> Stashed changes
 const initTheme = () => {
+  // Execute synchronously before any rendering
   const stored = localStorage.getItem('theme')
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
   const isDark = stored === 'dark' || (!stored && prefersDark)
   
+<<<<<<< Updated upstream
   // Set background color immediately to prevent white screen
   document.documentElement.style.backgroundColor = isDark ? '#000000' : '#ffffff'
   document.body.style.backgroundColor = isDark ? '#000000' : '#ffffff'
   
   // Add no-transitions class to prevent flash
+=======
+  // Add no-transitions class immediately to prevent flash
+>>>>>>> Stashed changes
   document.documentElement.classList.add('no-transitions')
   
   if (isDark) {
@@ -31,15 +40,21 @@ const initTheme = () => {
     document.documentElement.classList.remove('dark')
   }
   
-  // Remove no-transitions after a frame
-  requestAnimationFrame(() => {
+  // Remove no-transitions after DOM is ready (faster than double RAF)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('no-transitions')
+      })
+    })
+  } else {
     requestAnimationFrame(() => {
       document.documentElement.classList.remove('no-transitions')
       // Reset inline styles to let CSS take over
       document.documentElement.style.backgroundColor = ''
       document.body.style.backgroundColor = ''
     })
-  })
+  }
 }
 
 // Initialize theme color on load

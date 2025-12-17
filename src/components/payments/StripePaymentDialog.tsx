@@ -6,10 +6,11 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import { CreditCard, Bank, Lock, CheckCircle, Warning } from '@phosphor-icons/react'
+import { CreditCard, Bank, Lock, CheckCircle, Warning, Wallet } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { calculatePaymentBreakdown, type PaymentBreakdown } from '@/lib/stripe'
 import type { JobTier } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
 interface StripePaymentDialogProps {
   open: boolean
@@ -32,13 +33,17 @@ export function StripePaymentDialog({
   tier = 'STANDARD',
   onPaymentComplete
 }: StripePaymentDialogProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'ach'>('card')
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'ach' | 'apple-pay' | 'google-pay' | 'paypal' | 'saved'>('card')
   const [processing, setProcessing] = useState(false)
   const [cardNumber, setCardNumber] = useState('')
   const [expiry, setExpiry] = useState('')
   const [cvc, setCvc] = useState('')
   const [zipCode, setZipCode] = useState('')
   const [saveCard, setSaveCard] = useState(false)
+  const [savedCards] = useState([
+    { id: '1', last4: '4242', brand: 'Visa', expMonth: 12, expYear: 2025 },
+    { id: '2', last4: '8888', brand: 'Mastercard', expMonth: 6, expYear: 2026 }
+  ])
 
   const breakdown: PaymentBreakdown = calculatePaymentBreakdown(amount, tier)
 
@@ -159,28 +164,152 @@ export function StripePaymentDialog({
 
           {/* Right Column - Payment Form */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant={paymentMethod === 'card' ? 'default' : 'outline'}
-                className="flex-1 h-11"
-                onClick={() => setPaymentMethod('card')}
-              >
-                <CreditCard className="mr-2" size={18} weight="fill" />
-                Credit/Debit Card
-              </Button>
-              <Button
-                type="button"
-                variant={paymentMethod === 'ach' ? 'default' : 'outline'}
-                className="flex-1 h-11"
-                onClick={() => setPaymentMethod('ach')}
-              >
-                <Bank className="mr-2" size={18} weight="fill" />
-                Bank Transfer (ACH)
-              </Button>
+            <div>
+              <Label className="text-base mb-3 block">Payment Method</Label>
+              
+              {/* Saved Payment Methods */}
+              {savedCards.length > 0 && (
+                <div className="mb-4 space-y-2">
+                  {savedCards.map((card) => (
+                    <button
+                      key={card.id}
+                      type="button"
+                      onClick={() => setPaymentMethod('saved')}
+                      className={cn(
+                        "w-full p-4 rounded-lg border-2 text-left transition-all",
+                        paymentMethod === 'saved' 
+                          ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black" 
+                          : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <CreditCard size={24} weight="fill" />
+                          <div>
+                            <p className="font-semibold">{card.brand} •••• {card.last4}</p>
+                            <p className="text-sm opacity-70">Expires {card.expMonth}/{card.expYear}</p>
+                          </div>
+                        </div>
+                        {paymentMethod === 'saved' && (
+                          <CheckCircle size={20} weight="fill" />
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {/* Quick Payment Options */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'apple-pay' ? 'default' : 'outline'}
+                  className="h-12"
+                  onClick={() => setPaymentMethod('apple-pay')}
+                >
+                  <span className="text-lg">🍎</span>
+                  <span className="ml-2">Apple Pay</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'google-pay' ? 'default' : 'outline'}
+                  className="h-12"
+                  onClick={() => setPaymentMethod('google-pay')}
+                >
+                  <span className="text-lg">G</span>
+                  <span className="ml-2">Google Pay</span>
+                </Button>
+              </div>
+
+              {/* Standard Payment Methods */}
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'card' ? 'default' : 'outline'}
+                  className="flex-1 h-11"
+                  onClick={() => setPaymentMethod('card')}
+                >
+                  <CreditCard className="mr-2" size={18} weight="fill" />
+                  Card
+                </Button>
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'ach' ? 'default' : 'outline'}
+                  className="flex-1 h-11"
+                  onClick={() => setPaymentMethod('ach')}
+                >
+                  <Bank className="mr-2" size={18} weight="fill" />
+                  ACH
+                </Button>
+                <Button
+                  type="button"
+                  variant={paymentMethod === 'paypal' ? 'default' : 'outline'}
+                  className="flex-1 h-11"
+                  onClick={() => setPaymentMethod('paypal')}
+                >
+                  <span className="font-bold text-blue-600 dark:text-blue-400">PayPal</span>
+                </Button>
+              </div>
             </div>
 
-            {paymentMethod === 'card' ? (
+            {paymentMethod === 'saved' ? (
+              <Card className="border-2 border-black dark:border-white">
+                <CardContent className="pt-6 text-center space-y-4">
+                  <Wallet size={48} className="mx-auto text-black dark:text-white" weight="fill" />
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-black dark:text-white">Using Saved Card</h4>
+                    <p className="text-sm text-black/60 dark:text-white/60">
+                      {savedCards[0]?.brand} •••• {savedCards[0]?.last4}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : paymentMethod === 'apple-pay' ? (
+              <Card className="border-2 border-black dark:border-white">
+                <CardContent className="pt-6 text-center space-y-4">
+                  <div className="text-6xl mb-2">🍎</div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-black dark:text-white">Apple Pay</h4>
+                    <p className="text-sm text-black/60 dark:text-white/60">
+                      Pay securely with Face ID or Touch ID
+                    </p>
+                  </div>
+                  <Button className="w-full h-12 bg-black dark:bg-white text-white dark:text-black">
+                    Pay with Apple Pay
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : paymentMethod === 'google-pay' ? (
+              <Card className="border-2 border-black dark:border-white">
+                <CardContent className="pt-6 text-center space-y-4">
+                  <div className="text-5xl mb-2 font-bold">G</div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-black dark:text-white">Google Pay</h4>
+                    <p className="text-sm text-black/60 dark:text-white/60">
+                      Fast and secure payment with Google
+                    </p>
+                  </div>
+                  <Button className="w-full h-12 bg-black dark:bg-white text-white dark:text-black">
+                    Pay with Google Pay
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : paymentMethod === 'paypal' ? (
+              <Card className="border-2 border-black dark:border-white">
+                <CardContent className="pt-6 text-center space-y-4">
+                  <div className="text-4xl mb-2 font-bold text-blue-600 dark:text-blue-400">PayPal</div>
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-black dark:text-white">Pay with PayPal</h4>
+                    <p className="text-sm text-black/60 dark:text-white/60">
+                      Use your PayPal account or credit card
+                    </p>
+                  </div>
+                  <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white">
+                    Continue with PayPal
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : paymentMethod === 'card' ? (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="cardNumber" className="text-base">Card Number</Label>
@@ -281,7 +410,7 @@ export function StripePaymentDialog({
             </Button>
             <Button
               onClick={handlePayment}
-              disabled={processing || (paymentMethod === 'card' && (!cardNumber || !expiry || !cvc || !zipCode))}
+              disabled={processing || (paymentMethod === 'card' && (!cardNumber || !expiry || !cvc || !zipCode)) || paymentMethod === 'apple-pay' || paymentMethod === 'google-pay' || paymentMethod === 'paypal'}
               className="flex-1 h-11"
             >
               {processing ? (

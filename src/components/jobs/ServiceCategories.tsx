@@ -175,7 +175,9 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
+  // Neutral color scheme - green/grey for all categories
   const categoryStyles: Record<string, string> = {
+<<<<<<< Updated upstream
     emergency: "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300",
     plumbing: "bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-300",
     electrical: "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300",
@@ -184,6 +186,16 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
     outdoor: "bg-lime-50 dark:bg-lime-950/30 text-lime-700 dark:text-lime-300",
     remodeling: "bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300",
     cleaning: "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300"
+=======
+    emergency: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    plumbing: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    electrical: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    hvac: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    repair: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    outdoor: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
+    remodeling: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
+    cleaning: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+>>>>>>> Stashed changes
   }
 
   const handleCategoryClick = (categoryId: string) => {
@@ -246,6 +258,7 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                         weight="fill" 
                         className={
                           categoryStyles[category.id] 
+<<<<<<< Updated upstream
                             ? category.id === 'emergency' ? "text-rose-700 dark:text-rose-300" :
                               category.id === 'plumbing' ? "text-cyan-700 dark:text-cyan-300" :
                               category.id === 'electrical' ? "text-neutral-700 dark:text-neutral-300" :
@@ -256,6 +269,18 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                               category.id === 'cleaning' ? "text-neutral-700 dark:text-neutral-300" :
                               "text-neutral-800 dark:text-neutral-200"
                             : "text-neutral-800 dark:text-neutral-200"
+=======
+                            ? category.id === 'emergency' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'plumbing' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'electrical' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'hvac' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'repair' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'outdoor' ? "text-gray-800 dark:text-gray-200" :
+                              category.id === 'remodeling' ? "text-green-700 dark:text-green-300" :
+                              category.id === 'cleaning' ? "text-gray-800 dark:text-gray-200" :
+                              "text-gray-800 dark:text-gray-200"
+                            : "text-gray-800 dark:text-gray-200"
+>>>>>>> Stashed changes
                         }
                       />
                     </div>

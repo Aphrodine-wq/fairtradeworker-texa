@@ -16,9 +16,25 @@ import {
   EyeSlash,
   Trash,
   Download,
-  Upload
+  Upload,
+  Palette,
+  Layout,
+  Plugs,
+  Receipt,
+  Shield,
+  Globe,
+  Code,
+  Key,
+  Calendar,
+  Envelope,
+  Clock,
+  CurrencyDollar,
+  FileText,
+  Database
 } from "@phosphor-icons/react"
 import { BackButton } from "@/components/ui/BackButton"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 import { toast } from "sonner"
 
@@ -35,6 +51,28 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [pushNotifications, setPushNotifications] = useState(true)
+  
+  // Appearance settings
+  const [theme, setTheme] = useKV<'light' | 'dark' | 'auto'>('theme-preference', 'auto')
+  const [fontSize, setFontSize] = useKV<'small' | 'medium' | 'large'>('font-size', 'medium')
+  const [uiDensity, setUiDensity] = useKV<'compact' | 'comfortable' | 'spacious'>('ui-density', 'comfortable')
+  
+  // Workspace settings
+  const [defaultView, setDefaultView] = useKV<string>('default-view', 'dashboard')
+  const [showQuickActions, setShowQuickActions] = useKV<boolean>('show-quick-actions', true)
+  
+  // Security settings
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false)
+  const [activeSessions, setActiveSessions] = useState([
+    { id: '1', device: 'Chrome on Windows', location: 'Austin, TX', lastActive: '2 hours ago', current: true },
+    { id: '2', device: 'Safari on iPhone', location: 'Austin, TX', lastActive: '1 day ago', current: false }
+  ])
+  
+  // Preferences
+  const [language, setLanguage] = useKV<string>('language', 'en')
+  const [dateFormat, setDateFormat] = useKV<string>('date-format', 'MM/DD/YYYY')
+  const [timezone, setTimezone] = useKV<string>('timezone', 'America/Chicago')
+  const [currency, setCurrency] = useKV<string>('currency', 'USD')
 
   const handleSaveProfile = () => {
     // In a real app, this would update the user profile
@@ -73,10 +111,16 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
 
           {/* Settings Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-1 overflow-x-auto">
               <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="appearance">Appearance</TabsTrigger>
+              <TabsTrigger value="workspace">Workspace</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
-              <TabsTrigger value="payments">Payments</TabsTrigger>
+              <TabsTrigger value="integrations">Integrations</TabsTrigger>
+              <TabsTrigger value="billing">Billing</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
+              <TabsTrigger value="preferences">Preferences</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced</TabsTrigger>
               <TabsTrigger value="privacy">Privacy</TabsTrigger>
               <TabsTrigger value="account">Account</TabsTrigger>
             </TabsList>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Briefcase, Kanban, Crown, Users, Brain, ChartLine, 
@@ -32,6 +32,15 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
   const [customizeMode, setCustomizeMode] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  
+  // Prevent body scroll when CRM Void is active
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalStyle
+    }
+  }, [])
   
   // Persist layout customization
   const [sectionLayouts, setSectionLayouts] = useKV<SectionLayout[]>(
@@ -131,11 +140,19 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
   return (
     <div className={cn(
+<<<<<<< Updated upstream
       "fixed inset-0 w-full h-full overflow-hidden",
       "bg-background z-50"
     )}>
       {/* Subtle background pattern */}
       <VoidBackground />
+=======
+      "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
+      "bg-white dark:bg-black"
+    )}>
+      {/* Simplified background - no starfield for system consistency */}
+      <div className="absolute inset-0 bg-white dark:bg-black" />
+>>>>>>> Stashed changes
 
       {/* Header controls */}
       <motion.div
@@ -148,7 +165,11 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           variant="outline"
           size="sm"
           onClick={toggleFullscreen}
+<<<<<<< Updated upstream
           className="bg-background/80 backdrop-blur-sm border-border text-foreground hover:bg-muted"
+=======
+          className="bg-white dark:bg-black border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+>>>>>>> Stashed changes
         >
           {isFullscreen ? <ArrowsIn size={16} /> : <ArrowsOut size={16} />}
         </Button>
@@ -157,7 +178,11 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           <Button
             size="sm"
             onClick={() => setCustomizeMode(false)}
+<<<<<<< Updated upstream
             className="bg-primary hover:bg-primary/90 text-primary-foreground"
+=======
+            className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
+>>>>>>> Stashed changes
           >
             Done Customizing
           </Button>
@@ -171,9 +196,15 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+<<<<<<< Updated upstream
             className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-primary/10 border border-primary/30"
           >
             <p className="text-primary text-sm font-medium">
+=======
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-black dark:border-white"
+          >
+            <p className="text-black dark:text-white text-sm font-medium">
+>>>>>>> Stashed changes
               🎨 Customize Mode - Drag sections to reposition
             </p>
           </motion.div>
@@ -241,9 +272,15 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
 function StatsCard({ label, value }: { label: string; value: string }) {
   return (
+<<<<<<< Updated upstream
     <div className="px-4 py-2 rounded-lg bg-card border border-border backdrop-blur-sm">
       <p className="text-muted-foreground text-xs">{label}</p>
       <p className="text-foreground font-semibold">{value}</p>
+=======
+    <div className="px-4 py-2 rounded-lg bg-white dark:bg-black border-2 border-black dark:border-white">
+      <p className="text-black/60 dark:text-white/60 text-xs">{label}</p>
+      <p className="text-black dark:text-white font-semibold">{value}</p>
+>>>>>>> Stashed changes
     </div>
   )
 }

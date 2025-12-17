@@ -78,12 +78,19 @@ export function OrbitingSection({
         disabled={isLocked && !isPro}
         className={cn(
           "relative flex flex-col items-center justify-center",
-          "w-20 h-20 -ml-10 -mt-10 rounded-2xl",
+          "w-20 h-20 -ml-10 -mt-10 rounded-lg",
           "transition-all duration-300",
+<<<<<<< Updated upstream
           "border backdrop-blur-sm",
           isActive 
             ? "bg-primary/20 border-primary shadow-lg shadow-primary/20" 
             : "bg-card border-border hover:bg-muted hover:border-primary/50",
+=======
+          "border-2",
+          isActive 
+            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg" 
+            : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+>>>>>>> Stashed changes
           isLocked && !isPro && "opacity-50 cursor-not-allowed",
           customizable && "cursor-grab active:cursor-grabbing"
         )}
@@ -93,7 +100,11 @@ export function OrbitingSection({
         {/* Icon */}
         <div className={cn(
           "text-2xl mb-1",
+<<<<<<< Updated upstream
           isActive ? "text-primary" : "text-muted-foreground"
+=======
+          isActive ? "text-white dark:text-black" : "text-black dark:text-white"
+>>>>>>> Stashed changes
         )}>
           {icon}
         </div>
@@ -101,7 +112,11 @@ export function OrbitingSection({
         {/* Label */}
         <span className={cn(
           "text-[10px] font-medium text-center leading-tight",
+<<<<<<< Updated upstream
           isActive ? "text-primary" : "text-muted-foreground"
+=======
+          isActive ? "text-white dark:text-black" : "text-black dark:text-white"
+>>>>>>> Stashed changes
         )}>
           {label}
         </span>
@@ -120,13 +135,20 @@ export function OrbitingSection({
           </div>
         )}
 
-        {/* Glow effect when active */}
+        {/* Active indicator */}
         {isActive && (
           <motion.div
+<<<<<<< Updated upstream
             className="absolute inset-0 rounded-2xl bg-primary/10"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 2, repeat: Infinity }}
+=======
+            className="absolute inset-0 rounded-lg border-2 border-black dark:border-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+>>>>>>> Stashed changes
           />
         )}
       </motion.button>
@@ -146,8 +168,13 @@ export function OrbitingSection({
           y1={y < 0 ? Math.abs(y) + 20 : 20}
           x2={x < 0 ? 20 : Math.abs(x) + 20}
           y2={y < 0 ? 20 : Math.abs(y) + 20}
+<<<<<<< Updated upstream
           stroke={isActive ? 'rgba(var(--primary), 0.3)' : 'rgba(0, 0, 0, 0.1)'}
           className={cn(isActive ? 'stroke-primary/30' : 'stroke-muted-foreground/10')}
+=======
+          stroke={isActive ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.1)'}
+          className="dark:stroke-white/30 dark:stroke-white/10"
+>>>>>>> Stashed changes
           strokeWidth="1"
           strokeDasharray="4 4"
           initial={{ pathLength: 0 }}
