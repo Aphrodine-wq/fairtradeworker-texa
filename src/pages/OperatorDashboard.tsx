@@ -65,25 +65,35 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   }
 
   // Operators can only control one territory
+  // BACKWARD COMPATIBLE: Works with both old and new territory formats
   const myTerritory = useMemo(() => {
     if (!user.territoryId) return null
-    return (territories || []).find(t => t.id === user.territoryId) || null
-  }, [territories, user.territoryId])
+    // Try to find by user.territoryId (old format) or by operatorId/claimedBy (new format)
+    return (territories || []).find(t => 
+      t.id === user.territoryId || 
+      t.operatorId === user.id || 
+      t.claimedBy === user.id
+    ) || null
+  }, [territories, user.territoryId, user.id])
 
-  const territoryJobs = useMemo(() => 
-    (jobs || []).filter(j => j.territoryId === user.territoryId),
-    [jobs, user.territoryId]
-  )
+  // BACKWARD COMPATIBLE: Filtering works with both old and new territory formats
+  const territoryJobs = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (jobs || []).filter(j => j.territoryId === territoryId)
+  }, [jobs, user.territoryId, myTerritory])
 
-  const territoryContractors = useMemo(() => 
-    (users || []).filter(u => u.role === 'contractor' && u.territoryId === user.territoryId),
-    [users, user.territoryId]
-  )
+  const territoryContractors = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (users || []).filter(u => u.role === 'contractor' && u.territoryId === territoryId)
+  }, [users, user.territoryId, myTerritory])
 
-  const territoryHomeowners = useMemo(() => 
-    (users || []).filter(u => u.role === 'homeowner' && u.territoryId === user.territoryId),
-    [users, user.territoryId]
-  )
+  const territoryHomeowners = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (users || []).filter(u => u.role === 'homeowner' && u.territoryId === territoryId)
+  }, [users, user.territoryId, myTerritory])
 
   const activeJobs = useMemo(() => 
     territoryJobs.filter(j => j.status === 'in-progress'),
@@ -255,10 +265,16 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 Operators are contractors who perform well in their zip code. You get priority access to leads in your territory.
               </p>
             </div>
-            <Button onClick={() => onNavigate('territory-map')} size="lg">
-              <MapTrifold className="mr-2" />
-              View Territory Map
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={() => onNavigate('territory-map')} size="lg" variant="outline">
+                <MapTrifold className="mr-2" />
+                View Territory Map
+              </Button>
+              <Button onClick={() => onNavigate('territory-claim')} size="lg">
+                <MapTrifold className="mr-2" />
+                Claim Territory
+              </Button>
+            </div>
           </div>
 
           <TabsList className="mb-6">
@@ -356,6 +372,19 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                       <div>
                         <p className="font-semibold">Territory Map</p>
                         <p className="text-sm text-muted-foreground">View coverage</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('territory-claim')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                        <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Claim Territory</p>
+                        <p className="text-sm text-muted-foreground">Browse & claim</p>
                       </div>
                     </div>
                   </Card>

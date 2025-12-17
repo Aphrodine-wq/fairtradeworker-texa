@@ -12,6 +12,7 @@ import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
+import { migrateTerritoriesData } from "@/lib/territory/migration"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { AnimatePresence } from "framer-motion"
@@ -123,6 +124,9 @@ const BlogPage = lazy(() => retryImport(() =>
 ))
 const PricingPage = lazy(() => retryImport(() =>
   import("@/pages/Pricing").then(m => ({ default: m.PricingPage }))
+))
+const TerritoryClaimPage = lazy(() => retryImport(() =>
+  import("@/pages/TerritoryClaim").then(m => ({ default: m.TerritoryClaim }))
 ))
 const SettingsPage = lazy(() => retryImport(() =>
   import("@/pages/Settings").then(m => ({ default: m.SettingsPage }))
@@ -321,7 +325,7 @@ const EarnRewardsPage = lazy(() => retryImport(() =>
   import("@/pages/quick-actions/EarnRewardsPage").then(m => ({ default: m.EarnRewardsPage }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'territory-claim' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -423,6 +427,14 @@ function App() {
   useEffect(() => {
     let mounted = true
     const initData = async () => {
+      // Migrate existing territories to enhanced format (backward compatibility)
+      if (territories && territories.length > 0) {
+        const migrated = migrateTerritoriesData(territories)
+        if (migrated !== territories) {
+          setTerritories(migrated)
+        }
+      }
+      
       // Check if we already have jobs (from localStorage via useLocalKV)
       if (jobs.length === 0) {
         const demoData = initializeDemoData()
@@ -430,7 +442,9 @@ function App() {
           const { jobs: demoJobs, invoices: demoInvoices, territories: demoTerritories, bidTemplates: demoTemplates } = demoData
           setJobs(demoJobs)
           setInvoices(demoInvoices)
-          setTerritories(demoTerritories)
+          // Migrate demo territories too
+          const migratedDemoTerritories = migrateTerritoriesData(demoTerritories || [])
+          setTerritories(migratedDemoTerritories)
           if (demoTemplates && bidTemplates.length === 0) {
             setBidTemplates(demoTemplates)
           }
@@ -682,6 +696,10 @@ function App() {
       case 'territory-map':
         return currentUser?.role === 'operator'
           ? <Suspense fallback={<LoadingFallback />}><TerritoryMap user={currentUser} /></Suspense>
+          : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'territory-claim':
+        return currentUser?.role === 'operator'
+          ? <Suspense fallback={<LoadingFallback />}><TerritoryClaimPage user={currentUser} onNavigate={handleNavigate} /></Suspense>
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'revenue-dashboard':
         return currentUser ? <Suspense fallback={<LoadingFallback />}><CompanyRevenueDashboard user={currentUser} /></Suspense> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />

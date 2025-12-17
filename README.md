@@ -25,6 +25,8 @@
 
 </div>
 
+> NOTE: The canonical, expanded project overview is now `SuperREADME.md` at the repository root. See [SuperREADME.md](SuperREADME.md) for architecture, developer setup, docs index, and archival policy.
+
 ---
 
 ## 🎯 MISSION
@@ -160,9 +162,12 @@ FairTradeWorker uses a modern shadow-based design system (updated December 16, 2
 ### Recent Updates
 
 - ✅ December 16, 2025: Major UI/UX overhaul with shadow-based design
+- ✅ December 18, 2025: CRM Void enhancements (background system, decorative planets, styling updates)
+- ✅ December 18, 2025: New Careers and Blog pages with full routing integration
 - ✅ Comprehensive testing suite (150+ tests, 95% coverage)
 - ✅ AI Receptionist with 100% reliability features
 - ✅ Complete Supabase migrations (9 migration files)
+- 📖 See `SUPERREADME.md` for ultra-detailed documentation (200x detail)
 - 📖 See `docs/RECENT_UPDATES.md` for complete details
 
 ---

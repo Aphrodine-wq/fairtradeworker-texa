@@ -34,6 +34,8 @@ export interface User {
 export type JobSize = 'small' | 'medium' | 'large'
 export type JobTier = 'QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT'
 
+export type JobInputType = 'audio' | 'video' | 'photo' | 'text'
+
 export interface Job {
   id: string
   homeownerId: string
@@ -41,7 +43,9 @@ export interface Job {
   title: string
   description: string
   mediaUrl?: string
-  mediaType?: 'audio' | 'photo'
+  mediaType?: JobInputType
+  videoUrl?: string // For video jobs
+  audioUrl?: string // For audio/voice jobs
   photos?: string[]
   aiScope: {
     scope: string
@@ -371,12 +375,62 @@ export interface BankAccount {
   verifiedAt?: string
 }
 
+// BACKWARD COMPATIBLE: All existing fields remain required, new fields are optional
 export interface Territory {
-  id: number
-  countyName: string
-  operatorId?: string
-  operatorName?: string
-  status: 'available' | 'claimed'
+  // Existing required fields (DO NOT CHANGE - used throughout system)
+  id: number // MUST remain number (matches user.territoryId)
+  countyName: string // MUST remain (used in OperatorDashboard, TerritoryMap, etc.)
+  status: 'available' | 'claimed' // MUST remain (used in filtering)
+  operatorId?: string // MUST remain optional (used in OperatorDashboard)
+  operatorName?: string // MUST remain optional (used in OperatorDashboard)
+  
+  // New optional fields (all optional for backward compatibility)
+  fipsCode?: string // Unique county identifier (FIPS code)
+  state?: string // Full state name
+  stateCode?: string // 2-letter state code
+  population?: number // County population
+  ruralityClassification?: 'rural' | 'small' | 'medium' | 'metro' // NCHS classification
+  projectedJobOutput?: number // Population × 500
+  oneTimeFee?: number // One-time territory claim fee
+  monthlyFee?: number // Monthly subscription fee
+  claimedBy?: string // User ID (alternative to operatorId for new system)
+  claimedAt?: string // ISO timestamp of claim
+  entityType?: 'individual' | 'llc' | 'corporation' // Entity type for claim
+  entityEmail?: string // Entity email
+  entityTaxId?: string // Entity tax ID (for businesses)
+  isFirst300Free?: boolean // Whether this was a First 300 free claim
+  subscriptionId?: string // Stripe subscription ID
+  subscriptionStatus?: 'active' | 'canceled' | 'past_due' // Subscription status
+  version?: 'legacy' | 'enhanced' // Track which format territory uses
+}
+
+// New types for enhanced territory system
+export type RuralityTier = 'rural' | 'small' | 'medium' | 'metro'
+
+export interface TerritoryClaim {
+  entityType: 'individual' | 'llc' | 'corporation'
+  entityEmail: string
+  entityName?: string // For businesses
+  entityTaxId?: string // Required for LLC/Corporation
+}
+
+export interface TerritoryFilter {
+  state?: string // State code filter
+  rurality?: RuralityTier[] // Array of rurality classifications
+  populationMin?: number // Minimum population
+  populationMax?: number // Maximum population
+  search?: string // Search by county name or FIPS code
+}
+
+export type TerritoryView = 'map' | 'list'
+
+export interface PricingInfo {
+  oneTimeFee: number
+  monthlyFee: number
+  totalFirstYear: number
+  ruralityTier: RuralityTier
+  isFree: boolean
+  projectedJobOutput: number
 }
 
 export function calculateJobSize(priceHigh: number): JobSize {

@@ -18,11 +18,40 @@ const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap 
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle, CaretLeft, CaretRight } from "@phosphor-icons/react"
-import type { Job, Bid, User, JobSize, BidTemplate } from "@/lib/types"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle, CaretLeft, CaretRight, Microphone, VideoCamera, Camera, Notebook } from "@phosphor-icons/react"
+import type { Job, Bid, User, JobSize, BidTemplate, JobInputType } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { revenueConfig } from "@/lib/revenueConfig"
 import { cn } from "@/lib/utils"
+
+// Media type badge configuration
+const MEDIA_TYPE_CONFIG: Record<JobInputType, { icon: typeof Microphone; label: string; color: string; bgColor: string }> = {
+  audio: { icon: Microphone, label: 'Voice', color: 'text-purple-600 dark:text-purple-400', bgColor: 'bg-purple-100 dark:bg-purple-900/30 border-purple-200 dark:border-purple-800' },
+  video: { icon: VideoCamera, label: 'Video', color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100 dark:bg-red-900/30 border-red-200 dark:border-red-800' },
+  photo: { icon: Camera, label: 'Photo', color: 'text-blue-600 dark:text-blue-400', bgColor: 'bg-blue-100 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800' },
+  text: { icon: Notebook, label: 'Notes', color: 'text-emerald-600 dark:text-emerald-400', bgColor: 'bg-emerald-100 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800' },
+}
+
+// Media type badge component
+function MediaTypeBadge({ type, size = 'sm' }: { type?: JobInputType; size?: 'sm' | 'lg' }) {
+  if (!type) return null
+  const config = MEDIA_TYPE_CONFIG[type]
+  if (!config) return null
+  const Icon = config.icon
+  return (
+    <Badge 
+      variant="outline" 
+      className={cn(
+        "flex items-center gap-1 font-medium",
+        config.bgColor,
+        size === 'lg' ? 'text-sm py-1 px-3' : 'text-xs py-0.5 px-2'
+      )}
+    >
+      <Icon size={size === 'lg' ? 16 : 12} weight="duotone" className={config.color} />
+      <span className={config.color}>{config.label}</span>
+    </Badge>
+  )
+}
 
 // Carousel Lane component with scroll arrows
 function CarouselLane({ children }: { children: React.ReactNode }) {
@@ -244,12 +273,18 @@ const JobCard = memo(function JobCard({
             <div className="absolute inset-0 p-5 flex flex-col justify-between text-white">
               {/* Top Section - Badges */}
               <div className="flex items-center justify-between">
-                <Badge 
-                  variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
-                  className="backdrop-blur-sm bg-white/20 text-white border-white/30 text-sm py-1 px-3"
-                >
-                  {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge 
+                    variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
+                    className="backdrop-blur-sm bg-white/20 text-white border-white/30 text-sm py-1 px-3"
+                  >
+                    {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
+                  </Badge>
+                  {/* Media Type Badge */}
+                  {job.mediaType && (
+                    <MediaTypeBadge type={job.mediaType} size="lg" />
+                  )}
+                </div>
                 {photos.length > 1 && (
                   <Badge variant="outline" className="backdrop-blur-sm bg-white/20 text-white border-white/30 text-sm py-1 px-3">
                     <Images size={14} className="mr-1" weight="duotone" />
@@ -292,18 +327,39 @@ const JobCard = memo(function JobCard({
         </div>
       ) : (
         <div className="relative h-48 md:h-56 bg-gradient-to-br from-muted to-muted/50 flex items-center justify-center">
+          {/* Show appropriate icon based on media type */}
           <div className="text-center p-4">
-            <Wrench size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
-            <div className="text-xs text-muted-foreground">No photos available</div>
+            {job.mediaType === 'audio' ? (
+              <>
+                <Microphone size={48} weight="duotone" className="mx-auto mb-2 text-purple-500" />
+                <div className="text-xs text-muted-foreground">Voice Recording Job</div>
+              </>
+            ) : job.mediaType === 'video' ? (
+              <>
+                <VideoCamera size={48} weight="duotone" className="mx-auto mb-2 text-red-500" />
+                <div className="text-xs text-muted-foreground">Video Description Job</div>
+              </>
+            ) : job.mediaType === 'text' ? (
+              <>
+                <Notebook size={48} weight="duotone" className="mx-auto mb-2 text-emerald-500" />
+                <div className="text-xs text-muted-foreground">Text Description Job</div>
+              </>
+            ) : (
+              <>
+                <Wrench size={48} weight="duotone" className="mx-auto mb-2 text-muted-foreground" />
+                <div className="text-xs text-muted-foreground">No photos available</div>
+              </>
+            )}
           </div>
           {/* Badge Overlay on No Photo */}
-          <div className="absolute top-3 left-3">
+          <div className="absolute top-3 left-3 flex items-center gap-2">
             <Badge 
               variant={job.size === 'small' ? 'success' : job.size === 'medium' ? 'warning' : 'destructive'}
               className="shadow-sm"
             >
               {getJobSizeEmoji(job.size)} {getJobSizeLabel(job.size)}
             </Badge>
+            {job.mediaType && <MediaTypeBadge type={job.mediaType} />}
           </div>
         </div>
       )}
@@ -511,6 +567,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
+  const [mediaTypeFilter, setMediaTypeFilter] = useState<JobInputType | 'all'>('all')
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'table'>('list')
   const [visibleCount, setVisibleCount] = useState(50)
 
@@ -538,6 +595,11 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
     
     if (sizeFilter !== 'all') {
       openJobs = openJobs.filter(job => job.size === sizeFilter)
+    }
+    
+    // Filter by media type
+    if (mediaTypeFilter !== 'all') {
+      openJobs = openJobs.filter(job => job.mediaType === mediaTypeFilter)
     }
     
     const isJobFresh = (job: Job) => {
@@ -581,7 +643,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
       // Finally by most recent
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
-  }, [jobs, sizeFilter, user.role])
+  }, [jobs, sizeFilter, mediaTypeFilter, user.role])
 
   const visibleJobs = useMemo(() => {
     return sortedOpenJobs.slice(0, visibleCount)
@@ -807,40 +869,75 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
           {/* Modernized Filter & View Controls */}
           <div className="space-y-3">
             <Card className="p-4 md:p-5 border-border bg-white/50 dark:bg-black/50 backdrop-blur-sm">
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-                {/* Job Size Filters */}
-                <div className="flex items-center gap-3 md:gap-4 flex-1">
-                  <div className="flex items-center gap-2">
-                    <Funnel weight="duotone" size={18} className="text-primary" />
-                    <span className="font-semibold text-xs md:text-sm text-muted-foreground hidden sm:inline">Filter:</span>
+              <div className="flex flex-col gap-4">
+                {/* First Row: Size Filters + View Mode */}
+                <div className="flex flex-col md:flex-row md:items-center gap-4">
+                  {/* Job Size Filters */}
+                  <div className="flex items-center gap-3 md:gap-4 flex-1">
+                    <div className="flex items-center gap-2">
+                      <Funnel weight="duotone" size={18} className="text-primary" />
+                      <span className="font-semibold text-xs md:text-sm text-muted-foreground hidden sm:inline">Size:</span>
+                    </div>
+                    
+                    <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
+                      <TabsList className="grid grid-cols-4 w-full md:w-auto bg-muted/50 h-auto p-1">
+                        <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">All</TabsTrigger>
+                        <TabsTrigger value="small" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟢 Small</TabsTrigger>
+                        <TabsTrigger value="medium" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟡 Medium</TabsTrigger>
+                        <TabsTrigger value="large" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🔴 Large</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
                   </div>
                   
-                  <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
-                    <TabsList className="grid grid-cols-4 w-full md:w-auto bg-muted/50 h-auto p-1">
-                      <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">All</TabsTrigger>
-                      <TabsTrigger value="small" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟢 Small</TabsTrigger>
-                      <TabsTrigger value="medium" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟡 Medium</TabsTrigger>
-                      <TabsTrigger value="large" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🔴 Large</TabsTrigger>
-                    </TabsList>
-                  </Tabs>
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center gap-3 md:border-l md:pl-4">
+                    <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
+                    <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table')}>
+                      <TabsList className="bg-muted/50 h-auto p-1">
+                        <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as grid">
+                          <List weight="duotone" size={16} />
+                          <span className="hidden sm:inline">Grid</span>
+                        </TabsTrigger>
+                        <TabsTrigger value="table" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as table">
+                          <Eye weight="duotone" size={16} />
+                          <span className="hidden sm:inline">Table</span>
+                        </TabsTrigger>
+                        <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs on map">
+                          <MapTrifold weight="duotone" size={16} />
+                          <span className="hidden sm:inline">Map</span>
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
                 </div>
                 
-                {/* View Mode Toggle */}
-                <div className="flex items-center gap-3 md:border-l md:pl-4">
-                  <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
-                  <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table')}>
-                    <TabsList className="bg-muted/50 h-auto p-1">
-                      <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as grid">
-                        <List weight="duotone" size={16} />
-                        <span className="hidden sm:inline">Grid</span>
+                {/* Second Row: Media Type Filters */}
+                <div className="flex items-center gap-3 md:gap-4 border-t border-border/50 pt-4">
+                  <div className="flex items-center gap-2">
+                    <Camera weight="duotone" size={18} className="text-primary" />
+                    <span className="font-semibold text-xs md:text-sm text-muted-foreground hidden sm:inline">Type:</span>
+                  </div>
+                  
+                  <Tabs value={mediaTypeFilter} onValueChange={(v) => setMediaTypeFilter(v as JobInputType | 'all')} className="flex-1">
+                    <TabsList className="grid grid-cols-5 w-full md:w-auto bg-muted/50 h-auto p-1">
+                      <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">
+                        All
                       </TabsTrigger>
-                      <TabsTrigger value="table" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as table">
-                        <Eye weight="duotone" size={16} />
-                        <span className="hidden sm:inline">Table</span>
+                      <TabsTrigger value="photo" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                        <Camera weight="duotone" size={14} className="hidden sm:inline" />
+                        📸 Photo
                       </TabsTrigger>
-                      <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs on map">
-                        <MapTrifold weight="duotone" size={16} />
-                        <span className="hidden sm:inline">Map</span>
+                      <TabsTrigger value="video" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-red-600 data-[state=active]:text-white">
+                        <VideoCamera weight="duotone" size={14} className="hidden sm:inline" />
+                        🎬 Video
+                      </TabsTrigger>
+                      <TabsTrigger value="audio" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+                        <Microphone weight="duotone" size={14} className="hidden sm:inline" />
+                        🎙️ Voice
+                      </TabsTrigger>
+                      <TabsTrigger value="text" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
+                        <Notebook weight="duotone" size={14} className="hidden sm:inline" />
+                        📝 Notes
                       </TabsTrigger>
                     </TabsList>
                   </Tabs>
@@ -983,15 +1080,19 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   <div className="space-y-2">
                     <h2 className="text-2xl md:text-3xl font-bold text-foreground">No Jobs Available</h2>
                     <p className="text-muted-foreground text-base md:text-lg">
-                      {sizeFilter === 'all' 
+                      {sizeFilter === 'all' && mediaTypeFilter === 'all'
                         ? "We'll notify you when new opportunities arrive!"
-                        : `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters. Try a different size.`
+                        : sizeFilter !== 'all' && mediaTypeFilter !== 'all'
+                        ? `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} ${MEDIA_TYPE_CONFIG[mediaTypeFilter as JobInputType]?.label || ''} jobs match your filters.`
+                        : sizeFilter !== 'all'
+                        ? `No ${getJobSizeLabel(sizeFilter as JobSize).toLowerCase()} jobs match your filters.`
+                        : `No ${MEDIA_TYPE_CONFIG[mediaTypeFilter as JobInputType]?.label || ''} jobs match your filters.`
                       }
                     </p>
                   </div>
-                  {sizeFilter !== 'all' && (
+                  {(sizeFilter !== 'all' || mediaTypeFilter !== 'all') && (
                     <Button 
-                      onClick={() => setSizeFilter('all')}
+                      onClick={() => { setSizeFilter('all'); setMediaTypeFilter('all'); }}
                       variant="outline"
                       className="mt-4"
                     >

@@ -92,10 +92,9 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-002',
     title: 'Drywall Repair in Living Room',
     description: 'Hole in drywall from moving furniture. About 4 inches diameter.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=800&q=80',
-    ],
+    mediaType: 'video',
+    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    photos: [],
     aiScope: {
       scope: 'Patch 4-inch drywall hole with mesh tape, joint compound, sand smooth, prime and paint to match existing wall.',
       priceLow: 80,
@@ -169,10 +168,9 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-002',
     title: 'Leaky Toilet Fix',
     description: 'Toilet running constantly. Need quick repair.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
-    ],
+    mediaType: 'audio',
+    audioUrl: 'https://example.com/audio/toilet-leak.mp3',
+    photos: [],
     aiScope: {
       scope: 'Replace faulty flapper valve and adjust fill valve. Test for proper shutoff.',
       priceLow: 75,
@@ -279,10 +277,8 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-002',
     title: 'Replace Light Switch',
     description: 'Living room light switch is loose and sparking. Need immediate replacement.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80',
-    ],
+    mediaType: 'text',
+    photos: [],
     aiScope: {
       scope: 'Replace faulty light switch with new Decora-style switch, check wiring, test functionality.',
       priceLow: 60,
@@ -300,10 +296,9 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-003',
     title: 'Bathroom Sink Clog',
     description: 'Bathroom sink draining very slowly. Likely hair clog.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
-    ],
+    mediaType: 'video',
+    videoUrl: 'https://www.youtube.com/embed/example-video',
+    photos: [],
     aiScope: {
       scope: 'Snake bathroom drain, remove P-trap to clear clog, clean drain assembly, test flow.',
       priceLow: 85,
@@ -321,10 +316,9 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-001',
     title: 'Weather Stripping Replacement',
     description: 'Front door has drafts. Need weather stripping replaced.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=800&q=80',
-    ],
+    mediaType: 'audio',
+    audioUrl: 'https://example.com/audio/door-draft.mp3',
+    photos: [],
     aiScope: {
       scope: 'Remove old weather stripping, clean door frame, install new adhesive weather stripping, adjust door sweep.',
       priceLow: 75,
@@ -363,10 +357,8 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-003',
     title: 'Doorbell Installation',
     description: 'Want to install a Ring doorbell. Need wiring checked.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1558002038-1055907df827?w=800&q=80',
-    ],
+    mediaType: 'text',
+    photos: [],
     aiScope: {
       scope: 'Check existing doorbell wiring voltage, install Ring doorbell, configure WiFi, test functionality.',
       priceLow: 100,
@@ -384,10 +376,9 @@ export const DEMO_JOBS: Job[] = [
     homeownerId: 'demo-homeowner-001',
     title: 'Leaking Shower Head',
     description: 'Shower head drips constantly even when turned off.',
-    mediaType: 'photo',
-    photos: [
-      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800&q=80',
-    ],
+    mediaType: 'video',
+    videoUrl: 'https://www.youtube.com/embed/shower-leak-demo',
+    photos: [],
     aiScope: {
       scope: 'Replace shower head washer or cartridge, check for pipe corrosion, install new shower head if needed.',
       priceLow: 70,

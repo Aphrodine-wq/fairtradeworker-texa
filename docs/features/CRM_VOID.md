@@ -99,6 +99,82 @@ Nine tools orbit the central hub, each accessible with a single click.
 
 ## ✨ Visual Details
 
+### Background System (Updated December 2025)
+
+**VoidBackground Component**:
+- **Starfield**: 
+  - Light mode: Black stars (`rgba(0, 0, 0, 0.8)`) on white background
+  - Dark mode: White stars (`rgba(255, 255, 255, 0.8)`) on black background
+  - Dynamic count: 200-300 stars based on viewport size
+  - Parallax: Stars move subtly with cursor movement
+  - Twinkling: Random opacity changes for depth
+- **Nebula**: 
+  - Purple-blue gradient (`rgba(138, 43, 226, 0.3)` to `rgba(30, 144, 255, 0.2)`)
+  - Center-positioned with radial gradient
+  - Animated opacity pulsing (0.2 to 0.4)
+  - Size: 800px × 600px elliptical
+- **Shooting Stars**:
+  - Probability: 0.001 per frame
+  - Trail length: 50-100px
+  - Speed: 5-10px per frame
+  - White color with gradient fade
+  - Duration: 20-40 frames
+- **Canvas Optimization**: 
+  - `requestAnimationFrame` for 60fps
+  - Proper cleanup on unmount
+  - Resize handling
+  - Theme-aware color switching
+
+### Decorative Planets (New - December 2025)
+
+**6 Orbital Planets**:
+- **Implementation**: `useState` for angles, `useEffect` with `requestAnimationFrame`
+- **Animation**: Continuous 360° rotation at 0.02° per frame
+- **Properties**:
+  - Size: 40-80px diameter (varied)
+  - Colors: RGBA with alpha (0.3-0.6) for translucency
+  - Colors: Purple, Blue, Cyan, Pink, Orange, Green
+  - Position: Orbital radius 400-500px from center
+  - Z-index: 5 (behind sections, above background)
+  - Blur: `blur-sm` for soft appearance
+- **Performance**: Optimized with `useRef` to prevent memory leaks
+- **Visual Effect**: Creates depth and cosmic atmosphere
+
+### Startup Animation (Updated December 2025)
+
+**CRMVoidSolarSystem**:
+- **Double-Play Prevention**: `hasPlayedRef` prevents React StrictMode double execution
+- **Duration**: Extended from 4 seconds to 7 seconds
+- **Implementation**:
+  ```typescript
+  const hasPlayedRef = useRef(false)
+  useEffect(() => {
+    if (hasPlayedRef.current) return
+    hasPlayedRef.current = true
+    const timer = setTimeout(() => setShowWelcome(false), 7000)
+    return () => clearTimeout(timer)
+  }, [])
+  ```
+
+### Section Panels Styling (Updated December 2025)
+
+**Unified Glass-Card Design**:
+- **Main Panel**: `glass-card border-0`, `bg-white/95 dark:bg-black/95 backdrop-blur-lg`, `shadow-xl hover:shadow-2xl`
+- **Tool Buttons**: `glass-card hover:shadow-xl`, `bg-white/90 dark:bg-black/90 backdrop-blur-sm`, `hover:scale-[1.02]`
+- **Customer Tabs**: Inactive tabs use glass-card, active tabs have `shadow-md`
+- **Settings Cards**: `glass-card border-0 bg-white/90 dark:bg-black/90 backdrop-blur-sm`
+- **Consistency**: Matches UnifiedPostJob menu styling exactly
+
+### Customize Mode Exit (Updated December 2025)
+
+**Multiple Exit Methods**:
+1. ESC key handler (keyboard shortcut)
+2. "Exit Customize Mode" button in header
+3. Click outside customize area
+4. Close button (X) in top-right
+
+**Implementation**: `useEffect` with `window.addEventListener('keydown')` for ESC key
+
 ### Starfield Animation
 
 The background isn't static. It's a living canvas:

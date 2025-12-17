@@ -47,25 +47,40 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
     }
 
     // Operators can only control one territory
-    const existingTerritory = (currentTerritories || []).find(t => t.operatorId === user.id)
+    // BACKWARD COMPATIBLE: Check both old and new formats
+    const existingTerritory = (currentTerritories || []).find(t => 
+      t.operatorId === user.id || t.claimedBy === user.id
+    )
     if (existingTerritory) {
       toast.error(`You already control ${existingTerritory.countyName}. Operators can only manage one territory.`)
       return
     }
 
+    // Upgrade to enhanced format if legacy
+    const updatedTerritory: Territory = {
+      ...territory,
+      status: 'claimed' as const,
+      operatorId: user.id,
+      operatorName: user.fullName,
+      claimedBy: user.id, // New format
+      claimedAt: new Date().toISOString(), // New format
+      version: 'enhanced', // Mark as enhanced
+    }
+
     setTerritories((current) =>
       (current || []).map(t =>
-        t.id === territory.id
-          ? { ...t, status: 'claimed' as const, operatorId: user.id, operatorName: user.fullName }
-          : t
+        t.id === territory.id ? updatedTerritory : t
       )
     )
 
     toast.success(`${territory.countyName} claimed successfully!`)
   }
 
+  // BACKWARD COMPATIBLE: Works with both old and new territory formats
   const { myTerritories, availableTerritories } = useMemo(() => ({
-    myTerritories: (currentTerritories || []).filter(t => t.operatorId === user.id),
+    myTerritories: (currentTerritories || []).filter(t => 
+      t.operatorId === user.id || t.claimedBy === user.id
+    ),
     availableTerritories: (currentTerritories || []).filter(t => t.status === 'available')
   }), [currentTerritories, user.id])
 
