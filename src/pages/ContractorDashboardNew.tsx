@@ -1,4 +1,5 @@
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
+import { Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard, Folder, Calendar, ChatCircleDots, Bell, ClipboardText, Package, CheckCircle, Phone, Target, Microphone, MapPin, Swap, Ruler, WifiSlash, Image, CalendarDots, Heart } from "@phosphor-icons/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -20,10 +21,13 @@ import {
   MapPin,
   Target,
   Fire,
-  Sparkle
+  Sparkle,
+  Gear,
+  SlidersHorizontal
 } from "@phosphor-icons/react"
 import type { User, Job, Invoice, Bid } from "@/lib/types"
 import { useState, useMemo, useEffect } from "react"
+import { DashboardCustomizer } from "@/components/dashboard/DashboardCustomizer"
 
 interface ContractorDashboardNewProps {
   user: User
@@ -35,6 +39,8 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
   const [invoices, , invoicesLoading] = useKV<Invoice[]>("invoices", [])
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isInitializing, setIsInitializing] = useState(true)
+  const [customizerOpen, setCustomizerOpen] = useState(false)
+  const [pinnedTools] = useKV<Array<{ id: string; label: string; page: string; iconName: string }>>(`dashboard-pinned-tools-${user.id}`, [])
   const isPro = user.isPro || false
 
   // Simulate initial loading
@@ -470,77 +476,109 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('crm')}>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <Users className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold">Customer CRM</p>
-                  <p className="text-sm text-muted-foreground">Manage relationships</p>
-                </div>
+          {/* Quick Actions / Pinned Tools */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold">Quick Actions</h2>
+              {isPro && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCustomizerOpen(true)}
+                  className="gap-2"
+                >
+                  <SlidersHorizontal size={16} />
+                  Customize Dashboard
+                </Button>
+              )}
+            </div>
+            
+            {pinnedTools.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {pinnedTools.map((tool) => {
+                  // Import icon mapping from navigation
+                  const iconMap: Record<string, any> = {
+                    Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard,
+                    Folder, Calendar, ChatCircleDots, Bell, Users, ClipboardText, Package,
+                    CheckCircle, Gear, Phone, Target, Microphone, MapPin, Swap, Ruler,
+                    WifiSlash, Image, CalendarDots, Heart, Briefcase, Sparkle, CurrencyDollar
+                  }
+                  const Icon = iconMap[tool.iconName] || Sparkle
+                  
+                  return (
+                    <Card
+                      key={tool.id}
+                      className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                      glass={isPro}
+                      onClick={() => onNavigate(tool.page)}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm flex-shrink-0">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold truncate">{tool.label}</p>
+                          <p className="text-sm text-muted-foreground truncate">Quick access</p>
+                        </div>
+                      </div>
+                    </Card>
+                  )
+                })}
               </div>
-            </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {/* Default tools if no pinned tools */}
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+                  onClick={() => onNavigate('crm')}>
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <Users className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Customer CRM</p>
+                      <p className="text-sm text-muted-foreground">Manage relationships</p>
+                    </div>
+                  </div>
+                </Card>
 
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('invoices')}>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
-                  <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
-                </div>
-                <div>
-                  <p className="font-semibold">Invoices</p>
-                  <p className="text-sm text-muted-foreground">Track payments</p>
-                </div>
-              </div>
-            </Card>
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+                  onClick={() => onNavigate('invoices')}>
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
+                      <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Invoices</p>
+                      <p className="text-sm text-muted-foreground">Track payments</p>
+                    </div>
+                  </div>
+                </Card>
 
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('revenue-dashboard')}>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <ChartLine className="h-6 w-6 text-secondary-foreground" />
-                </div>
-                <div>
-                  <p className="font-semibold">Revenue Analytics</p>
-                  <p className="text-sm text-muted-foreground">View insights</p>
-                </div>
+                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+                  onClick={() => onNavigate('business-tools')}>
+                  <div className="flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
+                    </div>
+                    <div>
+                      <p className="font-semibold">Business Tools</p>
+                      <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
+                    </div>
+                  </div>
+                </Card>
               </div>
-            </Card>
-
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('business-tools')}>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
-                </div>
-                <div>
-                  <p className="font-semibold">Business Tools</p>
-                  <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => {
-                // Navigate to portfolio - add route if needed or use business-tools with portfolio tab
-                onNavigate('business-tools')
-                // Could also add a portfolio page route
-              }}>
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                  <Briefcase className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="font-semibold">Portfolio</p>
-                  <p className="text-sm text-muted-foreground">Showcase your work</p>
-                </div>
-              </div>
-            </Card>
+            )}
           </div>
+
+          {/* Dashboard Customizer Dialog */}
+          {isPro && (
+            <DashboardCustomizer
+              open={customizerOpen}
+              onClose={() => setCustomizerOpen(false)}
+              user={user}
+              onNavigate={onNavigate}
+            />
+          )}
         </div>
       </div>
     </div>
