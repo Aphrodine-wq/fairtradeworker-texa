@@ -267,6 +267,7 @@ export interface Invoice {
   sentDate?: string
   paidDate?: string
   reminderSentAt?: string
+  preDueGentleNudgeSentAt?: string // Friendly reminder sent 3 days before due date (for good clients)
   lateFeeApplied: boolean
   isProForma: boolean
   isRecurring?: boolean

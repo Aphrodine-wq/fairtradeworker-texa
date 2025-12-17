@@ -1,4 +1,5 @@
 import type { Invoice, CRMCustomer, FollowUpSequence, ScheduledFollowUp } from "@/lib/types"
+import { hasGoodPaymentHistory, daysUntilDue } from "@/lib/invoiceHelpers"
 
 export class InvoiceAutomationService {
   
@@ -37,6 +38,36 @@ export class InvoiceAutomationService {
     return updates
   }
   
+  /**
+   * Check if a pre-due gentle nudge should be sent (3 days before due date)
+   * Only for clients with good payment history (90%+ on-time)
+   */
+  static shouldSendPreDueGentleNudge(invoice: Invoice, allInvoices: Invoice[]): boolean {
+    // Only for sent/viewed invoices that haven't been paid
+    if (invoice.status !== 'sent' && invoice.status !== 'viewed') {
+      return false
+    }
+    
+    // Don't send if already sent
+    if (invoice.preDueGentleNudgeSentAt) {
+      return false
+    }
+    
+    // Check if client has good payment history (90%+ on-time)
+    // Get all invoices for this job/homeowner to check payment history
+    const clientInvoices = allInvoices.filter(inv => 
+      inv.jobId === invoice.jobId || inv.homeownerId === invoice.homeownerId
+    )
+    
+    if (!hasGoodPaymentHistory(clientInvoices)) {
+      return false
+    }
+    
+    // Check if 3 days before due date
+    const daysTillDue = daysUntilDue(invoice.dueDate)
+    return daysTillDue === 3
+  }
+  
   static shouldSendReminder(invoice: Invoice): boolean {
     if (invoice.status !== 'sent' && invoice.status !== 'viewed' && invoice.status !== 'overdue') {
       return false
@@ -50,7 +81,8 @@ export class InvoiceAutomationService {
     const dueDate = new Date(invoice.dueDate)
     const daysTillDue = Math.floor((dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
     
-    return daysTillDue <= 3 && daysTillDue >= 0
+    // Send reminder at 3, 7, 14 days overdue (existing logic)
+    return daysTillDue <= -3 && (daysTillDue >= -14)
   }
   
   static generateRecurringInvoice(originalInvoice: Invoice): Invoice | null {
@@ -98,6 +130,29 @@ export class InvoiceAutomationService {
     }
     
     return null
+  }
+  
+  static async sendPreDueGentleNudge(invoice: Invoice, recipientEmail?: string, recipientPhone?: string): Promise<boolean> {
+    const dueDateFormatted = new Date(invoice.dueDate).toLocaleDateString('en-US', { 
+      weekday: 'long',
+      month: 'long', 
+      day: 'numeric' 
+    })
+    
+    const message = `Just a friendly heads-up that your invoice for ${invoice.jobTitle} ($${invoice.total.toFixed(2)}) is due this ${dueDateFormatted}. Thank you!`
+    
+    if (recipientEmail) {
+      console.log(`[Simulated] Sending pre-due gentle nudge email for invoice ${invoice.id} to ${recipientEmail}`)
+      console.log(`Subject: Friendly reminder: Invoice due ${dueDateFormatted}`)
+      console.log(`Body: ${message}`)
+    }
+    
+    if (recipientPhone) {
+      console.log(`[Simulated] Sending pre-due gentle nudge SMS for invoice ${invoice.id} to ${recipientPhone}`)
+      console.log(`Message: ${message}`)
+    }
+    
+    return true
   }
   
   static async sendReminderEmail(invoice: Invoice, recipientEmail: string): Promise<boolean> {
@@ -233,9 +288,29 @@ export class AutomationRunner {
       }
       
       if (isPro) {
+        // Pre-due gentle nudge (3 days before due, for good clients)
+        invoices.forEach(invoice => {
+          if (InvoiceAutomationService.shouldSendPreDueGentleNudge(invoice, invoices)) {
+            console.log(`Pre-due gentle nudge triggered for invoice ${invoice.id}`)
+            // In production, would send email/SMS here
+            InvoiceAutomationService.sendPreDueGentleNudge(invoice)
+              .then(() => {
+                setInvoices((current) =>
+                  current.map(inv =>
+                    inv.id === invoice.id
+                      ? { ...inv, preDueGentleNudgeSentAt: new Date().toISOString() }
+                      : inv
+                  )
+                )
+              })
+              .catch(err => console.error('Failed to send pre-due nudge:', err))
+          }
+        })
+        
+        // Overdue reminders (3/7/14 days after due)
         invoices.forEach(invoice => {
           if (InvoiceAutomationService.shouldSendReminder(invoice)) {
-            console.log(`Reminder triggered for invoice ${invoice.id}`)
+            console.log(`Overdue reminder triggered for invoice ${invoice.id}`)
             setInvoices((current) =>
               current.map(inv =>
                 inv.id === invoice.id

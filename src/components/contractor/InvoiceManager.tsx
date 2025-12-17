@@ -17,6 +17,7 @@ import type { User, Invoice, InvoiceLineItem, Job, PartialPayment, InvoiceTempla
 import { InvoicePDFGenerator } from "./InvoicePDFGenerator"
 import { PartialPaymentDialog } from "./PartialPaymentDialog"
 import { InvoiceTemplateManager } from "./InvoiceTemplateManager"
+import { RenewalDetectionCard } from "./RenewalDetectionCard"
 
 interface InvoiceManagerProps {
   user: User
@@ -440,6 +441,19 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
       )}
 
       <InvoiceTemplateManager user={user} onApplyTemplate={handleApplyTemplate} />
+      
+      {/* Renewal Detection - Suggest contract conversion for 12+ month clients */}
+      <RenewalDetectionCard 
+        invoices={myInvoices}
+        onConvertToContract={(invoice) => {
+          toast.success(
+            `Contract conversion initiated for ${invoice.jobTitle}`,
+            {
+              description: 'Contract management features coming soon! For now, recurring invoices will continue automatically.'
+            }
+          )
+        }}
+      />
 
       <Tabs defaultValue="all" className="w-full">
         <TabsList>

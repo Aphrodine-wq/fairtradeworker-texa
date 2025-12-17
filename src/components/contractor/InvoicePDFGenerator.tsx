@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { FilePdf } from "@phosphor-icons/react"
 import { toast } from "sonner"
 import type { Invoice, User } from "@/lib/types"
+import { generatePaymentPortalUrl } from "@/lib/invoiceHelpers"
 
 interface InvoicePDFGeneratorProps {
   invoice: Invoice
@@ -205,6 +206,22 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
     .notes strong {
       color: #374151;
     }
+    .pay-now-button {
+      display: inline-block;
+      padding: 16px 32px;
+      background: white;
+      color: #0066FF;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pay-now-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
     ${invoice.isProForma ? `
       .proforma-watermark {
         position: fixed;
@@ -306,6 +323,17 @@ export function InvoicePDFGenerator({ invoice, contractor }: InvoicePDFGenerator
       'Late payments are subject to a 1.5% late fee after 30 days.'
     }</p>
     ${invoice.customNotes ? `<p style="margin-top: 12px;"><strong>Notes:</strong> ${invoice.customNotes}</p>` : ''}
+    ${!invoice.isProForma && invoice.status !== 'paid' ? `
+      <div style="margin-top: 24px; text-align: center; padding: 20px; background: #0066FF; border-radius: 8px;">
+        <a href="${generatePaymentPortalUrl(invoice, contractor)}" 
+           style="display: inline-block; padding: 16px 32px; background: white; color: #0066FF; text-decoration: none; border-radius: 6px; font-weight: 700; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          Pay Now - ${formatCurrency(invoice.total)}
+        </a>
+        <p style="margin-top: 12px; color: white; font-size: 13px; opacity: 0.9;">
+          Click above to pay securely online
+        </p>
+      </div>
+    ` : ''}
     <p style="margin-top: 12px;"><strong>Thank you for your business!</strong></p>
   </div>
 

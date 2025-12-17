@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { 
   CurrencyDollar, 
@@ -10,12 +11,15 @@ import {
   CheckCircle,
   Users,
   Wrench,
-  ChartBar
+  ChartBar,
+  Receipt
 } from '@phosphor-icons/react'
 import type { Job, Milestone, TradeContractor, ScopeChange } from '@/lib/types'
 
 interface BudgetTrackingProps {
   job: Job
+  onCreateInvoiceFromChangeOrder?: (changeOrder: ScopeChange) => void
+  userRole?: 'contractor' | 'homeowner'
 }
 
 interface TradeBudget {
@@ -30,7 +34,7 @@ interface TradeBudget {
   paidMilestones: number
 }
 
-export function BudgetTracking({ job }: BudgetTrackingProps) {
+export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }: BudgetTrackingProps) {
   const milestones = job.milestones || []
   const tradeContractors = job.tradeContractors || []
   const scopeChanges = job.scopeChanges || []
@@ -382,6 +386,18 @@ export function BudgetTracking({ job }: BudgetTrackingProps) {
                     </Badge>
                   </div>
                 </div>
+                {sc.status === 'approved' && userRole === 'contractor' && onCreateInvoiceFromChangeOrder && (
+                  <div className="mt-3 pt-3 border-t">
+                    <Button 
+                      size="sm"
+                      onClick={() => onCreateInvoiceFromChangeOrder(sc)}
+                      className="w-full"
+                    >
+                      <Receipt className="mr-2" size={16} weight="bold" />
+                      Generate Invoice for Approved CO
+                    </Button>
+                  </div>
+                )}
               </div>
             ))}
           </CardContent>

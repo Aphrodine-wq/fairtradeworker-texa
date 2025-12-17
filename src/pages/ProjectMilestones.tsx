@@ -40,6 +40,8 @@ import { ProjectScheduleView } from '@/components/projects/ProjectScheduleView'
 import { BudgetTracking } from '@/components/projects/BudgetTracking'
 import { GlassNav } from "@/components/ui/MarketingSections"
 import { ExpenseTracking } from '@/components/projects/ExpenseTracking'
+import { CreateInvoiceFromContextDialog } from '@/components/contractor/CreateInvoiceFromContextDialog'
+import type { ScopeChange } from '@/lib/types'
 
 interface ProjectMilestonesProps {
   job: Job
@@ -58,6 +60,12 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [showAddDialog, setShowAddDialog] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
+  const [invoiceDialogOpen, setInvoiceDialogOpen] = useState(false)
+  const [invoiceDialogContext, setInvoiceDialogContext] = useState<{
+    type: 'milestone' | 'changeOrder'
+    milestone?: Milestone
+    changeOrder?: ScopeChange
+  } | null>(null)
   
   const [editForm, setEditForm] = useState({
     name: '',
@@ -536,7 +544,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                 <CardDescription>Complete milestone overview</CardDescription>
               </CardHeader>
               <CardContent>
-                <MilestoneTimeline 
+                <MilestoneTimeline
                   milestones={milestones}
                   onRequestPayment={(m) => setSelectedMilestone(m)}
                   onApprove={handleApprove}
@@ -547,6 +555,10 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
                   onEdit={openEditDialog}
                   onDelete={handleDeleteMilestone}
                   onResolveDispute={handleResolveDispute}
+                  onCreateInvoice={(milestone) => {
+                    setInvoiceDialogContext({ type: 'milestone', milestone })
+                    setInvoiceDialogOpen(true)
+                  }}
                   onViewExpenses={(m) => setSelectedExpenseMilestone(m)}
                   userRole={user.role as 'contractor' | 'homeowner'}
                   getStatusIcon={getStatusIcon}
@@ -557,7 +569,14 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           </TabsContent>
           
           <TabsContent value="budget" className="space-y-4">
-            <BudgetTracking job={job} />
+              <BudgetTracking 
+                job={job} 
+                userRole={isContractor ? 'contractor' : 'homeowner'}
+                onCreateInvoiceFromChangeOrder={(changeOrder) => {
+                  setInvoiceDialogContext({ type: 'changeOrder', changeOrder })
+                  setInvoiceDialogOpen(true)
+                }}
+              />
           </TabsContent>
           
           <TabsContent value="pending" className="space-y-4">
@@ -1040,6 +1059,19 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* Create Invoice From Context Dialog */}
+      {invoiceDialogContext && (
+        <CreateInvoiceFromContextDialog
+          open={invoiceDialogOpen}
+          onOpenChange={setInvoiceDialogOpen}
+          context={{
+            ...invoiceDialogContext,
+            job
+          }}
+          user={user}
+        />
+      )}
     </div>
   )
 }
@@ -1055,6 +1087,7 @@ interface MilestoneTimelineProps {
   onDelete?: (milestoneId: string) => void
   onResolveDispute?: (milestone: Milestone) => void
   onViewExpenses?: (milestone: Milestone) => void
+  onCreateInvoice?: (milestone: Milestone) => void
   userRole: 'contractor' | 'homeowner'
   getStatusIcon: (status: Milestone['status'], size?: number) => React.ReactElement
   getStatusBadge: (status: Milestone['status']) => React.ReactElement
@@ -1069,6 +1102,7 @@ function MilestoneTimeline({
   onDelete,
   onResolveDispute,
   onViewExpenses,
+  onCreateInvoice,
   userRole,
   getStatusIcon,
   getStatusBadge
@@ -1216,6 +1250,17 @@ function MilestoneTimeline({
                       onClick={() => onResolveDispute?.(milestone)}
                     >
                       Resolve & Resubmit
+                    </Button>
+                  )}
+                  
+                  {userRole === 'contractor' && milestone.status === 'completed' && onCreateInvoice && (
+                    <Button 
+                      size="sm"
+                      onClick={() => onCreateInvoice(milestone)}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90"
+                    >
+                      <Receipt className="mr-1" size={16} weight="bold" />
+                      Create Invoice
                     </Button>
                   )}
                   
