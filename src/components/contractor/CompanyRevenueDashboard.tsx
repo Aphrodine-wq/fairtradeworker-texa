@@ -2,6 +2,11 @@ import { useState, useEffect, useMemo } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Slider } from "@/components/ui/slider"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { 
   TrendUp, 
@@ -42,6 +47,14 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
   const isPro = user.isPro || false
   
   const [users, setUsers] = useState<User[]>([])
+
+  // Revenue simulation controls
+  const [simulationSpeed, setSimulationSpeed] = useState<number>(1) // 1x, 2x, 5x, 10x
+  const [timeRange, setTimeRange] = useState<number>(5) // 1, 3, or 5 years
+  const [monthlyGrowthRate, setMonthlyGrowthRate] = useState<number>(10) // percentage
+  const [churnRate, setChurnRate] = useState<number>(5) // percentage
+  const [isPlaying, setIsPlaying] = useState<boolean>(false)
+  const [selectedScenario, setSelectedScenario] = useState<'conservative' | 'moderate' | 'aggressive'>('moderate')
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -479,13 +492,18 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-11">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="breakdown">Breakdown</TabsTrigger>
           <TabsTrigger value="trends">Trends</TabsTrigger>
           <TabsTrigger value="projections">Projections</TabsTrigger>
+          <TabsTrigger value="revenue-test">Revenue Test</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
           <TabsTrigger value="costs">Costs</TabsTrigger>
+          <TabsTrigger value="risks">Risks</TabsTrigger>
+          <TabsTrigger value="expenses">Expenses</TabsTrigger>
+          <TabsTrigger value="upkeep">Upkeep</TabsTrigger>
+          <TabsTrigger value="pro-projections">Pro Members</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6 space-y-6">
@@ -1119,6 +1137,949 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                   })}
                 </div>
               )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="revenue-test" className="mt-6 space-y-6">
+          {/* 5-Year Revenue Simulation */}
+          <Card glass={isPro}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calculator size={20} weight="duotone" className="text-primary" />
+                Revenue Simulation Controls
+              </CardTitle>
+              <CardDescription>
+                Adjust variables to simulate different revenue scenarios
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Simulation Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-muted/30 rounded-lg">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">Simulation Speed</Label>
+                  <Select value={simulationSpeed.toString()} onValueChange={(v) => setSimulationSpeed(Number(v))}>
+                    <SelectTrigger className="bg-white dark:bg-black border-transparent dark:border-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1x Speed</SelectItem>
+                      <SelectItem value="2">2x Speed</SelectItem>
+                      <SelectItem value="5">5x Speed</SelectItem>
+                      <SelectItem value="10">10x Speed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">Time Range</Label>
+                  <Select value={timeRange.toString()} onValueChange={(v) => setTimeRange(Number(v))}>
+                    <SelectTrigger className="bg-white dark:bg-black border-transparent dark:border-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 Year</SelectItem>
+                      <SelectItem value="3">3 Years</SelectItem>
+                      <SelectItem value="5">5 Years</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">Monthly Growth Rate</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[monthlyGrowthRate]}
+                      onValueChange={(v) => setMonthlyGrowthRate(v[0])}
+                      min={1}
+                      max={30}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={monthlyGrowthRate}
+                      onChange={(e) => setMonthlyGrowthRate(Number(e.target.value))}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={1}
+                      max={30}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-black/60 dark:text-white/60">%</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">Churn Rate</Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[churnRate]}
+                      onValueChange={(v) => setChurnRate(v[0])}
+                      min={0}
+                      max={20}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={churnRate}
+                      onChange={(e) => setChurnRate(Number(e.target.value))}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={0}
+                      max={20}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-black/60 dark:text-white/60">%</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Playback Controls */}
+              <div className="flex items-center justify-center gap-4 p-4 bg-muted/30 rounded-lg">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="bg-white dark:bg-black border-transparent dark:border-white text-black dark:text-white"
+                >
+                  {isPlaying ? <Clock size={16} className="mr-2" /> : <Timer size={16} className="mr-2" />}
+                  {isPlaying ? 'Pause' : 'Play'} Simulation
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setMonthlyGrowthRate(10)
+                    setChurnRate(5)
+                    setTimeRange(5)
+                    setSimulationSpeed(1)
+                  }}
+                  className="bg-white dark:bg-black border-transparent dark:border-white text-black dark:text-white"
+                >
+                  Reset to Defaults
+                </Button>
+              </div>
+
+              {/* Growth Scenario Selector */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'conservative' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('conservative')
+                    setMonthlyGrowthRate(5)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Conservative</h3>
+                    <p className="text-sm mb-2">5% monthly growth</p>
+                    <p className="text-xs opacity-80">Steady, sustainable expansion</p>
+                  </CardContent>
+                </Card>
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'moderate' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('moderate')
+                    setMonthlyGrowthRate(10)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Moderate</h3>
+                    <p className="text-sm mb-2">10% monthly growth</p>
+                    <p className="text-xs opacity-80">Balanced growth strategy</p>
+                  </CardContent>
+                </Card>
+                <Card 
+                  className={cn(
+                    "border-2 cursor-pointer transition-colors",
+                    selectedScenario === 'aggressive' 
+                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                  )}
+                  onClick={() => {
+                    setSelectedScenario('aggressive')
+                    setMonthlyGrowthRate(15)
+                  }}
+                >
+                  <CardContent className="p-4 text-center">
+                    <h3 className="font-bold mb-2">Aggressive</h3>
+                    <p className="text-sm mb-2">15% monthly growth</p>
+                    <p className="text-xs opacity-80">Rapid market expansion</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* 5-Year Projection Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-b-2 border-transparent dark:border-white">
+                      <th className="text-left p-3 font-bold text-black dark:text-white">Year</th>
+                      <th className="text-right p-3 font-bold text-black dark:text-white">Monthly MRR</th>
+                      <th className="text-right p-3 font-bold text-black dark:text-white">Annual Revenue</th>
+                      <th className="text-right p-3 font-bold text-black dark:text-white">Cumulative</th>
+                      <th className="text-right p-3 font-bold text-black dark:text-white">Users</th>
+                      <th className="text-right p-3 font-bold text-black dark:text-white">Jobs/Month</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const baseMRR = currentMonthMRR || 1000
+                      const baseUsers = users.length || 10
+                      const baseJobsPerMonth = currentMonthJobs.length || 5
+                      const growthRate = 0.10 // 10% moderate growth
+                      
+                      const projections = []
+                      let cumulativeRevenue = 0
+                      let currentMRR = baseMRR
+                      let currentUsers = baseUsers
+                      let currentJobsPerMonth = baseJobsPerMonth
+                      
+                      for (let year = 1; year <= 5; year++) {
+                        const yearData = []
+                        for (let month = 1; month <= 12; month++) {
+                          currentMRR *= (1 + growthRate / 12)
+                          currentUsers *= (1 + growthRate / 12)
+                          currentJobsPerMonth *= (1 + growthRate / 12)
+                          cumulativeRevenue += currentMRR
+                        }
+                        
+                        const annualRevenue = currentMRR * 12
+                        projections.push({
+                          year,
+                          mrr: currentMRR,
+                          annual: annualRevenue,
+                          cumulative: cumulativeRevenue,
+                          users: Math.round(currentUsers),
+                          jobsPerMonth: Math.round(currentJobsPerMonth)
+                        })
+                      }
+                      
+                      return projections.map((proj, idx) => (
+                        <tr key={proj.year} className={idx % 2 === 0 ? "bg-white dark:bg-black" : "bg-muted/30"}>
+                          <td className="p-3 font-semibold text-black dark:text-white">Year {proj.year}</td>
+                          <td className="p-3 text-right font-bold text-black dark:text-white">{formatCurrency(proj.mrr)}</td>
+                          <td className="p-3 text-right font-bold text-green-600 dark:text-green-400">{formatCurrency(proj.annual)}</td>
+                          <td className="p-3 text-right font-bold text-primary">{formatCurrency(proj.cumulative)}</td>
+                          <td className="p-3 text-right text-black dark:text-white">{proj.users.toLocaleString()}</td>
+                          <td className="p-3 text-right text-black dark:text-white">{proj.jobsPerMonth}</td>
+                        </tr>
+                      ))
+                    })()}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Key Milestones */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-black/60 dark:text-white/60 mb-1">Break-Even Point</p>
+                    <p className="text-xl font-bold text-black dark:text-white">Month 8</p>
+                    <p className="text-xs text-black/60 dark:text-white/60 mt-1">Projected timeline</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-black/60 dark:text-white/60 mb-1">{timeRange}-Year Total</p>
+                    <p className="text-xl font-bold text-primary">
+                      {formatCurrency((() => {
+                        const baseMRR = currentMonthMRR || 1000
+                        const growthRate = monthlyGrowthRate / 100
+                        let total = 0
+                        let mrr = baseMRR
+                        for (let month = 1; month <= timeRange * 12; month++) {
+                          mrr *= (1 + growthRate / 12)
+                          total += mrr
+                        }
+                        return total
+                      })())}
+                    </p>
+                    <p className="text-xs text-black/60 dark:text-white/60 mt-1">Cumulative revenue</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-black/60 dark:text-white/60 mb-1">Year {timeRange} MRR</p>
+                    <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                      {formatCurrency((() => {
+                        const baseMRR = currentMonthMRR || 1000
+                        const growthRate = monthlyGrowthRate / 100
+                        let mrr = baseMRR
+                        for (let month = 1; month <= timeRange * 12; month++) {
+                          mrr *= (1 + growthRate / 12)
+                        }
+                        return mrr
+                      })())}
+                    </p>
+                    <p className="text-xs text-black/60 dark:text-white/60 mt-1">Monthly recurring</p>
+                  </CardContent>
+                </Card>
+                <Card className="border-2 border-transparent dark:border-white">
+                  <CardContent className="p-4">
+                    <p className="text-sm text-black/60 dark:text-white/60 mb-1">Projected Users</p>
+                    <p className="text-xl font-bold text-black dark:text-white">
+                      {(() => {
+                        const baseUsers = users.length || 10
+                        const growthRate = monthlyGrowthRate / 100
+                        let userCount = baseUsers
+                        for (let month = 1; month <= timeRange * 12; month++) {
+                          userCount *= (1 + growthRate / 12) * (1 - churnRate / 100 / 12)
+                        }
+                        return Math.round(userCount).toLocaleString()
+                      })()}
+                    </p>
+                    <p className="text-xs text-black/60 dark:text-white/60 mt-1">After {timeRange} years</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Revenue Breakdown by Source */}
+              <Card className="border-2 border-transparent dark:border-white">
+                <CardHeader>
+                  <CardTitle className="text-lg">Projected Revenue by Source (Year {timeRange})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {(() => {
+                      const baseMRR = currentMonthMRR || 1000
+                      const growthRate = monthlyGrowthRate / 100
+                      let mrr = baseMRR
+                      for (let month = 1; month <= timeRange * 12; month++) {
+                        mrr *= (1 + growthRate / 12)
+                      }
+                      const finalYearMRR = mrr
+                      const proSubs = (users.filter(u => u.role === 'contractor' && u.isPro).length || 1) * (1 + growthRate) ** timeRange * 39
+                      const platformFees = finalYearMRR * 0.6
+                      const processingFees = finalYearMRR * 0.3
+                      
+                      return (
+                        <>
+                          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <Crown size={16} className="text-amber-600" />
+                              <span className="font-semibold text-black dark:text-white">Pro Subscriptions</span>
+                            </div>
+                            <span className="font-bold text-black dark:text-white">{formatCurrency(proSubs * 12)}</span>
+                          </div>
+                          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <Receipt size={16} className="text-primary" />
+                              <span className="font-semibold text-black dark:text-white">Platform Fees</span>
+                            </div>
+                            <span className="font-bold text-black dark:text-white">{formatCurrency(platformFees * 12)}</span>
+                          </div>
+                          <div className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                            <div className="flex items-center gap-2">
+                              <Wallet size={16} className="text-green-600" />
+                              <span className="font-semibold text-black dark:text-white">Processing Fees</span>
+                            </div>
+                            <span className="font-bold text-black dark:text-white">{formatCurrency(processingFees * 12)}</span>
+                          </div>
+                        </>
+                      )
+                    })()}
+                  </div>
+                </CardContent>
+              </Card>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="risks" className="mt-6 space-y-6">
+          <Card glass={isPro}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingDown size={20} weight="duotone" className="text-red-600" />
+                Risk Analysis
+              </CardTitle>
+              <CardDescription>
+                Comprehensive risk assessment and mitigation strategies
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  {
+                    type: 'market',
+                    label: 'Market Volatility',
+                    severity: 'medium',
+                    probability: 35,
+                    impact: totalRevenue * 0.15,
+                    mitigation: ['Diversify revenue streams', 'Build cash reserves', 'Monitor market trends']
+                  },
+                  {
+                    type: 'churn',
+                    label: 'Customer Churn',
+                    severity: 'high',
+                    probability: 45,
+                    impact: totalRevenue * 0.20,
+                    mitigation: ['Improve customer retention', 'Enhance product value', 'Regular customer feedback']
+                  },
+                  {
+                    type: 'competition',
+                    label: 'Competition',
+                    severity: 'high',
+                    probability: 60,
+                    impact: totalRevenue * 0.25,
+                    mitigation: ['Differentiate features', 'Build brand loyalty', 'Focus on customer experience']
+                  },
+                  {
+                    type: 'technology',
+                    label: 'Technology Risks',
+                    severity: 'medium',
+                    probability: 30,
+                    impact: totalRevenue * 0.10,
+                    mitigation: ['Regular security audits', 'Keep tech stack updated', 'Disaster recovery plan']
+                  },
+                  {
+                    type: 'regulatory',
+                    label: 'Regulatory Changes',
+                    severity: 'low',
+                    probability: 20,
+                    impact: totalRevenue * 0.05,
+                    mitigation: ['Stay compliant', 'Legal review', 'Monitor regulations']
+                  }
+                ].map((risk, idx) => {
+                  const severityColors = {
+                    low: 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900/30',
+                    medium: 'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900/30',
+                    high: 'bg-orange-50 dark:bg-orange-950/20 border-orange-200 dark:border-orange-900/30',
+                    critical: 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-900/30'
+                  }
+                  return (
+                    <div
+                      key={idx}
+                      className={cn("p-4 rounded-lg border", severityColors[risk.severity as keyof typeof severityColors])}
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h4 className="font-semibold text-black dark:text-white">{risk.label}</h4>
+                          <div className="flex items-center gap-3 mt-1">
+                            <Badge variant={risk.severity === 'high' || risk.severity === 'critical' ? 'destructive' : 'outline'}>
+                              {risk.severity.toUpperCase()}
+                            </Badge>
+                            <span className="text-sm text-black/60 dark:text-white/60">
+                              {risk.probability}% probability
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-lg font-bold text-red-600">
+                            {formatCurrency(risk.impact)}
+                          </p>
+                          <p className="text-xs text-black/60 dark:text-white/60">Potential impact</p>
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <p className="text-sm font-semibold text-black dark:text-white mb-2">Mitigation Strategies:</p>
+                        <ul className="list-disc list-inside space-y-1 text-sm text-black/60 dark:text-white/60">
+                          {risk.mitigation.map((strategy, i) => (
+                            <li key={i}>{strategy}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="expenses" className="mt-6 space-y-6">
+          <Card glass={isPro}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Wallet size={20} weight="duotone" className="text-primary" />
+                Detailed Expense Breakdown
+              </CardTitle>
+              <CardDescription>
+                Comprehensive expense tracking by category
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  {
+                    category: 'Infrastructure',
+                    items: [
+                      { name: 'Cloud Servers (AWS/GCP)', amount: totalRevenue * 0.08 },
+                      { name: 'CDN & Bandwidth', amount: totalRevenue * 0.02 },
+                      { name: 'Database Hosting', amount: totalRevenue * 0.03 },
+                      { name: 'Monitoring & Logging', amount: totalRevenue * 0.02 }
+                    ],
+                    total: totalRevenue * 0.15,
+                    type: 'fixed'
+                  },
+                  {
+                    category: 'Development',
+                    items: [
+                      { name: 'Engineering Team', amount: totalRevenue * 0.25 },
+                      { name: 'DevOps & Infrastructure', amount: totalRevenue * 0.05 },
+                      { name: 'QA & Testing', amount: totalRevenue * 0.03 },
+                      { name: 'Tools & Licenses', amount: totalRevenue * 0.02 }
+                    ],
+                    total: totalRevenue * 0.35,
+                    type: 'fixed'
+                  },
+                  {
+                    category: 'Marketing',
+                    items: [
+                      { name: 'Customer Acquisition (CAC)', amount: totalRevenue * 0.05 },
+                      { name: 'Digital Advertising', amount: totalRevenue * 0.02 },
+                      { name: 'Content Marketing', amount: totalRevenue * 0.015 },
+                      { name: 'Events & Conferences', amount: totalRevenue * 0.01 },
+                      { name: 'Brand & Design', amount: totalRevenue * 0.005 }
+                    ],
+                    total: totalRevenue * 0.10,
+                    type: 'variable'
+                  },
+                  {
+                    category: 'Support & Operations',
+                    items: [
+                      { name: 'Customer Support Team', amount: totalRevenue * 0.04 },
+                      { name: 'Support Tools', amount: totalRevenue * 0.005 },
+                      { name: 'Training & Documentation', amount: totalRevenue * 0.005 }
+                    ],
+                    total: totalRevenue * 0.05,
+                    type: 'fixed'
+                  },
+                  {
+                    category: 'Legal & Compliance',
+                    items: [
+                      { name: 'Legal Counsel', amount: totalRevenue * 0.015 },
+                      { name: 'Compliance & Audits', amount: totalRevenue * 0.01 },
+                      { name: 'Insurance', amount: totalRevenue * 0.01 }
+                    ],
+                    total: totalRevenue * 0.035,
+                    type: 'fixed'
+                  },
+                  {
+                    category: 'Office & Overhead',
+                    items: [
+                      { name: 'Office Space', amount: totalRevenue * 0.02 },
+                      { name: 'Utilities & Equipment', amount: totalRevenue * 0.01 },
+                      { name: 'Administrative', amount: totalRevenue * 0.01 }
+                    ],
+                    total: totalRevenue * 0.04,
+                    type: 'fixed'
+                  }
+                ].map((category, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="font-semibold text-black dark:text-white">{category.category}</h4>
+                        <Badge variant="outline" className="mt-1">
+                          {category.type === 'fixed' ? 'Fixed Cost' : 'Variable Cost'}
+                        </Badge>
+                      </div>
+                      <p className="text-xl font-bold text-black dark:text-white">
+                        {formatCurrency(category.total)}
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      {category.items.map((item, i) => (
+                        <div key={i} className="flex items-center justify-between text-sm">
+                          <span className="text-black/60 dark:text-white/60">{item.name}</span>
+                          <span className="font-semibold text-black dark:text-white">
+                            {formatCurrency(item.amount)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/30">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-black dark:text-white">Total Expenses</p>
+                    <p className="text-2xl font-bold text-red-600">
+                      {formatCurrency(totalRevenue * 0.705)}
+                    </p>
+                  </div>
+                  <p className="text-xs text-black/60 dark:text-white/60 mt-2">
+                    {((totalRevenue * 0.705 / totalRevenue) * 100).toFixed(1)}% of total revenue
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="upkeep" className="mt-6 space-y-6">
+          <Card glass={isPro}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Timer size={20} weight="duotone" className="text-primary" />
+                Upkeep & Maintenance Costs
+              </CardTitle>
+              <CardDescription>
+                Ongoing maintenance and operational costs
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {[
+                  {
+                    category: 'System Maintenance',
+                    monthly: totalRevenue * 0.02,
+                    items: [
+                      'Server maintenance and updates',
+                      'Database optimization',
+                      'Performance monitoring',
+                      'Load balancing adjustments'
+                    ]
+                  },
+                  {
+                    category: 'Security & Monitoring',
+                    monthly: totalRevenue * 0.015,
+                    items: [
+                      'Security audits and patches',
+                      'Threat monitoring',
+                      'SSL certificates',
+                      'Compliance checks'
+                    ]
+                  },
+                  {
+                    category: 'Backup & Disaster Recovery',
+                    monthly: totalRevenue * 0.01,
+                    items: [
+                      'Automated backups',
+                      'Disaster recovery testing',
+                      'Data redundancy',
+                      'Recovery time optimization'
+                    ]
+                  },
+                  {
+                    category: 'Bug Fixes & Technical Debt',
+                    monthly: totalRevenue * 0.025,
+                    items: [
+                      'Bug resolution',
+                      'Code refactoring',
+                      'Technical debt reduction',
+                      'Code quality improvements'
+                    ]
+                  },
+                  {
+                    category: 'Feature Updates & Patches',
+                    monthly: totalRevenue * 0.02,
+                    items: [
+                      'Feature enhancements',
+                      'Security patches',
+                      'Third-party updates',
+                      'API versioning'
+                    ]
+                  },
+                  {
+                    category: 'Performance Optimization',
+                    monthly: totalRevenue * 0.01,
+                    items: [
+                      'Performance tuning',
+                      'Caching optimization',
+                      'Database query optimization',
+                      'CDN optimization'
+                    ]
+                  }
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-black dark:text-white">{item.category}</h4>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-black dark:text-white">
+                          {formatCurrency(item.monthly)}/mo
+                        </p>
+                        <p className="text-xs text-black/60 dark:text-white/60">
+                          {formatCurrency(item.monthly * 12)}/year
+                        </p>
+                      </div>
+                    </div>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-black/60 dark:text-white/60">
+                      {item.items.map((listItem, i) => (
+                        <li key={i}>{listItem}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30">
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-black dark:text-white">Total Monthly Upkeep</p>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {formatCurrency(totalRevenue * 0.10)}
+                    </p>
+                  </div>
+                  <p className="text-xs text-black/60 dark:text-white/60 mt-2">
+                    Annual: {formatCurrency(totalRevenue * 0.10 * 12)}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="pro-projections" className="mt-6 space-y-6">
+          <Card glass={isPro}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Crown size={20} weight="duotone" className="text-amber-600" />
+                Pro Membership Projections
+              </CardTitle>
+              <CardDescription>
+                Projected Pro revenue from Homeowners, Contractors, and Subcontractors
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Conversion Rate Controls */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">
+                    Homeowner Pro Conversion
+                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[15]}
+                      min={0}
+                      max={50}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={15}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={0}
+                      max={50}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-black/60 dark:text-white/60">%</span>
+                  </div>
+                  <p className="text-xs text-black/60 dark:text-white/60">
+                    Expected conversion rate
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">
+                    Contractor Pro Conversion
+                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[25]}
+                      min={0}
+                      max={50}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={25}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={0}
+                      max={50}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-black/60 dark:text-white/60">%</span>
+                  </div>
+                  <p className="text-xs text-black/60 dark:text-white/60">
+                    Expected conversion rate
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold text-black dark:text-white">
+                    Subcontractor Pro Conversion
+                  </Label>
+                  <div className="flex items-center gap-2">
+                    <Slider
+                      value={[20]}
+                      min={0}
+                      max={50}
+                      step={0.5}
+                      className="flex-1"
+                    />
+                    <Input
+                      type="number"
+                      value={20}
+                      className="w-20 bg-white dark:bg-black border-transparent dark:border-white"
+                      min={0}
+                      max={50}
+                      step={0.5}
+                    />
+                    <span className="text-sm text-black/60 dark:text-white/60">%</span>
+                  </div>
+                  <p className="text-xs text-black/60 dark:text-white/60">
+                    Expected conversion rate
+                  </p>
+                </div>
+              </div>
+
+              {/* Pro Revenue Projections */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {(() => {
+                  const homeowners = users.filter(u => u.role === 'homeowner').length
+                  const contractors = users.filter(u => u.role === 'contractor').length
+                  const subcontractors = users.filter(u => u.role === 'subcontractor').length || 0
+                  
+                  const homeownerProRate = 0.15
+                  const contractorProRate = 0.25
+                  const subcontractorProRate = 0.20
+                  
+                  const homeownerProPrice = 29
+                  const contractorProPrice = 59
+                  const subcontractorProPrice = 39
+                  
+                  const projectedHomeownerPro = Math.round(homeowners * homeownerProRate)
+                  const projectedContractorPro = Math.round(contractors * contractorProRate)
+                  const projectedSubcontractorPro = Math.round(subcontractors * subcontractorProRate)
+                  
+                  const homeownerMRR = projectedHomeownerPro * homeownerProPrice
+                  const contractorMRR = projectedContractorPro * contractorProPrice
+                  const subcontractorMRR = projectedSubcontractorPro * subcontractorProPrice
+                  
+                  return (
+                    <>
+                      <Card className="border-2 border-transparent dark:border-white">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Users size={20} className="text-blue-600" />
+                            <h4 className="font-semibold text-black dark:text-white">Homeowners</h4>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Total Users</span>
+                              <span className="font-semibold text-black dark:text-white">{homeowners}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Pro Members</span>
+                              <span className="font-semibold text-black dark:text-white">{projectedHomeownerPro}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Conversion</span>
+                              <Badge variant="outline">{(homeownerProRate * 100).toFixed(0)}%</Badge>
+                            </div>
+                            <div className="pt-2 border-t border-transparent dark:border-white">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-black/60 dark:text-white/60">Monthly Revenue</span>
+                                <span className="text-lg font-bold text-green-600">
+                                  {formatCurrency(homeownerMRR)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between mt-1">
+                                <span className="text-xs text-black/60 dark:text-white/60">Annual</span>
+                                <span className="text-sm font-semibold text-black dark:text-white">
+                                  {formatCurrency(homeownerMRR * 12)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-2 border-transparent dark:border-white">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Crown size={20} className="text-amber-600" />
+                            <h4 className="font-semibold text-black dark:text-white">Contractors</h4>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Total Users</span>
+                              <span className="font-semibold text-black dark:text-white">{contractors}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Pro Members</span>
+                              <span className="font-semibold text-black dark:text-white">{projectedContractorPro}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Conversion</span>
+                              <Badge variant="outline">{(contractorProRate * 100).toFixed(0)}%</Badge>
+                            </div>
+                            <div className="pt-2 border-t border-transparent dark:border-white">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-black/60 dark:text-white/60">Monthly Revenue</span>
+                                <span className="text-lg font-bold text-green-600">
+                                  {formatCurrency(contractorMRR)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between mt-1">
+                                <span className="text-xs text-black/60 dark:text-white/60">Annual</span>
+                                <span className="text-sm font-semibold text-black dark:text-white">
+                                  {formatCurrency(contractorMRR * 12)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-2 border-transparent dark:border-white">
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Building size={20} className="text-purple-600" />
+                            <h4 className="font-semibold text-black dark:text-white">Subcontractors</h4>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Total Users</span>
+                              <span className="font-semibold text-black dark:text-white">{subcontractors}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Pro Members</span>
+                              <span className="font-semibold text-black dark:text-white">{projectedSubcontractorPro}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-black/60 dark:text-white/60">Conversion</span>
+                              <Badge variant="outline">{(subcontractorProRate * 100).toFixed(0)}%</Badge>
+                            </div>
+                            <div className="pt-2 border-t border-transparent dark:border-white">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-black/60 dark:text-white/60">Monthly Revenue</span>
+                                <span className="text-lg font-bold text-green-600">
+                                  {formatCurrency(subcontractorMRR)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between mt-1">
+                                <span className="text-xs text-black/60 dark:text-white/60">Annual</span>
+                                <span className="text-sm font-semibold text-black dark:text-white">
+                                  {formatCurrency(subcontractorMRR * 12)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="col-span-3 border-2 border-transparent dark:border-white bg-green-50 dark:bg-green-950/20">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-semibold text-black dark:text-white mb-1">Total Pro Revenue</h4>
+                              <p className="text-sm text-black/60 dark:text-white/60">
+                                Combined from all user types
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-3xl font-bold text-green-600">
+                                {formatCurrency(homeownerMRR + contractorMRR + subcontractorMRR)}
+                              </p>
+                              <p className="text-sm text-black/60 dark:text-white/60 mt-1">
+                                Monthly • {formatCurrency((homeownerMRR + contractorMRR + subcontractorMRR) * 12)}/year
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </>
+                  )
+                })()}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

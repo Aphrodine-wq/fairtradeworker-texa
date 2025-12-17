@@ -414,7 +414,7 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
                 ) : (
                   <div className="space-y-3">
                     {todaySchedule.map(job => (
-                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md">
+                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border-transparent dark:border-white/20 rounded-md">
                         <MapPin className="h-4 w-4 text-primary mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{job.title}</p>
@@ -513,7 +513,7 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
                       onClick={() => onNavigate(tool.page)}
                     >
                       <div className="flex items-center gap-4">
-                        <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm flex-shrink-0">
+                        <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm flex-shrink-0">
                           <Icon className="h-6 w-6 text-primary" />
                         </div>
                         <div className="min-w-0 flex-1">
@@ -529,9 +529,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Default tools if no pinned tools */}
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('browse-jobs')}>
+              onClick={() => onNavigate('browse-jobs-page')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Wrench className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -542,9 +542,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('my-jobs')}>
+              onClick={() => onNavigate('my-jobs-page')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Briefcase className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -555,9 +555,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('crm')}>
+              onClick={() => onNavigate('customer-crm')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
@@ -568,7 +568,7 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('invoices')}>
+              onClick={() => onNavigate('invoices-page')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
                   <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
@@ -581,9 +581,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('business-tools')}>
+              onClick={() => onNavigate('business-tools-page')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
                 </div>
                 <div>
@@ -594,9 +594,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('dashboard')}>
+              onClick={() => onNavigate('route-builder')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -607,9 +607,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('dashboard')}>
+              onClick={() => onNavigate('daily-briefing')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Sun className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -620,9 +620,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('dashboard')}>
+              onClick={() => onNavigate('certifications')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Shield className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -633,9 +633,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('dashboard')}>
+              onClick={() => onNavigate('smart-replies')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <ChatCircleDots className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>
@@ -646,9 +646,9 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('dashboard')}>
+              onClick={() => onNavigate('referrals')}>
               <div className="flex items-center gap-4">
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <UserPlus className="h-6 w-6 text-primary" weight="duotone" />
                 </div>
                 <div>

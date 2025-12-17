@@ -5,6 +5,7 @@ This document contains find-and-replace patterns for updating components to brut
 ## Common Patterns to Replace
 
 ### Rounded Corners
+
 - `rounded-xl` → `rounded-none`
 - `rounded-2xl` → `rounded-none`
 - `rounded-lg` → `rounded-none`
@@ -13,6 +14,7 @@ This document contains find-and-replace patterns for updating components to brut
 - `rounded-sm` → `rounded-none` (or keep minimal if absolutely necessary)
 
 ### Shadows
+
 - `shadow-sm` → `shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`
 - `shadow-md` → `shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]`
 - `shadow-lg` → `shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]`
@@ -23,6 +25,7 @@ This document contains find-and-replace patterns for updating components to brut
 - `hover:shadow-xl` → `hover:shadow-[8px_8px_0_#000] dark:hover:shadow-[8px_8px_0_#fff]`
 
 ### Borders
+
 - `border` → `border-2 border-black dark:border-white`
 - `border border-black/10` → `border-2 border-black dark:border-white`
 - `border border-white/10` → `border-2 border-black dark:border-white`
@@ -30,6 +33,7 @@ This document contains find-and-replace patterns for updating components to brut
 - `border-2 border-white/10` → `border-2 border-black dark:border-white`
 
 ### Transparency
+
 - `bg-black/20` → `bg-black`
 - `bg-white/10` → `bg-white dark:bg-black`
 - `bg-background/50` → `bg-white dark:bg-black`
@@ -42,12 +46,14 @@ This document contains find-and-replace patterns for updating components to brut
 - `text-white/70` → `text-white dark:text-black`
 
 ### Typography
+
 - `font-semibold` → `font-black uppercase` (for buttons, badges, important text)
 - `font-medium` → `font-black` (for emphasis)
 - Add `font-mono` to: numbers, stats, codes, IDs, timestamps
 - Add `uppercase tracking-tight` to: buttons, badges, labels
 
 ### Colors
+
 - Use pure colors: `#FFFFFF`, `#000000`, `#00FF00`, `#FF0000`, `#FFFF00`
 - No opacity variants
 - No gradients
@@ -55,6 +61,7 @@ This document contains find-and-replace patterns for updating components to brut
 ### Component-Specific Patterns
 
 #### Cards
+
 ```tsx
 // Before
 <Card className="rounded-xl shadow-lg">
@@ -64,6 +71,7 @@ This document contains find-and-replace patterns for updating components to brut
 ```
 
 #### Buttons
+
 ```tsx
 // Before
 <Button className="rounded-lg shadow-md">
@@ -73,6 +81,7 @@ This document contains find-and-replace patterns for updating components to brut
 ```
 
 #### Inputs
+
 ```tsx
 // Before
 <Input className="rounded-lg border border-black/10">
@@ -84,6 +93,7 @@ This document contains find-and-replace patterns for updating components to brut
 ## Files Remaining to Update
 
 ### UI Components (22 files)
+
 - calendar.tsx
 - chart.tsx
 - PhotoUploader.tsx
@@ -108,12 +118,15 @@ This document contains find-and-replace patterns for updating components to brut
 - sheet.tsx
 
 ### Contractor Components (29 files)
+
 - All files in src/components/contractor/
 
 ### Job Components (15 files)
+
 - All files in src/components/jobs/
 
 ### Page Components (13 files)
+
 - All files in src/pages/
 
 ## Priority Order

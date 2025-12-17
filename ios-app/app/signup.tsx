@@ -14,13 +14,15 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, TextInput, Card } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 import type { UserRole } from '@/src/types';
 
 export default function SignupScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ role?: string }>();
   const { users, signup } = useAppStore();
+  const { isTablet } = useResponsive();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -101,10 +103,10 @@ export default function SignupScreen() {
       >
         <ScrollView
           style={styles.container}
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}
           keyboardShouldPersistTaps="handled"
         >
-          <Card variant="elevated" padding="lg" style={styles.card}>
+          <Card variant="elevated" padding="lg" style={[styles.card, isTablet && styles.cardTablet]}>
             <Text style={styles.title}>Create Account</Text>
             <Text style={styles.description}>
               Join FairTradeWorker Texas today
@@ -226,7 +228,16 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingBottom: Spacing.xxxl,
   },
+  contentTablet: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Spacing.tablet.xl,
+  },
   card: {
+    width: '100%',
+  },
+  cardTablet: {
+    maxWidth: 520,
     width: '100%',
   },
   title: {

@@ -5,13 +5,17 @@ import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
 import { LoadAnimation } from "@/components/ui/LoadAnimation"
+import { KeyboardShortcutsModal } from "@/components/ui/KeyboardShortcutsModal"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts"
 import { initializeDemoData } from "@/lib/demoData"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { AnimatePresence } from "framer-motion"
+import { PageTransition } from "@/components/layout/PageTransition"
 
 const retryImport = <T,>(importFn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
   return importFn().catch((error) => {
@@ -249,7 +253,69 @@ const SMSPhotoScope = lazy(() => retryImport(() =>
   import("@/components/homeowner/SMSPhotoScope").then(m => ({ default: m.SMSPhotoScope }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
+// Quick Actions Pages
+const BrowseJobsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/BrowseJobsPage").then(m => ({ default: m.BrowseJobsPage }))
+))
+const FindOpportunitiesPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/FindOpportunitiesPage").then(m => ({ default: m.FindOpportunitiesPage }))
+))
+const MyJobsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/MyJobsPage").then(m => ({ default: m.MyJobsPage }))
+))
+const ManageProjectsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/ManageProjectsPage").then(m => ({ default: m.ManageProjectsPage }))
+))
+const CustomerCRMPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/CustomerCRMPage").then(m => ({ default: m.CustomerCRMPage }))
+))
+const ManageRelationshipsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/ManageRelationshipsPage").then(m => ({ default: m.ManageRelationshipsPage }))
+))
+const InvoicesPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/InvoicesPage").then(m => ({ default: m.InvoicesPage }))
+))
+const TrackPaymentsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/TrackPaymentsPage").then(m => ({ default: m.TrackPaymentsPage }))
+))
+const BusinessToolsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/BusinessToolsPage").then(m => ({ default: m.BusinessToolsPage }))
+))
+const AllInOneToolkitPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/AllInOneToolkitPage").then(m => ({ default: m.AllInOneToolkitPage }))
+))
+const RouteBuilderPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/RouteBuilderPage").then(m => ({ default: m.RouteBuilderPage }))
+))
+const OptimizeRoutesPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/OptimizeRoutesPage").then(m => ({ default: m.OptimizeRoutesPage }))
+))
+const DailyBriefingPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/DailyBriefingPage").then(m => ({ default: m.DailyBriefingPage }))
+))
+const TodaysOverviewPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/TodaysOverviewPage").then(m => ({ default: m.TodaysOverviewPage }))
+))
+const CertificationsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/CertificationsPage").then(m => ({ default: m.CertificationsPage }))
+))
+const ManageCredentialsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/ManageCredentialsPage").then(m => ({ default: m.ManageCredentialsPage }))
+))
+const SmartRepliesPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/SmartRepliesPage").then(m => ({ default: m.SmartRepliesPage }))
+))
+const QuickResponsesPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/QuickResponsesPage").then(m => ({ default: m.QuickResponsesPage }))
+))
+const ReferralsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/ReferralsPage").then(m => ({ default: m.ReferralsPage }))
+))
+const EarnRewardsPage = lazy(() => retryImport(() =>
+  import("@/pages/quick-actions/EarnRewardsPage").then(m => ({ default: m.EarnRewardsPage }))
+))
+
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
 type NavigationState = { page: Page; jobId?: string }
 
 class ErrorBoundary extends Component<
@@ -331,6 +397,8 @@ function App() {
   const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   const [bidTemplates, setBidTemplates] = useLocalKV<import("@/lib/types").BidTemplate[]>("bidTemplates", [])
   const [showLoadAnimation, setShowLoadAnimation] = useState(true)
+  const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false)
+  const [gKeyPressed, setGKeyPressed] = useState(false)
   
   const { isOnline } = useServiceWorker()
   const { processQueue, queue } = useOfflineQueue()
@@ -392,6 +460,96 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'instant' } as ScrollToOptions)
   }, [])
 
+  // Handle G key navigation mode
+  useEffect(() => {
+    if (!gKeyPressed) return
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase()
+      switch (key) {
+        case 'h':
+          handleNavigate('home')
+          setGKeyPressed(false)
+          break
+        case 'j':
+          handleNavigate('browse-jobs-page')
+          setGKeyPressed(false)
+          break
+        case 'm':
+          handleNavigate('my-jobs-page')
+          setGKeyPressed(false)
+          break
+        case 'i':
+          if (currentUser?.role === 'contractor' || currentUser?.role === 'operator') {
+            handleNavigate('invoices-page')
+            setGKeyPressed(false)
+          }
+          break
+        case 'c':
+          if (currentUser?.role === 'contractor' || currentUser?.role === 'operator') {
+            handleNavigate('customer-crm')
+            setGKeyPressed(false)
+          }
+          break
+        case 'd':
+          if (currentUser) {
+            handleNavigate('dashboard')
+            setGKeyPressed(false)
+          }
+          break
+        default:
+          setGKeyPressed(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [gKeyPressed, handleNavigate, currentUser])
+
+  // Keyboard shortcuts
+  useKeyboardShortcuts(
+    useMemo(
+      () => [
+        {
+          key: 'k',
+          ctrl: true,
+          description: 'Open search / Command palette',
+          action: () => {
+            toast.info('Command palette coming soon')
+          },
+        },
+        {
+          key: '/',
+          ctrl: true,
+          description: 'Show keyboard shortcuts help',
+          action: () => setShortcutsModalOpen(true),
+        },
+        {
+          key: '?',
+          description: 'Show keyboard shortcuts help',
+          action: () => setShortcutsModalOpen(true),
+        },
+        {
+          key: 'g',
+          description: 'Navigation mode (press G then another key)',
+          action: () => {
+            setGKeyPressed(true)
+            setTimeout(() => setGKeyPressed(false), 2000)
+          },
+        },
+        {
+          key: 'Escape',
+          description: 'Close modals / dialogs',
+          action: () => {
+            setShortcutsModalOpen(false)
+          },
+        },
+      ],
+      []
+    ),
+    true
+  )
+
   const handleLogin = useCallback((user: User) => {
     setCurrentUser(user)
     setIsDemoMode(false)
@@ -441,6 +599,34 @@ function App() {
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
         return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'post-job-voice':
+        return currentUser ? (
+          (() => {
+            sessionStorage.setItem('postJobMethod', 'audio')
+            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
+          })()
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'post-job-photo':
+        return currentUser ? (
+          (() => {
+            sessionStorage.setItem('postJobMethod', 'photos')
+            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
+          })()
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'post-job-video':
+        return currentUser ? (
+          (() => {
+            sessionStorage.setItem('postJobMethod', 'video')
+            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
+          })()
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'post-job-text':
+        return currentUser ? (
+          (() => {
+            sessionStorage.setItem('postJobMethod', 'text')
+            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
+          })()
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'unified-post-job':
         return (
           <Suspense fallback={<LoadingFallback />}>
@@ -772,7 +958,7 @@ function App() {
       case 'receptionist-upsell':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <ReceptionistUpsell user={currentUser} />
+            <ReceptionistUpsell user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       
@@ -835,6 +1021,127 @@ function App() {
             <ClientPaymentPortalPage user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      // Quick Actions Pages
+      case 'browse-jobs-page':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <BrowseJobsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'find-opportunities':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <FindOpportunitiesPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'my-jobs-page':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <MyJobsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'manage-projects':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ManageProjectsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'customer-crm':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CustomerCRMPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'manage-relationships':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ManageRelationshipsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'invoices-page':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <InvoicesPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'track-payments':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <TrackPaymentsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'business-tools-page':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <BusinessToolsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'all-in-one-toolkit':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <AllInOneToolkitPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'route-builder':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <RouteBuilderPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'optimize-routes':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <OptimizeRoutesPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'daily-briefing':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <DailyBriefingPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'todays-overview':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <TodaysOverviewPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'certifications':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CertificationsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'manage-credentials':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ManageCredentialsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'smart-replies':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <SmartRepliesPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'quick-responses':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <QuickResponsesPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'referrals':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ReferralsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'earn-rewards':
+        return currentUser ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <EarnRewardsPage user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       default:
         return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
     }
@@ -867,7 +1174,25 @@ function App() {
           </Suspense>
         </ErrorBoundary>
       </main>
-      <Footer onNavigate={handleNavigate} />
+      {currentPage !== 'crm' && <Footer onNavigate={handleNavigate} />}
+      <KeyboardShortcutsModal 
+        open={shortcutsModalOpen} 
+        onOpenChange={setShortcutsModalOpen}
+        customShortcuts={[
+          { key: 'g', description: 'Navigation mode (press G then H/J/M/I/C/D)' },
+          { key: 'h', description: 'Go to Home (after G)' },
+          { key: 'j', description: 'Go to Browse Jobs (after G)' },
+          { key: 'm', description: 'Go to My Jobs (after G)' },
+          { key: 'i', description: 'Go to Invoices (after G, contractors only)' },
+          { key: 'c', description: 'Go to CRM (after G, contractors only)' },
+          { key: 'd', description: 'Go to Dashboard (after G)' },
+        ]}
+      />
+      {gKeyPressed && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg shadow-lg">
+          <p className="text-sm font-semibold">Navigation mode: Press H, J, M, I, C, or D</p>
+        </div>
+      )}
       <Toaster position="top-center" />
     </div>
   )

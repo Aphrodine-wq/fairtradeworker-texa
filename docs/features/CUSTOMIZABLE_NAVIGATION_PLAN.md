@@ -1,7 +1,9 @@
 # Customizable Navigation Feature - Implementation Plan
 
 ## Overview
+
 Allow users to customize their navigation by:
+
 1. Choosing which tools appear in navigation
 2. Reordering tools via drag-and-drop
 3. Persisting preferences using existing `useLocalKV` system
@@ -58,6 +60,7 @@ export const DEFAULT_NAVIGATION: Record<UserRole, NavItem[]> = {
 ## Components to Create
 
 ### 1. NavigationCustomizer Component
+
 Main UI for customizing navigation
 
 ```typescript
@@ -81,6 +84,7 @@ interface NavigationCustomizerProps {
 ```
 
 ### 2. DraggableNavItem Component
+
 Individual draggable navigation item
 
 ```typescript
@@ -93,6 +97,7 @@ import type { NavItem } from '@/lib/types/navigation'
 ```
 
 ### 3. Navigation Preferences Hook
+
 Custom hook for managing navigation preferences
 
 ```typescript
@@ -108,11 +113,13 @@ import { DEFAULT_NAVIGATION } from '@/lib/types/navigation'
 ## Implementation Steps
 
 ### Step 1: Create Type Definitions
+
 1. Create `src/lib/types/navigation.ts` with all type definitions
 2. Define default navigation configurations
 3. Export types for use across the app
 
 ### Step 2: Create Navigation Preferences Hook
+
 1. Create `src/hooks/useNavigationPreferences.ts`
 2. Implement logic to:
    - Load user preferences or use defaults
@@ -121,6 +128,7 @@ import { DEFAULT_NAVIGATION } from '@/lib/types/navigation'
    - Handle migrations if schema changes
 
 ### Step 3: Create Navigation Customization UI
+
 1. Create `src/components/navigation/NavigationCustomizer.tsx`
 2. Implement drag-and-drop using native HTML5 drag API (no external deps)
 3. Add visibility toggles
@@ -128,6 +136,7 @@ import { DEFAULT_NAVIGATION } from '@/lib/types/navigation'
 5. Follow brutalist design system
 
 ### Step 4: Integrate with Header Component
+
 1. Modify `src/components/layout/Header.tsx`
 2. Use `useNavigationPreferences` hook
 3. Render navigation items from preferences
@@ -135,6 +144,7 @@ import { DEFAULT_NAVIGATION } from '@/lib/types/navigation'
 5. Handle required items (cannot be hidden)
 
 ### Step 5: Handle Edge Cases
+
 1. New tools added in updates (merge into user preferences)
 2. User hides all items (ensure at least required items remain)
 3. Migration of old preferences to new schema
@@ -210,21 +220,25 @@ export function useNavigationPreferences(user: User | null) {
 ## Edge Case Handling
 
 ### 1. New Tools Added
+
 - When loading preferences, merge with current defaults
 - New tools appear at end of list with `visible: true`
 - User can then customize as desired
 
 ### 2. User Hides All Items
+
 - Prevent hiding required items
 - Show warning if user tries to hide all non-required items
 - Always ensure at least one visible item
 
 ### 3. Schema Migration
+
 - Store version in preferences
 - On load, check version and migrate if needed
 - Migrate function handles old format → new format
 
 ### 4. Role Changes
+
 - If user role changes, reset to new role's defaults
 - Store preferences per role if needed
 - Or reset on role change
@@ -232,6 +246,7 @@ export function useNavigationPreferences(user: User | null) {
 ## Design Considerations
 
 ### Brutalist Design Elements
+
 - 2-4px solid borders (black/white)
 - Hard shadows (no blur)
 - No rounded corners (except where existing)
@@ -240,12 +255,14 @@ export function useNavigationPreferences(user: User | null) {
 - Specific color palette only
 
 ### Drag and Drop
+
 - Use native HTML5 drag API (no external library)
 - Visual feedback with borders during drag
 - Drop zones clearly marked
 - Snap-to-position behavior
 
 ### Accessibility
+
 - Keyboard navigation support
 - Screen reader announcements
 - Focus management
@@ -254,6 +271,7 @@ export function useNavigationPreferences(user: User | null) {
 ## Files to Create/Modify
 
 ### New Files
+
 1. `src/lib/types/navigation.ts` - Type definitions
 2. `src/hooks/useNavigationPreferences.ts` - Preferences hook
 3. `src/components/navigation/NavigationCustomizer.tsx` - Main UI
@@ -261,6 +279,7 @@ export function useNavigationPreferences(user: User | null) {
 5. `src/lib/utils/navigation-utils.ts` - Utility functions
 
 ### Modified Files
+
 1. `src/components/layout/Header.tsx` - Use custom navigation
 2. `src/lib/types.ts` - Export navigation types (if needed)
 

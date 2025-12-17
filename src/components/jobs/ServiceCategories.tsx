@@ -10,6 +10,8 @@ import {
   Tree,
   House,
   Broom,
+  Clock,
+  Calendar,
 } from "@phosphor-icons/react"
 
 // Main categories structure
@@ -35,6 +37,12 @@ export const allServicesByCategory: Record<string, ServiceItem[]> = {
     { id: 'ac-heat', title: 'AC or Heat Not Working', icon: Thermometer },
     { id: 'clogged-toilet', title: 'Clogged Toilet or Drain', icon: Wrench },
     { id: 'broken-window', title: 'Broken Window or Door Lock', icon: Warning },
+    { id: 'water-damage', title: 'Water Damage Emergency', icon: Warning },
+    { id: 'gas-leak', title: 'Gas Leak Detection', icon: Warning },
+    { id: 'storm-damage', title: 'Storm Damage Repair', icon: Warning },
+    { id: 'burst-pipe', title: 'Burst Pipe Emergency', icon: Wrench },
+    { id: 'power-outage', title: 'Power Outage Troubleshooting', icon: Lightning },
+    { id: 'hvac-emergency', title: 'HVAC Emergency (Extreme Temps)', icon: Thermometer },
   ],
   plumbing: [
     { id: 'plumbing-repair', title: 'Plumbing Repair', icon: Wrench },
@@ -116,6 +124,13 @@ export const allServicesByCategory: Record<string, ServiceItem[]> = {
     { id: 'junk-removal', title: 'Junk Removal', icon: Broom },
     { id: 'pressure-washing-clean', title: 'Pressure Washing', icon: Broom },
   ],
+  'quick-services': [
+    { id: 'same-day-service', title: 'Same-Day Service Requests', icon: Clock },
+    { id: 'weekend-service', title: 'Weekend Service', icon: Calendar },
+    { id: 'after-hours-service', title: 'After-Hours Service', icon: Clock },
+    { id: 'express-quotes', title: 'Express Quotes', icon: Lightning },
+    { id: 'priority-booking', title: 'Priority Booking', icon: Warning },
+  ],
 }
 
 // Main categories to display on home page
@@ -168,6 +183,12 @@ export const mainCategories: MainCategory[] = [
     icon: Broom,
     services: allServicesByCategory.cleaning,
   },
+  {
+    id: 'quick-services',
+    title: 'Quick Services',
+    icon: Clock,
+    services: allServicesByCategory['quick-services'],
+  },
 ]
 
 interface ServiceCategoriesProps {
@@ -175,27 +196,17 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Neutral color scheme - green/grey for all categories
+  // Bold rainbow color scheme for all categories
   const categoryStyles: Record<string, string> = {
-<<<<<<< Updated upstream
-    emergency: "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300",
-    plumbing: "bg-cyan-50 dark:bg-cyan-950/30 text-cyan-700 dark:text-cyan-300",
-    electrical: "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300",
-    hvac: "bg-slate-100 dark:bg-slate-900/60 text-slate-800 dark:text-slate-200",
-    repair: "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300",
-    outdoor: "bg-lime-50 dark:bg-lime-950/30 text-lime-700 dark:text-lime-300",
-    remodeling: "bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-300",
-    cleaning: "bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300"
-=======
-    emergency: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    plumbing: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    electrical: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    hvac: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    repair: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    outdoor: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    remodeling: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    cleaning: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
->>>>>>> Stashed changes
+    emergency: "bg-red-100 dark:bg-red-950/30 text-red-800 dark:text-red-300",
+    plumbing: "bg-orange-100 dark:bg-orange-950/30 text-orange-800 dark:text-orange-300",
+    electrical: "bg-yellow-100 dark:bg-yellow-950/30 text-yellow-800 dark:text-yellow-300",
+    hvac: "bg-green-100 dark:bg-green-950/30 text-green-800 dark:text-green-300",
+    repair: "bg-blue-100 dark:bg-blue-950/30 text-blue-800 dark:text-blue-300",
+    outdoor: "bg-indigo-100 dark:bg-indigo-950/30 text-indigo-800 dark:text-indigo-300",
+    remodeling: "bg-violet-100 dark:bg-violet-950/30 text-violet-800 dark:text-violet-300",
+    cleaning: "bg-teal-100 dark:bg-teal-950/30 text-teal-800 dark:text-teal-300",
+    'quick-services': "bg-purple-100 dark:bg-purple-950/30 text-purple-800 dark:text-purple-300"
   }
 
   const handleCategoryClick = (categoryId: string) => {
@@ -227,8 +238,11 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
         animate="visible"
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
       >
-        {mainCategories.map((category) => {
+        {mainCategories.map((category, index) => {
           const Icon = category.icon
+          // Center Quick Services (9th item) in 4-column grid
+          const isQuickServices = category.id === 'quick-services'
+          const centerClass = isQuickServices ? "lg:col-start-2" : ""
           return (
             <motion.div
               key={category.id}
@@ -236,6 +250,7 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
               whileHover={universalCardHover.hover}
               whileTap={{ scale: 0.98 }}
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+              className={centerClass}
             >
               <Card
                 className="cursor-pointer h-full border-2 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors"
@@ -258,29 +273,17 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                         weight="fill" 
                         className={
                           categoryStyles[category.id] 
-<<<<<<< Updated upstream
-                            ? category.id === 'emergency' ? "text-rose-700 dark:text-rose-300" :
-                              category.id === 'plumbing' ? "text-cyan-700 dark:text-cyan-300" :
-                              category.id === 'electrical' ? "text-neutral-700 dark:text-neutral-300" :
-                              category.id === 'hvac' ? "text-slate-800 dark:text-slate-200" :
-                              category.id === 'repair' ? "text-emerald-700 dark:text-emerald-300" :
-                              category.id === 'outdoor' ? "text-lime-700 dark:text-lime-300" :
-                              category.id === 'remodeling' ? "text-purple-700 dark:text-purple-300" :
-                              category.id === 'cleaning' ? "text-neutral-700 dark:text-neutral-300" :
-                              "text-neutral-800 dark:text-neutral-200"
-                            : "text-neutral-800 dark:text-neutral-200"
-=======
-                            ? category.id === 'emergency' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'plumbing' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'electrical' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'hvac' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'repair' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'outdoor' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'remodeling' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'cleaning' ? "text-gray-800 dark:text-gray-200" :
-                              "text-gray-800 dark:text-gray-200"
-                            : "text-gray-800 dark:text-gray-200"
->>>>>>> Stashed changes
+                            ? category.id === 'emergency' ? "text-red-800 dark:text-red-300" :
+                              category.id === 'plumbing' ? "text-orange-800 dark:text-orange-300" :
+                              category.id === 'electrical' ? "text-yellow-800 dark:text-yellow-300" :
+                              category.id === 'hvac' ? "text-green-800 dark:text-green-300" :
+                              category.id === 'repair' ? "text-blue-800 dark:text-blue-300" :
+                              category.id === 'outdoor' ? "text-indigo-800 dark:text-indigo-300" :
+                              category.id === 'remodeling' ? "text-violet-800 dark:text-violet-300" :
+                              category.id === 'cleaning' ? "text-teal-800 dark:text-teal-300" :
+                              category.id === 'quick-services' ? "text-purple-800 dark:text-purple-300" :
+                              "text-slate-800 dark:text-slate-200"
+                            : "text-slate-800 dark:text-slate-200"
                         }
                       />
                     </div>

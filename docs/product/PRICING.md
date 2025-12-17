@@ -35,6 +35,7 @@
 ### What's Included
 
 #### Core Features
+
 - ✅ **Unlimited Job Bids** - No monthly cap on bidding
 - ✅ **Priority Placement** - Appear higher in search results
 - ✅ **Verified Badge** - Build trust with homeowners
@@ -43,6 +44,7 @@
 - ✅ **Photo Scoper** - AI project scoping from photos
 
 #### Business Tools
+
 - ✅ **Invoice Manager** - Professional invoice templates
 - ✅ **Payment Tracking** - Monitor payment status
 - ✅ **Certification Wallet** - Digital credential storage
@@ -50,6 +52,7 @@
 - ✅ **Export Reports** - PDF/CSV data export
 
 #### Communication
+
 - ✅ **AI Receptionist** - Automated SMS/voice responses
 - ✅ **Push Notifications** - Real-time job alerts
 - ✅ **Video Messaging** - Direct video communication
@@ -95,6 +98,7 @@ For projects with milestone-based payment schedules:
 ## 🆓 Free Tier Features
 
 ### Contractors (Free)
+
 - Basic profile creation
 - 5 job bids per month
 - Standard search placement
@@ -102,6 +106,7 @@ For projects with milestone-based payment schedules:
 - Email support
 
 ### Homeowners (Free)
+
 - Post unlimited jobs
 - Browse contractor profiles
 - View ratings and reviews
@@ -152,7 +157,7 @@ For companies with 10+ team members or custom requirements:
 - SLA guarantees
 - White-label options
 
-**Contact**: enterprise@fairtradeworker.com
+**Contact**: <enterprise@fairtradeworker.com>
 
 ---
 
@@ -161,6 +166,7 @@ For companies with 10+ team members or custom requirements:
 ### Why $59/month for Pro?
 
 $59/month is positioned to be:
+
 - **Accessible**: Less than 1 hour of billable work for most trades
 - **Competitive**: 70-90% cheaper than lead-gen alternatives
 - **Sustainable**: Allows us to provide quality service without selling data
@@ -168,6 +174,7 @@ $59/month is positioned to be:
 ### Are there any hidden fees?
 
 No. The prices listed above are the complete pricing structure:
+
 - Pro: $59/month flat
 - Platform fee: $20 flat per job
 - Extended draw: 2.5-3% only for large projects with draw schedules
@@ -193,4 +200,4 @@ Homeowners pay the $20 platform fee. Contractors keep 100% of their quoted price
 
 ---
 
-*For billing questions or disputes, contact billing@fairtradeworker.com*
+*For billing questions or disputes, contact <billing@fairtradeworker.com>*

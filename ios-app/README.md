@@ -6,7 +6,7 @@ This is the iOS app version of FairTradeWorker, built with Expo and React Native
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Expo CLI: `npm install -g expo-cli`
 - Xcode (for iOS simulator)
@@ -15,21 +15,25 @@ This is the iOS app version of FairTradeWorker, built with Expo and React Native
 ### Installation
 
 1. Navigate to the ios-app directory:
+
    ```bash
    cd ios-app
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Start the development server:
+
    ```bash
    npm start
    ```
 
 4. Run on iOS simulator:
+
    ```bash
    npm run ios
    ```
@@ -39,6 +43,7 @@ This is the iOS app version of FairTradeWorker, built with Expo and React Native
 This iOS app includes all core features from the web application:
 
 ### For Homeowners
+
 - 📝 Post jobs with AI-powered scoping
 - 📷 Upload photos of your project
 - 💰 Get instant price estimates
@@ -46,6 +51,7 @@ This iOS app includes all core features from the web application:
 - ✅ Accept bids and track progress
 
 ### For Contractors
+
 - 🔍 Browse available jobs
 - 💵 Submit bids (no fees!)
 - 📊 View performance stats
@@ -53,6 +59,7 @@ This iOS app includes all core features from the web application:
 - 💼 Manage your business
 
 ### For Operators
+
 - 🗺️ Claim territories
 - 📈 View analytics
 - 🎯 Track key metrics
@@ -100,16 +107,19 @@ The app follows the same design system as the web app:
 ### Using EAS Build
 
 1. Configure your EAS project:
+
    ```bash
    eas build:configure
    ```
 
 2. Build for iOS:
+
    ```bash
    eas build --platform ios
    ```
 
 3. Submit to App Store:
+
    ```bash
    eas submit --platform ios
    ```

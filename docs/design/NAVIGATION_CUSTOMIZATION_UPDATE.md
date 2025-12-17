@@ -1,11 +1,13 @@
 # Navigation Customization Update
 
 ## Overview
+
 Enhanced navigation system to allow users to add business tools to their navigation and build fully custom navigation menus.
 
 ## Changes Made
 
 ### 1. Business Tools Integration
+
 - Added ability for contractors and subcontractors to add business tools directly to navigation
 - Business tools available to add:
   - **Contractors**: Cost Calculator, Warranty Tracker, Quick Notes
@@ -13,6 +15,7 @@ Enhanced navigation system to allow users to add business tools to their navigat
 - Tools can be added via the Navigation Customizer dialog
 
 ### 2. Custom Navigation Builder
+
 - All users can now fully customize their navigation
 - Reorder items via drag and drop
 - Toggle visibility of navigation items
@@ -20,6 +23,7 @@ Enhanced navigation system to allow users to add business tools to their navigat
 - Reset to defaults at any time
 
 ### 3. Navigation System Updates
+
 - Updated `src/lib/types/navigation.ts` to include business tool definitions
 - Added `getAvailableBusinessTools()` function to get tools by user role
 - Enhanced NavigationCustomizer component with "Add Business Tools" section
@@ -28,12 +32,14 @@ Enhanced navigation system to allow users to add business tools to their navigat
 ## Technical Details
 
 ### Files Modified
+
 - `src/lib/types/navigation.ts` - Added business tool definitions and helper functions
 - `src/components/navigation/NavigationCustomizer.tsx` - Added UI for adding business tools
 - `src/pages/BusinessTools.tsx` - Added max-width centering
 - `src/pages/FreeToolsPage.tsx` - Added URL hash support for initial tool selection
 
 ### How It Works
+
 1. Users open Navigation Customizer from their profile menu
 2. They see their current navigation items (drag to reorder, toggle visibility)
 3. Below current items, they see "Add Business Tools" section with available tools
@@ -41,6 +47,7 @@ Enhanced navigation system to allow users to add business tools to their navigat
 5. Custom navigation is saved per-user and persists across sessions
 
 ## User Experience
+
 - Intuitive drag-and-drop interface
 - Visual feedback during customization
 - Validation ensures at least one item is always visible

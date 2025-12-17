@@ -11,9 +11,11 @@ Successfully implemented a comprehensive suite of **FREE** tools that increase e
 ### For Contractors/Subcontractors (3 Tools)
 
 #### 1. **Job Cost Calculator** 💰
+
 Calculate profit margins and effective hourly rates in real-time.
 
 **Key Features**:
+
 - Input: Bid amount, estimated hours, materials cost, overhead %
 - Output: Profit margin, effective hourly rate, cost breakdown
 - Quality indicators: Excellent (>40%), Good (>25%), Fair (>15%), Low (<15%)
@@ -27,9 +29,11 @@ Calculate profit margins and effective hourly rates in real-time.
 ---
 
 #### 2. **Warranty Tracker** 🛡️
+
 Never lose track of warranties given to customers.
 
 **Key Features**:
+
 - Track all warranties with customer info, job details, duration
 - Automatic 30-day expiration warnings
 - Categorized by: Active / Expiring Soon / Expired
@@ -43,9 +47,11 @@ Never lose track of warranties given to customers.
 ---
 
 #### 3. **Quick Notes** 📝
+
 Capture job details, customer preferences, and important info on the go.
 
 **Key Features**:
+
 - Categories: Job Related, Customer Info, Materials, Reminders, Ideas, Other
 - Search and filter across all notes
 - Pin important notes to top
@@ -61,9 +67,11 @@ Capture job details, customer preferences, and important info on the go.
 ### For Homeowners (2 Tools)
 
 #### 1. **Saved Contractors** ❤️
+
 Bookmark and quickly re-hire your trusted contractors.
 
 **Key Features**:
+
 - Save favorite contractors
 - One-click "Quick Hire" button
 - View complete job history with each contractor
@@ -77,6 +85,7 @@ Bookmark and quickly re-hire your trusted contractors.
 ---
 
 #### 2. **Quick Notes** 📝
+
 Same powerful note-taking tool as contractors (universal feature).
 
 **Why It's Useful**: Track project details, contractor preferences, important info about your home.
@@ -98,12 +107,14 @@ Same powerful note-taking tool as contractors (universal feature).
 ## 📱 How to Access
 
 ### Desktop Navigation
+
 1. Log in as Contractor or Homeowner
 2. Look for **"Free Tools"** in the top navigation bar (Sparkle ⭐ icon)
 3. Click to see all available tools
 4. Select any tool to start using it
 
 ### Mobile Navigation
+
 1. Log in as Contractor or Homeowner
 2. Tap the menu icon (three lines) in top-right
 3. Tap **"Free Tools"**
@@ -113,12 +124,14 @@ Same powerful note-taking tool as contractors (universal feature).
 
 ## 💡 Usage Tips
 
-### For Contractors:
+### For Contractors
+
 1. **Use Job Cost Calculator before every bid** - Know if it's worth your time
 2. **Add warranties immediately after job completion** - Set it and forget it
 3. **Take quick notes during site visits** - Capture details before you forget
 
-### For Homeowners:
+### For Homeowners
+
 1. **Save contractors after first great job** - Build your trusted network
 2. **Use "Quick Hire" for repeat work** - Skip the bidding process
 3. **Keep notes on each contractor** - Remember who did what and when
@@ -146,13 +159,15 @@ Same powerful note-taking tool as contractors (universal feature).
 
 ## 📊 Expected Benefits
 
-### Contractors:
+### Contractors
+
 - **Time Saved**: 15+ minutes per day on admin tasks
 - **Better Decisions**: Price jobs profitably, avoid low-margin work
 - **Professional Image**: Never miss warranty obligations
 - **Organized**: All important info in one place
 
-### Homeowners:
+### Homeowners
+
 - **Convenience**: Re-hire trusted contractors in seconds
 - **Better Relationships**: Build long-term contractor network
 - **Peace of Mind**: Track all home service information
@@ -163,6 +178,7 @@ Same powerful note-taking tool as contractors (universal feature).
 ## 🎯 Success Criteria
 
 These features are considered successful if:
+
 - 60% of contractors use Job Cost Calculator within first month
 - 40% of contractors track warranties
 - 50% of repeat homeowners save contractors
@@ -174,6 +190,7 @@ These features are considered successful if:
 ## 🔮 Future Enhancements
 
 Based on user feedback, we may add:
+
 - Document storage (contracts, receipts, photos)
 - Reminders system with notifications
 - Material price history tracking
@@ -201,6 +218,7 @@ A: We're listening! Contact support with your ideas.
 ## 📞 Support
 
 If you have questions or issues with the Free Tools:
+
 1. Check this documentation
 2. Contact platform support
 3. Submit feedback through the app

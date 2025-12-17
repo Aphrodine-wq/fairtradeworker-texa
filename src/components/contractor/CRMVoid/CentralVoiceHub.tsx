@@ -203,8 +203,8 @@ export function CentralVoiceHub({ user, onCustomerAdded }: CentralVoiceHubProps)
       {/* Outer glow ring */}
       <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 via-emerald-500/20 to-cyan-500/20 blur-3xl" />
       
-      {/* Main hub container */}
-      <div className="relative z-10 w-[400px] h-[400px] rounded-full border border-cyan-500/30 bg-black/60 backdrop-blur-xl flex flex-col items-center justify-center p-8 shadow-2xl shadow-cyan-500/10">
+      {/* Main hub container - smaller to fit better */}
+      <div className="relative z-10 w-[320px] h-[320px] rounded-full border border-cyan-500/30 bg-black/60 backdrop-blur-xl flex flex-col items-center justify-center p-6 shadow-2xl shadow-cyan-500/10">
         
         {/* Mode toggle */}
         <div className="absolute top-6 flex gap-2">
@@ -243,12 +243,12 @@ export function CentralVoiceHub({ user, onCustomerAdded }: CentralVoiceHubProps)
               exit={{ opacity: 0, y: -20 }}
               className="flex flex-col items-center gap-4"
             >
-              {/* Mic button */}
+              {/* Mic button - slightly smaller */}
               <motion.button
                 onClick={voiceState === 'listening' ? stopListening : startListening}
                 disabled={voiceState === 'processing'}
                 className={cn(
-                  "w-24 h-24 rounded-full flex items-center justify-center transition-all",
+                  "w-20 h-20 rounded-full flex items-center justify-center transition-all",
                   voiceState === 'idle' && "bg-cyan-600 hover:bg-cyan-500 hover:scale-105",
                   voiceState === 'listening' && "bg-red-500 animate-pulse",
                   voiceState === 'processing' && "bg-yellow-600",
@@ -257,10 +257,10 @@ export function CentralVoiceHub({ user, onCustomerAdded }: CentralVoiceHubProps)
                 whileHover={{ scale: voiceState === 'idle' ? 1.05 : 1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {voiceState === 'idle' && <Microphone size={40} weight="fill" className="text-white" />}
-                {voiceState === 'listening' && <Stop size={40} weight="fill" className="text-white" />}
-                {voiceState === 'processing' && <Spinner size={40} className="text-white animate-spin" />}
-                {voiceState === 'success' && <CheckCircle size={40} weight="fill" className="text-white" />}
+                {voiceState === 'idle' && <Microphone size={32} weight="fill" className="text-white" />}
+                {voiceState === 'listening' && <Stop size={32} weight="fill" className="text-white" />}
+                {voiceState === 'processing' && <Spinner size={32} className="text-white animate-spin" />}
+                {voiceState === 'success' && <CheckCircle size={32} weight="fill" className="text-white" />}
               </motion.button>
 
               {/* Status text */}
@@ -295,14 +295,14 @@ export function CentralVoiceHub({ user, onCustomerAdded }: CentralVoiceHubProps)
                 </motion.div>
               )}
 
-              {/* Transcript preview */}
+              {/* Transcript preview - smaller */}
               {transcript && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="max-w-[300px] p-3 rounded-lg bg-white/5 border border-white/10"
+                  className="max-w-[260px] p-2 rounded-lg bg-white/5 border border-white/10"
                 >
-                  <p className="text-white/60 text-xs">{transcript}</p>
+                  <p className="text-white/60 text-xs leading-tight">{transcript}</p>
                 </motion.div>
               )}
             </motion.div>

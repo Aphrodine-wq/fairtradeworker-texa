@@ -15,16 +15,19 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 ## 🎨 Design System Changes
 
 ### Shadow-Based Depth (No Borders)
+
 - **Cards**: Removed all border classes, now use `shadow-lg hover:shadow-xl` with `rounded-xl`
 - **Buttons**: Removed border-2 from outline variants, 3D effect with layered shadows
 - **Overall**: Consistent shadow-based depth throughout the platform
 
 ### Theme Transitions
+
 - **Duration**: 5-second smooth transitions between light/dark mode
 - **Implementation**: CSS transitions on background-color and color properties
 - **ThemeToggle**: Enhanced with Framer Motion animations
 
 ### Light Mode Fixes
+
 - **WorkflowAutomation**: Changed from `bg-white/bg-black` with black borders to `bg-gray-50/bg-gray-900` with proper text colors
 - **AI Scope Section**: Fixed contrast issues in Browse Jobs
 - **Text Colors**: Proper gray-600/gray-300 for descriptions, gray-900/white for headings
@@ -34,12 +37,14 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 ## 🆕 New Features Added
 
 ### 1. Purchase Page (`src/pages/Purchase.tsx`)
+
 - Mock payment flow for Pro subscriptions
 - Card input UI with validation
 - Success confirmation with redirect
 - Stripe-ready design
 
 ### 2. Netflix-Style Browse Jobs
+
 - Horizontal scrolling lanes by job category:
   - 🔥 Fresh Jobs — Be First to Bid
   - 🟢 Quick Jobs (Under $500)
@@ -49,12 +54,14 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 - Responsive card widths (320px mobile, 360px desktop)
 
 ### 3. 3D Button Effects
+
 - Layered shadow system for depth
 - Hover transforms (`translateY(-2px)`)
 - Enhanced shadow on hover state
 - Consistent across all button variants
 
 ### 4. Footer Donate Button
+
 - Moved under brand logo
 - Gradient pink-purple styling
 - Heart emoji with "Donate to Platform" CTA
@@ -64,6 +71,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 ## 📁 Files Modified
 
 ### Core UI Components
+
 | File | Changes |
 |------|---------|
 | `src/components/ui/card.tsx` | Removed borders, added shadow-lg/xl, rounded-xl |
@@ -73,6 +81,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 | `src/components/layout/Header.tsx` | Navigation refinements |
 
 ### Feature Components
+
 | File | Changes |
 |------|---------|
 | `src/components/jobs/BrowseJobs.tsx` | Netflix lanes, CarouselLane component, arrow navigation |
@@ -80,6 +89,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 | `src/components/ui/MarketingSections.tsx` | Centered FeatureSection, PricingSection with purchase CTA |
 
 ### Pages
+
 | File | Changes |
 |------|---------|
 | `src/pages/Home.tsx` | "Fees Saved vs Traditional" stat ($892K), shadow-based role buttons |
@@ -94,6 +104,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 | `src/pages/PhotoScoper.tsx` | Removed GlassNav/ThemePersistenceToggle |
 
 ### Styles
+
 | File | Changes |
 |------|---------|
 | `src/styles/theme-transitions.css` | 5s transition timing |
@@ -103,6 +114,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 | `src/windows-95.css` | NEW - Retro design explorations |
 
 ### Infrastructure
+
 | File | Changes |
 |------|---------|
 | `vercel.json` | Fixed SPA rewrite to exclude /assets/* |
@@ -112,11 +124,13 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 ## 📊 Metrics Changed
 
 ### Home Page Stats
+
 | Before | After |
 |--------|-------|
 | Total Revenue: $1.2M | Fees Saved vs Traditional: $892K |
 
 ### Design Philosophy
+
 | Before | After |
 |--------|-------|
 | Border-based definition | Shadow-based depth |
@@ -130,7 +144,7 @@ This update delivers a comprehensive UI/UX overhaul focusing on depth, modern ae
 
 - **Build**: `npm run build` - Successful
 - **Deploy**: `npx vercel --prod --yes`
-- **Live URL**: https://fairtradeworker-texa-main.vercel.app
+- **Live URL**: <https://fairtradeworker-texa-main.vercel.app>
 
 ---
 

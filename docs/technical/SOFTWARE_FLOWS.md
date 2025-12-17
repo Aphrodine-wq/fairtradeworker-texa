@@ -374,6 +374,7 @@ User Clicks Notification
 ## Key Features by User Type
 
 ### Homeowners
+
 - Post jobs (photo/video/audio/text)
 - Review bids
 - Accept/reject bids
@@ -383,6 +384,7 @@ User Clicks Notification
 - Free tools access
 
 ### Contractors
+
 - Browse jobs
 - Submit bids (0% fees)
 - Manage jobs
@@ -393,6 +395,7 @@ User Clicks Notification
 - Access Pro features ($59/month)
 
 ### Operators
+
 - Claim territories
 - Monitor territory health
 - View territory analytics
@@ -405,21 +408,25 @@ User Clicks Notification
 ## Data Flow
 
 ### Job Creation
+
 ```
 User Input → AI Scoping → Job Object → Local Storage/KV → Display in Marketplace
 ```
 
 ### Bid Submission
+
 ```
 Bid Form → Bid Object → Added to Job.bids[] → Local Storage/KV → Homeowner Notification
 ```
 
 ### Payment Processing
+
 ```
 Invoice → Stripe API → Payment Processed → Funds Transferred → Status Updated
 ```
 
 ### Data Persistence
+
 ```
 All data stored in:
 - Local Storage (via useLocalKV hook)
@@ -432,16 +439,19 @@ All data stored in:
 ## Error Handling Flows
 
 ### Network Error
+
 ```
 Error Detected → NetworkError Component → Retry Button → Retry Request
 ```
 
 ### Image Load Error
+
 ```
 Image Fails → onError Handler → Placeholder Image → User Sees Fallback
 ```
 
 ### Form Validation Error
+
 ```
 Submit Form → Validation Check → FieldFeedback Component → User Corrects → Resubmit
 ```
@@ -451,6 +461,7 @@ Submit Form → Validation Check → FieldFeedback Component → User Corrects �
 ## State Management
 
 ### Global State (via useLocalKV)
+
 - Current user
 - Jobs array
 - Invoices array
@@ -459,6 +470,7 @@ Submit Form → Validation Check → FieldFeedback Component → User Corrects �
 - Users array
 
 ### Component State
+
 - Form inputs
 - UI state (modals, dialogs)
 - Filter selections
@@ -489,20 +501,24 @@ App.tsx (Router)
 ## Integration Points
 
 ### Stripe Payments
+
 - Invoice payment processing
 - Payment status tracking
 - Receipt generation
 
 ### OpenAI (Future)
+
 - AI photo scoping
 - AI receptionist
 - AI bid optimization
 
 ### Twilio (Future)
+
 - SMS notifications
 - AI receptionist calls
 
 ### SendGrid (Future)
+
 - Email notifications
 - Automated follow-ups
 
@@ -511,17 +527,20 @@ App.tsx (Router)
 ## Performance Optimizations
 
 ### Code Splitting
+
 - Lazy loading for heavy components
 - Route-based code splitting
 - Dynamic imports
 
 ### Image Optimization
+
 - OptimizedImage component
 - Lazy loading
 - Error handling
 - Placeholder fallbacks
 
 ### State Management
+
 - Local storage caching
 - KV storage for persistence
 - Optimistic updates
@@ -531,11 +550,13 @@ App.tsx (Router)
 ## Security Considerations
 
 ### Client-Side Only
+
 - No backend authentication required
 - Local storage for data
 - Demo mode available
 
 ### Data Validation
+
 - Form validation
 - Type checking (TypeScript)
 - Input sanitization
@@ -545,16 +566,19 @@ App.tsx (Router)
 ## Testing Flows
 
 ### Unit Tests
+
 - Component rendering
 - Function logic
 - State management
 
 ### Integration Tests
+
 - User workflows
 - Data persistence
 - Navigation
 
 ### E2E Tests
+
 - Complete user journeys
 - Cross-browser testing
 - Performance testing

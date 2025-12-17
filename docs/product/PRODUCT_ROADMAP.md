@@ -1,14 +1,18 @@
 # FairTradeWorker
+
 ## Complete Product Roadmap & Feature Specification
+
 ### Bootstrap Launch: January 1, 2026
 
 ---
 
 ## Current Phase Update (Hosted-First AI + Revenue CTAs Live)
+
 - Hosted-first AI stack implemented: routing/classification, embeddings + RAG, enhanced Claude scoping, CRM intelligence, smart follow-ups, contractor matching (see `docs/AI_CONFIG.md`).
 - Revenue CTAs live (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory. Flags and fallbacks prevent hard dependency on keys/links.
 
 ## Next Steps (Near-Term)
+
 - Partner integrations: insurance/financing providers; finalize affiliate partners and API/white-label pricing.
 - Resilience: feature flags, rate limits/budget guardrails, Claude fallback to open source, observability hooks.
 - Legal/Compliance: affiliate disclosures, AI disclaimers, ToS/contractor agreements, operator royalty terms.
@@ -23,6 +27,7 @@ Price at $59/month total Pro tier (or $39 base + $11 add-on). Makes Pro feel lik
 ### Core Value Proposition
 
 When someone calls the contractor's business number:
+
 - AI answers 24/7 with natural voice ("Hi, this is the assistant for Joe's Roofing…")
 - Listens, transcribes (Whisper), understands intent (GPT)
 - Routes intelligently (emergency → call contractor immediately; quote → create private job)
@@ -55,6 +60,7 @@ When someone calls the contractor's business number:
 ### Top 5 Priority Enhancements (Build Order)
 
 #### 1. Full CRM Auto-Population & Private Job Creation
+
 **Priority:** HIGHEST — Build First  
 **Effort:** 2-3 days (reuse CRMKanban.tsx + hooks/useLocalKV.ts)  
 **Why #1:** Core "20x" multiplier. Every call = rich, actionable lead with zero manual work. Highest pro conversion driver.
@@ -62,24 +68,28 @@ When someone calls the contractor's business number:
 **Implementation:** GPT extracts structured data (name, phone, address, issue, urgency) → auto-create CRM card + private job → attach transcript + audio → text caller unique onboarding link.
 
 #### 2. Context-Aware Conversations with Contractor History
+
 **Effort:** 2 days  
 **Impact:** "Welcome back, Mrs. Johnson — is this about the kitchen remodel?" → massive trust + virality
 
 **Implementation:** Pull recent jobs from CRM before GPT response. System prompt includes contractor name + recent jobs summary. Match caller phone to existing records.
 
 #### 3. Calendar Sync & Auto-Scheduling
+
 **Effort:** 3 days (build on existing availability calendar)  
 **Impact:** Turns inquiries into booked appointments while caller is on the line. Alone justifies $59/month.
 
 **Implementation:** AI checks calendar slots real-time → offers times → books on confirmation → adds to calendar + sends confirmation text with FTW job link.
 
 #### 4. Proactive Upsell & Quote Estimation During Call
+
 **Effort:** 2 days  
 **Impact:** Increases average job value 20-50%, creates instant draft invoices.
 
 **Implementation:** GPT prompt includes upsells. Pull from materials price DB + scoping logic → instant ballpark → auto-create draft invoice → text link includes "Secure with deposit?"
 
 #### 5. Multi-Channel Expansion (SMS/Chat Fallback + Website Widget)
+
 **Effort:** 3-4 days  
 **Impact:** Captures 2-3x more leads. Makes AI omnipresent.
 
@@ -100,6 +110,7 @@ When someone calls the contractor's business number:
 Five additional flagship features that make Pro feel like a full virtual office.
 
 ### 1. AI Bid Optimizer & Auto-Bid Engine
+
 **Value:** Upload past job data → AI analyzes win/loss patterns → suggests optimal prices + auto-places bids. "What-if" simulations included.
 
 **Why 20x:** Stops over/under-bidding (biggest profit killer). Saves hours researching. Increases win rate 30-50%. Auto-bid runs 24/7.
@@ -108,6 +119,7 @@ Five additional flagship features that make Pro feel like a full virtual office.
 **Implementation:** Reuse lib/ai.ts + materials JSON. Pro dashboard for CSV upload. GPT prompt analyzes 50 past jobs. Auto-bid rules with background worker. Glassmorphism "Bid Simulator" card with probability graph.
 
 ### 2. AI Follow-Up Automator & Sequence Builder
+
 **Value:** Drag-and-drop sequence builder (SMS/email/in-app) → AI personalizes from transcripts → auto-sends on triggers.
 
 **Why 20x:** Turns "forgotten leads" into wins (most contractors lose 70% here). Personalizes at scale. Frees 10-20 hours/week.
@@ -116,6 +128,7 @@ Five additional flagship features that make Pro feel like a full virtual office.
 **Implementation:** New SequenceBuilder.tsx (shadcn/ui drag-drop). Twilio + SendGrid. Triggers from CRM state changes. Analytics card shows recovered revenue.
 
 ### 3. AI Expense & Profit Tracker with Tax Optimizer
+
 **Value:** Snap receipt photos → AI categorizes → real-time P&L per job → quarterly tax estimates + deduction suggestions.
 
 **Why 20x:** Most contractors guess profits. This shows exact margins live. Catches missed deductions (saves thousands).
@@ -124,6 +137,7 @@ Five additional flagship features that make Pro feel like a full virtual office.
 **Implementation:** Image upload + GPT-4 Vision for receipt parsing. LocalKV for expenses tied to jobs. Glass card showing monthly profit + projected tax.
 
 ### 4. AI Change Order & Upsell Generator
+
 **Value:** Mid-job discovery? Snap photo → AI scopes extra work → generates change order PDF → homeowner approves digitally.
 
 **Why 20x:** Captures 20-40% more revenue per job from extras. Eliminates disputes with signed approvals. Instant quotes.
@@ -132,6 +146,7 @@ Five additional flagship features that make Pro feel like a full virtual office.
 **Implementation:** Reuse PhotoScoper.tsx + Vision. ChangeOrderBuilder.tsx auto-fills from photo. Digital signature via canvas. Auto-updates invoice.
 
 ### 5. AI Crew Dispatcher & Subcontractor Manager
+
 **Value:** AI assigns jobs to subs by skills/availability/location → SMS schedules → tracks progress with photo check-ins.
 
 **Why 20x:** Scales operations without chaos. Reduces no-shows. Real-time oversight = higher quality.
@@ -237,6 +252,7 @@ Ready to spec code for any of these features. Recommended order:
 ### 1. AI Receptionist System
 
 **Architecture Overview:**
+
 - Call Flow: Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent → CRM write → SMS response
 - Latency Target: <3s first response, <8s full processing
 - Fallback: Voicemail after 2 failed intent matches or caller opt-out
@@ -246,6 +262,7 @@ Ready to spec code for any of these features. Recommended order:
 **Webhook Endpoint:** `POST /api/receptionist/inbound`
 
 **GPT Extraction Schema:**
+
 ```typescript
 {
   callerName: string | null,

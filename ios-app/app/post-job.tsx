@@ -16,7 +16,8 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { Button, TextInput, Card } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 import { calculateJobSize } from '@/src/types';
 import type { Job } from '@/src/types';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,6 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 export default function PostJobScreen() {
   const router = useRouter();
   const { currentUser, addJob } = useAppStore();
+  const { isTablet } = useResponsive();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
@@ -198,98 +200,100 @@ export default function PostJobScreen() {
       >
         <ScrollView
           style={styles.container}
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}
           keyboardShouldPersistTaps="handled"
         >
-          {/* Title Input */}
-          <View style={styles.section}>
-            <TextInput
-              label="What needs to be done?"
-              placeholder="e.g., Kitchen faucet replacement"
-              value={title}
-              onChangeText={setTitle}
-            />
-          </View>
-
-          {/* Description Input */}
-          <View style={styles.section}>
-            <TextInput
-              label="Describe your project"
-              placeholder="Provide details about the work needed..."
-              value={description}
-              onChangeText={setDescription}
-              multiline
-              numberOfLines={4}
-              style={styles.textArea}
-            />
-          </View>
-
-          {/* Photo Upload Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Add Photos (Optional)</Text>
-            <Text style={styles.helperText}>
-              Photos help contractors understand your project better
-            </Text>
-
-            <View style={styles.photoGrid}>
-              {photos.map((uri, index) => (
-                <View key={uri} style={styles.photoContainer}>
-                  <Image source={{ uri }} style={styles.photoPreview} />
-                  <TouchableOpacity
-                    style={styles.removePhotoButton}
-                    onPress={() => removePhoto(index)}
-                  >
-                    <Ionicons name="close-circle" size={24} color={Colors.error} />
-                  </TouchableOpacity>
-                </View>
-              ))}
-              
-              {photos.length < 5 && (
-                <View style={styles.addPhotoButtons}>
-                  <TouchableOpacity
-                    style={styles.addPhotoButton}
-                    onPress={pickImage}
-                  >
-                    <Ionicons name="images" size={32} color={Colors.textSecondary} />
-                    <Text style={styles.addPhotoText}>Library</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.addPhotoButton}
-                    onPress={takePhoto}
-                  >
-                    <Ionicons name="camera" size={32} color={Colors.textSecondary} />
-                    <Text style={styles.addPhotoText}>Camera</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+          <View style={isTablet ? styles.formContainer : null}>
+            {/* Title Input */}
+            <View style={styles.section}>
+              <TextInput
+                label="What needs to be done?"
+                placeholder="e.g., Kitchen faucet replacement"
+                value={title}
+                onChangeText={setTitle}
+              />
             </View>
-          </View>
 
-          {/* AI Info Card */}
-          <Card variant="filled" padding="md" style={styles.infoCard}>
-            <View style={styles.infoHeader}>
-              <Ionicons name="sparkles" size={24} color={Colors.primary} />
-              <Text style={styles.infoTitle}>AI-Powered Scoping</Text>
+            {/* Description Input */}
+            <View style={styles.section}>
+              <TextInput
+                label="Describe your project"
+                placeholder="Provide details about the work needed..."
+                value={description}
+                onChangeText={setDescription}
+                multiline
+                numberOfLines={4}
+                style={styles.textArea}
+              />
             </View>
-            <Text style={styles.infoText}>
-              Our AI will analyze your project and provide an instant price estimate. 
-              Contractors/Subcontractors will review this scope when submitting their bids.
+
+            {/* Photo Upload Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>Add Photos (Optional)</Text>
+              <Text style={styles.helperText}>
+                Photos help contractors understand your project better
+              </Text>
+
+              <View style={styles.photoGrid}>
+                {photos.map((uri, index) => (
+                  <View key={uri} style={styles.photoContainer}>
+                    <Image source={{ uri }} style={styles.photoPreview} />
+                    <TouchableOpacity
+                      style={styles.removePhotoButton}
+                      onPress={() => removePhoto(index)}
+                    >
+                      <Ionicons name="close-circle" size={24} color={Colors.error} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                
+                {photos.length < 5 && (
+                  <View style={styles.addPhotoButtons}>
+                    <TouchableOpacity
+                      style={styles.addPhotoButton}
+                      onPress={pickImage}
+                    >
+                      <Ionicons name="images" size={32} color={Colors.textSecondary} />
+                      <Text style={styles.addPhotoText}>Library</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.addPhotoButton}
+                      onPress={takePhoto}
+                    >
+                      <Ionicons name="camera" size={32} color={Colors.textSecondary} />
+                      <Text style={styles.addPhotoText}>Camera</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            {/* AI Info Card */}
+            <Card variant="filled" padding="md" style={styles.infoCard}>
+              <View style={styles.infoHeader}>
+                <Ionicons name="sparkles" size={24} color={Colors.primary} />
+                <Text style={styles.infoTitle}>AI-Powered Scoping</Text>
+              </View>
+              <Text style={styles.infoText}>
+                Our AI will analyze your project and provide an instant price estimate. 
+                Contractors/Subcontractors will review this scope when submitting their bids.
+              </Text>
+            </Card>
+
+            {/* Submit Button */}
+            <Button
+              title={aiProcessing ? 'AI is analyzing...' : 'Post Job – $0'}
+              onPress={handleSubmit}
+              loading={loading || aiProcessing}
+              disabled={loading || aiProcessing || !title.trim() || !description.trim()}
+              size="lg"
+              style={styles.submitButton}
+            />
+
+            <Text style={styles.freeNote}>
+              ✓ Free to post • ✓ Free to bid • ✓ No commissions
             </Text>
-          </Card>
-
-          {/* Submit Button */}
-          <Button
-            title={aiProcessing ? 'AI is analyzing...' : 'Post Job – $0'}
-            onPress={handleSubmit}
-            loading={loading || aiProcessing}
-            disabled={loading || aiProcessing || !title.trim() || !description.trim()}
-            size="lg"
-            style={styles.submitButton}
-          />
-
-          <Text style={styles.freeNote}>
-            ✓ Free to post • ✓ Free to bid • ✓ No commissions
-          </Text>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -310,6 +314,15 @@ const styles = StyleSheet.create({
   content: {
     padding: Spacing.lg,
     paddingBottom: Spacing.xxxl,
+  },
+  contentTablet: {
+    alignItems: 'center',
+    padding: Spacing.tablet.xl,
+    paddingBottom: Spacing.tablet.xxxl,
+  },
+  formContainer: {
+    maxWidth: 600,
+    width: '100%',
   },
   section: {
     marginBottom: Spacing.xl,

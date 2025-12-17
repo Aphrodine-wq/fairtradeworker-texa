@@ -39,23 +39,23 @@
 
 ### High Priority
 
-7. **Operator Business Tools Access**
+1. **Operator Business Tools Access**
    - Status: Already implemented (line 124 of BusinessTools.tsx)
    - Verify: Ensure operators can actually access and use tools
 
-8. **Operator Priority Leads**
+2. **Operator Priority Leads**
    - Issue: Operators need 10-minute early access to new jobs
    - Fix: Filter jobs by `createdAt` - show jobs to operators 10 minutes before others
    - Files: `src/components/jobs/BrowseJobs.tsx`, operator-specific filtering
 
-9. **Test Coverage**
+3. **Test Coverage**
    - Add tests for:
      - Image loading
      - Tool navigation
      - Job filtering
      - Operator priority leads
 
-10. **Software Flows Documentation**
+4. **Software Flows Documentation**
     - Document complete user flows
     - File: `docs/SOFTWARE_FLOWS.md`
 

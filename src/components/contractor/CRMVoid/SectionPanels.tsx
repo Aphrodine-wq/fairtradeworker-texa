@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowLeft } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
@@ -11,6 +12,9 @@ import { SimpleCRMDashboard } from '../SimpleCRMDashboard'
 import { AIInsightsCRM } from '../AIInsightsCRM'
 import { ConstructionDocuments } from '../ConstructionDocuments'
 import { AdvancedAnalyticsCRM } from '../AdvancedAnalyticsCRM'
+import { CustomerAnalyticsPanel } from './CustomerAnalyticsPanel'
+import { AutomationPanel } from './AutomationPanel'
+import { AdvancedReportsPanel } from './AdvancedReportsPanel'
 
 interface SectionPanelProps {
   section: SectionId | null
@@ -35,7 +39,7 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
       case 'ai-insights':
         return <AIInsightsPanel user={user} />
       case 'reports':
-        return <ReportsPanel user={user} />
+        return <AdvancedReportsPanel user={user} />
       case 'customize':
         return <CustomizePanel />
       case 'settings':
@@ -75,11 +79,7 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-<<<<<<< Updated upstream
-          className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-=======
           className="absolute inset-0 bg-black/50 dark:bg-white/10 backdrop-blur-sm"
->>>>>>> Stashed changes
           onClick={onClose}
         />
 
@@ -90,61 +90,41 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           className={cn(
-<<<<<<< Updated upstream
-            "relative z-10 w-[90vw] max-w-6xl h-[85vh] rounded-2xl",
-            "bg-card border border-border",
-            "shadow-2xl shadow-primary/10",
-=======
-            "relative z-10 w-[90vw] max-w-6xl h-[85vh] rounded-lg",
+            "relative z-10 w-[95vw] max-w-5xl h-[80vh] max-h-[800px] rounded-lg",
             "bg-white dark:bg-black",
-            "border-2 border-black dark:border-white",
+            "border-2 border-transparent dark:border-white",
             "shadow-2xl",
->>>>>>> Stashed changes
             "flex flex-col overflow-hidden"
           )}
         >
           {/* Header */}
-<<<<<<< Updated upstream
-          <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-=======
-          <div className="flex items-center justify-between px-6 py-4 border-b-2 border-black dark:border-white">
->>>>>>> Stashed changes
+          <div className="flex items-center justify-between px-6 py-3 border-b-2 border-transparent dark:border-white flex-shrink-0">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-<<<<<<< Updated upstream
-                className="text-muted-foreground hover:text-foreground hover:bg-muted"
-              >
-                <ArrowLeft size={20} />
-              </Button>
-              <h2 className="text-xl font-bold text-foreground">{getPanelTitle()}</h2>
-=======
                 className="text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
               >
                 <ArrowLeft size={20} />
               </Button>
               <h2 className="text-xl font-bold text-black dark:text-white">{getPanelTitle()}</h2>
->>>>>>> Stashed changes
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
-<<<<<<< Updated upstream
-              className="text-muted-foreground hover:text-foreground hover:bg-muted"
-=======
               className="text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
->>>>>>> Stashed changes
             >
               <X size={20} />
             </Button>
           </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-auto p-6">
-            {getPanelContent()}
+          {/* Content - No scrolling, content must fit */}
+          <div className="flex-1 overflow-hidden p-4">
+            <div className="h-full overflow-hidden">
+              {getPanelContent()}
+            </div>
           </div>
         </motion.div>
       </motion.div>
@@ -156,12 +136,12 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
 
 function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: string) => void }) {
   const tools = [
+    { id: 'cost-calculator', label: 'Job Cost Calculator', description: 'Calculate profit margins and hourly rates instantly', icon: '📊' },
+    { id: 'warranty-tracker', label: 'Warranty Tracker', description: 'Never lose track of warranties you\'ve given', icon: '🛡️' },
+    { id: 'quick-notes', label: 'Quick Notes', description: 'Capture job details and customer info on the go', icon: '📝' },
     { id: 'invoices', label: 'Invoice Manager', description: 'Create and manage invoices', icon: '📄' },
     { id: 'expenses', label: 'Expense Tracker', description: 'Track business expenses', icon: '💰' },
     { id: 'calendar', label: 'Calendar Sync', description: 'Sync with Google/Outlook', icon: '📅' },
-    { id: 'estimates', label: 'Estimate Builder', description: 'Create professional estimates', icon: '📝' },
-    { id: 'contracts', label: 'Contract Templates', description: 'Legal contract templates', icon: '📋' },
-    { id: 'mileage', label: 'Mileage Tracker', description: 'Track driving for tax deductions', icon: '🚗' },
   ]
 
   return (
@@ -171,28 +151,17 @@ function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (pa
           key={tool.id}
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
-<<<<<<< Updated upstream
-            "p-6 rounded-xl text-left",
-            "bg-card border border-border",
-            "hover:bg-muted hover:border-primary/50",
-=======
             "p-6 rounded-lg text-left",
-            "bg-white dark:bg-black border-2 border-black dark:border-white",
+            "bg-white dark:bg-black border-2 border-transparent dark:border-white",
             "hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
->>>>>>> Stashed changes
             "transition-all duration-200"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <div className="text-3xl mb-3">{tool.icon}</div>
-<<<<<<< Updated upstream
-          <h3 className="font-semibold text-foreground mb-1">{tool.label}</h3>
-          <p className="text-sm text-muted-foreground">{tool.description}</p>
-=======
           <h3 className="font-semibold text-black dark:text-white mb-1">{tool.label}</h3>
           <p className="text-sm text-black/60 dark:text-white/60">{tool.description}</p>
->>>>>>> Stashed changes
         </motion.button>
       ))}
     </div>
@@ -201,8 +170,10 @@ function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (pa
 
 function KanbanPanel({ user }: { user: User }) {
   return (
-    <div className="h-full">
-      <CRMKanban user={user} />
+    <div className="h-full overflow-hidden">
+      <div className="h-full overflow-hidden">
+        <CRMKanban user={user} />
+      </div>
     </div>
   )
 }
@@ -221,22 +192,13 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
     return (
       <div className="flex flex-col items-center justify-center h-full text-center">
         <div className="text-6xl mb-4">👑</div>
-<<<<<<< Updated upstream
-        <h3 className="text-2xl font-bold text-foreground mb-2">Upgrade to Pro</h3>
-        <p className="text-muted-foreground mb-6 max-w-md">
-=======
         <h3 className="text-2xl font-bold text-black dark:text-white mb-2">Upgrade to Pro</h3>
         <p className="text-black/60 dark:text-white/60 mb-6 max-w-md">
->>>>>>> Stashed changes
           Unlock powerful tools to grow your business faster
         </p>
         <Button
           onClick={() => onNavigate?.('pro-upgrade')}
-<<<<<<< Updated upstream
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-=======
           className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 font-semibold"
->>>>>>> Stashed changes
         >
           Upgrade for $59/mo
         </Button>
@@ -245,34 +207,23 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 h-full overflow-hidden">
       {proTools.map((tool) => (
         <motion.button
           key={tool.id}
           onClick={() => onNavigate?.(tool.id)}
           className={cn(
-<<<<<<< Updated upstream
-            "p-6 rounded-xl text-left",
-            "bg-primary/10 border border-primary/30",
-            "hover:bg-primary/20 hover:border-primary/50",
-=======
             "p-6 rounded-lg text-left",
-            "bg-white dark:bg-black border-2 border-black dark:border-white",
+            "bg-white dark:bg-black border-2 border-transparent dark:border-white",
             "hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
->>>>>>> Stashed changes
             "transition-all duration-200"
           )}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <div className="text-3xl mb-3">{tool.icon}</div>
-<<<<<<< Updated upstream
-          <h3 className="font-semibold text-foreground mb-1">{tool.label}</h3>
-          <p className="text-sm text-muted-foreground">{tool.description}</p>
-=======
           <h3 className="font-semibold text-black dark:text-white mb-1">{tool.label}</h3>
           <p className="text-sm text-black/60 dark:text-white/60">{tool.description}</p>
->>>>>>> Stashed changes
         </motion.button>
       ))}
     </div>
@@ -280,17 +231,51 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
 }
 
 function CustomersPanel({ user }: { user: User }) {
+  const [viewMode, setViewMode] = useState<'list' | 'analytics'>('list')
+  
   return (
-    <div className="h-full">
-      <SimpleCRMDashboard user={user} />
+    <div className="h-full overflow-hidden flex flex-col">
+      <div className="flex gap-2 mb-4 flex-shrink-0">
+        <button
+          onClick={() => setViewMode('list')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+            viewMode === 'list'
+              ? "bg-black dark:bg-white text-white dark:text-black"
+              : "bg-white dark:bg-black border-2 border-transparent dark:border-white text-black dark:text-white"
+          )}
+        >
+          Customer List
+        </button>
+        <button
+          onClick={() => setViewMode('analytics')}
+          className={cn(
+            "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+            viewMode === 'analytics'
+              ? "bg-black dark:bg-white text-white dark:text-black"
+              : "bg-white dark:bg-black border-2 border-transparent dark:border-white text-black dark:text-white"
+          )}
+        >
+          Analytics
+        </button>
+      </div>
+      <div className="flex-1 overflow-hidden">
+        {viewMode === 'list' ? (
+          <SimpleCRMDashboard user={user} />
+        ) : (
+          <CustomerAnalyticsPanel user={user} />
+        )}
+      </div>
     </div>
   )
 }
 
 function AIInsightsPanel({ user }: { user: User }) {
   return (
-    <div className="h-full">
-      <AIInsightsCRM user={user} />
+    <div className="h-full overflow-hidden">
+      <div className="h-full overflow-hidden">
+        <AIInsightsCRM user={user} />
+      </div>
     </div>
   )
 }
@@ -307,21 +292,12 @@ function CustomizePanel() {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center">
       <div className="text-6xl mb-4">✨</div>
-<<<<<<< Updated upstream
-      <h3 className="text-2xl font-bold text-foreground mb-2">Customize Mode</h3>
-      <p className="text-muted-foreground mb-6 max-w-md">
-        Drag and reposition the orbiting sections to customize your CRM layout.
-        Your changes will be saved automatically.
-      </p>
-      <p className="text-primary text-sm">
-=======
       <h3 className="text-2xl font-bold text-black dark:text-white mb-2">Customize Mode</h3>
       <p className="text-black/60 dark:text-white/60 mb-6 max-w-md">
         Drag and reposition the orbiting sections to customize your CRM layout.
         Your changes will be saved automatically.
       </p>
       <p className="text-black dark:text-white text-sm">
->>>>>>> Stashed changes
         Close this panel to enter customize mode
       </p>
     </div>
@@ -331,22 +307,7 @@ function CustomizePanel() {
 function SettingsPanel() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-<<<<<<< Updated upstream
-      <div className="p-4 rounded-xl bg-card border border-border">
-        <h3 className="font-semibold text-foreground mb-3">Display Settings</h3>
-        <div className="space-y-3">
-          <label className="flex items-center justify-between">
-            <span className="text-foreground">Show connection lines</span>
-            <input type="checkbox" defaultChecked className="rounded" />
-          </label>
-          <label className="flex items-center justify-between">
-            <span className="text-foreground">Enable animations</span>
-            <input type="checkbox" defaultChecked className="rounded" />
-          </label>
-          <label className="flex items-center justify-between">
-            <span className="text-foreground">Show background pattern</span>
-=======
-      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-black dark:border-white">
+      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white">
         <h3 className="font-semibold text-black dark:text-white mb-3">Display Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">
@@ -355,24 +316,12 @@ function SettingsPanel() {
           </label>
           <label className="flex items-center justify-between">
             <span className="text-black dark:text-white">Enable animations</span>
->>>>>>> Stashed changes
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
         </div>
       </div>
 
-<<<<<<< Updated upstream
-      <div className="p-4 rounded-xl bg-card border border-border">
-        <h3 className="font-semibold text-foreground mb-3">Voice Settings</h3>
-        <div className="space-y-3">
-          <label className="flex items-center justify-between">
-            <span className="text-foreground">Enable voice commands</span>
-            <input type="checkbox" defaultChecked className="rounded" />
-          </label>
-          <label className="flex items-center justify-between">
-            <span className="text-foreground">Auto-transcribe recordings</span>
-=======
-      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-black dark:border-white">
+      <div className="p-4 rounded-lg bg-white dark:bg-black border-2 border-transparent dark:border-white">
         <h3 className="font-semibold text-black dark:text-white mb-3">Voice Settings</h3>
         <div className="space-y-3">
           <label className="flex items-center justify-between">
@@ -381,7 +330,6 @@ function SettingsPanel() {
           </label>
           <label className="flex items-center justify-between">
             <span className="text-black dark:text-white">Auto-transcribe recordings</span>
->>>>>>> Stashed changes
             <input type="checkbox" defaultChecked className="rounded" />
           </label>
         </div>
@@ -392,8 +340,10 @@ function SettingsPanel() {
 
 function DocumentsPanel({ user }: { user: User }) {
   return (
-    <div className="h-full">
-      <ConstructionDocuments user={user} />
+    <div className="h-full overflow-hidden">
+      <div className="h-full overflow-hidden">
+        <ConstructionDocuments user={user} />
+      </div>
     </div>
   )
 }

@@ -591,6 +591,7 @@ export function UnifiedPaymentScreen({
                   </div>
                   </CardContent>
                 </Card>
+                </div>
               )}
             </div>
 

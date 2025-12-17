@@ -1,5 +1,7 @@
 # FairTradeWorker
+
 ## Technical Specification & Implementation Guide
+
 ### Deep-Dive Edition • December 2025
 
 ---
@@ -9,6 +11,7 @@
 ### 1.1 Architecture Overview
 
 **Call Flow:**
+
 ```
 Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent → CRM write → SMS response
 ```
@@ -23,6 +26,7 @@ Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent �
 **POST /api/receptionist/inbound**
 
 **Input:**
+
 ```json
 {
   "From": "+1234567890",
@@ -34,6 +38,7 @@ Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent �
 ```
 
 **Process:**
+
 1. Match To → contractorId
 2. Whisper if no transcription
 3. GPT extract
@@ -41,6 +46,7 @@ Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent �
 5. SMS caller
 
 **Output:**
+
 ```json
 {
   "success": true,
@@ -50,6 +56,7 @@ Inbound → Twilio → Vercel webhook → Whisper transcribe → GPT-4o intent �
 ```
 
 **Error States:**
+
 - CONTRACTOR_NOT_FOUND
 - TRANSCRIPTION_FAILED
 - LOW_CONFIDENCE
@@ -76,6 +83,7 @@ interface CallExtraction {
 **Hook:** `useReceptionistJobs(contractorId)` — subscribes to new inbound jobs
 
 **Auto-Fields:**
+
 - name, phone, address, issue, urgency, transcript, audioUrl, createdAt
 
 **CRM Card:** Glassmorphism card with expandable transcript, play audio button, one-click call back  
@@ -127,6 +135,7 @@ interface CallExtraction {
 **Simulator UI:** Slider for bid amount → real-time probability curve (Chart.js)
 
 **Auto-Bid Rules Schema:**
+
 ```typescript
 interface AutoBidRule {
   name: string; // "Kitchen jobs under $10k in Dallas"
@@ -151,6 +160,7 @@ interface AutoBidRule {
 **GPT Rewrite:** "Rewrite this template using transcript: {transcript}" → warm, personal message
 
 **Sequence Storage:**
+
 - sequences/{id}: { name, trigger, steps: [{ type, delay, channel, template, conditions }] }
 - sequenceRuns/{id}: { sequenceId, leadId, currentStep, status, history: [{ step, sentAt, response }] }
 - Analytics: { sent, opened, replied, converted, revenue } per sequence
@@ -165,6 +175,7 @@ interface AutoBidRule {
 **Tax Hints:** GPT prompt: "Based on IRS 2025 rules, flag deductions: {expense list}"
 
 **P&L Calculation:**
+
 - Revenue: sum(completedJobs.finalAmount)
 - COGS: sum(expenses.where(category in ['materials', 'labor']))
 - Gross Profit: Revenue - COGS
@@ -182,6 +193,7 @@ interface AutoBidRule {
 **Integration:** On approval: update job.totalAmount, add to invoice, notify homeowner
 
 **Change Order Schema:**
+
 ```typescript
 interface ChangeOrder {
   id: string;
@@ -212,6 +224,7 @@ interface ChangeOrder {
 **Tracking:** Optional: browser geolocation on crew app → show on contractor map
 
 **Dispatch Flow:**
+
 1. Job Created → Trigger: new job or manual dispatch
 2. AI Recommends → Top 3 crew ranked by fit score
 3. Contractor Confirms → Or override with manual pick
@@ -224,6 +237,7 @@ interface ChangeOrder {
 ## 3. Free Features (Detailed Specs)
 
 ### 3.1 Job Alerts & Saved Searches
+
 **Component:** `components/contractor/SavedSearches.tsx`  
 **Storage:** savedSearches/{id}: { name, filters: { zipCodes, jobTypes, budgetRange, keywords } }  
 **Notifications:** Browser Push API + in-app badge counter  
@@ -231,6 +245,7 @@ interface ChangeOrder {
 **Digest Option:** Daily email at 7am with all matches (vs real-time)
 
 ### 3.2 Contractor Portfolio Builder
+
 **Component:** `components/contractor/PortfolioBuilder.tsx`  
 **Sections:** Hero image, bio, services list, before/after gallery, testimonials, contact CTA  
 **Gallery:** Drag-drop reorder, auto-compress images (sharp.js), lazy load  
@@ -238,6 +253,7 @@ interface ChangeOrder {
 **Analytics:** views, clicks, contactRequests per portfolio
 
 ### 3.3 Review & Rating System
+
 **Schema:** reviews/{id}: { jobId, rating (1-5), text, photos[], response, createdAt }  
 **Verification:** Only homeowners with completedJob can review  
 **Display:** Star average + count on profile, sort contractors by rating  
@@ -245,6 +261,7 @@ interface ChangeOrder {
 **Flagging:** Report button → manual review queue
 
 ### 3.4 Dispute Center
+
 **Component:** `components/shared/DisputeCenter.tsx`  
 **Trigger:** "Issue?" button on active/completed jobs  
 **Form:** issueType (quality, payment, communication, other), description, evidence upload  
@@ -253,6 +270,7 @@ interface ChangeOrder {
 **Resolution:** Mark resolved, optional public note
 
 ### 3.5 Materials Price Checker
+
 **Data:** data/materials.json — 500+ items with regional price ranges  
 **UI:** Search/filter → show low/avg/high price, last updated  
 **Integration:** Show inline during bid creation: "Typical cost: $X-$Y"  
@@ -264,12 +282,14 @@ interface ChangeOrder {
 ## 4. Technical Infrastructure
 
 ### 4.1 Storage Architecture
+
 **Primary:** localStorage via useLocalKV hook — JSON stringified  
 **Namespaces:** users/, jobs/, bids/, messages/, expenses/, sequences/, calls/  
 **Limits:** 5MB per origin — split large data across keys  
 **Sync:** Future: optional cloud sync via Supabase/Firebase
 
 ### 4.2 API Routes (Vercel)
+
 - `/api/receptionist/*` — Twilio webhooks for voice/SMS
 - `/api/ai/scope` — GPT-4 Vision for photo scoping
 - `/api/ai/extract` — GPT-4o for data extraction
@@ -277,6 +297,7 @@ interface ChangeOrder {
 - `/api/export/*` — PDF/CSV generation endpoints
 
 ### 4.3 Third-Party Services
+
 - **Twilio:** Voice, SMS, phone numbers — ~$1/number/month + usage
 - **OpenAI:** GPT-4o, GPT-4 Vision, Whisper — ~$0.01-0.03/request
 - **SendGrid:** Email delivery — free tier 100/day
@@ -284,12 +305,14 @@ interface ChangeOrder {
 - **Mapbox:** Maps for territory heatmaps — free tier 50k loads/month
 
 ### 4.4 Component Library
+
 **Base:** shadcn/ui — Button, Card, Dialog, Input, Select, Table, Tabs  
 **Custom:** GlassCard, AnimatedNumber, StatusBadge, PriceSlider  
 **Animation:** Framer Motion — page transitions, micro-interactions  
 **Charts:** Chart.js or Recharts for analytics
 
 ### 4.5 File Structure
+
 ```
 components/
   contractor/, homeowner/, shared/, widget/
@@ -308,6 +331,7 @@ api/
 ## 5. Launch Checklist
 
 ### 5.1 Pre-Launch (Dec 15-31)
+
 - [ ] AI Receptionist MVP live with 10 beta contractors
 - [ ] Twilio numbers provisioned and tested
 - [ ] Stripe/payment integration for Pro subscriptions
@@ -315,12 +339,14 @@ api/
 - [ ] Landing page with Pro feature showcase
 
 ### 5.2 Launch Day (Jan 1)
+
 - [ ] Announce in contractor Facebook groups
 - [ ] Email blast to waitlist
 - [ ] Product Hunt launch
 - [ ] First 50 Pro signups get 30% off first 3 months
 
 ### 5.3 Post-Launch (Jan-Feb)
+
 - [ ] Ship Bid Optimizer (Week 2)
 - [ ] Ship Follow-Up Automator (Week 4)
 - [ ] Ship Expense Tracker (Week 6)

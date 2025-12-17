@@ -16,7 +16,7 @@
 
 <div align="center">
 
-# ZERO FEES. ZERO BS. ZERO MIDDLEMEN.
+# ZERO FEES. ZERO BS. ZERO MIDDLEMEN
 
 **The home services marketplace where contractors keep 100% of what they earn.**
 
@@ -38,6 +38,7 @@ FairTradeWorker is a marketplace platform that connects homeowners with contract
 ## ✨ KEY FEATURES
 
 ### For Contractors
+
 - **Zero Fees** - Keep 100% of every job
 - **Job Matching** - Browse and bid on projects in your area
 - **Construction CRM** - Industry-specific CRM with pipeline, documents, financials, collaboration, and reporting
@@ -46,6 +47,7 @@ FairTradeWorker is a marketplace platform that connects homeowners with contract
 - **Enterprise CRM** - AI insights, advanced analytics, integrations (QuickBooks, Procore), security, workflows
 
 ### For Homeowners
+
 - **Flat Fee** - Simple pricing, no surprises
 - **Quality Contractors** - Verified, licensed professionals
 - **Direct Communication** - Connect directly with contractors
@@ -93,6 +95,7 @@ This model ensures contractors maximize their income while the platform remains 
 - **AI (hosted-first):** Smart Claude Tiering (Haiku/Sonnet) with pre-routing + RAG context and open-source helpers for background/CRM tasks (see Super README + `docs/AI_CONFIG.md`)
 
 ## 🧠 NEW AI & REVENUE HIGHLIGHTS
+
 - Hosted-first AI stack with routing/classification, embeddings + RAG, and enhanced scoping.
 - CRM intelligence (lead scoring, sentiment, CLV), smart follow-ups, contractor matching.
 - Revenue CTAs added (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
@@ -136,22 +139,26 @@ src/
 FairTradeWorker uses a modern shadow-based design system (updated December 16, 2025):
 
 ### Visual Philosophy
+
 - **Depth:** Shadow-based (no borders) - `shadow-lg hover:shadow-xl`
 - **Cards:** Rounded corners (`rounded-xl`), elevated appearance
 - **Buttons:** 3D effects with layered shadows, hover transforms
 - **Colors:** Clean grayscale with accent colors
 
 ### Theme Transitions
+
 - **Duration:** 5-second smooth transitions
 - **Implementation:** CSS transitions on all color properties
 - **Dark Mode:** Full support with proper contrast
 
 ### Key Components
+
 - **Netflix-style Browse Jobs:** Horizontal scrolling lanes with carousel arrows
 - **3D Buttons:** Layered shadow system with hover lift effect
 - **Cards:** Borderless with shadow depth
 
 ### Recent Updates
+
 - ✅ December 16, 2025: Major UI/UX overhaul with shadow-based design
 - ✅ Comprehensive testing suite (150+ tests, 95% coverage)
 - ✅ AI Receptionist with 100% reliability features
@@ -181,6 +188,7 @@ FairTradeWorker uses an intelligent two-tier Claude AI approach to optimize cost
 ### Cost Optimization
 
 **Realistic Monthly Usage (50K jobs):**
+
 - 45K Simple Jobs: $11.25 (Haiku)
 - 5K Complex Jobs: $15.00 (Sonnet)
 - **Total AI Cost: ~$26.25/month**

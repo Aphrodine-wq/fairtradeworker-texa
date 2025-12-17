@@ -98,7 +98,7 @@ export function StripePaymentDialog({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-        <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+        <div className="px-8 pt-6 pb-4 border-b border-transparent dark:border-white/10 flex-shrink-0">
           <DialogHeader className="text-left">
             <DialogTitle className="text-2xl">Complete Payment</DialogTitle>
             <DialogDescription>
@@ -178,8 +178,8 @@ export function StripePaymentDialog({
                       className={cn(
                         "w-full p-4 rounded-lg border-2 text-left transition-all",
                         paymentMethod === 'saved' 
-                          ? "bg-black dark:bg-white border-black dark:border-white text-white dark:text-black" 
-                          : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+                          ? "bg-black dark:bg-white border-transparent dark:border-white text-white dark:text-black" 
+                          : "bg-white dark:bg-black border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
                       )}
                     >
                       <div className="flex items-center justify-between">
@@ -397,7 +397,7 @@ export function StripePaymentDialog({
           </div>
         </div>
 
-        <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+        <div className="px-8 py-4 border-t border-transparent dark:border-white/10 flex-shrink-0">
           <div className="flex gap-3">
             <Button
               type="button"

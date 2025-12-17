@@ -8,11 +8,13 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 
 **Current Platform State:** Production-ready with 95% feature completion
 **Latest Updates (hosted-first AI + monetization CTAs):**
+
 - Hosted-first AI stack with routing/classification, embeddings + RAG context, enhanced Claude scoping, CRM intelligence, smart follow-ups, contractor matching (see `docs/AI_CONFIG.md`).
 - Revenue CTAs live (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
 - Feature flags and graceful fallbacks for missing keys/links.
 
 ### Code Statistics
+
 - **Total Files:** 178 TypeScript files
 - **Total Lines:** 39,700 lines of code
 - **Components:** 120 React components (23,874 lines)
@@ -28,7 +30,9 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 - **Language:** 100% TypeScript (zero JavaScript)
 
 ### Feature Implementation Status
+
 ✅ **Complete (95%):**
+
 - Core marketplace (job posting, bidding, browsing)
 - AI job scoping (simulation ready for real LLM)
 - Enhanced CRM with Kanban board
@@ -41,6 +45,7 @@ A zero-fee home services marketplace where AI scopes jobs in seconds, homeowners
 - Comprehensive test coverage
 
 ⏳ **Needs Production Integration (5%):**
+
 - Stripe payment processing (integration-ready)
 - OpenAI GPT-4 Vision + Whisper API (integration-ready)
 - Twilio SMS service (integration-ready)
@@ -67,6 +72,7 @@ This platform includes 10 growth acceleration features designed to achieve viral
 10. **Territory Operator System** - Operators claim counties and track their territory metrics
 
 ## Core Values
+
 1. **Free Job Posting** - Homeowners never pay to post
 2. **Free Job Bidding** - Contractors never pay to bid  
 3. **Open Marketplace** - No paywalls or hidden fees
@@ -77,6 +83,7 @@ This platform includes 10 growth acceleration features designed to achieve viral
 8. **Clean, Seamless, Familiar** - iOS-quality interactions
 
 **Experience Qualities**:
+
 1. **Empowering** - Makes posting and bidding on home repair jobs feel effortless and transparent
 2. **Trustworthy** - Clear pricing, AI-powered scoping, and fair transactions build confidence
 3. **Efficient** - Fast job posting with AI assistance, streamlined contractor workflows, instant territory claiming
@@ -87,6 +94,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 ## Essential Features
 
 ### Demo Mode
+
 - **Functionality**: Instant access to three pre-configured user accounts (homeowner, contractor, operator) with sample data
 - **Purpose**: Allow potential users to explore the platform's features without signing up
 - **Trigger**: Clicking one of three "Demo as [Role]" buttons on the homepage
@@ -94,6 +102,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Users can instantly experience all platform features with realistic data; demo banner clearly indicates demo mode status
 
 ### 3D Theme Toggle
+
 - **Functionality**: Animated theme switcher with a 3D rotating sphere that flips between sun (☀️) and moon (🌙) icons
 - **Purpose**: Provide delightful, accessible way to switch between light and dark modes while saving user preference
 - **Trigger**: User clicks theme toggle button in top-right corner of header
@@ -101,6 +110,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Animation is smooth with natural spring physics; theme applies immediately; preference persists after page refresh; respects system preference on first visit
 
 ### Post-&-Win Viral Loop (Tiered Referral System)
+
 - **Functionality**: Every homeowner who posts a job receives a unique referral code with escalating rewards. First referral earns $20 off next job, third referral unlocks priority contractor matching, fifth referral grants "Preferred Homeowner" gold badge status that makes jobs more attractive to top-tier contractors. Tracks multi-degree referral chains (A→B→C gives A a bonus).
 - **Purpose**: Create compounding viral growth through neighbor-to-neighbor referrals with escalating financial incentives and network effects
 - **Trigger**: Immediately after job is posted successfully
@@ -108,6 +118,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Tiered rewards display correctly; $20 credit applies automatically on first referral; priority matching activates at 3 referrals; gold badge shows on job posts at 5 referrals; second-degree tracking gives 10% bonus; dashboard shows referral tree; target K-factor of 1.2 achieved through tiered system; 35% of referral codes used within 7 days
 
 ### Contractor Referral Goldmine (Leaderboard & Buddy System)
+
 - **Functionality**: Contractors can invite tradesmen via SMS with leaderboard showing top recruiters per county. Contractors who bring in 5+ active tradesmen in a quarter get "Crew Leader" status with dedicated landing page. Optional "buddy system" links referring contractor to referral for first 90 days, earning 2% of new contractor's first 10 jobs as mentorship incentive.
 - **Purpose**: Rapidly expand contractor network through quality peer referrals with skin-in-the-game mentorship and competitive gamification
 - **Trigger**: Contractor clicks "Invite a Tradesman" or views Referral Leaderboard in CRM dashboard
@@ -115,6 +126,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: SMS invites are sent with tracking; buddy system option toggles on/off; 2% commission calculated correctly for first 10 jobs; Crew Leader badge displays after 5 active referrals; custom landing page generates with share link; county leaderboard updates in real-time; top recruiters display with photo and stats; 45% invite-to-signup conversion achieved; quality referrals incentivized over volume
 
 ### Speed-Based Job Visibility
+
 - **Functionality**: Small jobs (<$300) display with blinking green "FRESH" tag for first 15 minutes; first bid within 15 min gets sticky top slot for 2 hours; Lightning Round for small jobs where first 3 bids within 10 minutes get bolt icon highlighting; Response Time badges on contractor profiles (green clock <15 min, yellow <30 min, no badge >60 min); Peak Hours notifications alert contractors when job posting volume spikes.
 - **Purpose**: Create urgency, encourage contractors to monitor feed actively, and gamify quick responses while helping homeowners identify responsive contractors
 - **Trigger**: Job is posted with AI price estimate under $300, or contractor views job feed during high-activity period
@@ -122,6 +134,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Fresh indicator appears on qualifying jobs; contractors bid within 15 minutes on 85% of small jobs; sticky positioning works correctly for first bids; Lightning Round bolt icons display on first 3 bids; Response Time badges calculate accurately; contractors with green badges get 25% more bid acceptances; Peak Hours notifications send when volume spikes; notifications increase contractor engagement 40% during peaks; camping rate reaches 40% of contractors checking every 15 min during 4-7pm
 
 ### Speed Metrics Dashboard
+
 - **Functionality**: Real-time tracking of key growth metrics with visual status indicators (green/yellow/red lights)
 - **Purpose**: Keep the team focused on speed and conversion metrics instead of vanity metrics
 - **Trigger**: Operator views the Speed Metrics tab in Territory Map
@@ -129,6 +142,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Metrics calculate correctly; status lights update based on targets; operators can track performance trends
 
 ### Live Stats Bar
+
 - **Functionality**: Prominent display of real-time platform activity on homepage
 - **Purpose**: Build trust and demonstrate platform velocity to new visitors
 - **Trigger**: User visits homepage
@@ -136,6 +150,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Stats update in real-time; numbers are accurate; bar is visually prominent but not overwhelming
 
 ### User Authentication & Role Selection
+
 - **Functionality**: Email-based signup/login with role selection (homeowner, contractor, operator)
 - **Purpose**: Segregate user experiences and permissions based on their role in the marketplace
 - **Trigger**: Landing page CTA buttons or header login link
@@ -143,6 +158,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: User can sign up, log in, and see content appropriate to their role
 
 ### AI Job Scoping (Confidence Scoring & Pro Assessment)
+
 - **Functionality**: Upload video/voice/photos, get AI-generated scope with 1-100 Confidence Score. Jobs 90+ confidence get "Verified Scope" badge. Jobs below 60 confidence trigger optional "Request Pro Assessment" where local operator/experienced contractor does quick video call to refine scope (operators earn $5-15 per assessment).
 - **Purpose**: Remove friction from job posting, provide instant pricing transparency with quality scoring, and create additional revenue stream for operators while improving accuracy
 - **Trigger**: Homeowner clicks "Post Job" button
@@ -150,6 +166,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Confidence score displays on all scopes; Verified Scope badge shows on 90+ jobs; Pro Assessment booking flow works; operators/contractors can accept assessment requests; video call initiates; refined scope updates job; assessment payment processes; operators earn $5-15 per assessment; smart frame extraction identifies problem areas; object detection tags items with 80% accuracy; multi-issue detection prompts split/bundle option; voice transcription highlights key phrases in summary
 
 ### 150 MB Video Upload System
+
 - **Functionality**: Advanced video upload with chunked resumable transfer, real-time thumbnail extraction, metadata analysis, duplicate detection, and quality warnings
 - **Purpose**: Enable homeowners to record detailed walkthrough videos of repair needs while providing contractors with rich visual context
 - **Trigger**: Homeowner selects "Video" input method when posting a job
@@ -157,6 +174,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Uploads handle files up to 150 MB; progress can be paused/resumed; thumbnails extract correctly; duplicate detection prevents re-uploads; analysis provides actionable data; warnings appear for quality issues; upload completes successfully 98% of the time
 
 ### Video Analysis & Metadata
+
 - **Functionality**: Extract comprehensive metadata from uploaded videos including technical specs, GPS location, scene changes, detected objects, sound events, and audio transcription
 - **Purpose**: Provide contractors with deep context about the job and auto-fill location data when available
 - **Trigger**: Video upload completes processing
@@ -164,6 +182,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: All metadata fields populate correctly; GPS auto-fills job location when present; scene cuts and objects are detected; transcript is clickable with timestamps; warnings trigger for poor audio (<-40 LUFS) or shaky footage (<22 dB PSNR)
 
 ### Job Browsing & Bidding with Smart Communication
+
 - **Functionality**: Contractors view open jobs with size badges (🟢 Small ≤$300, 🟡 Medium ≤$1,500, 🔴 Large >$1,500), photos, materials list, and AI scope, then submit free bids with context-aware Smart Reply suggestions and job-stage-specific message templates
 - **Purpose**: Connect contractors with relevant work opportunities while eliminating typing friction through intelligent message suggestions that speed up communication from 2 minutes to 2 seconds
 - **Trigger**: Contractor navigates to "Browse Jobs" or dashboard, or receives message from homeowner
@@ -171,6 +190,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Bid appears in homeowner's bid list and contractor's active bids; photos expand smoothly in lightbox viewer; free bidding message is clear; weather-smart sorting increases indoor job bids on bad weather days 30%; contractor no-shows due to weather drop 60%; smart replies used on 60% of contractor messages; average response time drops 70%; custom library averages 15 saved replies per active contractor; message quality (measured by homeowner satisfaction) maintains or improves; drive time warnings shown on bids that create inefficient routes (20+ min from existing schedule); warnings display nearest job distance, estimated drive time, efficiency impact score, and actionable suggestions; contractors can still bid after seeing warning (informative, not blocking); warnings help contractors make informed routing decisions and maintain profitable schedules
 
 ### Performance-Based Bid Sorting
+
 - **Functionality**: Bids are automatically sorted by contractor quality score (performance + accuracy + operator status)
 - **Purpose**: Prioritize the most reliable contractors for homeowners
 - **Trigger**: When homeowner views bids on their job
@@ -178,6 +198,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Bids display in correct priority order; formula: `score = performanceScore + bidAccuracy + (isOperator ? 0.2 : 0)`
 
 ### Job Size Classification
+
 - **Functionality**: Jobs automatically categorized as Small (🟢 ≤$300), Medium (🟡 ≤$1,500), or Large (🔴 >$1,500)
 - **Purpose**: Help contractors quickly identify jobs that match their capacity
 - **Trigger**: AI generates price estimate
@@ -185,6 +206,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Size badge appears on all jobs; correct categorization based on priceHigh value
 
 ### Contractor CRM - Business Command Center with Integrated Efficiency Machine
+
 - **Functionality**: Complete business management hub combining existing Smart Scheduler, Repeat Customer Engine, and automation with deep-integrated efficiency tools: Route Builder intelligence, Customer Memory Bank, Smart Replies, Daily Briefing, Bid Insights Engine, Truck Inventory Tracker, Certification Wallet, and Weather-Smart scheduling. Every efficiency feature lives naturally inside the CRM as part of the contractor's daily workflow.
 - **Purpose**: Transform CRM into the complete contractor efficiency platform where business intelligence, daily operations, and workflow optimization merge into one cohesive system that runs their entire business
 - **Trigger**: Contractor logs in or clicks "Dashboard" or "CRM"
@@ -192,6 +214,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Contractor spends 40% of platform time in CRM; Daily Briefing checked by 70% of contractors each morning; Route Builder reduces average weekly drive time by 2+ hours; 60% of contractors use anchor job feature; drive time warnings shown on 15% of bids; cluster bidding increases jobs-per-contractor 20%; Smart Scheduler suggests jobs saving 2+ hours travel time per week; 80% of return customers have auto-populated history; contractors add notes on 40% of completed jobs; follow-up reminders set on 25% of jobs mentioning future work; repeat customer recognition increases rebooking 30%; Repeat Customer Engine seasonal outreach achieves 35% response rate; job-type-specific timing increases relevance; contractors reactivate 30% of dormant customers; Bid Insights users improve win rate 15% over 3 months; pricing guide reduces bid outliers 40%; response time awareness decreases average response by 20 minutes; 70% of contractors check insights weekly; 40% of contractors use truck inventory; parts checklist referenced on 30% of jobs; restock reminders prevent 50% of "forgot the part" delays; supply run optimizer saves average 15 minutes per restock trip; 80% of contractors complete certification wallet; expiration alerts prevent 90% of lapses; skills matching reduces unqualified bids 50%; Health Scores calculate correctly; automation rules trigger on schedule; profit calculator accurate; follow-up sequences achieve 25%+ reply rate; contractors report CRM runs their entire business and acts as their business partner
 
 ### Invoice Management - Delightful, Bulletproof & Lightning Fast
+
 - **Functionality**: Smart line item suggestions based on AI scope and job type, materials markup calculator with industry standards, Payment Plans for jobs over $1K (2-4 payments, no interest, contractor paid in full immediately), optional Tip Jar (5-15% one-click), Invoice Insights dashboard (avg time-to-payment by customer, most profitable job types, seasonal trends, YoY comparisons, job profitability analysis with effective hourly rate), quarterly tax summaries with categorized expenses, company logo upload for branded invoices or use platform generic template, invoice templates to save/reuse common configurations, recurring invoices, partial payments, late fees, one-tap invoice creation from job completion, payment status visibility with view tracking, cash/check marking
 - **Purpose**: Make invoicing fast (under 30 seconds), professional, and a revenue optimization tool while providing contractors business intelligence on profitability and payment patterns
 - **Trigger**: Contractor clicks "Invoices" in menu or "+ New Invoice" or "Create Invoice" button after job completion
@@ -199,6 +222,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Invoices created in <90 seconds manually, <30 seconds with one-tap from job completion; invoice creation time drops to <30 seconds for pre-populated invoices; smart suggestions appear for recognized job types; materials markup calculator shows recommendations; payment plans work with platform float; tip jar increases contractor earnings 8-12%; logo uploads successfully and appears on PDF; platform template looks professional; invoice templates save/load correctly; recurring invoices auto-generate on schedule; "Viewed" tracking surfaces 20% of stalled invoices; follow-up prompts increase payment rate 15%; cash/check marking used on 25% of invoices; overall time-to-payment drops 2 days; profitability analysis shown on 60% of jobs with material tracking; contractors identify most profitable job types; trend charts viewed weekly by 50% of contractors; Invoice Insights dashboard shows accurate metrics including effective hourly rates; tax export includes all necessary categories with clean formatting; tax export used by 70% of contractors at tax time; collection rate 78% within 7 days (Pro: 85%); late fees calculate correctly; average invoice value increases 15% with smart features
 
 ### Pro Upgrade
+
 - **Functionality**: Contractors upgrade to Pro ($59/mo) for instant payouts, auto-reminders, no-show protection, Invoice Insights dashboard, Smart Scheduler, Repeat Customer Engine, unlimited CRM contacts, advanced analytics
 - **Purpose**: Monetization and premium feature access that provides real business value
 - **Trigger**: "Upgrade to Pro" button in dashboard, invoices page, or when hitting free tier limits
@@ -206,6 +230,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: User's Pro status is persisted; Pro badge displays prominently; all Pro features become accessible; free tier limits enforce correctly; Pro contractors see instant payouts option; Invoice Insights dashboard appears; Smart Scheduler unlocks; 15% of contractors convert to Pro within 6 months; Pro members report 40% higher earnings due to better tools
 
 ### Strategic Monetization Layers
+
 - **Functionality**: Multiple revenue streams beyond Pro subscriptions: Bid Boost feature ($5-20 to feature bid at top for 24h, limited 2 per job), Materials Marketplace partnership (order supplies with bulk discounts, platform takes affiliate cut), FTW Verified certification ($99/year for background check, insurance verification, skills assessment with prominent badge and higher search ranking).
 - **Purpose**: Diversify platform revenue while providing value-added services to contractors and homeowners
 - **Trigger**: Contractor views bid submission dialog, Materials tab, or Profile Settings
@@ -213,6 +238,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Bid Boost charges correctly; boosted bids display at top with star icon; 2-boost-per-job limit enforces; Materials Marketplace queries supplier APIs; prices show correct discount; platform affiliate commission tracks; contractors save 10-15% on materials; FTW Verified application flow completes; background checks integrate with third-party service; verification approves/denies within 48h; verified badge displays prominently; verified contractors rank higher; premium job categories unlock; annual renewal reminds and processes; revenue targets: Bid Boost $5k/month by month 6, Materials $15k/month by month 9, Verified $8k/month by month 12
 
 ### Territory Operator System - Real Tools & Tier System
+
 - **Functionality**: Operator Dashboard with territory health metrics (active contractors per 10k residents, job density heat maps, average response times, contractor quality scores), Territory Challenges (time-limited promotions like "first to 5 jobs wins $100 bonus"), Local Events calendar to log partnerships and track which generate most signups, Operator Tier system (Bronze 1 county, Silver 3-5, Gold 6-10, Platinum 11+) with escalating benefits, Territory Transfer marketplace to sell established territories.
 - **Purpose**: Give operators real business management tools, create growth incentives through tiers, and establish territory asset value
 - **Trigger**: Operator clicks "Territory Map" or "Operator Dashboard"
@@ -220,6 +246,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Dashboard metrics calculate accurately; heat maps visualize job density; territory challenges create and track correctly; local events calendar logs activities; tier system displays benefits and progress; higher tiers unlock features; territory transfer marketplace lists/sells territories; 5% fee processes on transfers; operators motivated to grow and optimize territories; average territory grows from 8 to 25 active contractors in 6 months
 
 ### Payment Flow (Simulated)
+
 - **Functionality**: Homeowner accepts bid and pays via Stripe-like checkout
 - **Purpose**: Complete the job transaction loop
 - **Trigger**: Homeowner clicks "Accept Bid" on a bid
@@ -227,6 +254,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Job status updates and contractor sees payment in dashboard
 
 ### Active Job Management - Scope Creep Protection & Photo Intelligence
+
 - **Functionality**: Comprehensive job-site tools integrating Scope Creep Documenter for professional change order handling and Job Photo Auto-Organize for effortless documentation, all accessible during active work
 - **Purpose**: Protect contractors from scope disputes, create professional paper trails, and automatically organize job photos without manual effort
 - **Trigger**: Contractor starts working on accepted job or takes photos during work
@@ -234,6 +262,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: 90% of completed jobs have organized Before/After photos; photo prompts accepted 50% of time; before/after comparisons generated on 70% of photo-documented jobs; contractors share comparisons 30% of time; photo quality improves 25% with prompts; scope changes documented on 25% of jobs (reflecting reality); 95% of documented changes approved by homeowner; disputes drop 60% due to documentation; contractors report feeling protected; homeowners report appreciating transparency; change order system saves contractors average 8 minutes per scope change; photo organization eliminates all manual sorting time
 
 ### Enhanced Demo Mode - Conversion Machine
+
 - **Functionality**: Demo mode transformed into persuasive sales tool with guided walkthroughs highlighting pain points solved, sample notifications showing real-time bid arrivals, realistic metrics dashboards, competitor fee calculator, and clear conversion CTAs.
 - **Purpose**: Turn demo experience into primary conversion funnel that sells platform benefits viscerally
 - **Trigger**: User clicks "Demo as [Role]" button on homepage
@@ -241,6 +270,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Demo mode loads instantly with rich data (12 sample jobs, 24 bids, 8 invoices, 3 territories per role); guided walkthrough highlights key features; sample notifications appear realistically; metrics dashboards show believable numbers; competitor fee calculator compares accurately; conversion modal appears after engagement threshold; demo-to-signup rate reaches 40%; users report understanding platform value immediately
 
 ### Social Proof & Trust Signals
+
 - **Functionality**: Real-time activity feed on homepage, neighborhood trust scores showing platform activity by zip code, contractor success stories with video testimonials embedded throughout experience.
 - **Purpose**: Build credibility and create FOMO through transparent community activity and social proof
 - **Trigger**: User lands on homepage or browses platform
@@ -248,6 +278,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Activity feed updates in real-time; activities are anonymized appropriately; neighborhood trust scores calculate correctly by zip code; savings numbers aggregate accurately; success story videos embed and play smoothly; testimonials feel authentic; social proof increases homepage time-on-site 25%; trust indicators improve signup conversion 15%
 
 ### Mobile-First Optimization
+
 - **Functionality**: Complete job posting flow optimized for one-thumb operation, Quick Capture mode (big record button), contractor mobile experience surfaces urgent actions, Apple Watch/Wear OS notifications for FRESH jobs, offline mode for rural contractors.
 - **Purpose**: Enable seamless mobile experience since most homeowners post from phones after discovering problems, and contractors need instant job notifications
 - **Trigger**: User accesses platform from mobile device or areas with spotty coverage
@@ -255,6 +286,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Success criteria**: Quick Capture mode reduces job posting time to <60 seconds on mobile; contractor mobile dashboard loads <1.5 seconds; watch notifications send within 15 seconds of job posting; offline mode caches essential data; queued actions sync successfully; all interactive elements meet 44×44px minimum; text remains readable at 16px+; one-thumb operation tested on devices from iPhone SE to iPhone 15 Pro Max; 70% of homeowner jobs posted from mobile; 85% of contractor bids submitted from mobile; mobile conversion rate matches desktop; Smart Reply buttons sized for thumb tapping; Scope Creep Documenter camera opens instantly; Photo capture works offline and uploads when connected; Truck Inventory checkboxes sized for gloved hands; all efficiency features usable with one thumb; voice commands work in 80% of attempts for Dirty Hands Mode
 
 ### Review Optimization - Effortless Collection & Response
+
 - **Functionality**: Automatic review requests sent 3 days after job completion, one-tap star rating for homeowners, context-aware response templates for contractors (5-star, 4-star, 3-star or below), review insights analyzing patterns and strengths
 - **Purpose**: Increase review collection rate without contractors having to ask, enable professional responses in seconds, and provide actionable feedback from customer words
 - **Trigger**: Job marked complete (for automatic request) or contractor receives new review (for response prompt)
@@ -298,7 +330,7 @@ This platform requires multiple user roles (homeowner, contractor, operator), AI
 - **Accent Color**: oklch(0.456 0.243 264) - Deep Blue for CTAs and highlights
 - **Background**: Warm light gray oklch(0.988 0.002 264) in light mode, deep charcoal oklch(0.165 0.01 264) in dark mode
 - **Glass Surfaces**: White @ 85% opacity in light mode, Charcoal @ 75% opacity in dark mode (with 12px backdrop-blur)
-- **Foreground/Background Pairings**: 
+- **Foreground/Background Pairings**:
   - Background (Light) → Foreground (Charcoal): Ratio 17.8:1 ✓
   - Primary (Electric Blue) → White text: Ratio 8.4:1 ✓
   - Card (Glass White) → Text: Ratio 17.8:1 ✓
@@ -312,6 +344,7 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
 - **Secondary Typeface**: Inter - Clean, highly legible for body text and data-heavy interfaces
 
 **Typographic Hierarchy**:
+
 - H1 (Hero Headlines): Space Grotesk Bold/48px/tight (-0.02em) letter spacing
 - H2 (Section Headers): Space Grotesk Bold/32px/tight letter spacing
 - H3 (Card Titles): Space Grotesk SemiBold/20px/normal spacing
@@ -324,7 +357,7 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
 
 ## Component Selection
 
-- **Components**: 
+- **Components**:
   - Button (primary/secondary/ghost with electric blue theming, hover lift effects, 44px minimum)
   - Card (glass morphism with 85%/75% opacity, 12px backdrop-blur, rounded-2xl, hover float)
   - GlassCard (specialized card with museum-glass aesthetic and shadow-xl hover)
@@ -340,7 +373,7 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
   - Label (form fields with blue focus)
   - ThemeToggle (3D animated sun/moon with spring physics and gradient spheres)
   
-- **Customizations**: 
+- **Customizations**:
   - GlassCard component with backdrop-blur-12 and semi-transparent backgrounds
   - 3D ThemeToggle with rotateY animation and luxury spring physics
   - Custom noise texture overlay on body (0.5% opacity for depth)
@@ -353,23 +386,23 @@ Strong, readable typefaces that convey professionalism and clarity, appropriate 
   - Custom lightbox with smooth scale animations
   - Custom instant invite widget with real-time validation
 
-- **States**: 
+- **States**:
   - Buttons: default, hover (scale-105 + brightness + shadow-md + translate-y-[-2px]), active (scale-95), disabled (opacity-50)
   - Inputs: default (border-input), focus (border-primary + ring), error (border-destructive), minimum 44px height
   - Cards: default (shadow-sm + rounded-lg), hover (shadow-md + translate-y-[-2px])
   - Theme: light (white background) and dark (deep dark background) with smooth 0.4s fade transition
   
-- **Icon Selection**: 
+- **Icon Selection**:
   - Phosphor icons throughout (Wrench for jobs, House for homeowner, Hammer for contractor, MapPin for territory, CurrencyDollar for invoices, Crown for Pro, Users for CRM, EnvelopeSimple for email invites, DeviceMobile for SMS invites, PaperPlaneRight for sending invites, Note for customer notes, Sun for light mode, Moon for dark mode)
 
-- **Spacing**: 
+- **Spacing**:
   - Container padding: px-4 md:px-8
   - Section gaps: gap-6 md:gap-8
   - Card padding: p-4 md:p-6
   - Button padding: px-6 py-3
   - All spacing uses 4px increments (4, 8, 12, 16, 24px)
 
-- **Mobile**: 
+- **Mobile**:
   - Stack navigation horizontally on desktop, collapse items on mobile with responsive breakpoints
   - Single column layouts below md breakpoint
   - Touch-friendly 44px minimum tap targets on all interactive elements
@@ -393,42 +426,51 @@ The complete efficiency framework is woven into existing platform features, crea
 ### Daily Contractor Workflow Example
 
 **Morning (7:00 AM)**:
+
 - Contractor opens app → **Daily Briefing** shows today's 4 jobs with travel times, weather alert for afternoon outdoor job, and 2 unread messages
 - Smart contextual reminders: "Don't forget: homeowner said gate code is 4521"
 - Expected earnings: $1,240 for the day
 
 **Driving to First Job (7:30 AM)**:
+
 - **Smart Reply** lets them respond to messages at red lights with one tap
 - "I'll be there in 15 minutes" sent in 2 seconds
 
 **Arriving at Job (8:00 AM)**:
+
 - **Customer Memory** banner shows: "You installed their water heater last year. They mentioned wanting to redo the bathroom"
 - Professional appearance with zero manual effort
 
 **Starting Job (8:15 AM)**:
+
 - **Photo Prompt** reminds them to capture "before" shot
 - One tap, photo auto-tagged "Before"
 
 **Mid-Job Discovery (9:30 AM)**:
+
 - Discovers water damage behind wall
 - **Scope Creep Documenter**: Tap button → Camera opens → Take photos → Voice note: "Found water damage, about 4 square feet" → Auto-generated change order sent to homeowner in 30 seconds
 - Homeowner approves via phone, work continues with full documentation
 
 **Completing Job (11:00 AM)**:
+
 - **Photo System** auto-organizes all shots, prompts for "after" comparison
 - **One-Tap Invoice**: Pre-fills everything including the approved scope change
 - Invoice sent in 15 seconds
 
 **Checking Schedule (11:15 AM)**:
+
 - **Route Builder** suggests: "There's a small plumbing job 6 minutes away that needs a bid. Add it before your 1 PM job?"
 - Efficient routing maximizes earnings
 
 **End of Day (6:00 PM)**:
+
 - **Daily Summary**: "Great day! You earned $1,240 across 4 jobs"
 - One new 5-star review received
 - Tomorrow's preview: 3 jobs scheduled, first at 9 AM
 
 **Evening (7:00 PM)**:
+
 - **Review Response** template: Tap once to thank customer
 - Professional engagement in seconds
 
@@ -437,6 +479,7 @@ The complete efficiency framework is woven into existing platform features, crea
 ## Efficiency Features Success Metrics
 
 ### Time Saved (Primary Goal: 10+ hours per week per contractor)
+
 - Average drive time per job: **Reduce 20%** (Route Builder + Anchor Jobs)
 - Message response time: **Reduce 70%** (Smart Replies)
 - Invoice creation time: **Under 30 seconds** (One-Tap Invoice)
@@ -446,6 +489,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Review responses: **10 seconds vs 5 minutes** (Response Templates)
 
 ### Money Earned (Primary Goal: 20%+ revenue increase per contractor)
+
 - Jobs per contractor per week: **Increase 15%** (Route Builder + Daily Briefing)
 - Win rate improvement: **Increase 15%** for engaged users (Bid Insights)
 - Scope creep revenue captured: **95%** of documented changes paid
@@ -454,6 +498,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Profitable job identification: **Contractors eliminate low-margin work** (Profitability Analysis)
 
 ### Stress Reduced (Primary Goal: Platform becomes indispensable)
+
 - Contractor satisfaction score: **4.5+ out of 5**
 - "Platform helps me run my business" agreement: **80%+**
 - Daily Briefing usage: **70% of contractors daily**
@@ -463,6 +508,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Expired credential incidents: **Reduce 90%** (Certification Alerts)
 
 ### Engagement & Adoption (Prove value through usage)
+
 - Smart Replies used on: **60% of contractor messages**
 - Daily Briefing daily check rate: **70% of active contractors**
 - Route Builder weekly usage: **60% of contractors**
@@ -477,6 +523,7 @@ The complete efficiency framework is woven into existing platform features, crea
 ## Implementation Priority Roadmap
 
 ### Phase 1: Core Efficiency (Months 1-2) - Immediate Value
+
 **Goal**: Prove time-saving value and sticky engagement
 
 1. **Smart Replies System**
@@ -516,6 +563,7 @@ The complete efficiency framework is woven into existing platform features, crea
 **Phase 1 Success Criteria**: Contractors save 4+ hours per week; 50% use 3+ efficiency features; satisfaction score 4.3+
 
 ### Phase 2: Business Intelligence (Months 3-4) - Optimize Performance
+
 **Goal**: Help contractors win more and earn more through data-driven insights
 
 1. **Bid Insights Engine Enhancement**
@@ -551,6 +599,7 @@ The complete efficiency framework is woven into existing platform features, crea
 **Phase 2 Success Criteria**: Win rate increases 15%; drive time reduces 20%; review collection doubles; contractors report feeling "smarter" about their business
 
 ### Phase 3: Protection & Optimization (Months 5-6) - Professional Tools
+
 **Goal**: Protect contractors legally and operationally while optimizing daily workflow
 
 1. **Scope Creep Documenter**
@@ -584,6 +633,7 @@ The complete efficiency framework is woven into existing platform features, crea
 **Phase 3 Success Criteria**: Disputes drop 60%; contractors feel protected; operational efficiency increases; zero expired credentials shown to homeowners
 
 ### Phase 4: Polish & Delight (Months 7-8) - Perfection
+
 **Goal**: Eliminate all remaining friction and create magical experiences
 
 1. **Intelligent Empty States**
@@ -635,6 +685,7 @@ The complete efficiency framework is woven into existing platform features, crea
 ## Technical Considerations for Efficiency Features
 
 ### Performance Targets
+
 - Daily Briefing load time: <800ms (all data pre-aggregated)
 - Smart Reply suggestions: <200ms (pre-computed common scenarios)
 - Photo auto-organize: Instant (timestamp-based, no processing delay)
@@ -642,6 +693,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Voice transcription: <3s for 30-second clip (streaming API)
 
 ### Data Storage Strategy
+
 - Customer notes: Encrypted in `useKV` with customer ID key
 - Quick Reply library: User-specific `useKV` array
 - Truck inventory: Local-first with sync (offline support)
@@ -649,6 +701,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Route efficiency scores: Calculated on-demand, cached for day
 
 ### Mobile Optimization
+
 - All efficiency features designed mobile-first
 - Offline support for job-site critical features
 - One-thumb operation for all interactions
@@ -656,6 +709,7 @@ The complete efficiency framework is woven into existing platform features, crea
 - Large tap targets (44×44px minimum) throughout
 
 ### Privacy & Security
+
 - Customer notes: Private to contractor, never shared
 - Bid insights: All competitor data anonymized
 - Review insights: Aggregated pattern analysis only

@@ -1,15 +1,17 @@
 # Service Worker & Offline Mode Implementation
 
 ## Overview
+
 Implemented comprehensive service worker with offline support, instant loads, and PWA capabilities for FairTradeWorker Texas.
 
 ## Features Implemented
 
 ### 1. Service Worker (`/public/sw.js`)
+
 - **Cache-First Strategy**: Static assets (images, fonts) served from cache for instant loads
 - **Network-First Strategy**: API calls prioritize fresh data but fall back to cache offline
 - **Stale-While-Revalidate**: JavaScript/CSS files use cached version while fetching fresh copy
-- **Intelligent Cache Management**: 
+- **Intelligent Cache Management**:
   - Automatic cache versioning with cleanup of old caches
   - Cache size limits (100 items per cache)
   - 7-day cache expiry
@@ -19,6 +21,7 @@ Implemented comprehensive service worker with offline support, instant loads, an
 ### 2. React Hooks (`/src/hooks/useServiceWorker.ts`)
 
 #### `useServiceWorker()`
+
 ```typescript
 const { 
   registration,      // ServiceWorkerRegistration instance
@@ -32,6 +35,7 @@ const {
 ```
 
 #### `useOfflineQueue()`
+
 ```typescript
 const {
   queue,           // Pending offline operations
@@ -43,6 +47,7 @@ const {
 ```
 
 #### `usePrefetch()`
+
 ```typescript
 const {
   prefetch,          // Prefetch array of URLs
@@ -52,24 +57,29 @@ const {
 ```
 
 ### 3. Offline Indicator Component
+
 Visual feedback for:
+
 - Installing offline support (spinner with message)
 - Update available (prompt to refresh)
 - Offline mode (warning banner)
 
 ### 4. PWA Manifest (`/public/manifest.json`)
+
 - Installable as native app on mobile/desktop
 - Custom app icons and branding
 - Shortcuts for quick actions (Post Job, Browse Jobs, Dashboard)
 - Share target for sharing photos directly to app
 
 ### 5. Performance Utilities (`/src/lib/performance.ts`)
+
 - `debounce()` / `throttle()` - Rate limiting
 - `measurePerformance()` / `measureAsync()` - Performance tracking
 - `preloadImage()` / `preloadImages()` - Asset preloading
 - `performanceMonitor` - Centralized performance tracking
 
 ### 6. Optimized Data Hooks (`/src/hooks/useOptimizedData.ts`)
+
 - `useOptimizedData()` - Cached data fetching with loading states
 - `usePaginatedData()` - Client-side pagination
 - `useVirtualList()` - Virtual scrolling for large lists
@@ -89,7 +99,8 @@ Visual feedback for:
 
 ## Offline Capabilities
 
-### Works Offline:
+### Works Offline
+
 ✅ Browse cached jobs
 ✅ View contractor profiles (cached)
 ✅ Review past messages
@@ -98,14 +109,16 @@ Visual feedback for:
 ✅ View cached invoices
 ✅ Browse CRM customer list
 
-### Queued for Sync:
+### Queued for Sync
+
 🔄 Submit new bids
 🔄 Send messages
 🔄 Update job status
 🔄 Create invoices
 🔄 Upload photos
 
-### Requires Online:
+### Requires Online
+
 ❌ Post new jobs
 ❌ Real-time updates
 ❌ Payment processing
@@ -115,19 +128,23 @@ Visual feedback for:
 ## Performance Improvements
 
 ### Initial Load
+
 - Service worker caches critical assets on first visit
 - Subsequent visits load from cache: **~100ms** vs **2-3s**
 
 ### Navigation
+
 - Prefetching routes reduces navigation time: **50ms** vs **500ms**
 - Lazy-loaded components with cached chunks
 
 ### Images
+
 - Lazy loading saves initial bandwidth
 - Cached images load instantly
 - Progressive image loading for large photos
 
 ### API Calls
+
 - Cached responses for repeated requests
 - Stale data shown while fetching fresh (perceived instant)
 - Network-first ensures data accuracy
@@ -135,6 +152,7 @@ Visual feedback for:
 ## Usage Examples
 
 ### Automatic (Integrated in App.tsx)
+
 ```typescript
 // Service worker auto-registers on app load
 // Offline indicator appears automatically when offline
@@ -142,6 +160,7 @@ Visual feedback for:
 ```
 
 ### Manual Prefetching
+
 ```typescript
 import { usePrefetch } from '@/hooks/useServiceWorker';
 
@@ -169,6 +188,7 @@ function JobList() {
 ```
 
 ### Offline Queue
+
 ```typescript
 import { useOfflineQueue } from '@/hooks/useServiceWorker';
 
@@ -197,6 +217,7 @@ function BidSubmission() {
 ```
 
 ### Performance Monitoring
+
 ```typescript
 import { performanceMonitor } from '@/lib/performance';
 
@@ -214,6 +235,7 @@ const jobs = await performanceMonitor.measureAsync('fetchJobs', async () => {
 ## Installation on Mobile/Desktop
 
 ### iOS (Safari)
+
 1. Visit FairTradeWorker.com
 2. Tap Share button
 3. Select "Add to Home Screen"
@@ -221,6 +243,7 @@ const jobs = await performanceMonitor.measureAsync('fetchJobs', async () => {
 5. Opens in standalone mode (no browser UI)
 
 ### Android (Chrome)
+
 1. Visit FairTradeWorker.com
 2. Tap menu (three dots)
 3. Select "Install app" or "Add to Home screen"
@@ -228,6 +251,7 @@ const jobs = await performanceMonitor.measureAsync('fetchJobs', async () => {
 5. Opens as native-feeling app
 
 ### Desktop (Chrome/Edge)
+
 1. Visit FairTradeWorker.com
 2. Click install icon in address bar (or menu)
 3. App installs like native application
@@ -236,11 +260,13 @@ const jobs = await performanceMonitor.measureAsync('fetchJobs', async () => {
 ## Cache Management
 
 ### Automatic Cleanup
+
 - Old cache versions deleted on service worker update
 - Cache size limited to 100 items per category
 - Least recently used items removed when limit hit
 
 ### Manual Cleanup
+
 ```typescript
 const { clearCache } = useServiceWorker();
 
@@ -271,6 +297,7 @@ clearCache();
 ## Testing Offline Mode
 
 ### Chrome DevTools
+
 1. Open DevTools (F12)
 2. Go to "Application" tab
 3. Click "Service Workers" in sidebar
@@ -278,6 +305,7 @@ clearCache();
 5. Refresh page to test offline behavior
 
 ### Network Tab
+
 1. Open DevTools (F12)
 2. Go to "Network" tab
 3. Select "Offline" from throttling dropdown
@@ -296,12 +324,14 @@ clearCache();
 ## Performance Metrics
 
 ### Before Service Worker
+
 - Initial load: 2.5s
 - Repeat visit: 1.8s
 - Navigation: 400-600ms
 - Image load: 200-800ms per image
 
 ### After Service Worker
+
 - Initial load: 2.5s (first visit, installs SW)
 - Repeat visit: **150ms** ⚡ (16x faster)
 - Navigation: **50-100ms** ⚡ (5x faster)
@@ -321,6 +351,7 @@ clearCache();
 ## Monitoring
 
 Track in analytics:
+
 - Service worker registration success rate
 - Cache hit rate by resource type
 - Offline queue processing success rate

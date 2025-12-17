@@ -7,13 +7,15 @@ A comprehensive push notification system for instant job alerts to contractors. 
 ## Features Implemented
 
 ### ✅ Core Notification System
+
 - **Push Subscription Management**: Subscribe/unsubscribe with one click
 - **Permission Handling**: Graceful permission request flow
 - **Service Worker Integration**: Handles notifications even when app is closed
 - **Browser Compatibility**: Detects support and provides fallback UI
 
 ### ✅ Smart Notification Preferences
-- **Notification Types**: 
+
+- **Notification Types**:
   - New jobs (all jobs in service area)
   - Smart matches (perfectly matched jobs)
   - Bid accepted/rejected
@@ -39,7 +41,9 @@ A comprehensive push notification system for instant job alerts to contractors. 
 ### ✅ UI Components
 
 #### NotificationSettings Component
+
 Full-featured settings panel with:
+
 - Enable/disable toggle
 - Test notification button
 - Collapsible detailed settings
@@ -48,7 +52,9 @@ Full-featured settings panel with:
 - Clear explanation of each option
 
 #### NotificationPrompt Component
+
 Smart promotional banner that:
+
 - Shows only to contractors
 - Auto-hides when enabled
 - Dismissible with "don't show again"
@@ -58,6 +64,7 @@ Smart promotional banner that:
 ### ✅ Developer Features
 
 #### usePushNotifications Hook
+
 ```typescript
 const {
   preferences,           // Current notification preferences
@@ -76,6 +83,7 @@ const {
 ```
 
 #### useJobAlerts Hook
+
 ```typescript
 const {
   shouldNotify,         // Check if job matches preferences
@@ -88,6 +96,7 @@ const {
 ## Usage Examples
 
 ### Enable Notifications for Contractor
+
 ```typescript
 import { NotificationPrompt } from '@/components/contractor/NotificationPrompt';
 
@@ -102,6 +111,7 @@ function ContractorDashboard({ user }) {
 ```
 
 ### Show Notification Settings
+
 ```typescript
 import { NotificationSettings } from '@/components/contractor/NotificationSettings';
 
@@ -116,6 +126,7 @@ function SettingsPage({ user }) {
 ```
 
 ### Send Job Alert
+
 ```typescript
 import { useJobAlerts } from '@/hooks/usePushNotifications';
 
@@ -146,7 +157,7 @@ function JobPoster() {
 
 All notification data is stored using the Spark KV system:
 
-- **Preferences**: `notification-prefs-{userId}` 
+- **Preferences**: `notification-prefs-{userId}`
   - Stores all user notification preferences
   - Auto-synced across devices
 
@@ -165,6 +176,7 @@ All notification data is stored using the Spark KV system:
 ## Notification Flow
 
 ### 1. New Job Posted
+
 ```
 Job Posted
   ↓
@@ -182,6 +194,7 @@ Else:
 ```
 
 ### 2. Quiet Hours End
+
 ```
 Every Minute Check:
   ↓
@@ -198,6 +211,7 @@ Clear Pending Alerts
 ```
 
 ### 3. Notification Click
+
 ```
 User Clicks Notification
   ↓
@@ -217,6 +231,7 @@ Else:
 ## Configuration
 
 ### Default Preferences
+
 ```typescript
 {
   enabled: false,
@@ -243,18 +258,22 @@ Else:
 ## Browser Support
 
 ### Supported Browsers
+
 - ✅ Chrome/Edge 42+ (Desktop & Android)
-- ✅ Firefox 44+ (Desktop & Android) 
+- ✅ Firefox 44+ (Desktop & Android)
 - ✅ Safari 16+ (macOS & iOS)
 - ✅ Opera 37+
 
 ### Not Supported
+
 - ❌ Safari < 16 on iOS
 - ❌ Internet Explorer (all versions)
 - ❌ Firefox on iOS (uses Safari engine)
 
 ### Feature Detection
+
 The system automatically detects support and shows appropriate UI:
+
 ```typescript
 if ('Notification' in window && 
     'serviceWorker' in navigator && 
@@ -268,16 +287,19 @@ if ('Notification' in window &&
 ## Performance
 
 ### Load Time Impact
+
 - **Hook overhead**: <1ms (checks localStorage/KV)
 - **Component render**: <5ms (conditional render based on state)
 - **Service worker**: Already loaded for offline support
 
 ### Network Impact
+
 - **Initial subscription**: 1 request (~1KB)
 - **Preference updates**: Instant (KV storage)
 - **Receiving notifications**: Push API (no HTTP polling)
 
 ### Memory Impact
+
 - **Hooks**: ~2KB in memory
 - **Preferences**: ~500 bytes stored
 - **Pending alerts**: ~200 bytes per alert
@@ -285,16 +307,19 @@ if ('Notification' in window &&
 ## Security & Privacy
 
 ### Permission Model
+
 - Notifications require explicit user permission
 - Permission persists across sessions
 - User can revoke permission in browser settings
 
 ### Data Privacy
+
 - Subscription data stored locally (Spark KV)
 - No third-party notification services
 - No tracking or analytics on notifications
 
 ### Content Security
+
 - Notifications are web standard
 - No arbitrary code execution
 - Limited to text, icons, and actions
@@ -302,6 +327,7 @@ if ('Notification' in window &&
 ## Testing
 
 ### Manual Testing
+
 1. **Enable Flow**:
    - Click "Enable Notifications"
    - Grant permission
@@ -323,6 +349,7 @@ if ('Notification' in window &&
    - Verify notification received
 
 ### Automated Testing
+
 ```typescript
 // Test notification preference updates
 const { updatePreferences } = usePushNotifications(testUser);
@@ -343,6 +370,7 @@ expect(shouldNotify(job)).toBe(true);
 ## Troubleshooting
 
 ### Notifications Not Showing
+
 1. Check browser permissions in settings
 2. Verify service worker is active
 3. Check notification preferences are enabled
@@ -350,11 +378,13 @@ expect(shouldNotify(job)).toBe(true);
 5. Check browser console for errors
 
 ### Permission Denied
+
 - User clicked "Block" on permission prompt
 - Must manually enable in browser settings
 - Show instructions to user with link to settings
 
 ### Service Worker Not Registering
+
 - Check HTTPS (required for service workers)
 - Verify sw.js is in public directory
 - Check browser console for registration errors
@@ -363,6 +393,7 @@ expect(shouldNotify(job)).toBe(true);
 ## Future Enhancements
 
 ### Planned Features
+
 - [ ] Rich notifications with inline job details
 - [ ] Notification action buttons (Bid Now, Dismiss)
 - [ ] Smart notification batching based on user behavior
@@ -374,14 +405,17 @@ expect(shouldNotify(job)).toBe(true);
 - [ ] Snooze functionality
 
 ### Server-Side Push (Future)
+
 For production deployment with actual push notifications:
 
 1. **Generate VAPID Keys**:
+
 ```bash
 npx web-push generate-vapid-keys
 ```
 
-2. **Store Keys Securely**:
+1. **Store Keys Securely**:
+
 ```typescript
 const vapidKeys = {
   publicKey: process.env.VAPID_PUBLIC_KEY,
@@ -389,7 +423,8 @@ const vapidKeys = {
 };
 ```
 
-3. **Send Push from Server**:
+1. **Send Push from Server**:
+
 ```typescript
 import webPush from 'web-push';
 
@@ -410,17 +445,20 @@ await webPush.sendNotification(subscription, JSON.stringify({
 ## Integration Points
 
 ### Where to Show NotificationSettings
+
 - ✅ Contractor Dashboard (settings section)
 - ✅ Contractor Profile page
 - ✅ Settings/Preferences page
 - ✅ First-time contractor onboarding
 
 ### Where to Show NotificationPrompt
+
 - ✅ Contractor Dashboard (top banner)
 - ✅ Browse Jobs page (contractors only)
 - ✅ After first bid (if not enabled)
 
 ### Where to Send Notifications
+
 - ✅ New job posted (matching contractors)
 - ✅ Bid accepted (contractor)
 - ✅ Bid rejected (contractor, optional)
@@ -445,6 +483,7 @@ Track these to measure notification effectiveness:
 ## Conclusion
 
 This push notification system provides:
+
 - ✅ **Instant alerts** for time-sensitive job opportunities
 - ✅ **Smart filtering** to reduce notification fatigue
 - ✅ **Flexible preferences** for different contractor workflows

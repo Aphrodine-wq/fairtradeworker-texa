@@ -113,7 +113,30 @@ const featureIconMap: Record<string, React.ElementType> = {
   secure: Shield,
 }
 
-export function FeatureSection({ features }: { features: Feature[] }) {
+export function FeatureSection({ features, onNavigate }: { features: Feature[]; onNavigate?: (page: string) => void }) {
+  const getFeatureRoute = (title: string): string | null => {
+    const titleLower = title.toLowerCase()
+    if (titleLower.includes('ai scoping') || titleLower.includes('scoping')) {
+      return 'photo-scoper'
+    }
+    if (titleLower.includes('invoicing') || titleLower.includes('invoice')) {
+      return 'invoices-page'
+    }
+    if (titleLower.includes('analytics') || titleLower.includes('dashboard')) {
+      return 'revenue-dashboard'
+    }
+    if (titleLower.includes('crm')) {
+      return 'customer-crm'
+    }
+    if (titleLower.includes('boosted') || titleLower.includes('listing')) {
+      return 'pro-upgrade'
+    }
+    if (titleLower.includes('payment') || titleLower.includes('secure')) {
+      return 'track-payments'
+    }
+    return null
+  }
+
   return (
     <div className="mb-12">
       <div className="text-center mb-10 space-y-2">
@@ -126,8 +149,21 @@ export function FeatureSection({ features }: { features: Feature[] }) {
         {features.map((feature) => {
           // Use explicit icon if provided, otherwise try to match from map
           const Icon = feature.icon || featureIconMap[feature.title.toLowerCase()] || Sparkle
+          const route = getFeatureRoute(feature.title)
+          const handleClick = () => {
+            if (route && onNavigate) {
+              onNavigate(route)
+            }
+          }
           return (
-            <GlassCard key={feature.title} className="feature-card p-6 hover-lift text-center">
+            <GlassCard 
+              key={feature.title} 
+              className={cn(
+                "feature-card p-6 hover-lift text-center",
+                route && onNavigate && "cursor-pointer"
+              )}
+              onClick={handleClick}
+            >
               <div className="feature-icon h-14 w-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 mx-auto">
                 <Icon className="text-gray-600 dark:text-gray-300 text-2xl" />
               </div>

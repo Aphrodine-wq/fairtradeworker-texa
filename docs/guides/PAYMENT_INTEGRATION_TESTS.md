@@ -317,12 +317,14 @@ Expected test execution times:
 ## Test Metrics
 
 Current Coverage:
+
 - **Lines**: ~95%
 - **Branches**: ~90%
 - **Functions**: ~100%
 - **Statements**: ~95%
 
 Critical Paths Covered:
+
 - ✅ Happy path (all milestones paid successfully)
 - ✅ Dispute path (milestone rejected)
 - ✅ Change order path (additional work approved)

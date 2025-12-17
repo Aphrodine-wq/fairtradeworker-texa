@@ -3,6 +3,7 @@
 ## ✅ Completed Core Infrastructure
 
 ### 1. Type System Enhancements
+
 - ✅ Added `JobTier` type ('QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT')
 - ✅ Extended `Job` interface with:
   - `tier?: JobTier`
@@ -14,6 +15,7 @@
   - `depositPercentage?: number`
 
 ### 2. Milestone System
+
 - ✅ Created `Milestone` interface with full payment tracking
 - ✅ Built milestone templates for major projects:
   - Kitchen remodel (6 milestones)
@@ -26,6 +28,7 @@
 - ✅ Added retainage support for projects $15K+
 
 ### 3. Tier Classification Logic
+
 - ✅ `classifyJobTier()` - Automatic tier detection
 - ✅ `getTierBadge()` - Visual tier indicators
 - ✅ `getContractorTierRequirements()` - Qualification levels
@@ -33,11 +36,13 @@
 ### 4. UI Components Created
 
 #### TierBadge Component (`src/components/jobs/TierBadge.tsx`)
+
 - Shows tier with emoji, label, and price range
 - Configurable size (sm/md/lg)
 - Color-coded (green/yellow/blue)
 
 #### MilestoneTracker Component (`src/components/jobs/MilestoneTracker.tsx`)
+
 - Full milestone payment UI
 - Contractor: Request payment with photos
 - Homeowner: Approve/question milestones
@@ -46,6 +51,7 @@
 - Dispute handling
 
 #### MajorProjectScopeBuilder Component (`src/components/jobs/MajorProjectScopeBuilder.tsx`)
+
 - Interactive scope definition
 - Room-based configuration
 - Selection level choices
@@ -65,6 +71,7 @@
    - Auto-classify based on estimated cost
 
 2. **Add Tier-Specific Flows**:
+
    ```typescript
    if (tier === 'QUICK_FIX') {
      // Current flow - no changes
@@ -99,6 +106,7 @@
    - "What you need" checklist
 
 2. **Qualification Requirements**:
+
    ```
    Tier 1 (Quick Fix): Anyone can bid
    Tier 2 (Standard): 10+ jobs, 4.0+ rating, insurance $300K+
@@ -121,11 +129,13 @@
 ## 📋 Feature Checklist
 
 ### Tier 1: Quick Fix ($50-$500)
+
 - [x] Type definitions
 - [x] Badge component
 - [ ] No special handling needed (current flow works)
 
 ### Tier 2: Standard ($500-$5K)
+
 - [x] Type definitions
 - [x] Badge component
 - [ ] Add deposit toggle to JobPoster
@@ -133,6 +143,7 @@
 - [ ] Show tier badge in job cards
 
 ### Tier 3: Major Project ($5K-$50K)
+
 - [x] Type definitions
 - [x] Badge component
 - [x] Milestone templates created
@@ -148,7 +159,9 @@
 ## 🔧 Quick Integration Steps
 
 ### Step 1: Add Tier Classification to AI Scope
+
 In `src/lib/ai.ts`:
+
 ```typescript
 import { classifyJobTier } from './types'
 
@@ -168,7 +181,9 @@ return {
 ```
 
 ### Step 2: Update JobPoster Results Display
+
 In `src/components/jobs/JobPoster.tsx`:
+
 ```typescript
 import { TierBadge } from './TierBadge'
 
@@ -192,7 +207,9 @@ import { TierBadge } from './TierBadge'
 ```
 
 ### Step 3: Add Tier Badge to Job Cards
+
 In `src/components/jobs/BrowseJobs.tsx`:
+
 ```typescript
 import { TierBadge } from './TierBadge'
 
@@ -201,7 +218,9 @@ import { TierBadge } from './TierBadge'
 ```
 
 ### Step 4: Show Milestones for Active Jobs
+
 In contractor dashboard / job details:
+
 ```typescript
 import { MilestoneTracker } from './MilestoneTracker'
 
@@ -219,17 +238,20 @@ import { MilestoneTracker } from './MilestoneTracker'
 ## 🎯 Success Metrics
 
 ### Tier 1 Targets
+
 - Job posting time: <60 seconds
 - First bid: <15 minutes
 - Completion rate: 98%+
 
 ### Tier 2 Targets
+
 - Job posting time: <2 minutes
 - First bid: <2 hours
 - Completion rate: 96%+
 - Deposit usage: 40%+
 
 ### Tier 3 Targets
+
 - Job posting time: <5 minutes
 - Bids per job: 3-5
 - Milestone compliance: 95%+

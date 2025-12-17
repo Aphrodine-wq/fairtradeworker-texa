@@ -9,6 +9,7 @@ The AI Receptionist is a **mission-critical** feature that provides 24/7 phone a
 ## Architecture
 
 ### Flow
+
 1. Customer calls contractor's Twilio number
 2. Twilio records call and sends webhook to `/api/receptionist/inbound`
 3. Call is transcribed using OpenAI Whisper
@@ -18,6 +19,7 @@ The AI Receptionist is a **mission-critical** feature that provides 24/7 phone a
 7. Contractor receives notification of new lead
 
 ### Reliability Features
+
 - **3x retry logic** on all external API calls
 - **Exponential backoff** for transient failures
 - **Fallback mechanisms** at every step
@@ -33,13 +35,16 @@ The AI Receptionist is a **mission-critical** feature that provides 24/7 phone a
 Each contractor/subcontractor gets their own Twilio phone number.
 
 #### Purchase Number
+
 ```bash
 # Using Twilio CLI
 twilio phone-numbers:buy:local --country-code US --sms-enabled --voice-enabled
 ```
 
 #### Configure Webhook
+
 In Twilio Console:
+
 - Navigate to Phone Numbers → Active Numbers
 - Select the contractor's number
 - Under Voice & Fax:
@@ -49,6 +54,7 @@ In Twilio Console:
   - Primary Handler Fails: Use TwiML bins (see fallback below)
 
 #### Recording Configuration
+
 - Call Recording: Enable
 - Recording Status Callback: `https://yourdomain.com/api/receptionist/recording-status`
 - Transcription: Enable
@@ -149,11 +155,13 @@ CREATE TABLE receptionist_call_logs (
 For each new contractor:
 
 1. **Purchase Twilio Number**
+
    ```bash
    twilio phone-numbers:buy:local --country-code US --area-code 512
    ```
 
 2. **Map Number to Contractor**
+
    ```sql
    UPDATE contractors 
    SET receptionist_phone = '+15125551234' 
@@ -175,6 +183,7 @@ For each new contractor:
 ### Manual Testing
 
 1. **Test Call Flow**
+
    ```bash
    # Call the Twilio number
    # Leave a message describing a repair job
@@ -182,12 +191,14 @@ For each new contractor:
    ```
 
 2. **Test Low Confidence**
+
    ```bash
    # Call and mumble or speak unclearly
    # Verify voicemail job is created
    ```
 
 3. **Test Emergency Detection**
+
    ```bash
    # Call and say "emergency" or "urgent"
    # Verify urgency is set to 'high' or 'emergency'
@@ -216,12 +227,14 @@ artillery run tests/load/receptionist-load.yml
 ### Alert Conditions
 
 **Critical Alerts** (Page immediately):
+
 - Webhook endpoint down (>5 failures in 5 minutes)
 - OpenAI API key expired/invalid
 - Twilio credentials invalid
 - Database connection failures
 
 **Warning Alerts** (Notify team):
+
 - Low confidence rate >20% in 1 hour
 - Transcription failures >10% in 1 hour
 - SMS delivery failures >20% in 1 hour
@@ -249,21 +262,25 @@ datadogMetrics.distribution('receptionist.extraction.confidence', confidence)
 ### Common Issues
 
 **Issue**: Calls not reaching webhook
+
 - Check Twilio phone number webhook configuration
 - Verify endpoint is accessible publicly
 - Check firewall rules
 
 **Issue**: Transcription failures
+
 - Verify OpenAI API key is valid and has credits
 - Check recording quality (too quiet, too much noise)
 - Verify Whisper API quotas
 
 **Issue**: Low extraction confidence
+
 - Review GPT-4o prompts for clarity
 - Check if caller history is being used
 - Analyze failed transcripts for patterns
 
 **Issue**: SMS not delivered
+
 - Verify Twilio SMS credentials
 - Check caller's phone number format (E.164)
 - Verify SMS quotas and geographic restrictions
@@ -287,15 +304,19 @@ DEBUG=receptionist:*
 ## Fallback Mechanisms
 
 ### Level 1: Retry Logic
+
 All external API calls retry 3 times with exponential backoff
 
 ### Level 2: Graceful Degradation
+
 - No transcription → Create voicemail job
 - Low confidence → Create manual review job
 - SMS failure → Job still created, contractor notified
 
 ### Level 3: Ultimate Fallback
+
 If everything fails:
+
 - Create "Missed Call" job with caller's number
 - Send critical alert to operations team
 - Contractor can manually call back
@@ -303,6 +324,7 @@ If everything fails:
 ## Security
 
 ### Webhook Validation ✅ IMPLEMENTED
+
 All webhook requests are validated using Twilio's signature verification:
 
 ```typescript
@@ -316,17 +338,20 @@ if (!isValid) {
 ```
 
 **How it works:**
+
 1. Twilio signs each webhook with your AUTH_TOKEN
 2. We recreate the signature using the same algorithm
 3. If signatures match, request is authentic
 4. If not, request is rejected (prevents spoofing)
 
 **Configuration:**
+
 - Ensure `TWILIO_AUTH_TOKEN` is set in environment variables
 - Webhook validation happens automatically on every request
 - Failed validations are logged and alerted
 
 ### Data Privacy
+
 - Store call recordings securely (encrypted at rest)
 - Comply with wiretapping laws (inform callers)
 - Delete recordings after 90 days (configurable)
@@ -335,6 +360,7 @@ if (!isValid) {
 ## Cost Estimation
 
 Per call costs:
+
 - Twilio Recording: $0.0025/min
 - Twilio Transcription: $0.02/min (optional, we use Whisper)
 - OpenAI Whisper: $0.006/min
@@ -348,13 +374,15 @@ For 1000 calls/month: **~$20-$30/month**
 ## Support
 
 For issues or questions:
-- Email: support@fairtradeworker.com
+
+- Email: <support@fairtradeworker.com>
 - Slack: #ai-receptionist-support
 - On-call: [PagerDuty rotation]
 
 ## Changelog
 
 ### v1.0.0 (Current)
+
 - Initial release with 100% reliability guarantee
 - Multi-retry logic
 - Comprehensive error handling
@@ -362,6 +390,7 @@ For issues or questions:
 - Graceful degradation
 
 ### Future Enhancements
+
 - [ ] Multi-language support (Spanish, French)
 - [ ] Voice cloning for contractor branding
 - [ ] Appointment scheduling integration

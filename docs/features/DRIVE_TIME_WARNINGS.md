@@ -1,32 +1,39 @@
 # Drive Time Warnings Implementation
 
 ## Overview
+
 Implemented intelligent drive time warnings that appear when contractors bid on jobs that would create inefficient routes based on their existing schedule. This feature helps contractors make informed decisions about job bids and maintain profitable, efficient routing.
 
 ## Feature Details
 
 ### When Warnings Appear
+
 Drive time warnings are shown in the bid submission dialog when:
+
 - Contractor has at least one scheduled job (accepted bids)
 - The job they're bidding on is 20+ minutes drive time from their nearest scheduled work
 - The inefficiency would create routing challenges
 
 ### Warning Levels
+
 The system calculates three severity levels based on drive time impact:
 
 **High Impact (90% inefficiency score)**
+
 - 45+ minutes from nearest scheduled job
 - Red destructive styling
 - Strong warning language about spending nearly an hour driving
 - Suggests considering jobs closer to existing schedule
 
 **Moderate Impact (70% inefficiency score)**
+
 - 30-44 minutes from nearest scheduled job
 - Orange warning styling
 - Notes the significant drive time
 - Suggests looking for jobs between current schedule to fill gaps
 
 **Low Impact (50% inefficiency score)**
+
 - 20-29 minutes from nearest scheduled job
 - Yellow warning styling
 - Informs about extra drive time
@@ -64,6 +71,7 @@ Each warning displays:
 ### Components Created
 
 **DriveTimeWarning.tsx**
+
 - React component that analyzes route efficiency
 - Calculates drive times using existing routing.ts utilities
 - Displays contextual warnings with severity-based styling
@@ -72,6 +80,7 @@ Each warning displays:
 ### Integration Points
 
 **BrowseJobs.tsx**
+
 - Warning appears in bid submission dialog
 - Positioned between Bid Intelligence and bid form
 - Only shows when contractor has scheduled jobs
@@ -80,6 +89,7 @@ Each warning displays:
 ### Route Analysis Logic
 
 The system:
+
 1. Identifies all contractor's scheduled jobs (accepted bids)
 2. Calculates drive time from target job to each scheduled job
 3. Finds nearest scheduled job
@@ -98,6 +108,7 @@ The system:
 ## User Experience
 
 ### Contractor Flow
+
 1. Browse available jobs
 2. Click "Place Bid" on a job
 3. See Bid Intelligence (pricing guidance)
@@ -107,6 +118,7 @@ The system:
 7. Submit bid or cancel
 
 ### Non-Blocking Design
+
 - Warning never prevents bidding
 - Contractor maintains full autonomy
 - Information empowers decision-making
@@ -115,19 +127,23 @@ The system:
 ## Business Impact
 
 ### Efficiency Gains
+
 - Contractors avoid unintentionally scattered schedules
 - Reduces weekly drive time through awareness
 - Increases jobs per day through clustering
 - Improves profitability (less fuel, more billable hours)
 
 ### Competitive Advantage
+
 - No other platform helps contractors optimize routing during bidding
 - Demonstrates platform cares about contractor success
 - Reinforces "business partner" positioning vs. "just a marketplace"
 - Saves contractors real money and time
 
 ### Success Metrics
+
 Track:
+
 - % of bids that trigger warnings
 - % of contractors who proceed after warning vs. cancel
 - Change in average contractor drive time per job
@@ -135,6 +151,7 @@ Track:
 - Impact on jobs-per-contractor-per-week
 
 Target outcomes:
+
 - Drive time warnings shown on 15-20% of bids
 - 40% of warned contractors reconsider and find closer jobs
 - Average weekly drive time reduces by 2+ hours for engaged users
@@ -143,6 +160,7 @@ Target outcomes:
 ## Future Enhancements
 
 ### Potential Improvements
+
 1. **Smart Alternatives**: Show similar nearby jobs when warning appears
 2. **Route Visualization**: Mini-map showing current schedule + target job
 3. **Cost Calculator**: "This route will cost you $X in gas and Y hours"
@@ -152,6 +170,7 @@ Target outcomes:
 7. **Time-of-Day Routing**: Factor in traffic patterns for drive time estimates
 
 ### Integration Opportunities
+
 - Link directly to Route Builder from warning
 - Suggest anchor job marking for clustered scheduling
 - Connect with Truck Inventory (supply runs on the way)
@@ -160,6 +179,7 @@ Target outcomes:
 ## Design Consistency
 
 The implementation follows FairTradeWorker design principles:
+
 - DuoTone color system (blue warnings integrate with primary palette)
 - Quick, subtle animations (0.15s transitions)
 - Glass morphism aesthetic maintained

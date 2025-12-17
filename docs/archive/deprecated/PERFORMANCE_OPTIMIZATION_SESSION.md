@@ -3,6 +3,7 @@
 ## Date: Current Session
 
 ## 🎯 Goals
+
 1. Complete brutalist style conversion (~65% remaining)
 2. Optimize performance (reduce PC slowdown)
 3. Add memoization to heavy components
@@ -13,24 +14,30 @@
 ## ✅ COMPLETED OPTIMIZATIONS
 
 ### 1. Component Memoization (Performance)
+
 **Added React.memo() to heavy components:**
+
 - ✅ `PartialPaymentDialog.tsx` - Added memo + useCallback
 - ✅ `EnhancedCRMDashboard.tsx` - Added memo (already had useMemo)
 - ✅ `InvoiceManager.tsx` - Added memo + useMemo for filtered data
 - ✅ `RouteBuilder.tsx` - Added memo (already had useMemo)
 
 **Impact:**
+
 - Prevents unnecessary re-renders when parent components update
 - Only re-renders when props actually change
 - Estimated 50-80% reduction in unnecessary renders for these components
 
 ### 2. Brutalist Style Updates
+
 **Fixed remaining instances:**
+
 - ✅ `PartialPaymentDialog.tsx` - Fixed `rounded-lg` → brutalist style
 - ✅ `InvoiceManager.tsx` - Fixed `rounded-lg` and bg-muted/50 → brutalist
 - ✅ `RouteBuilder.tsx` - Fixed 2x `rounded-lg` instances → brutalist
 
 **Patterns applied:**
+
 - `rounded-lg` → `rounded-none border-2 border-black dark:border-white shadow-[2px_2px_0_#000] dark:shadow-[2px_2px_0_#fff]`
 - `bg-muted/50` → `bg-muted` (remove opacity)
 - Added hard borders and shadows for brutalist aesthetic
@@ -42,6 +49,7 @@
 ### Brutalist Style Conversion (~300+ instances across 100+ files)
 
 **Priority files with most instances:**
+
 1. **Contractor Components (22 files with rounded corners):**
    - `FeeSavingsDashboard.tsx` (3 instances)
    - `EnhancedExpenseTracking.tsx` (1 instance)
@@ -74,6 +82,7 @@
 ### Performance Optimizations Needed
 
 **Components still needing memo() (~40+ components):**
+
 - `CompanyRevenueDashboard.tsx`
 - `EnhancedExpenseTracking.tsx`
 - `TaxHelper.tsx`
@@ -87,6 +96,7 @@
 - And 30+ more contractor components
 
 **Large components needing code splitting:**
+
 - `EnhancedCRMDashboard.tsx` (~940 lines) - Could split into sub-components
 - `InvoiceManager.tsx` (~783 lines) - Could extract dialogs
 - `RouteBuilder.tsx` (~394 lines) - Already optimized with memoization
@@ -94,6 +104,7 @@
 ### Bundle Size Optimization
 
 **Potential improvements:**
+
 1. Tree-shake unused Phosphor icons
 2. Lazy load heavy chart libraries
 3. Split vendor bundles (react, radix-ui, etc.)
@@ -117,6 +128,7 @@ grep -r "bg-.*\/\d+" src/components/contractor/
 ```
 
 ### Automated Update (Need to fix script)
+
 The `scripts/brutalist-update.js` needs to be converted from CommonJS to ES modules:
 
 ```js
@@ -133,17 +145,20 @@ import { dirname } from 'path';
 
 ## 📈 PERFORMANCE METRICS (Expected)
 
-### Before Optimization:
+### Before Optimization
+
 - Initial render: ~2-3 seconds
 - Component re-renders: Every parent update
 - Memory usage: 50-80MB (already optimized from previous session)
 
-### After This Session:
+### After This Session
+
 - Initial render: ~2-3 seconds (unchanged - already optimized)
 - Component re-renders: Only when props change (50-80% reduction)
 - Memory usage: 50-80MB (unchanged)
 
-### After Complete Brutalist Conversion:
+### After Complete Brutalist Conversion
+
 - CSS calculations: Faster (harder shadows vs blur effects)
 - Bundle size: Slightly smaller (no backdrop-filter calculations)
 - Render performance: Better (no transparency calculations)
@@ -152,7 +167,8 @@ import { dirname } from 'path';
 
 ## 🎯 NEXT STEPS
 
-### Immediate (High Priority):
+### Immediate (High Priority)
+
 1. ✅ Add memo() to remaining heavy components (in progress)
 2. Convert brutalist styles in most-used components first:
    - PaymentProcessing.tsx (7 instances)
@@ -161,16 +177,18 @@ import { dirname } from 'path';
    - EnhancedSchedulingCalendar.tsx (4 instances)
 3. Fix brutalist-update.js script to use ES modules
 
-### Medium Priority:
-4. Convert remaining contractor components (~22 files)
-5. Convert job components
-6. Convert payment components
-7. Convert project components
+### Medium Priority
 
-### Low Priority (Nice to Have):
+4. Convert remaining contractor components (~22 files)
+2. Convert job components
+3. Convert payment components
+4. Convert project components
+
+### Low Priority (Nice to Have)
+
 8. Code split large components
-9. Optimize bundle size further
-10. Add performance monitoring
+2. Optimize bundle size further
+3. Add performance monitoring
 
 ---
 
@@ -190,6 +208,7 @@ import { dirname } from 'path';
 ---
 
 **Progress:**
+
 - Brutalist: ~35% → ~38% complete (3 files fixed)
 - Memoization: ~2% → ~6% complete (4 components fixed)
 - Overall optimization: Continuous improvement

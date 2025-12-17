@@ -33,21 +33,25 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 ## 📊 Growth Phases
 
 ### Phase 1: Foundation (0-5k users, Months 1-3)
+
 - **Infrastructure**: 2-4 instances, basic monitoring
 - **Monthly Cost**: ~$750
 - **Focus**: Establish core infrastructure and monitoring
 
 ### Phase 2: Growth (5k-25k users, Months 4-6)
+
 - **Infrastructure**: 4-8 instances, auto-scaling, Redis cache
 - **Monthly Cost**: ~$2,100
 - **Focus**: Enable auto-scaling and optimization
 
 ### Phase 3: Scale (25k-100k users, Months 7-9)
+
 - **Infrastructure**: 8-16 instances, multi-region, advanced caching
 - **Monthly Cost**: ~$4,750
 - **Focus**: Handle rapid growth
 
 ### Phase 4: Optimize (100k-300k users, Months 10-12)
+
 - **Infrastructure**: 16-32 instances, full redundancy
 - **Monthly Cost**: ~$7,000
 - **Focus**: Cost optimization and reliability
@@ -119,12 +123,14 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 ## 📊 Monitoring & Alerts
 
 ### Critical Alerts
+
 - Error rate >5%
 - Response time >2s (P95)
 - CPU usage >90%
 - Database connections >95%
 
 ### Warning Alerts
+
 - Error rate >2%
 - Response time >1s (P95)
 - CPU usage >80%
@@ -164,6 +170,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 ## 🔄 Deployment Strategy
 
 ### Blue-Green Deployment
+
 1. Deploy new version alongside current
 2. Run smoke tests
 3. Switch traffic instantly
@@ -171,6 +178,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 5. Scale down old version or rollback if issues
 
 ### Gradual Rollout
+
 1. Deploy to canary (5% traffic)
 2. Monitor metrics for 10 minutes
 3. Expand to 25%, 50%, 100% over 30 minutes
@@ -185,6 +193,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 ## 🆘 Troubleshooting
 
 ### High Error Rate
+
 1. Check monitoring dashboard
 2. Review recent deployments
 3. Check external service status (OpenAI, Twilio, Stripe)
@@ -192,6 +201,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 5. Rollback if bad deployment
 
 ### Slow Performance
+
 1. Check CPU/Memory usage
 2. Review database query performance
 3. Check cache hit ratio
@@ -199,6 +209,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 5. Scale up if needed
 
 ### Database Issues
+
 1. Check connection pool usage
 2. Review slow query log
 3. Check for locks
@@ -208,6 +219,7 @@ See `../SCALING_300K_USERS.md` for complete deployment instructions.
 ## 📞 Support
 
 For infrastructure questions or incidents:
+
 - Check runbook in `SCALING_300K_USERS.md`
 - Review monitoring dashboards
 - Contact DevOps team

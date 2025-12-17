@@ -9,11 +9,13 @@ This document outlines the complete design system overhaul implementing DuoTone 
 ## 🎨 DuoTone Color System
 
 ### Core Principle
+
 Two primary colors drive the entire UI: **Electric Blue** and **Charcoal/Gray**. No gradients except for the 3D theme toggle. Every element uses these colors to create instant visual hierarchy.
 
 ### Color Palette (oklch format)
 
 #### Light Mode
+
 ```css
 --background: oklch(0.988 0.002 264);        /* Warm light gray background */
 --foreground: oklch(0.165 0.01 264);         /* Deep charcoal text */
@@ -27,6 +29,7 @@ Two primary colors drive the entire UI: **Electric Blue** and **Charcoal/Gray**.
 ```
 
 #### Dark Mode
+
 ```css
 --background: oklch(0.165 0.01 264);         /* Deep charcoal background */
 --foreground: oklch(0.988 0.002 264);        /* Soft white text */
@@ -40,6 +43,7 @@ Two primary colors drive the entire UI: **Electric Blue** and **Charcoal/Gray**.
 ```
 
 ### WCAG Contrast Compliance
+
 All color pairings meet WCAG AA standards (4.5:1 minimum for text, 3:1 for large text):
 
 - **Background (Light) → Foreground**: 17.8:1 ✓
@@ -56,6 +60,7 @@ All color pairings meet WCAG AA standards (4.5:1 minimum for text, 3:1 for large
 **Not the tacky iOS 7 version. Subtle. Premium. Like museum glass.**
 
 #### CSS Support
+
 ```css
 @supports (backdrop-filter: blur(12px)) {
   .backdrop-blur-12 { backdrop-filter: blur(12px); }
@@ -63,15 +68,17 @@ All color pairings meet WCAG AA standards (4.5:1 minimum for text, 3:1 for large
 ```
 
 #### Glass Card Rules
+
 - **Light mode**: 85% opacity white cards with 12px blur
 - **Dark mode**: 75% opacity charcoal cards with 12px blur
 - **Borders**: 50% opacity, never pure white/black
-- **Shadows**: 
+- **Shadows**:
   - Default: `shadow-sm` (subtle elevation)
   - Hover: `shadow-xl` (enhanced depth)
 - **No solid backgrounds on text** – text floats on glass
 
 #### Implementation Pattern
+
 ```tsx
 // GlassCard Component
 <div className="bg-card backdrop-blur-12 border border-border rounded-2xl 
@@ -82,6 +89,7 @@ All color pairings meet WCAG AA standards (4.5:1 minimum for text, 3:1 for large
 ```
 
 ### Applied To
+
 - **All Card components** – Job cards, stat cards, forms
 - **Header** – Sticky navigation with glass effect
 - **Popover/Dialog backgrounds** – Consistent glass treatment
@@ -92,12 +100,14 @@ All color pairings meet WCAG AA standards (4.5:1 minimum for text, 3:1 for large
 ## ⚡ 3D "Luxury Car" Theme Toggle
 
 ### Visual Design
+
 A **magnetic lever** that physically rotates 180° on the Y-axis with spring physics, creating a tangible "luxury car switch" feel.
 
 ### Animation Specifications
+
 - **Transition**: Spring physics (duration: 0.8s, stiffness: 200, damping: 20)
 - **Transform**: `rotateY(180deg)` flip
-- **Icons**: 
+- **Icons**:
   - Sun (☀️): Phosphor Sun icon, fill weight, in blue gradient sphere
   - Moon (🌙): Phosphor Moon icon, fill weight, in gray gradient sphere
 - **States**:
@@ -105,6 +115,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
   - Dark mode: Gray gradient sphere (from-gray-700 to-gray-900)
 
 ### Interaction Flow
+
 1. User clicks toggle
 2. Sphere rotates 180° with spring animation
 3. Entire page fades to new theme (0.4s transition)
@@ -112,6 +123,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 5. Theme persists across sessions
 
 ### Accessibility
+
 - **Keyboard accessible**: Focus ring on toggle
 - **Screen reader**: Aria-label indicates current state
 - **Touch target**: 48×48px minimum (44px visible + padding)
@@ -122,6 +134,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 ## 📐 Component Design Specifications
 
 ### Buttons
+
 ```tsx
 // Primary Button
 <button className="
@@ -136,6 +149,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 ```
 
 **States**:
+
 - Default: Blue with shadow-sm
 - Hover: Darkens 10%, lifts 2px, shadow-md
 - Active: Scales to 95%
@@ -143,6 +157,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 - Focus: 4px ring @ 20% opacity
 
 ### Glass Cards
+
 ```tsx
 <div className="
   bg-card backdrop-blur-12
@@ -156,6 +171,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 **Hover behavior**: Lifts 4px and increases shadow intensity
 
 ### Input Fields
+
 ```tsx
 <input className="
   w-full px-4 py-3 min-h-[44px]
@@ -173,6 +189,7 @@ A **magnetic lever** that physically rotates 180° on the Y-axis with spring phy
 ## 🎯 Micro-Interactions & Polish
 
 ### 1. Animated Link Underlines
+
 Links grow a blue underline from left to right on hover:
 
 ```css
@@ -193,6 +210,7 @@ a:hover::after {
 ```
 
 ### 2. Page Load Fade-In
+
 All direct children of `<main>` fade in with slight upward motion:
 
 ```css
@@ -207,6 +225,7 @@ main > * {
 ```
 
 ### 3. Subtle Noise Texture
+
 Background has 0.5% opacity noise for depth:
 
 ```css
@@ -216,11 +235,13 @@ body {
 ```
 
 ### 4. Button Haptics
+
 - **Hover**: Scale 105%, translate-y -2px, shadow-md (feels lifted)
 - **Active**: Scale 95% (feels pressed)
 - **Transition**: 200ms ease (snappy but smooth)
 
 ### 5. Card Hover Effects
+
 Cards lift 4px and enhance shadow on hover, creating floating effect
 
 ---
@@ -228,10 +249,12 @@ Cards lift 4px and enhance shadow on hover, creating floating effect
 ## 🎨 Typography Scale
 
 ### Font Families
+
 - **Headings**: Space Grotesk (Bold 700, SemiBold 600)
 - **Body**: Inter (Regular 400, Medium 500, SemiBold 600)
 
 ### Scale
+
 ```css
 --h1: 48px / 1.1 / Space Grotesk Bold / -0.02em letter-spacing
 --h2: 32px / 1.2 / Space Grotesk Bold / -0.02em letter-spacing
@@ -247,17 +270,20 @@ All headings have tight letter-spacing (-0.02em) for architectural feel.
 ## 📱 Mobile Responsiveness
 
 ### Touch Targets
+
 - **Minimum size**: 44×44px for all interactive elements
 - **Buttons**: min-h-[44px] class enforced
 - **Icon buttons**: size-11 (44px) or larger
 
 ### Breakpoints
+
 - Mobile-first approach
 - Single column layouts below `md` (768px)
 - Stack navigation items on mobile
 - Full-width cards and buttons on small screens
 
 ### Typography
+
 - **Minimum font size**: 16px (prevents zoom on iOS)
 - Headlines scale down gracefully (text-4xl → text-3xl on mobile)
 
@@ -266,6 +292,7 @@ All headings have tight letter-spacing (-0.02em) for architectural feel.
 ## 🌓 Dark Mode Implementation
 
 ### Activation Pattern
+
 ```tsx
 useEffect(() => {
   const saved = localStorage.getItem('theme')
@@ -278,12 +305,14 @@ useEffect(() => {
 ```
 
 ### Transition
+
 - **Duration**: 400ms
 - **Property**: All colors via `transition-colors`
 - **Easing**: Default ease
 - **Scope**: Body and all themed elements
 
 ### Dark Mode Adjustments
+
 - **Images**: Optional `dark:brightness-90` filter for visual harmony
 - **Borders**: More subtle (50% opacity maintained)
 - **Glass cards**: 75% opacity instead of 85% (lighter in dark mode)
@@ -293,6 +322,7 @@ useEffect(() => {
 ## ✅ Implementation Checklist
 
 ### Phase 1: Color System (Completed)
+
 - [x] Update CSS variables in index.css
 - [x] Define light mode colors
 - [x] Define dark mode colors
@@ -302,6 +332,7 @@ useEffect(() => {
 - [x] Add page fade-in animation
 
 ### Phase 2: Core Components (Completed)
+
 - [x] Create ThemeToggle component with 3D animation
 - [x] Create GlassCard component
 - [x] Update Card component with glass morphism
@@ -309,6 +340,7 @@ useEffect(() => {
 - [x] Update Button hover states (already good)
 
 ### Phase 3: Global Styling (Completed)
+
 - [x] Apply glass effect to all cards
 - [x] Update typography scale
 - [x] Ensure 44px minimum touch targets
@@ -316,6 +348,7 @@ useEffect(() => {
 - [x] Test dark mode transitions
 
 ### Phase 4: Testing & Polish (Next Steps)
+
 - [ ] Manual test: Toggle theme 10 times (smooth?)
 - [ ] Mobile test: All buttons tappable (44px)?
 - [ ] Dark mode test: 10 min usage session
@@ -329,10 +362,12 @@ useEffect(() => {
 **DuoTone = Simplicity + Detail**
 
 Every UI element is either:
+
 1. **Blue** (action, trust, primary)
 2. **Charcoal/Gray** (structure, text, secondary)
 
 This constraint creates:
+
 - **Instant visual hierarchy** – Blue = important
 - **Clean, editorial feel** – Like reading a premium magazine
 - **Trustworthy aesthetic** – Professional services demand professionalism
@@ -346,11 +381,13 @@ This constraint creates:
 ## 📊 Success Metrics
 
 ### Qualitative
+
 - Users describe the UI as "premium" or "professional"
 - Theme toggle elicits positive reactions ("whoa" moments)
 - Interface feels faster due to snappy animations
 
 ### Quantitative
+
 - Lighthouse Performance: 95+
 - Lighthouse Accessibility: 100
 - All WCAG AA contrast ratios met
@@ -362,6 +399,7 @@ This constraint creates:
 ## 🚀 Future Enhancements
 
 ### Phase 2 Micro-Details (Optional)
+
 1. **Custom cursor**: Blue dot on links (5px, follows with lag)
 2. **Scroll-aware header**: Hides on scroll down, reveals on scroll up
 3. **Ripple effect**: Click creates expanding circle on theme toggle
@@ -369,6 +407,7 @@ This constraint creates:
 5. **Loading skeletons**: Blue shimmer effect instead of spinner
 
 ### Advanced Glass Effects
+
 1. **Depth layers**: Multiple glass cards stacked create subtle depth
 2. **Parallax scrolling**: Background moves slower than foreground
 3. **Glow states**: Active elements have subtle blue glow
@@ -379,20 +418,25 @@ This constraint creates:
 ## 📝 Developer Notes
 
 ### CSS Custom Properties
+
 All colors are defined as CSS variables in `:root` and `.dark`, then mapped to Tailwind theme via `@theme` block. This allows:
+
 - Single source of truth for colors
 - Runtime theme switching without rebuild
 - Easy maintenance and updates
 
 ### framer-motion Dependency
+
 The 3D theme toggle requires framer-motion for spring physics. This is already installed in the project.
 
 ### Browser Support
+
 - **backdrop-filter**: Supported in all modern browsers (Chrome 76+, Firefox 103+, Safari 14.1+)
 - **oklch colors**: Supported in Chrome 111+, Safari 15.4+, Firefox 113+
 - Graceful degradation: Falls back to solid colors if unsupported
 
 ### Performance
+
 - Glass blur is GPU-accelerated via `backdrop-filter`
 - Transitions use `transform` and `opacity` (compositor properties)
 - No layout thrashing during animations
