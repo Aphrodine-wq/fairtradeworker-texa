@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Briefcase, Kanban, Crown, Users, Brain, ChartLine, 
-  Sliders, Gear, FileText, ArrowsOut, ArrowsIn
+  Sliders, Gear, FileText, ArrowsOut, ArrowsIn, X
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { useLocalKV as useKV } from '@/hooks/useLocalKV'
@@ -130,13 +130,33 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     return (sectionLayouts || []).filter(s => s.visible)
   }, [sectionLayouts])
 
+  // Handle ESC key to exit customize mode
+  useEffect(() => {
+    if (!customizeMode) return
+
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setCustomizeMode(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscKey)
+    return () => {
+      window.removeEventListener('keydown', handleEscKey)
+    }
+  }, [customizeMode])
+
+  const exitCustomizeMode = useCallback(() => {
+    setCustomizeMode(false)
+  }, [])
+
   return (
     <div className={cn(
       "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
       "bg-white dark:bg-black"
     )}>
-      {/* Simplified background - no starfield for system consistency */}
-      <div className="absolute inset-0 bg-white dark:bg-black" />
+      {/* Starfield background */}
+      <VoidBackground />
 
       {/* Header controls */}
       <motion.div
@@ -155,13 +175,25 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         </Button>
         
         {customizeMode && (
-          <Button
-            size="sm"
-            onClick={() => setCustomizeMode(false)}
-            className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
-          >
-            Done Customizing
-          </Button>
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exitCustomizeMode}
+              className="bg-white dark:bg-black border-black dark:border-white text-black dark:text-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
+              title="Exit Customize Mode (ESC)"
+            >
+              <X size={16} />
+            </Button>
+            <Button
+              size="sm"
+              onClick={exitCustomizeMode}
+              className="bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90"
+              title="Exit Customize Mode (ESC)"
+            >
+              Done Customizing
+            </Button>
+          </>
         )}
       </motion.div>
 
@@ -172,11 +204,20 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2 rounded-full bg-white dark:bg-black border-2 border-black dark:border-white"
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-30 px-4 py-2.5 rounded-full bg-white dark:bg-black border-2 border-black dark:border-white flex items-center gap-3 shadow-lg"
           >
             <p className="text-black dark:text-white text-sm font-medium">
               🎨 Customize Mode - Drag sections to reposition
             </p>
+            <button
+              onClick={exitCustomizeMode}
+              className="ml-2 p-1 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+              title="Exit Customize Mode (ESC)"
+              aria-label="Exit Customize Mode"
+            >
+              <X size={16} className="text-black dark:text-white" weight="bold" />
+            </button>
+            <span className="text-xs text-black/60 dark:text-white/60 ml-1">(Press ESC)</span>
           </motion.div>
         )}
       </AnimatePresence>

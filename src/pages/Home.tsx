@@ -80,29 +80,49 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         </div>
 
         {onDemoLogin && (
-          <Card className="mt-8 p-6 glass-card border-0">
-            <div className="space-y-4">
+          <Card className="mt-6 p-4 glass-card border-0">
+            <div className="space-y-3">
               <div className="flex items-center gap-2">
-                <Play weight="fill" size={24} />
-                <h3 className="text-xl font-bold">Try Demo Mode</h3>
+                <Play weight="fill" size={18} className="text-primary" />
+                <h3 className="text-base font-semibold">Try Demo Mode</h3>
               </div>
-              <p>Explore the platform instantly with pre-populated demo accounts for each user type.</p>
-              <div className="flex flex-col md:flex-row gap-3">
-                <Button variant="outline" className="flex-1" onClick={() => onDemoLogin(DEMO_USERS.homeowner)}>
-                  <House weight="fill" className="mr-2" size={20} />
-                  Demo as Homeowner
+              <p className="text-sm text-muted-foreground">Explore with pre-populated demo accounts</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-9 text-xs" 
+                  onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
+                >
+                  <House weight="fill" className="mr-1.5" size={14} />
+                  Homeowner
                 </Button>
-                <Button variant="outline" className="flex-1" onClick={() => onDemoLogin(DEMO_USERS.contractor)}>
-                  <Hammer weight="fill" className="mr-2" size={20} />
-                  Demo as Contractor/Subcontractor
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-9 text-xs" 
+                  onClick={() => onDemoLogin(DEMO_USERS.contractor)}
+                >
+                  <Hammer weight="fill" className="mr-1.5" size={14} />
+                  Contractor
                 </Button>
-                <Button variant="outline" className="flex-1" onClick={() => onDemoLogin(DEMO_USERS.operator)}>
-                  <MapTrifold weight="fill" className="mr-2" size={20} />
-                  Demo as Operator
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-9 text-xs" 
+                  onClick={() => onDemoLogin(DEMO_USERS.operator)}
+                >
+                  <MapTrifold weight="fill" className="mr-1.5" size={14} />
+                  Operator
                 </Button>
-                <Button variant="outline" className="flex-1" onClick={() => onNavigate('admin-dashboard')}>
-                  <Shield weight="fill" className="mr-2" size={20} />
-                  Admin Dashboard
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-9 text-xs" 
+                  onClick={() => onNavigate('admin-dashboard')}
+                >
+                  <Shield weight="fill" className="mr-1.5" size={14} />
+                  Admin
                 </Button>
               </div>
             </div>

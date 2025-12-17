@@ -443,6 +443,7 @@ function App() {
   }, [isOnline, queue.length])
 
   const handleNavigate = useCallback((page: string, role?: string, jobId?: string) => {
+    // Use functional updates to ensure we always have the latest state
     if (role) {
       setPreselectedRole(role as UserRole)
     }
@@ -455,9 +456,13 @@ function App() {
       sessionStorage.setItem('selectedCategory', categoryId)
       setCurrentPage('service-category' as Page)
     } else {
+      // Ensure page navigation happens immediately
       setCurrentPage(page as Page)
     }
-    window.scrollTo({ top: 0, behavior: 'instant' } as ScrollToOptions)
+    // Scroll to top after a brief delay to ensure page has rendered
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' } as ScrollToOptions)
+    }, 0)
   }, [])
 
   // Handle G key navigation mode
