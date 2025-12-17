@@ -14,7 +14,8 @@ import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, Badge, TextInput } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 import { getJobSizeEmoji, getJobSizeLabel } from '@/src/types';
 import { formatDistanceToNow, format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,6 +25,7 @@ export default function JobDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { jobs, currentUser, addBidToJob, updateJob } = useAppStore();
+  const { isTablet } = useResponsive();
   
   const job = useMemo(() => jobs.find((j) => j.id === id), [jobs, id]);
   
@@ -122,111 +124,117 @@ export default function JobDetailsScreen() {
         }}
       />
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.titleRow}>
-              <Text style={styles.emoji}>{getJobSizeEmoji(job.size)}</Text>
-              <Text style={styles.title}>{job.title}</Text>
-            </View>
-            <View style={styles.metaRow}>
-              <Badge
-                label={getJobSizeLabel(job.size)}
-                variant={
-                  job.size === 'small'
-                    ? 'success'
-                    : job.size === 'medium'
-                    ? 'warning'
-                    : 'error'
-                }
-              />
-              <Badge
-                label={job.status.replace('-', ' ')}
-                variant={
-                  job.status === 'open'
-                    ? 'primary'
-                    : job.status === 'in-progress'
-                    ? 'warning'
-                    : job.status === 'completed'
-                    ? 'success'
-                    : 'default'
-                }
-              />
-              <Text style={styles.timeText}>{timeAgo}</Text>
-            </View>
-          </View>
-
-          {/* Photos */}
-          {job.photos && job.photos.length > 0 && (
-            <View style={styles.photosSection}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {job.photos.map((photo, index) => (
-                  <Image
-                    key={index}
-                    source={{ uri: photo }}
-                    style={styles.photo}
-                    resizeMode="cover"
+        <ScrollView style={styles.container} contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}>
+          <View style={isTablet ? styles.splitLayout : null}>
+            {/* Left Column - Job Info */}
+            <View style={isTablet ? styles.leftColumn : null}>
+              {/* Header */}
+              <View style={styles.header}>
+                <View style={styles.titleRow}>
+                  <Text style={styles.emoji}>{getJobSizeEmoji(job.size)}</Text>
+                  <Text style={styles.title}>{job.title}</Text>
+                </View>
+                <View style={styles.metaRow}>
+                  <Badge
+                    label={getJobSizeLabel(job.size)}
+                    variant={
+                      job.size === 'small'
+                        ? 'success'
+                        : job.size === 'medium'
+                        ? 'warning'
+                        : 'error'
+                    }
                   />
-                ))}
-              </ScrollView>
-            </View>
-          )}
-
-          {/* Description */}
-          <Card variant="elevated" padding="md" style={styles.section}>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.description}>{job.description}</Text>
-          </Card>
-
-          {/* AI Scope */}
-          <Card variant="elevated" padding="md" style={styles.section}>
-            <View style={styles.scopeHeader}>
-              <Ionicons name="sparkles" size={20} color={Colors.primary} />
-              <Text style={styles.sectionTitle}>AI Scope & Estimate</Text>
-            </View>
-            <Text style={styles.scopeText}>{job.aiScope.scope}</Text>
-            
-            <View style={styles.priceEstimate}>
-              <Text style={styles.priceLabel}>Estimated Price:</Text>
-              <Text style={styles.priceValue}>
-                ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
-              </Text>
-            </View>
-
-            {job.aiScope.materials.length > 0 && (
-              <View style={styles.materials}>
-                <Text style={styles.materialsLabel}>Materials needed:</Text>
-                <View style={styles.materialsList}>
-                  {job.aiScope.materials.map((material, index) => (
-                    <Badge key={index} label={material} variant="outline" size="sm" />
-                  ))}
+                  <Badge
+                    label={job.status.replace('-', ' ')}
+                    variant={
+                      job.status === 'open'
+                        ? 'primary'
+                        : job.status === 'in-progress'
+                        ? 'warning'
+                        : job.status === 'completed'
+                        ? 'success'
+                        : 'default'
+                    }
+                  />
+                  <Text style={styles.timeText}>{timeAgo}</Text>
                 </View>
               </View>
-            )}
-          </Card>
 
-          {/* Bids Section */}
-          <View style={styles.section}>
-            <View style={styles.bidsHeader}>
-              <Text style={styles.sectionTitle}>Bids ({job.bids.length})</Text>
-              {isContractor && !hasAlreadyBid && job.status === 'open' && (
-                <Button
-                  title="Submit Bid"
-                  size="sm"
-                  onPress={() => setShowBidModal(true)}
-                />
+              {/* Photos */}
+              {job.photos && job.photos.length > 0 && (
+                <View style={styles.photosSection}>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {job.photos.map((photo, index) => (
+                      <Image
+                        key={index}
+                        source={{ uri: photo }}
+                        style={styles.photo}
+                        resizeMode="cover"
+                      />
+                    ))}
+                  </ScrollView>
+                </View>
               )}
+
+              {/* Description */}
+              <Card variant="elevated" padding="md" style={styles.section}>
+                <Text style={styles.sectionTitle}>Description</Text>
+                <Text style={styles.description}>{job.description}</Text>
+              </Card>
+
+              {/* AI Scope */}
+              <Card variant="elevated" padding="md" style={styles.section}>
+                <View style={styles.scopeHeader}>
+                  <Ionicons name="sparkles" size={20} color={Colors.primary} />
+                  <Text style={styles.sectionTitle}>AI Scope & Estimate</Text>
+                </View>
+                <Text style={styles.scopeText}>{job.aiScope.scope}</Text>
+                
+                <View style={styles.priceEstimate}>
+                  <Text style={styles.priceLabel}>Estimated Price:</Text>
+                  <Text style={styles.priceValue}>
+                    ${job.aiScope.priceLow} - ${job.aiScope.priceHigh}
+                  </Text>
+                </View>
+
+                {job.aiScope.materials.length > 0 && (
+                  <View style={styles.materials}>
+                    <Text style={styles.materialsLabel}>Materials needed:</Text>
+                    <View style={styles.materialsList}>
+                      {job.aiScope.materials.map((material, index) => (
+                        <Badge key={index} label={material} variant="outline" size="sm" />
+                      ))}
+                    </View>
+                  </View>
+                )}
+              </Card>
             </View>
 
-            {job.bids.length === 0 ? (
-              <Card variant="filled" padding="md">
-                <Text style={styles.noBidsText}>
-                  No bids yet. {isContractor ? 'Be the first to bid!' : 'Waiting for contractor bids.'}
-                </Text>
-              </Card>
-            ) : (
-              job.bids.map((bid) => (
-                <Card key={bid.id} variant="elevated" padding="md" style={styles.bidCard}>
+            {/* Right Column - Bids */}
+            <View style={isTablet ? styles.rightColumn : null}>
+              {/* Bids Section */}
+              <View style={styles.section}>
+                <View style={styles.bidsHeader}>
+                  <Text style={styles.sectionTitle}>Bids ({job.bids.length})</Text>
+                  {isContractor && !hasAlreadyBid && job.status === 'open' && (
+                    <Button
+                      title="Submit Bid"
+                      size="sm"
+                      onPress={() => setShowBidModal(true)}
+                    />
+                  )}
+                </View>
+
+                {job.bids.length === 0 ? (
+                  <Card variant="filled" padding="md">
+                    <Text style={styles.noBidsText}>
+                      No bids yet. {isContractor ? 'Be the first to bid!' : 'Waiting for contractor bids.'}
+                    </Text>
+                  </Card>
+                ) : (
+                  job.bids.map((bid) => (
+                    <Card key={bid.id} variant="elevated" padding="md" style={styles.bidCard}>
                   <View style={styles.bidHeader}>
                     <View>
                       <Text style={styles.bidContractor}>{bid.contractorName}</Text>
@@ -274,6 +282,8 @@ export default function JobDetailsScreen() {
               </Text>
             </Card>
           )}
+            </View>
+          </View>
         </ScrollView>
 
         {/* Bid Modal */}
@@ -349,6 +359,23 @@ const styles = StyleSheet.create({
   content: {
     padding: Spacing.lg,
     paddingBottom: Spacing.xxxl,
+  },
+  contentTablet: {
+    padding: Spacing.tablet.xl,
+    paddingBottom: Spacing.tablet.xxxl,
+    alignItems: 'center',
+  },
+  splitLayout: {
+    flexDirection: 'row',
+    gap: Spacing.tablet.xl,
+    maxWidth: Layout.maxContentWidth.tablet,
+    alignItems: 'flex-start',
+  },
+  leftColumn: {
+    flex: 1.5,
+  },
+  rightColumn: {
+    flex: 1,
   },
   notFound: {
     flex: 1,
