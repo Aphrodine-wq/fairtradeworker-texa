@@ -204,13 +204,166 @@ src/components/contractor/CRMVoid/
 
 ---
 
+## 🪐 PLANETARY SYSTEM (New!)
+
+### The Solar System Vision
+
+CRM Void has evolved into a **full solar system**. You are no longer just at the center—you ARE the sun. Your business tools are now **living planets** that orbit around you, each with unique characteristics, colors, and purposes.
+
+### The Planets
+
+| Planet | Name | Purpose | Color | Special Feature |
+|--------|------|---------|-------|-----------------|
+| ☀️ **Sun** | Command Center | Voice hub & control | Orange/Gold | Pulsing glow, central hub |
+| ⚡ **Mercury** | Quick Actions | Fast tasks & shortcuts | Gray/Silver | Fastest orbit (8 seconds) |
+| 💛 **Venus** | Relationships | Customers & leads | Gold/Yellow | Customer connections |
+| 🌍 **Earth** | Home Base | Dashboard overview | Blue | Has a moon! |
+| 🔴 **Mars** | Projects | Active work & jobs | Red | Project battleground |
+| 💰 **Jupiter** | Finance | Money & invoices | Tan/Brown | Largest planet |
+| 📊 **Saturn** | Analytics | Reports & insights | Beige | Has rings! |
+| 🔗 **Uranus** | Integrations | Apps & connections | Cyan | Pro feature 🔒 |
+| 🌊 **Neptune** | Archive | History & storage | Deep Blue | Distant orbit |
+
+### Orbital Mechanics
+
+Each planet orbits the sun at its own speed:
+
+```
+Mercury: 8 seconds per orbit   (closest, fastest)
+Venus:   12 seconds
+Earth:   20 seconds
+Mars:    28 seconds
+Jupiter: 45 seconds
+Saturn:  60 seconds
+Uranus:  80 seconds
+Neptune: 100 seconds per orbit (furthest, slowest)
+```
+
+### Planetary Connections
+
+When you click a planet, **connection lines** appear showing relationships:
+
+- **Sun** → Connects to ALL planets (you're the center)
+- **Venus (Customers)** → Earth, Mars (dashboard, projects)
+- **Mars (Projects)** → Jupiter, Venus (finance, customers)
+- **Jupiter (Finance)** → Saturn, Mars (analytics, projects)
+- **Saturn (Analytics)** → Jupiter, Earth (finance, dashboard)
+
+### Control Panel
+
+At the bottom of the screen, you have orbital controls:
+
+| Control | Function |
+|---------|----------|
+| ⏪ | Slow down orbital speed |
+| ⏸️/▶️ | Pause/Resume orbits |
+| ⏩ | Speed up orbital speed |
+| 👁️ | Toggle orbit paths visibility |
+| 🪐 | Jump to Command Center |
+
+Speed multiplier ranges from **0.25x to 8x**.
+
+### Visual Enhancements
+
+The cosmic background now includes:
+
+- **Multiple nebulae** - Purple, blue, pink, and cyan gas clouds
+- **Shooting stars** - Random meteor streaks across the sky
+- **Star colors** - Stars now have subtle color variations (white, warm, cool)
+- **Parallax depth** - Stars move at different speeds for 3D effect
+- **Planet glow** - Active planets emit a radiant glow
+
+### Planetary Panels
+
+Each planet opens a unique panel with relevant tools:
+
+**Mercury (Quick Actions)**
+- Add Customer
+- New Invoice
+- Create Estimate
+- Schedule Job
+- Send Message
+- Log Time
+
+**Venus (Relationships)**
+- Recent contacts list
+- Customer status indicators
+- Pipeline values
+- Quick access to customer details
+
+**Earth (Home Base)**
+- Active projects count
+- Pipeline value
+- Monthly revenue
+- Pending tasks
+- Trend indicators
+
+**Mars (Projects)**
+- Active project cards
+- Project stages (Planning → In Progress → Completed)
+- Client associations
+- Kanban board access
+
+**Jupiter (Finance)**
+- Revenue received
+- Pending payments
+- Overdue amounts
+- Invoice/Estimate quick links
+
+**Saturn (Analytics)**
+- Revenue trend chart
+- Visual data representation
+- Report generation
+
+**Uranus (Integrations)** 🔒
+- QuickBooks connection
+- Google Calendar sync
+- Stripe setup
+- Zapier automations
+- *Requires Pro subscription*
+
+**Neptune (Archive)**
+- Archived projects count
+- Past customers database
+- Historical data access
+
+---
+
+## 🛠️ Technical Architecture (Updated)
+
+### Components
+
+```
+src/components/contractor/CRMVoid/
+├── index.ts                  # Barrel exports
+├── CRMVoid.tsx              # Original orbital view
+├── CRMVoidSolarSystem.tsx   # NEW: Full planetary system
+├── VoidBackground.tsx       # Enhanced with nebulae & shooting stars
+├── VoidPlanet.tsx           # NEW: Individual planet component
+├── PlanetarySystem.tsx      # NEW: Orbital animation manager
+├── PlanetPanels.tsx         # NEW: Planet-specific panels
+├── CentralVoiceHub.tsx      # Voice intake hub
+├── OrbitingSection.tsx      # Original floating buttons
+└── SectionPanels.tsx        # Original section panels
+```
+
+### New Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| **Framer Motion** | Planet animations & orbital motion |
+| **Canvas API** | Nebulae, shooting stars, enhanced starfield |
+| **requestAnimationFrame** | Smooth 60fps orbital animation |
+
+---
+
 ## 🎯 Why This Matters
 
 Traditional CRMs are **boring**. They're spreadsheets with extra steps. They feel like work.
 
 **CRM Void** feels like the future.
 
-When a contractor opens their CRM and sees the void—stars drifting, tools orbiting, their business floating in space—they don't feel like they're doing paperwork.
+When a contractor opens their CRM and sees the void—stars drifting, planets orbiting, their business floating in space—they don't feel like they're doing paperwork.
 
 They feel like they're commanding a starship.
 
@@ -227,6 +380,9 @@ Potential enhancements for future versions:
 - **Achievement system**: Unlock new nebula colors as you grow
 - **Sound design**: Ambient space audio, hover sounds
 - **VR mode**: Full WebXR support for headsets
+- **Asteroid belt**: Completed tasks floating as debris
+- **Comet mode**: Urgent tasks streak across the system
+- **Planet customization**: Choose your own planet colors
 
 ---
 
@@ -245,15 +401,14 @@ Designed and built for **FairTradeWorker** - December 2025
 ---
 
 ```
-     ✦
-        ·    ✧
-   ·         ·    WELCOME TO THE VOID    ·         ·
-        ✧    ·                               ·    ✦
-     ·              ╭───────────────╮              ·
-            ·      │  YOUR BUSINESS │      ·
-     ✧             │    AWAITS      │             ✧
-            ·      ╰───────────────╯      ·
-     ·         ·                               ·         ·
-        ✦    ·                               ·    ✧
-     ·
-```
+                    ✦
+         ✧              ·    ✦
+    ·         ☀️              ·
+        ·    ⚡ ·    ·    ✧
+   💛         🌍    ·         ✦
+        ·    ·    🔴    ·
+    ✧    ·    💰    ·    ·
+         ·    ·    📊    ✧
+    ·         🔗    ·         ·
+        ✦    ·    🌊    ·
+              ✧         ✦
