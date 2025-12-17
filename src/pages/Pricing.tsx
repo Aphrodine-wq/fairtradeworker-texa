@@ -202,9 +202,10 @@ export const PricingPage = memo(function PricingPage({ user, onNavigate }: Prici
                   Pricing
                 </h1>
               </div>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Simple, transparent pricing. No hidden fees. Contractors keep 100% of earnings.
-            </p>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+                Simple, transparent pricing. No hidden fees. Contractors keep 100% of earnings.
+              </p>
+            </div>
           </div>
 
           {/* Pricing Tiers - Contractors */}
