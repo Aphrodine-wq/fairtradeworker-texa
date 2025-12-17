@@ -128,16 +128,7 @@ export function CountyMapView({
           
           {/* Hover Tooltip */}
           {hoveredCounty && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="absolute z-20 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-lg shadow-xl p-4 min-w-[200px]"
-              style={{
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            >
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-lg shadow-xl p-4 min-w-[200px]">
               <h4 className="font-bold text-gray-900 dark:text-white mb-2">
                 {hoveredCounty.countyName}
               </h4>
