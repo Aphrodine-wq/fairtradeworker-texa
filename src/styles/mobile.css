@@ -1,0 +1,136 @@
+/* Mobile-specific sizing and optimizations */
+
+/* Mobile devices generally */
+@media (max-width: 768px) {
+  /* Reduce base font size slightly for mobile */
+  html {
+    font-size: 15px;
+  }
+
+  /* Reduce container padding */
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Reduce heading sizes */
+  h1 {
+    font-size: 1.75rem;
+    line-height: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+
+  /* Reduce card padding */
+  .card,
+  [class*="card-"] {
+    padding: 0.875rem;
+  }
+
+  /* Reduce button padding for mobile */
+  button:not(.min-h-\[44px\]),
+  .btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Optimize spacing for mobile */
+  .space-y-6 > * + * {
+    margin-top: 1rem;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .gap-6 {
+    gap: 1rem;
+  }
+
+  .gap-4 {
+    gap: 0.75rem;
+  }
+
+  /* Reduce margins */
+  .mb-12 {
+    margin-bottom: 2rem;
+  }
+
+  .mt-12 {
+    margin-top: 2rem;
+  }
+
+  .py-12 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Optimize form elements */
+  input,
+  textarea,
+  select {
+    padding: 0.625rem 0.75rem;
+    font-size: 1rem;
+  }
+
+  /* Reduce modal/dialog padding */
+  [role="dialog"] {
+    padding: 1rem;
+  }
+
+  /* Optimize tables for mobile */
+  table {
+    font-size: 0.875rem;
+  }
+
+  th,
+  td {
+    padding: 0.5rem;
+  }
+}
+
+/* Extra small devices (phones in portrait) */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  /* Further reduce spacing */
+  .mb-12 {
+    margin-bottom: 1.5rem;
+  }
+
+  .mt-12 {
+    margin-top: 1.5rem;
+  }
+
+  .py-12 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Reduce logo size on very small screens */
+  .font-heading.font-bold {
+    font-size: 1.125rem;
+  }
+}
+
+/* Tablet devices */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    font-size: 15.5px;
+  }
+}

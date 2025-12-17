@@ -145,7 +145,7 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
           Everything you need to manage your home services business
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl mx-auto">
+      <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-3 max-w-5xl mx-auto">
         {features.map((feature) => {
           // Use explicit icon if provided, otherwise try to match from map
           const Icon = feature.icon || featureIconMap[feature.title.toLowerCase()] || Sparkle
@@ -167,8 +167,8 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
               <div className="feature-icon h-14 w-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 mx-auto">
                 <Icon className="text-gray-600 dark:text-gray-300 text-2xl" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
-              <p className="mt-2 text-gray-500 dark:text-gray-400 text-sm">{feature.description}</p>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+              <p className="mt-1 sm:mt-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{feature.description}</p>
             </GlassCard>
           )
         })}

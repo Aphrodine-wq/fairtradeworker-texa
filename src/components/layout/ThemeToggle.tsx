@@ -9,8 +9,10 @@ function updateThemeColor(isDark: boolean) {
   // Also update Apple status bar style
   const appleStatusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
   if (appleStatusBarMeta) {
-    appleStatusBarMeta.setAttribute('content', isDark ? 'black' : 'default')
+    appleStatusBarMeta.setAttribute('content', isDark ? 'black-translucent' : 'default')
   }
+  // Ensure body background is set for iOS Safari
+  document.body.style.backgroundColor = isDark ? '#000000' : '#ffffff'
 }
 
 export function ThemeToggle() {
