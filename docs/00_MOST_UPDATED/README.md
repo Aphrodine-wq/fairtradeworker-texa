@@ -22,6 +22,11 @@ This folder contains the most recently updated and most important documents for 
   - Consistent page centering (max-w-7xl mx-auto)
   - Pricing accuracy fixes ($50/month Pro)
 
+- **[ENHANCED_INVOICE_PAYMENT_SYSTEM.md](./ENHANCED_INVOICE_PAYMENT_SYSTEM.md)** - Enhanced Invoice & Payment System Expansions
+  - "Instant Invoice" - Context-aware invoice generation
+  - "Smart PDF" - Interactive payment portal
+  - "Polite Collections Agent" - Pre-due reminders and client portal
+
 ### Testing & Quality
 - **[TESTING_COMPREHENSIVE_GUIDE.md](./TESTING_COMPREHENSIVE_GUIDE.md)** - Complete testing guide with best practices and patterns
   - Test architecture overview

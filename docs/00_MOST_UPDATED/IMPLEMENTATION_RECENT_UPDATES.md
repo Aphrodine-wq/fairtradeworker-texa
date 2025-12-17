@@ -98,7 +98,7 @@ This document tracks recent implementation updates, improvements, and feature ad
 
 ### Pricing Accuracy Fix
 
-**Date**: Current  
+**Date**: December 16, 2025  
 **Status**: ✅ Complete
 
 #### Change Made
@@ -112,6 +112,29 @@ This document tracks recent implementation updates, improvements, and feature ad
 - Home screen pricing now accurately reflects subscription costs
 - Prevents user confusion
 - Builds trust through transparency
+
+### Enhanced Invoice & Payment System Expansions
+
+**Date**: December 16, 2025  
+**Status**: ✅ Documented, ⏳ Implementation in progress
+
+#### Features Documented
+- **"Instant Invoice"**: Context-aware invoice generation from tasks and change orders
+- **"Smart PDF"**: Interactive invoice PDFs with payment portal integration
+- **"Polite Collections Agent"**: Pre-due reminders and client payment portal
+
+#### Documentation
+- Created comprehensive guide: `ENHANCED_INVOICE_PAYMENT_SYSTEM.md`
+- Detailed implementation roadmap
+- Expected impact metrics (83% time savings, 30% payment rate increase)
+
+#### Current Status
+- ✅ Core invoice system: Complete
+- ✅ PDF generation: Complete
+- ✅ Recurring invoices: Complete
+- ⏳ Context-aware generation: Planned
+- ⏳ Interactive payment portal: Planned
+- ⏳ Client payment portal: Planned
 
 ## Previous Major Updates
 

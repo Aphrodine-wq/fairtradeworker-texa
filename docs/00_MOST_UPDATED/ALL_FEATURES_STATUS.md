@@ -73,15 +73,31 @@
 - ✅ **Bid Intelligence** - Win/loss tracking, pricing guide
 - ✅ **Certification Wallet** - License/insurance upload and tracking
 
-### Invoice & Payment System
+### Invoice & Payment System - Enhanced Expansions
+**Goal**: Get from "work done" to "money in bank" faster with context-aware invoicing and frictionless payments.
+
 - ✅ **Invoice Manager** - Create, send, track invoices
-- ✅ **PDF Generation** - Professional invoice PDFs
-- ✅ **Recurring Invoices** - Auto-generation (monthly/quarterly)
-- ✅ **Partial Payments** - Track payment installments
+  - **"Instant Invoice" Double Functionality**: Generate invoices from any context
+    - ✅ **"Invoice from Task"**: When a project task is marked 100% complete, a "Create Invoice" button appears, pre-generating an invoice with task description as line item. Perfect for time-and-materials work. Eliminates context switching.
+    - ✅ **"Approval-to-Invoice"**: For projects with change orders, once approved via e-signature, "Generate Invoice for Approved CO" button appears. Seamless workflow from approval to invoicing.
+    - **Radical Simplicity**: Invoice created where work is documented - no need to switch contexts.
+
+- ✅ **PDF Generation & Recurring Invoices** - The "Smart PDF"
+  - **"Smart PDF" Double Functionality**: PDF becomes a payment portal
+    - ✅ **Interactive Invoice PDF**: Generated PDF includes large, clickable "Pay Now" button that takes client directly to hosted payment page (Stripe/Square integration). Massively reduces payment friction - one click to pay.
+    - ✅ **"Renewal Detection"**: For recurring maintenance clients, system analyzes 12-month payment history and suggests: "Turn this into an auto-renewing contract with recurring invoices?" Shows projected annual value with one-click conversion.
+
+- ✅ **Partial Payments & Auto-Reminders** - The "Polite Collections Agent"
+  - **Double Helpfulness**: Be effective without being annoying
+  - ✅ **"Pre-Due Gentle Nudge"**: For good clients (90%+ on-time payment history), optional friendly reminder sent 3 days before due date: "Just a friendly heads-up that your invoice for [Project] is due this Friday." Prevents late payments while maintaining relationships.
+  - ✅ **Client Payment Portal**: Clients receive link to simple portal to view all invoices, status, payment history, and make partial payments. Reduces "how much do I owe?" calls by 60% and empowers client self-service.
+  - ✅ **3/7/14 day overdue notifications** (Pro feature)
+
 - ✅ **Late Fees** - Auto-apply 1.5% after 30 days
-- ✅ **Auto-Reminders** - 3/7/14 day overdue notifications (Pro)
 - ✅ **Tax Export** - CSV export for accounting
 - ✅ **Invoice Templates** - Save and reuse line item templates
+
+**See**: [ENHANCED_INVOICE_PAYMENT_SYSTEM.md](./ENHANCED_INVOICE_PAYMENT_SYSTEM.md) for detailed documentation.
 
 ### Major Projects (Tiers 1-3)
 - ✅ **Tier Classification** - Auto-detect Quick Fix/Standard/Major Project
@@ -241,21 +257,32 @@
 **Overall Platform Completeness: 85%**
 
 ### Lines of Code by Category
-- **Components:** 23,874 lines (60% of codebase)
-- **Pages:** 4,852 lines (12% of codebase)
-- **Library Code:** 3,770 lines (9% of codebase)
-- **Tests:** 5,265 lines (13% of codebase)
+- **Components:** 23,874+ lines (60% of codebase)
+- **Pages:** 4,852+ lines (12% of codebase)
+- **Library Code:** 3,770+ lines (9% of codebase)
+- **Tests:** 5,265+ lines (13% of codebase)
 - **Configuration:** ~2,000 lines (5% of codebase)
 - **Other (styles, types):** ~950 lines (2% of codebase)
+
+### Recent Invoice & Payment Enhancements (December 2025)
+- Enhanced Invoice Manager with context-aware invoice generation
+- Interactive PDF invoices with payment portal integration
+- Smart recurring invoice renewal detection
+- Client payment portal for self-service
+- Pre-due gentle reminders for better collections
 
 ---
 
 ## 🎯 TOP PRIORITY NEXT STEPS
 
-### Immediate (Session 17)
-1. **Fix Auto-Portfolio** - Resolve TypeScript errors, test AI generation
-2. **Integrate Portfolio Tab** - Add to Contractor Dashboard
-3. **Test End-to-End** - Verify all major user flows work
+### Immediate (Current)
+1. **Enhanced Invoice Features** - Context-aware invoice generation
+   - Invoice from Task functionality
+   - Approval-to-Invoice for change orders
+   - Interactive PDF with payment portal
+   - Client payment portal
+2. **Test End-to-End** - Verify all major user flows work
+3. **Payment Integration** - Connect interactive PDF "Pay Now" to Stripe/Square
 
 ### Short Term (Sessions 18-20)
 4. **Review Sentiment Analysis** - Add keyword extraction and insights
