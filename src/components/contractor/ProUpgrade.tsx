@@ -52,8 +52,8 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
                 Back to Dashboard
               </Button>
             </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </div>
 
       <UnifiedPaymentScreen
         open={paymentOpen}
@@ -67,9 +67,9 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
         enableRecurring={true}
         recurringInterval="monthly"
       />
-    </div>
-  )
-}
+      </div>
+    )
+  }
 
   const features = [
     {

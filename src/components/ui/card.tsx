@@ -8,18 +8,31 @@ interface CardProps extends ComponentProps<"div"> {
 }
 
 function Card({ className, glass = false, ...props }: CardProps) {
-  // All cards use glassmorphism for consistent UI/UX
+  if (glass) {
+    // Pro glass variant - semi-transparent with subtle blur
+    return (
+      <div
+        data-slot="card"
+        className={cn(
+          "bg-glass-light dark:bg-glass-dark backdrop-blur-xs",
+          "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
+          "shadow-lg hover:shadow-xl",
+          "transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+          "hover:-translate-y-0.5",
+          "relative overflow-hidden group",
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+
+  // Default card (non-glass) - modern professional style
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(0,0,0,0.75)]",
-        "backdrop-blur-[12px] -webkit-backdrop-blur-[12px]",
-        "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
-        "border border-white/10 dark:border-white/10",
-        "transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-        "hover:-translate-y-0.5",
-        "relative overflow-hidden",
+        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-xl py-5 shadow-lg hover:shadow-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] relative overflow-hidden group",
         className
       )}
       {...props}

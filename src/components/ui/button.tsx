@@ -15,16 +15,15 @@ const buttonVariants = cva(
     "disabled:pointer-events-none disabled:opacity-50",
     "hover:scale-[1.02]",
     "active:scale-[0.98]",
+    "shadow-sm hover:shadow-md",
     "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0",
   ],
   {
     variants: {
       variant: {
         default: [
-          "bg-[rgba(0,0,0,0.85)] dark:bg-[rgba(255,255,255,0.85)]",
-          "backdrop-blur-sm",
-          "text-white dark:text-black",
-          "hover:bg-[rgba(0,0,0,0.9)] dark:hover:bg-[rgba(255,255,255,0.9)]",
+          "bg-black text-white dark:bg-white dark:text-black",
+          "hover:bg-gray-800 dark:hover:bg-gray-100",
           "focus-visible:ring-black dark:focus-visible:ring-white",
         ],
         destructive: [

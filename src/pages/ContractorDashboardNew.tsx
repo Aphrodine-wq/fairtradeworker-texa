@@ -215,7 +215,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-12">
+      <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>
@@ -241,8 +241,8 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
           </div>
 
           {/* Key Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Active Jobs</p>
@@ -251,18 +251,18 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     {todaySchedule.length} scheduled today
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">This Month</p>
+                  <p className="text-sm text-muted-foreground">This Month</p>
                   <p className="text-3xl font-bold mt-1">${monthlyEarnings.toLocaleString()}</p>
-                  <p className="text-xs text-muted-foreground font-medium mt-1">
+                  <p className="text-xs text-accent-foreground mt-1">
                     {completedJobs.filter(j => {
                       const jobDate = new Date(j.createdAt)
                       const now = new Date()
@@ -270,36 +270,36 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     }).length} jobs completed
                   </p>
                 </div>
-                <div className="h-14 w-14 rounded-full bg-primary/10 flex items-center justify-center">
-                  <CurrencyDollar className="h-7 w-7 text-primary" weight="bold" />
+                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
+                  <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">Win Rate</p>
+                  <p className="text-sm text-muted-foreground">Win Rate</p>
                   <p className="text-3xl font-bold mt-1">{winRate.toFixed(0)}%</p>
-                  <p className="text-xs text-muted-foreground font-medium mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {wonBids.length} of {myBids.length} bids
                   </p>
                 </div>
-                <div className="h-14 w-14 rounded-md bg-primary/10 flex items-center justify-center">
-                  <Target className="h-7 w-7 text-primary" weight="bold" />
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Target className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6">
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground font-medium">Performance</p>
+                  <p className="text-sm text-muted-foreground">Performance</p>
                   <p className="text-3xl font-bold mt-1">{performanceScore}/100</p>
-                  <Progress value={performanceScore} className="mt-2 h-2" />
+                  <Progress value={performanceScore} className="mt-2 h-1" />
                 </div>
-                <div className="h-14 w-14 rounded-md bg-primary/10 flex items-center justify-center">
-                  <ChartLine className="h-7 w-7 text-primary" weight="bold" />
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <ChartLine className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </Card>
@@ -307,7 +307,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
           {/* Fee Savings Highlight */}
           {feesAvoided > 0 && (
-            <Card className="p-6" >
+            <Card className="p-6" glass={isPro}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Fees Avoided on FairTradeWorker</p>
@@ -353,7 +353,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {freshJobs.slice(0, 10).map((job) => {
+                  {freshJobs.map(job => {
                     const ageMinutes = Math.round((currentTime.getTime() - new Date(job.createdAt).getTime()) / (1000 * 60))
                     const myBid = job.bids.find(b => b.contractorId === user.id)
                     
@@ -402,7 +402,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
 
             {/* Today's Focus */}
             <div className="space-y-6">
-              <Card className="p-6" >
+              <Card className="p-6" glass={isPro}>
                 <h3 className="font-semibold mb-4 flex items-center gap-2 text-black dark:text-white">
                   <Calendar className="h-5 w-5 text-primary" />
                   Today's Schedule
@@ -414,7 +414,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 ) : (
                   <div className="space-y-3">
                     {todaySchedule.map(job => (
-                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black rounded-md shadow-sm hover:shadow-md transition-shadow">
+                      <div key={job.id} className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md">
                         <MapPin className="h-4 w-4 text-primary mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{job.title}</p>
@@ -428,7 +428,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 )}
               </Card>
 
-              <Card className="p-6" >
+              <Card className="p-6" glass={isPro}>
                 <h3 className="font-semibold mb-4 text-black dark:text-white">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -458,7 +458,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
               </Card>
 
               {upcomingMilestones.length > 0 && (
-                <Card className="p-6" >
+                <Card className="p-6" glass={isPro}>
                   <h3 className="font-semibold mb-4">Upcoming Milestones</h3>
                   <div className="space-y-3">
                     {upcomingMilestones.map(({ job, milestone }) => (
@@ -509,6 +509,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                     <Card
                       key={tool.id}
                       className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                      glass={isPro}
                       onClick={() => onNavigate(tool.page)}
                     >
                       <div className="flex items-center gap-4">
@@ -525,46 +526,49 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
                 })}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Default tools if no pinned tools */}
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('crm')}>
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-md bg-primary/10 flex items-center justify-center shadow-md">
-                      <Users className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Customer CRM</p>
-                      <p className="text-sm text-muted-foreground">Manage relationships</p>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('invoices')}>
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
-                      <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Invoices</p>
-                      <p className="text-sm text-muted-foreground">Track payments</p>
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"                   onClick={() => onNavigate('business-tools')}>
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-md bg-purple-500/10 flex items-center justify-center shadow-md">
-                      <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">Business Tools</p>
-                      <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
-                    </div>
-                  </div>
-                </Card>
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('crm')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <p className="font-semibold">Customer CRM</p>
+                  <p className="text-sm text-muted-foreground">Manage relationships</p>
+                </div>
               </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('invoices')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
+                  <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
+                </div>
+                <div>
+                  <p className="font-semibold">Invoices</p>
+                  <p className="text-sm text-muted-foreground">Track payments</p>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
+              onClick={() => onNavigate('business-tools')}>
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Sparkle className="h-6 w-6 text-purple-600 dark:text-purple-400" weight="duotone" />
+                </div>
+                <div>
+                  <p className="font-semibold">Business Tools</p>
+                  <p className="text-sm text-muted-foreground">All-in-one toolkit</p>
+                </div>
+              </div>
+            </Card>
+                </div>
             )}
-          </div>
+                </div>
 
           {/* Dashboard Customizer Dialog */}
           {isPro && (

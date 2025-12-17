@@ -119,7 +119,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Password</Label>
                   <button
                     type="button"
                     onClick={() => onNavigate("login")}

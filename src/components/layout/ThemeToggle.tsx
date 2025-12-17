@@ -37,11 +37,11 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative w-9 h-9 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-transform duration-200 ease-out hover:scale-105 active:scale-95 min-w-[32px] min-h-[32px]"
+      className="relative w-9 h-9 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-[1500ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:scale-105 active:scale-95 min-w-[32px] min-h-[32px]"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       <motion.div
-        className="absolute inset-0 rounded-full border-2 will-change-[background-color,border-color]"
+        className="absolute inset-0 rounded-full border-2"
         initial={false}
         animate={{
           backgroundColor: isDark 
@@ -51,10 +51,7 @@ export function ThemeToggle() {
             ? 'oklch(0.35 0.02 264)' 
             : 'oklch(0.85 0.1 85)',
         }}
-        transition={{ 
-          duration: 1.5, 
-          ease: [0.25, 0.46, 0.45, 0.94]
-        }}
+        transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
       />
     </button>
   )

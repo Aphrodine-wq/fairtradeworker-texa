@@ -265,73 +265,73 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
           <TabsContent value="overview">
             <div className="flex flex-col gap-6">
-              {/* Key Metrics */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Total Jobs</p>
-                      <p className="text-3xl font-bold mt-1">{territoryJobs.length}</p>
-                      <p className="text-xs text-accent-foreground mt-1">
-                        {activeJobs.length} active
-                      </p>
-                    </div>
-                    <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                      <Briefcase className="h-6 w-6 text-primary" />
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Contractors</p>
-                      <p className="text-3xl font-bold mt-1">{territoryContractors.length}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {contractorsByTier.pro} PRO members
-                      </p>
-                    </div>
-                    <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                      <Users className="h-6 w-6 text-secondary-foreground" />
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Territory Volume</p>
-                      <p className="text-3xl font-bold mt-1">${(totalVolume / 1000).toFixed(0)}K</p>
-                      <p className="text-xs text-accent-foreground mt-1">
-                        Your share: ${operatorRevenue.toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
-                      <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
-                    </div>
-                  </div>
-                </Card>
-
-                <Card className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Territory Health</p>
-                      <p className="text-3xl font-bold mt-1">{territoryHealth}/100</p>
-                      <Progress value={territoryHealth} className="mt-2 h-1" />
-                    </div>
-                    <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
-                      <Target className="h-6 w-6 text-primary" />
-                    </div>
-                  </div>
-                </Card>
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Card className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Jobs</p>
+                  <p className="text-3xl font-bold mt-1">{territoryJobs.length}</p>
+                  <p className="text-xs text-accent-foreground mt-1">
+                    {activeJobs.length} active
+                  </p>
+                </div>
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Briefcase className="h-6 w-6 text-primary" />
+                </div>
               </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Contractors</p>
+                  <p className="text-3xl font-bold mt-1">{territoryContractors.length}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {contractorsByTier.pro} PRO members
+                  </p>
+                </div>
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Users className="h-6 w-6 text-secondary-foreground" />
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Territory Volume</p>
+                  <p className="text-3xl font-bold mt-1">${(totalVolume / 1000).toFixed(0)}K</p>
+                  <p className="text-xs text-accent-foreground mt-1">
+                    Your share: ${operatorRevenue.toLocaleString()}
+                  </p>
+                </div>
+                <div className="h-12 w-12 rounded-full bg-accent/20 flex items-center justify-center">
+                  <CurrencyDollar className="h-6 w-6 text-accent-foreground" />
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Territory Health</p>
+                  <p className="text-3xl font-bold mt-1">{territoryHealth}/100</p>
+                  <Progress value={territoryHealth} className="mt-2 h-1" />
+                </div>
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <Target className="h-6 w-6 text-primary" />
+                </div>
+              </div>
+            </Card>
+          </div>
 
               {/* Rest of overview content will go here - keeping existing content structure */}
               {/* For now, placeholder to maintain structure */}
               <div className="text-center py-8 text-muted-foreground">
                 Overview content (existing dashboard content can be added here)
+                </div>
               </div>
-            </div>
           </TabsContent>
 
           <TabsContent value="productivity">
