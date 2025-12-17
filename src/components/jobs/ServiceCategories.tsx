@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { containerVariants, itemVariants, universalCardHover } from "@/lib/animations"
+import { itemVariants, universalCardHover } from "@/lib/animations"
 import {
   Warning,
   Wrench,
@@ -196,16 +196,23 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Neutral color scheme - green/grey for all categories
-  const categoryStyles: Record<string, string> = {
-    emergency: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    plumbing: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    electrical: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    hvac: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    repair: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    outdoor: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200",
-    remodeling: "bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-300",
-    cleaning: "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200"
+  // Rainbow color scheme - random colors for each category
+  const rainbowColors = [
+    { bg: "bg-red-100 dark:bg-red-950/30", text: "text-red-700 dark:text-red-300" },
+    { bg: "bg-orange-100 dark:bg-orange-950/30", text: "text-orange-700 dark:text-orange-300" },
+    { bg: "bg-yellow-100 dark:bg-yellow-950/30", text: "text-yellow-700 dark:text-yellow-300" },
+    { bg: "bg-green-100 dark:bg-green-950/30", text: "text-green-700 dark:text-green-300" },
+    { bg: "bg-blue-100 dark:bg-blue-950/30", text: "text-blue-700 dark:text-blue-300" },
+    { bg: "bg-indigo-100 dark:bg-indigo-950/30", text: "text-indigo-700 dark:text-indigo-300" },
+    { bg: "bg-purple-100 dark:bg-purple-950/30", text: "text-purple-700 dark:text-purple-300" },
+    { bg: "bg-pink-100 dark:bg-pink-950/30", text: "text-pink-700 dark:text-pink-300" },
+  ]
+
+  // Assign random colors to categories (consistent per session)
+  const getCategoryColor = (categoryId: string) => {
+    // Use a simple hash to get consistent color per category
+    const hash = categoryId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    return rainbowColors[hash % rainbowColors.length]
   }
 
   const handleCategoryClick = (categoryId: string) => {
@@ -213,46 +220,37 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
     onNavigate(`service-category/${categoryId}`)
   }
 
+  // Split categories into two rows with Quick Services in the middle column
+  const categoriesWithoutQuick = mainCategories.filter(cat => cat.id !== 'quick-services')
+  const firstRow = categoriesWithoutQuick.slice(0, 4)
+  const quickServices = mainCategories.find(cat => cat.id === 'quick-services')
+  const secondRow = categoriesWithoutQuick.slice(4)
+
   return (
     <div className="w-full py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ 
-          type: "spring",
-          stiffness: 300,
-          damping: 30
-        }}
-        className="text-center mb-8"
-        style={{ willChange: 'transform, opacity' }}
-      >
+      <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
           Browse Services
         </h2>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-      >
-        {mainCategories.map((category, index) => {
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-rows-fr">
+        {/* First Row - 4 items */}
+        {firstRow.map((category) => {
           const Icon = category.icon
-          // Center Quick Services (9th item) in 4-column grid
-          const isQuickServices = category.id === 'quick-services'
-          const centerClass = isQuickServices ? "lg:col-start-2" : ""
+          const color = getCategoryColor(category.id)
           return (
             <motion.div
               key={category.id}
               variants={itemVariants}
+              initial="hidden"
+              animate="visible"
               whileHover={universalCardHover.hover}
               whileTap={{ scale: 0.98 }}
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-              className={centerClass}
             >
               <Card
-                className="cursor-pointer h-full border-2 border-black/10 dark:border-white/10 hover:border-black dark:hover:border-white transition-colors"
+                className="cursor-pointer h-full border-0 hover:shadow-lg transition-shadow"
                 onClick={() => handleCategoryClick(category.id)}
               >
                 <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
@@ -263,26 +261,12 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                     style={{ willChange: 'transform' }}
                   >
                     <div
-                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border border-black/10 dark:border-white/10 ${
-                        categoryStyles[category.id] || "bg-neutral-100 dark:bg-neutral-900"
-                      }`}
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${color.bg}`}
                     >
                       <Icon 
                         size={28} 
                         weight="fill" 
-                        className={
-                          categoryStyles[category.id] 
-                            ? category.id === 'emergency' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'plumbing' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'electrical' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'hvac' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'repair' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'outdoor' ? "text-gray-800 dark:text-gray-200" :
-                              category.id === 'remodeling' ? "text-green-700 dark:text-green-300" :
-                              category.id === 'cleaning' ? "text-gray-800 dark:text-gray-200" :
-                              "text-gray-800 dark:text-gray-200"
-                            : "text-gray-800 dark:text-gray-200"
-                        }
+                        className={color.text}
                       />
                     </div>
                   </motion.div>
@@ -294,7 +278,136 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
             </motion.div>
           )
         })}
-      </motion.div>
+
+        {/* Quick Services - Middle Column spanning 2 rows */}
+        {quickServices && (
+          <motion.div
+            key={quickServices.id}
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover={universalCardHover.hover}
+            whileTap={{ scale: 0.98 }}
+            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+            className="hidden lg:block lg:row-span-2 lg:col-start-3"
+          >
+            <Card
+              className="cursor-pointer h-full border-0 hover:shadow-lg transition-shadow"
+              onClick={() => handleCategoryClick(quickServices.id)}
+            >
+              <CardContent className="p-5 flex flex-col items-center justify-center text-center space-y-3 h-full">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  style={{ willChange: 'transform' }}
+                >
+                  <div
+                    className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${getCategoryColor(quickServices.id).bg}`}
+                  >
+                    <quickServices.icon 
+                      size={28} 
+                      weight="fill" 
+                      className={getCategoryColor(quickServices.id).text}
+                    />
+                  </div>
+                </motion.div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {quickServices.title}
+                </h3>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Second Row - remaining items (skip middle on lg) */}
+        {secondRow.map((category, index) => {
+          const Icon = category.icon
+          const color = getCategoryColor(category.id)
+          // On large screens, skip the middle column (col 3) for second row items
+          const colClass = index === 0 ? "lg:col-start-1" : index === 1 ? "lg:col-start-2" : index === 2 ? "lg:col-start-4" : "lg:col-start-5"
+          return (
+            <motion.div
+              key={category.id}
+              variants={itemVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={universalCardHover.hover}
+              whileTap={{ scale: 0.98 }}
+              style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+              className={colClass}
+            >
+              <Card
+                className="cursor-pointer h-full border-0 hover:shadow-lg transition-shadow"
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    style={{ willChange: 'transform' }}
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${color.bg}`}
+                    >
+                      <Icon 
+                        size={28} 
+                        weight="fill" 
+                        className={color.text}
+                      />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    {category.title}
+                  </h3>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )
+        })}
+
+        {/* Quick Services - Mobile/Tablet view (shown after other items) */}
+        {quickServices && (
+          <motion.div
+            key={`${quickServices.id}-mobile`}
+            variants={itemVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover={universalCardHover.hover}
+            whileTap={{ scale: 0.98 }}
+            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+            className="lg:hidden"
+          >
+            <Card
+              className="cursor-pointer h-full border-0 hover:shadow-lg transition-shadow"
+              onClick={() => handleCategoryClick(quickServices.id)}
+            >
+              <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  style={{ willChange: 'transform' }}
+                >
+                  <div
+                    className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${getCategoryColor(quickServices.id).bg}`}
+                  >
+                    <quickServices.icon 
+                      size={28} 
+                      weight="fill" 
+                      className={getCategoryColor(quickServices.id).text}
+                    />
+                  </div>
+                </motion.div>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {quickServices.title}
+                </h3>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </div>
     </div>
   )
 }

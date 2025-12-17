@@ -9,7 +9,7 @@ import type { User } from "@/lib/types"
 type NavLink = { label: string; href?: string; active?: boolean }
 
 export function GlassCard({ className, ...props }: React.ComponentProps<typeof Card>) {
-  return <Card className={cn("glass-card", className)} {...props} />
+  return <Card className={cn("glass-card border-0", className)} {...props} />
 }
 
 export function GlassNav({ children }: { brand?: any; links?: NavLink[]; primaryLabel?: string; onPrimaryClick?: () => void; children?: React.ReactNode }) {

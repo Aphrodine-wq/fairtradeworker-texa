@@ -6,7 +6,7 @@
    1. ENHANCED LAYERED TRANSITION SYSTEM
    ============================================ */
 
-/* Layer 1: Backgrounds (fastest - 300ms) */
+/* Layer 1: Backgrounds (fastest - 200ms for smoother transitions) */
 body,
 main,
 section,
@@ -18,13 +18,13 @@ nav,
 div:not([class*="animate"]),
 [class*="bg-"] {
   transition-property: background-color;
-  transition-duration: 0.3s;
+  transition-duration: 0.2s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: background-color;
   transform: translate3d(0, 0, 0); /* GPU acceleration */
 }
 
-/* Layer 2: Borders (medium - 400ms) */
+/* Layer 2: Borders (medium - 250ms) */
 [class*="border"],
 button,
 input,
@@ -32,13 +32,13 @@ select,
 textarea,
 [data-slot="card"] {
   transition-property: border-color, box-shadow;
-  transition-duration: 0.4s;
+  transition-duration: 0.25s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: border-color, box-shadow;
   transform: translate3d(0, 0, 0);
 }
 
-/* Layer 3: Text and Icons (slower - 500ms for smooth fade) */
+/* Layer 3: Text and Icons (slower - 300ms for smooth fade) */
 p,
 span,
 h1, h2, h3, h4, h5, h6,
@@ -48,7 +48,7 @@ label,
 svg,
 [class*="icon"] {
   transition-property: color, fill, stroke;
-  transition-duration: 0.5s;
+  transition-duration: 0.3s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: color, fill, stroke;
   transform: translate3d(0, 0, 0);
@@ -69,7 +69,7 @@ svg,
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 0.4s;
+  transition-duration: 0.25s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -365,7 +365,7 @@ svg,
 
 /* Smooth dark mode transition with layered timing */
 html {
-  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Theme transitioning state - prevents choppy updates */
