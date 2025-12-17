@@ -75,7 +75,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
             aria-label="Go to home"
           >
-            <span className="font-heading font-bold text-xl md:text-2xl leading-none text-black dark:text-white">
+            <span className="font-heading font-bold text-2xl md:text-3xl leading-none text-black dark:text-white">
               FairTradeWorker
             </span>
           </button>

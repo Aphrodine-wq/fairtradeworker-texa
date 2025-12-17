@@ -18,8 +18,10 @@ interface LoginPageProps {
 export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [twoFactorCode, setTwoFactorCode] = useState("")
+  const [enable2FA, setEnable2FA] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
+  const [errors, setErrors] = useState<{ email?: string; password?: string; twoFactor?: string }>({})
   const [users] = useKV<User[]>("users", [])
 
   const validateEmail = useCallback((email: string): boolean => {
@@ -79,7 +81,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
       <div className="pt-20 pb-16 px-4">
         <HeroSection
           title="Welcome back"
-          subtitle="Log in to manage bids, jobs, invoices, and CRM with zero platform fees."
+          subtitle="Log in to manage bids, jobs, invoices, and CRM."
           primaryAction={{ label: "Create an account", onClick: () => onNavigate("signup") }}
         />
 
@@ -116,7 +118,16 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate("login")}
+                    className="text-xs text-primary hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
                 <Input
                   id="password"
                   type="password"
@@ -137,7 +148,55 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                     {errors.password}
                   </p>
                 )}
+                {password.length > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    Password strength: {password.length >= 8 ? "Strong" : password.length >= 6 ? "Medium" : "Weak"}
+                  </p>
+                )}
               </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="enable-2fa"
+                  checked={enable2FA}
+                  onChange={(e) => setEnable2FA(e.target.checked)}
+                  className="h-4 w-4 rounded border-black dark:border-white"
+                />
+                <Label htmlFor="enable-2fa" className="text-sm font-normal cursor-pointer">
+                  Use two-factor authentication
+                </Label>
+              </div>
+
+              {enable2FA && (
+                <div className="space-y-2">
+                  <Label htmlFor="twoFactor">2FA Code</Label>
+                  <Input
+                    id="twoFactor"
+                    type="text"
+                    placeholder="000000"
+                    value={twoFactorCode}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 6)
+                      setTwoFactorCode(value)
+                      if (errors.twoFactor) setErrors((prev) => ({ ...prev, twoFactor: undefined }))
+                    }}
+                    className={errors.twoFactor ? "border-[#FF0000] font-mono text-center text-lg tracking-widest" : "font-mono text-center text-lg tracking-widest"}
+                    disabled={isLoading}
+                    maxLength={6}
+                    aria-invalid={!!errors.twoFactor}
+                    aria-describedby={errors.twoFactor ? "twoFactor-error" : undefined}
+                  />
+                  {errors.twoFactor && (
+                    <p id="twoFactor-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                      {errors.twoFactor}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Enter the 6-digit code from your authenticator app
+                  </p>
+                </div>
+              )}
 
               <Button type="submit" className="w-full border-2 border-black dark:border-white" disabled={isLoading}>
                 {isLoading ? (

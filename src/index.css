@@ -386,8 +386,8 @@
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-  transition-duration: 75ms;
-  transition-timing-function: ease-out;
+  transition-duration: 1500ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Disable transitions on page load to prevent flash */

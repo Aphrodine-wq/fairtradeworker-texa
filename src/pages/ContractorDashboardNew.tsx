@@ -204,27 +204,7 @@ export function ContractorDashboardNew({ user, onNavigate }: ContractorDashboard
   }, [winRate, avgResponseTime, completedJobs.length, lightningBids])
 
   if (isInitializing) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <SkeletonLoader variant="text" className="h-10 w-64" />
-              <SkeletonLoader variant="rectangular" className="h-10 w-32" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <SkeletonLoader key={i} variant="card" />
-              ))}
-            </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <SkeletonLoader variant="card" />
-              <SkeletonLoader variant="card" />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return null
   }
 
   return (

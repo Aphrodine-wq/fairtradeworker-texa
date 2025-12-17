@@ -402,13 +402,13 @@ export const DEFAULT_NAVIGATION: Record<UserRole, NavItem[]> = {
       iconName: 'Briefcase'
     },
     { 
-      id: 'business-tools', 
-      label: 'Business Tools', 
-      page: 'business-tools', 
+      id: 'free-tools', 
+      label: 'Free Tools', 
+      page: 'free-tools', 
       visible: true, 
       order: 3, 
       required: false,
-      iconName: 'Sparkle'
+      iconName: 'Calculator'
     },
     { 
       id: 'photo-scoper', 

@@ -148,8 +148,8 @@ export function PricingSection({
   const pricingTiers = [
     {
       name: "Homeowner",
-      price: "$15",
-      description: "Pay per job posted",
+      price: "Free",
+      description: "Sign up free, pay per job posted",
       features: ["Post unlimited jobs", "Access to verified contractors", "Secure messaging", "Basic support"],
       ctaLabel: "Post a Job"
     },
@@ -187,7 +187,7 @@ export function PricingSection({
                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">{tier.description}</p>
                 <p className="mt-4">
                   <span className="text-5xl font-bold text-black dark:text-white">{tier.price}</span>
-                  <span className="text-base font-medium text-gray-500 dark:text-gray-400">{tier.price === "$0" ? "" : "/mo"}</span>
+                  <span className="text-base font-medium text-gray-500 dark:text-gray-400">{tier.price === "$0" || tier.price === "Free" ? "" : "/mo"}</span>
                 </p>
               </div>
               <ul className="mt-6 space-y-3">

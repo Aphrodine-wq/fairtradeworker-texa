@@ -20,13 +20,18 @@ interface SignupPageProps {
 export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [fullName, setFullName] = useState("")
+  const [phone, setPhone] = useState("")
   const [role, setRole] = useState<UserRole | "">(preselectedRole || "")
+  const [enable2FA, setEnable2FA] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [errors, setErrors] = useState<{
     fullName?: string
     email?: string
     password?: string
+    confirmPassword?: string
+    phone?: string
     role?: string
   }>({})
   const [users, setUsers] = useKV<User[]>("users", [])
@@ -52,14 +57,24 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
     else if (!validateEmail(email)) newErrors.email = "Please enter a valid email address"
 
     if (!password.trim()) newErrors.password = "Password is required"
-    else if (password.length < 6) newErrors.password = "Password must be at least 6 characters"
+    else if (password.length < 8) newErrors.password = "Password must be at least 8 characters"
     else if (password.length > 128) newErrors.password = "Password is too long (max 128 characters)"
+    else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      newErrors.password = "Password must contain uppercase, lowercase, and a number"
+    }
+
+    if (!confirmPassword.trim()) newErrors.confirmPassword = "Please confirm your password"
+    else if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match"
+
+    if (phone.trim() && !/^[\d\s\-\(\)]+$/.test(phone)) {
+      newErrors.phone = "Please enter a valid phone number"
+    }
 
     if (!role) newErrors.role = "Please select your role"
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
-  }, [fullName, email, password, role, validateEmail])
+  }, [fullName, email, password, confirmPassword, phone, role, validateEmail])
 
   const handleSignup = useCallback(
     async (e: React.FormEvent) => {
@@ -116,7 +131,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
       <div className="pt-20 pb-16 px-4">
         <HeroSection
           title="Create your free account"
-          subtitle="Join a zero-fee marketplace where contractors keep 100% and homeowners get transparent bids."
+          subtitle="Join our marketplace where contractors keep 100% of earnings and homeowners get transparent bids."
           primaryAction={{ label: "Already registered? Log in", onClick: () => onNavigate("login") }}
         />
 
@@ -211,8 +226,77 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                     {errors.password}
                   </p>
                 )}
-                {!errors.password && password.length > 0 && password.length < 6 && (
-                  <p className="text-xs text-muted-foreground">{6 - password.length} more characters needed</p>
+                {!errors.password && password.length > 0 && (
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground">
+                      Strength: {password.length >= 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password) ? "Strong" : password.length >= 6 ? "Medium" : "Weak"}
+                    </p>
+                    <div className="flex gap-1">
+                      {[
+                        password.length >= 8,
+                        /[a-z]/.test(password),
+                        /[A-Z]/.test(password),
+                        /\d/.test(password)
+                      ].map((met, i) => (
+                        <div
+                          key={i}
+                          className={`h-1 flex-1 rounded ${met ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-700'}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
+                  }}
+                  className={errors.confirmPassword ? "border-[#FF0000]" : ""}
+                  disabled={isLoading}
+                  required
+                  aria-invalid={!!errors.confirmPassword}
+                  aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
+                />
+                {errors.confirmPassword && (
+                  <p id="confirmPassword-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number <span className="text-muted-foreground text-xs">(Optional)</span></Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  value={phone}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, '')
+                    const formatted = value.length <= 10 
+                      ? value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3').replace(/(\d{3})(\d{3})/, '($1) $2-').replace(/(\d{3})/, '($1')
+                      : phone
+                    setPhone(formatted)
+                    if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }))
+                  }}
+                  className={errors.phone ? "border-[#FF0000]" : ""}
+                  disabled={isLoading}
+                  maxLength={14}
+                  aria-invalid={!!errors.phone}
+                  aria-describedby={errors.phone ? "phone-error" : undefined}
+                />
+                {errors.phone && (
+                  <p id="phone-error" className="text-sm text-[#FF0000] font-mono" role="alert">
+                    {errors.phone}
+                  </p>
                 )}
               </div>
 
@@ -240,6 +324,26 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                     {errors.role}
                   </p>
                 )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="enable-2fa-signup"
+                  checked={enable2FA}
+                  onChange={(e) => setEnable2FA(e.target.checked)}
+                  className="h-4 w-4 rounded border-black dark:border-white"
+                />
+                <Label htmlFor="enable-2fa-signup" className="text-sm font-normal cursor-pointer">
+                  Enable two-factor authentication for extra security
+                </Label>
+              </div>
+
+              <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-md border border-blue-200 dark:border-blue-900/50">
+                <p className="text-xs text-blue-900 dark:text-blue-100">
+                  <strong>Security:</strong> We use industry-standard encryption and security practices. 
+                  {enable2FA && " 2FA will be set up after account creation."}
+                </p>
               </div>
 
               <Button type="submit" className="w-full border-2 border-black dark:border-white" disabled={isLoading}>
