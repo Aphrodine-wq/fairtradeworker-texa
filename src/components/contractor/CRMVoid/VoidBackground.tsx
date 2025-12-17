@@ -44,6 +44,15 @@ export const VoidBackground = memo(function VoidBackground() {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    // Helper function to convert hex colors to rgba
+    const hexToRgba = (hex: string, alpha: number): string => {
+      const cleanHex = hex.replace('#', '')
+      const r = parseInt(cleanHex.substr(0, 2), 16)
+      const g = parseInt(cleanHex.substr(2, 2), 16)
+      const b = parseInt(cleanHex.substr(4, 2), 16)
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`
+    }
+
     const resizeCanvas = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -101,13 +110,14 @@ export const VoidBackground = memo(function VoidBackground() {
       // Draw nebulae first (background layer)
       if (isDark) {
         nebulaeRef.current.forEach((nebula) => {
+          // Convert hex to rgba for proper gradient support
           const gradient = ctx.createRadialGradient(
             nebula.x, nebula.y, 0,
             nebula.x, nebula.y, nebula.radius
           )
-          gradient.addColorStop(0, `${nebula.color}${Math.floor(nebula.opacity * 255).toString(16).padStart(2, '0')}`)
-          gradient.addColorStop(0.5, `${nebula.color}${Math.floor(nebula.opacity * 128).toString(16).padStart(2, '0')}`)
-          gradient.addColorStop(1, 'transparent')
+          gradient.addColorStop(0, hexToRgba(nebula.color, nebula.opacity))
+          gradient.addColorStop(0.5, hexToRgba(nebula.color, nebula.opacity * 0.5))
+          gradient.addColorStop(1, 'rgba(0, 0, 0, 0)')
           
           ctx.save()
           ctx.translate(nebula.x, nebula.y)
@@ -150,11 +160,12 @@ export const VoidBackground = memo(function VoidBackground() {
         
         // Colored stars for dark mode, black stars for light mode
         if (isDark) {
-          ctx.fillStyle = star.color ? 
-            star.color.replace(')', `, ${Math.min(alpha, 0.9)})`.replace('rgb', 'rgba').replace('#', '')) :
-            `rgba(255, 255, 255, ${Math.min(alpha, 0.9)})`
-          // Simple white with alpha for now
-          ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(alpha, 0.9)})`
+          if (star.color) {
+            // Convert hex color to rgba
+            ctx.fillStyle = hexToRgba(star.color, Math.min(alpha, 0.9))
+          } else {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(alpha, 0.9)})`
+          }
         } else {
           ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(alpha, 0.9)})`
         }
@@ -174,7 +185,7 @@ export const VoidBackground = memo(function VoidBackground() {
       // Draw shooting stars occasionally
       if (isDark) {
         shootingStarsRef.current.forEach((star) => {
-          if (!star.active && Math.random() < 0.001) {
+          if (!star.active && Math.random() < 0.003) {
             star.active = true
             star.x = Math.random() * canvas.width
             star.y = Math.random() * canvas.height * 0.5
