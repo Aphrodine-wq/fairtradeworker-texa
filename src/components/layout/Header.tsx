@@ -72,15 +72,19 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
         <div className="flex h-14 items-center justify-between relative">
           <button 
             onClick={handleHomeClick}
-            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1"
+            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0"
             aria-label="Go to home"
           >
-            <span className="font-heading font-bold text-2xl md:text-3xl leading-none text-black dark:text-white">
+            <span className="font-heading font-bold text-xl md:text-3xl leading-none text-black dark:text-white">
                 FairTradeWorker
               </span>
           </button>
 
-          <nav className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5">
+          <nav className={cn(
+            "flex items-center gap-1.5",
+            !user && "hidden md:flex md:absolute md:left-1/2 md:transform md:-translate-x-1/2",
+            user && "md:absolute md:left-1/2 md:transform md:-translate-x-1/2"
+          )}>
             {!user ? (
               <>
                 <ThemeToggle />
@@ -125,6 +129,27 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
               </>
             )}
           </nav>
+          
+          {/* Mobile-only auth buttons */}
+          {!user && (
+            <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
+              <ThemeToggle />
+              <Button 
+                variant="ghost" 
+                onClick={() => onNavigate('login')} 
+                className="min-h-[44px] hover:bg-black/5 dark:hover:bg-white/5 text-sm px-3"
+              >
+                Log In
+              </Button>
+              <Button 
+                onClick={() => onNavigate('signup')} 
+                className="min-h-[44px] bg-black dark:bg-white text-white dark:text-black border border-black/20 dark:border-white/20 hover:shadow-md shadow-sm transition-all rounded-md text-sm px-3"
+              >
+                <Sparkle weight="fill" className="mr-1.5" size={14} />
+                Sign Up
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </header>

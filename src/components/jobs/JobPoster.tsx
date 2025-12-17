@@ -426,18 +426,18 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
               Choose a template or describe a custom project
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-4">
+          <CardContent className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4">
             <button
               onClick={() => {
                 setSelectedProjectType('kitchen-remodel')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🍳</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Kitchen Remodel</h4>
-                <p className="text-sm text-muted-foreground">$15K-$50K · 4-8 weeks</p>
+              <div className="text-2xl sm:text-4xl">🍳</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Kitchen Remodel</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$15K-$50K · 4-8 weeks</p>
               </div>
             </button>
 
@@ -446,12 +446,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('bathroom-remodel')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🚿</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Bathroom Remodel</h4>
-                <p className="text-sm text-muted-foreground">$8K-$35K · 2-5 weeks</p>
+              <div className="text-2xl sm:text-4xl">🚿</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Bathroom Remodel</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$8K-$35K · 2-5 weeks</p>
               </div>
             </button>
 
@@ -460,12 +460,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('roof-replacement')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🏠</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Roof Replacement</h4>
-                <p className="text-sm text-muted-foreground">$8K-$25K · 2-5 days</p>
+              <div className="text-2xl sm:text-4xl">🏠</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Roof Replacement</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$8K-$25K · 2-5 days</p>
               </div>
             </button>
 
@@ -474,12 +474,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('deck-build')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🪵</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Deck Build</h4>
-                <p className="text-sm text-muted-foreground">$8K-$35K · 1-3 weeks</p>
+              <div className="text-2xl sm:text-4xl">🪵</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Deck Build</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$8K-$35K · 1-3 weeks</p>
               </div>
             </button>
 
@@ -488,12 +488,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('fence-installation')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🚧</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Fence Installation</h4>
-                <p className="text-sm text-muted-foreground">$3K-$15K · 2-5 days</p>
+              <div className="text-2xl sm:text-4xl">🚧</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Fence Installation</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$3K-$15K · 2-5 days</p>
               </div>
             </button>
 
@@ -502,12 +502,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('room-addition')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">🏗️</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Room Addition</h4>
-                <p className="text-sm text-muted-foreground">$25K-$100K · 6-12 weeks</p>
+              <div className="text-2xl sm:text-4xl">🏗️</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Room Addition</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">$25K-$100K · 6-12 weeks</p>
               </div>
             </button>
 
@@ -516,12 +516,12 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedProjectType('custom')
                 setStep('scope-builder')
               }}
-              className="flex items-center gap-4 p-5 rounded-md border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
+              className="flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
             >
-              <div className="text-4xl">✏️</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Custom Project</h4>
-                <p className="text-sm text-muted-foreground">Describe your own project</p>
+              <div className="text-2xl sm:text-4xl">✏️</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="font-semibold text-sm sm:text-lg truncate">Custom Project</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">Describe your own project</p>
               </div>
             </button>
           </CardContent>
