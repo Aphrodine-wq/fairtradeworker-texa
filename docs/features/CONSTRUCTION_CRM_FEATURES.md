@@ -544,7 +544,7 @@ FairTradeWorker's Construction CRM is a comprehensive, industry-specific custome
 
 ### Design System
 
-- Brutalist design system
+- Modern, smooth design system
 - Black/white color scheme
 - Clear visual hierarchy
 - Responsive design

@@ -38,7 +38,7 @@
 
 ### 🎨 [Design](design/)
 
-- [Design System](design/DESIGN_SYSTEM.md) - Brutalist UI design system
+- [Design System](design/DESIGN_SYSTEM.md) - Modern, smooth UI design system
 - [Themes](design/THEMES.md) - Light/dark theme implementation
 - [Navigation](design/NAVIGATION_CUSTOMIZATION_UPDATE.md) - Navigation customization
 - [Button Redesign](design/BUTTON_REDESIGN.md) - Button component updates
@@ -123,7 +123,7 @@ Historical documentation for reference:
 
 ### December 16, 2025
 
-- 🎨 Brutalist UI design system implementation
+- 🎨 Modern, smooth UI design system implementation
 - ⚡ Performance optimizations (1000x improvements)
 - 🔐 Security hardening and audit
 

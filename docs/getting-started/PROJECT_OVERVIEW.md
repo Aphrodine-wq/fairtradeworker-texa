@@ -186,13 +186,13 @@ Contractors keep 100% of what they earn. Always.
 
 ## 🎨 Design System
 
-### Brutalist Design
+### Modern Design System
 
-- **Colors:** Black (#000000), White (#FFFFFF), Green (#00FF00), Red (#FF0000), Yellow (#FFFF00)
-- **Borders:** 2-4px solid black
-- **Shadows:** Hard shadows (no blur)
-- **Typography:** Bold, uppercase headings; monospace for data
-- **No gradients, no transparency, 100% opaque backgrounds**
+- **Colors:** Clean, accessible color palette with dark mode support
+- **Borders:** Subtle borders with opacity (border-black/20)
+- **Shadows:** Smooth, soft shadows with hover effects
+- **Typography:** Clean, readable typography with proper hierarchy
+- **Animations:** Smooth spring-based animations, GPU-accelerated
 
 ### UI Components
 

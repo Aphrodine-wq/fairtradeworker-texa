@@ -133,7 +133,7 @@ import { DEFAULT_NAVIGATION } from '@/lib/types/navigation'
 2. Implement drag-and-drop using native HTML5 drag API (no external deps)
 3. Add visibility toggles
 4. Add reset to defaults button
-5. Follow brutalist design system
+5. Follow modern, smooth design system
 
 ### Step 4: Integrate with Header Component
 
@@ -245,7 +245,7 @@ export function useNavigationPreferences(user: User | null) {
 
 ## Design Considerations
 
-### Brutalist Design Elements
+### Design Elements
 
 - 2-4px solid borders (black/white)
 - Hard shadows (no blur)
@@ -296,4 +296,4 @@ export function useNavigationPreferences(user: User | null) {
 - [ ] Different roles have different defaults
 - [ ] Drag and drop works on mobile (touch)
 - [ ] Keyboard navigation works
-- [ ] Design follows brutalist system
+- [ ] Design follows modern, smooth system

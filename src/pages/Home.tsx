@@ -80,7 +80,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         </div>
 
         {onDemoLogin && (
-          <Card className="mt-6 p-4 glass-card border-0">
+          <Card className="mt-6 p-4 border-0 hover:shadow-xl transition-shadow">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Play weight="fill" size={18} className="text-primary" />
@@ -134,7 +134,7 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <PricingSection user={currentUser} onNavigate={onNavigate} />
         
         {/* Pricing CTA Section */}
-        <Card className="mb-12 p-8 glass-card border-0 text-center">
+        <Card className="mb-12 p-8 border-0 hover:shadow-xl transition-shadow text-center">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
             Simple, Transparent Pricing
           </h2>

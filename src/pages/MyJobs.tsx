@@ -256,7 +256,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       <CardContent className="space-y-4">
         {/* Re-Hire Prompt for Completed Jobs */}
         {job.status === 'completed' && acceptedBid && (
-          <Card className="border-2 border-accent/30 bg-accent/5">
+          <Card className="border border-accent/30 bg-accent/5">
             <CardContent className="pt-6">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -518,7 +518,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                     const isBoosted = bid.isBoosted && bid.boostedUntil && new Date(bid.boostedUntil) > new Date()
                     
                     return (
-                    <Card key={bid.id} className={bid.status === 'accepted' ? 'border-2 border-primary' : isBoosted ? 'border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-950/20' : 'flex flex-col'}>
+                    <Card key={bid.id} className={bid.status === 'accepted' ? 'border border-primary' : isBoosted ? 'border border-yellow-400/30 bg-yellow-50 dark:bg-yellow-950/20' : 'flex flex-col border-0 hover:shadow-xl transition-shadow'}>
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
@@ -640,7 +640,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               </Button>
               <Button 
                 onClick={handlePayment} 
-                className="h-11 border-2 border-black dark:border-white"
+                className="h-11 border border-black/20 dark:border-white/20"
                 disabled={isProcessingPayment}
               >
                 {isProcessingPayment ? (

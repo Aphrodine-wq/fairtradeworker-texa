@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { BrutalistGlassCard, GlassCardContent } from "@/components/ui/BrutalistGlassCard"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -132,8 +132,9 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               {features.map((feature, idx) => (
-                <BrutalistGlassCard key={idx} glass={true} className="p-4">
-                  <div className="flex gap-4">
+                <Card key={idx} className="border-0 hover:shadow-xl transition-shadow p-4">
+                  <CardContent className="p-0">
+                    <div className="flex gap-4">
                     <div className="shrink-0 w-12 h-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm text-white dark:text-black">
                       {feature.icon}
                     </div>
@@ -144,7 +145,8 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
                       </p>
                     </div>
                   </div>
-                </BrutalistGlassCard>
+                  </CardContent>
+                </Card>
               ))}
             </div>
 

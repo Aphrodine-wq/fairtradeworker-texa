@@ -22,7 +22,7 @@ const patterns = [
   { find: /\btext-foreground\b/g, replace: 'text-black dark:text-white' },
   { find: /\btext-muted-foreground\b/g, replace: 'text-black dark:text-white' },
   
-  // Border transparency - convert to solid brutalist borders
+  // Border transparency - convert to solid borders
   { find: /border border-black\/10/g, replace: 'border-2 border-black dark:border-white' },
   { find: /border border-white\/10/g, replace: 'border-2 border-black dark:border-white' },
   { find: /border-2 border-black\/10/g, replace: 'border-2 border-black dark:border-white' },

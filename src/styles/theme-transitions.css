@@ -81,7 +81,7 @@ svg,
 }
 
 /* ============================================
-   2. ENHANCED BRUTALIST THEME VARIABLES
+   2. ENHANCED THEME VARIABLES
    ============================================ */
 
 :root {
@@ -100,7 +100,7 @@ svg,
   --accent-red: #FF0000;
   --accent-yellow: #FFFF00;
   
-  /* Border widths for brutalist style */
+  /* Border widths */
   --border-thin: 2px;
   --border-thick: 4px;
   
@@ -109,7 +109,7 @@ svg,
   --shadow-md: 4px 4px 0 var(--shadow-color);
   --shadow-lg: 8px 8px 0 var(--shadow-color);
   
-  /* Spacing (pixel-perfect for brutalist) */
+  /* Spacing */
   --spacing-xxs: 1px;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -131,32 +131,32 @@ svg,
 }
 
 /* ============================================
-   3. UTILITY CLASSES FOR BRUTALIST DESIGN
+   3. UTILITY CLASSES
    ============================================ */
 
 /* Border utilities */
-.border-brutal {
+.border-modern {
   border-width: var(--border-thin);
   border-style: solid;
   border-color: var(--border-color);
 }
 
-.border-brutal-thick {
+.border-modern-thick {
   border-width: var(--border-thick);
   border-style: solid;
   border-color: var(--border-color);
 }
 
 /* Shadow utilities */
-.shadow-brutal-sm {
+.shadow-modern-sm {
   box-shadow: var(--shadow-sm);
 }
 
-.shadow-brutal-md {
+.shadow-modern-md {
   box-shadow: var(--shadow-md);
 }
 
-.shadow-brutal-lg {
+.shadow-modern-lg {
   box-shadow: var(--shadow-lg);
 }
 
@@ -183,7 +183,7 @@ svg,
 /* Glass card fix (if you're using glass morphism) */
 .glass-card {
   background-color: var(--bg-primary);
-  backdrop-filter: blur(0px); /* Brutalist - no blur */
+  backdrop-filter: blur(0px);
   border: var(--border-thick) solid var(--border-color);
   box-shadow: var(--shadow-lg);
 }
@@ -199,12 +199,12 @@ svg,
    ============================================ */
 
 /* Keyframe animations */
-@keyframes brutal-pulse {
+@keyframes modern-pulse {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(2px, 2px); }
 }
 
-@keyframes brutal-bounce {
+@keyframes modern-bounce {
   0%, 100% { transform: translate(0, 0); }
   25% { transform: translate(4px, 0); }
   50% { transform: translate(4px, 4px); }
@@ -261,9 +261,8 @@ svg,
   }
 }
 
-/* Remove empty/brutalist placeholder menus that appear during transitions */
+/* Remove empty placeholder menus that appear during transitions */
 .empty-menu,
-.brutalist-placeholder,
 .floating-menu {
   display: none !important;
   opacity: 0 !important;
@@ -341,7 +340,7 @@ svg,
    ============================================ */
 
 /* High contrast focus indicators */
-.focus-brutal {
+.focus-modern {
   outline: var(--border-thick) solid var(--accent-green);
   outline-offset: 2px;
 }
@@ -485,7 +484,7 @@ select:disabled {
    15. SCROLLBAR STYLING
    ============================================ */
 
-/* Custom scrollbars that match brutalist aesthetic */
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;

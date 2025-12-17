@@ -416,11 +416,11 @@ function App() {
   // Initialize iOS optimizations
   useIOSOptimizations()
   
-  // Hide load animation after initial load (matches optimized animation duration)
+  // Hide load animation after initial load (smooth 400ms fade-in)
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoadAnimation(false)
-    }, 700)
+    }, 400)
     return () => clearTimeout(timer)
   }, [])
 

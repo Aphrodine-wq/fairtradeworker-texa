@@ -1,5 +1,7 @@
 
 import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense, useRef } from "react"
+import { motion } from "framer-motion"
+import { universalCardHover } from "@/lib/animations"
 import { SkeletonGrid } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -203,7 +205,13 @@ const JobCard = memo(function JobCard({
   }, [job.viewingContractors])
 
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg group h-full flex flex-col relative ${isFresh ? "ring-2 ring-green-500/50 ring-offset-2" : ""}`}>
+    <motion.div
+      whileHover={universalCardHover.hover}
+      whileTap={{ scale: 0.98 }}
+      style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+      className="h-full"
+    >
+      <Card className={`overflow-hidden border-0 hover:shadow-xl transition-shadow group h-full flex flex-col relative ${isFresh ? "ring-2 ring-green-500/50 ring-offset-2" : ""}`}>
       {/* Priority Lead Banner for Operators */}
       {isPriorityLead && (
         <div className="absolute top-0 left-0 right-0 z-10 bg-[#FFFF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-transparent dark:border-black shadow-[0_2px_0_#000]">
@@ -214,7 +222,7 @@ const JobCard = memo(function JobCard({
       
       {/* Fresh Job Banner */}
       {isFresh && !isPriorityLead && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-[#00FF00] text-black px-4 py-2 flex items-center gap-2 border-b-2 border-transparent dark:border-black shadow-[0_2px_0_#000]">
+        <div className="absolute top-0 left-0 right-0 z-10 bg-green-400 dark:bg-green-500 text-black px-4 py-2 flex items-center gap-2 border-b border-black/20 dark:border-white/20 shadow-sm">
           <span className="font-black text-lg">⚡</span>
           <span className="font-black text-sm uppercase">FRESH JOB - FIRST TO BID GETS FEATURED!</span>
         </div>
@@ -550,6 +558,7 @@ const JobCard = memo(function JobCard({
         </div>
       </CardContent>
     </Card>
+    </motion.div>
   )
 })
 
@@ -1486,7 +1495,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <Button
                   onClick={handleSubmitBid}
                   disabled={isSubmittingBid}
-                  className="h-14 px-12 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-2 border-black dark:border-white disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-none"
+                  className="h-14 px-12 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border border-black/20 dark:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-none"
                 >
                   {isSubmittingBid ? (
                     <>

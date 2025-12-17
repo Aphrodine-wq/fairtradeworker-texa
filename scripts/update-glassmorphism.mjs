@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Batch update components to use Brutalist Glassmorphism
+ * Batch update components to use Glassmorphism
  * Adds glass prop to Card components in Pro features
  */
 
@@ -124,7 +124,7 @@ function processFile(filePath) {
 }
 
 // Main execution
-console.log('🔄 Updating components for Brutalist Glassmorphism...\n');
+console.log('🔄 Updating components for Glassmorphism...\n');
 
 let updatedCount = 0;
 for (const file of proComponentFiles) {

@@ -1,15 +1,17 @@
 import React, { useMemo, useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Users, Star, Robot, FileText, ChartLine, UsersThree, Megaphone, Shield, Sparkle, Brain, BarChart, Lock } from "@phosphor-icons/react"
 import { UnifiedPaymentScreen } from "@/components/payments/UnifiedPaymentScreen"
+import { containerVariants, itemVariants, universalCardHover } from "@/lib/animations"
 import type { User } from "@/lib/types"
 
 type NavLink = { label: string; href?: string; active?: boolean }
 
 export function GlassCard({ className, ...props }: React.ComponentProps<typeof Card>) {
-  return <Card className={cn("glass-card border-0", className)} {...props} />
+  return <Card className={cn("border-0 hover:shadow-xl transition-shadow", className)} {...props} />
 }
 
 export function GlassNav({ children }: { brand?: any; links?: NavLink[]; primaryLabel?: string; onPrimaryClick?: () => void; children?: React.ReactNode }) {
@@ -29,7 +31,17 @@ export function HeroSection({
   secondaryAction?: { label: string; href?: string; onClick?: () => void }
 }) {
   return (
-    <GlassCard className="p-8 mb-12">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ 
+        type: "spring",
+        stiffness: 300,
+        damping: 30
+      }}
+      style={{ willChange: 'transform, opacity' }}
+    >
+      <GlassCard className="p-8 mb-12">
       <div className="text-center space-y-6">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
           {title}
@@ -56,6 +68,7 @@ export function HeroSection({
         </div>
       </div>
     </GlassCard>
+    </motion.div>
   )
 }
 
@@ -65,33 +78,46 @@ export function StatsSection({
   stats: Array<{ label: string; value: string; icon?: React.ElementType; tone?: string }>
 }) {
   return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-12">
-      {stats.map((stat) => {
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-12"
+    >
+      {stats.map((stat, idx) => {
         const Icon = stat.icon || Users
         const tone = stat.tone || "primary"
         const bg = tone === "green" ? "bg-green-100 dark:bg-green-900" : "bg-primary-100 dark:bg-primary-900"
         const fg = tone === "green" ? "text-green-600 dark:text-green-400" : "text-primary-600 dark:text-primary-400"
         return (
-          <GlassCard key={stat.label} className="stats-card p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 stats-icon">
-                <div className={cn("h-12 w-12 rounded-md flex items-center justify-center", bg)}>
-                  <Icon className={cn("text-xl", fg)} />
+          <motion.div
+            key={stat.label}
+            variants={itemVariants}
+            custom={idx}
+            whileHover={universalCardHover.hover}
+            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+          >
+            <GlassCard className="p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className={cn("h-12 w-12 rounded-md flex items-center justify-center", bg)}>
+                    <Icon className={cn("text-xl", fg)} />
+                  </div>
+                </div>
+                <div className="ml-5 w-0 flex-1">
+                  <dl>
+                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{stat.label}</dt>
+                    <dd className="flex items-baseline">
+                      <div className="text-2xl font-semibold text-gray-900 dark:text-white">{stat.value}</div>
+                    </dd>
+                  </dl>
                 </div>
               </div>
-              <div className="ml-5 w-0 flex-1">
-                <dl>
-                  <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{stat.label}</dt>
-                  <dd className="flex items-baseline">
-                    <div className="text-2xl font-semibold text-gray-900 dark:text-white">{stat.value}</div>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </GlassCard>
+            </GlassCard>
+          </motion.div>
         )
       })}
-    </div>
+    </motion.div>
   )
 }
 
@@ -139,14 +165,29 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
 
   return (
     <div className="mb-12">
-      <div className="text-center mb-10 space-y-2">
-        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Platform Features</h2>
-        <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }}
+        className="text-center mb-10 space-y-2"
+        style={{ willChange: 'transform, opacity' }}
+      >
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Platform Features</h2>
+        <p className="mt-2 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">
           Everything you need to manage your home services business
         </p>
-      </div>
-      <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-3 max-w-5xl mx-auto">
-        {features.map((feature) => {
+      </motion.div>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-2 gap-6 sm:gap-8 lg:grid-cols-3 max-w-5xl mx-auto"
+      >
+        {features.map((feature, idx) => {
           // Use explicit icon if provided, otherwise try to match from map
           const Icon = feature.icon || featureIconMap[feature.title.toLowerCase()] || Sparkle
           const route = getFeatureRoute(feature.title)
@@ -156,23 +197,36 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
             }
           }
           return (
-            <GlassCard 
-              key={feature.title} 
-              className={cn(
-                "feature-card p-6 hover-lift text-center",
-                route && onNavigate && "cursor-pointer"
-              )}
-              onClick={handleClick}
+            <motion.div
+              key={feature.title}
+              variants={itemVariants}
+              custom={idx}
+              whileHover={universalCardHover.hover}
+              whileTap={{ scale: 0.98 }}
+              style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
-              <div className="feature-icon h-14 w-14 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 mx-auto">
-                <Icon className="text-gray-600 dark:text-gray-300 text-2xl" />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
-              <p className="mt-1 sm:mt-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{feature.description}</p>
-            </GlassCard>
+              <GlassCard 
+                className={cn(
+                  "p-6 text-center",
+                  route && onNavigate && "cursor-pointer"
+                )}
+                onClick={handleClick}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                  className="h-14 w-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center mb-4 mx-auto"
+                >
+                  <Icon className="text-black dark:text-white text-2xl" />
+                </motion.div>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
+                <p className="mt-1 sm:mt-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{feature.description}</p>
+              </GlassCard>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
     </div>
   )
 }
@@ -260,13 +314,35 @@ export function PricingSection({
 
   return (
     <div className="mb-12">
-      <div className="text-center mb-10 space-y-2">
-        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Simple, Transparent Pricing</h2>
-        <p className="mt-2 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">Choose the plan that works for you</p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {pricingTiers.map((tier) => (
-          <GlassCard key={tier.name} className={`pricing-card ${tier.highlighted ? 'ring-2 ring-black dark:ring-white' : ''}`}>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }}
+        className="text-center mb-10 space-y-2"
+        style={{ willChange: 'transform, opacity' }}
+      >
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Simple, Transparent Pricing</h2>
+        <p className="mt-2 max-w-2xl mx-auto text-lg text-gray-600 dark:text-gray-300">Choose the plan that works for you</p>
+      </motion.div>
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto"
+      >
+        {pricingTiers.map((tier, idx) => (
+          <motion.div
+            key={tier.name}
+            variants={itemVariants}
+            custom={idx}
+            whileHover={universalCardHover.hover}
+            style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+          >
+            <GlassCard className={`${tier.highlighted ? 'ring-2 ring-black dark:ring-white' : ''}`}>
             <div className="px-6 py-8">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -296,8 +372,9 @@ export function PricingSection({
               </Button>
             </div>
           </GlassCard>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       {user && selectedTier && (
         <UnifiedPaymentScreen
           open={paymentOpen}

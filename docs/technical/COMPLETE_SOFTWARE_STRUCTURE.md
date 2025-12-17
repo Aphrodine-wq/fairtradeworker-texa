@@ -45,7 +45,7 @@ fairtradeworker-texa-main/
 
 ### Design System
 
-- **Style:** Brutalist design system
+- **Style:** Modern, smooth design system
 - **Colors:** #FFFFFF, #000000, #00FF00, #FF0000, #FFFF00 only
 - **Borders:** 2-4px solid black
 - **Shadows:** Hard shadows (e.g., `shadow-[4px_4px_0_#000]`)
@@ -450,7 +450,7 @@ type Page = 'home' | 'login' | 'signup' | 'post-job' | 'my-jobs' |
 
 - **Configuration:** `tailwind.config.js` (if exists)
 - **Custom Colors:** Defined in `src/index.css` or `src/main.css`
-- **Design Tokens:** Brutalist design system enforced
+- **Design Tokens:** Modern, smooth design system enforced
 
 ### CSS Files
 
@@ -789,7 +789,7 @@ export function ComponentName({ prop1, prop2 }: ComponentProps) {
 
 ### Key Concepts
 
-- **Brutalist Design:** Strict design system enforcement
+- **Modern Design:** Smooth, clean design system enforcement
 - **Zero Fees:** Core business model (contractors keep 100%)
 - **AI Scoping:** 60-second job scoping simulation
 - **Viral Growth:** Referral codes and contractor invites
@@ -1150,7 +1150,7 @@ interface Invoice {
 
 ## 🎨 DESIGN SYSTEM DETAILS
 
-### Brutalist Design Rules (STRICTLY ENFORCED)
+### Modern Design Rules
 
 **Colors:**
 
@@ -1420,7 +1420,7 @@ When adding new features:
 - [ ] Add lazy import in `App.tsx`
 - [ ] Add navigation link if needed
 - [ ] Add to BusinessTools if it's a business tool
-- [ ] Follow Brutalist design system
+- [ ] Follow modern, smooth design system
 - [ ] Add error handling
 - [ ] Add loading states
 - [ ] Test on mobile and desktop
@@ -1506,7 +1506,7 @@ When adding new features:
 
 ### Design Consistency
 
-- Always use Brutalist design rules
+- Always use modern, smooth design rules
 - Use `cn()` helper for conditional classes
 - Follow existing patterns
 - Test dark mode

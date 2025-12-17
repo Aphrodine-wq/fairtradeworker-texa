@@ -11,7 +11,7 @@ A fully functional customizable navigation system has been implemented with the 
 3. ✅ **Visibility Toggles** - Show/hide navigation items with switches
 4. ✅ **Default Navigation** - Role-based defaults for new users
 5. ✅ **Persistence** - Preferences saved to localStorage per user
-6. ✅ **Brutalist Design** - Follows existing design system (2-4px borders, hard shadows)
+6. ✅ **Modern Design** - Follows smooth design system (subtle borders, soft shadows)
 7. ✅ **Validation** - Prevents hiding all items
 8. ✅ **Mobile Support** - Works on both desktop and mobile navigation
 
@@ -175,7 +175,7 @@ const visibleNav = getVisibleNavItems(navigation)
 
 ## Design Implementation
 
-### Brutalist Design Elements
+### Design Elements
 
 - ✅ 2-4px solid borders (black/white)
 - ✅ Hard shadows (no blur, `shadow-[4px_4px_0_#000]`)
@@ -209,7 +209,7 @@ const visibleNav = getVisibleNavItems(navigation)
 - [ ] Different roles have different defaults
 - [ ] Drag and drop works on desktop
 - [ ] Mobile navigation uses custom preferences
-- [ ] Design follows brutalist system
+- [ ] Design follows modern, smooth system
 - [ ] No TypeScript errors
 - [ ] No console errors
 
