@@ -32,6 +32,9 @@ interface EnhancedCRMProps {
   user: User
 }
 
+// Common tab styling to avoid duplication
+const TAB_TRIGGER_CLASSES = "flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+
 export function EnhancedCRM({ user }: EnhancedCRMProps) {
   const [customers, , customersLoading] = useKV<CRMCustomer[]>("crm-customers", [])
   const [isInitializing, setIsInitializing] = useState(true)
@@ -129,56 +132,56 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
               <TabsList className="flex flex-wrap gap-2 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-3 rounded-lg w-full justify-start">
                 <TabsTrigger 
                   value="pipeline" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Funnel weight="duotone" size={18} />
                   <span>Pipeline</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="documents" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <FileText weight="duotone" size={18} />
                   <span>Documents</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="financials" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Calculator weight="duotone" size={18} />
                   <span>Financials</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="collaboration" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <UsersIcon weight="duotone" size={18} />
                   <span>Team</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reporting" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <ChartLine weight="duotone" size={18} />
                   <span>Reports</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customers" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Users weight="duotone" size={18} />
                   <span>Customers</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="kanban" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Kanban weight="duotone" size={18} />
                   <span>Kanban</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="followups" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Calendar weight="duotone" size={18} />
                   <span>Follow-Ups</span>
@@ -186,70 +189,70 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="ai" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Brain weight="duotone" size={18} />
                   <span>AI Insights</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="analytics" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <BarChart weight="duotone" size={18} />
                   <span>Analytics</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="integrations" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Plug weight="duotone" size={18} />
                   <span>Integrations</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="security" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Shield weight="duotone" size={18} />
                   <span>Security</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="territories" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <MapTrifold weight="duotone" size={18} />
                   <span>Territories</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="workflows" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <FlowArrow weight="duotone" size={18} />
                   <span>Workflows</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="customize" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Gear weight="duotone" size={18} />
                   <span>Customize</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="objects" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <PuzzlePiece weight="duotone" size={18} />
                   <span>Objects</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="warehouse" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <Database weight="duotone" size={18} />
                   <span>Warehouse</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="mobile" 
-                  className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black whitespace-nowrap"
+                  className={TAB_TRIGGER_CLASSES}
                 >
                   <DeviceMobile weight="duotone" size={18} />
                   <span>Mobile</span>
