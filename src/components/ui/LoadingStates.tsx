@@ -41,7 +41,7 @@ export function PageLoading({ message = "Loading..." }: { message?: string }) {
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
       <div className="text-center">
-        <div className="bg-white border-4 border-black p-8 shadow-[6px_6px_0_#000] inline-block mb-4">
+        <div className="bg-white/90 backdrop-blur-sm border border-white/10 p-8 shadow-lg inline-block mb-4 rounded-lg">
           <div className="w-12 h-12 mx-auto animate-spin">
             <Spinner size={48} weight="bold" />
           </div>
@@ -55,7 +55,7 @@ export function PageLoading({ message = "Loading..." }: { message?: string }) {
 // Skeleton loader for cards
 export function CardSkeleton() {
   return (
-    <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0_#000] animate-pulse">
+    <div className="bg-white/90 backdrop-blur-sm border border-white/10 p-6 shadow-md animate-pulse rounded-lg">
       <div className="h-4 bg-black/10 w-2/3 mb-4" />
       <div className="h-3 bg-black/10 w-full mb-2" />
       <div className="h-3 bg-black/10 w-4/5 mb-4" />

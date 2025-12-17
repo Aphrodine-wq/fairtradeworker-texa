@@ -10,7 +10,7 @@
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 5s;
+  transition-duration: 2s;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -306,7 +306,7 @@
 
 /* Smooth dark mode transition - synced with button */
 html {
-  transition: color 5s, background-color 5s;
+  transition: color 2s, background-color 2s;
 }
 
 /* ============================================
@@ -356,7 +356,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 5s, border-color 5s, color 5s;
+  transition: background-color 2s, border-color 2s, color 2s;
 }
 
 /* Dialogs and modals */
@@ -365,7 +365,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 5s, border-color 5s, color 5s;
+  transition: background-color 2s, border-color 2s, color 2s;
 }
 
 /* Tooltips */
@@ -374,7 +374,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 5s, border-color 5s, color 5s;
+  transition: background-color 2s, border-color 2s, color 2s;
 }
 
 /* Popovers */
@@ -382,7 +382,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 5s, border-color 5s, color 5s;
+  transition: background-color 2s, border-color 2s, color 2s;
 }
 
 /* ============================================
@@ -395,7 +395,7 @@ select {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   border-color: var(--border-color);
-  transition: background-color 5s, border-color 5s, color 5s;
+  transition: background-color 2s, border-color 2s, color 2s;
 }
 
 input:focus,

@@ -31,6 +31,7 @@ import {
   WifiSlash,
   Image,
   CalendarDots,
+  Crown,
 } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { HeroSection, StatsSection, GlassCard } from "@/components/ui/MarketingSections"
@@ -100,6 +101,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const categories = [
     { id: "all", label: "All Tools", count: tools.length },
     { id: "free", label: "Free Tools", count: tools.filter((t) => !t.isPro).length },
+    { id: "pro", label: "Pro Tools", count: tools.filter((t) => t.isPro).length },
     { id: "finance", label: "Finance", count: tools.filter((t) => t.category === "finance").length },
     { id: "sales", label: "Sales & CRM", count: tools.filter((t) => t.category === "sales").length },
     { id: "management", label: "Management", count: tools.filter((t) => t.category === "management").length },
@@ -160,8 +162,8 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-12 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="pt-10 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <HeroSection
           title="All-in-one toolkit for contractors and operators"
           subtitle="Finance, CRM, operations, and automation—most tools are free; PRO unlocks AI-powered growth."
@@ -198,7 +200,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
         </div>
 
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-3 md:grid-cols-4 lg:grid-cols-8 bg-white dark:bg-black border border-black/20 dark:border-white/20 gap-2 p-2">
+          <TabsList className="grid w-full max-w-5xl mx-auto grid-cols-3 md:grid-cols-4 lg:grid-cols-9 gap-2 p-2">
             {categories.map((cat) => (
               <TabsTrigger key={cat.id} value={cat.id} className="text-xs md:text-sm px-4 py-2">
                 {cat.label} ({cat.count})
@@ -213,6 +215,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                   .filter((tool) => {
                     if (category.id === "all") return true
                     if (category.id === "free") return !tool.isPro
+                    if (category.id === "pro") return tool.isPro
                     return tool.category === category.id
                   })
                   .map((tool) => {
@@ -221,8 +224,8 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                       <Card
                         key={tool.id}
                         className={cn(
-                          "hover:shadow-lg transition-all cursor-pointer border-2 hover:border-primary/50",
-                          tool.isPro && "bg-green-50/30 dark:bg-green-950/20 border-green-200/40 dark:border-green-800/40"
+                          "hover:shadow-lg transition-all cursor-pointer",
+                          tool.isPro && "bg-green-50/30 dark:bg-green-950/20"
                         )}
                         onClick={() => handleToolClick(tool.id)}
                       >
@@ -260,9 +263,22 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
                           <CardDescription className="text-base mt-2">{tool.description}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <Button className="w-full" variant="outline">
-                            Open Tool
-                          </Button>
+                          {tool.isPro && !isPro ? (
+                            <Button 
+                              className="w-full" 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                onNavigate("pro-upgrade")
+                              }}
+                            >
+                              <Crown size={16} className="mr-2" weight="fill" />
+                              Upgrade to Access
+                            </Button>
+                          ) : (
+                            <Button className="w-full" variant="outline">
+                              Open Tool
+                            </Button>
+                          )}
                         </CardContent>
                       </Card>
                     )

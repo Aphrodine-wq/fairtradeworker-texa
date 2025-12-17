@@ -112,7 +112,7 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
       {/* Icon container with brutalist styling */}
-      <div className="bg-white border-4 border-black p-6 shadow-[6px_6px_0_#000] mb-6">
+      <div className="bg-white/90 backdrop-blur-sm border border-white/10 p-6 shadow-lg mb-6 rounded-lg">
         <div className="text-black">
           {displayIcon}
         </div>

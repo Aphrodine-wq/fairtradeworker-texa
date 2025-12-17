@@ -68,10 +68,10 @@ export function DraggableNavItem({
       onDrop={handleDrop}
       onDragEnd={onDragEnd}
       className={cn(
-        "border-2 bg-white dark:bg-black p-4 mb-2 flex items-center gap-4 transition-all",
+        "border border-white/10 dark:border-white/10 glass-card p-4 mb-2 flex items-center gap-4 transition-all rounded-lg",
         dragOver 
-          ? "border-yellow-400 dark:border-yellow-600 shadow-[4px_4px_0_#eab308]" 
-          : "border-black dark:border-white shadow-[4px_4px_0_#000]",
+          ? "border-yellow-400/50 dark:border-yellow-600/50 shadow-lg" 
+          : "shadow-md",
         isDragging && "opacity-50",
         !item.required ? "cursor-move" : "cursor-not-allowed opacity-75"
       )}

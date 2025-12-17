@@ -45,10 +45,10 @@ function DropdownMenuContent({
         sideOffset={sideOffset}
         className={cn(
           "z-50 min-w-[8rem] overflow-hidden",
-          "border-2 border-black dark:border-white",
-          "bg-white dark:bg-black",
+          "border border-white/10 dark:border-white/10",
+          "bg-white/95 dark:bg-black/95 backdrop-blur-lg",
           "text-black dark:text-white",
-          "shadow-[4px_4px_0_#000] dark:shadow-[4px_4px_0_#fff]",
+          "shadow-lg",
           "p-1",
           /* Ensure menu fits in viewport */
           "max-h-[calc(100vh-2rem)]",

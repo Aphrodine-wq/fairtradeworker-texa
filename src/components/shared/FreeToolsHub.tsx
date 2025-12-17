@@ -72,7 +72,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
     <div className="space-y-8">
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-16 h-16 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+          <div className="w-16 h-16 rounded-md bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 flex items-center justify-center shadow-sm">
             <Sparkle weight="fill" className="text-black dark:text-white" size={32} />
           </div>
         </div>
@@ -88,11 +88,11 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
           return (
             <Card 
               key={tool.id}
-              className={`group p-8 ${tool.color} ${tool.borderColor} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer border-2 dark:bg-transparent dark:border-white/10 dark:hover:border-white/20`}
+              className={`group p-8 glass-card hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer`}
               onClick={() => onToolSelect(tool.id)}
             >
               <div className="flex flex-col h-full">
-                <div className={`w-16 h-16 rounded-md ${tool.iconBg} border border-black/20 dark:border-white/20 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-200`}>
+                <div className={`w-16 h-16 rounded-md ${tool.iconBg} border border-white/10 dark:border-white/10 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-200`}>
                   <Icon weight="fill" className="text-black dark:text-white" size={32} />
                 </div>
                 
@@ -118,7 +118,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
         })}
       </div>
 
-      <Card className="max-w-4xl mx-auto mt-8 p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+      <Card className="max-w-4xl mx-auto mt-8 p-6 glass-card">
         <div className="flex items-start gap-4">
           <div className="text-3xl">💡</div>
           <div>

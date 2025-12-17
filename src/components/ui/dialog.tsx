@@ -37,7 +37,7 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={cn(
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50",
-        "glass-overlay backdrop-blur-xs",
+        "glass-overlay",
         className
       )}
       {...props}
@@ -58,10 +58,10 @@ function DialogContent({
         className={cn(
           "fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%]",
           "w-full max-w-lg max-h-[90vh] overflow-y-auto",
-          "border-4 border-black dark:border-white",
-          "bg-white dark:bg-black",
-          "shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff]",
-          "p-6",
+          "border border-white/10 dark:border-white/10",
+          "bg-white/95 dark:bg-black/95 backdrop-blur-lg",
+          "shadow-xl",
+          "p-6 rounded-lg",
           "duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
           "data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
@@ -72,7 +72,7 @@ function DialogContent({
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-4 top-4 border-2 border-black dark:border-white p-1 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
+        <DialogPrimitive.Close className="absolute right-4 top-4 border border-white/10 dark:border-white/10 p-1 hover:bg-black/10 hover:text-black dark:hover:bg-white/10 dark:hover:text-white transition-colors rounded-md">
           <XIcon className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>

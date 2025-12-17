@@ -93,6 +93,7 @@ export function NavigationCustomizer({
       lastUpdated: new Date().toISOString()
     }
     
+    console.log('[NavigationCustomizer] Saving preferences:', prefs)
     onSave(prefs)
     toast.success('Navigation preferences saved!')
     onClose?.()
@@ -130,7 +131,7 @@ export function NavigationCustomizer({
   }
 
   return (
-    <Card className="border-4 border-black dark:border-white bg-white dark:bg-black shadow-[8px_8px_0_#000] dark:shadow-[8px_8px_0_#fff]">
+    <Card className="glass-card">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-black dark:text-white">
           Customize Navigation
@@ -141,7 +142,7 @@ export function NavigationCustomizer({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Instructions */}
-        <div className="border-2 border-black dark:border-white p-3 bg-white dark:bg-black">
+          <div className="border border-white/10 dark:border-white/10 p-3 glass-card">
           <p className="text-sm font-semibold text-black dark:text-white mb-1">
             How to customize:
           </p>
@@ -170,8 +171,8 @@ export function NavigationCustomizer({
         </div>
 
         {/* Available Business Tools to Add */}
-        {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'homeowner') && (
-          <div className="border-t-2 border-black dark:border-white pt-4">
+        {availableTools.length > 0 && (user.role === 'contractor' || user.role === 'operator' || user.role === 'homeowner') && (
+          <div className="border-t border-white/10 dark:border-white/10 pt-4">
             <h3 className="text-lg font-semibold mb-3 text-black dark:text-white">
               Add Business Tools to Navigation
             </h3>
@@ -181,7 +182,7 @@ export function NavigationCustomizer({
                 return (
                   <div
                     key={tool.id}
-                    className="border-2 border-black dark:border-white bg-white dark:bg-black p-3 flex items-center justify-between"
+                    className="border border-white/10 dark:border-white/10 glass-card p-3 flex items-center justify-between"
                   >
                     <div className="flex items-center gap-3">
                       {Icon && (
@@ -199,7 +200,6 @@ export function NavigationCustomizer({
                       size="sm"
                       variant="outline"
                       onClick={() => handleAddTool(tool)}
-                      className="border-2 border-black dark:border-white"
                     >
                       <Plus size={16} className="mr-1" />
                       Add
@@ -212,18 +212,17 @@ export function NavigationCustomizer({
         )}
 
         {/* Actions */}
-        <div className="flex gap-3 pt-4 border-t-2 border-black dark:border-white">
+        <div className="flex gap-3 pt-4 border-t border-white/10 dark:border-white/10">
           <Button
             variant="outline"
             onClick={handleReset}
-            className="flex-1 border-2 border-black dark:border-white"
           >
             <ArrowCounterClockwise size={16} className="mr-2" />
             Reset to Defaults
           </Button>
           <Button
             onClick={handleSave}
-            className="flex-1 bg-black dark:bg-white text-white dark:text-black border-2 border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+            className="flex-1"
           >
             Save Changes
           </Button>
@@ -231,7 +230,6 @@ export function NavigationCustomizer({
             <Button
               variant="outline"
               onClick={onClose}
-              className="flex-1 border-2 border-black dark:border-white"
             >
               Cancel
             </Button>

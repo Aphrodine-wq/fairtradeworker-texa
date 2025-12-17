@@ -57,7 +57,7 @@ export function WelcomeBanner({
   };
 
   return (
-    <div className="bg-black text-white border-4 border-black shadow-[8px_8px_0_#00FF00] mb-6 overflow-hidden relative">
+    <div className="bg-black/95 backdrop-blur-lg text-white border border-white/10 shadow-xl mb-6 overflow-hidden relative rounded-lg">
       {/* Dismiss button */}
       <button
         onClick={handleDismiss}
@@ -139,7 +139,7 @@ export function WelcomeBar({
   };
 
   return (
-    <div className="bg-[#00FF00] text-black border-2 border-black px-4 py-3 flex items-center justify-between">
+    <div className="bg-[#00FF00]/90 backdrop-blur-sm text-black border border-white/10 px-4 py-3 flex items-center justify-between rounded-md shadow-md">
       <p className="font-bold">
         {userName ? `👋 Hey ${userName}!` : '👋 Welcome!'} {message || "Ready to get to work?"}
       </p>
@@ -161,8 +161,8 @@ export function ValueReminder({ savedAmount }: { savedAmount?: number }) {
   if (dismissed) return null;
 
   return (
-    <div className="bg-white border-2 border-black shadow-[4px_4px_0_#00FF00] p-4 flex items-center gap-4">
-      <div className="bg-[#00FF00] p-3 border-2 border-black">
+    <div className="bg-white/90 backdrop-blur-sm border border-white/10 shadow-lg p-4 flex items-center gap-4 rounded-lg">
+      <div className="bg-[#00FF00]/20 p-3 border border-white/10 rounded-md">
         <CurrencyDollar size={24} weight="bold" />
       </div>
       <div className="flex-1">

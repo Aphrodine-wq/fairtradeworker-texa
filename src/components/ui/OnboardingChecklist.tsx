@@ -156,7 +156,7 @@ export function OnboardingChecklist({
     return (
       <button
         onClick={() => setDismissed(false)}
-        className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 font-mono text-sm border-2 border-black shadow-[3px_3px_0_#00FF00] hover:shadow-[4px_4px_0_#00FF00] transition-shadow z-50"
+        className="fixed bottom-4 right-4 bg-black text-white px-4 py-2 font-mono text-sm shadow-lg hover:shadow-xl transition-shadow z-50 rounded-md"
       >
         Show Getting Started ({completedCount}/{totalCount})
       </button>
@@ -168,7 +168,7 @@ export function OnboardingChecklist({
   }
 
   return (
-    <div className="bg-white border-4 border-black shadow-[8px_8px_0_#000] p-6 mb-6">
+    <div className="bg-white/95 backdrop-blur-lg border border-white/10 shadow-xl p-6 mb-6 rounded-lg">
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
@@ -200,7 +200,7 @@ export function OnboardingChecklist({
           <span className="font-mono text-sm">PROGRESS</span>
           <span className="font-mono text-sm font-bold">{progressPercent}%</span>
         </div>
-        <div className="h-4 bg-white border-2 border-black">
+        <div className="h-4 bg-white/90 backdrop-blur-sm border border-white/10 rounded">
           <div 
             className="h-full bg-[#00FF00] transition-all duration-500"
             style={{ width: `${progressPercent}%` }}
@@ -216,16 +216,17 @@ export function OnboardingChecklist({
               onClick={() => handleToggle(item.id)}
               className={`
                 w-full flex items-start gap-4 p-4 text-left transition-all
-                border-2 border-black
+                border border-white/10
                 ${item.completed 
-                  ? 'bg-[#00FF00]/20 shadow-[2px_2px_0_#000]' 
-                  : 'bg-white shadow-[4px_4px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px]'
+                  ? 'bg-[#00FF00]/20 shadow-md' 
+                  : 'bg-white/90 backdrop-blur-sm shadow-md hover:shadow-lg hover:-translate-y-0.5'
                 }
+                rounded-md
               `}
             >
               {/* Checkbox */}
               <div className={`
-                flex-shrink-0 w-6 h-6 border-2 border-black flex items-center justify-center
+                flex-shrink-0 w-6 h-6 border border-white/10 flex items-center justify-center rounded
                 ${item.completed ? 'bg-[#00FF00]' : 'bg-white'}
               `}>
                 {item.completed && <Check size={16} weight="bold" />}
@@ -258,7 +259,7 @@ export function OnboardingChecklist({
 
       {/* Completion celebration */}
       {isComplete && (
-        <div className="mt-6 p-4 bg-[#00FF00] border-2 border-black">
+        <div className="mt-6 p-4 bg-[#00FF00]/20 border border-white/10 rounded-lg shadow-md">
           <div className="flex items-center gap-3">
             <Trophy size={32} weight="fill" />
             <div>

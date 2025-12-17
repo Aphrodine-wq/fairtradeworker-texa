@@ -1,38 +1,39 @@
-/* Brutalist Glassmorphism System v4.0 */
+/* Modern Glassmorphism System - No Brutalism */
 
 :root {
-  /* Glass colors - PRO FEATURES ONLY */
-  --glass-light: rgba(255, 255, 255, 0.2);
-  --glass-dark: rgba(0, 0, 0, 0.2);
+  /* Glass colors */
+  --glass-light: rgba(255, 255, 255, 0.85);
+  --glass-dark: rgba(0, 0, 0, 0.75);
 }
 
-/* Glass Card - PRO DASHBOARD COMPONENTS ONLY */
+/* Glass Card - Modern glassmorphism with subtle blur */
 .glass-card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  border: 2px solid #000000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* Minimal border only for accessibility if needed */
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dark .glass-card {
-  background: rgba(0, 0, 0, 0.2);
-  border-color: #FFFFFF;
-  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.07), 0 1px 3px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Glass Overlay - PRO MODALS ONLY */
+/* Glass Overlay - For modals and overlays */
 .glass-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .dark .glass-overlay {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-/* Respect motion preferences - only target animated elements */
+/* Respect motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse,
   .animate-spin,

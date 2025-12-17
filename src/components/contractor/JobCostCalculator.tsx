@@ -254,7 +254,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
             </div>
           </div>
 
-          <div className="mt-6 p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
+          <div className="mt-6 p-4 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 rounded-md shadow-sm font-mono">
             <p className="text-sm text-muted-foreground">
               <strong>💡 Tip:</strong> Industry standard margins are 25-40%. 
               If your margin is below 20%, consider increasing your bid or reducing costs.
@@ -265,7 +265,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
       )}
 
       {!breakdown && (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20 border-dashed">
+        <Card className="p-12 text-center border border-white/10 dark:border-white/10 border-dashed">
           <Calculator size={48} className="mx-auto mb-4 text-muted-foreground" />
           <p className="text-muted-foreground">
             Enter your job details above to see the cost breakdown

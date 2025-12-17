@@ -15,10 +15,27 @@ import {
   Calculator,
   ShieldCheck,
   Note,
-  Heart
+  Heart,
+  Receipt,
+  CreditCard,
+  Folder,
+  Calendar,
+  ChatCircleDots,
+  Bell,
+  ClipboardText,
+  Package,
+  CheckCircle,
+  Gear,
+  Phone,
+  Target,
+  FileText,
+  Microphone,
+  Swap,
+  Ruler,
+  WifiSlash,
+  Image,
+  CalendarDots
 } from '@phosphor-icons/react'
-import type { Icon } from '@phosphor-icons/react'
-import type { UserRole } from './types'
 
 export interface NavItem {
   id: string                    // Unique identifier (e.g., 'dashboard', 'browse-jobs')
@@ -51,6 +68,25 @@ const iconMap: Record<string, typeof ChartLine> = {
   'ShieldCheck': ShieldCheck,
   'Note': Note,
   'Heart': Heart,
+  'Receipt': Receipt,
+  'CreditCard': CreditCard,
+  'Folder': Folder,
+  'Calendar': Calendar,
+  'ChatCircleDots': ChatCircleDots,
+  'Bell': Bell,
+  'ClipboardText': ClipboardText,
+  'Package': Package,
+  'CheckCircle': CheckCircle,
+  'Gear': Gear,
+  'Phone': Phone,
+  'Target': Target,
+  'FileText': FileText,
+  'Microphone': Microphone,
+  'Swap': Swap,
+  'Ruler': Ruler,
+  'WifiSlash': WifiSlash,
+  'Image': Image,
+  'CalendarDots': CalendarDots,
 }
 
 export function getNavIcon(iconName?: string) {
@@ -60,30 +96,259 @@ export function getNavIcon(iconName?: string) {
 
 /**
  * Get available business tools that can be added to navigation
- * These are tools from the Free Tools Hub that can be pinned to nav
+ * Includes both free and pro tools that can be pinned to nav
  */
 export function getAvailableBusinessTools(role: UserRole): Array<Omit<NavItem, 'visible' | 'order'>> {
   const contractorTools: Array<Omit<NavItem, 'visible' | 'order'>> = [
+    // Free Tools
     {
       id: 'cost-calculator',
       label: 'Cost Calculator',
-      page: 'business-tools',
+      page: 'free-tools',
       category: 'secondary',
       iconName: 'Calculator'
     },
     {
       id: 'warranty-tracker',
       label: 'Warranty Tracker',
-      page: 'business-tools',
+      page: 'free-tools',
       category: 'secondary',
       iconName: 'ShieldCheck'
     },
     {
       id: 'quick-notes',
       label: 'Quick Notes',
-      page: 'business-tools',
+      page: 'free-tools',
       category: 'secondary',
       iconName: 'Note'
+    },
+    // Business Tools - Finance
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      page: 'invoices',
+      category: 'secondary',
+      iconName: 'Receipt'
+    },
+    {
+      id: 'expenses',
+      label: 'Expenses',
+      page: 'expenses',
+      category: 'secondary',
+      iconName: 'ChartLine'
+    },
+    {
+      id: 'tax-helper',
+      label: 'Tax Helper',
+      page: 'tax-helper',
+      category: 'secondary',
+      iconName: 'FileText'
+    },
+    {
+      id: 'payments',
+      label: 'Payments',
+      page: 'payments',
+      category: 'secondary',
+      iconName: 'CreditCard'
+    },
+    // Management
+    {
+      id: 'documents',
+      label: 'Documents',
+      page: 'documents',
+      category: 'secondary',
+      iconName: 'Folder'
+    },
+    {
+      id: 'calendar',
+      label: 'Calendar',
+      page: 'calendar',
+      category: 'secondary',
+      iconName: 'Calendar'
+    },
+    {
+      id: 'communication',
+      label: 'Communication',
+      page: 'communication',
+      category: 'secondary',
+      iconName: 'ChatCircleDots'
+    },
+    {
+      id: 'notifications',
+      label: 'Notifications',
+      page: 'notifications',
+      category: 'secondary',
+      iconName: 'Bell'
+    },
+    // Sales & CRM
+    {
+      id: 'leads',
+      label: 'Lead Management',
+      page: 'leads',
+      category: 'secondary',
+      iconName: 'Users'
+    },
+    {
+      id: 'reports',
+      label: 'Reports',
+      page: 'reports',
+      category: 'secondary',
+      iconName: 'ClipboardText'
+    },
+    // Operations
+    {
+      id: 'inventory',
+      label: 'Inventory',
+      page: 'inventory',
+      category: 'secondary',
+      iconName: 'Package'
+    },
+    {
+      id: 'quality',
+      label: 'Quality Assurance',
+      page: 'quality',
+      category: 'secondary',
+      iconName: 'CheckCircle'
+    },
+    {
+      id: 'compliance',
+      label: 'Compliance',
+      page: 'compliance',
+      category: 'secondary',
+      iconName: 'ShieldCheck'
+    },
+    // Automation
+    {
+      id: 'automation',
+      label: 'Automation',
+      page: 'automation',
+      category: 'secondary',
+      iconName: 'Gear'
+    },
+    // Pro Tools
+    {
+      id: 'receptionist',
+      label: 'AI Receptionist',
+      page: 'receptionist',
+      category: 'secondary',
+      iconName: 'Phone'
+    },
+    {
+      id: 'bid-optimizer',
+      label: 'Bid Optimizer',
+      page: 'bid-optimizer',
+      category: 'secondary',
+      iconName: 'Target'
+    },
+    {
+      id: 'change-order',
+      label: 'Change Orders',
+      page: 'change-order',
+      category: 'secondary',
+      iconName: 'FileText'
+    },
+    {
+      id: 'crew-dispatcher',
+      label: 'Crew Dispatcher',
+      page: 'crew-dispatcher',
+      category: 'secondary',
+      iconName: 'Users'
+    },
+    // Zero-Cost Features
+    {
+      id: 'voice-bids',
+      label: 'Voice Bids',
+      page: 'voice-bids',
+      category: 'secondary',
+      iconName: 'Microphone'
+    },
+    {
+      id: 'neighborhood-alerts',
+      label: 'Neighborhood Alerts',
+      page: 'neighborhood-alerts',
+      category: 'secondary',
+      iconName: 'MapPin'
+    },
+    {
+      id: 'skill-trading',
+      label: 'Skill Trading',
+      page: 'skill-trading',
+      category: 'secondary',
+      iconName: 'Swap'
+    },
+    {
+      id: 'material-calc',
+      label: 'Material Calculator',
+      page: 'material-calc',
+      category: 'secondary',
+      iconName: 'Ruler'
+    },
+    {
+      id: 'offline-mode',
+      label: 'Offline Mode',
+      page: 'offline-mode',
+      category: 'secondary',
+      iconName: 'WifiSlash'
+    },
+    {
+      id: 'project-stories',
+      label: 'Project Stories',
+      page: 'project-stories',
+      category: 'secondary',
+      iconName: 'Image'
+    },
+    {
+      id: 'seasonal-clubs',
+      label: 'Seasonal Clubs',
+      page: 'seasonal-clubs',
+      category: 'secondary',
+      iconName: 'CalendarDots'
+    }
+  ]
+
+  const operatorTools: Array<Omit<NavItem, 'visible' | 'order'>> = [
+    // Operators can add most business tools too
+    {
+      id: 'invoices',
+      label: 'Invoices',
+      page: 'invoices',
+      category: 'secondary',
+      iconName: 'Receipt'
+    },
+    {
+      id: 'expenses',
+      label: 'Expenses',
+      page: 'expenses',
+      category: 'secondary',
+      iconName: 'ChartLine'
+    },
+    {
+      id: 'documents',
+      label: 'Documents',
+      page: 'documents',
+      category: 'secondary',
+      iconName: 'Folder'
+    },
+    {
+      id: 'calendar',
+      label: 'Calendar',
+      page: 'calendar',
+      category: 'secondary',
+      iconName: 'Calendar'
+    },
+    {
+      id: 'communication',
+      label: 'Communication',
+      page: 'communication',
+      category: 'secondary',
+      iconName: 'ChatCircleDots'
+    },
+    {
+      id: 'automation',
+      label: 'Automation',
+      page: 'automation',
+      category: 'secondary',
+      iconName: 'Gear'
     }
   ]
 
@@ -91,14 +356,14 @@ export function getAvailableBusinessTools(role: UserRole): Array<Omit<NavItem, '
     {
       id: 'saved-contractors',
       label: 'Saved Contractors',
-      page: 'business-tools',
+      page: 'free-tools',
       category: 'secondary',
       iconName: 'Heart'
     },
     {
       id: 'quick-notes',
       label: 'Quick Notes',
-      page: 'business-tools',
+      page: 'free-tools',
       category: 'secondary',
       iconName: 'Note'
     }
@@ -106,11 +371,13 @@ export function getAvailableBusinessTools(role: UserRole): Array<Omit<NavItem, '
 
   if (role === 'contractor') {
     return contractorTools
+  } else if (role === 'operator') {
+    return operatorTools
   } else if (role === 'homeowner') {
     return homeownerTools
   }
   
-  return [] // Operators don't have business tools
+  return []
 }
 
 // Default navigation configurations per role

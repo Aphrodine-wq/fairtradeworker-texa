@@ -35,17 +35,17 @@ export function QuickAction({
     <a
       href={href}
       className={`
-        block p-4 border-2 border-black transition-all
+        block p-4 border border-white/10 transition-all rounded-lg
         ${highlight 
-          ? 'bg-[#00FF00] shadow-[4px_4px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px]' 
-          : 'bg-white shadow-[4px_4px_0_#000] hover:shadow-[2px_2px_0_#000] hover:translate-x-[2px] hover:translate-y-[2px]'
+          ? 'bg-[#00FF00]/90 backdrop-blur-sm shadow-md hover:shadow-lg hover:-translate-y-0.5' 
+          : 'bg-white/90 backdrop-blur-sm shadow-md hover:shadow-lg hover:-translate-y-0.5'
         }
       `}
     >
       <div className="flex items-start gap-4">
         {/* Icon */}
         <div className={`
-          flex-shrink-0 p-2 border-2 border-black
+          flex-shrink-0 p-2 border border-white/10 rounded-md
           ${highlight ? 'bg-black text-[#00FF00]' : 'bg-white'}
         `}>
           {icon}
@@ -223,7 +223,7 @@ export function MilestoneCelebration({ type, value, onDismiss }: MilestoneProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
-      <div className="bg-white border-4 border-black shadow-[8px_8px_0_#00FF00] max-w-md w-full animate-in zoom-in-95 duration-200">
+      <div className="bg-white/95 backdrop-blur-lg border border-white/10 shadow-xl max-w-md w-full animate-in zoom-in-95 duration-200 rounded-lg">
         {/* Header with icon */}
         <div className="bg-[#00FF00] p-6 text-center border-b-4 border-black">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white border-2 border-black mb-4">
@@ -249,7 +249,7 @@ export function MilestoneCelebration({ type, value, onDismiss }: MilestoneProps)
         <div className="p-4 border-t-2 border-black">
           <button
             onClick={onDismiss}
-            className="w-full bg-black text-white py-3 font-black uppercase text-lg border-2 border-black hover:bg-white hover:text-black transition-colors"
+            className="w-full bg-black text-white py-3 font-black uppercase text-lg hover:bg-gray-800 transition-colors rounded-md shadow-md"
           >
             LET'S GO!
           </button>

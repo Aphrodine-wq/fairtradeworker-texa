@@ -126,34 +126,34 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
             </div>
           ) : (
             <Tabs defaultValue="pipeline" className="w-full">
-              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 p-4 rounded-lg">
+              <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-3 gap-3 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10 p-4 rounded-lg">
                 <TabsTrigger 
                   value="pipeline" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Funnel weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Pipeline</span>
+                  <span>Pipeline</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="documents" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <FileText weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Documents</span>
+                  <span>Documents</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="financials" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Calculator weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Financials</span>
+                  <span>Financials</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="collaboration" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <UsersIcon weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Team</span>
+                  <span>Team</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="reporting" 
@@ -167,21 +167,21 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Users weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Customers</span>
+                  <span>Customers</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="kanban" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Kanban weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Kanban</span>
+                  <span>Kanban</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="followups" 
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Calendar weight="duotone" size={20} />
-                  <span className="hidden lg:inline">Follow-Ups</span>
+                  <span>Follow-Ups</span>
                   {!user.isPro && <span className="ml-1">🔒</span>}
                 </TabsTrigger>
                 <TabsTrigger 
@@ -189,7 +189,7 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                   className="flex items-center gap-2 px-4 py-3 md:px-5 md:py-3.5 text-base md:text-lg font-medium rounded-md data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
                 >
                   <Brain weight="duotone" size={20} />
-                  <span className="hidden lg:inline">AI Insights</span>
+                  <span>AI Insights</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="analytics" 

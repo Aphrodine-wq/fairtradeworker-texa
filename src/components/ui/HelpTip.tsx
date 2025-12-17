@@ -98,9 +98,9 @@ export function HelpTip({
   return (
     <div className={`
       ${config.bgColor} 
-      border-2 ${config.borderColor} 
-      shadow-[3px_3px_0_#000]
-      relative
+      border border-white/10 
+      shadow-md
+      relative rounded-lg
     `}>
       {/* Accent bar */}
       <div className={`absolute left-0 top-0 bottom-0 w-1 ${config.accentColor}`} />
@@ -248,7 +248,7 @@ export function FeatureHelp({
     <div className="relative inline-block">
       <button
         onClick={() => setShowHelp(!showHelp)}
-        className="inline-flex items-center justify-center w-5 h-5 border border-black rounded-full text-xs font-bold hover:bg-black hover:text-white transition-colors"
+        className="inline-flex items-center justify-center w-5 h-5 border border-white/10 rounded-full text-xs font-bold hover:bg-black/10 hover:text-black dark:hover:text-white transition-colors"
         aria-label={`Help for ${feature}`}
       >
         ?
@@ -260,7 +260,7 @@ export function FeatureHelp({
             className="fixed inset-0 z-40" 
             onClick={() => setShowHelp(false)}
           />
-          <div className="absolute z-50 left-6 top-0 w-64 bg-white border-2 border-black shadow-[4px_4px_0_#000] p-3">
+          <div className="absolute z-50 left-6 top-0 w-64 bg-white/95 backdrop-blur-lg border border-white/10 shadow-xl p-3 rounded-lg">
             <div className="flex justify-between items-start mb-2">
               <span className="font-bold text-xs uppercase">{feature}</span>
               <button 

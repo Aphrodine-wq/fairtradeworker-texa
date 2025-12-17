@@ -38,12 +38,12 @@ interface QuickNotesProps {
 }
 
 const NOTE_CATEGORIES = [
-  { value: "job", label: "Job Related", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" },
-  { value: "customer", label: "Customer Info", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" },
-  { value: "material", label: "Materials", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" },
-  { value: "reminder", label: "Reminder", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" },
-  { value: "idea", label: "Idea", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" },
-  { value: "other", label: "Other", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20" }
+  { value: "job", label: "Job Related", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" },
+    { value: "customer", label: "Customer Info", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" },
+    { value: "material", label: "Materials", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" },
+    { value: "reminder", label: "Reminder", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" },
+    { value: "idea", label: "Idea", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" },
+    { value: "other", label: "Other", color: "bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-white/10 dark:border-white/10" }
 ]
 
 export function QuickNotes({ user }: QuickNotesProps) {
@@ -266,7 +266,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
                   <Label htmlFor="content">Content</Label>
                   <textarea
                     id="content"
-                    className="w-full min-h-[100px] px-3 py-2 border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm"
+                    className="w-full min-h-[100px] px-3 py-2 border border-white/10 dark:border-white/10 rounded-md font-mono shadow-sm"
                     placeholder="Your note..."
                     value={content}
                     onChange={(e) => setContent(e.target.value)}

@@ -81,7 +81,7 @@ export function ErrorState({
     <div className="min-h-[60vh] flex items-center justify-center p-6">
       <div className="text-center max-w-md">
         {/* Icon */}
-        <div className="bg-[#FF0000]/10 border-4 border-black p-6 inline-block mb-6 shadow-[6px_6px_0_#FF0000]">
+        <div className="bg-[#FF0000]/10 border border-white/10 p-6 inline-block mb-6 shadow-lg rounded-lg">
           <div className="text-[#FF0000]">
             {config.icon}
           </div>
@@ -107,7 +107,7 @@ export function ErrorState({
           {action && (
             <button
               onClick={action.onClick}
-              className="inline-flex items-center justify-center gap-2 bg-black text-white px-6 py-3 font-bold uppercase border-2 border-black hover:bg-white hover:text-black transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-black text-white px-6 py-3 font-bold uppercase hover:bg-gray-800 transition-colors rounded-md shadow-md"
             >
               <ArrowClockwise size={20} weight="bold" />
               {action.label}
@@ -117,7 +117,7 @@ export function ErrorState({
           {secondaryAction && (
             <button
               onClick={secondaryAction.onClick}
-              className="inline-flex items-center justify-center gap-2 bg-white text-black px-6 py-3 font-bold uppercase border-2 border-black hover:bg-black hover:text-white transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-white/90 backdrop-blur-sm text-black px-6 py-3 font-bold uppercase hover:bg-white transition-colors rounded-md shadow-md"
             >
               <House size={20} weight="bold" />
               {secondaryAction.label}
