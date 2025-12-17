@@ -12,7 +12,8 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { JobCard } from '@/src/components/jobs/JobCard';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 import type { JobSize, Job } from '@/src/types';
 
 type FilterOption = 'all' | JobSize;
@@ -50,6 +51,7 @@ function JobCarousel({
 export default function BrowseJobsScreen() {
   const router = useRouter();
   const { jobs, currentUser } = useAppStore();
+  const { isTablet } = useResponsive();
   const [selectedFilter, setSelectedFilter] = useState<FilterOption>('all');
 
   // Filter jobs by status
@@ -188,13 +190,18 @@ export default function BrowseJobsScreen() {
         <FlatList
           data={filteredJobs}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContent}
+          contentContainerStyle={[styles.listContent, isTablet && styles.listContentTablet]}
+          numColumns={isTablet ? 2 : 1}
+          key={isTablet ? 'tablet' : 'phone'} // Force re-render when changing columns
+          columnWrapperStyle={isTablet ? styles.columnWrapper : undefined}
           renderItem={({ item }) => (
-            <JobCard
-              job={item}
-              onPress={() => handleJobPress(item.id)}
-              showBidCount={currentUser?.role === 'contractor'}
-            />
+            <View style={isTablet ? styles.gridItem : null}>
+              <JobCard
+                job={item}
+                onPress={() => handleJobPress(item.id)}
+                showBidCount={currentUser?.role === 'contractor'}
+              />
+            </View>
           )}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
@@ -296,6 +303,16 @@ const styles = StyleSheet.create({
   listContent: {
     padding: Spacing.md,
     paddingBottom: Spacing.xxxl,
+  },
+  listContentTablet: {
+    padding: Spacing.tablet.lg,
+    paddingBottom: Spacing.tablet.xxxl,
+  },
+  columnWrapper: {
+    gap: Spacing.tablet.md,
+  },
+  gridItem: {
+    flex: 1,
   },
   listHeader: {
     marginBottom: Spacing.md,

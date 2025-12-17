@@ -63,6 +63,16 @@ export const Spacing = {
   xl: 24,
   xxl: 32,
   xxxl: 48,
+  // Tablet-specific spacing
+  tablet: {
+    xs: 6,
+    sm: 12,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    xxl: 48,
+    xxxl: 64,
+  },
 };
 
 export const BorderRadius = {
@@ -150,5 +160,23 @@ export const Animation = {
     fast: 150,
     normal: 300,
     slow: 500,
+  },
+};
+
+export const Layout = {
+  // Breakpoints
+  tabletBreakpoint: 768,
+  
+  // Max widths for centered content
+  maxContentWidth: {
+    phone: '100%',
+    tablet: 1200,
+  },
+  
+  // Grid columns
+  gridColumns: {
+    phone: 1,
+    tablet: 2,
+    tabletLarge: 3,
   },
 };
