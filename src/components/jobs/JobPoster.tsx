@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -23,6 +23,7 @@ import { generateMilestonesFromTemplate } from "@/lib/milestones"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { v4 as uuidv4 } from "uuid"
+import { cn } from "@/lib/utils"
 
 interface JobPosterProps {
   user: User
@@ -32,6 +33,52 @@ interface JobPosterProps {
 type InputMethod = 'photos' | 'audio' | 'text' | null
 type ProjectType = 'kitchen-remodel' | 'bathroom-remodel' | 'roof-replacement' | 'deck-build' | 'fence-installation' | 'room-addition' | 'custom' | null
 type Step = 'tier-select' | 'project-select' | 'scope-builder' | 'select' | 'input' | 'processing' | 'results' | 'posted'
+
+const PROJECT_TEMPLATES = [
+  {
+    type: 'kitchen-remodel' as const,
+    emoji: '🍳',
+    title: 'Kitchen Remodel',
+    priceRange: '$15K-$50K · 4-8 weeks',
+  },
+  {
+    type: 'bathroom-remodel' as const,
+    emoji: '🚿',
+    title: 'Bathroom Remodel',
+    priceRange: '$8K-$35K · 2-5 weeks',
+  },
+  {
+    type: 'roof-replacement' as const,
+    emoji: '🏠',
+    title: 'Roof Replacement',
+    priceRange: '$8K-$25K · 2-5 days',
+  },
+  {
+    type: 'deck-build' as const,
+    emoji: '🪵',
+    title: 'Deck Build',
+    priceRange: '$8K-$35K · 1-3 weeks',
+  },
+  {
+    type: 'fence-installation' as const,
+    emoji: '🚧',
+    title: 'Fence Installation',
+    priceRange: '$3K-$15K · 2-5 days',
+  },
+  {
+    type: 'room-addition' as const,
+    emoji: '🏗️',
+    title: 'Room Addition',
+    priceRange: '$25K-$100K · 6-12 weeks',
+  },
+  {
+    type: 'custom' as const,
+    emoji: '✏️',
+    title: 'Custom Project',
+    priceRange: 'Describe your own project',
+    isCustom: true,
+  },
+] as const
 
 export function JobPoster({ user, onNavigate }: JobPosterProps) {
   const [step, setStep] = useState<Step>('tier-select')
@@ -426,104 +473,28 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
               Choose a template or describe a custom project
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-2 gap-4">
-            <button
-              onClick={() => {
-                setSelectedProjectType('kitchen-remodel')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🍳</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Kitchen Remodel</h4>
-                <p className="text-sm text-muted-foreground">$15K-$50K · 4-8 weeks</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('bathroom-remodel')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🚿</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Bathroom Remodel</h4>
-                <p className="text-sm text-muted-foreground">$8K-$35K · 2-5 weeks</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('roof-replacement')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🏠</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Roof Replacement</h4>
-                <p className="text-sm text-muted-foreground">$8K-$25K · 2-5 days</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('deck-build')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🪵</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Deck Build</h4>
-                <p className="text-sm text-muted-foreground">$8K-$35K · 1-3 weeks</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('fence-installation')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🚧</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Fence Installation</h4>
-                <p className="text-sm text-muted-foreground">$3K-$15K · 2-5 days</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('room-addition')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">🏗️</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Room Addition</h4>
-                <p className="text-sm text-muted-foreground">$25K-$100K · 6-12 weeks</p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setSelectedProjectType('custom')
-                setStep('scope-builder')
-              }}
-              className="flex items-center gap-4 p-5 rounded-md border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all text-left"
-            >
-              <div className="text-4xl">✏️</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-lg">Custom Project</h4>
-                <p className="text-sm text-muted-foreground">Describe your own project</p>
-              </div>
-            </button>
+          <CardContent className="grid grid-cols-2 md:grid-cols-2 gap-3 sm:gap-4">
+            {PROJECT_TEMPLATES.map((project) => (
+              <button
+                key={project.type}
+                onClick={() => {
+                  setSelectedProjectType(project.type)
+                  setStep('scope-builder')
+                }}
+                className={cn(
+                  "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md transition-all text-left",
+                  project.isCustom
+                    ? "border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+                    : "border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+                )}
+              >
+                <div className="text-2xl sm:text-4xl">{project.emoji}</div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-sm sm:text-lg truncate">{project.title}</h4>
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{project.priceRange}</p>
+                </div>
+              </button>
+            ))}
           </CardContent>
         </Card>
       )}

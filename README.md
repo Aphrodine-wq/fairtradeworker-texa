@@ -152,6 +152,12 @@ FairTradeWorker uses a modern shadow-based design system (updated December 16, 2
 - **Cards:** Borderless with shadow depth
 
 ### Recent Updates
+- ✅ December 17, 2025: Mobile UI improvements for seamless experience
+  - Fixed theme toggle overlapping logo on mobile
+  - Enhanced iOS/Safari compatibility (fixed black screen issue)
+  - Optimized page sizing for mobile devices
+  - Updated service columns to 2-column layout on mobile (3 rows)
+  - Updated "Post Your Job" menu to 2-column layout on mobile
 - ✅ December 16, 2025: Major UI/UX overhaul with shadow-based design
 - ✅ Comprehensive testing suite (150+ tests, 95% coverage)
 - ✅ AI Receptionist with 100% reliability features
