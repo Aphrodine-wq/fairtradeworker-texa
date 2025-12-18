@@ -1,7 +1,7 @@
-import { Briefcase, UsersThree, UserPlus, Brain, Building, Crown, Microphone } from '@phosphor-icons/react'
+import { Briefcase, UsersThree, UserPlus, Brain, Building, Crown, Microphone, List, FileText, ArrowsClockwise, ChartBar, Export, Gear } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 
-export type MainMenuId = 'jobs' | 'teams' | 'customer-intake' | 'ai' | 'office' | 'pro-tools'
+export type MainMenuId = 'jobs' | 'teams' | 'customer-intake' | 'ai' | 'office' | 'pro-tools' | 'leads'
 
 export interface SubMenuItem {
   id: string
@@ -127,6 +127,24 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
       { id: 'pro-support-chat', label: 'Pro Support Chat', icon: <Crown size={20} />, page: 'pro-support-chat' },
       { id: 'priority-job-alerts', label: 'Priority Job Alerts', icon: <Crown size={20} />, page: 'priority-job-alerts' },
       { id: 'advanced-crm', label: 'Advanced CRM', icon: <Crown size={20} />, page: 'customer-crm' },
+    ],
+  },
+  {
+    id: 'leads',
+    label: 'Leads',
+    icon: Microphone,
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
+    subMenus: [
+      { id: 'quick-capture', label: 'Quick Capture', icon: <Microphone size={20} />, page: 'lead-capture' },
+      { id: 'manual-entry', label: 'Manual Entry', icon: <FileText size={20} />, page: 'lead-capture' },
+      { id: 'view-leads', label: 'View Captured Leads', icon: <List size={20} />, page: 'lead-capture' },
+      { id: 'sync-crm', label: 'Sync to CRM', icon: <ArrowsClockwise size={20} />, page: 'lead-capture' },
+      { id: 'lead-templates', label: 'Lead Templates', icon: <FileText size={20} />, page: 'lead-capture' },
+      { id: 'lead-analytics', label: 'Lead Analytics', icon: <ChartBar size={20} />, page: 'lead-capture' },
+      { id: 'export-leads', label: 'Export Leads', icon: <Export size={20} />, page: 'lead-capture' },
+      { id: 'lead-settings', label: 'Lead Settings', icon: <Gear size={20} />, page: 'lead-capture' },
     ],
   },
 ]

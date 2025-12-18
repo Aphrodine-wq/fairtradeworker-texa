@@ -33,32 +33,24 @@ export function SubMenuCircle({
   bgColor,
   borderColor,
 }: SubMenuCircleProps) {
-  // Arc positioning pattern - similar to CSS circular menu
-  // Position items in a semi-circle arc around parent
-  // Using transform-based positioning like CSS translate3d
-  // Adjusted for 160px radius (subMenuRadius) with proper scaling
-  const subMenuRadius = 160
-  const arcPositions = [
-    { x: 20, y: -140 },    // Item 1: top-right
-    { x: -70, y: -126 },   // Item 2: top
-    { x: -130, y: -64 },   // Item 3: top-left
-    { x: -140, y: 20 },    // Item 4: left
-    { x: -130, y: 104 },   // Item 5: bottom-left
-    { x: -70, y: 166 },    // Item 6: bottom
-    { x: 20, y: 180 },     // Item 7: bottom-right
-    { x: 110, y: 166 },    // Item 8: right
-  ]
+  // Arc positioning pattern - tighter grouping
+  // Position items in a circular pattern around parent with reduced spacing
+  // Using rotation-based positioning: rotate(360deg / total * index) translateX(-distance)
+  const itemSize = 80 // Base item size
+  const translateDistance = -180 // Reduced from -240 for tighter grouping
+  const anglePerItem = (360 / total) * index
+  const angleRad = (anglePerItem * Math.PI) / 180
+  
+  // Calculate position using rotation transform
+  const relativeX = Math.cos(angleRad) * Math.abs(translateDistance)
+  const relativeY = Math.sin(angleRad) * Math.abs(translateDistance)
 
-  // Use arc positions, cycling if more than 8 items
-  const position = arcPositions[index % arcPositions.length]
-  
-  // Adjust for parent position - position relative to parent center
-  const relativeX = position.x
-  const relativeY = position.y
-  
   // Absolute position from center
   const x = parentX + relativeX
   const y = parentY + relativeY
+  
+  // Counter-rotate content so it stays upright
+  const contentRotation = -anglePerItem
 
   // Staggered animation delay - faster for sleek animations
   const delay = index * 0.08
@@ -113,7 +105,10 @@ export function SubMenuCircle({
         )}
         whileHover={{ scale: 1.05, y: -4 }}
         whileTap={{ scale: 0.95 }}
-        style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+        style={{ 
+          willChange: 'transform', 
+          transform: `translateZ(0) rotate(${contentRotation}deg)`
+        }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
       >
         {/* Icon container */}

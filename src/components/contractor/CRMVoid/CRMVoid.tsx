@@ -9,6 +9,8 @@ import { VoidBackground } from './VoidBackground'
 import { CentralVoiceHub } from './CentralVoiceHub'
 import { MainMenuCircle } from './MainMenuCircle'
 import { SubMenuCircle } from './SubMenuCircle'
+import { LeadCaptureMenu } from './LeadCaptureMenu'
+import { VoidClock } from './VoidClock'
 import { MAIN_MENU_CONFIGS, type MainMenuId } from './MainMenuConfig'
 
 interface CRMVoidProps {
@@ -51,6 +53,14 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       return
     }
     
+    // Check if this is a leads menu sub-menu - show LeadCaptureMenu
+    if (subMenuId.startsWith('quick-capture') || subMenuId.startsWith('manual-entry') || 
+        subMenuId.startsWith('view-leads') || subMenuId.startsWith('sync-crm') ||
+        subMenuId.startsWith('lead-')) {
+      // Keep menu active to show LeadCaptureMenu panel
+      return
+    }
+    
     // For other sub-menus, navigate normally
     if (onNavigate) {
       onNavigate(page)
@@ -59,9 +69,9 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setActiveMainMenu(null)
   }, [onNavigate])
 
-  // Calculate main menu positions (6 circles, 60 degrees apart)
-  const mainMenuRadius = 400
-  const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => index * 60)
+  // Calculate main menu positions (7 circles, ~51.4 degrees apart)
+  const mainMenuRadius = 350 // Reduced for tighter grouping
+  const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => (index * 360) / MAIN_MENU_CONFIGS.length)
 
   // Handle ESC key to close main menu
   useEffect(() => {
@@ -124,6 +134,16 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         </h1>
       </motion.div>
 
+      {/* Void Clock - Top Right */}
+      <motion.div
+        className="absolute top-8 right-8 z-30"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <VoidClock />
+      </motion.div>
+
       {/* Main content area - ensure no scrolling and perfect centering */}
       <div className="relative z-10 flex items-center justify-center h-screen w-screen overflow-hidden">
         {/* Centered container for all elements */}
@@ -151,6 +171,35 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                   borderColor={menuConfig.borderColor}
                 />
                 
+                {/* Menu Title - appears when sub-menus are expanded */}
+                <AnimatePresence>
+                  {activeMainMenu === menuConfig.id && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        transform: `translate(-50%, calc(-50% - ${mainMenuRadius + 60}px))`,
+                        zIndex: 19,
+                      }}
+                    >
+                      <div className={cn(
+                        "px-4 py-2 rounded-lg glass-card",
+                        "backdrop-blur-[12px]",
+                        "shadow-[0_4px_20px_rgba(0,0,0,0.04)]",
+                        "border-0"
+                      )}>
+                        <h3 className="text-lg font-bold text-black dark:text-white whitespace-nowrap">
+                          {menuConfig.label}
+                        </h3>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {/* Sub-Menu Circles - appear when main menu is active */}
                 <AnimatePresence>
                   {activeMainMenu === menuConfig.id && (
@@ -182,6 +231,28 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
         </div>
       </div>
+
+      {/* Lead Capture Menu Panel */}
+      <AnimatePresence>
+        {activeMainMenu === 'leads' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none"
+          >
+            <div className="pointer-events-auto max-h-[90vh] overflow-y-auto">
+              <LeadCaptureMenu 
+                user={user}
+                onLeadCaptured={(lead) => {
+                  console.log('Lead captured:', lead)
+                  // Could trigger sync to CRM here
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Voice Intake Modal */}
       <AnimatePresence>
