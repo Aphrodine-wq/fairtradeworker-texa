@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
@@ -32,9 +32,30 @@ export function MusicPlayer() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0)
   const [progress, setProgress] = useState(0)
   const [volume, setVolume] = useState(75)
+  const [previousVolume, setPreviousVolume] = useState(75)
   const [isMuted, setIsMuted] = useState(false)
 
   const currentTrack = MOCK_PLAYLIST[currentTrackIndex]
+
+  const handleNext = useCallback(() => {
+    setCurrentTrackIndex((prev) => (prev + 1) % MOCK_PLAYLIST.length)
+    setProgress(0)
+  }, [])
+
+  const handlePrevious = useCallback(() => {
+    setProgress((currentProgress) => {
+      if (currentProgress > 5) {
+        // If more than 5 seconds in, restart current track
+        return 0
+      } else {
+        // Otherwise go to previous track
+        setCurrentTrackIndex((prev) => 
+          prev === 0 ? MOCK_PLAYLIST.length - 1 : prev - 1
+        )
+        return 0
+      }
+    })
+  }, [])
 
   // Simulate playback progress
   useEffect(() => {
@@ -52,28 +73,10 @@ export function MusicPlayer() {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [isPlaying, currentTrack.duration])
+  }, [isPlaying, currentTrack.duration, handleNext])
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying)
-  }
-
-  const handleNext = () => {
-    setCurrentTrackIndex((prev) => (prev + 1) % MOCK_PLAYLIST.length)
-    setProgress(0)
-  }
-
-  const handlePrevious = () => {
-    if (progress > 5) {
-      // If more than 5 seconds in, restart current track
-      setProgress(0)
-    } else {
-      // Otherwise go to previous track
-      setCurrentTrackIndex((prev) => 
-        prev === 0 ? MOCK_PLAYLIST.length - 1 : prev - 1
-      )
-      setProgress(0)
-    }
   }
 
   const handleProgressChange = (value: number[]) => {
@@ -81,14 +84,25 @@ export function MusicPlayer() {
   }
 
   const handleVolumeChange = (value: number[]) => {
-    setVolume(value[0])
-    if (value[0] > 0) {
+    const newVolume = value[0]
+    setVolume(newVolume)
+    if (newVolume > 0) {
       setIsMuted(false)
+      setPreviousVolume(newVolume)
     }
   }
 
   const toggleMute = () => {
-    setIsMuted(!isMuted)
+    if (isMuted) {
+      // Unmute and restore previous volume
+      setIsMuted(false)
+      setVolume(previousVolume)
+    } else {
+      // Mute and save current volume
+      setIsMuted(true)
+      setPreviousVolume(volume)
+      setVolume(0)
+    }
   }
 
   const formatTime = (seconds: number) => {
@@ -180,7 +194,7 @@ export function MusicPlayer() {
             )}
           </Button>
           <Slider
-            value={[isMuted ? 0 : volume]}
+            value={[volume]}
             max={100}
             step={1}
             onValueChange={handleVolumeChange}
