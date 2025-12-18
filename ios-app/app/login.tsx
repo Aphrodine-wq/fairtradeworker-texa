@@ -8,15 +8,18 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { Button, TextInput, Card } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { DEMO_USERS } from '@/src/constants/demoData';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { users, login } = useAppStore();
+  const { users, login, demoLogin } = useAppStore();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,6 +46,15 @@ export default function LoginScreen() {
     login(user);
     setLoading(false);
     router.back();
+  };
+
+  const handleDemoLogin = async (role: 'homeowner' | 'contractor' | 'operator') => {
+    setLoading(true);
+    // Simulate network delay for consistency
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    demoLogin(role);
+    setLoading(false);
+    router.replace('/dashboard');
   };
 
   return (
@@ -100,6 +112,52 @@ export default function LoginScreen() {
               </Text>
             </View>
           </Card>
+
+          {/* Demo Accounts Section */}
+          <Card variant="elevated" padding="md" style={styles.demoCard}>
+            <View style={styles.demoHeader}>
+              <Ionicons name="play-circle" size={20} color={Colors.primary} />
+              <Text style={styles.demoTitle}>Quick Demo Login</Text>
+            </View>
+            <Text style={styles.demoDescription}>
+              Try the platform instantly with demo accounts:
+            </Text>
+            <View style={styles.demoButtons}>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.primary }]}
+                onPress={() => handleDemoLogin('homeowner')}
+                disabled={loading}
+              >
+                <Ionicons name="home" size={18} color={Colors.primary} />
+                <Text style={[styles.demoButtonText, { color: Colors.primary }]}>
+                  Homeowner
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.secondary }]}
+                onPress={() => handleDemoLogin('contractor')}
+                disabled={loading}
+              >
+                <Ionicons name="hammer" size={18} color={Colors.secondary} />
+                <Text style={[styles.demoButtonText, { color: Colors.secondary }]}>
+                  Contractor
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.accent }]}
+                onPress={() => handleDemoLogin('operator')}
+                disabled={loading}
+              >
+                <Ionicons name="map" size={18} color={Colors.accent} />
+                <Text style={[styles.demoButtonText, { color: Colors.accent }]}>
+                  Operator
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.demoNote}>
+              Demo accounts have pre-populated data for testing
+            </Text>
+          </Card>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -155,5 +213,53 @@ const styles = StyleSheet.create({
     fontSize: Typography.fontSize.md,
     color: Colors.primary,
     fontWeight: '600',
+  },
+  demoCard: {
+    marginTop: Spacing.lg,
+    width: '100%',
+  },
+  demoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
+    marginBottom: Spacing.xs,
+  },
+  demoTitle: {
+    fontSize: Typography.fontSize.lg,
+    fontWeight: '600',
+    color: Colors.textPrimary,
+  },
+  demoDescription: {
+    fontSize: Typography.fontSize.sm,
+    color: Colors.textSecondary,
+    marginBottom: Spacing.md,
+  },
+  demoButtons: {
+    flexDirection: 'row',
+    gap: Spacing.sm,
+    marginBottom: Spacing.sm,
+  },
+  demoButton: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.xs,
+    paddingVertical: Spacing.sm,
+    paddingHorizontal: Spacing.xs,
+    borderWidth: 1.5,
+    borderRadius: BorderRadius.md,
+    backgroundColor: Colors.surface,
+  },
+  demoButtonText: {
+    fontSize: Typography.fontSize.xs,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  demoNote: {
+    fontSize: Typography.fontSize.xs,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
