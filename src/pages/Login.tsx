@@ -6,16 +6,18 @@ import { Label } from "@/components/ui/label"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
 import { safeInput } from "@/lib/utils"
-import { CircleNotch } from "@phosphor-icons/react"
+import { CircleNotch, Play, House, Hammer, MapTrifold } from "@phosphor-icons/react"
 import type { User } from "@/lib/types"
 import { GlassNav, HeroSection, GlassCard } from "@/components/ui/MarketingSections"
+import { DEMO_USERS } from "@/lib/demoData"
 
 interface LoginPageProps {
   onNavigate: (page: string) => void
   onLogin: (user: User) => void
+  onDemoLogin?: (user: User) => void
 }
 
-export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
+export function LoginPage({ onNavigate, onLogin, onDemoLogin }: LoginPageProps) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [twoFactorCode, setTwoFactorCode] = useState("")
@@ -217,6 +219,52 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
               </p>
             </form>
           </GlassCard>
+
+          {onDemoLogin && (
+            <GlassCard className="p-4 md:p-6 mt-4">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Play weight="fill" size={20} />
+                  <h3 className="text-lg font-bold">Quick Demo Login</h3>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Try the platform instantly with pre-populated demo accounts:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
+                    disabled={isLoading}
+                  >
+                    <House weight="fill" className="mr-2" size={16} />
+                    Homeowner
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => onDemoLogin(DEMO_USERS.contractor)}
+                    disabled={isLoading}
+                  >
+                    <Hammer weight="fill" className="mr-2" size={16} />
+                    Contractor
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={() => onDemoLogin(DEMO_USERS.operator)}
+                    disabled={isLoading}
+                  >
+                    <MapTrifold weight="fill" className="mr-2" size={16} />
+                    Operator
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground text-center italic">
+                  Demo accounts have pre-populated data for testing
+                </p>
+              </div>
+            </GlassCard>
+          )}
         </div>
       </div>
     </div>

@@ -416,7 +416,7 @@ function App() {
   const renderPage = useCallback(() => {
     switch (currentPage) {
       case 'login':
-        return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} />
+        return <LoginPage onNavigate={handleNavigate} onLogin={handleLogin} onDemoLogin={handleDemoLogin} />
       case 'signup':
         return <SignupPage onNavigate={handleNavigate} onLogin={handleLogin} preselectedRole={preselectedRole} />
       case 'post-job':
