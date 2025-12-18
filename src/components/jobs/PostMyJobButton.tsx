@@ -12,7 +12,23 @@ type InputMethod = 'audio' | 'photos' | 'video' | 'text'
 
 export function PostMyJobButton({ onNavigate }: PostMyJobButtonProps) {
   const handleMainButtonClick = () => {
-    onNavigate('unified-post-job')
+    try {
+      if (!onNavigate) {
+        console.error('PostMyJobButton: onNavigate prop is not provided')
+        return
+      }
+      onNavigate('unified-post-job')
+    } catch (error) {
+      console.error('PostMyJobButton: Error navigating to unified-post-job:', error)
+      // Fallback: try navigating to post-job if unified-post-job fails
+      try {
+        if (onNavigate) {
+          onNavigate('post-job')
+        }
+      } catch (fallbackError) {
+        console.error('PostMyJobButton: Fallback navigation also failed:', fallbackError)
+      }
+    }
   }
 
   return (

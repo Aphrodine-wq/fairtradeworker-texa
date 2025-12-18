@@ -39,9 +39,9 @@ export function MainMenuCircle({
   onDragEnd,
   isDraggable = true,
 }: MainMenuCircleProps) {
-  // Calculate default position from angle and radius
-  const defaultX = Math.cos((angle * Math.PI) / 180) * radius
-  const defaultY = Math.sin((angle * Math.PI) / 180) * radius
+  // Calculate default position from angle and radius (only if radius > 0, otherwise use 0,0)
+  const defaultX = radius > 0 ? Math.cos((angle * Math.PI) / 180) * radius : 0
+  const defaultY = radius > 0 ? Math.sin((angle * Math.PI) / 180) * radius : 0
   
   // Use custom position if available, otherwise use calculated position
   const x = customPosition?.x ?? defaultX

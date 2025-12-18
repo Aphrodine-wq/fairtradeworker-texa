@@ -14,28 +14,71 @@ interface ServiceCategoryDetailProps {
 
 export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategoryDetailProps) {
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([])
+  const [selectedServices, setSelectedServices] = useState<Array<{id: string, title: string}>>([])
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Ensure component is mounted before accessing sessionStorage to prevent hydration mismatch
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   useEffect(() => {
+    if (!isMounted) return
+    
     // Get selected categories from sessionStorage (supports multiple)
-    const storedCategories = sessionStorage.getItem('selectedCategories')
-    if (storedCategories) {
-      try {
-        const parsed = JSON.parse(storedCategories)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setSelectedCategoryIds(parsed)
-          return
+    try {
+      const storedCategories = sessionStorage.getItem('selectedCategories')
+      if (storedCategories) {
+        try {
+          const parsed = JSON.parse(storedCategories)
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setSelectedCategoryIds(parsed)
+            return
+          }
+        } catch (e) {
+          // Fall through to single category logic
         }
-      } catch (e) {
-        // Fall through to single category logic
+      }
+      
+      // Fallback to single category from props or sessionStorage
+      const id = categoryId || sessionStorage.getItem('selectedCategory') || null
+      if (id) {
+        setSelectedCategoryIds([id])
+      }
+    } catch (error) {
+      console.error('Error reading from sessionStorage:', error)
+      // Fallback to categoryId prop if available
+      if (categoryId) {
+        setSelectedCategoryIds([categoryId])
       }
     }
+  }, [categoryId, isMounted])
+
+  // Get all selected categories
+  const selectedCategories = mainCategories.filter(c => selectedCategoryIds.includes(c.id))
+  
+  useEffect(() => {
+    if (!isMounted) return
     
-    // Fallback to single category from props or sessionStorage
-    const id = categoryId || sessionStorage.getItem('selectedCategory') || null
-    if (id) {
-      setSelectedCategoryIds([id])
+    // Load selected services from sessionStorage
+    try {
+      const stored = sessionStorage.getItem('selectedServices')
+      if (stored) {
+        try {
+          setSelectedServices(JSON.parse(stored))
+        } catch (e) {
+          // If parsing fails, check for old single service format
+          const oldService = sessionStorage.getItem('selectedService')
+          const oldTitle = sessionStorage.getItem('selectedServiceTitle')
+          if (oldService && oldTitle) {
+            setSelectedServices([{ id: oldService, title: oldTitle }])
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error reading services from sessionStorage:', error)
     }
-  }, [categoryId])
+  }, [isMounted])
 
   // Get all selected categories
   const selectedCategories = mainCategories.filter(c => selectedCategoryIds.includes(c.id))
@@ -44,6 +87,20 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
   const allServices = selectedCategories.flatMap(category => 
     category.services.map(service => ({ ...service, categoryId: category.id, categoryTitle: category.title }))
   )
+
+  // Show loading state until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-64 mx-auto mb-4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-96 mx-auto"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   if (selectedCategories.length === 0) {
     return (
@@ -63,25 +120,6 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
     )
   }
 
-  const [selectedServices, setSelectedServices] = useState<Array<{id: string, title: string}>>([])
-
-  useEffect(() => {
-    // Load selected services from sessionStorage
-    const stored = sessionStorage.getItem('selectedServices')
-    if (stored) {
-      try {
-        setSelectedServices(JSON.parse(stored))
-      } catch (e) {
-        // If parsing fails, check for old single service format
-        const oldService = sessionStorage.getItem('selectedService')
-        const oldTitle = sessionStorage.getItem('selectedServiceTitle')
-        if (oldService && oldTitle) {
-          setSelectedServices([{ id: oldService, title: oldTitle }])
-        }
-      }
-    }
-  }, [])
-
   const handleServiceClick = (serviceId: string, serviceTitle: string) => {
     setSelectedServices(prev => {
       const exists = prev.find(s => s.id === serviceId)
@@ -93,7 +131,11 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
         // Add if not selected
         updated = [...prev, { id: serviceId, title: serviceTitle }]
       }
-      sessionStorage.setItem('selectedServices', JSON.stringify(updated))
+      try {
+        sessionStorage.setItem('selectedServices', JSON.stringify(updated))
+      } catch (error) {
+        console.error('Error saving to sessionStorage:', error)
+      }
       return updated
     })
   }
@@ -106,9 +148,13 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
 
   const handleClearAll = () => {
     setSelectedServices([])
-    sessionStorage.removeItem('selectedServices')
-    sessionStorage.removeItem('selectedService')
-    sessionStorage.removeItem('selectedServiceTitle')
+    try {
+      sessionStorage.removeItem('selectedServices')
+      sessionStorage.removeItem('selectedService')
+      sessionStorage.removeItem('selectedServiceTitle')
+    } catch (error) {
+      console.error('Error clearing sessionStorage:', error)
+    }
   }
 
   return (

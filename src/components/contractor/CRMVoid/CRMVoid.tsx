@@ -13,6 +13,7 @@ import { SubMenuCircle } from './SubMenuCircle'
 import { LeadCaptureMenu } from './LeadCaptureMenu'
 import { VoidClock } from './VoidClock'
 import { CRMVoidBentoGrid } from './CRMVoidBentoGrid'
+import { MusicPlayer } from './MusicPlayer'
 import { MAIN_MENU_CONFIGS, type MainMenuId } from './MainMenuConfig'
 
 // Type for menu positions
@@ -33,6 +34,9 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   
   // Drag-and-drop menu positions (persisted in localStorage)
   const [menuPositions, setMenuPositions] = useKV<Record<MainMenuId, MenuPosition>>("crm-void-menu-positions", {})
+  
+  // Voice intake position (persisted in localStorage)
+  const [voiceIntakePosition, setVoiceIntakePosition] = useKV<MenuPosition | null>("crm-void-voice-intake-position", null)
   
   // Track which menu is being dragged
   const [draggingMenu, setDraggingMenu] = useState<MainMenuId | null>(null)
@@ -96,9 +100,18 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setDraggingMenu(null)
   }, [setMenuPositions])
 
-  // Calculate main menu positions (7 circles, ~51.4 degrees apart)
-  const mainMenuRadius = 420 // Increased to make room for central microphone
-  const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => (index * 360) / MAIN_MENU_CONFIGS.length)
+  // Handle voice intake drag end - save new position
+  const handleVoiceIntakeDragEnd = useCallback((position: { x: number; y: number }) => {
+    setVoiceIntakePosition(position)
+  }, [setVoiceIntakePosition])
+
+  // Calculate main menu positions - horizontal row layout
+  const menuSpacing = 120 // pixels between menus
+  const startX = -(MAIN_MENU_CONFIGS.length * menuSpacing) / 2
+  const menuPositionsLinear = MAIN_MENU_CONFIGS.map((_, index) => ({
+    x: startX + (index * menuSpacing),
+    y: 0 // Center vertically
+  }))
 
   // Handle ESC key to close main menu
   useEffect(() => {
@@ -181,39 +194,27 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         <CRMVoidBentoGrid user={user} onNavigate={onNavigate} />
       </motion.div>
 
-      {/* Central Microphone Hub - Main Feature (Larger and More Prominent) */}
+      {/* Central Voice Intake Hub - Draggable */}
       <motion.div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+        className="absolute z-30"
+        style={{
+          left: voiceIntakePosition ? '50%' : '50%',
+          top: voiceIntakePosition ? '50%' : '50%',
+          transform: voiceIntakePosition 
+            ? `translate(${voiceIntakePosition.x}px, ${voiceIntakePosition.y}px)` 
+            : 'translate(-50%, -50%)'
+        }}
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1, type: 'spring', stiffness: 150, damping: 15 }}
       >
-        <motion.button
-          onClick={() => setShowVoiceIntake(true)}
-          className="relative w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center shadow-2xl transition-all cursor-pointer"
-          whileHover={{ scale: 1.15 }}
-          whileTap={{ scale: 0.9 }}
-          animate={{
-            boxShadow: [
-              '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(59, 130, 246, 0.4)',
-              '0 0 50px rgba(147, 51, 234, 0.9), 0 0 100px rgba(59, 130, 246, 0.6)',
-              '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(59, 130, 246, 0.4)',
-            ],
-          }}
-          transition={{
-            boxShadow: {
-              duration: 2.5,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            },
-          }}
-        >
-          <Microphone size={64} weight="fill" className="text-white drop-shadow-lg" />
-          <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-center">
-            <p className="text-lg font-bold text-white drop-shadow-lg">Voice Intake</p>
-            <p className="text-xs text-white/80 drop-shadow-md mt-1">Tap to add customer</p>
-          </div>
-        </motion.button>
+        <CentralVoiceHub 
+          user={user} 
+          onCustomerAdded={handleCustomerAdded}
+          position={voiceIntakePosition || undefined}
+          onDragEnd={handleVoiceIntakeDragEnd}
+          isDraggable={true}
+        />
       </motion.div>
 
       {/* Main content area - ensure no scrolling and perfect centering */}
@@ -221,15 +222,14 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         {/* Centered container for all elements */}
         <div className="relative w-full h-full flex items-center justify-center">
 
-          {/* Main Menu Circles - with drag-and-drop */}
+          {/* Main Menu Circles - with drag-and-drop, linear layout */}
           {MAIN_MENU_CONFIGS.map((menuConfig, index) => {
-            const angle = mainMenuAngles[index]
-            const defaultX = Math.cos((angle * Math.PI) / 180) * mainMenuRadius
-            const defaultY = Math.sin((angle * Math.PI) / 180) * mainMenuRadius
-            // Use custom position if saved, otherwise use default
+            // Use linear positions instead of circular
+            const defaultPos = menuPositionsLinear[index]
+            // Use custom position if saved, otherwise use default linear position
             const customPos = menuPositions?.[menuConfig.id]
-            const x = customPos?.x ?? defaultX
-            const y = customPos?.y ?? defaultY
+            const x = customPos?.x ?? defaultPos.x
+            const y = customPos?.y ?? defaultPos.y
             const Icon = menuConfig.icon
             
             return (
@@ -238,8 +238,8 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                   id={menuConfig.id}
                   label={menuConfig.label}
                   icon={<Icon size={28} weight="duotone" />}
-                  angle={angle}
-                  radius={mainMenuRadius}
+                  angle={0} // Not used in linear layout
+                  radius={0} // Not used in linear layout
                   isActive={activeMainMenu === menuConfig.id}
                   onClick={() => handleMainMenuClick(menuConfig.id)}
                   color={menuConfig.color}
@@ -262,8 +262,8 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                           id={subMenu.id}
                           label={subMenu.label}
                           icon={subMenu.icon}
-                          parentAngle={angle}
-                          parentRadius={mainMenuRadius}
+                          parentAngle={0} // Not used in linear layout
+                          parentRadius={0} // Not used in linear layout
                           parentX={x}
                           parentY={y}
                           index={subIndex}
@@ -353,6 +353,9 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
           </>
         )}
       </AnimatePresence>
+
+      {/* Music Player */}
+      <MusicPlayer />
 
     </div>
   )
