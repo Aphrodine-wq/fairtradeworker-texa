@@ -1,30 +1,10 @@
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
-import { Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard, Folder, Calendar, ChatCircleDots, Bell, ClipboardText, Package, CheckCircle, Phone, Target, Microphone, MapPin, Swap, Ruler, WifiSlash, Image, CalendarDots, Heart, Wrench, MapTrifold, Sun, Shield, Sparkle, UserPlus } from "@phosphor-icons/react"
+import { Calculator, ShieldCheck, Note, Receipt, ChartLine, FileText, CreditCard, Folder, Calendar, ChatCircleDots, Bell, ClipboardText, Package, CheckCircle, Phone, Target, Microphone, MapPin, Swap, Ruler, WifiSlash, Image, CalendarDots, Heart, Wrench, MapTrifold, Sun, Shield, Sparkle, UserPlus, Briefcase, Lightning, Clock, CurrencyDollar, Star, TrendUp, Users, Fire, Gear, SlidersHorizontal } from "@phosphor-icons/react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
-
-import { 
-  Briefcase, 
-  Lightning, 
-  CheckCircle, 
-  Clock, 
-  CurrencyDollar,
-  Star,
-  TrendUp,
-  Users,
-  Calendar,
-  ChartLine,
-  Wrench,
-  MapPin,
-  Target,
-  Fire,
-  Sparkle,
-  Gear,
-  SlidersHorizontal
-} from "@phosphor-icons/react"
 import type { User, Job, Invoice, Bid } from "@/lib/types"
 import { useState, useMemo, useEffect, memo } from "react"
 import { DashboardCustomizer } from "@/components/dashboard/DashboardCustomizer"

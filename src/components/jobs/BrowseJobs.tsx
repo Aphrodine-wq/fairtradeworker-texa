@@ -186,38 +186,7 @@ const AppleJobCard = memo(function AppleJobCard({
     ))
   }, [job.photos])
 
-  // Mock images for jobs - use category-based images
-  const getMockImage = (jobTitle: string) => {
-    const title = jobTitle.toLowerCase()
-    if (title.includes('kitchen') || title.includes('cabinet')) {
-      return 'https://images.unsplash.com/photo-1556912172-45b7abe8b7e4?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('bathroom') || title.includes('plumb')) {
-      return 'https://images.unsplash.com/photo-1620626011761-996317b8d101?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('roof') || title.includes('shingle')) {
-      return 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('deck') || title.includes('patio')) {
-      return 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('paint')) {
-      return 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('floor') || title.includes('tile')) {
-      return 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('electr') || title.includes('wiring')) {
-      return 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&auto=format&fit=crop&q=80'
-    }
-    if (title.includes('hvac') || title.includes('heat') || title.includes('ac')) {
-      return 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=800&auto=format&fit=crop&q=80'
-    }
-    // Default construction/home improvement image
-    return 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop&q=80'
-  }
-  
-  const heroImage = photos[0] || getMockImage(job.title)
+  const heroImage = photos[0] || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop&q=60'
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -493,6 +462,7 @@ function CarouselLane({ children }: { children: React.ReactNode }) {
 
 interface BrowseJobsProps {
   user: User
+  onNavigate?: (page: string) => void
 }
 
 const JobCard = memo(function JobCard({ 

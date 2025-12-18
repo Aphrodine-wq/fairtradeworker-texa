@@ -673,7 +673,7 @@ function App() {
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'browse-jobs':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') 
-          ? <BrowseJobs user={currentUser} /> 
+          ? <BrowseJobs user={currentUser} onNavigate={handleNavigate} /> 
           : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'dashboard':
         if (!currentUser) return <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />

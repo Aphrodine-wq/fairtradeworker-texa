@@ -173,10 +173,44 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
       return sum + 15
     }, 0)
 
-    // Pro subscription revenue
-    const contractorProRevenue = contractors * 59 // Monthly
+    // Pro subscription revenue (Primary Revenue)
+    const contractorProCount = users?.filter(u => u.role === 'contractor' && u.isPro).length || 0
+    const contractorProRevenue = contractorProCount * 59 // Monthly
     const homeownerProRevenue = homeownerPro * 25 // Monthly
-    const proRevenue = (contractorProRevenue + homeownerProRevenue) * 12 // Annual
+    const proRevenueMonthly = contractorProRevenue + homeownerProRevenue
+    const proRevenue = proRevenueMonthly * 12 // Annual
+
+    // Add-on revenue (Secondary Revenue) - estimated adoption rates
+    const proContractors = contractorProCount
+    const aiReceptionistSubscribers = Math.round(proContractors * 0.30) // 30% adoption
+    const territoryLockSubscribers = Math.round(proContractors * 0.20) // 20% adoption
+    const priorityBoostSubscribers = Math.round(proContractors * 0.40) // 40% adoption
+    const storageSubscribers = Math.round(proContractors * 0.25) // 25% adoption
+    
+    const aiReceptionistRevenue = aiReceptionistSubscribers * 29 // $29/mo
+    const territoryLockRevenue = territoryLockSubscribers * 49 // $49/mo
+    const priorityBoostRevenue = priorityBoostSubscribers * 19 // $19/mo
+    const storageRevenue = storageSubscribers * 15 // $15/mo avg (mid-range of $9-29)
+    
+    const addOnRevenueMonthly = aiReceptionistRevenue + territoryLockRevenue + priorityBoostRevenue + storageRevenue
+    const addOnRevenue = addOnRevenueMonthly * 12 // Annual
+
+    // Future Revenue Streams
+    const paidInvoices = invoices?.filter(inv => inv.status === 'paid') || []
+    const totalInvoiceValue = paidInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0)
+    const invoiceFinancingRevenue = totalInvoiceValue * 0.025 // 2.5% avg (2-3% range)
+    
+    // Material procurement: estimated 5% of job value goes to materials, 10% affiliate commission
+    const materialProcurementRevenue = totalRevenue * 0.05 * 0.10
+    
+    // Insurance referrals: estimated $50 commission per contractor per year
+    const insuranceReferralRevenue = contractors * 50
+
+    const futureRevenueStreams = invoiceFinancingRevenue + materialProcurementRevenue + insuranceReferralRevenue
+
+    // Total MRR and ARR
+    const totalMRR = proRevenueMonthly + addOnRevenueMonthly
+    const totalARR = proRevenue + addOnRevenue
 
     // Job statistics
     const jobsWithBids = jobs?.filter(j => j.bids && j.bids.length > 0).length || 0
@@ -200,9 +234,30 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
       operators,
       proUsers,
       homeownerPro,
+      contractorProCount,
       totalRevenue,
       platformFees,
       proRevenue,
+      proRevenueMonthly,
+      // Add-on revenue
+      addOnRevenue,
+      addOnRevenueMonthly,
+      aiReceptionistRevenue,
+      aiReceptionistSubscribers,
+      territoryLockRevenue,
+      territoryLockSubscribers,
+      priorityBoostRevenue,
+      priorityBoostSubscribers,
+      storageRevenue,
+      storageSubscribers,
+      // Future revenue streams
+      futureRevenueStreams,
+      invoiceFinancingRevenue,
+      materialProcurementRevenue,
+      insuranceReferralRevenue,
+      // Totals
+      totalMRR,
+      totalARR,
       jobsWithBids,
       avgBidsPerJob,
       jobsWithMultipleServices,
@@ -210,7 +265,7 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
       invoicingUsage,
       aiScopingUsage
     }
-  }, [users, jobs])
+  }, [users, jobs, invoices])
 
   const simIntervalMs = useMemo(() => {
     const minMs = 350
@@ -259,27 +314,37 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     ) || []
   }, [users])
 
-  // Calculate projected revenue
+  // Calculate projected revenue (including add-ons)
   const projectedRevenue = useMemo(() => {
-    const baseMRR = latestRevenue || 20000
+    // Base MRR includes Pro subscriptions + Add-ons
+    const baseProMRR = stats.proRevenueMonthly || 0
+    const baseAddOnMRR = stats.addOnRevenueMonthly || 0
+    const baseMRR = baseProMRR + baseAddOnMRR || latestRevenue || 20000
+    
     const growthRate = monthlyGrowthRate / 100
     let total = 0
     let mrr = baseMRR
+    let proMRR = baseProMRR
+    let addOnMRR = baseAddOnMRR
+    
+    // Add-ons typically grow faster as Pro users adopt more features
+    const addOnGrowthMultiplier = 1.1 // 10% faster growth for add-ons
+    
     for (let month = 1; month <= timeRange * 12; month++) {
-      mrr *= (1 + growthRate / 12)
+      proMRR *= (1 + growthRate / 12)
+      addOnMRR *= (1 + (growthRate * addOnGrowthMultiplier) / 12)
+      mrr = proMRR + addOnMRR
       total += mrr
     }
+    
     return {
       total: total,
-      yearEndMRR: (() => {
-        let mrr = baseMRR
-        for (let month = 1; month <= timeRange * 12; month++) {
-          mrr *= (1 + growthRate / 12)
-        }
-        return mrr
-      })()
+      yearEndMRR: mrr,
+      yearEndProMRR: proMRR,
+      yearEndAddOnMRR: addOnMRR,
+      yearEndARR: mrr * 12
     }
-  }, [latestRevenue, timeRange, monthlyGrowthRate])
+  }, [latestRevenue, timeRange, monthlyGrowthRate, stats])
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full py-8 md:py-12 px-4 sm:px-6 lg:px-8">
@@ -579,7 +644,7 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Card className="border-0 bg-muted/50">
                     <CardContent className="p-4">
                       <p className="text-sm text-muted-foreground mb-1">{timeRange}-Year Total</p>
@@ -590,16 +655,30 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
                   </Card>
                   <Card className="border-0 bg-muted/50">
                     <CardContent className="p-4">
-                      <p className="text-sm text-muted-foreground mb-1">Year {timeRange} MRR</p>
+                      <p className="text-sm text-muted-foreground mb-1">Year {timeRange} Total MRR</p>
                       <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                         ${projectedRevenue.yearEndMRR.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                       </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Pro: ${projectedRevenue.yearEndProMRR.toLocaleString(undefined, { maximumFractionDigits: 0 })} • 
+                        Add-ons: ${projectedRevenue.yearEndAddOnMRR.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card className="border-0 bg-muted/50">
+                    <CardContent className="p-4">
+                      <p className="text-sm text-muted-foreground mb-1">Year {timeRange} ARR</p>
+                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        ${projectedRevenue.yearEndARR.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">Combined Pro + Add-ons</p>
                     </CardContent>
                   </Card>
                   <Card className="border-0 bg-muted/50">
                     <CardContent className="p-4">
                       <p className="text-sm text-muted-foreground mb-1">Growth Rate</p>
                       <p className="text-2xl font-bold">{monthlyGrowthRate}%</p>
+                      <p className="text-xs text-muted-foreground mt-1">Monthly compound</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -792,49 +871,496 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
 
           {/* Revenue Tab */}
           <TabsContent value="revenue" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="border-0">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <CurrencyDollar size={20} />
-                    Platform Fees
-                  </CardTitle>
+            {/* Total Revenue Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card className="border-0 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Total MRR</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">${stats.platformFees.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    From {stats.completedJobs} completed jobs
+                  <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                    ${stats.totalMRR.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Monthly Recurring</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/20 dark:to-green-900/20">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Total ARR</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                    ${stats.totalARR.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Annual Recurring</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/20 dark:to-purple-900/20">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Pro MRR</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                    ${stats.proRevenueMonthly.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    {stats.contractorProCount} Pro users
                   </p>
                 </CardContent>
               </Card>
 
+              <Card className="border-0 bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950/20 dark:to-amber-900/20">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">Add-ons MRR</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                    ${stats.addOnRevenueMonthly.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">Secondary Revenue</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Primary Revenue: Pro Subscriptions */}
+            <Card className="border-0">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Crown size={20} className="text-yellow-600 dark:text-yellow-400" />
+                  Primary Revenue: Pro Subscriptions
+                  <Badge variant="secondary" className="ml-2">85% Margin</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Core subscription revenue from Pro contractors and homeowners
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Contractor Pro</p>
+                    <p className="text-2xl font-bold">${stats.proRevenueMonthly.toLocaleString()}/mo</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                      ${stats.proRevenue.toLocaleString()}/yr • {stats.contractorProCount} subscribers
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Homeowner Pro</p>
+                    <p className="text-2xl font-bold">${(stats.homeownerPro * 25).toLocaleString()}/mo</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                      ${(stats.homeownerPro * 25 * 12).toLocaleString()}/yr • {stats.homeownerPro} subscribers
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Pro ARR</p>
+                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      ${stats.proRevenue.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">Annual recurring</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Secondary Revenue: Add-ons */}
+            <Card className="border-0">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <ChartBar size={20} className="text-blue-600 dark:text-blue-400" />
+                  Secondary Revenue: Add-ons
+                  <Badge variant="secondary" className="ml-2">~$40/mo avg per Pro</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Optional premium features with estimated adoption rates
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                  <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <Brain size={18} className="text-blue-600 dark:text-blue-400" />
+                      <Badge variant="outline" className="text-xs">
+                        {stats.aiReceptionistSubscribers} users
+                      </Badge>
+                    </div>
+                    <p className="text-sm font-semibold mb-1">AI Receptionist</p>
+                    <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                      ${stats.aiReceptionistRevenue.toLocaleString()}/mo
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">$29/mo • 30% adoption</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <MapTrifold size={18} className="text-purple-600 dark:text-purple-400" />
+                      <Badge variant="outline" className="text-xs">
+                        {stats.territoryLockSubscribers} users
+                      </Badge>
+                    </div>
+                    <p className="text-sm font-semibold mb-1">Territory Lock</p>
+                    <p className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                      ${stats.territoryLockRevenue.toLocaleString()}/mo
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">$49/mo • 20% adoption</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <TrendingUp size={18} className="text-amber-600 dark:text-amber-400" />
+                      <Badge variant="outline" className="text-xs">
+                        {stats.priorityBoostSubscribers} users
+                      </Badge>
+                    </div>
+                    <p className="text-sm font-semibold mb-1">Priority Boost</p>
+                    <p className="text-xl font-bold text-amber-600 dark:text-amber-400">
+                      ${stats.priorityBoostRevenue.toLocaleString()}/mo
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">$19/mo • 40% adoption</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <Database size={18} className="text-green-600 dark:text-green-400" />
+                      <Badge variant="outline" className="text-xs">
+                        {stats.storageSubscribers} users
+                      </Badge>
+                    </div>
+                    <p className="text-sm font-semibold mb-1">Storage Upgrades</p>
+                    <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                      ${stats.storageRevenue.toLocaleString()}/mo
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">$15/mo avg • 25% adoption</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Add-ons Revenue</p>
+                      <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                        ${stats.addOnRevenueMonthly.toLocaleString()}/mo
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                        ${stats.addOnRevenue.toLocaleString()}/yr ARR
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Avg per Pro User</p>
+                      <p className="text-xl font-bold">
+                        ${stats.contractorProCount > 0 ? (stats.addOnRevenueMonthly / stats.contractorProCount).toFixed(0) : 0}/mo
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Future Revenue Streams */}
+            <Card className="border-0">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe size={20} className="text-indigo-600 dark:text-indigo-400" />
+                  Future Revenue Streams
+                  <Badge variant="outline" className="ml-2">Projected</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Additional revenue opportunities from platform services
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-lg bg-indigo-50 dark:bg-indigo-950/20 border border-indigo-200 dark:border-indigo-800">
+                    <Receipt size={20} className="text-indigo-600 dark:text-indigo-400 mb-2" />
+                    <p className="text-sm font-semibold mb-1">Invoice Financing</p>
+                    <p className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+                      ${stats.invoiceFinancingRevenue.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">2.5% of invoice value</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-teal-50 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-800">
+                    <Building size={20} className="text-teal-600 dark:text-teal-400 mb-2" />
+                    <p className="text-sm font-semibold mb-1">Material Procurement</p>
+                    <p className="text-xl font-bold text-teal-600 dark:text-teal-400">
+                      ${stats.materialProcurementRevenue.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">10% affiliate commission</p>
+                  </div>
+
+                  <div className="p-4 rounded-lg bg-rose-50 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-800">
+                    <Shield size={20} className="text-rose-600 dark:text-rose-400 mb-2" />
+                    <p className="text-sm font-semibold mb-1">Insurance Referrals</p>
+                    <p className="text-xl font-bold text-rose-600 dark:text-rose-400">
+                      ${stats.insuranceReferralRevenue.toLocaleString()}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">$50 per contractor/year</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-4 rounded-lg bg-gradient-to-r from-indigo-50 to-rose-50 dark:from-indigo-950/20 dark:to-rose-950/20 border border-indigo-200 dark:border-indigo-800">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Future Revenue</p>
+                      <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                        ${stats.futureRevenueStreams.toLocaleString()}
+                      </p>
+                    </div>
+                    <Info size={20} className="text-gray-400" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Platform Fees (Legacy) */}
+            <Card className="border-0">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <CurrencyDollar size={20} />
+                  Platform Fees (Homeowner Posting)
+                </CardTitle>
+                <CardDescription>
+                  One-time fees from completed jobs
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-3xl font-bold">${stats.platformFees.toLocaleString()}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      From {stats.completedJobs} completed jobs
+                    </p>
+                  </div>
+                  <Badge variant="secondary">One-time revenue</Badge>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Revenue Breakdown Visualization */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Revenue by Source - Bar Chart */}
               <Card className="border-0">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Crown size={20} />
-                    Pro Subscriptions
+                    <PieChart size={20} />
+                    Revenue by Source (MRR)
                   </CardTitle>
+                  <CardDescription>
+                    Monthly recurring revenue breakdown
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">${stats.proRevenue.toLocaleString()}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    Annual recurring revenue
-                  </p>
+                  <div className="h-64">
+                    <ChartContainer
+                      config={{
+                        pro: {
+                          label: "Pro Subscriptions",
+                          color: "hsl(262, 80%, 50%)"
+                        },
+                        addons: {
+                          label: "Add-ons",
+                          color: "hsl(217, 80%, 50%)"
+                        }
+                      }}
+                      className="h-full w-full"
+                    >
+                      <BarChart
+                        data={[
+                          {
+                            source: "Pro",
+                            revenue: stats.proRevenueMonthly,
+                            fill: "hsl(262, 80%, 50%)"
+                          },
+                          {
+                            source: "Add-ons",
+                            revenue: stats.addOnRevenueMonthly,
+                            fill: "hsl(217, 80%, 50%)"
+                          }
+                        ]}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.3} />
+                        <XAxis
+                          dataKey="source"
+                          tick={{ fontSize: 12 }}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <YAxis
+                          tick={{ fontSize: 12 }}
+                          tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <ChartTooltip
+                          content={
+                            <ChartTooltipContent
+                              formatter={(value) => [`$${Number(value).toLocaleString()}/mo`, "MRR"]}
+                            />
+                          }
+                        />
+                        <Bar dataKey="revenue" radius={[8, 8, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-4">
+                    <div className="text-center p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Pro Revenue</p>
+                      <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+                        {stats.totalMRR > 0 ? ((stats.proRevenueMonthly / stats.totalMRR) * 100).toFixed(1) : 0}%
+                      </p>
+                    </div>
+                    <div className="text-center p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Add-ons Revenue</p>
+                      <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                        {stats.totalMRR > 0 ? ((stats.addOnRevenueMonthly / stats.totalMRR) * 100).toFixed(1) : 0}%
+                      </p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
+              {/* Add-on Adoption Metrics */}
               <Card className="border-0">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <ChartLine size={20} />
-                    Total Job Value
+                    <ChartBar size={20} />
+                    Add-on Adoption Rates
                   </CardTitle>
+                  <CardDescription>
+                    Percentage of Pro users with each add-on
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-3xl font-bold">${(stats.totalRevenue / 1000).toFixed(0)}k</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    Estimated value of completed jobs
-                  </p>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <Brain size={16} className="text-blue-600 dark:text-blue-400" />
+                          <span className="text-sm font-medium">AI Receptionist</span>
+                        </div>
+                        <span className="text-sm font-bold">
+                          {stats.contractorProCount > 0 
+                            ? ((stats.aiReceptionistSubscribers / stats.contractorProCount) * 100).toFixed(0) 
+                            : 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full"
+                          style={{
+                            width: `${stats.contractorProCount > 0 
+                              ? (stats.aiReceptionistSubscribers / stats.contractorProCount) * 100 
+                              : 0}%`
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                        {stats.aiReceptionistSubscribers} of {stats.contractorProCount} Pro users
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <MapTrifold size={16} className="text-purple-600 dark:text-purple-400" />
+                          <span className="text-sm font-medium">Territory Lock</span>
+                        </div>
+                        <span className="text-sm font-bold">
+                          {stats.contractorProCount > 0 
+                            ? ((stats.territoryLockSubscribers / stats.contractorProCount) * 100).toFixed(0) 
+                            : 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-purple-600 dark:bg-purple-400 h-2 rounded-full"
+                          style={{
+                            width: `${stats.contractorProCount > 0 
+                              ? (stats.territoryLockSubscribers / stats.contractorProCount) * 100 
+                              : 0}%`
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                        {stats.territoryLockSubscribers} of {stats.contractorProCount} Pro users
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <TrendingUp size={16} className="text-amber-600 dark:text-amber-400" />
+                          <span className="text-sm font-medium">Priority Boost</span>
+                        </div>
+                        <span className="text-sm font-bold">
+                          {stats.contractorProCount > 0 
+                            ? ((stats.priorityBoostSubscribers / stats.contractorProCount) * 100).toFixed(0) 
+                            : 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-amber-600 dark:bg-amber-400 h-2 rounded-full"
+                          style={{
+                            width: `${stats.contractorProCount > 0 
+                              ? (stats.priorityBoostSubscribers / stats.contractorProCount) * 100 
+                              : 0}%`
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                        {stats.priorityBoostSubscribers} of {stats.contractorProCount} Pro users
+                      </p>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <Database size={16} className="text-green-600 dark:text-green-400" />
+                          <span className="text-sm font-medium">Storage Upgrades</span>
+                        </div>
+                        <span className="text-sm font-bold">
+                          {stats.contractorProCount > 0 
+                            ? ((stats.storageSubscribers / stats.contractorProCount) * 100).toFixed(0) 
+                            : 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-green-600 dark:bg-green-400 h-2 rounded-full"
+                          style={{
+                            width: `${stats.contractorProCount > 0 
+                              ? (stats.storageSubscribers / stats.contractorProCount) * 100 
+                              : 0}%`
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                        {stats.storageSubscribers} of {stats.contractorProCount} Pro users
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 border border-blue-200 dark:border-blue-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Avg Add-ons per Pro</p>
+                        <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                          {stats.contractorProCount > 0 
+                            ? ((stats.aiReceptionistSubscribers + stats.territoryLockSubscribers + 
+                                stats.priorityBoostSubscribers + stats.storageSubscribers) / stats.contractorProCount).toFixed(1)
+                            : 0}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Total Add-on Users</p>
+                        <p className="text-xl font-bold">
+                          {stats.aiReceptionistSubscribers + stats.territoryLockSubscribers + 
+                           stats.priorityBoostSubscribers + stats.storageSubscribers}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             </div>

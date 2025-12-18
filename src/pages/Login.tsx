@@ -34,7 +34,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
     if (!email.trim()) newErrors.email = "Email is required"
     else if (!validateEmail(email)) newErrors.email = "Please enter a valid email address"
     if (!password.trim()) newErrors.password = "Password is required"
-    else if (password.length < 6) newErrors.password = "Password must be at least 6 characters"
+    else if (password.length < 8) newErrors.password = "Password must be at least 8 characters"
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }, [email, password, validateEmail])
@@ -134,7 +134,7 @@ export function LoginPage({ onNavigate, onLogin }: LoginPageProps) {
                   <Label htmlFor="password" className="text-base font-semibold">Password</Label>
                   <button
                     type="button"
-                    onClick={() => onNavigate("login")}
+                    onClick={() => onNavigate("forgot-password")}
                     className="text-sm text-[#00FF00] hover:underline font-medium"
                   >
                     Forgot password?

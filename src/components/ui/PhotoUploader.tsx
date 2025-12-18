@@ -11,6 +11,7 @@ interface PhotoUploaderProps {
   onPhotosChange?: (photos: UploadedPhoto[]) => void
   className?: string
   compact?: boolean
+  photos?: UploadedPhoto[] // Optional initial photos (for controlled component usage)
 }
 
 export function PhotoUploader({ 
@@ -131,7 +132,7 @@ export function PhotoUploader({
               <div key={photo.id} className="relative group aspect-square">
                 <img
                   src={photo.preview}
-                  alt="Upload preview"
+                  alt={`Photo ${photos.indexOf(photo) + 1} preview`}
                   className="w-full h-full object-cover rounded-md border-0 shadow-md hover:shadow-lg"
                 />
                 
@@ -191,6 +192,15 @@ export function PhotoUploader({
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload photos by clicking or pressing Enter"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            fileInputRef.current?.click()
+          }
+        }}
         className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-8 text-center hover:border-gray-400 dark:hover:border-gray-600 transition-all cursor-pointer shadow-sm hover:shadow-md"
         onClick={() => fileInputRef.current?.click()}
       >
@@ -250,7 +260,7 @@ export function PhotoUploader({
                 <div className="aspect-square rounded-lg overflow-hidden bg-muted">
                   <img
                     src={photo.preview}
-                    alt="Upload preview"
+                    alt={`Photo ${photos.indexOf(photo) + 1} preview`}
                     className="w-full h-full object-cover"
                   />
                 </div>

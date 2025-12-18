@@ -94,6 +94,12 @@ export interface Job {
     urgency?: 'low' | 'medium' | 'high' | 'emergency'
     estimatedScope?: string
   }
+  // PostJob media tracking properties
+  hasVoiceRecording?: boolean
+  photoCount?: number
+  videoCount?: number
+  hasAudioFile?: boolean
+  recordings?: string[]
 }
 
 export interface Bid {
@@ -110,8 +116,6 @@ export interface Bid {
   isBoosted?: boolean // Bid boost feature
   boostedUntil?: string // Boost expiration timestamp
   boostCount?: number // Number of boosts used on this job (max 2)
-  responseTimeMinutes?: number
-  isLightningBid?: boolean
   selectedTimeSlot?: string
 }
 
@@ -795,24 +799,24 @@ export interface CustomObjectPermissions {
   delete: string[]
 }
 
-export interface Territory {
+export interface ContractorTerritory {
   id: string
   contractorId: string
   name: string
   type: 'geographic' | 'product' | 'hybrid'
-  boundaries: TerritoryBoundary[]
+  boundaries: ContractorTerritoryBoundary[]
   assignedUsers: string[]
-  rules: TerritoryRule[]
+  rules: ContractorTerritoryRule[]
   createdAt: string
 }
 
-export interface TerritoryBoundary {
+export interface ContractorTerritoryBoundary {
   type: 'zipcode' | 'city' | 'state' | 'radius' | 'custom'
   value: string | number
   coordinates?: { lat: number; lng: number; radius?: number }
 }
 
-export interface TerritoryRule {
+export interface ContractorTerritoryRule {
   field: string
   operator: 'equals' | 'contains' | 'greater-than' | 'less-than'
   value: any

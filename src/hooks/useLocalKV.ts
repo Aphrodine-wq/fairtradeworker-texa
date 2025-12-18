@@ -5,6 +5,29 @@ import { encryptData, decryptData } from '@/lib/security'
 // Cache for decrypted values to avoid repeated decryption
 const decryptionCache = new Map<string, { data: any; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+const MAX_CACHE_SIZE = 100 // Maximum number of cached entries
+
+// Clean up cache: remove expired entries and enforce size limit
+function cleanupCache() {
+  const now = Date.now()
+  
+  // Remove expired entries
+  for (const [key, value] of decryptionCache.entries()) {
+    if (now - value.timestamp > CACHE_TTL) {
+      decryptionCache.delete(key)
+    }
+  }
+  
+  // If still over limit, remove oldest entries (LRU)
+  if (decryptionCache.size > MAX_CACHE_SIZE) {
+    const entries = Array.from(decryptionCache.entries())
+    entries.sort((a, b) => a[1].timestamp - b[1].timestamp) // Sort by timestamp (oldest first)
+    const toRemove = entries.slice(0, decryptionCache.size - MAX_CACHE_SIZE)
+    for (const [key] of toRemove) {
+      decryptionCache.delete(key)
+    }
+  }
+}
 
 // Compression utility (simple JSON compression)
 function compressData(data: string): string {
@@ -35,6 +58,9 @@ export function useLocalKV<T>(
     try {
       const item = window.localStorage.getItem(key)
       if (!item) return initialValue
+      
+      // Clean up cache periodically
+      cleanupCache()
       
       // Check cache first
       const cached = decryptionCache.get(key)
@@ -70,6 +96,10 @@ export function useLocalKV<T>(
       return parsed
     } catch (error) {
       console.warn(`Error loading ${key} from localStorage:`, error)
+      // Log parse errors for debugging
+      if (error instanceof Error) {
+        console.error('Parse error details:', error.message)
+      }
       return initialValue
     }
   })
@@ -97,6 +127,7 @@ export function useLocalKV<T>(
         
         // Update cache
         if (encrypt) {
+          cleanupCache() // Clean before adding new entry
           decryptionCache.set(key, { data: value, timestamp: Date.now() })
         }
         

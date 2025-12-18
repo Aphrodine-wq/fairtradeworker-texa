@@ -34,6 +34,7 @@ import {
 } from "@phosphor-icons/react"
 import { BackButton } from "@/components/ui/BackButton"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Badge } from "@/components/ui/badge"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 import { toast } from "sonner"
@@ -111,13 +112,13 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
 
           {/* Settings Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-1 overflow-x-auto">
+              <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-1 overflow-x-auto">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="appearance">Appearance</TabsTrigger>
               <TabsTrigger value="workspace">Workspace</TabsTrigger>
               <TabsTrigger value="notifications">Notifications</TabsTrigger>
               <TabsTrigger value="integrations">Integrations</TabsTrigger>
-              <TabsTrigger value="billing">Billing</TabsTrigger>
+              <TabsTrigger value="payments">Billing</TabsTrigger>
               <TabsTrigger value="security">Security</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
               <TabsTrigger value="advanced">Advanced</TabsTrigger>
@@ -166,6 +167,98 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
                   <Button onClick={handleSaveProfile} className="w-full md:w-auto">
                     Save Changes
                   </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Appearance Tab */}
+            <TabsContent value="appearance" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Palette size={20} weight="duotone" className="text-primary" />
+                    Appearance Settings
+                  </CardTitle>
+                  <CardDescription>Customize the look and feel of your interface</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label>Theme</Label>
+                    <Select value={theme} onValueChange={(value: 'light' | 'dark' | 'auto') => setTheme(value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="light">Light</SelectItem>
+                        <SelectItem value="dark">Dark</SelectItem>
+                        <SelectItem value="auto">Auto (System)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Font Size</Label>
+                    <Select value={fontSize} onValueChange={(value: 'small' | 'medium' | 'large') => setFontSize(value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="small">Small</SelectItem>
+                        <SelectItem value="medium">Medium</SelectItem>
+                        <SelectItem value="large">Large</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>UI Density</Label>
+                    <Select value={uiDensity} onValueChange={(value: 'compact' | 'comfortable' | 'spacious') => setUiDensity(value)}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="compact">Compact</SelectItem>
+                        <SelectItem value="comfortable">Comfortable</SelectItem>
+                        <SelectItem value="spacious">Spacious</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Workspace Tab */}
+            <TabsContent value="workspace" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Layout size={20} weight="duotone" className="text-primary" />
+                    Workspace Settings
+                  </CardTitle>
+                  <CardDescription>Configure your workspace preferences</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label>Default View</Label>
+                    <Select value={defaultView} onValueChange={setDefaultView}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="dashboard">Dashboard</SelectItem>
+                        <SelectItem value="jobs">Jobs</SelectItem>
+                        <SelectItem value="crm">CRM</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Show Quick Actions</Label>
+                      <p className="text-sm text-muted-foreground">Display quick action buttons in the sidebar</p>
+                    </div>
+                    <Switch
+                      checked={showQuickActions}
+                      onCheckedChange={setShowQuickActions}
+                    />
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -221,7 +314,25 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
               </Card>
             </TabsContent>
 
-            {/* Payments Tab */}
+            {/* Integrations Tab */}
+            <TabsContent value="integrations" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Plugs size={20} weight="duotone" className="text-primary" />
+                    Integrations
+                  </CardTitle>
+                  <CardDescription>Connect external services and tools</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 border border-border rounded-lg">
+                    <p className="text-sm text-muted-foreground">No integrations connected</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Billing Tab */}
             <TabsContent value="payments" className="mt-6">
               <Card>
                 <CardHeader>
@@ -247,6 +358,132 @@ export function SettingsPage({ user, onNavigate }: SettingsPageProps) {
                     <CreditCard className="mr-2" size={18} />
                     Manage Payment Methods
                   </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Security Tab */}
+            <TabsContent value="security" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield size={20} weight="duotone" className="text-primary" />
+                    Security Settings
+                  </CardTitle>
+                  <CardDescription>Manage your account security</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Two-Factor Authentication</Label>
+                      <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+                    </div>
+                    <Switch
+                      checked={twoFactorEnabled}
+                      onCheckedChange={setTwoFactorEnabled}
+                    />
+                  </div>
+                  <Separator />
+                  <div>
+                    <Label className="mb-2 block">Active Sessions</Label>
+                    <div className="space-y-2">
+                      {activeSessions.map((session) => (
+                        <div key={session.id} className="flex items-center justify-between p-3 border border-border rounded-lg">
+                          <div>
+                            <p className="font-medium">{session.device}</p>
+                            <p className="text-sm text-muted-foreground">{session.location} • {session.lastActive}</p>
+                          </div>
+                          {session.current && (
+                            <Badge variant="secondary">Current</Badge>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Preferences Tab */}
+            <TabsContent value="preferences" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Gear size={20} weight="duotone" className="text-primary" />
+                    Preferences
+                  </CardTitle>
+                  <CardDescription>Set your application preferences</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-2">
+                    <Label>Language</Label>
+                    <Select value={language} onValueChange={setLanguage}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">English</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Date Format</Label>
+                    <Select value={dateFormat} onValueChange={setDateFormat}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                        <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                        <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Timezone</Label>
+                    <Select value={timezone} onValueChange={setTimezone}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="America/Chicago">Central Time</SelectItem>
+                        <SelectItem value="America/New_York">Eastern Time</SelectItem>
+                        <SelectItem value="America/Denver">Mountain Time</SelectItem>
+                        <SelectItem value="America/Los_Angeles">Pacific Time</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Currency</Label>
+                    <Select value={currency} onValueChange={setCurrency}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="USD">USD ($)</SelectItem>
+                        <SelectItem value="EUR">EUR (€)</SelectItem>
+                        <SelectItem value="GBP">GBP (£)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Advanced Tab */}
+            <TabsContent value="advanced" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Code size={20} weight="duotone" className="text-primary" />
+                    Advanced Settings
+                  </CardTitle>
+                  <CardDescription>Advanced configuration options</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="p-4 border border-border rounded-lg">
+                    <p className="text-sm text-muted-foreground">Advanced settings coming soon</p>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>

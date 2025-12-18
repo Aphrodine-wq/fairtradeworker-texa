@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -25,7 +25,8 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [referrals] = useKV<ContractorReferral[]>("contractor-referrals", [])
 
-  const initializeTerritories = () => {
+  // Move side effect to useEffect instead of useMemo
+  useEffect(() => {
     if (!territories || territories.length === 0) {
       const initialTerritories: Territory[] = TEXAS_COUNTIES.map((county, idx) => ({
         id: idx + 1,
@@ -33,12 +34,20 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
         status: 'available' as const
       }))
       setTerritories(initialTerritories)
-      return initialTerritories
+    }
+  }, [territories, setTerritories])
+
+  const currentTerritories = useMemo(() => {
+    if (!territories || territories.length === 0) {
+      // Return default territories for display (side effect handled in useEffect above)
+      return TEXAS_COUNTIES.map((county, idx) => ({
+        id: idx + 1,
+        countyName: `${county} County`,
+        status: 'available' as const
+      }))
     }
     return territories
-  }
-
-  const currentTerritories = useMemo(() => initializeTerritories(), [territories])
+  }, [territories])
 
   const handleClaimTerritory = (territory: Territory) => {
     if (territory.status === 'claimed') {
