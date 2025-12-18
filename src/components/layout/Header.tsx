@@ -295,6 +295,10 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
     setOpen(false)
   }, [setActiveTab, onNavigate])
 
+  const handleSavePreferences = useCallback((prefs: any) => {
+    savePreferences(prefs.items)
+  }, [savePreferences])
+
   const handleOpenCustomizerClick = useCallback(() => {
     setOpen(false) // Close mobile menu
     if (onOpenCustomizer) {
