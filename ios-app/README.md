@@ -40,22 +40,33 @@ This iOS app includes all core features from the web application:
 
 ### For Homeowners
 - 📝 Post jobs with AI-powered scoping
+- 🎯 Choose from 7 major project templates (Kitchen, Bathroom, Roof, Deck, Fence, Room Addition, Custom)
+- 📊 Select job tier (Small/Medium/Large) for better matching
 - 📷 Upload photos of your project
-- 💰 Get instant price estimates
+- 💰 Get instant price estimates based on project type
 - 🔔 Receive bids from contractors
 - ✅ Accept bids and track progress
 
-### For Contractors
-- 🔍 Browse available jobs
+### For Contractors/Subcontractors
+- 🔍 Browse available jobs with Netflix-style horizontal carousel
 - 💵 Submit bids (no fees!)
-- 📊 View performance stats
+- 📊 View jobs by category (Fresh, Quick, Standard, Major)
 - 🏆 Build your reputation
 - 💼 Manage your business
+- 🎨 100% of earnings kept
 
 ### For Operators
 - 🗺️ Claim territories
 - 📈 View analytics
 - 🎯 Track key metrics
+
+### Latest Updates (December 2025)
+- ✅ **Project Templates**: 7 major project types with price ranges
+- ✅ **Multi-Step Job Posting**: Tier selection → Project type → Details
+- ✅ **2-Column Grid Layout**: Mobile-optimized project selection
+- ✅ **Enhanced AI Scoping**: Better estimates based on project type
+- ✅ **Shadow-Based Design**: Consistent with web app (no borders, depth through shadows)
+- ✅ **Netflix-Style Browse**: Horizontal scrolling job lanes
 
 ## 🏗️ Project Structure
 
@@ -64,18 +75,18 @@ ios-app/
 ├── app/                    # Expo Router screens
 │   ├── (tabs)/            # Tab navigation screens
 │   │   ├── index.tsx      # Home screen
-│   │   ├── browse.tsx     # Browse jobs
+│   │   ├── browse.tsx     # Browse jobs (Netflix-style)
 │   │   ├── dashboard.tsx  # User dashboard
 │   │   └── profile.tsx    # Profile/settings
 │   ├── job/
 │   │   └── [id].tsx       # Job details
 │   ├── login.tsx          # Login screen
 │   ├── signup.tsx         # Signup screen
-│   ├── post-job.tsx       # Post job screen
+│   ├── post-job.tsx       # Post job screen (multi-step with templates)
 │   └── _layout.tsx        # Root layout
 ├── src/
 │   ├── components/        # Reusable components
-│   │   ├── ui/           # Base UI components
+│   │   ├── ui/           # Base UI components (shadow-based design)
 │   │   └── jobs/         # Job-related components
 │   ├── constants/        # Theme & demo data
 │   ├── store/            # Zustand state management
@@ -89,11 +100,24 @@ ios-app/
 
 ## 🎨 Design System
 
-The app follows the same design system as the web app:
+The app follows the same design system as the web app (updated December 2025):
 
+### Visual Philosophy
+- **Depth**: Shadow-based (NO borders) - cards and buttons use layered shadows
+- **Cards**: Rounded corners (`borderRadius: 16`), elevated appearance
+- **Buttons**: 3D effects with layered shadows, touch feedback
+- **Colors**: Clean palette with construction orange primary
+
+### Colors
 - **Primary Color**: Construction Orange (#F97316)
 - **Secondary Color**: Trust Blue (#3B82F6)
 - **Accent Color**: Bright Yellow-Orange (#FBBF24)
+
+### Shadow System
+- Small shadows: 0-2px offset, 5% opacity
+- Medium shadows: 0-4px offset, 10% opacity
+- Large shadows: 0-8px offset, 15% opacity
+- 3D Button shadows: 0-6px offset, 30% opacity with hover lift
 
 ## 🔧 Build for Production
 

@@ -30,36 +30,42 @@ const PROJECT_TEMPLATES = [
     emoji: '🍳',
     title: 'Kitchen Remodel',
     priceRange: '$15K-$50K · 4-8 weeks',
+    isCustom: false,
   },
   {
     type: 'bathroom-remodel' as const,
     emoji: '🚿',
     title: 'Bathroom Remodel',
     priceRange: '$8K-$35K · 2-5 weeks',
+    isCustom: false,
   },
   {
     type: 'roof-replacement' as const,
     emoji: '🏠',
     title: 'Roof Replacement',
     priceRange: '$8K-$25K · 2-5 days',
+    isCustom: false,
   },
   {
     type: 'deck-build' as const,
     emoji: '🪵',
     title: 'Deck Build',
     priceRange: '$8K-$35K · 1-3 weeks',
+    isCustom: false,
   },
   {
     type: 'fence-installation' as const,
     emoji: '🚧',
     title: 'Fence Installation',
     priceRange: '$3K-$15K · 2-5 days',
+    isCustom: false,
   },
   {
     type: 'room-addition' as const,
     emoji: '🏗️',
     title: 'Room Addition',
     priceRange: '$25K-$100K · 6-12 weeks',
+    isCustom: false,
   },
   {
     type: 'custom' as const,
@@ -382,9 +388,6 @@ export default function PostJobScreen() {
             </View>
           )}
 
-          {/* Input Screen */}
-          {step === 'input' && (
-            <View>
           {/* Input Screen */}
           {step === 'input' && (
             <View>
