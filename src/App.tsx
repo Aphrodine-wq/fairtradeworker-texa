@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense, memo, useMemo, useCallback, Component, ReactNode } from "react"
+import { useState, useEffect, lazy, Suspense, useMemo, useCallback, Component, ReactNode } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
@@ -14,8 +14,6 @@ import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { migrateTerritoriesData } from "@/lib/territory/migration"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
-import { AnimatePresence } from "framer-motion"
-import { PageTransition } from "@/components/layout/PageTransition"
 
 const retryImport = <T,>(importFn: () => Promise<T>, retries = 3, delay = 1000): Promise<T> => {
   return importFn().catch((error) => {
@@ -328,8 +326,7 @@ const EarnRewardsPage = lazy(() => retryImport(() =>
   import("@/pages/quick-actions/EarnRewardsPage").then(m => ({ default: m.EarnRewardsPage }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'territory-claim' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help'
-type NavigationState = { page: Page; jobId?: string }
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'territory-claim' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help' | 'browse-jobs-page' | 'find-opportunities' | 'my-jobs-page' | 'manage-projects' | 'customer-crm' | 'manage-relationships' | 'invoices-page' | 'track-payments' | 'business-tools-page' | 'all-in-one-toolkit' | 'route-builder' | 'optimize-routes' | 'daily-briefing' | 'todays-overview' | 'certifications' | 'manage-credentials' | 'smart-replies' | 'quick-responses' | 'referrals' | 'earn-rewards'
 
 class ErrorBoundary extends Component<
   { children: ReactNode; onReset: () => void },
@@ -406,7 +403,7 @@ function App() {
   const [isDemoMode, setIsDemoMode] = useLocalKV<boolean>("is-demo-mode", false)
   const [preselectedRole, setPreselectedRole] = useState<UserRole | undefined>()
   const [jobs, setJobs] = useLocalKV<Job[]>("jobs", [])
-  const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
+  const [, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
   const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   const [bidTemplates, setBidTemplates] = useLocalKV<import("@/lib/types").BidTemplate[]>("bidTemplates", [])
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false)
@@ -1012,19 +1009,19 @@ function App() {
       case 'voice-bids':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <VoiceBidRecorder user={currentUser} />
+            <VoiceBidRecorder jobId="" jobTitle="" jobDescription="" />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'neighborhood-alerts':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <NeighborhoodJobAlerts userId={currentUser.id} userZipCode="78749" />
+            <NeighborhoodJobAlerts contractorId={currentUser.id} isPro={currentUser.isPro} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'skill-trading':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <SkillTradingMarketplace userId={currentUser.id} userRating={4.8} userSkills={['plumbing', 'hvac']} />
+            <SkillTradingMarketplace contractorId={currentUser.id} contractorName={currentUser.fullName} contractorRating={4.8} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'material-calc':
@@ -1036,13 +1033,13 @@ function App() {
       case 'offline-mode':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <OfflineFieldMode userId={currentUser.id} />
+            <OfflineFieldMode contractorId={currentUser.id} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'project-stories':
         return currentUser ? (
           <Suspense fallback={<LoadingFallback />}>
-            <ProjectStoryGenerator userId={currentUser.id} userRole={currentUser.role} />
+            <ProjectStoryGenerator contractorName={currentUser.fullName} contractorLocation={currentUser.companyAddress || 'Unknown'} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'seasonal-clubs':

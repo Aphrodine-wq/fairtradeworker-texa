@@ -1367,8 +1367,8 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                                     )}
                                   </div>
                                   <p className="text-xs text-muted-foreground line-clamp-2">{job.description}</p>
-                                  {job.location && (
-                                    <p className="text-xs text-muted-foreground mt-1">{job.location}</p>
+                                  {job.territoryId && (
+                                    <p className="text-xs text-muted-foreground mt-1">Territory #{job.territoryId}</p>
                                   )}
                                 </div>
                               </div>
@@ -1614,10 +1614,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                         <p className="text-sm text-foreground leading-relaxed">{selectedJob.aiScope.scope}</p>
                       </div>
                     )}
-                    {selectedJob.location && (
+                    {selectedJob.territoryId && (
                       <div>
-                        <h4 className="text-sm font-semibold text-muted-foreground mb-1">Location</h4>
-                        <p className="text-sm text-foreground">{selectedJob.location}</p>
+                        <h4 className="text-sm font-semibold text-muted-foreground mb-1">Territory</h4>
+                        <p className="text-sm text-foreground">Territory #{selectedJob.territoryId}</p>
                   </div>
                 )}
                     {selectedJob.aiScope?.materials && selectedJob.aiScope.materials.length > 0 && (

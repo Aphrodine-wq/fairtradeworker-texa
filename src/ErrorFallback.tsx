@@ -13,8 +13,8 @@ export const ErrorFallback = ({ error, resetErrorBoundary, errorInfo }: ErrorFal
   // Log error to console and potentially to tracking service
   useEffect(() => {
     console.error('Application Error:', error, errorInfo);
-    // TODO: Add error tracking service integration
-    // logErrorToService(error, errorInfo);
+    // Error tracking service integration can be added here
+    // Example: if (window.sentry) window.sentry.captureException(error, { contexts: { react: errorInfo } })
   }, [error, errorInfo]);
 
   // When encountering an error in the development mode, rethrow it and don't display the boundary. 

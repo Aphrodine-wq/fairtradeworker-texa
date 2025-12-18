@@ -32,16 +32,20 @@ describe('Viral Features', () => {
     it('validates correct referral code format', () => {
       const validCode = 'JD-ABC123'
       expect(validateReferralCode(validCode)).toBe(true)
+      expect(validateReferralCode('AB-XYZ')).toBe(true)
+      expect(validateReferralCode('ABCD-1234')).toBe(true)
     })
 
     it('rejects invalid referral codes', () => {
       expect(validateReferralCode('')).toBe(false)
       expect(validateReferralCode('abc')).toBe(false)
       expect(validateReferralCode('123')).toBe(false)
+      expect(validateReferralCode('JDABC123')).toBe(false) // Missing dash
     })
 
     it('rejects codes that are too short', () => {
       expect(validateReferralCode('AB')).toBe(false)
+      expect(validateReferralCode('A-1')).toBe(false) // Too short after dash
     })
   })
 })

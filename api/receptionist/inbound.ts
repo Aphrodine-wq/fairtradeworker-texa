@@ -16,14 +16,14 @@
 
 import crypto from 'crypto'
 
-// @ts-ignore - Vercel serverless function types
+// @ts-expect-error - Vercel serverless function types
 interface VercelRequest {
   method?: string
   body?: any
   headers?: Record<string, string>
 }
 
-// @ts-ignore - Vercel serverless function types
+// @ts-expect-error - Vercel serverless function types
 interface VercelResponse {
   status: (code: number) => VercelResponse
   json: (data: any) => void

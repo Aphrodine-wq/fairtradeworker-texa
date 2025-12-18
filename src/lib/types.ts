@@ -29,6 +29,7 @@ export interface User {
   feesAvoided?: number
   availableNow?: boolean
   availableNowSince?: string
+  phone?: string
 }
 
 export type JobSize = 'small' | 'medium' | 'large'

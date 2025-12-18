@@ -161,20 +161,6 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       {/* Starfield background */}
       <VoidBackground />
 
-      {/* CRM Void System Title */}
-      <motion.div
-        className="absolute top-8 left-1/2 -translate-x-1/2 z-30"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <h1 className="text-4xl md:text-5xl font-bold text-center">
-          <span className="text-white dark:text-white brightness-110">
-            CRM Void System
-          </span>
-        </h1>
-      </motion.div>
-
       {/* Void Clock - Top Right */}
       <motion.div
         className="absolute top-8 right-8 z-30"
@@ -183,6 +169,16 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         transition={{ delay: 0.5 }}
       >
         <VoidClock />
+      </motion.div>
+
+      {/* Music Player - Top Right, below clock */}
+      <motion.div
+        className="absolute top-48 right-8 z-30"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, type: 'spring', stiffness: 900, damping: 18 }}
+      >
+        <MusicPlayer />
       </motion.div>
 
       {/* Bento Grid - Top Left (below title) */}
@@ -355,8 +351,6 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         )}
       </AnimatePresence>
 
-      {/* Music Player */}
-      <MusicPlayer />
 
     </div>
   )

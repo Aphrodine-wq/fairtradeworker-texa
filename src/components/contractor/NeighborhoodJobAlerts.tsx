@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { MapPin, Bell, BellRinging, TrendingUp, House, Lightning, Eye, EyeSlash, Crown, Star, Clock, DollarSign } from '@phosphor-icons/react'
+import { MapPin, Bell, BellRinging, TrendUp, House, Lightning, Eye, EyeSlash, Crown, Star, Clock, CurrencyDollar } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -230,7 +230,7 @@ export function NeighborhoodJobAlerts({
   const alertTypeIcon = (type: NeighborhoodAlert['type']) => {
     switch (type) {
       case 'cluster': return <MapPin className="h-4 w-4" />
-      case 'high_activity': return <TrendingUp className="h-4 w-4" />
+      case 'high_activity': return <TrendUp className="h-4 w-4" />
       case 'premium': return <Lightning className="h-4 w-4" />
       case 'trend': return <House className="h-4 w-4" />
     }
@@ -360,7 +360,7 @@ export function NeighborhoodJobAlerts({
                                 {alert.jobCount} jobs
                               </span>
                               <span className="flex items-center gap-1">
-                                <DollarSign className="h-4 w-4 text-green-500" />
+                                <CurrencyDollar className="h-4 w-4 text-green-500" />
                                 ~${alert.avgValue} avg
                               </span>
                             </div>

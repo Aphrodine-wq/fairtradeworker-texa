@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { 
-  ChartLine, ChartBar, TrendingUp, DollarSign, Users, 
-  Calendar, Target, BarChart, PieChart, Download,
+  ChartLine, ChartBar, TrendUp, CurrencyDollar, Users,
+  Calendar, Target, Download,
   Plus, X, Settings
 } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -148,7 +148,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-2">
-            <BarChart weight="duotone" size={28} className="text-black dark:text-white" />
+            <ChartBar weight="duotone" size={28} className="text-black dark:text-white" />
             Advanced Analytics & Business Intelligence
           </h2>
           <p className="text-muted-foreground mt-1">
@@ -188,7 +188,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
             <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <DollarSign weight="duotone" size={24} className="text-black dark:text-white" />
+                  <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
                   <span className="text-xs text-muted-foreground">Total Revenue</span>
                 </div>
                 <div className="text-2xl font-bold text-black dark:text-white">
@@ -383,7 +383,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
 
           {dashboards.length === 0 ? (
             <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
-              <BarChart size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
+              <ChartBar size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground mb-4">No custom dashboards yet</p>
               <Button>Create Your First Dashboard</Button>
             </Card>
@@ -442,7 +442,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
 
             <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all">
               <CardContent className="p-6">
-                <TrendingUp weight="duotone" size={32} className="text-black dark:text-white mb-3" />
+                <TrendUp weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Pipeline Report</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Pipeline health, stage analysis, and conversion metrics

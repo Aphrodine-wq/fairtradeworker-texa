@@ -26,3 +26,14 @@ export function calculateJobToFirstBidTime(jobCreatedAt: string, firstBidCreated
   const bidTime = new Date(firstBidCreatedAt).getTime()
   return Math.round((bidTime - jobTime) / 1000 / 60)
 }
+
+/**
+ * Validate referral code format
+ * Format: XX-ABC123 (2-4 letter prefix, dash, 3-6 alphanumeric)
+ */
+export function validateReferralCode(code: string): boolean {
+  if (!code || code.length < 6) return false
+  // Check for format: letters-dash-alphanumeric
+  const pattern = /^[A-Z]{2,4}-[A-Z0-9]{3,6}$/i
+  return pattern.test(code)
+}

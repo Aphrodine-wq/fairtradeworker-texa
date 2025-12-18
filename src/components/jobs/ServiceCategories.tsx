@@ -260,62 +260,29 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
               <Card
-                className="cursor-pointer h-full border-0 hover:shadow-lg transition-all overflow-hidden"
+                className="cursor-pointer h-full border-0 hover:shadow-lg transition-all"
                 onClick={() => handleCategoryClick(category.id)}
               >
-                <CardContent className="p-0 flex flex-col">
-                  {/* Category Image */}
-                  {category.image && (
-                    <div className="relative h-32 w-full overflow-hidden">
-                      <img 
-                        src={category.image} 
-                        alt={category.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          // Fallback to icon if image fails to load
-                          e.currentTarget.style.display = 'none'
-                        }}
+                <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    style={{ willChange: 'transform' }}
+                  >
+                    <div
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${colorStyle.bg} relative shadow-lg`}
+                    >
+                      <Icon 
+                        size={28} 
+                        weight="fill" 
+                        className={colorStyle.text}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      <div className="absolute bottom-2 left-2 right-2">
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center ${colorStyle.bg} shadow-lg`}
-                        >
-                          <Icon 
-                            size={20} 
-                            weight="fill" 
-                            className={colorStyle.text}
-                          />
-                        </div>
-                      </div>
                     </div>
-                  )}
-                  {/* Fallback to icon if no image */}
-                  {!category.image && (
-                    <div className="p-5 flex flex-col items-center text-center space-y-3">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        whileTap={{ scale: 0.95 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                        style={{ willChange: 'transform' }}
-                      >
-                        <div
-                          className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${colorStyle.bg} relative shadow-lg`}
-                        >
-                          <Icon 
-                            size={28} 
-                            weight="fill" 
-                            className={colorStyle.text}
-                          />
-                        </div>
-                      </motion.div>
-                    </div>
-                  )}
-                  <div className="p-5 pt-3">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white text-center">
-                      {category.title}
-                    </h3>
-                  </div>
+                  </motion.div>
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                    {category.title}
+                  </h3>
                 </CardContent>
               </Card>
             </motion.div>
