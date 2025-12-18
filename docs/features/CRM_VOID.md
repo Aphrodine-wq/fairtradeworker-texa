@@ -38,17 +38,30 @@ All sub-menus close automatically after navigation.
 
 ## Drag & pin behavior
 
-- Every main menu circle is draggable. Positions persist in localStorage under `crm-void-menu-positions`.
+- **All elements are draggable**: Main menu circles, Voice Intake Hub, Music Player, Clock, and Bento Grid
+- **Collision detection**: Menus automatically push apart when overlapping to prevent stacking
+- **Boundary constraints**: All draggable elements are constrained to viewport bounds to prevent items flying off screen
+- **Position persistence**: All positions persist in localStorage:
+  - `crm-void-menu-positions`: `{ [menuId]: { x: number; y: number } }`
+  - `crm-void-voice-intake-position`: `{ x: number; y: number }`
+  - `crm-void-music-player-position`: `{ x: number; y: number }`
+  - `crm-void-clock-position`: `{ x: number; y: number }`
+  - `crm-void-bento-grid-position`: `{ x: number; y: number }`
 - Pins are stored in `crm-void-pinned-menus` and add a subtle ring. Pins persist across reloads and survive drags.
-- Default layout: 7 circles distributed evenly by angle across a 350px radius; custom positions override those defaults.
+- **Default layout**: Linear horizontal layout with 160px spacing, positioned above center to avoid overlap
+- **Menu stacking prevention**: Automatic collision resolution ensures menus never stack on top of each other
 
 ---
 
 ## Visuals & styling
 
+- **Modern menu design**: Larger menu buttons (24x24, up from 20x20) with rounded-2xl corners and gradient backgrounds when active
 - Menu and submenu buttons use borderless glass styling with soft shadows (`bg-white/90` light, `bg-black/90` dark) and hover shadows instead of borders.
+- **Enhanced animations**: Modern hover effects with scale and subtle rotation, active state pulsing icons and labels
 - Sub-menu clusters are pulled tighter (translate distance ~180px) for compact orbit rings.
 - Active main menus show a soft expanding pulse behind the circle; sub-menus animate in with a short spring and exit quickly.
+- **Music Player**: Modern, larger design (320-400px width) with gradient play button, improved controls, and full drag-and-drop support
+- **Improved shadows**: Deeper shadows for better depth perception
 
 ---
 
@@ -72,8 +85,12 @@ All sub-menus close automatically after navigation.
 
 ## Persistence keys
 
-- `crm-void-menu-positions`: `{ [menuId]: { x: number; y: number } }`
-- `crm-void-pinned-menus`: `MainMenuId[]`
+- `crm-void-menu-positions`: `{ [menuId]: { x: number; y: number } }` - Main menu positions
+- `crm-void-pinned-menus`: `MainMenuId[]` - Pinned menu IDs
+- `crm-void-voice-intake-position`: `{ x: number; y: number } | null` - Voice hub position
+- `crm-void-music-player-position`: `{ x: number; y: number } | null` - Music player position
+- `crm-void-clock-position`: `{ x: number; y: number } | null` - Clock position
+- `crm-void-bento-grid-position`: `{ x: number; y: number } | null` - Bento grid position
 
 ---
 

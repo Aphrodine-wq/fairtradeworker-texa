@@ -1,4 +1,3 @@
-```markdown
 # December 17, 2025 - Mobile UI Improvements
 
 ## Overview
@@ -161,5 +160,3 @@ Changes are committed and will trigger automatic deployment to Vercel on push to
 - Fixed iPhone black screen issue
 - Improved overall mobile UX
 - Enhanced touch interactions
-
-```

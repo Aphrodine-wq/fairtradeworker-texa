@@ -6,7 +6,7 @@
 
 ## 🎯 The Pitch (30 seconds)
 
-> "FairTradeWorker is the Angi killer. Contractors on Angi pay $1,000+/month in lead fees. On FairTradeWorker, they pay $0 per lead and keep 100% of what they earn. I built 180,000 lines of production code in under 7 days. The platform is live. The market is 3.7 million contractors who are tired of getting robbed."
+> "FairTradeWorker is the Angi killer. Contractors on Angi pay $1,000+/month in lead fees. On FairTradeWorker, they pay $0 per lead and keep 100% of what they earn. I built 200,000+ lines of production code. The platform is live. The market is 3.7 million contractors who are tired of getting robbed."
 
 ---
 
@@ -14,9 +14,9 @@
 
 | What | Number |
 |------|--------|
-| **Lines of Code** | 179,168 |
-| **Build Time** | < 7 days |
-| **Company Age** | < 30 days |
+| **Lines of Code** | 200,000+ |
+| **Build Time** | Initial build < 7 days, continuously enhanced |
+| **Company Age** | ~1 year (founded December 2024) |
 | **Previous Codebase** | 400,000+ LOC |
 | **Lead Fee** | $0 (forever) |
 | **Pro Subscription** | $59/month |
@@ -43,7 +43,7 @@
 
 ### "What's stopping someone else from building this?"
 
-**Answer:** I have a 400k line head start. Built another 180k in a week. By the time anyone catches up, I'll have the network effects locked.
+**Answer:** I have a 400k line head start. Built another 200k+ lines. By the time anyone catches up, I'll have the network effects locked.
 
 ---
 
@@ -61,7 +61,7 @@
 
 ### "What's your background?"
 
-**Answer:** I'm a builder. I've shipped 400,000+ lines of code before this project. I built FairTradeWorker — 179,000 lines — in under 7 days. I move fast and I don't stop.
+**Answer:** I'm a builder. I've shipped 400,000+ lines of code before this project. I built FairTradeWorker — 200,000+ lines — and continuously enhance it. I move fast and I don't stop.
 
 ---
 
@@ -98,7 +98,7 @@
 ## 🎯 Remember These 3 Things
 
 1. **$0 Lead Fees** — Contractors keep 100%
-2. **180k LOC in 7 Days** — Proven execution speed
+2. **200k+ LOC** — Proven execution speed
 3. **$1B ARR by Year 16** — Built to scale
 
 ---

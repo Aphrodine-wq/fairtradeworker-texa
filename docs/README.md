@@ -115,21 +115,18 @@ Historical documentation for reference:
 
 ## 🆕 Recent Updates
 
-### December 17, 2025
+### December 2025
 
-- ✨ **CRM Void** - New immersive space-themed CRM with voice intake
-- 📚 **Documentation Reorganization** - Full restructure of docs folder
+- ✨ **CRM Void Enhancements** - Drag-and-drop for all elements, modernized music player, menu collision detection
+- 🎨 **Modern UI Improvements** - Enhanced menu animations, better visual design
+- 📸 **Mock Job Images** - Automatic image generation for jobs without photos
+- 📚 **Documentation Update** - Comprehensive update of all documentation with current dates and metrics
+- 📁 **Documentation Reorganization** - Improved folder structure and navigation
 - 💰 **Pricing Standardization** - Unified $59/mo Pro pricing across all docs
-
-### December 16, 2025
-
-- 🎨 Modern, smooth UI design system implementation
-- ⚡ Performance optimizations (1000x improvements)
-- 🔐 Security hardening and audit
 
 ---
 
-*Last updated: December 17, 2025*
+*Last updated: December 2025*
 
 ### `status/` - Status Reports
 
@@ -146,28 +143,28 @@ Progress reports, completion summaries, and session notes:
 
 ### Getting Started
 
-1. **[PRD.md](./PRD.md)** - Product Requirements Document
-2. **[ROADMAP.md](./ROADMAP.md)** - Implementation Roadmap
-3. **[TESTING_SETUP.md](./TESTING_SETUP.md)** - Testing Setup Guide
+1. **[PRD](./product/PRD.md)** - Product Requirements Document
+2. **[Roadmap](./product/ROADMAP.md)** - Implementation Roadmap
+3. **[Testing Setup](./guides/TESTING_SETUP.md)** - Testing Setup Guide
 
 ### Current Status
 
-1. **[FINAL_STATUS.md](./FINAL_STATUS.md)** - Current platform status
-2. **[ALL_FEATURES_STATUS.md](./ALL_FEATURES_STATUS.md)** - Feature completion status
-3. **[TESTING_SUMMARY.md](./TESTING_SUMMARY.md)** - Test coverage summary
+1. **[Features](./product/FEATURES.md)** - Feature completion status
+2. **[Testing Summary](./guides/TESTING_SUMMARY.md)** - Test coverage summary
+3. **[Architecture](./technical/ARCHITECTURE.md)** - System architecture
 
 ### Key Features
 
-1. **[FREE_FEATURES_GUIDE.md](./FREE_FEATURES_GUIDE.md)** - Free features documentation
-2. **[VIRAL_FEATURES_IMPLEMENTED.md](./VIRAL_FEATURES_IMPLEMENTED.md)** - Viral growth features
-3. **[COMPLETE_FEATURES.md](./COMPLETE_FEATURES.md)** - Complete feature list
+1. **[Free Features Guide](./business/FREE_FEATURES_GUIDE.md)** - Free features documentation
+2. **[Viral Features](./business/VIRAL_FEATURES.md)** - Viral growth features
+3. **[Features List](./product/FEATURES.md)** - Complete feature list
 
 ### Technical Guides
 
-1. **[TECHNICAL_SPEC.md](./TECHNICAL_SPEC.md)** - Technical specifications
-2. **[AI_CONFIG.md](./AI_CONFIG.md)** - AI configuration
-3. **[SECURITY.md](./SECURITY.md)** - Security documentation
-4. **[PERFORMANCE_OPTIMIZATIONS.md](./PERFORMANCE_OPTIMIZATIONS.md)** - Performance guide
+1. **[Architecture](./technical/ARCHITECTURE.md)** - Technical specifications
+2. **[AI System](./technical/AI_SYSTEM.md)** - AI configuration
+3. **[Security](./technical/SECURITY.md)** - Security documentation
+4. **[Performance](./technical/PERFORMANCE.md)** - Performance guide
 
 ---
 
@@ -226,37 +223,36 @@ Documents follow these naming patterns:
 
 ### For Developers
 
-- [Testing Guide](./00_MOST_UPDATED/TESTING_COMPREHENSIVE_GUIDE.md)
-- [Recent Updates](./00_MOST_UPDATED/IMPLEMENTATION_RECENT_UPDATES.md)
-- [Technical Spec](./TECHNICAL_SPEC.md)
-- [AI Configuration](./AI_CONFIG.md)
+- [Testing Guide](./guides/TESTING_COMPREHENSIVE_GUIDE.md)
+- [Architecture](./technical/ARCHITECTURE.md)
+- [AI System](./technical/AI_SYSTEM.md)
+- [Deployment](./guides/DEPLOYMENT.md)
 
 ### For Product Managers
 
-- [PRD](./PRD.md)
-- [Roadmap](./ROADMAP.md)
-- [Feature Status](./ALL_FEATURES_STATUS.md)
-- [Final Status](./FINAL_STATUS.md)
+- [PRD](./product/PRD.md)
+- [Roadmap](./product/ROADMAP.md)
+- [Features](./product/FEATURES.md)
+- [Pricing](./product/PRICING.md)
 
 ### For Designers
 
-- [Design Spec](./DESIGN_SPEC.md)
-- [Theme Implementation](./THEME_IMPLEMENTATION.md)
-- [UI Redesign](./UI_REDESIGN_COMPLETE.md)
+- [Design System](./design/DESIGN_SYSTEM.md)
+- [Theme Implementation](./design/THEME_IMPLEMENTATION.md)
+- [UI Redesign](./design/UI_REDESIGN_COMPLETE.md)
 
 ### For QA/Testing
 
-- [Testing Guide](./00_MOST_UPDATED/TESTING_COMPREHENSIVE_GUIDE.md)
-- [Testing Summary](./TESTING_SUMMARY.md)
-- [E2E Testing](./E2E_TESTING_COMPLETE.md)
+- [Testing Guide](./guides/TESTING_COMPREHENSIVE_GUIDE.md)
+- [Testing Summary](./guides/TESTING_SUMMARY.md)
+- [E2E Testing](./guides/E2E_TESTING_COMPLETE.md)
 
 ---
 
 ## 📊 Documentation Statistics
 
 - **Total Documents**: 90+
-- **Most Recent Updates**: See `00_MOST_UPDATED/` folder
-- **Last Updated**: December 16, 2025
+- **Last Updated**: December 2025
 
 ---
 
@@ -272,29 +268,30 @@ Documents follow these naming patterns:
 ### Updating Documents
 
 1. Update the "Last Updated" date if applicable
-2. Move to `00_MOST_UPDATED/` if it's a critical recent update
-3. Keep cross-references updated
+2. Keep cross-references updated
+3. Move to `archive/` if superseded or outdated
 
 ### Archiving Old Documents
 
-- Move outdated documents to `status/archived/` (create if needed)
+- Move outdated documents to `archive/deprecated/`
+- Update `ARCHIVE_LIST.md` with rationale
 - Update this README to reflect archived status
 
 ---
 
 ## 💡 Tips
 
-1. **Start with `00_MOST_UPDATED/`** for the latest information
-2. **Check `FINAL_STATUS.md`** for current platform state
-3. **Use `PRD.md`** as the source of truth for product requirements
-4. **Refer to `TESTING_COMPREHENSIVE_GUIDE.md`** for all testing needs
-5. **Check `ROADMAP.md`** for planned features and priorities
+1. **Start with `archive/session-logs/`** for the latest information
+2. **Check `product/PRD.md`** for product requirements
+3. **Use `product/PRD.md`** as the source of truth for product requirements
+4. **Refer to `guides/TESTING_COMPREHENSIVE_GUIDE.md`** for all testing needs
+5. **Check `product/ROADMAP.md`** for planned features and priorities
 
 ---
 
 ## 🆘 Need Help?
 
-- Check the [Most Updated Documents](./00_MOST_UPDATED/) folder first
-- Review the [PRD](./PRD.md) for product context
-- Consult the [Technical Spec](./TECHNICAL_SPEC.md) for technical details
-- See [Testing Guide](./00_MOST_UPDATED/TESTING_COMPREHENSIVE_GUIDE.md) for testing questions
+- Check the [Session Logs](./archive/session-logs/) folder first
+- Review the [PRD](./product/PRD.md) for product context
+- Consult the [Architecture](./technical/ARCHITECTURE.md) for technical details
+- See [Testing Guide](./guides/TESTING_COMPREHENSIVE_GUIDE.md) for testing questions

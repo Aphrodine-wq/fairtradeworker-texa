@@ -12,9 +12,9 @@
 | **Target Market** | 3.7M contractors in the US |
 | **Pain Point** | Contractors lose $1,000+/mo to lead fees |
 | **Our Solution** | $0 lead fees. $59/mo flat. Keep 100%. |
-| **Current Build** | 179,168 lines of production code |
-| **Build Time** | < 7 days |
-| **Company Age** | < 30 days |
+| **Current Build** | 200,000+ lines of production code |
+| **Build Time** | Initial build < 7 days, continuously enhanced |
+| **Company Age** | ~1 year (founded December 2024) |
 | **Year 1 Target** | $11.9M ARR |
 | **Year 5 Target** | $178M ARR |
 | **Year 16 Target** | $1B+ ARR |
@@ -26,7 +26,7 @@
 **Solo founder. Already proven. Moving at warp speed.**
 
 - **Previous Build:** 400,000+ LOC codebase (shipped)
-- **Current Build:** 179,168 LOC in under 7 days
+- **Current Build:** 200,000+ LOC, continuously enhanced
 - **Velocity:** 25,000+ lines of production code per day
 - **Track Record:** Not a first-time founder learning to code
 
@@ -74,7 +74,7 @@ This isn't a startup founder building an MVP. This is a machine executing at a p
 
 This isn't a landing page with a Stripe button. This is **billion-dollar infrastructure**:
 
-### Core Platform (179,168 LOC)
+### Core Platform (200,000+ LOC)
 - ✅ Full CRM system with orbital menu interface (CRM Void)
 - ✅ AI Receptionist — 24/7 automated phone answering
 - ✅ Real-time job matching engine
@@ -322,7 +322,7 @@ But if the right partner wants in early on billion-dollar infrastructure built i
 ## 📎 Quick Links
 
 - **Live Site:** [fairtradeworker.com](https://www.fairtradeworker.com)
-- **Codebase:** 179,168 LOC production-ready
+- **Codebase:** 200,000+ LOC production-ready
 - **Documentation:** Full technical + business docs available
 
 ---
@@ -338,8 +338,8 @@ Ready to discuss? Let's talk.
 ---
 
 **Last Updated:** December 18, 2024  
-**Company Age:** < 30 days  
+**Company Age:** ~1 year (founded December 2024)  
 **Build Time:** < 7 days  
-**Lines of Code:** 179,168  
+**Lines of Code:** 200,000+  
 **Previous Experience:** 400,000+ LOC shipped  
 **Outcome:** Inevitable

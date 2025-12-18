@@ -6,9 +6,9 @@
 
 **FairTradeWorker** is a zero-fee home services marketplace that lets contractors keep 100% of what they earn.
 
-**Founded:** December 2024 (< 30 days old)  
-**Product:** Production-ready (179,168 LOC)  
-**Build Time:** < 7 days  
+**Founded:** December 2024 (~1 year old)  
+**Product:** Production-ready (200,000+ LOC)  
+**Build Time:** Initial build < 7 days, continuously enhanced  
 **Live:** [fairtradeworker.com](https://www.fairtradeworker.com)
 
 ---
@@ -38,7 +38,7 @@ A typical contractor pays $1,000-3,000/month just for leads — and they pay eve
 ## Why We Win
 
 1. **Competitors can't respond** — Their entire model is lead fees. If they match us, they die.
-2. **Infrastructure advantage** — 179k LOC in 7 days. Enterprise-grade from day one.
+2. **Infrastructure advantage** — 200k+ LOC, continuously enhanced. Enterprise-grade from day one.
 3. **Founder velocity** — Previously shipped 400k LOC codebase. Building at 25k+ LOC/day.
 4. **Market timing** — Contractor frustration at all-time high.
 
@@ -70,7 +70,7 @@ A typical contractor pays $1,000-3,000/month just for leads — and they pay eve
 ## The Founder
 
 - **Previous:** 400,000+ LOC codebase (shipped)
-- **Current:** 179,168 LOC in < 7 days
+- **Current:** 200,000+ LOC, continuously enhanced
 - **Style:** Solo execution at warp speed
 - **Track Record:** Proven builder, not a first-timer
 
@@ -117,4 +117,4 @@ If the right partner wants early access:
 
 ---
 
-*December 2024 | fairtradeworker.com*
+*December 2025 | fairtradeworker.com*

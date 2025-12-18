@@ -1,4 +1,3 @@
-```markdown
 # User Types and Pro Abilities
 
 This document outlines the different user types in FairTradeWorker and their respective Pro subscription abilities.
@@ -143,5 +142,3 @@ Operators are typically larger businesses or companies that manage multiple cont
 **Contractors keep 100% of what they earn. Always.**
 
 Pro subscriptions are optional enhancements that provide advanced business tools, but they do not affect the core principle that contractors pay zero fees on completed jobs.
-
-```
