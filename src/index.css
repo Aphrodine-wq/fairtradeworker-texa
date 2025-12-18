@@ -19,7 +19,7 @@
 }
 
 :root {
-  /* Safari fallbacks - RGB values */
+  /* Fallback colors for Safari and older browsers */
   --background: #ffffff;
   --foreground: #000000;
   --card: #ffffff;
@@ -40,36 +40,40 @@
   --input: #ffffff;
   --ring: #000000;
   --radius: 0.5rem;
-  
-  /* Modern browsers - oklch values (override above if supported) */
-  --background: oklch(1 0 0); /* Pure white background in light mode */
-  --foreground: oklch(0 0 0); /* Pure black text in light mode */
+}
 
-  --card: oklch(1 0 0); /* Pure white card background */
-  --card-foreground: oklch(0 0 0); /* Pure black text in light mode */
-  --popover: oklch(1 0 0); /* Pure white popover background */
-  --popover-foreground: oklch(0 0 0); /* Pure black text in light mode */
+/* Modern browsers with oklch support */
+@supports (color: oklch(0% 0 0)) {
+  :root {
+    --background: oklch(1 0 0); /* Pure white background in light mode */
+    --foreground: oklch(0 0 0); /* Pure black text in light mode */
 
-  --primary: oklch(0.506 0.213 264);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.706 0.12 264);
-  --secondary-foreground: oklch(0 0 0); /* Pure black text in light mode */
-  --accent: oklch(0.456 0.243 264);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(1 0 0);
+    --card: oklch(1 0 0); /* Pure white card background */
+    --card-foreground: oklch(0 0 0); /* Pure black text in light mode */
+    --popover: oklch(1 0 0); /* Pure white popover background */
+    --popover-foreground: oklch(0 0 0); /* Pure black text in light mode */
 
-  --muted: oklch(1 0 0); /* Pure white muted background */
-  --muted-foreground: oklch(0 0 0); /* Pure black text in light mode */
-  --border: oklch(0 0 0); /* Pure black borders - no transparency */
-  --input: oklch(1 0 0); /* Pure white input background */
-  --ring: oklch(0 0 0); /* Pure black focus ring */
+    --primary: oklch(0.506 0.213 264);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.706 0.12 264);
+    --secondary-foreground: oklch(0 0 0); /* Pure black text in light mode */
+    --accent: oklch(0.456 0.243 264);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(1 0 0);
 
-  --radius: 0.5rem; /* Subtle rounded corners - modern professional */
+    --muted: oklch(1 0 0); /* Pure white muted background */
+    --muted-foreground: oklch(0 0 0); /* Pure black text in light mode */
+    --border: oklch(0 0 0); /* Pure black borders - no transparency */
+    --input: oklch(1 0 0); /* Pure white input background */
+    --ring: oklch(0 0 0); /* Pure black focus ring */
+
+    --radius: 0.5rem; /* Subtle rounded corners - modern professional */
+  }
 }
 
 .dark {
-  /* Safari fallbacks - RGB values */
+  /* Fallback colors for Safari and older browsers */
   --background: #000000;
   --foreground: #ffffff;
   --card: #000000;
@@ -89,30 +93,34 @@
   --border: #ffffff;
   --input: #000000;
   --ring: #ffffff;
-  
-  /* Modern browsers - oklch values (override above if supported) */
-  --background: oklch(0 0 0); /* Pure black background in dark mode */
-  --foreground: oklch(1 0 0); /* Pure white text in dark mode */
+}
 
-  --card: oklch(0 0 0); /* Pure black card background */
-  --card-foreground: oklch(1 0 0); /* Pure white text in dark mode */
-  --popover: oklch(0 0 0); /* Pure black popover background */
-  --popover-foreground: oklch(1 0 0); /* Pure white text in dark mode */
+/* Modern browsers with oklch support */
+@supports (color: oklch(0% 0 0)) {
+  .dark {
+    --background: oklch(0 0 0); /* Pure black background in dark mode */
+    --foreground: oklch(1 0 0); /* Pure white text in dark mode */
 
-  --primary: oklch(0.606 0.213 264);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.306 0.05 264);
-  --secondary-foreground: oklch(1 0 0); /* Pure white text in dark mode */
-  --accent: oklch(0.556 0.243 264);
-  --accent-foreground: oklch(1 0 0);
-  --destructive: oklch(0.65 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
+    --card: oklch(0 0 0); /* Pure black card background */
+    --card-foreground: oklch(1 0 0); /* Pure white text in dark mode */
+    --popover: oklch(0 0 0); /* Pure black popover background */
+    --popover-foreground: oklch(1 0 0); /* Pure white text in dark mode */
 
-  --muted: oklch(0 0 0); /* Pure black muted background */
-  --muted-foreground: oklch(1 0 0); /* Pure white text in dark mode */
-  --border: oklch(1 0 0); /* Pure white borders - no transparency */
-  --input: oklch(0 0 0); /* Pure black input background */
-  --ring: oklch(1 0 0); /* Pure white focus ring */
+    --primary: oklch(0.606 0.213 264);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.306 0.05 264);
+    --secondary-foreground: oklch(1 0 0); /* Pure white text in dark mode */
+    --accent: oklch(0.556 0.243 264);
+    --accent-foreground: oklch(1 0 0);
+    --destructive: oklch(0.65 0.22 27);
+    --destructive-foreground: oklch(1 0 0);
+
+    --muted: oklch(0 0 0); /* Pure black muted background */
+    --muted-foreground: oklch(1 0 0); /* Pure white text in dark mode */
+    --border: oklch(1 0 0); /* Pure white borders - no transparency */
+    --input: oklch(0 0 0); /* Pure black input background */
+    --ring: oklch(1 0 0); /* Pure white focus ring */
+  }
 }
 
 @supports (backdrop-filter: blur(12px)) {
