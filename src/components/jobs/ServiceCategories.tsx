@@ -200,17 +200,20 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Bold, vibrant color scheme - using 500 shades for boldness
+  // Bold, vibrant color scheme - diverse assortment of colors
   const boldColors = [
     { bg: "bg-red-500 dark:bg-red-600", text: "text-white dark:text-white", index: 0 },
     { bg: "bg-orange-500 dark:bg-orange-600", text: "text-white dark:text-white", index: 1 },
     { bg: "bg-amber-500 dark:bg-amber-600", text: "text-white dark:text-white", index: 2 },
-    { bg: "bg-green-500 dark:bg-green-600", text: "text-white dark:text-white", index: 3 },
-    { bg: "bg-teal-500 dark:bg-teal-600", text: "text-white dark:text-white", index: 4 },
+    { bg: "bg-emerald-500 dark:bg-emerald-600", text: "text-white dark:text-white", index: 3 },
+    { bg: "bg-cyan-500 dark:bg-cyan-600", text: "text-white dark:text-white", index: 4 },
     { bg: "bg-blue-500 dark:bg-blue-600", text: "text-white dark:text-white", index: 5 },
-    { bg: "bg-indigo-500 dark:bg-indigo-600", text: "text-white dark:text-white", index: 6 },
-    { bg: "bg-purple-500 dark:bg-purple-600", text: "text-white dark:text-white", index: 7 },
-    { bg: "bg-pink-500 dark:bg-pink-600", text: "text-white dark:text-white", index: 8 },
+    { bg: "bg-violet-500 dark:bg-violet-600", text: "text-white dark:text-white", index: 6 },
+    { bg: "bg-fuchsia-500 dark:bg-fuchsia-600", text: "text-white dark:text-white", index: 7 },
+    { bg: "bg-rose-500 dark:bg-rose-600", text: "text-white dark:text-white", index: 8 },
+    { bg: "bg-lime-500 dark:bg-lime-600", text: "text-white dark:text-white", index: 9 },
+    { bg: "bg-sky-500 dark:bg-sky-600", text: "text-white dark:text-white", index: 10 },
+    { bg: "bg-yellow-500 dark:bg-yellow-600", text: "text-white dark:text-white", index: 11 },
   ]
 
   // Color similarity groups - colors that are too similar should not be adjacent

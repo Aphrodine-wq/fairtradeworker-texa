@@ -13,6 +13,9 @@ import { VoidBackground } from './VoidBackground'
 import { CentralVoiceHub } from './CentralVoiceHub'
 import { OrbitingSection, DEFAULT_SECTIONS, type SectionId } from './OrbitingSection'
 import { SectionPanel } from './SectionPanels'
+import { MainMenuCircle } from './MainMenuCircle'
+import { SubMenuCircle } from './SubMenuCircle'
+import { MAIN_MENU_CONFIGS, type MainMenuId } from './MainMenuConfig'
 
 interface CRMVoidProps {
   user: User
@@ -30,6 +33,7 @@ const DEFAULT_RADIUS = 200 // Reduced to fit better on screen
 
 export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
+  const [activeMainMenu, setActiveMainMenu] = useState<MainMenuId | null>(null)
   const [customizeMode, setCustomizeMode] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   
@@ -170,6 +174,70 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setCustomizeMode(false)
   }, [])
 
+  const handleMainMenuClick = useCallback((menuId: MainMenuId) => {
+    if (customizeMode) return
+    
+    // Toggle: if clicking the same menu, close it; otherwise open the new one
+    if (activeMainMenu === menuId) {
+      setActiveMainMenu(null)
+    } else {
+      setActiveMainMenu(menuId)
+      // Close any active section panel when opening main menu
+      setActiveSection(null)
+    }
+  }, [customizeMode, activeMainMenu])
+
+  const handleSubMenuClick = useCallback((page: string) => {
+    if (onNavigate) {
+      onNavigate(page)
+    }
+    // Close sub-menus after navigation
+    setActiveMainMenu(null)
+  }, [onNavigate])
+
+  // Calculate main menu positions (5 circles, 72 degrees apart)
+  const mainMenuRadius = 280
+  const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => index * 72)
+
+  // Handle ESC key to close main menu
+  useEffect(() => {
+    if (!activeMainMenu) return
+
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveMainMenu(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscKey)
+    return () => {
+      window.removeEventListener('keydown', handleEscKey)
+    }
+  }, [activeMainMenu])
+
+  // Handle click outside to close sub-menus
+  useEffect(() => {
+    if (!activeMainMenu) return
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      // Check if click is outside main menu circles and sub-menu circles
+      if (!target.closest('[data-main-menu]') && !target.closest('[data-sub-menu]')) {
+        setActiveMainMenu(null)
+      }
+    }
+
+    // Small delay to prevent immediate closing when opening
+    const timeout = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside)
+    }, 100)
+
+    return () => {
+      clearTimeout(timeout)
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [activeMainMenu])
+
   return (
     <div className={cn(
       "relative w-full h-screen overflow-hidden fixed inset-0 z-50",
@@ -177,6 +245,20 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     )}>
       {/* Starfield background */}
       <VoidBackground />
+
+      {/* CRM Void System Title */}
+      <motion.div
+        className="absolute top-8 left-1/2 -translate-x-1/2 z-30"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <h1 className="text-4xl md:text-5xl font-bold text-white dark:text-white text-center drop-shadow-lg">
+          <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+            CRM Void System
+          </span>
+        </h1>
+      </motion.div>
 
       {/* Header controls */}
       <motion.div
@@ -308,6 +390,57 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
             </div>
           </div>
 
+          {/* Main Menu Circles */}
+          {MAIN_MENU_CONFIGS.map((menuConfig, index) => {
+            const angle = mainMenuAngles[index]
+            const x = Math.cos((angle * Math.PI) / 180) * mainMenuRadius
+            const y = Math.sin((angle * Math.PI) / 180) * mainMenuRadius
+            const Icon = menuConfig.icon
+            
+            return (
+              <div key={menuConfig.id}>
+                <MainMenuCircle
+                  id={menuConfig.id}
+                  label={menuConfig.label}
+                  icon={<Icon size={28} weight="duotone" />}
+                  angle={angle}
+                  radius={mainMenuRadius}
+                  isActive={activeMainMenu === menuConfig.id}
+                  onClick={() => handleMainMenuClick(menuConfig.id)}
+                  color={menuConfig.color}
+                  bgColor={menuConfig.bgColor}
+                  borderColor={menuConfig.borderColor}
+                />
+                
+                {/* Sub-Menu Circles - appear when main menu is active */}
+                <AnimatePresence>
+                  {activeMainMenu === menuConfig.id && (
+                    <>
+                      {menuConfig.subMenus.map((subMenu, subIndex) => (
+                        <SubMenuCircle
+                          key={subMenu.id}
+                          id={subMenu.id}
+                          label={subMenu.label}
+                          icon={subMenu.icon}
+                          parentAngle={angle}
+                          parentRadius={mainMenuRadius}
+                          parentX={x}
+                          parentY={y}
+                          index={subIndex}
+                          total={menuConfig.subMenus.length}
+                          onClick={() => handleSubMenuClick(subMenu.page)}
+                          color={menuConfig.color}
+                          bgColor={menuConfig.bgColor}
+                          borderColor={menuConfig.borderColor}
+                        />
+                      ))}
+                    </>
+                  )}
+                </AnimatePresence>
+              </div>
+            )
+          })}
+
           {/* Orbiting sections */}
           {visibleSections.map((layout) => {
             const sectionConfig = DEFAULT_SECTIONS.find(s => s.id === layout.id)
@@ -335,7 +468,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
 
       {/* Section panel overlay */}
       <AnimatePresence>
-        {activeSection && !customizeMode && (
+        {activeSection && !customizeMode && !activeMainMenu && (
           <SectionPanel
             section={activeSection}
             user={user}

@@ -1,0 +1,114 @@
+import { Briefcase, UsersThree, UserPlus, Brain, Building } from '@phosphor-icons/react'
+import type { ReactNode } from 'react'
+
+export type MainMenuId = 'jobs' | 'teams' | 'customer-intake' | 'ai' | 'office'
+
+export interface SubMenuItem {
+  id: string
+  label: string
+  icon: ReactNode
+  page: string
+}
+
+export interface MainMenuConfig {
+  id: MainMenuId
+  label: string
+  icon: typeof Briefcase
+  color: string
+  bgColor: string
+  borderColor: string
+  subMenus: SubMenuItem[]
+}
+
+export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
+  {
+    id: 'jobs',
+    label: 'Job',
+    icon: Briefcase,
+    color: 'text-blue-600 dark:text-blue-400',
+    bgColor: 'bg-blue-50 dark:bg-blue-950/20',
+    borderColor: 'border-blue-200 dark:border-blue-800',
+    subMenus: [
+      { id: 'browse-jobs', label: 'Browse Jobs', icon: <Briefcase size={20} />, page: 'browse-jobs' },
+      { id: 'post-job', label: 'Post Job', icon: <Briefcase size={20} />, page: 'unified-post-job' },
+      { id: 'my-jobs', label: 'My Jobs', icon: <Briefcase size={20} />, page: 'my-jobs' },
+      { id: 'bid-management', label: 'Bid Management', icon: <Briefcase size={20} />, page: 'browse-jobs' },
+      { id: 'job-analytics', label: 'Job Analytics', icon: <Briefcase size={20} />, page: 'browse-jobs' },
+      { id: 'route-builder', label: 'Route Builder', icon: <Briefcase size={20} />, page: 'route-builder' },
+      { id: 'job-calendar', label: 'Job Calendar', icon: <Briefcase size={20} />, page: 'calendar' },
+      { id: 'find-opportunities', label: 'Find Opportunities', icon: <Briefcase size={20} />, page: 'find-opportunities' },
+    ],
+  },
+  {
+    id: 'teams',
+    label: 'Teams',
+    icon: UsersThree,
+    color: 'text-green-600 dark:text-green-400',
+    bgColor: 'bg-green-50 dark:bg-green-950/20',
+    borderColor: 'border-green-200 dark:border-green-800',
+    subMenus: [
+      { id: 'crew-dispatcher', label: 'Crew Dispatcher', icon: <UsersThree size={20} />, page: 'crew-dispatcher' },
+      { id: 'team-calendar', label: 'Team Calendar', icon: <UsersThree size={20} />, page: 'calendar' },
+      { id: 'collaboration-hub', label: 'Collaboration Hub', icon: <UsersThree size={20} />, page: 'communication' },
+      { id: 'task-assignment', label: 'Task Assignment', icon: <UsersThree size={20} />, page: 'dashboard' },
+      { id: 'team-analytics', label: 'Team Analytics', icon: <UsersThree size={20} />, page: 'revenue-dashboard' },
+      { id: 'communication', label: 'Communication', icon: <UsersThree size={20} />, page: 'communication' },
+      { id: 'skill-trading', label: 'Skill Trading', icon: <UsersThree size={20} />, page: 'skill-trading' },
+      { id: 'team-settings', label: 'Team Settings', icon: <UsersThree size={20} />, page: 'settings' },
+    ],
+  },
+  {
+    id: 'customer-intake',
+    label: 'Customer Intake',
+    icon: UserPlus,
+    color: 'text-pink-600 dark:text-pink-400',
+    bgColor: 'bg-pink-50 dark:bg-pink-950/20',
+    borderColor: 'border-pink-200 dark:border-pink-800',
+    subMenus: [
+      { id: 'voice-intake', label: 'Voice Intake', icon: <UserPlus size={20} />, page: 'crm' },
+      { id: 'add-customer', label: 'Add Customer', icon: <UserPlus size={20} />, page: 'customer-crm' },
+      { id: 'customer-list', label: 'Customer List', icon: <UserPlus size={20} />, page: 'customer-crm' },
+      { id: 'crm-pipeline', label: 'CRM Pipeline', icon: <UserPlus size={20} />, page: 'crm' },
+      { id: 'customer-analytics', label: 'Customer Analytics', icon: <UserPlus size={20} />, page: 'customer-crm' },
+      { id: 'follow-up-sequences', label: 'Follow-up Sequences', icon: <UserPlus size={20} />, page: 'customer-crm' },
+      { id: 'lead-management', label: 'Lead Management', icon: <UserPlus size={20} />, page: 'leads' },
+      { id: 'relationship-tracking', label: 'Relationship Tracking', icon: <UserPlus size={20} />, page: 'customer-crm' },
+    ],
+  },
+  {
+    id: 'ai',
+    label: 'AI',
+    icon: Brain,
+    color: 'text-purple-600 dark:text-purple-400',
+    bgColor: 'bg-purple-50 dark:bg-purple-950/20',
+    borderColor: 'border-purple-200 dark:border-purple-800',
+    subMenus: [
+      { id: 'ai-scoping', label: 'AI Scoping', icon: <Brain size={20} />, page: 'photo-scoper' },
+      { id: 'bid-intelligence', label: 'Bid Intelligence', icon: <Brain size={20} />, page: 'browse-jobs' },
+      { id: 'smart-replies', label: 'Smart Replies', icon: <Brain size={20} />, page: 'smart-replies' },
+      { id: 'ai-insights', label: 'AI Insights', icon: <Brain size={20} />, page: 'customer-crm' },
+      { id: 'voice-assistant', label: 'Voice Assistant', icon: <Brain size={20} />, page: 'crm' },
+      { id: 'auto-categorization', label: 'Auto Categorization', icon: <Brain size={20} />, page: 'customer-crm' },
+      { id: 'predictive-analytics', label: 'Predictive Analytics', icon: <Brain size={20} />, page: 'revenue-dashboard' },
+      { id: 'ai-receptionist', label: 'AI Receptionist', icon: <Brain size={20} />, page: 'receptionist-crm' },
+    ],
+  },
+  {
+    id: 'office',
+    label: 'Office',
+    icon: Building,
+    color: 'text-orange-600 dark:text-orange-400',
+    bgColor: 'bg-orange-50 dark:bg-orange-950/20',
+    borderColor: 'border-orange-200 dark:border-orange-800',
+    subMenus: [
+      { id: 'document-manager', label: 'Document Manager', icon: <Building size={20} />, page: 'documents' },
+      { id: 'invoice-manager', label: 'Invoice Manager', icon: <Building size={20} />, page: 'invoices-page' },
+      { id: 'expense-tracking', label: 'Expense Tracking', icon: <Building size={20} />, page: 'expenses' },
+      { id: 'calendar-sync', label: 'Calendar Sync', icon: <Building size={20} />, page: 'calendar-sync' },
+      { id: 'client-portal', label: 'Client Portal', icon: <Building size={20} />, page: 'client-portal' },
+      { id: 'compliance-tracker', label: 'Compliance Tracker', icon: <Building size={20} />, page: 'compliance' },
+      { id: 'quality-assurance', label: 'Quality Assurance', icon: <Building size={20} />, page: 'quality' },
+      { id: 'tax-helper', label: 'Tax Helper', icon: <Building size={20} />, page: 'tax-helper' },
+    ],
+  },
+]
