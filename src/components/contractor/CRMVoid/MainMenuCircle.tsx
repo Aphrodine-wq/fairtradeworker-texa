@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -54,6 +54,34 @@ export function MainMenuCircle({
         delay: angle / 360 * 0.2
       }}
     >
+      {/* Circular expansion background - similar to CSS .circular-menu.active:after */}
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            className="absolute rounded-full bg-black dark:bg-white"
+            style={{
+              width: '3.5em',
+              height: '3.5em',
+              left: '-1.75em',
+              top: '-1.75em',
+              zIndex: -1,
+            }}
+            initial={{ scale: 1, opacity: 0.3 }}
+            animate={{ 
+              scale: 5.5, 
+              opacity: 0.1,
+            }}
+            exit={{ scale: 1, opacity: 0 }}
+            transition={{ 
+              type: 'spring',
+              stiffness: 200,
+              damping: 20,
+              mass: 0.8
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       <motion.button
         onClick={onClick}
         data-main-menu={id}
@@ -63,8 +91,8 @@ export function MainMenuCircle({
           "transition-all duration-300",
           "border-2",
           isActive 
-            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg shadow-white/20" 
-            : `${bgColor} ${borderColor} hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black`,
+            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg" 
+            : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
         )}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
@@ -72,7 +100,7 @@ export function MainMenuCircle({
         {/* Icon */}
         <div className={cn(
           "text-2xl mb-1",
-          isActive ? "text-white dark:text-black" : color
+          isActive ? "text-white dark:text-black" : "text-black dark:text-white"
         )}>
           {icon}
         </div>
@@ -84,42 +112,7 @@ export function MainMenuCircle({
         )}>
           {label}
         </span>
-
-        {/* Active indicator */}
-        {isActive && (
-          <motion.div
-            className="absolute inset-0 rounded-full border-2 border-white dark:border-black"
-            initial={{ scale: 1 }}
-            animate={{ scale: 1.1 }}
-            transition={{ duration: 0.2 }}
-          />
-        )}
       </motion.button>
-
-      {/* Connection line to center */}
-      <svg
-        className="absolute pointer-events-none"
-        style={{
-          width: Math.abs(x) + 50,
-          height: Math.abs(y) + 50,
-          left: x < 0 ? x : -25,
-          top: y < 0 ? y : -25,
-        }}
-      >
-        <motion.line
-          x1={x < 0 ? Math.abs(x) + 25 : 25}
-          y1={y < 0 ? Math.abs(y) + 25 : 25}
-          x2={x < 0 ? 25 : Math.abs(x) + 25}
-          y2={y < 0 ? 25 : Math.abs(y) + 25}
-          stroke={isActive ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)'}
-          className="dark:stroke-white/30 dark:stroke-white/10"
-          strokeWidth="1"
-          strokeDasharray="4 4"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1, delay: angle / 360 * 0.3 }}
-        />
-      </svg>
     </motion.div>
   )
 }

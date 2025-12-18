@@ -1,7 +1,7 @@
-import { Briefcase, UsersThree, UserPlus, Brain, Building } from '@phosphor-icons/react'
+import { Briefcase, UsersThree, UserPlus, Brain, Building, Crown, Microphone } from '@phosphor-icons/react'
 import type { ReactNode } from 'react'
 
-export type MainMenuId = 'jobs' | 'teams' | 'customer-intake' | 'ai' | 'office'
+export type MainMenuId = 'jobs' | 'teams' | 'customer-intake' | 'ai' | 'office' | 'pro-tools'
 
 export interface SubMenuItem {
   id: string
@@ -25,9 +25,9 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     id: 'jobs',
     label: 'Job',
     icon: Briefcase,
-    color: 'text-blue-600 dark:text-blue-400',
-    bgColor: 'bg-blue-50 dark:bg-blue-950/20',
-    borderColor: 'border-blue-200 dark:border-blue-800',
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
     subMenus: [
       { id: 'browse-jobs', label: 'Browse Jobs', icon: <Briefcase size={20} />, page: 'browse-jobs' },
       { id: 'post-job', label: 'Post Job', icon: <Briefcase size={20} />, page: 'unified-post-job' },
@@ -43,9 +43,9 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     id: 'teams',
     label: 'Teams',
     icon: UsersThree,
-    color: 'text-green-600 dark:text-green-400',
-    bgColor: 'bg-green-50 dark:bg-green-950/20',
-    borderColor: 'border-green-200 dark:border-green-800',
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
     subMenus: [
       { id: 'crew-dispatcher', label: 'Crew Dispatcher', icon: <UsersThree size={20} />, page: 'crew-dispatcher' },
       { id: 'team-calendar', label: 'Team Calendar', icon: <UsersThree size={20} />, page: 'calendar' },
@@ -61,11 +61,11 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     id: 'customer-intake',
     label: 'Customer Intake',
     icon: UserPlus,
-    color: 'text-pink-600 dark:text-pink-400',
-    bgColor: 'bg-pink-50 dark:bg-pink-950/20',
-    borderColor: 'border-pink-200 dark:border-pink-800',
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
     subMenus: [
-      { id: 'voice-intake', label: 'Voice Intake', icon: <UserPlus size={20} />, page: 'crm' },
+      { id: 'import-customer-data', label: 'Import Customer Data', icon: <Microphone size={20} />, page: 'voice-intake' },
       { id: 'add-customer', label: 'Add Customer', icon: <UserPlus size={20} />, page: 'customer-crm' },
       { id: 'customer-list', label: 'Customer List', icon: <UserPlus size={20} />, page: 'customer-crm' },
       { id: 'crm-pipeline', label: 'CRM Pipeline', icon: <UserPlus size={20} />, page: 'crm' },
@@ -79,9 +79,9 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     id: 'ai',
     label: 'AI',
     icon: Brain,
-    color: 'text-purple-600 dark:text-purple-400',
-    bgColor: 'bg-purple-50 dark:bg-purple-950/20',
-    borderColor: 'border-purple-200 dark:border-purple-800',
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
     subMenus: [
       { id: 'ai-scoping', label: 'AI Scoping', icon: <Brain size={20} />, page: 'photo-scoper' },
       { id: 'bid-intelligence', label: 'Bid Intelligence', icon: <Brain size={20} />, page: 'browse-jobs' },
@@ -97,9 +97,9 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     id: 'office',
     label: 'Office',
     icon: Building,
-    color: 'text-orange-600 dark:text-orange-400',
-    bgColor: 'bg-orange-50 dark:bg-orange-950/20',
-    borderColor: 'border-orange-200 dark:border-orange-800',
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
     subMenus: [
       { id: 'document-manager', label: 'Document Manager', icon: <Building size={20} />, page: 'documents' },
       { id: 'invoice-manager', label: 'Invoice Manager', icon: <Building size={20} />, page: 'invoices-page' },
@@ -109,6 +109,24 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
       { id: 'compliance-tracker', label: 'Compliance Tracker', icon: <Building size={20} />, page: 'compliance' },
       { id: 'quality-assurance', label: 'Quality Assurance', icon: <Building size={20} />, page: 'quality' },
       { id: 'tax-helper', label: 'Tax Helper', icon: <Building size={20} />, page: 'tax-helper' },
+    ],
+  },
+  {
+    id: 'pro-tools',
+    label: 'Pro Tools',
+    icon: Crown,
+    color: 'text-black dark:text-white',
+    bgColor: 'bg-white dark:bg-black',
+    borderColor: 'border-black dark:border-white',
+    subMenus: [
+      { id: 'advanced-analytics', label: 'Advanced Analytics', icon: <Crown size={20} />, page: 'revenue-dashboard' },
+      { id: 'custom-branding', label: 'Custom Branding', icon: <Crown size={20} />, page: 'custom-branding' },
+      { id: 'priority-support', label: 'Priority Support', icon: <Crown size={20} />, page: 'pro-support-chat' },
+      { id: 'export-everything', label: 'Export Everything', icon: <Crown size={20} />, page: 'export-everything' },
+      { id: 'advanced-workflows', label: 'Advanced Workflows', icon: <Crown size={20} />, page: 'workflow-automation' },
+      { id: 'pro-support-chat', label: 'Pro Support Chat', icon: <Crown size={20} />, page: 'pro-support-chat' },
+      { id: 'priority-job-alerts', label: 'Priority Job Alerts', icon: <Crown size={20} />, page: 'priority-job-alerts' },
+      { id: 'advanced-crm', label: 'Advanced CRM', icon: <Crown size={20} />, page: 'customer-crm' },
     ],
   },
 ]
