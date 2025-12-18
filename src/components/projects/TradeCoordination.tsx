@@ -81,7 +81,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getStatusBadge = (status: TradeContractor['status']) => {
     const variants = {
-      'invited': { className: 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10', label: 'Invited' },
+      'invited': { className: 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm', label: 'Invited' },
       'accepted': { className: 'bg-blue-100 text-blue-700', label: 'Accepted' },
       'active': { className: 'bg-green-100 text-green-700', label: 'Active' },
       'completed': { className: 'bg-green-600 text-white', label: 'Completed' }
@@ -92,7 +92,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getRoleBadge = (role: TradeContractor['role']) => {
     return role === 'lead' 
-      ? <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10">Contractor</Badge>
+      ? <Badge className="bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm">Contractor</Badge>
       : <Badge variant="outline">Subcontractor</Badge>
   }
 

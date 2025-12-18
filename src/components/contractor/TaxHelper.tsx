@@ -159,7 +159,7 @@ export function TaxHelper({ user }: { user: User }) {
 
           {/* Main Content */}
           <Tabs defaultValue="deductions" className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
               <TabsTrigger value="deductions">Deductions</TabsTrigger>
               <TabsTrigger value="calculator">Tax Calculator</TabsTrigger>
               <TabsTrigger value="forms">Forms & Filing</TabsTrigger>
@@ -176,7 +176,7 @@ export function TaxHelper({ user }: { user: User }) {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {deductions.map(deduction => (
-                  <Card key={deduction.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+                  <Card key={deduction.id} className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <Badge variant="outline">{deduction.category}</Badge>
@@ -239,7 +239,7 @@ export function TaxHelper({ user }: { user: User }) {
                   </Card>
                 ))}
                 {deductions.length === 0 && (
-                  <Card className="col-span-2 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+                  <Card className="col-span-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
                     <CardContent className="p-12 text-center">
                       <FileText size={48} className="mx-auto mb-4 text-black dark:text-white" />
                       <p className="text-muted-foreground">No deductions tracked yet</p>
@@ -282,7 +282,7 @@ export function TaxHelper({ user }: { user: User }) {
                       className="h-11 text-lg"
                     />
                   </div>
-                  <div className="p-6 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md space-y-3 shadow-sm font-mono">
+                  <div className="p-6 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md space-y-3 shadow-sm font-mono">
                     <div className="flex justify-between text-base">
                       <span>Total Income:</span>
                       <span className="font-semibold">${income.toLocaleString()}</span>
@@ -300,7 +300,7 @@ export function TaxHelper({ user }: { user: User }) {
                       <span>${estimatedTax.toLocaleString()}</span>
                     </div>
                   </div>
-                  <div className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md text-sm shadow-sm font-mono">
+                  <div className="p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md text-sm shadow-sm font-mono">
                     <p className="font-semibold mb-1">💡 Tax Tip</p>
                     <p className="text-muted-foreground mb-2">
                       This is an estimate. Consult a tax professional for accurate calculations.
@@ -326,7 +326,7 @@ export function TaxHelper({ user }: { user: User }) {
               <h2 className="text-2xl font-semibold">Tax Forms & Filing</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {commonForms.map(form => (
-                  <Card key={form.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+                  <Card key={form.id} className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>

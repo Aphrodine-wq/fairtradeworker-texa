@@ -1562,7 +1562,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   <CardContent>
                     <div className="grid grid-cols-2 gap-3">
                       {selectedJob.photos.filter(p => p && p.trim()).slice(0, 4).map((photo, idx) => (
-                        <div key={idx} className="aspect-square rounded-lg overflow-hidden border border-black/10 dark:border-white/10 relative group cursor-pointer" onClick={() => handlePhotoClick(selectedJob.photos?.filter(p => p && p.trim()) || [])}>
+                        <div key={idx} className="aspect-square rounded-lg overflow-hidden border-0 shadow-md hover:shadow-lg relative group cursor-pointer" onClick={() => handlePhotoClick(selectedJob.photos?.filter(p => p && p.trim()) || [])}>
                           <img 
                             src={photo} 
                             alt={`Job photo ${idx + 1}`}

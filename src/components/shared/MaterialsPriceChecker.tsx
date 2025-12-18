@@ -98,7 +98,7 @@ export function MaterialsPriceChecker({ user }: MaterialsPriceCheckerProps) {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="mt-2 px-4 py-2 border border-black/20 dark:border-white/20 bg-white dark:bg-black text-black dark:text-white rounded-md"
+                className="mt-2 px-4 py-2 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black text-black dark:text-white rounded-md"
               >
                 <option value="all">All Categories</option>
                 {categories.map(cat => (
@@ -113,7 +113,7 @@ export function MaterialsPriceChecker({ user }: MaterialsPriceCheckerProps) {
               <p className="text-center text-black dark:text-white py-8">No materials found</p>
             ) : (
               filteredMaterials.map((material, idx) => (
-                <div key={idx} className="p-4 border border-black/20 dark:border-white/20">
+                <div key={idx} className="p-4 border-0 shadow-md hover:shadow-lg">
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <h3 className="font-semibold text-black dark:text-white">{material.item}</h3>

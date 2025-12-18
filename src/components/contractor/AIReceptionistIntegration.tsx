@@ -512,7 +512,7 @@ export function AIReceptionistIntegration({ user, onNavigate }: AIReceptionistIn
                     <span className="text-black/60 dark:text-white/60">Transcription (per minute)</span>
                     <span className="font-semibold text-black dark:text-white">$0.02</span>
                   </div>
-                  <div className="pt-2 border-t border-black/20 dark:border-white/20 flex items-center justify-between">
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-800 flex items-center justify-between">
                     <span className="font-semibold text-black dark:text-white">Your monthly cost</span>
                     <span className="text-xl font-bold text-primary">
                       ${costAnalysis.current.monthlyCost.toFixed(2)}

@@ -157,7 +157,7 @@ export function PaymentDashboard({ user }: PaymentDashboardProps) {
               </CardContent>
             </Card>
 
-            <Card className="border border-black/10 dark:border-white/10">
+            <Card className="border-0 shadow-lg hover:shadow-xl">
               <CardHeader className="pb-3">
                 <CardDescription>Fees Saved (vs 15%)</CardDescription>
                 <CardTitle className="text-2xl text-black dark:text-white">

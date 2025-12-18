@@ -135,7 +135,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
                 <Card key={idx} className="border-0 hover:shadow-xl transition-shadow p-4">
                   <CardContent className="p-0">
                     <div className="flex gap-4">
-                    <div className="shrink-0 w-12 h-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm text-white dark:text-black">
+                    <div className="shrink-0 w-12 h-12 rounded-md bg-black dark:bg-white border-0 shadow-sm flex items-center justify-center shadow-sm text-white dark:text-black">
                       {feature.icon}
                     </div>
                     <div className="flex-1">
@@ -161,7 +161,7 @@ export function ProUpgrade({ user, onNavigate }: ProUpgradeProps) {
               </Button>
             </div>
 
-            <div className="border-t-2 border-black dark:border-white pt-6 space-y-4">
+            <div className="border-t border-gray-200 dark:border-gray-800 pt-6 space-y-4">
               <h3 className="font-bold text-lg text-center text-black dark:text-white mb-4">What Pro Members Get:</h3>
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="flex items-center gap-2 text-black dark:text-white">

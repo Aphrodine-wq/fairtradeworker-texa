@@ -82,8 +82,8 @@ export function OrbitingSection({
           "transition-all duration-300",
           "border-2",
           isActive 
-            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg" 
-            : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+            ? "bg-black dark:bg-white border-0 shadow-lg hover:shadow-xl shadow-lg" 
+            : "bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
           isLocked && !isPro && "opacity-50 cursor-not-allowed",
           customizable && "cursor-grab active:cursor-grabbing"
         )}
@@ -123,7 +123,7 @@ export function OrbitingSection({
         {/* Active indicator */}
         {isActive && (
           <motion.div
-            className="absolute inset-0 rounded-lg border-2 border-black dark:border-white"
+            className="absolute inset-0 rounded-lg border-2 border-0 shadow-lg hover:shadow-xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2 }}

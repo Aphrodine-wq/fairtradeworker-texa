@@ -40,8 +40,8 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
     switch (urgency) {
       case 'emergency': return 'bg-[#FF0000] text-white'
       case 'high': return 'bg-[#FFFF00] text-black'
-      case 'medium': return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
-      default: return 'bg-white dark:bg-black border border-black/20 dark:border-white/20'
+      case 'medium': return 'bg-white dark:bg-black border-0 shadow-md hover:shadow-lg'
+      default: return 'bg-white dark:bg-black border-0 shadow-md hover:shadow-lg'
     }
   }
 
@@ -217,7 +217,7 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
                         <summary className="text-xs font-semibold text-black dark:text-white cursor-pointer">
                           View Transcript
                         </summary>
-                        <p className="text-xs text-black dark:text-white mt-2 p-2 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                        <p className="text-xs text-black dark:text-white mt-2 p-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
                           {call.transcript}
                         </p>
                       </details>
@@ -299,7 +299,7 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
             {selectedCall.transcript && (
               <div>
                 <h3 className="font-semibold mb-2">Full Transcript</h3>
-                <p className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 whitespace-pre-wrap">
+                <p className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg whitespace-pre-wrap">
                   {selectedCall.transcript}
                 </p>
               </div>

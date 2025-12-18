@@ -373,7 +373,7 @@ export function SignupPage({ onNavigate, onLogin, preselectedRole }: SignupPageP
                   id="enable-2fa-signup"
                   checked={enable2FA}
                   onChange={(e) => setEnable2FA(e.target.checked)}
-                  className="h-4 w-4 rounded border-black dark:border-white"
+                  className="h-4 w-4 rounded border-gray-300 dark:border-gray-700"
                 />
                 <Label htmlFor="enable-2fa-signup" className="text-sm font-normal cursor-pointer">
                   Enable two-factor authentication for extra security

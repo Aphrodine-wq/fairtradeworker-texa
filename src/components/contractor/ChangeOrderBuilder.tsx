@@ -237,7 +237,7 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
                   <div className="mt-4 grid grid-cols-3 gap-4">
                     {photos.map((photo, idx) => (
                       <div key={idx} className="relative">
-                        <img src={photo} alt={`Discovery ${idx + 1}`} className="w-full h-32 object-cover border border-black/20 dark:border-white/20" />
+                        <img src={photo} alt={`Discovery ${idx + 1}`} className="w-full h-32 object-cover border-0 shadow-md hover:shadow-lg" />
                         <Button
                           size="sm"
                           variant="ghost"
@@ -301,7 +301,7 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {jobChangeOrders.map((co) => (
-              <div key={co.id} className="p-4 border border-black/20 dark:border-white/20">
+              <div key={co.id} className="p-4 border-0 shadow-md hover:shadow-lg">
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <p className="font-semibold text-black dark:text-white">
@@ -319,7 +319,7 @@ export function ChangeOrderBuilder({ user, job }: ChangeOrderBuilderProps) {
                 {co.photos && co.photos.length > 0 && (
                   <div className="flex gap-2 mt-2">
                     {co.photos.map((photo, idx) => (
-                      <img key={idx} src={photo} alt={`Photo ${idx + 1}`} className="w-20 h-20 object-cover border border-black dark:border-white" />
+                      <img key={idx} src={photo} alt={`Photo ${idx + 1}`} className="w-20 h-20 object-cover border-0 shadow-md hover:shadow-lg" />
                     ))}
                   </div>
                 )}

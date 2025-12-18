@@ -239,7 +239,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
               <CardContent>
                 <div className="space-y-2">
                   {defaultFields.map((field) => (
-                    <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                    <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                       <div className="flex items-center gap-3">
                         <DotsThreeVertical size={20} className="text-muted-foreground" />
                         <div>
@@ -269,7 +269,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
                 <CardContent>
                   <div className="space-y-2">
                     {customFields.map((field) => (
-                      <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                      <div key={field.id} className="flex items-center justify-between p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                         <div className="flex items-center gap-3">
                           <DotsThreeVertical size={20} className="text-muted-foreground" />
                           <div>
@@ -430,7 +430,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       {/* Field Dialog */}
       <Dialog open={showFieldDialog} onOpenChange={setShowFieldDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">{editingField ? 'Edit Field' : 'Create Custom Field'}</DialogTitle>
               <DialogDescription>
@@ -460,7 +460,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       {/* View Dialog */}
       <Dialog open={showViewDialog} onOpenChange={setShowViewDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">{editingView ? 'Edit View' : 'Create Custom View'}</DialogTitle>
               <DialogDescription>
@@ -497,7 +497,7 @@ export function CustomizableCRM({ user }: CustomizableCRMProps) {
       {/* Workflow Dialog */}
       <Dialog open={showWorkflowDialog} onOpenChange={setShowWorkflowDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">{editingWorkflow ? 'Edit Workflow' : 'Create Automation Workflow'}</DialogTitle>
               <DialogDescription>
@@ -620,7 +620,7 @@ function FieldForm({
               {options.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
                   {options.map((opt, idx) => (
-                    <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                    <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                       <span className="text-sm">{opt}</span>
                       <button
                         onClick={() => setOptions(options.filter((_, i) => i !== idx))}
@@ -637,7 +637,7 @@ function FieldForm({
         </div>
       </div>
 
-      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+      <div className="flex gap-3 justify-end pt-6 border-t border-gray-200 dark:border-gray-800 mt-6">
         <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
@@ -730,7 +730,7 @@ function ViewForm({
         </div>
       </div>
 
-      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+      <div className="flex gap-3 justify-end pt-6 border-t border-gray-200 dark:border-gray-800 mt-6">
         <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>
@@ -802,13 +802,13 @@ function WorkflowForm({
 
         {/* Right Column */}
         <div className="space-y-4">
-          <div className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+          <div className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
             Advanced workflow configuration coming soon. For now, basic triggers are available.
           </div>
         </div>
       </div>
 
-      <div className="flex gap-3 justify-end pt-6 border-t border-black/10 dark:border-white/10 mt-6">
+      <div className="flex gap-3 justify-end pt-6 border-t border-gray-200 dark:border-gray-800 mt-6">
         <Button variant="outline" onClick={onCancel} className="h-11">
           Cancel
         </Button>

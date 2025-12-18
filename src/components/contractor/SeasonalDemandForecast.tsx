@@ -102,7 +102,7 @@ export function SeasonalDemandForecast({ user }: SeasonalDemandForecastProps) {
           </p>
         ) : (
           forecasts.map((forecast) => (
-            <div key={forecast.category} className="p-4 border border-black/20 dark:border-white/20">
+            <div key={forecast.category} className="p-4 border-0 shadow-md hover:shadow-lg">
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <h3 className="font-semibold text-black dark:text-white capitalize">

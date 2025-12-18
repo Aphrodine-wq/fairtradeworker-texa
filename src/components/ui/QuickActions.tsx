@@ -246,7 +246,7 @@ export function MilestoneCelebration({ type, value, onDismiss }: MilestoneProps)
         </div>
 
         {/* Action */}
-        <div className="p-4 border-t-2 border-black">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <button
             onClick={onDismiss}
             className="w-full bg-black text-white py-3 font-black uppercase text-lg hover:bg-gray-800 transition-colors rounded-md shadow-md"

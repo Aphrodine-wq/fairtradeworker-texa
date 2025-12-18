@@ -281,7 +281,7 @@ Provide JSON response:
                     <Button 
                       onClick={analyzeBid} 
                       disabled={analyzing || !currentJob || completedJobs.length < 5 || bidAmount <= 0}
-                      className="border-2 border-black dark:border-white"
+                      className="border-0 shadow-lg hover:shadow-xl"
                     >
                       {analyzing ? (
                         <>
@@ -307,7 +307,7 @@ Provide JSON response:
                 </div>
 
                 {prediction && (
-                  <Card glass={isPro} className="border border-black/20 dark:border-white/20">
+                  <Card glass={isPro} className="border-0 shadow-lg hover:shadow-xl">
                     <CardHeader>
                       <CardTitle className="text-lg">AI Prediction</CardTitle>
                     </CardHeader>
@@ -316,7 +316,7 @@ Provide JSON response:
                         <div>
                           <p className="text-sm text-black dark:text-white mb-1">Win Probability</p>
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
+                            <div className="flex-1 bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl h-6">
                               <div 
                                 className="h-full bg-[#00FF00] dark:bg-[#00FF00]"
                                 style={{ width: `${prediction.winProbability * 100}%` }}
@@ -342,7 +342,7 @@ Provide JSON response:
                       </div>
                       <div>
                         <p className="text-sm text-black dark:text-white mb-2">AI Reasoning</p>
-                        <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                        <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                           {prediction.reasoning}
                         </p>
                       </div>
@@ -430,19 +430,19 @@ Provide JSON response:
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-lg hover:shadow-xl rounded-md">
                   <p className="text-sm text-muted-foreground">Total Bids</p>
                   <p className="text-2xl font-bold">{myBids.length}</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-lg hover:shadow-xl rounded-md">
                   <p className="text-sm text-muted-foreground">Won</p>
                   <p className="text-2xl font-bold text-green-600 dark:text-green-400">{wonBids.length}</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-lg hover:shadow-xl rounded-md">
                   <p className="text-sm text-muted-foreground">Lost</p>
                   <p className="text-2xl font-bold text-red-600 dark:text-red-400">{lostBids.length}</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-lg hover:shadow-xl rounded-md">
                   <p className="text-sm text-muted-foreground">Win Rate</p>
                   <p className="text-2xl font-bold">{winRate.toFixed(1)}%</p>
                 </div>
@@ -454,7 +454,7 @@ Provide JSON response:
                   {myBids.slice(0, 10).map(bid => {
                     const job = jobs.find(j => j.id === bid.jobId)
                     return (
-                      <div key={bid.id} className="p-3 border border-black/20 dark:border-white/20 rounded-md flex items-center justify-between">
+                      <div key={bid.id} className="p-3 border-0 shadow-lg hover:shadow-xl rounded-md flex items-center justify-between">
                         <div>
                           <p className="font-medium text-sm">{job?.title || 'Unknown Job'}</p>
                           <p className="text-xs text-muted-foreground">

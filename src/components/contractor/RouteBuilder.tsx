@@ -210,8 +210,8 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
                       )
 
                       return (
-                        <div key={job.id} className="flex items-start gap-3 p-3 rounded-md border border-black/20 dark:border-white/20 bg-muted shadow-sm">
-                          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-black dark:bg-white text-white dark:text-black border border-black/20 dark:border-white/20 text-xs font-semibold flex-shrink-0 shadow-sm">
+                        <div key={job.id} className="flex items-start gap-3 p-3 rounded-md border-0 shadow-md hover:shadow-lg bg-muted shadow-sm">
+                          <div className="flex items-center justify-center w-6 h-6 rounded-md bg-black dark:bg-white text-white dark:text-black border-0 shadow-md hover:shadow-lg text-xs font-semibold flex-shrink-0 shadow-sm">
                             {index + 1}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -284,7 +284,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
                   )
                   
                   return (
-                    <div key={job.id} className="p-4 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                    <div key={job.id} className="p-4 rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="font-medium">{job.title}</div>
@@ -348,7 +348,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
                 </div>
               ) : (
                 anchorJobs.map(job => (
-                  <div key={job.id} className="p-4 rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black shadow-sm">
+                  <div key={job.id} className="p-4 rounded-md border-0 shadow-md hover:shadow-lg bg-white dark:bg-black shadow-sm">
                     <div className="flex items-start gap-3">
                       <Star weight="fill" size={24} className="text-accent flex-shrink-0 mt-1" />
                       <div className="flex-1">
@@ -356,7 +356,7 @@ export const RouteBuilder = memo(function RouteBuilder({ user }: RouteBuilderPro
                         <div className="text-sm text-muted-foreground mb-3">
                           Big job anchoring your schedule
                         </div>
-                        <div className="bg-[#00FF00] border border-black/20 dark:border-white/20 rounded-md p-3 shadow-sm">
+                        <div className="bg-[#00FF00] border-0 shadow-md hover:shadow-lg rounded-md p-3 shadow-sm">
                           <div className="text-sm font-medium text-green-800 mb-2">
                             3 nearby jobs found within 10 minutes
                           </div>

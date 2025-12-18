@@ -2,7 +2,45 @@
 @import "tw-animate-css";
 @import "./styles/glass.css";
 
+/* ===========================================
+   GPU ACCELERATION & PERFORMANCE LAYER
+   =========================================== */
 @layer base {
+  /* Enable hardware acceleration for all transforms */
+  *,
+  *::before,
+  *::after {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  /* GPU-accelerate common interactive elements */
+  button,
+  a,
+  [role="button"],
+  [data-slot="card"],
+  .transition-transform,
+  [class*="hover:"] {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+  }
+
+  /* Optimize paint for fixed/sticky elements */
+  [class*="fixed"],
+  [class*="sticky"],
+  header,
+  nav {
+    will-change: transform;
+    contain: layout style;
+  }
+
+  /* Content visibility optimization for off-screen content */
+  main > section,
+  [data-slot="card"] {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
+
   * {
     @apply border-0
   }
@@ -308,22 +346,43 @@
     opacity: 1 !important;
   }
   
-  /* FIX: Make semi-transparent borders invisible or very subtle in light mode */
-  /* These black lines are breaking up white space everywhere */
+  /* REMOVED: border-black from color scheme - all borders removed */
+  /* Make all border-black variants invisible/transparent */
   [class*="border-black/20"],
   [class*="border-black/10"],
   [class*="border-black/5"],
+  [class*="border-black"]:not([class*="bg-black"]):not([class*="text-black"]):not([class*="from-black"]):not([class*="to-black"]) {
+    border-color: transparent !important;
+  }
+  
+  /* Replace border-black/20 with subtle gray for dividers */
+  [class*="border-b"][class*="border-black/20"],
+  [class*="border-t"][class*="border-black/20"],
+  [class*="border-l"][class*="border-black/20"],
+  [class*="border-r"][class*="border-black/20"] {
+    border-color: rgb(229 231 235) !important; /* gray-200 */
+  }
+  
+  .dark [class*="border-b"][class*="border-black/20"],
+  .dark [class*="border-t"][class*="border-black/20"],
+  .dark [class*="border-l"][class*="border-black/20"],
+  .dark [class*="border-r"][class*="border-black/20"] {
+    border-color: rgb(31 41 55) !important; /* gray-800 */
+  }
+  
+  /* Keep white borders for dark mode dividers only */
   [class*="border-white/20"],
   [class*="border-white/10"],
   [class*="border-white/5"] {
     border-color: transparent !important;
   }
   
-  /* FIX: Remove thick black borders in light mode - make borderless */
-  [class*="border-2"][class*="border-black"]:not(.dark *),
-  [class*="border "][class*="border-black"]:not(.dark *),
-  [class*="border-black"]:not(.dark *):not([class*="bg-black"]) {
+  /* FIX: Remove all black borders - make borderless for cards */
+  [class*="border-2"][class*="border-black"]:not(.dark *):not([class*="border-dashed"]),
+  [class*="border "][class*="border-black"]:not(.dark *):not([class*="border-dashed"]),
+  [class*="border-black"]:not(.dark *):not([class*="bg-black"]):not([class*="text-black"]):not([class*="border-dashed"]) {
     border-color: transparent !important;
+    border-width: 0 !important;
   }
   
   /* Light mode: cards should have subtle shadow instead of borders */
@@ -349,10 +408,21 @@
     border-color: rgba(255, 255, 255, 0.05) !important;
   }
   
+  /* Remove border-black in dark mode as well */
   .dark [class*="border-black/20"],
   .dark [class*="border-black/10"],
-  .dark [class*="border-black/5"] {
+  .dark [class*="border-black/5"],
+  .dark [class*="border-black"]:not([class*="bg-black"]):not([class*="text-black"]):not([class*="from-black"]):not([class*="to-black"]) {
     border-color: transparent !important;
+    border-width: 0 !important;
+  }
+  
+  /* For dashed borders, use gray instead of black */
+  [class*="border-dashed"][class*="border-black"] {
+    border-color: rgb(209 213 219) !important; /* gray-300 */
+  }
+  .dark [class*="border-dashed"][class*="border-black"] {
+    border-color: rgb(55 65 81) !important; /* gray-700 */
   }
   
   /* Force all bg-* opacity classes to solid white in light mode - EXCEPT overlays */
@@ -394,7 +464,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translate3d(0, 2px, 0); /* GPU-accelerated transform */
+    transform: translate3d(0, 4px, 0);
   }
   to {
     opacity: 1;
@@ -411,17 +481,51 @@
   }
 }
 
+/* GPU-accelerated slide animations */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-20px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.95, 0.95, 1);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 /* ===========================================
    GLOBAL DARK/LIGHT MODE TRANSITION FIX
    =========================================== */
 
-/* Smooth color transitions for ALL elements - optimized to <100ms */
+/* Faster color transitions - 150ms is optimal for perceived performance */
 *,
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 320ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 /* Disable transitions on page load to prevent flash */
@@ -557,4 +661,121 @@ html:not(.dark) {
 /* Ensure scrolling still works */
 * {
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* ===========================================
+   PERFORMANCE UTILITY CLASSES
+   =========================================== */
+
+/* GPU acceleration utilities */
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.gpu-composite {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Instant transitions for interactive feedback */
+.transition-instant {
+  transition-duration: 50ms !important;
+}
+
+/* Fast transitions for hover states */
+.transition-fast {
+  transition-duration: 100ms !important;
+}
+
+/* Standard transitions */
+.transition-normal {
+  transition-duration: 150ms !important;
+}
+
+/* Content visibility for lazy rendering */
+.lazy-render {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 300px;
+}
+
+/* Paint containment for isolated updates */
+.contain-paint {
+  contain: paint;
+}
+
+.contain-layout {
+  contain: layout;
+}
+
+.contain-strict {
+  contain: strict;
+}
+
+/* Reduce motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High performance animations - 60fps targets */
+.animate-gpu {
+  animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Smooth scrolling with GPU */
+.scroll-smooth-gpu {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Optimize large lists */
+.virtual-scroll {
+  contain: strict;
+  will-change: scroll-position;
+}
+
+/* Image optimization */
+img {
+  content-visibility: auto;
+}
+
+img[loading="lazy"] {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+}
+
+.dark img[loading="lazy"] {
+  background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+}
+
+/* Font loading optimization */
+@font-face {
+  font-display: swap;
+}
+
+/* Optimize dialog/modal performance */
+[role="dialog"],
+[data-radix-popper-content-wrapper] {
+  will-change: transform, opacity;
+  contain: layout style;
+}
+
+/* Optimize dropdown performance */
+[role="menu"],
+[role="listbox"] {
+  contain: layout style;
+  will-change: transform;
 }

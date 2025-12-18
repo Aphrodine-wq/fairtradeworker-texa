@@ -173,7 +173,7 @@ export function AdvancedWorkflows({ user }: AdvancedWorkflowsProps) {
                   }
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                 <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
                   Cancel
                 </Button>
@@ -187,7 +187,7 @@ export function AdvancedWorkflows({ user }: AdvancedWorkflowsProps) {
       </div>
 
       {workflows.length === 0 ? (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+        <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
           <FlowArrow size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
           <p className="text-muted-foreground mb-4">No workflows created yet</p>
           <Button onClick={() => setShowCreateDialog(true)}>Create Your First Workflow</Button>
@@ -195,7 +195,7 @@ export function AdvancedWorkflows({ user }: AdvancedWorkflowsProps) {
       ) : (
         <div className="space-y-4">
           {workflows.map(workflow => (
-            <Card key={workflow.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card key={workflow.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -258,7 +258,7 @@ export function AdvancedWorkflows({ user }: AdvancedWorkflowsProps) {
                   )}
 
                   {workflow.approvals.length > 0 && (
-                    <div className="pt-2 border-t border-black/10 dark:border-white/10">
+                    <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
                       <div className="text-xs text-muted-foreground mb-2">Approval Requirements</div>
                       <div className="space-y-1">
                         {workflow.approvals.map((approval, idx) => (
@@ -273,7 +273,7 @@ export function AdvancedWorkflows({ user }: AdvancedWorkflowsProps) {
                     </div>
                   )}
 
-                  <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Settings size={16} className="mr-2" />
                       Configure

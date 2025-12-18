@@ -261,7 +261,7 @@ export function SavedSearches({ user }: SavedSearchesProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {searches.map((search) => (
-              <div key={search.id} className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between">
+              <div key={search.id} className="p-4 border-0 shadow-md hover:shadow-lg flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-semibold text-black dark:text-white">{search.name}</h3>

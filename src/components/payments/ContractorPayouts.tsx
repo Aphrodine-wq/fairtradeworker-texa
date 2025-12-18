@@ -170,7 +170,7 @@ export function ContractorPayouts({ user }: ContractorPayoutsProps) {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="p-4 bg-white dark:bg-black rounded-lg border border-black/10 dark:border-white/10 space-y-2">
+              <div className="p-4 bg-white dark:bg-black rounded-lg border-0 shadow-md hover:shadow-lg space-y-2">
                 <h4 className="font-semibold text-sm">Standard Payout</h4>
                 <p className="text-xs text-muted-foreground">
                   Free transfers to your bank account. Arrives in 2-3 business days.

@@ -191,7 +191,7 @@ export function PhotoUploader({
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className="border-2 border-dashed border-black dark:border-white rounded-md p-8 text-center hover:border-black dark:hover:border-white transition-all cursor-pointer shadow-sm"
+        className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-8 text-center hover:border-gray-400 dark:hover:border-gray-600 transition-all cursor-pointer shadow-sm hover:shadow-md"
         onClick={() => fileInputRef.current?.click()}
       >
         <div className="flex flex-col items-center gap-3">
@@ -306,7 +306,7 @@ export function PhotoUploader({
                 )}
 
                 {photo.metadata && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black dark:bg-white px-2 py-1 text-xs text-white dark:text-black opacity-0 group-hover:opacity-100 transition-opacity border-t-2 border-black dark:border-white font-mono">
+                  <div className="absolute bottom-0 left-0 right-0 bg-black dark:bg-white px-2 py-1 text-xs text-white dark:text-black opacity-0 group-hover:opacity-100 transition-opacity border-t border-gray-200 dark:border-gray-800 font-mono">
                     <div className="flex justify-between items-center">
                       <span>{photo.metadata.width}×{photo.metadata.height}</span>
                       <span>{(photo.metadata.size / 1024).toFixed(0)}KB</span>

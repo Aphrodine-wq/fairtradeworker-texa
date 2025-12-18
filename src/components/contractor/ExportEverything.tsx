@@ -227,7 +227,7 @@ export function ExportEverything({ user }: ExportEverythingProps) {
               { id: 'bids', label: 'Bids', count: bids.length },
               { id: 'invoices', label: 'Invoices', count: invoices.length },
             ].map((type) => (
-              <div key={type.id} className="flex items-center justify-between p-3 border border-black/20 dark:border-white/20">
+              <div key={type.id} className="flex items-center justify-between p-3 border-0 shadow-md hover:shadow-lg">
                 <div className="flex items-center gap-3">
                   <Checkbox
                     checked={selectedTypes.has(type.id)}

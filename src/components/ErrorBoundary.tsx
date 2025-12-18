@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-screen flex items-center justify-center p-4 bg-white dark:bg-black">
-          <Card className="max-w-md w-full border-2 border-black dark:border-white">
+          <Card className="max-w-md w-full border-0 shadow-xl">
             <CardHeader>
               <div className="flex items-center gap-3">
                 <AlertTriangle size={32} className="text-[#FF0000]" weight="bold" />
@@ -85,7 +85,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="space-y-4">
               {this.state.error && (
-                <div className="p-3 bg-black/5 dark:bg-white/5 rounded border border-black/10 dark:border-white/10">
+                <div className="p-3 bg-black/5 dark:bg-white/5 rounded border-0 shadow-sm">
                   <p className="text-sm font-mono text-black/80 dark:text-white/80 break-all">
                     {this.state.error.message}
                   </p>
@@ -95,14 +95,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="flex gap-2">
                 <Button
                   onClick={this.handleReset}
-                  className="flex-1 border-2 border-black dark:border-white"
+                  className="flex-1 border-0 shadow-lg hover:shadow-xl"
                 >
                   Try Again
                 </Button>
                 <Button
                   onClick={() => window.location.reload()}
                   variant="outline"
-                  className="flex-1 border-2 border-black dark:border-white"
+                  className="flex-1 border-0 shadow-lg hover:shadow-xl"
                 >
                   Reload Page
                 </Button>

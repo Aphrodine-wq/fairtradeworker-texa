@@ -171,7 +171,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <CardHeader>
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
@@ -378,7 +378,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
                     </div>
                     <Badge 
                       variant="outline"
-                      className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10"
+                      className="bg-white dark:bg-black text-black dark:text-white border-0 shadow-lg hover:shadow-xl"
                     >
                       {sc.status === 'approved' && '✓ Approved'}
                       {sc.status === 'rejected' && '✗ Rejected'}

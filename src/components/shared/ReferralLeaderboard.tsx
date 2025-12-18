@@ -73,7 +73,7 @@ export function ReferralLeaderboard({ user, period = 'monthly' }: ReferralLeader
                 }`}
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <div className="flex items-center justify-center w-10 h-10 border border-black/20 dark:border-white/20 bg-white dark:bg-black font-bold text-black dark:text-white">
+                  <div className="flex items-center justify-center w-10 h-10 border-0 shadow-sm bg-white dark:bg-black font-bold text-black dark:text-white">
                     {entry.rank <= 3 ? (
                       entry.rank === 1 ? (
                         <Trophy size={24} weight="fill" className="text-yellow-400" />
@@ -108,10 +108,10 @@ export function ReferralLeaderboard({ user, period = 'monthly' }: ReferralLeader
             ))}
 
             {userRank && userRank > 10 && (
-              <div className="p-4 border border-black/20 dark:border-white/20">
+              <div className="p-4 border-0 shadow-sm">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 border border-black/20 dark:border-white/20 bg-white dark:bg-black font-bold text-black dark:text-white">
+                    <div className="flex items-center justify-center w-10 h-10 border-0 shadow-sm bg-white dark:bg-black font-bold text-black dark:text-white">
                       {userRank}
                     </div>
                     <div>

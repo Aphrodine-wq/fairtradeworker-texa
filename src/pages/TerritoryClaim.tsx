@@ -173,7 +173,7 @@ export function TerritoryClaim({ user, onNavigate }: TerritoryClaimProps) {
                   px-4 py-2 rounded-lg transition-all
                   ${view === 'map' 
                     ? 'bg-black dark:bg-white text-white dark:text-black' 
-                    : 'bg-white dark:bg-black border border-black/20 dark:border-white/20 text-black dark:text-white'
+                    : 'bg-white dark:bg-black border-0 shadow-md hover:shadow-lg text-black dark:text-white'
                   }
                 `}
               >
@@ -186,7 +186,7 @@ export function TerritoryClaim({ user, onNavigate }: TerritoryClaimProps) {
                   px-4 py-2 rounded-lg transition-all
                   ${view === 'list' 
                     ? 'bg-black dark:bg-white text-white dark:text-black' 
-                    : 'bg-white dark:bg-black border border-black/20 dark:border-white/20 text-black dark:text-white'
+                    : 'bg-white dark:bg-black border-0 shadow-md hover:shadow-lg text-black dark:text-white'
                   }
                 `}
               >

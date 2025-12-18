@@ -181,7 +181,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
   }, [notes, deletingNoteId])
 
   const getCategoryColor = (cat: string) => {
-    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border border-black/20 dark:border-white/20"
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-0 shadow-md hover:shadow-lg"
   }
 
   const getCategoryLabel = (cat: string) => {
@@ -202,10 +202,10 @@ export function QuickNotes({ user }: QuickNotesProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-6 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+            <div className="w-12 h-12 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex items-center justify-center shadow-sm">
               <Note weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
@@ -327,17 +327,17 @@ export function QuickNotes({ user }: QuickNotesProps) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 mt-6">
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Total Notes</p>
             <p className="text-3xl font-bold text-black dark:text-white">{notes?.length || 0}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Pinned</p>
             <p className="text-3xl font-bold text-black dark:text-white">{pinnedCount}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">This Week</p>
             <p className="text-3xl font-bold text-black dark:text-white">
               {notes?.filter(n => {
@@ -408,8 +408,8 @@ export function QuickNotes({ user }: QuickNotesProps) {
           {filteredNotes.map(note => (
             <Card 
               key={note.id} 
-              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border border-black/20 dark:border-white/20 ${
-                note.isPinned ? 'border border-black/20 dark:border-white/20 bg-white dark:bg-black' : ''
+              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-0 shadow-md hover:shadow-lg ${
+                note.isPinned ? 'border-0 shadow-md hover:shadow-lg bg-white dark:bg-black' : ''
               }`}
             >
               <div className="flex items-start justify-between mb-3">

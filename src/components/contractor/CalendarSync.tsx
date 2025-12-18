@@ -150,7 +150,7 @@ export function CalendarSync({ user }: CalendarSyncProps) {
 
           {syncEnabled && (
             <>
-              <div className="flex items-center justify-between p-4 border border-black/20 dark:border-white/20">
+              <div className="flex items-center justify-between p-4 border-0 shadow-md hover:shadow-lg">
                 <div className="flex items-center gap-3">
                   <Calendar size={24} className="text-black dark:text-white" />
                   <div>

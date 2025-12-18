@@ -231,7 +231,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
 
         <TabsContent value="scores" className="space-y-4 mt-6">
           <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Hot Leads</span>
@@ -243,7 +243,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Warm Leads</span>
@@ -255,7 +255,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Avg Score</span>
@@ -273,7 +273,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
           <div className="space-y-3">
             <h3 className="font-semibold text-lg text-black dark:text-white">Top Hot Leads</h3>
             {hotLeads.length === 0 ? (
-              <Card className="p-8 text-center border border-black/20 dark:border-white/20">
+              <Card className="p-8 text-center border-0 shadow-lg hover:shadow-xl">
                 <p className="text-muted-foreground">No hot leads at this time</p>
               </Card>
             ) : (
@@ -282,7 +282,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
                 if (!customer) return null
 
                 return (
-                  <Card key={score.customerId} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                  <Card key={score.customerId} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -351,7 +351,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
           <div className="space-y-3">
             <h3 className="font-semibold text-lg text-black dark:text-white">AI Recommended Actions</h3>
             {nextActions.length === 0 ? (
-              <Card className="p-8 text-center border border-black/20 dark:border-white/20">
+              <Card className="p-8 text-center border-0 shadow-lg hover:shadow-xl">
                 <Lightbulb size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
                 <p className="text-muted-foreground">No recommended actions at this time</p>
               </Card>
@@ -370,7 +370,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
                 }
 
                 return (
-                  <Card key={action.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                  <Card key={action.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -413,7 +413,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
 
         <TabsContent value="sentiment" className="space-y-4 mt-6">
           <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Positive</span>
@@ -425,7 +425,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Neutral</span>
@@ -437,7 +437,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm text-muted-foreground">Negative</span>
@@ -458,7 +458,7 @@ export function AIInsightsCRM({ user }: AIInsightsCRMProps) {
               const customer = myCustomers.find(c => c.id === interaction.customerId)
 
               return (
-                <Card key={sentiment.interactionId} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={sentiment.interactionId} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">

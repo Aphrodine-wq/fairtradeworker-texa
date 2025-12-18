@@ -114,7 +114,7 @@ export function CustomBranding({ user }: CustomBrandingProps) {
           <div className="mt-2">
             {branding.logoUrl ? (
               <div className="flex items-center gap-4">
-                <img src={branding.logoUrl} alt="Logo" className="w-32 h-32 object-contain border border-black/20 dark:border-white/20" />
+                <img src={branding.logoUrl} alt="Logo" className="w-32 h-32 object-contain border-0 shadow-md hover:shadow-lg" />
                 <Button variant="outline" onClick={handleLogoUpload}>
                   <Upload size={16} className="mr-2" />
                   Change Logo
@@ -152,7 +152,7 @@ export function CustomBranding({ user }: CustomBrandingProps) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-4 border border-black/20 dark:border-white/20">
+        <div className="flex items-center justify-between p-4 border-0 shadow-md hover:shadow-lg">
           <div>
             <Label htmlFor="remove-branding">Remove FTW Branding</Label>
             <p className="text-xs text-black dark:text-white mt-1">

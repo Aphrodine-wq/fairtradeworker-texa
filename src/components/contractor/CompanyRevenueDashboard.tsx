@@ -1078,7 +1078,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
               ) : (
                 <div className="space-y-3">
                   {proContractors.map(contractor => (
-                    <div key={contractor.id} className="flex items-center justify-between p-4 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                    <div key={contractor.id} className="flex items-center justify-between p-4 rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
                       <div>
                         <p className="font-semibold">{contractor.fullName}</p>
                         <p className="text-sm text-black dark:text-white">
@@ -1119,7 +1119,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                     const operatorShare = territoryFees * 0.1
                     
                     return (
-                      <div key={territory.id} className="flex items-center justify-between p-4 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                      <div key={territory.id} className="flex items-center justify-between p-4 rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
                         <div>
                           <p className="font-semibold">{territory.countyName}</p>
                           <p className="text-sm text-black dark:text-white">
@@ -1262,7 +1262,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                   className={cn(
                     "border-2 cursor-pointer transition-colors",
                     selectedScenario === 'conservative' 
-                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      ? "border-0 bg-black dark:bg-white text-white dark:text-black"
                       : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
                   )}
                   onClick={() => {
@@ -1280,7 +1280,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                   className={cn(
                     "border-2 cursor-pointer transition-colors",
                     selectedScenario === 'moderate' 
-                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      ? "border-0 bg-black dark:bg-white text-white dark:text-black"
                       : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
                   )}
                   onClick={() => {
@@ -1298,7 +1298,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
                   className={cn(
                     "border-2 cursor-pointer transition-colors",
                     selectedScenario === 'aggressive' 
-                      ? "border-black dark:border-white bg-black dark:bg-white text-white dark:text-black"
+                      ? "border-0 bg-black dark:bg-white text-white dark:text-black"
                       : "border-transparent dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black"
                   )}
                   onClick={() => {
@@ -2089,7 +2089,7 @@ export function CompanyRevenueDashboard({ user }: CompanyRevenueDashboardProps) 
       <Card glass={isPro}>
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="p-3 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-3 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg shadow-sm">
               <TrendUp size={24} weight="duotone" className="text-primary" />
             </div>
             <div className="flex-1">

@@ -52,9 +52,9 @@ function getCertificationStatus(cert: Certification): { status: CertificationSta
 function getStatusBadge(status: CertificationStatus, daysUntil: number) {
   switch (status) {
     case 'active':
-      return <Badge className="bg-[#00FF00] text-black border border-black/20 dark:border-white/20"><CheckCircle className="w-3 h-3 mr-1" />Active</Badge>
+      return <Badge className="bg-[#00FF00] text-black border-0 shadow-sm"><CheckCircle className="w-3 h-3 mr-1" />Active</Badge>
     case 'expiring-soon':
-      return <Badge className="bg-[#FFFF00] text-black border border-black/20 dark:border-white/20"><Warning className="w-3 h-3 mr-1" />Expires in {daysUntil}d</Badge>
+      return <Badge className="bg-[#FFFF00] text-black border-0 shadow-sm"><Warning className="w-3 h-3 mr-1" />Expires in {daysUntil}d</Badge>
     case 'expired':
       return <Badge className="bg-red-500/10 text-red-600 border-red-500/20"><XCircle className="w-3 h-3 mr-1" />Expired</Badge>
   }
@@ -70,10 +70,10 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
   const Icon = typeInfo?.icon || Briefcase
 
   return (
-    <Card className="p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border border-black/20 dark:border-white/20">
+    <Card className="p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-0 shadow-sm">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 shadow-sm">
+          <div className="w-10 h-10 rounded-md bg-black dark:bg-white border-0 shadow-sm flex items-center justify-center flex-shrink-0 shadow-sm">
             <Icon className="w-5 h-5 text-primary" />
           </div>
           <div>
@@ -128,7 +128,7 @@ const CertificationCard = memo(({ cert, onEdit, onDelete }: {
         )}
       </div>
 
-      <div className="flex gap-2 mt-4 pt-4 border-t-2 border-black dark:border-white">
+      <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
         {cert.fileUrl && (
           <Button 
             variant="outline" 
@@ -593,7 +593,7 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
               <Button 
                 onClick={handleSubmit}
-                className="border-2 border-black dark:border-white"
+                className="border-0 shadow-lg hover:shadow-xl"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -674,7 +674,7 @@ export function CertificationWallet({ user }: CertificationWalletProps) {
       {filteredCerts.length === 0 ? (
         <Card className="p-12 text-center">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 rounded-md bg-white dark:bg-black border-0 shadow-sm flex items-center justify-center shadow-sm">
               <FileText className="w-8 h-8 text-black dark:text-white" />
             </div>
             <div>

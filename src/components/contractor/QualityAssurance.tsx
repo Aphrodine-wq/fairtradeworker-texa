@@ -148,7 +148,7 @@ export function QualityAssurance({ user }: { user: User }) {
                 </Button>
               </DialogTrigger>
               <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-                <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
                   <DialogHeader className="text-left">
                     <DialogTitle className="text-2xl">New Quality Inspection</DialogTitle>
                     <DialogDescription>Record inspection results and compliance</DialogDescription>
@@ -262,7 +262,7 @@ export function QualityAssurance({ user }: { user: User }) {
                         />
                       </div>
                       {(newInspection.items || []).length > 0 && (
-                        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 p-4 shadow-sm">
+                        <Card className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg p-4 shadow-sm">
                           <div className="text-sm">
                             <div className="flex justify-between mb-1">
                               <span>Items Passed:</span>
@@ -304,13 +304,13 @@ export function QualityAssurance({ user }: { user: User }) {
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <Card className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-black dark:text-white">{inspections.length}</div>
                 <div className="text-sm text-muted-foreground mt-1">Total Inspections</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <Card className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <CardContent className="p-6 text-center">
                 <div className={`text-3xl font-bold ${getScoreColor(avgScore)}`}>
                   {avgScore}%
@@ -318,7 +318,7 @@ export function QualityAssurance({ user }: { user: User }) {
                 <div className="text-sm text-muted-foreground mt-1">Avg Score</div>
               </CardContent>
             </Card>
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <Card className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   {passedCount}
@@ -333,7 +333,7 @@ export function QualityAssurance({ user }: { user: User }) {
             {inspections.map(inspection => (
               <Card
                 key={inspection.id}
-                className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
+                className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm"
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -373,7 +373,7 @@ export function QualityAssurance({ user }: { user: User }) {
             ))}
 
             {inspections.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+              <Card className="col-span-full bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
                 <CardContent className="p-12 text-center">
                   <CheckCircle size={64} className="mx-auto mb-4 text-black dark:text-white" />
                   <p className="text-muted-foreground text-lg">No inspections yet</p>

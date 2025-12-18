@@ -340,7 +340,7 @@ export function ConfirmDialog({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b-2 border-black">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-800">
           <h2 className="font-black text-xl uppercase">{title}</h2>
         </div>
 
@@ -350,7 +350,7 @@ export function ConfirmDialog({
         </div>
 
         {/* Actions */}
-        <div className="p-4 border-t-2 border-black flex gap-3 justify-end">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex gap-3 justify-end">
           <button
             onClick={onCancel}
             className="px-4 py-2 font-bold uppercase border-2 border-black hover:bg-black/5 transition-colors"

@@ -167,7 +167,7 @@ export function TerritoryManager({ user }: TerritoryManagerProps) {
       </div>
 
       {territories.length === 0 ? (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+        <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
           <MapTrifold size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
           <p className="text-muted-foreground mb-4">No territories defined yet</p>
           <Button onClick={() => setShowCreateDialog(true)}>Create Your First Territory</Button>
@@ -175,7 +175,7 @@ export function TerritoryManager({ user }: TerritoryManagerProps) {
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
           {territories.map(territory => (
-            <Card key={territory.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card key={territory.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

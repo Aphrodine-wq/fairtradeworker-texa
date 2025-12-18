@@ -209,7 +209,7 @@ export function CrewDispatcher({ user }: CrewDispatcherProps) {
           {myCrew.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {myCrew.map((member) => (
-                <div key={member.id} className="p-4 border border-black/20 dark:border-white/20">
+                <div key={member.id} className="p-4 border-0 shadow-md hover:shadow-lg">
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-semibold text-black dark:text-white">{member.name}</p>
@@ -249,7 +249,7 @@ export function CrewDispatcher({ user }: CrewDispatcherProps) {
             <p className="text-center text-black dark:text-white py-4">No active jobs to dispatch</p>
           ) : (
             activeJobs.map((job) => (
-              <div key={job.id} className="p-4 border border-black/20 dark:border-white/20">
+              <div key={job.id} className="p-4 border-0 shadow-md hover:shadow-lg">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="font-semibold text-black dark:text-white">{job.title}</p>
@@ -286,7 +286,7 @@ export function CrewDispatcher({ user }: CrewDispatcherProps) {
               const crew = myCrew.find(c => c.id === dispatch.crewMemberId)
               
               return (
-                <div key={dispatch.id} className="p-4 border border-black/20 dark:border-white/20">
+                <div key={dispatch.id} className="p-4 border-0 shadow-md hover:shadow-lg">
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-semibold text-black dark:text-white">{job?.title}</p>

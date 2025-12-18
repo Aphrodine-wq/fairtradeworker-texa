@@ -132,7 +132,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Won</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
+                    <div className="w-48 bg-white dark:bg-black border-0 shadow-sm h-6">
                       <div 
                         className="h-full bg-green-600 dark:bg-green-400"
                         style={{ width: `${(analytics.won / analytics.totalBids) * 100}%` }}
@@ -144,7 +144,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Lost</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
+                    <div className="w-48 bg-white dark:bg-black border-0 shadow-sm h-6">
                       <div 
                         className="h-full bg-red-600 dark:bg-red-400"
                         style={{ width: `${(analytics.lost / analytics.totalBids) * 100}%` }}
@@ -156,7 +156,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                 <div className="flex items-center justify-between">
                   <span className="text-black dark:text-white">Pending</span>
                   <div className="flex items-center gap-4">
-                    <div className="w-48 bg-white dark:bg-black border border-black/20 dark:border-white/20 h-6">
+                    <div className="w-48 bg-white dark:bg-black border-0 shadow-sm h-6">
                       <div 
                         className="h-full bg-yellow-600 dark:bg-yellow-400"
                         style={{ width: `${(analytics.pending / analytics.totalBids) * 100}%` }}
@@ -166,7 +166,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                   </div>
                 </div>
               </div>
-              <div className="p-4 border border-black/20 dark:border-white/20 mt-4">
+              <div className="p-4 border-0 shadow-md mt-4">
                 <p className="text-sm font-semibold text-black dark:text-white mb-2">Average Bid Amount</p>
                 <p className="text-2xl font-bold text-black dark:text-white">
                   ${analytics.avgBidAmount.toLocaleString()}
@@ -183,7 +183,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
-                <div className="p-4 border border-black/20 dark:border-white/20">
+                <div className="p-4 border-0 shadow-md">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />
@@ -197,7 +197,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                     Lightning fast responses have the highest win rate
                   </p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20">
+                <div className="p-4 border-0 shadow-md">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />
@@ -208,7 +208,7 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
                     </span>
                   </div>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20">
+                <div className="p-4 border-0 shadow-md">
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-black dark:text-white flex items-center gap-2">
                       <Clock size={16} />
@@ -242,29 +242,29 @@ export function AdvancedBidAnalytics({ user }: AdvancedBidAnalyticsProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                   <p className="text-sm text-muted-foreground">Fast Response (&lt; 1hr)</p>
                   <p className="text-2xl font-bold">{analytics.fastWinRate.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                   <p className="text-sm text-muted-foreground">Medium (1-4hr)</p>
                   <p className="text-2xl font-bold">{analytics.mediumWinRate.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                   <p className="text-sm text-muted-foreground">Slow (&gt; 4hr)</p>
                   <p className="text-2xl font-bold">{analytics.slowWinRate.toFixed(1)}%</p>
                   <p className="text-xs text-muted-foreground mt-1">Win Rate</p>
                 </div>
-                <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                   <p className="text-sm text-muted-foreground">Avg Response</p>
                   <p className="text-2xl font-bold">{Math.round(analytics.avgResponseTime)}m</p>
                   <p className="text-xs text-muted-foreground mt-1">Minutes</p>
                 </div>
               </div>
               
-              <div className="mt-6 p-4 border border-black/20 dark:border-white/20 rounded-md bg-white dark:bg-black">
+              <div className="mt-6 p-4 border-0 shadow-md hover:shadow-lg rounded-md bg-white dark:bg-black">
                 <p className="text-sm font-semibold mb-3">Key Insights</p>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-start gap-2">

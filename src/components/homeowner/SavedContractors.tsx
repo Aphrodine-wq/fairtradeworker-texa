@@ -120,10 +120,10 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-6 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex items-center justify-center">
               <Heart weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
@@ -149,7 +149,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
               {recentlyUsed.map(contractor => (
                 <Card 
                   key={contractor.id}
-                  className="p-3 bg-white dark:bg-black border border-black/10 dark:border-white/10 hover:border-black/20 dark:hover:border-white/20 transition-colors cursor-pointer"
+                  className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg hover:border-black/20 dark:hover:border-white/20 transition-colors cursor-pointer"
                   onClick={() => handleQuickRehire(contractor)}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -185,7 +185,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-white dark:bg-black border border-black/10 dark:border-white/10 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex items-center justify-center">
                       <Hammer size={20} className="text-black dark:text-white" />
                     </div>
                     <div>
@@ -280,7 +280,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
         </div>
       )}
 
-      <Card className="p-4 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
         <p className="text-sm text-muted-foreground">
           <strong>💡 Pro Tip:</strong> Save contractors who did great work so you can hire them again instantly. 
           No need to browse bids - just click "Quick Hire" and they'll see your new job first!

@@ -170,7 +170,7 @@ export function DocumentManager({ user }: { user: User }) {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-                  <div className="px-8 pt-6 pb-4 border-b-2 border-black dark:border-white flex-shrink-0">
+                  <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
                     <DialogHeader className="text-left">
                       <DialogTitle className="text-2xl">Create Folder</DialogTitle>
                       <DialogDescription>Organize your documents</DialogDescription>
@@ -210,14 +210,14 @@ export function DocumentManager({ user }: { user: User }) {
                       </div>
                     </div>
                   </div>
-                  <div className="px-8 py-4 border-t-2 border-black dark:border-white flex-shrink-0">
+                  <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                     <div className="flex gap-3 justify-end">
                       <Button variant="outline" onClick={() => setShowNewFolderDialog(false)} className="h-11">
                         Cancel
                       </Button>
                       <Button 
                         onClick={handleCreateFolder} 
-                        className="h-11 border-2 border-black dark:border-white"
+                        className="h-11 border-0 shadow-md hover:shadow-lg"
                         disabled={isCreatingFolder}
                       >
                         {isCreatingFolder ? (
@@ -295,11 +295,11 @@ export function DocumentManager({ user }: { user: User }) {
             {subFolders.map(folder => (
               <Card
                 key={folder.id}
-                className="hover:shadow-md transition-all cursor-pointer bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
+                className="hover:shadow-md transition-all cursor-pointer bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm"
                 onClick={() => setCurrentFolderId(folder.id)}
               >
                 <CardContent className="p-6 flex flex-col items-center text-center">
-                  <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 mb-3 shadow-sm">
+                  <div className="p-4 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg mb-3 shadow-sm">
                     <Folder size={32} weight="duotone" className="text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="font-semibold text-black dark:text-white truncate w-full">
@@ -316,11 +316,11 @@ export function DocumentManager({ user }: { user: User }) {
             {filteredDocuments.map(doc => (
               <Card
                 key={doc.id}
-                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm"
+                className="hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex-shrink-0 shadow-sm">
+                    <div className="p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex-shrink-0 shadow-sm">
                       <File size={24} weight="duotone" className="text-muted-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">

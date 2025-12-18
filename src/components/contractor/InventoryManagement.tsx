@@ -300,7 +300,7 @@ export function InventoryManagement({ user }: { user: User }) {
             })}
 
             {items.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="col-span-full bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                 <CardContent className="p-12 text-center">
                   <Package size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
                   <p className="text-muted-foreground text-lg">No inventory items yet</p>

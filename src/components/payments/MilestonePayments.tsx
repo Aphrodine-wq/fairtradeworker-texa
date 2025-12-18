@@ -61,7 +61,7 @@ export function MilestonePaymentDialog({
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-        <div className="px-8 pt-6 pb-4 border-b-2 border-black dark:border-white flex-shrink-0">
+        <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
           <DialogHeader className="text-left">
             <DialogTitle className="text-2xl">Pay Milestone</DialogTitle>
             <DialogDescription>
@@ -73,7 +73,7 @@ export function MilestonePaymentDialog({
         <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left Column - Summary */}
           <div className="space-y-4">
-            <Card className="border border-black/10 dark:border-white/10 bg-white dark:bg-black">
+            <Card className="border-0 shadow-lg hover:shadow-xl bg-white dark:bg-black">
               <CardContent className="pt-6 space-y-4">
                 <div>
                   <div className="flex items-start justify-between mb-2">

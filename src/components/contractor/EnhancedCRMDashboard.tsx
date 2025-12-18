@@ -246,13 +246,13 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
   const getStatusColor = (status: CRMCustomer['status']) => {
     switch (status) {
       case 'active':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'lead':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'completed':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'advocate':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
     }
   }
 
@@ -291,7 +291,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
       {/* View Mode Tabs */}
       {myCustomers.length > 0 && (
         <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
-          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+          <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
             <TabsTrigger 
               value="list" 
               className="flex items-center gap-2 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black"
@@ -329,7 +329,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                   placeholder="Search by name, email, phone, notes, or tags..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-11 border-2 border-black dark:border-white rounded-lg bg-white dark:bg-black"
+                  className="pl-10 h-11 border-0 shadow-md hover:shadow-lg rounded-lg bg-white dark:bg-black"
                 />
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-2">
@@ -377,7 +377,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                   <Dialog key={customer.id}>
                     <DialogTrigger asChild>
                       <Card
-                        className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:scale-[1.02] transition-all duration-200 bg-white dark:bg-black border border-black/20 dark:border-white/20"
+                        className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:scale-[1.02] transition-all duration-200 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg"
                         onClick={() => {
                           setSelectedCustomer(customer)
                           setNotes(customer.notes || "")
@@ -459,10 +459,10 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                       <div className="flex-1 overflow-hidden grid grid-cols-1 lg:grid-cols-3 gap-4 p-6">
                         {/* Left Column - Overview */}
                         <div className="lg:col-span-1 space-y-4 overflow-hidden flex flex-col">
-                          <div className="bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 p-4 space-y-4">
+                          <div className="bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg p-4 space-y-4">
                             <div className="space-y-2">
                               <Label className="dark:text-white text-sm">Contact</Label>
-                              <div className="flex items-center gap-2 p-2 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20">
+                              <div className="flex items-center gap-2 p-2 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg">
                                 {customer.invitedVia === 'email' ? (
                                   <>
                                     <EnvelopeSimple weight="duotone" size={18} className="dark:text-white" />
@@ -483,7 +483,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                 value={customer.status}
                                 onValueChange={(value) => handleUpdateStatus(customer.id, value as CRMCustomer['status'])}
                               >
-                                <SelectTrigger className="dark:bg-black dark:text-white border border-black/20 dark:border-white/20 h-9">
+                                <SelectTrigger className="dark:bg-black dark:text-white border-0 shadow-md hover:shadow-lg h-9">
                                   <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -533,7 +533,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                           </div>
 
                           {/* Notes Section */}
-                          <div className="bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 p-4 flex-1 overflow-hidden flex flex-col">
+                          <div className="bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg p-4 flex-1 overflow-hidden flex flex-col">
                             <div className="flex items-center justify-between mb-3 flex-shrink-0">
                               <Label className="flex items-center gap-2 dark:text-white text-sm">
                                 <Note weight="duotone" size={16} />
@@ -557,7 +557,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                   placeholder="Add notes..."
                                   value={notes}
                                   onChange={(e) => setNotes(e.target.value)}
-                                  className="flex-1 dark:bg-black dark:text-white border border-black/20 dark:border-white/20 text-sm resize-none font-mono"
+                                  className="flex-1 dark:bg-black dark:text-white border-0 shadow-md hover:shadow-lg text-sm resize-none font-mono"
                                 />
                                 <div className="flex gap-2 flex-shrink-0">
                                   <Button onClick={handleSaveNotes} size="sm" className="h-8 text-xs">Save</Button>
@@ -568,14 +568,14 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                       setNotes(customer.notes || "")
                                       setIsEditingNotes(false)
                                     }}
-                                    className="dark:bg-black dark:text-white border border-black/20 dark:border-white/20 h-8 text-xs font-mono"
+                                    className="dark:bg-black dark:text-white border-0 shadow-md hover:shadow-lg h-8 text-xs font-mono"
                                   >
                                     Cancel
                                   </Button>
                                 </div>
                               </div>
                             ) : (
-                              <div className="flex-1 text-xs p-3 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 dark:text-white overflow-hidden font-mono">
+                              <div className="flex-1 text-xs p-3 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg dark:text-white overflow-hidden font-mono">
                                 {customer.notes || "No notes yet. Click Edit to add notes."}
                               </div>
                             )}
@@ -583,7 +583,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                         </div>
 
                         {/* Right Column - Interactions */}
-                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 p-4 overflow-hidden flex flex-col">
+                        <div className="lg:col-span-2 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg p-4 overflow-hidden flex flex-col">
                           <div className="flex items-center justify-between mb-4 flex-shrink-0">
                             <Label className="dark:text-white text-base font-semibold">Interaction History</Label>
                             <Button
@@ -608,7 +608,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                 return (
                                   <Card key={interaction.id} className="p-3 dark:bg-black dark:border-white/10">
                                     <div className="flex items-start gap-2">
-                                      <div className="p-1.5 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex-shrink-0">
+                                      <div className="p-1.5 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex-shrink-0">
                                         <Icon weight="duotone" size={16} className="text-black dark:text-white" />
                                       </div>
                                       <div className="flex-1 min-w-0">
@@ -645,7 +645,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                       </div>
 
                       {/* Footer */}
-                      <div className="px-8 py-4 border-t-2 border-black dark:border-white flex-shrink-0">
+                      <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                         <Button
                           variant="destructive"
                           size="sm"
@@ -668,7 +668,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   {pipelineStages.map((stage) => (
                     <div key={stage.id} className="space-y-4">
-                      <div className="flex items-center justify-between p-3 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20">
+                      <div className="flex items-center justify-between p-3 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg">
                         <h3 className="font-semibold dark:text-white">{stage.name}</h3>
                         <Badge variant="outline" className="dark:border-white/20 dark:text-white/80">
                           {stage.customers.length}
@@ -735,7 +735,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                                   {customer.notes && (
                                     <div>
                                       <Label className="dark:text-white text-sm mb-2 block">Notes</Label>
-                                      <div className="text-sm p-3 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 dark:text-white">
+                                      <div className="text-sm p-3 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg dark:text-white">
                                         {customer.notes}
                                       </div>
                                     </div>
@@ -814,7 +814,7 @@ export const EnhancedCRMDashboard = memo(function EnhancedCRMDashboard({ user }:
                       const customer = myCustomers.find(c => c.id === interaction.customerId)
                       const Icon = getInteractionIcon(interaction.type)
                       return (
-                        <div key={interaction.id} className="flex items-center gap-3 p-3 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20">
+                        <div key={interaction.id} className="flex items-center gap-3 p-3 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg">
                           <Icon weight="duotone" size={20} className="text-black dark:text-white" />
                           <div className="flex-1">
                             <div className="font-semibold dark:text-white">{interaction.title}</div>

@@ -602,7 +602,7 @@ Generate a complete, professional scope document now.`
                 </div>
               </CardHeader>
               <CardContent>
-                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-black dark:border-white rounded-md cursor-pointer hover:border-black dark:hover:border-white hover:bg-white dark:hover:bg-black transition-all shadow-sm">
+                <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md cursor-pointer hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900 transition-all shadow-sm hover:shadow-md">
                   <div className="flex flex-col items-center">
                     <Camera className="w-12 h-12 text-muted-foreground mb-3" />
                     <span className="text-base text-foreground font-medium mb-1">Click to upload photos</span>
@@ -768,7 +768,7 @@ Generate a complete, professional scope document now.`
             <Button
               onClick={generateScope}
               disabled={loading || photos.length === 0 || !projectInfo.name?.trim() || !projectInfo.address?.trim()}
-              className="w-full h-14 text-lg border-2 border-black dark:border-white"
+              className="w-full h-14 text-lg border-0 shadow-md hover:shadow-lg"
               size="lg"
             >
               {loading ? (

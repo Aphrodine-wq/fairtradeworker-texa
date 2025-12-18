@@ -35,7 +35,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: Briefcase,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'browse-jobs', label: 'Browse Jobs', icon: <MagnifyingGlass size={20} />, page: 'browse-jobs' },
       { id: 'post-job', label: 'Post Job', icon: <PlusCircle size={20} />, page: 'unified-post-job' },
@@ -53,7 +53,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: UsersThree,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'crew-dispatcher', label: 'Crew Dispatcher', icon: <Users size={20} />, page: 'crew-dispatcher' },
       { id: 'team-calendar', label: 'Team Calendar', icon: <CalendarBlank size={20} />, page: 'calendar' },
@@ -71,7 +71,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: UserPlus,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'import-customer-data', label: 'Import Customer Data', icon: <Microphone size={20} />, page: 'voice-intake' },
       { id: 'add-customer', label: 'Add Customer', icon: <UserPlus size={20} />, page: 'customer-crm' },
@@ -89,7 +89,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: Brain,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'ai-scoping', label: 'AI Scoping', icon: <Brain size={20} />, page: 'photo-scoper' },
       { id: 'bid-intelligence', label: 'Bid Intelligence', icon: <Sparkle size={20} />, page: 'browse-jobs' },
@@ -107,7 +107,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: Building,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'document-manager', label: 'Document Manager', icon: <FileText size={20} />, page: 'documents' },
       { id: 'invoice-manager', label: 'Invoice Manager', icon: <Receipt size={20} />, page: 'invoices-page' },
@@ -125,7 +125,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: Crown,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'advanced-analytics', label: 'Advanced Analytics', icon: <ChartBar size={20} />, page: 'revenue-dashboard' },
       { id: 'custom-branding', label: 'Custom Branding', icon: <Crown size={20} />, page: 'custom-branding' },
@@ -143,7 +143,7 @@ export const MAIN_MENU_CONFIGS: MainMenuConfig[] = [
     icon: Microphone,
     color: 'text-black dark:text-white',
     bgColor: 'bg-white dark:bg-black',
-    borderColor: 'border-black dark:border-white',
+    borderColor: 'border-0',
     subMenus: [
       { id: 'quick-capture', label: 'Quick Capture', icon: <Microphone size={20} />, page: 'lead-capture' },
       { id: 'manual-entry', label: 'Manual Entry', icon: <FileText size={20} />, page: 'lead-capture' },

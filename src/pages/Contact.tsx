@@ -280,7 +280,7 @@ export function ContactPage() {
                 )}
               </div>
 
-              <Button type="submit" className="w-full md:w-auto px-8 border-2 border-black dark:border-white" disabled={isSubmitting}>
+              <Button type="submit" className="w-full md:w-auto px-8 border-0 shadow-lg hover:shadow-xl" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <>
                     <CircleNotch size={20} className="mr-2 animate-spin" weight="bold" />

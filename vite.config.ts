@@ -12,7 +12,10 @@ const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      // Enable faster refresh and better tree-shaking
+      jsxImportSource: undefined,
+    }),
     tailwindcss(),
     // DO NOT REMOVE
     createIconImportProxy() as PluginOption,
@@ -89,6 +92,8 @@ export default defineConfig({
       'recharts',
       'd3',
     ],
+    // Force prebundling for faster cold starts
+    force: false,
   },
   // Performance optimizations
   esbuild: {
@@ -96,5 +101,15 @@ export default defineConfig({
     drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
     // Target for esbuild
     target: 'es2020',
+    // Enable tree shaking
+    treeShaking: true,
+    // Minify identifiers for smaller bundles
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true,
+  },
+  // CSS optimization
+  css: {
+    devSourcemap: false, // Disable source maps for faster dev
   },
 });

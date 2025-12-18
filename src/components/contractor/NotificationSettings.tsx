@@ -80,11 +80,11 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3 flex-1">
             {isSubscribed ? (
-              <div className="w-10 h-10 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+              <div className="w-10 h-10 rounded-md bg-black dark:bg-white border-0 shadow-sm flex items-center justify-center shadow-sm">
                 <Bell className="w-5 h-5 text-primary" />
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+              <div className="w-10 h-10 rounded-md bg-white dark:bg-black border-0 shadow-sm flex items-center justify-center shadow-sm">
                 <BellOff className="w-5 h-5 text-muted-foreground" />
               </div>
             )}
@@ -437,7 +437,7 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
+            <div className="flex items-center gap-2 p-4 bg-white dark:bg-black border-0 shadow-sm rounded-md shadow-sm font-mono">
               <Check className="w-5 h-5 text-primary" />
               <p className="text-sm text-muted-foreground">
                 Your notification settings are saved automatically
@@ -448,7 +448,7 @@ export function NotificationSettings({ user }: NotificationSettingsProps) {
       </Card>
 
       {isSubscribed && !isExpanded && (
-        <Card className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+        <Card className="p-4 bg-white dark:bg-black border-0 shadow-sm shadow-sm">
           <div className="flex items-start gap-3">
             <Zap className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <div>

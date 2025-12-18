@@ -187,7 +187,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
               const recentSyncs = (syncs || []).filter(s => s.integrationId === integration.id).slice(0, 5)
 
               return (
-                <Card key={integration.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={integration.id} className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -324,7 +324,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
             return (
               <Card 
                 key={integration.type}
-                className={`bg-white dark:bg-black border border-black/20 dark:border-white/20 ${
+                className={`bg-white dark:bg-black border-0 shadow-md hover:shadow-lg ${
                   isConnected ? 'opacity-60' : 'cursor-pointer hover:shadow-md transition-all'
                 }`}
                 onClick={() => !isConnected && setShowConnectDialog(true)}

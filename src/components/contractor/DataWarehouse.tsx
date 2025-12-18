@@ -92,7 +92,7 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
 
       {/* Summary Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <HardDrive weight="duotone" size={24} className="text-black dark:text-white" />
@@ -104,7 +104,7 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <Database weight="duotone" size={24} className="text-black dark:text-white" />
@@ -116,7 +116,7 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp weight="duotone" size={24} className="text-black dark:text-white" />
@@ -128,7 +128,7 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <Clock weight="duotone" size={24} className="text-black dark:text-white" />
@@ -145,14 +145,14 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
 
       {/* Warehouses */}
       {warehouses.length === 0 ? (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+        <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
           <Database size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
           <p className="text-muted-foreground">No data warehouses configured</p>
         </Card>
       ) : (
         <div className="space-y-4">
           {warehouses.map(warehouse => (
-            <Card key={warehouse.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card key={warehouse.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export function DataWarehouse({ user }: DataWarehouseProps) {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
                     <div className="text-sm font-semibold text-black dark:text-white mb-3">
                       Tables ({warehouse.tables.length})
                     </div>

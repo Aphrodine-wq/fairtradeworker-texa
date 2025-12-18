@@ -296,7 +296,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {activeJobs.length} active
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -311,7 +311,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {contractorsByTier.pro} PRO members
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -339,7 +339,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <p className="text-3xl font-bold mt-1">{territoryHealth}/100</p>
                   <Progress value={territoryHealth} className="mt-2 h-1" />
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Target className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -353,7 +353,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
                     onClick={() => onNavigate('browse-jobs')}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <Wrench className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -366,7 +366,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
                     onClick={() => onNavigate('territory-map')}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -379,7 +379,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
                     onClick={() => onNavigate('territory-claim')}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -395,7 +395,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                       if (tabs) tabs.click()
                     }}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <Target className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -408,7 +408,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
                     onClick={() => setReferralDialogOpen(true)}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <UserPlus className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -421,7 +421,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
                     onClick={() => onNavigate('dashboard')}>
                     <div className="flex items-center gap-4">
-                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                         <BarChart className="h-6 w-6 text-primary" weight="duotone" />
                       </div>
                       <div>
@@ -455,7 +455,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
       {/* Referral Link Dialog */}
       <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
-        <DialogContent className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <DialogContent className="bg-white dark:bg-black border-0 shadow-xl">
           <DialogHeader>
             <DialogTitle className="text-black dark:text-white">Your Operator Referral Link</DialogTitle>
             <DialogDescription className="text-muted-foreground">
@@ -470,7 +470,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   id="referral-link"
                   value={referralLink}
                   readOnly
-                  className="font-mono text-sm bg-white dark:bg-black border border-black/20 dark:border-white/20 text-black dark:text-white"
+                  className="font-mono text-sm bg-white dark:bg-black border-0 shadow-md text-black dark:text-white"
                 />
                 <Button
                   onClick={handleCopyReferral}

@@ -112,7 +112,7 @@ export function ContractorReferralSystem({ user }: ContractorReferralSystemProps
           <Button
             onClick={handleInvite}
             disabled={sending || !canInviteMore}
-            className="w-full bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10 hover:bg-white/80 dark:hover:bg-black/80 h-12 text-lg font-bold"
+            className="w-full bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg hover:bg-white/80 dark:hover:bg-black/80 h-12 text-lg font-bold"
           >
             <DeviceMobile size={20} className="mr-2" weight="bold" />
             {sending ? "Sending..." : `Send Invite (${monthlyCount}/10 this month)`}

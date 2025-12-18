@@ -363,7 +363,7 @@ export function MajorProjectScopeBuilder({ projectType, onComplete }: ScopeBuild
       </Card>
       
       {/* Estimate Display */}
-      <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Lightbulb size={24} className="text-black dark:text-white" weight="fill" />

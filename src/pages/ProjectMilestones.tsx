@@ -653,7 +653,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       
       <Dialog open={!!selectedMilestone && !showDisputeDialog && !showEditDialog} onOpenChange={(open) => !open && setSelectedMilestone(null)}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Request Milestone Payment</DialogTitle>
               <DialogDescription>
@@ -723,7 +723,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
             </div>
             
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <Button 
               onClick={handleRequestPayment}
               className="w-full h-11"
@@ -747,7 +747,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       
       <Dialog open={showDisputeDialog} onOpenChange={setShowDisputeDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Question Milestone</DialogTitle>
               <DialogDescription>
@@ -772,7 +772,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               </div>
             </div>
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
@@ -807,7 +807,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Edit Milestone</DialogTitle>
               <DialogDescription>Update milestone details</DialogDescription>
@@ -860,7 +860,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
             </div>
           </div>
           
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
@@ -885,7 +885,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Add Milestone</DialogTitle>
               <DialogDescription>Create a new milestone for this project</DialogDescription>
@@ -1001,7 +1001,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
             </div>
           </div>
           
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button 
                 variant="outline" 
@@ -1015,7 +1015,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               </Button>
               <Button
                 onClick={handleAddMilestone}
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isAddingMilestone}
               >
                 {isAddingMilestone ? (
@@ -1037,7 +1037,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
       
       <Dialog open={!!selectedExpenseMilestone} onOpenChange={(open) => !open && setSelectedExpenseMilestone(null)}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Expense Tracking - {selectedExpenseMilestone?.name}</DialogTitle>
               <DialogDescription>

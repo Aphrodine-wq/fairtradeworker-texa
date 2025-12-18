@@ -1,12 +1,12 @@
 /* ===========================================
-   FairTradeWorker - Enhanced Global Theme Transition Fix
+   FairTradeWorker - GPU-Optimized Theme Transitions
    =========================================== */
 
 /* ============================================
-   1. ENHANCED LAYERED TRANSITION SYSTEM
+   1. PERFORMANCE-FIRST TRANSITION SYSTEM
    ============================================ */
 
-/* Layer 1: Backgrounds (fastest - 200ms for smoother transitions) */
+/* GPU acceleration for all transitions */
 body,
 main,
 section,
@@ -17,28 +17,24 @@ footer,
 nav,
 div:not([class*="animate"]),
 [class*="bg-"] {
-  transition-property: background-color;
-  transition-duration: 0.2s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: background-color;
-  transform: translate3d(0, 0, 0); /* GPU acceleration */
+  transition: background-color 0.12s cubic-bezier(0.2, 0, 0.2, 1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
-/* Layer 2: Borders (medium - 250ms) */
+/* Borders - faster for snappy feedback */
 [class*="border"],
 button,
 input,
 select,
 textarea,
 [data-slot="card"] {
-  transition-property: border-color, box-shadow;
-  transition-duration: 0.25s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: border-color, box-shadow;
-  transform: translate3d(0, 0, 0);
+  transition: border-color 0.1s, box-shadow 0.15s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  transform: translateZ(0);
 }
 
-/* Layer 3: Text and Icons (slower - 300ms for smooth fade) */
+/* Text - quick color change */
 p,
 span,
 h1, h2, h3, h4, h5, h6,
@@ -47,37 +43,42 @@ label,
 [class*="text-"],
 svg,
 [class*="icon"] {
-  transition-property: color, fill, stroke;
-  transition-duration: 0.3s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: color, fill, stroke;
-  transform: translate3d(0, 0, 0);
+  transition: color 0.1s, fill 0.1s, stroke 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
-/* Layer 4: Shadows and Effects (slowest - 600ms for depth) */
+/* Shadows - slightly longer for depth perception */
 [class*="shadow"],
 [class*="backdrop"] {
-  transition-property: box-shadow, backdrop-filter;
-  transition-duration: 0.6s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: box-shadow, backdrop-filter;
-  transform: translate3d(0, 0, 0);
+  transition: box-shadow 0.2s, backdrop-filter 0.15s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: box-shadow;
 }
 
-/* Fallback for elements not covered above */
+/* Minimal fallback - only essential properties */
 *,
 *::before,
 *::after {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 0.25s;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 /* Performance optimization - disable transitions during heavy operations */
 .reduce-motion *,
 .reduce-motion *::before,
-.reduce-motion *::after {
-  transition-duration: 0ms !important;
+.reduce-motion *::after,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ============================================

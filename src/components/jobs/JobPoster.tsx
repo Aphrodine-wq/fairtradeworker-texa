@@ -514,7 +514,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 className={cn(
                   "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md transition-all text-left",
                   project.isCustom
-                    ? "border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+                    ? "border-2 border-dashed border-gray-300 dark:border-gray-700 hover:shadow-xl"
                     : "border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
                 )}
               >

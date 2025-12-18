@@ -58,7 +58,7 @@ export function FeeSavingsDashboard({
       animate="show"
     >
       <motion.div variants={item}>
-        <Card className="p-8 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+        <Card className="p-8 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ export function FeeSavingsDashboard({
         <motion.div variants={item}>
           <Card className="p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+              <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                 <CurrencyDollar className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div className="flex-1 space-y-3">
@@ -97,25 +97,25 @@ export function FeeSavingsDashboard({
                 </div>
                 
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                     <span className="text-sm">Thumbtack (15%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${thumbtackSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                     <span className="text-sm">HomeAdvisor (20%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${homeadvisorSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                     <span className="text-sm">Angi (18%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${angiSavings.toLocaleString()}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                  <div className="flex justify-between items-center p-2 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                     <span className="text-sm">TaskRabbit (26%)</span>
                     <span className="font-semibold text-black dark:text-white">
                       ${taskrabbitSavings.toLocaleString()}
@@ -142,7 +142,7 @@ export function FeeSavingsDashboard({
         <motion.div variants={item}>
           <Card className="p-6">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+              <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                 <TrendUp className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div className="flex-1 space-y-3">
@@ -159,7 +159,7 @@ export function FeeSavingsDashboard({
                         ${projectedYearlySavings.toLocaleString()}
                       </span>
                     </div>
-                    <div className="h-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md overflow-hidden shadow-sm">
+                    <div className="h-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md overflow-hidden shadow-sm">
                       <div 
                         className="h-full bg-black dark:bg-white rounded-full"
                         style={{ width: `${((new Date().getMonth() + 1) / 12) * 100}%` }}
@@ -170,7 +170,7 @@ export function FeeSavingsDashboard({
                     </p>
                   </div>
 
-                  <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                  <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
                       <CalendarBlank className="w-5 h-5 text-black dark:text-white" />
                       <span className="font-semibold text-black dark:text-white">
@@ -194,7 +194,7 @@ export function FeeSavingsDashboard({
       <motion.div variants={item}>
         <Card className="p-6" glass={user.isPro}>
           <div className="flex items-start gap-4">
-            <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-lg flex-shrink-0">
+            <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-lg flex-shrink-0">
               <Medal className="w-6 h-6 text-black dark:text-white" weight="fill" />
             </div>
             <div className="flex-1">
@@ -202,7 +202,7 @@ export function FeeSavingsDashboard({
                 What You Could Do With Your Savings
               </h4>
               <div className="grid gap-2 md:grid-cols-3">
-                <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+                <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                   <div className="font-semibold text-black dark:text-white">
                     ${(homeadvisorSavings / 12).toFixed(0)}/month
                   </div>
@@ -210,7 +210,7 @@ export function FeeSavingsDashboard({
                     New truck payment
                   </div>
                 </div>
-                <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+                <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                   <div className="font-semibold text-black dark:text-white">
                     ${homeadvisorSavings.toLocaleString()}
                   </div>
@@ -218,7 +218,7 @@ export function FeeSavingsDashboard({
                     Family vacation
                   </div>
                 </div>
-                <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+                <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                   <div className="font-semibold text-black dark:text-white">
                     ${fiveYearSavings.toLocaleString()}
                   </div>

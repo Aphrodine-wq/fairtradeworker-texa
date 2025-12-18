@@ -152,7 +152,7 @@ export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps
 
               {quote && (
                 <div className="space-y-4">
-                  <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+                  <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-bold text-black dark:text-white">Instant Quote</h3>
                       <Badge variant="default">
@@ -169,10 +169,10 @@ export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps
                       </div>
 
                       {upsells.length > 0 && (
-                        <div className="pt-3 border-t-2 border-black dark:border-white">
+                        <div className="pt-3 border-t border-gray-200 dark:border-gray-800">
                           <p className="font-semibold text-black dark:text-white mb-2">Suggested Upsells</p>
                           {upsells.map((upsell, idx) => (
-                            <div key={idx} className="p-3 mb-2 border border-black/20 dark:border-white/20">
+                            <div key={idx} className="p-3 mb-2 border-0 shadow-md hover:shadow-lg">
                               <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                   <p className="font-semibold text-black dark:text-white">{upsell.service}</p>

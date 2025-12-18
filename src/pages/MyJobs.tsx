@@ -293,7 +293,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
               {job.photos.slice(0, 4).map((photo, idx) => (
                 <div
                   key={idx}
-                  className="aspect-square rounded-md border border-black/20 dark:border-white/20 overflow-hidden cursor-pointer hover:shadow-md transition-all"
+                  className="aspect-square rounded-md border-0 shadow-md hover:shadow-lg overflow-hidden cursor-pointer transition-all"
                   onClick={() => handlePhotoClick(job.photos || [], idx)}
                 >
                   <img
@@ -336,7 +336,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         )}
         
         {job.milestones && job.milestones.length > 0 && (
-          <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md">
+          <div className="p-3 bg-white dark:bg-black border-0 shadow-md rounded-md">
             <div className="flex items-center justify-between mb-2">
               <Label className="text-sm text-muted-foreground flex items-center gap-1">
                 <ChartBar size={14} weight="fill" />
@@ -496,7 +496,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
 
       <Dialog open={!!selectedJob && !paymentDialogOpen} onOpenChange={(open) => !open && setSelectedJob(null)}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Bids for {selectedJob?.title}</DialogTitle>
               <DialogDescription>
@@ -522,7 +522,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
                       <CardHeader className="pb-3">
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <div className="w-10 h-10 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                            <div className="w-10 h-10 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                               <User weight="fill" className="text-primary" size={20} />
                             </div>
                             <CardTitle className="text-base">{bid.contractorName}</CardTitle>
@@ -572,7 +572,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
 
       <Dialog open={paymentDialogOpen} onOpenChange={setPaymentDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Complete Payment</DialogTitle>
               <DialogDescription>
@@ -585,7 +585,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             <div className="flex-1 overflow-hidden p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Left Column - Payment Summary */}
               <div className="space-y-4">
-                <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardContent className="pt-6 space-y-3">
                     <div className="flex justify-between text-base">
                       <span className="text-muted-foreground">Contractor/Subcontractor bid:</span>
@@ -633,14 +633,14 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
             </div>
           )}
 
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogFooter className="gap-3">
               <Button variant="outline" onClick={() => setPaymentDialogOpen(false)} className="h-11">
                 Cancel
               </Button>
               <Button 
                 onClick={handlePayment} 
-                className="h-11 border border-black/20 dark:border-white/20"
+                className="h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isProcessingPayment}
               >
                 {isProcessingPayment ? (

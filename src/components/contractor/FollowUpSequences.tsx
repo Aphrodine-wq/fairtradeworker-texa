@@ -255,7 +255,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
                   {sequence.steps.map((step, i) => (
                     <div
                       key={step.id}
-                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md text-sm font-mono shadow-sm"
+                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md text-sm font-mono shadow-sm"
                     >
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                         {i + 1}
@@ -410,7 +410,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
               </Button>
               <Button 
                 onClick={handleSave} 
-                className="h-11 border-2 border-black dark:border-white"
+                className="h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSaving}
               >
                 {isSaving ? (
