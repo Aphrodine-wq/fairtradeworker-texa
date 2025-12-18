@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from 'framer-motion'
-import { ReactNode } from 'react'
-import { PushPin, PushPinSlash } from '@phosphor-icons/react'
+import { motion, AnimatePresence, PanInfo } from 'framer-motion'
+import { ReactNode, useCallback, useState } from 'react'
+import { PushPin, PushPinSlash, DotsSixVertical } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface MainMenuCircleProps {
@@ -16,6 +16,10 @@ interface MainMenuCircleProps {
   borderColor: string
   isPinned?: boolean
   onPinToggle?: () => void
+  // Drag-and-drop props
+  customPosition?: { x: number; y: number }
+  onDragEnd?: (position: { x: number; y: number }) => void
+  isDraggable?: boolean
 }
 
 export function MainMenuCircle({
@@ -31,10 +35,29 @@ export function MainMenuCircle({
   borderColor,
   isPinned = false,
   onPinToggle,
+  customPosition,
+  onDragEnd,
+  isDraggable = true,
 }: MainMenuCircleProps) {
-  // Calculate position from angle and radius
-  const x = Math.cos((angle * Math.PI) / 180) * radius
-  const y = Math.sin((angle * Math.PI) / 180) * radius
+  // Calculate default position from angle and radius
+  const defaultX = Math.cos((angle * Math.PI) / 180) * radius
+  const defaultY = Math.sin((angle * Math.PI) / 180) * radius
+  
+  // Use custom position if available, otherwise use calculated position
+  const x = customPosition?.x ?? defaultX
+  const y = customPosition?.y ?? defaultY
+  
+  const [isDragging, setIsDragging] = useState(false)
+  
+  const handleDragEnd = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false)
+    if (onDragEnd) {
+      // Calculate new position based on drag offset
+      const newX = x + info.offset.x
+      const newY = y + info.offset.y
+      onDragEnd({ x: newX, y: newY })
+    }
+  }, [x, y, onDragEnd])
 
   return (
     <motion.div
@@ -42,15 +65,22 @@ export function MainMenuCircle({
       style={{
         left: '50%',
         top: '50%',
-        zIndex: isActive ? 20 : 15,
+        zIndex: isActive ? 20 : isDragging ? 25 : 15,
+        cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
       }}
       initial={{ x, y, opacity: 0, scale: 0 }}
       animate={{ 
         x, 
         y, 
         opacity: 1, 
-        scale: 1,
+        scale: isDragging ? 1.1 : 1,
       }}
+      drag={isDraggable}
+      dragMomentum={false}
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={handleDragEnd}
+      whileDrag={{ scale: 1.15, zIndex: 30 }}
       transition={{ 
         type: 'spring', 
         stiffness: 900, 
@@ -94,11 +124,11 @@ export function MainMenuCircle({
           "relative flex flex-col items-center justify-center",
           "w-20 h-20 -ml-10 -mt-10 rounded-full",
           "transition-all duration-300",
-          "border-2",
+          "shadow-lg hover:shadow-xl",
           isActive 
-            ? "bg-black dark:bg-white border-black dark:border-black shadow-lg" 
-            : "bg-white dark:bg-black border-black dark:border-black hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
-          isPinned && "ring-2 ring-black dark:ring-black ring-offset-2"
+            ? "bg-black dark:bg-white" 
+            : "bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+          isPinned && "ring-2 ring-primary ring-offset-2"
         )}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}

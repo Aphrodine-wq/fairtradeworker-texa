@@ -96,8 +96,8 @@ export function SubMenuCircle({
         className={cn(
           "relative flex flex-col items-center justify-center",
           "w-20 h-20 -ml-10 -mt-10 rounded-xl",
-          "border-0 hover:shadow-xl transition-shadow",
-          "bg-white dark:bg-black",
+          "shadow-lg hover:shadow-xl transition-all",
+          "bg-white/95 dark:bg-black/95 backdrop-blur-sm",
           "cursor-pointer"
         )}
         whileHover={{ scale: 1.05, y: -4 }}

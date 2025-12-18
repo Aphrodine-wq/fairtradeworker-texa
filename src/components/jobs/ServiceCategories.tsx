@@ -200,25 +200,22 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Rainbow gradient scheme - vibrant, eye-catching gradients
-  const rainbowGradients = [
-    { bg: "bg-gradient-to-br from-red-500 to-orange-500", text: "text-white", index: 0 },
-    { bg: "bg-gradient-to-br from-orange-500 to-yellow-500", text: "text-white", index: 1 },
-    { bg: "bg-gradient-to-br from-yellow-500 to-green-500", text: "text-white", index: 2 },
-    { bg: "bg-gradient-to-br from-green-500 to-cyan-500", text: "text-white", index: 3 },
-    { bg: "bg-gradient-to-br from-cyan-500 to-blue-500", text: "text-white", index: 4 },
-    { bg: "bg-gradient-to-br from-blue-500 to-purple-500", text: "text-white", index: 5 },
-    { bg: "bg-gradient-to-br from-purple-500 to-pink-500", text: "text-white", index: 6 },
-    { bg: "bg-gradient-to-br from-pink-500 to-rose-500", text: "text-white", index: 7 },
-    { bg: "bg-gradient-to-br from-rose-500 to-red-500", text: "text-white", index: 8 },
-    { bg: "bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500", text: "text-white", index: 9 },
-    { bg: "bg-gradient-to-br from-yellow-500 via-green-500 to-cyan-500", text: "text-white", index: 10 },
-    { bg: "bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500", text: "text-white", index: 11 },
+  // Solid color scheme - each category gets a distinct solid color
+  const solidColors = [
+    { bg: "bg-red-500", text: "text-white", index: 0 },
+    { bg: "bg-orange-500", text: "text-white", index: 1 },
+    { bg: "bg-amber-500", text: "text-white", index: 2 },
+    { bg: "bg-emerald-500", text: "text-white", index: 3 },
+    { bg: "bg-cyan-500", text: "text-white", index: 4 },
+    { bg: "bg-blue-500", text: "text-white", index: 5 },
+    { bg: "bg-violet-500", text: "text-white", index: 6 },
+    { bg: "bg-pink-500", text: "text-white", index: 7 },
+    { bg: "bg-rose-500", text: "text-white", index: 8 },
   ]
 
-  // Assign rainbow gradients to categories - cycle through for variety
-  const getCategoryGradient = (index: number) => {
-    return rainbowGradients[index % rainbowGradients.length]
+  // Assign solid colors to categories - cycle through for variety
+  const getCategoryColor = (index: number) => {
+    return solidColors[index % solidColors.length]
   }
 
   // Multi-select state
@@ -334,7 +331,7 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
         {mainCategories.map((category, index) => {
           const Icon = category.icon
-          const gradient = getCategoryGradient(index)
+          const colorStyle = getCategoryColor(index)
           const isSelected = selectedCategories.includes(category.id)
           return (
             <motion.div
@@ -360,12 +357,12 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                     style={{ willChange: 'transform' }}
                   >
                     <div
-                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${gradient.bg} relative shadow-lg`}
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${colorStyle.bg} relative shadow-lg`}
                     >
                       <Icon 
                         size={28} 
                         weight="fill" 
-                        className={gradient.text}
+                        className={colorStyle.text}
                       />
                       {isSelected && (
                         <div className="absolute -top-1 -right-1 w-5 h-5 bg-black dark:bg-white rounded-full flex items-center justify-center">

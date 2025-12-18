@@ -75,14 +75,14 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
             className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0"
             aria-label="Go to home"
           >
-            <span className="font-heading font-bold text-xl md:text-3xl leading-none text-black dark:text-white">
+            <span className="font-heading font-bold text-2xl md:text-4xl leading-none text-black dark:text-white whitespace-nowrap">
                 FairTradeWorker
               </span>
           </button>
 
           <nav className={cn(
-            "flex items-center gap-1.5 md:absolute md:left-1/2 md:transform md:-translate-x-1/2",
-            !user && "hidden md:flex"
+            "flex items-center gap-1.5",
+            user ? "md:absolute md:left-1/2 md:transform md:-translate-x-1/2" : "ml-auto hidden md:flex"
           )}>
             {!user ? (
               <>

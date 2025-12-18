@@ -1231,10 +1231,10 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     
                     <Tabs value={sizeFilter} onValueChange={(v) => setSizeFilter(v as JobSize | 'all')} className="flex-1">
                       <TabsList className="grid grid-cols-4 w-full md:w-auto bg-muted/50 h-auto p-1">
-                        <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">All</TabsTrigger>
-                        <TabsTrigger value="small" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟢 Small</TabsTrigger>
-                        <TabsTrigger value="medium" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🟡 Medium</TabsTrigger>
-                        <TabsTrigger value="large" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">🔴 Large</TabsTrigger>
+                        <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100">All</TabsTrigger>
+                        <TabsTrigger value="small" className="text-xs md:text-sm py-2 px-3 transition-all hover:scale-105 hover:bg-green-100 dark:hover:bg-green-900/30 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100">🟢 Small</TabsTrigger>
+                        <TabsTrigger value="medium" className="text-xs md:text-sm py-2 px-3 transition-all hover:scale-105 hover:bg-yellow-100 dark:hover:bg-yellow-900/30 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100">🟡 Medium</TabsTrigger>
+                        <TabsTrigger value="large" className="text-xs md:text-sm py-2 px-3 transition-all hover:scale-105 hover:bg-red-100 dark:hover:bg-red-900/30 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100">🔴 Large</TabsTrigger>
                       </TabsList>
                     </Tabs>
                   </div>
@@ -1244,19 +1244,19 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                     <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
                     <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table' | 'carousel')}>
                       <TabsList className="bg-muted/50 h-auto p-1">
-                        <TabsTrigger value="carousel" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as carousel">
+                        <TabsTrigger value="carousel" className="gap-2 py-2 px-3 text-xs md:text-sm transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100" aria-label="View jobs as carousel">
                           <Rows weight="duotone" size={16} />
                           <span className="hidden sm:inline">Cards</span>
                         </TabsTrigger>
-                        <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as grid">
+                        <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100" aria-label="View jobs as grid">
                           <List weight="duotone" size={16} />
                           <span className="hidden sm:inline">Grid</span>
                         </TabsTrigger>
-                        <TabsTrigger value="table" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as table">
+                        <TabsTrigger value="table" className="gap-2 py-2 px-3 text-xs md:text-sm transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100" aria-label="View jobs as table">
                           <Eye weight="duotone" size={16} />
                           <span className="hidden sm:inline">Table</span>
                         </TabsTrigger>
-                        <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs on map">
+                        <TabsTrigger value="map" className="gap-2 py-2 px-3 text-xs md:text-sm transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100" aria-label="View jobs on map">
                           <MapTrifold weight="duotone" size={16} />
                           <span className="hidden sm:inline">Map</span>
                         </TabsTrigger>
@@ -1274,22 +1274,22 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   
                   <Tabs value={mediaTypeFilter} onValueChange={(v) => setMediaTypeFilter(v as JobInputType | 'all')} className="flex-1">
                     <TabsList className="grid grid-cols-5 w-full md:w-auto bg-muted/50 h-auto p-1">
-                      <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black">
+                      <TabsTrigger value="all" className="text-xs md:text-sm py-2 px-3 transition-all hover:scale-105 hover:bg-black/5 dark:hover:bg-white/10 data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black data-[state=active]:scale-100">
                         All
                       </TabsTrigger>
-                      <TabsTrigger value="photo" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                      <TabsTrigger value="photo" className="text-xs md:text-sm py-2 px-3 gap-1 transition-all hover:scale-105 hover:bg-blue-100 dark:hover:bg-blue-900/30 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:scale-100">
                         <Camera weight="duotone" size={14} className="hidden sm:inline" />
                         📸 Photo
                       </TabsTrigger>
-                      <TabsTrigger value="video" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-red-600 data-[state=active]:text-white">
+                      <TabsTrigger value="video" className="text-xs md:text-sm py-2 px-3 gap-1 transition-all hover:scale-105 hover:bg-red-100 dark:hover:bg-red-900/30 data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=active]:scale-100">
                         <VideoCamera weight="duotone" size={14} className="hidden sm:inline" />
                         🎬 Video
                       </TabsTrigger>
-                      <TabsTrigger value="audio" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+                      <TabsTrigger value="audio" className="text-xs md:text-sm py-2 px-3 gap-1 transition-all hover:scale-105 hover:bg-purple-100 dark:hover:bg-purple-900/30 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:scale-100">
                         <Microphone weight="duotone" size={14} className="hidden sm:inline" />
                         🎙️ Voice
                       </TabsTrigger>
-                      <TabsTrigger value="text" className="text-xs md:text-sm py-2 px-3 gap-1 data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
+                      <TabsTrigger value="text" className="text-xs md:text-sm py-2 px-3 gap-1 transition-all hover:scale-105 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:scale-100">
                         <Notebook weight="duotone" size={14} className="hidden sm:inline" />
                         📝 Notes
                       </TabsTrigger>

@@ -584,6 +584,9 @@ function App() {
     setCurrentUser(demoUser)
     setIsDemoMode(true)
     
+    // Scroll to top when entering demo mode
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    
     const roleMessages = {
       homeowner: 'You can post jobs and receive bids from contractors.',
       contractor: 'You can browse jobs and submit bids. Check out your dashboard!',

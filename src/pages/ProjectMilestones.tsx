@@ -726,7 +726,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
           <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
             <Button 
               onClick={handleRequestPayment}
-              className="w-full h-11 border-2 border-black dark:border-white"
+              className="w-full h-11"
               disabled={photos.length < 3 || isRequestingPayment || !notes.trim()}
             >
               {isRequestingPayment ? (
@@ -786,7 +786,7 @@ export function ProjectMilestones({ job, user, onBack }: ProjectMilestonesProps)
               </Button>
               <Button 
                 onClick={handleDispute}
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11"
                 disabled={isSubmittingDispute || !disputeReason.trim() || disputeReason.trim().length < 10}
               >
                 {isSubmittingDispute ? (

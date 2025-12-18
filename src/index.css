@@ -319,6 +319,23 @@
     border-color: transparent !important;
   }
   
+  /* FIX: Remove thick black borders in light mode - make borderless */
+  [class*="border-2"][class*="border-black"]:not(.dark *),
+  [class*="border "][class*="border-black"]:not(.dark *),
+  [class*="border-black"]:not(.dark *):not([class*="bg-black"]) {
+    border-color: transparent !important;
+  }
+  
+  /* Light mode: cards should have subtle shadow instead of borders */
+  [data-slot="card"]:not(.dark *) {
+    border: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  }
+  
+  [data-slot="card"]:hover:not(.dark *) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+  }
+  
   /* Dark mode: make the borders visible with appropriate opacity */
   .dark [class*="border-white/20"] {
     border-color: rgba(255, 255, 255, 0.2) !important;

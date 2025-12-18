@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useCallback, useEffect, useMemo } from 'react'
+import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion'
 import { X } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -15,6 +15,12 @@ import { VoidClock } from './VoidClock'
 import { CRMVoidBentoGrid } from './CRMVoidBentoGrid'
 import { MAIN_MENU_CONFIGS, type MainMenuId } from './MainMenuConfig'
 
+// Type for menu positions
+interface MenuPosition {
+  x: number
+  y: number
+}
+
 interface CRMVoidProps {
   user: User
   onNavigate?: (page: string) => void
@@ -24,6 +30,12 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeMainMenu, setActiveMainMenu] = useState<MainMenuId | null>(null)
   const [showVoiceIntake, setShowVoiceIntake] = useState(false)
   const [pinnedMenus, setPinnedMenus] = useKV<MainMenuId[]>("crm-void-pinned-menus", [])
+  
+  // Drag-and-drop menu positions (persisted in localStorage)
+  const [menuPositions, setMenuPositions] = useKV<Record<MainMenuId, MenuPosition>>("crm-void-menu-positions", {})
+  
+  // Track which menu is being dragged
+  const [draggingMenu, setDraggingMenu] = useState<MainMenuId | null>(null)
   
   // Prevent body scroll when CRM Void is active
   useEffect(() => {
@@ -67,21 +79,22 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       return
     }
     
-    // Check if this is a leads menu sub-menu - show LeadCaptureMenu
-    if (subMenuId.startsWith('quick-capture') || subMenuId.startsWith('manual-entry') || 
-        subMenuId.startsWith('view-leads') || subMenuId.startsWith('sync-crm') ||
-        subMenuId.startsWith('lead-')) {
-      // Keep menu active to show LeadCaptureMenu panel
-      return
-    }
-    
-    // For other sub-menus, navigate normally
+    // For all sub-menus (including leads), navigate and close menu
     if (onNavigate) {
       onNavigate(page)
     }
     // Close sub-menus after navigation
     setActiveMainMenu(null)
   }, [onNavigate])
+
+  // Handle menu drag end - save new position
+  const handleMenuDragEnd = useCallback((menuId: MainMenuId, position: { x: number; y: number }) => {
+    setMenuPositions((current) => ({
+      ...current,
+      [menuId]: position,
+    }))
+    setDraggingMenu(null)
+  }, [setMenuPositions])
 
   // Calculate main menu positions (7 circles, ~51.4 degrees apart)
   const mainMenuRadius = 350 // Reduced for tighter grouping
@@ -173,11 +186,15 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         {/* Centered container for all elements */}
         <div className="relative w-full h-full flex items-center justify-center">
 
-          {/* Main Menu Circles */}
+          {/* Main Menu Circles - with drag-and-drop */}
           {MAIN_MENU_CONFIGS.map((menuConfig, index) => {
             const angle = mainMenuAngles[index]
-            const x = Math.cos((angle * Math.PI) / 180) * mainMenuRadius
-            const y = Math.sin((angle * Math.PI) / 180) * mainMenuRadius
+            const defaultX = Math.cos((angle * Math.PI) / 180) * mainMenuRadius
+            const defaultY = Math.sin((angle * Math.PI) / 180) * mainMenuRadius
+            // Use custom position if saved, otherwise use default
+            const customPos = menuPositions?.[menuConfig.id]
+            const x = customPos?.x ?? defaultX
+            const y = customPos?.y ?? defaultY
             const Icon = menuConfig.icon
             
             return (
@@ -195,37 +212,11 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                   borderColor={menuConfig.borderColor}
                   isPinned={(pinnedMenus || []).includes(menuConfig.id)}
                   onPinToggle={() => handlePinToggle(menuConfig.id)}
+                  customPosition={customPos}
+                  onDragEnd={(pos) => handleMenuDragEnd(menuConfig.id, pos)}
+                  isDraggable={true}
                 />
                 
-                {/* Menu Title - appears when sub-menus are expanded */}
-                <AnimatePresence>
-                  {activeMainMenu === menuConfig.id && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute"
-                      style={{
-                        left: '50%',
-                        top: '50%',
-                        transform: `translate(-50%, calc(-50% - ${mainMenuRadius + 60}px))`,
-                        zIndex: 19,
-                      }}
-                    >
-                      <div className={cn(
-                        "px-4 py-2 rounded-lg glass-card",
-                        "backdrop-blur-[12px]",
-                        "shadow-[0_4px_20px_rgba(0,0,0,0.04)]",
-                        "border-0"
-                      )}>
-                        <h3 className="text-lg font-bold text-black dark:text-white whitespace-nowrap">
-                          {menuConfig.label}
-                        </h3>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 {/* Sub-Menu Circles - appear when main menu is active */}
                 <AnimatePresence>
                   {activeMainMenu === menuConfig.id && (
@@ -300,7 +291,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
               exit={{ opacity: 0, scale: 0.9 }}
               className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
             >
-              <div className="relative pointer-events-auto bg-white dark:bg-black border-2 border-black dark:border-white rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4">
+              <div className="relative pointer-events-auto bg-white dark:bg-black rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4">
                 {/* Close button */}
                 <Button
                   variant="ghost"
