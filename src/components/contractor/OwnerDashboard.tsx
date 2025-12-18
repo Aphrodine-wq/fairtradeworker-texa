@@ -162,7 +162,7 @@ export function OwnerDashboard({ user }: OwnerDashboardProps) {
           <CardContent>
             <div className="space-y-3">
               {upcomingJobs.map(job => (
-                <div key={job.id} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                <div key={job.id} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{job.title}</h4>
@@ -197,7 +197,7 @@ export function OwnerDashboard({ user }: OwnerDashboardProps) {
           <CardContent>
             <div className="space-y-3">
               {topLeads.map(lead => (
-                <div key={lead.id} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                <div key={lead.id} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{lead.name}</h4>

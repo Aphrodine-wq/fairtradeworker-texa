@@ -254,7 +254,7 @@ export function ProjectStoryGenerator({
             </div>
             
             {/* Carousel preview */}
-            <div className="relative aspect-square bg-gray-100">
+            <div className="relative aspect-square bg-gray-100 dark:bg-gray-800">
               {afterPhoto && (
                 <img 
                   src={afterPhoto.url} 

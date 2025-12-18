@@ -334,9 +334,9 @@ export function PredictiveInventory({ user }: PredictiveInventoryProps) {
                       )}
 
                       {forecast.recommendedOrder > 0 && (
-                        <div className="mt-3 flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div className="mt-3 flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                           <div>
-                            <p className="text-xs font-medium text-gray-700">Recommended Order</p>
+                            <p className="text-xs font-medium text-gray-700 dark:text-gray-300">Recommended Order</p>
                             <p className="text-sm font-semibold text-blue-600">
                               {forecast.recommendedOrder} {forecast.item.unit}
                             </p>

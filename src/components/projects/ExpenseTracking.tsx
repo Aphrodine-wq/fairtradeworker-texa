@@ -41,12 +41,12 @@ const categoryIcons: Record<MilestoneExpense['category'], any> = {
 }
 
 const categoryColors: Record<MilestoneExpense['category'], string> = {
-  materials: 'bg-blue-100 text-blue-700 border-blue-300',
-  labor: 'bg-purple-100 text-purple-700 border-purple-300',
-  equipment: 'bg-orange-100 text-orange-700 border-orange-300',
-  permits: 'bg-green-100 text-green-700 border-green-300',
-  travel: 'bg-yellow-100 text-yellow-700 border-yellow-300',
-  other: 'bg-gray-100 text-gray-700 border-gray-300'
+  materials: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border-blue-300 dark:border-blue-700',
+  labor: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-300 dark:border-purple-700',
+  equipment: 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 border-orange-300 dark:border-orange-700',
+  permits: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-700',
+  travel: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-700',
+  other: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
 }
 
 export function ExpenseTracking({ milestone, onUpdateMilestone, canEdit }: ExpenseTrackingProps) {

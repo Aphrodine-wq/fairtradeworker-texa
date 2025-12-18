@@ -326,7 +326,7 @@ export function AIEnhancedFollowUp({ user }: AIEnhancedFollowUpProps) {
                     </div>
                     <div className="space-y-3">
                       {(newSequence.steps || []).map((step, index) => (
-                        <Card key={step.id} className="bg-gray-50">
+                        <Card key={step.id} className="bg-gray-50 dark:bg-gray-800">
                           <CardContent className="p-3">
                             <div className="text-sm font-medium mb-2">Step {index + 1}</div>
                             <div className="grid grid-cols-2 gap-2 mb-2">

@@ -167,7 +167,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 const isUrgent = daysUntil <= 3
                 
                 return (
-                  <div key={job.id} className={`p-3 rounded-lg ${isUrgent ? 'bg-red-50' : 'bg-gray-50'} hover:bg-gray-100 transition-colors duration-200`}>
+                  <div key={job.id} className={`p-3 rounded-lg ${isUrgent ? 'bg-red-50 dark:bg-red-900/20' : 'bg-gray-50 dark:bg-gray-800'} hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200`}>
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h4 className="font-medium text-sm">{job.title}</h4>
@@ -248,7 +248,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {crewAssignments.map(assignment => (
-                <div key={assignment.id} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                <div key={assignment.id} className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h4 className="font-medium text-sm">{assignment.job?.title}</h4>

@@ -61,10 +61,10 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
 
   const getTypeBadge = (type: ProjectUpdate['type']) => {
     const variants = {
-      progress: { className: 'bg-green-100 text-green-700', label: 'Progress' },
-      issue: { className: 'bg-red-100 text-red-700', label: 'Issue' },
-      milestone: { className: 'bg-blue-100 text-blue-700', label: 'Milestone' },
-      general: { className: 'bg-gray-100 text-gray-700', label: 'General' }
+      progress: { className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400', label: 'Progress' },
+      issue: { className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400', label: 'Issue' },
+      milestone: { className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400', label: 'Milestone' },
+      general: { className: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300', label: 'General' }
     }
     const variant = variants[type]
     return <Badge className={variant.className}>{variant.label}</Badge>
