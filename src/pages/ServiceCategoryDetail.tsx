@@ -80,10 +80,7 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
     }
   }, [isMounted])
 
-  // Get all selected categories
-  const selectedCategories = mainCategories.filter(c => selectedCategoryIds.includes(c.id))
-  
-  // Combine all services from selected categories
+  // Combine all services from selected categories (selectedCategories already declared above)
   const allServices = selectedCategories.flatMap(category => 
     category.services.map(service => ({ ...service, categoryId: category.id, categoryTitle: category.title }))
   )
