@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion'
-import { X } from '@phosphor-icons/react'
+import { X, Microphone } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useLocalKV as useKV } from '@/hooks/useLocalKV'
@@ -97,7 +97,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   }, [setMenuPositions])
 
   // Calculate main menu positions (7 circles, ~51.4 degrees apart)
-  const mainMenuRadius = 350 // Reduced for tighter grouping
+  const mainMenuRadius = 420 // Increased to make room for central microphone
   const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => (index * 360) / MAIN_MENU_CONFIGS.length)
 
   // Handle ESC key to close main menu
@@ -179,6 +179,41 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         transition={{ delay: 0.7, type: 'spring', stiffness: 900, damping: 18 }}
       >
         <CRMVoidBentoGrid user={user} onNavigate={onNavigate} />
+      </motion.div>
+
+      {/* Central Microphone Hub - Main Feature (Larger and More Prominent) */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1, type: 'spring', stiffness: 150, damping: 15 }}
+      >
+        <motion.button
+          onClick={() => setShowVoiceIntake(true)}
+          className="relative w-48 h-48 md:w-56 md:h-56 rounded-full bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center shadow-2xl transition-all cursor-pointer"
+          whileHover={{ scale: 1.15 }}
+          whileTap={{ scale: 0.9 }}
+          animate={{
+            boxShadow: [
+              '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(59, 130, 246, 0.4)',
+              '0 0 50px rgba(147, 51, 234, 0.9), 0 0 100px rgba(59, 130, 246, 0.6)',
+              '0 0 30px rgba(147, 51, 234, 0.6), 0 0 60px rgba(59, 130, 246, 0.4)',
+            ],
+          }}
+          transition={{
+            boxShadow: {
+              duration: 2.5,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            },
+          }}
+        >
+          <Microphone size={64} weight="fill" className="text-white drop-shadow-lg" />
+          <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap text-center">
+            <p className="text-lg font-bold text-white drop-shadow-lg">Voice Intake</p>
+            <p className="text-xs text-white/80 drop-shadow-md mt-1">Tap to add customer</p>
+          </div>
+        </motion.button>
       </motion.div>
 
       {/* Main content area - ensure no scrolling and perfect centering */}

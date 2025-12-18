@@ -88,7 +88,7 @@ export function MainMenuCircle({
         zIndex: isActive ? 20 : isDragging ? 25 : 15,
         cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'pointer',
       }}
-      initial={{ x, y, opacity: 0, scale: 0 }}
+      initial={false}
       animate={{ 
         x, 
         y, 

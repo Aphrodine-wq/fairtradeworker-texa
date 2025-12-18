@@ -94,7 +94,7 @@ svg,
   --text-secondary: #333333;
   --text-tertiary: #666666;
   --border-color: #000000;
-  --shadow-color: #000000;
+  --shadow-color: transparent;
   
   /* Accent colors */
   --accent-green: #00FF00;
@@ -105,10 +105,10 @@ svg,
   --border-thin: 2px;
   --border-thick: 4px;
   
-  /* Shadows */
-  --shadow-sm: 2px 2px 0 var(--shadow-color);
-  --shadow-md: 4px 4px 0 var(--shadow-color);
-  --shadow-lg: 8px 8px 0 var(--shadow-color);
+  /* Shadows - DISABLED in light mode for clean flat design */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
   
   /* Spacing */
   --spacing-xxs: 1px;
@@ -129,6 +129,11 @@ svg,
   --text-tertiary: #999999;
   --border-color: #FFFFFF;
   --shadow-color: #FFFFFF;
+  
+  /* Dark mode gets shadows */
+  --shadow-sm: 2px 2px 0 var(--shadow-color);
+  --shadow-md: 4px 4px 0 var(--shadow-color);
+  --shadow-lg: 8px 8px 0 var(--shadow-color);
 }
 
 /* ============================================

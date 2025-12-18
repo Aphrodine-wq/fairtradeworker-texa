@@ -99,6 +99,10 @@ const PhotoScoperPage = lazy(() => retryImport(() =>
   import("@/pages/PhotoScoper").then(m => ({ default: m.PhotoScoperPage }))
 ))
 const UnifiedPostJob = lazy(() => retryImport(() => import("@/pages/UnifiedPostJob").then(m => ({ default: m.UnifiedPostJob }))))
+const PostJobVoice = lazy(() => retryImport(() => import("@/pages/PostJobVoice").then(m => ({ default: m.PostJobVoice }))))
+const PostJobPhoto = lazy(() => retryImport(() => import("@/pages/PostJobPhoto").then(m => ({ default: m.PostJobPhoto }))))
+const PostJobVideo = lazy(() => retryImport(() => import("@/pages/PostJobVideo").then(m => ({ default: m.PostJobVideo }))))
+const PostJobText = lazy(() => retryImport(() => import("@/pages/PostJobText").then(m => ({ default: m.PostJobText }))))
 const ServiceCategoryDetail = lazy(() => retryImport(() => import("@/pages/ServiceCategoryDetail").then(m => ({ default: m.ServiceCategoryDetail }))))
 const AdminDashboard = lazy(() => retryImport(() => import("@/pages/AdminDashboard").then(m => ({ default: m.AdminDashboard }))))
 const DonatePage = lazy(() => retryImport(() => import("@/pages/DonatePage").then(m => ({ default: m.DonatePage }))))
@@ -629,31 +633,27 @@ function App() {
         return currentUser ? <JobPoster user={currentUser} onNavigate={handleNavigate} /> : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'post-job-voice':
         return currentUser ? (
-          (() => {
-            sessionStorage.setItem('postJobMethod', 'audio')
-            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
-          })()
+          <Suspense fallback={<LoadingFallback />}>
+            <PostJobVoice user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'post-job-photo':
         return currentUser ? (
-          (() => {
-            sessionStorage.setItem('postJobMethod', 'photos')
-            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
-          })()
+          <Suspense fallback={<LoadingFallback />}>
+            <PostJobPhoto user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'post-job-video':
         return currentUser ? (
-          (() => {
-            sessionStorage.setItem('postJobMethod', 'video')
-            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
-          })()
+          <Suspense fallback={<LoadingFallback />}>
+            <PostJobVideo user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'post-job-text':
         return currentUser ? (
-          (() => {
-            sessionStorage.setItem('postJobMethod', 'text')
-            return <JobPoster user={currentUser} onNavigate={handleNavigate} />
-          })()
+          <Suspense fallback={<LoadingFallback />}>
+            <PostJobText user={currentUser} onNavigate={handleNavigate} />
+          </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'unified-post-job':
         return (
@@ -726,7 +726,7 @@ function App() {
       case 'about':
         return (
           <Suspense fallback={<LoadingFallback />}>
-            <AboutPage />
+            <AboutPage onNavigate={handleNavigate} />
           </Suspense>
         )
       case 'contact':

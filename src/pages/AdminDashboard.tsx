@@ -146,7 +146,8 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     const totalUsers = users?.length || 0
     const totalJobs = jobs?.length || 0
     const openJobs = jobs?.filter(j => j.status === 'open').length || 0
-    const completedJobs = jobs?.filter(j => j.status === 'completed').length || 0
+    const completedJobsArray = jobs?.filter(j => j.status === 'completed') || []
+    const completedJobs = completedJobsArray.length
     const inProgressJobs = jobs?.filter(j => j.status === 'in-progress').length || 0
     const cancelledJobs = jobs?.filter(j => j.status === 'cancelled').length || 0
     
@@ -165,7 +166,7 @@ export function AdminDashboard({ onNavigate }: AdminDashboardProps) {
     }, 0) || 0
 
     // Platform fees (homeowner posting fees)
-    const platformFees = completedJobs.reduce((sum, job) => {
+    const platformFees = completedJobsArray.reduce((sum, job) => {
       if (job.tier === 'QUICK_FIX') return sum + 15
       if (job.tier === 'STANDARD') return sum + (job.aiScope?.priceHigh || 0) * 0.03
       if (job.tier === 'MAJOR_PROJECT') return sum + (job.aiScope?.priceHigh || 0) * 0.025

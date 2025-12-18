@@ -48,6 +48,13 @@ const inputMethods: Array<{
 export function UnifiedPostJob({ user, onNavigate }: UnifiedPostJobProps) {
   const [selectedServices, setSelectedServices] = useState<Array<{id: string, title: string}>>([])
 
+  // Redirect if no user
+  useEffect(() => {
+    if (!user) {
+      onNavigate('home')
+    }
+  }, [user, onNavigate])
+
   useEffect(() => {
     // Load selected services from sessionStorage
     const stored = sessionStorage.getItem('selectedServices')

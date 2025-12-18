@@ -218,71 +218,9 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
     return solidColors[index % solidColors.length]
   }
 
-  // Multi-select state
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-
-  // Load selected categories from sessionStorage on mount
-  useEffect(() => {
-    const stored = sessionStorage.getItem('selectedCategories')
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored)
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setSelectedCategories(parsed)
-        }
-      } catch (e) {
-        // Ignore parse errors
-      }
-    }
-  }, [])
-
   const handleCategoryClick = (categoryId: string) => {
-    setSelectedCategories(prev => {
-      const exists = prev.includes(categoryId)
-      let updated: string[]
-      
-      if (exists) {
-        // Remove if already selected
-        updated = prev.filter(id => id !== categoryId)
-      } else {
-        // Add if not selected
-        updated = [...prev, categoryId]
-      }
-      
-      // Store in sessionStorage
-      if (updated.length > 0) {
-        sessionStorage.setItem('selectedCategories', JSON.stringify(updated))
-      } else {
-        sessionStorage.removeItem('selectedCategories')
-      }
-      
-      return updated
-    })
-  }
-
-  const handleContinue = () => {
-    if (selectedCategories.length === 0) {
-      // If no categories selected, use old behavior - navigate to first category
-      const firstCategory = mainCategories[0]
-      sessionStorage.setItem('selectedCategory', firstCategory.id)
-      onNavigate(`service-category/${firstCategory.id}`)
-    } else if (selectedCategories.length === 1) {
-      // Single category - navigate directly
-      sessionStorage.setItem('selectedCategory', selectedCategories[0])
-      onNavigate(`service-category/${selectedCategories[0]}`)
-    } else {
-      // Multiple categories - store all and navigate to first one
-      // The ServiceCategoryDetail page will handle showing services from all selected categories
-      sessionStorage.setItem('selectedCategory', selectedCategories[0])
-      sessionStorage.setItem('selectedCategories', JSON.stringify(selectedCategories))
-      onNavigate(`service-category/${selectedCategories[0]}`)
-    }
-  }
-
-  const handleClearAll = () => {
-    setSelectedCategories([])
-    sessionStorage.removeItem('selectedCategories')
-    sessionStorage.removeItem('selectedCategory')
+    sessionStorage.setItem('selectedCategory', categoryId)
+    onNavigate(`service-category/${categoryId}`)
   }
 
   return (
@@ -292,39 +230,8 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
           Browse Services
         </h2>
         <p className="text-gray-600 dark:text-gray-400">
-          Select one or more service categories
+          Choose a service category to get started
         </p>
-        {selectedCategories.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-            {selectedCategories.map((categoryId) => {
-              const category = mainCategories.find(c => c.id === categoryId)
-              if (!category) return null
-              return (
-                <Badge key={categoryId} variant="secondary" className="text-sm px-3 py-1 flex items-center gap-2">
-                  {category.title}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleCategoryClick(categoryId)
-                    }}
-                    className="hover:bg-black/10 dark:hover:bg-white/10 rounded-full p-0.5"
-                    aria-label={`Remove ${category.title}`}
-                  >
-                    <X size={12} />
-                  </button>
-                </Badge>
-              )
-            })}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleClearAll}
-              className="text-xs"
-            >
-              Clear All
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Symmetrical 3x3 grid layout */}
@@ -332,7 +239,6 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
         {mainCategories.map((category, index) => {
           const Icon = category.icon
           const colorStyle = getCategoryColor(index)
-          const isSelected = selectedCategories.includes(category.id)
           return (
             <motion.div
               key={category.id}
@@ -344,9 +250,7 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
               <Card
-                className={`cursor-pointer h-full border-0 hover:shadow-lg transition-all ${
-                  isSelected ? 'ring-2 ring-black dark:ring-white shadow-lg' : ''
-                }`}
+                className="cursor-pointer h-full border-0 hover:shadow-lg transition-all"
                 onClick={() => handleCategoryClick(category.id)}
               >
                 <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
@@ -364,16 +268,10 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                         weight="fill" 
                         className={colorStyle.text}
                       />
-                      {isSelected && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-black dark:bg-white rounded-full flex items-center justify-center">
-                          <Check size={12} weight="bold" className="text-white dark:text-black" />
-                        </div>
-                      )}
                     </div>
                   </motion.div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     {category.title}
-                    {isSelected && <Check size={18} weight="bold" className="text-black dark:text-white" />}
                   </h3>
                 </CardContent>
               </Card>
@@ -382,18 +280,6 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
         })}
       </div>
 
-      {/* Continue button */}
-      {selectedCategories.length > 0 && (
-        <div className="mt-8 flex justify-center">
-          <Button
-            onClick={handleContinue}
-            size="lg"
-            className="px-8"
-          >
-            Continue with {selectedCategories.length} Categor{selectedCategories.length > 1 ? 'ies' : 'y'}
-          </Button>
-        </div>
-      )}
     </div>
   )
 }

@@ -19,8 +19,6 @@ interface CRMVoidSolarSystemProps {
 export function CRMVoidSolarSystem({ user, onNavigate, onBack }: CRMVoidSolarSystemProps) {
   const [activePlanet, setActivePlanet] = useState<PlanetType | null>(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [showWelcome, setShowWelcome] = useState(true)
-  const hasPlayedRef = useRef(false)
 
   // Prevent body scroll when Solar System is active
   useEffect(() => {
@@ -29,15 +27,6 @@ export function CRMVoidSolarSystem({ user, onNavigate, onBack }: CRMVoidSolarSys
     return () => {
       document.body.style.overflow = originalStyle
     }
-  }, [])
-
-  // Hide welcome after a delay - prevent double execution
-  useEffect(() => {
-    if (hasPlayedRef.current) return
-    hasPlayedRef.current = true
-    
-    const timer = setTimeout(() => setShowWelcome(false), 7000) // Increased from 4000 to 7000
-    return () => clearTimeout(timer)
   }, [])
 
   const handlePlanetSelect = useCallback((planet: PlanetType) => {
@@ -81,40 +70,6 @@ export function CRMVoidSolarSystem({ user, onNavigate, onBack }: CRMVoidSolarSys
     )}>
       {/* Cosmic background with stars, nebulae, and shooting stars */}
       <VoidBackground />
-
-      {/* Welcome animation */}
-      <AnimatePresence>
-        {showWelcome && (
-          <motion.div
-            className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <motion.div
-              className="text-center"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.2, opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <motion.div
-                className="text-6xl mb-4"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-              >
-                🌌
-              </motion.div>
-              <h1 className="text-3xl font-bold text-white mb-2">
-                CRM Solar System
-              </h1>
-              <p className="text-white/60 text-lg">
-                Your business universe awaits...
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Header controls */}
       <motion.div
