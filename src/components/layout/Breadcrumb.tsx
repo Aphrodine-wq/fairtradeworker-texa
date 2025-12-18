@@ -151,7 +151,7 @@ export function getBreadcrumbs(
       breadcrumbs.push(
         { label: 'Home', page: 'home', icon: homeIcon },
         { label: 'Dashboard', page: 'dashboard' },
-        { label: 'CRM' }
+        { label: 'Void' }
       )
       break
 

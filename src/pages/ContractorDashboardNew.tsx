@@ -535,14 +535,14 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
             </Card>
 
             <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer" glass={isPro}
-              onClick={() => onNavigate('customer-crm')}>
+              onClick={() => onNavigate('crm')}>
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-transparent dark:border-white/20 flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold">Customer CRM</p>
-                  <p className="text-sm text-muted-foreground">Manage relationships</p>
+                  <p className="font-semibold">Void</p>
+                  <p className="text-sm text-muted-foreground">CRM System</p>
                 </div>
               </div>
             </Card>

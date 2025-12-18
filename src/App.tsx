@@ -1092,7 +1092,7 @@ function App() {
       case 'customer-crm':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>
-            <CustomerCRMPage user={currentUser} onNavigate={handleNavigate} />
+            <EnhancedCRM user={currentUser} onNavigate={handleNavigate} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'manage-relationships':
