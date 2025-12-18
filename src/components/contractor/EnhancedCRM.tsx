@@ -25,6 +25,7 @@ import { ConstructionDocuments } from "./ConstructionDocuments"
 import { ConstructionFinancials } from "./ConstructionFinancials"
 import { ConstructionCollaboration } from "./ConstructionCollaboration"
 import { ConstructionReporting } from "./ConstructionReporting"
+import { MusicPlayer } from "./MusicPlayer"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import type { User, CRMCustomer } from "@/lib/types"
 
@@ -114,6 +115,11 @@ export function EnhancedCRM({ user }: EnhancedCRMProps) {
                 </div>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Music Player - CRM Void Radio */}
+          <div className="max-w-md mx-auto">
+            <MusicPlayer />
           </div>
 
           {/* Main Tabs */}
