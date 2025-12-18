@@ -99,29 +99,29 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
   return (
     <div className="space-y-6">
       {/* Header Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         <Card glass={isPro}>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-black dark:text-white">{calls.length}</div>
-            <div className="text-sm text-black dark:text-white mt-1">Total Calls</div>
+          <CardContent className="p-3 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-black dark:text-white">{calls.length}</div>
+            <div className="text-xs md:text-sm text-black dark:text-white mt-1">Total Calls</div>
           </CardContent>
         </Card>
         <Card glass={isPro}>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-black dark:text-white">{newCalls.length}</div>
-            <div className="text-sm text-black dark:text-white mt-1">New Calls</div>
+          <CardContent className="p-3 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-black dark:text-white">{newCalls.length}</div>
+            <div className="text-xs md:text-sm text-black dark:text-white mt-1">New Calls</div>
           </CardContent>
         </Card>
         <Card glass={isPro}>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-black dark:text-white">{voicemailCalls.length}</div>
-            <div className="text-sm text-black dark:text-white mt-1">Voicemails</div>
+          <CardContent className="p-3 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-black dark:text-white">{voicemailCalls.length}</div>
+            <div className="text-xs md:text-sm text-black dark:text-white mt-1">Voicemails</div>
           </CardContent>
         </Card>
         <Card glass={isPro}>
-          <CardContent className="p-6 text-center">
-            <div className="text-3xl font-bold text-black dark:text-white">{totalCount}</div>
-            <div className="text-sm text-black dark:text-white mt-1">Private Jobs</div>
+          <CardContent className="p-3 md:p-6 text-center">
+            <div className="text-2xl md:text-3xl font-bold text-black dark:text-white">{totalCount}</div>
+            <div className="text-xs md:text-sm text-black dark:text-white mt-1">Private Jobs</div>
           </CardContent>
         </Card>
       </div>
@@ -139,13 +139,13 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="calls" className="space-y-4 mt-6">
+        <TabsContent value="calls" className="space-y-3 md:space-y-4 mt-4 md:mt-6">
           {calls.length === 0 ? (
             <Card glass={isPro}>
-              <CardContent className="py-12 text-center">
-                <Phone size={48} weight="duotone" className="mx-auto mb-4 text-black dark:text-white opacity-50" />
-                <p className="text-black dark:text-white">No calls yet</p>
-                <p className="text-sm text-black dark:text-white mt-2">
+              <CardContent className="py-8 md:py-12 text-center">
+                <Phone size={36} weight="duotone" className="mx-auto mb-3 md:mb-4 text-black dark:text-white opacity-50 md:w-12 md:h-12" />
+                <p className="text-sm md:text-base text-black dark:text-white">No calls yet</p>
+                <p className="text-xs md:text-sm text-black dark:text-white mt-2">
                   Calls from your Twilio number will appear here
                 </p>
               </CardContent>
@@ -154,39 +154,41 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
             calls.map((call) => (
               <Card key={call.id} glass={isPro} className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all"
                 onClick={() => setSelectedCall(call)}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="flex items-center gap-2">
-                        {call.callerName || 'Unknown Caller'}
+                <CardHeader className="p-3 md:p-6">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="flex items-center gap-2 text-sm md:text-base flex-wrap">
+                        <span className="truncate">{call.callerName || 'Unknown Caller'}</span>
                         <Badge className={getUrgencyColor(call.extraction.urgency)}>
                           {call.extraction.urgency.toUpperCase()}
                         </Badge>
                       </CardTitle>
-                      <CardDescription className="mt-2 flex items-center gap-4 flex-wrap">
+                      <CardDescription className="mt-2 flex items-center gap-2 md:gap-4 flex-wrap text-xs md:text-sm">
                         <span className="flex items-center gap-1">
-                          <Phone size={14} weight="duotone" />
-                          {call.callerPhone}
+                          <Phone size={12} weight="duotone" />
+                          <span className="truncate">{call.callerPhone}</span>
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={14} weight="duotone" />
-                          {formatDate(call.createdAt)}
+                          <Clock size={12} weight="duotone" />
+                          <span className="hidden md:inline">{formatDate(call.createdAt)}</span>
+                          <span className="md:hidden">{new Date(call.createdAt).toLocaleDateString()}</span>
                         </span>
                         {call.extraction.propertyAddress && (
-                          <span className="flex items-center gap-1">
-                            <MapPin size={14} weight="duotone" />
-                            {call.extraction.propertyAddress}
+                          <span className="flex items-center gap-1 w-full md:w-auto">
+                            <MapPin size={12} weight="duotone" />
+                            <span className="truncate">{call.extraction.propertyAddress}</span>
                           </span>
                         )}
                       </CardDescription>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col md:flex-row items-end md:items-center gap-1 md:gap-2">
                       {call.status === 'new' && (
-                        <Button size="sm" onClick={(e) => {
+                        <Button size="sm" className="text-xs md:text-sm" onClick={(e) => {
                           e.stopPropagation()
                           handleCreateJob(call)
                         }}>
-                          Create Job
+                          <span className="hidden md:inline">Create Job</span>
+                          <span className="md:hidden">Create</span>
                         </Button>
                       )}
                       {call.recordingUrl && (
@@ -194,23 +196,23 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
                           e.stopPropagation()
                           window.open(call.recordingUrl, '_blank')
                         }}>
-                          <Play size={16} />
+                          <Play size={14} />
                         </Button>
                       )}
                       <Button size="sm" variant="outline" onClick={(e) => {
                         e.stopPropagation()
                         handleCallBack(call.callerPhone)
                       }}>
-                        <Phone size={16} />
+                        <Phone size={14} />
                       </Button>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 md:p-6 pt-0">
                   <div className="space-y-2">
                     <div>
                       <span className="text-xs font-semibold text-black dark:text-white">Issue:</span>
-                      <p className="text-sm text-black dark:text-white mt-1">{call.extraction.description}</p>
+                      <p className="text-xs md:text-sm text-black dark:text-white mt-1">{call.extraction.description}</p>
                     </div>
                     {call.transcript && (
                       <details className="mt-2">
@@ -229,13 +231,13 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
           )}
         </TabsContent>
 
-        <TabsContent value="jobs" className="space-y-4 mt-6">
+        <TabsContent value="jobs" className="space-y-3 md:space-y-4 mt-4 md:mt-6">
           {privateJobs.length === 0 ? (
             <Card glass={isPro}>
-              <CardContent className="py-12 text-center">
-                <CheckCircle size={48} weight="duotone" className="mx-auto mb-4 text-black dark:text-white opacity-50" />
-                <p className="text-black dark:text-white">No private jobs yet</p>
-                <p className="text-sm text-black dark:text-white mt-2">
+              <CardContent className="py-8 md:py-12 text-center">
+                <CheckCircle size={36} weight="duotone" className="mx-auto mb-3 md:mb-4 text-black dark:text-white opacity-50 md:w-12 md:h-12" />
+                <p className="text-sm md:text-base text-black dark:text-white">No private jobs yet</p>
+                <p className="text-xs md:text-sm text-black dark:text-white mt-2">
                   Private jobs created from calls will appear here
                 </p>
               </CardContent>
@@ -243,24 +245,24 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
           ) : (
             privateJobs.map((job) => (
               <Card key={job.id} glass={isPro} className="cursor-pointer hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all">
-                <CardHeader>
-                  <CardTitle>{job.title}</CardTitle>
-                  <CardDescription className="mt-2">
+                <CardHeader className="p-3 md:p-6">
+                  <CardTitle className="text-sm md:text-base">{job.title}</CardTitle>
+                  <CardDescription className="mt-2 text-xs md:text-sm">
                     Created from AI Receptionist call
                     {job.metadata?.callerPhone && ` • ${job.metadata.callerPhone}`}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-black dark:text-white">{job.description}</p>
+                <CardContent className="p-3 md:p-6 pt-0">
+                  <p className="text-xs md:text-sm text-black dark:text-white">{job.description}</p>
                   {job.address && (
                     <p className="text-xs text-black dark:text-white mt-2 flex items-center gap-1">
                       <MapPin size={12} weight="duotone" />
                       {job.address}
                     </p>
                   )}
-                  <div className="mt-4 flex gap-2">
-                    <Button size="sm">View Job</Button>
-                    <Button size="sm" variant="outline">Call Client</Button>
+                  <div className="mt-3 md:mt-4 flex flex-col sm:flex-row gap-2">
+                    <Button size="sm" className="text-xs md:text-sm">View Job</Button>
+                    <Button size="sm" variant="outline" className="text-xs md:text-sm">Call Client</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -271,45 +273,45 @@ export function ReceptionistCRM({ user }: ReceptionistCRMProps) {
 
       {/* Call Detail Modal */}
       {selectedCall && (
-        <Card glass={isPro} className="fixed inset-4 z-50 overflow-auto">
-          <CardHeader>
+        <Card glass={isPro} className="fixed inset-2 md:inset-4 z-50 overflow-auto max-h-[95vh] md:max-h-none">
+          <CardHeader className="p-3 md:p-6">
             <div className="flex items-center justify-between">
-              <CardTitle>Call Details</CardTitle>
+              <CardTitle className="text-base md:text-lg">Call Details</CardTitle>
               <Button variant="ghost" size="icon" onClick={() => setSelectedCall(null)}>
-                <XCircle size={20} />
+                <XCircle size={18} className="md:w-5 md:h-5" />
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 p-3 md:p-6">
             <div>
-              <h3 className="font-semibold mb-2">Caller Information</h3>
-              <p>Name: {selectedCall.callerName || 'Unknown'}</p>
-              <p>Phone: {selectedCall.callerPhone}</p>
+              <h3 className="font-semibold mb-2 text-sm md:text-base">Caller Information</h3>
+              <p className="text-xs md:text-sm">Name: {selectedCall.callerName || 'Unknown'}</p>
+              <p className="text-xs md:text-sm">Phone: {selectedCall.callerPhone}</p>
               {selectedCall.extraction.propertyAddress && (
-                <p>Address: {selectedCall.extraction.propertyAddress}</p>
+                <p className="text-xs md:text-sm">Address: {selectedCall.extraction.propertyAddress}</p>
               )}
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Extraction</h3>
-              <p>Issue Type: {selectedCall.extraction.issueType}</p>
-              <p>Urgency: {selectedCall.extraction.urgency}</p>
-              <p>Description: {selectedCall.extraction.description}</p>
-              <p>Confidence: {(selectedCall.extraction.confidence * 100).toFixed(0)}%</p>
+              <h3 className="font-semibold mb-2 text-sm md:text-base">Extraction</h3>
+              <p className="text-xs md:text-sm">Issue Type: {selectedCall.extraction.issueType}</p>
+              <p className="text-xs md:text-sm">Urgency: {selectedCall.extraction.urgency}</p>
+              <p className="text-xs md:text-sm">Description: {selectedCall.extraction.description}</p>
+              <p className="text-xs md:text-sm">Confidence: {(selectedCall.extraction.confidence * 100).toFixed(0)}%</p>
             </div>
             {selectedCall.transcript && (
               <div>
-                <h3 className="font-semibold mb-2">Full Transcript</h3>
-                <p className="text-sm text-black dark:text-white p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 whitespace-pre-wrap">
+                <h3 className="font-semibold mb-2 text-sm md:text-base">Full Transcript</h3>
+                <p className="text-xs md:text-sm text-black dark:text-white p-3 md:p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 whitespace-pre-wrap">
                   {selectedCall.transcript}
                 </p>
               </div>
             )}
-            <div className="flex gap-2">
-              <Button onClick={() => handleCreateJob(selectedCall)}>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Button className="text-xs md:text-sm" onClick={() => handleCreateJob(selectedCall)}>
                 Create Private Job
               </Button>
-              <Button variant="outline" onClick={() => handleCallBack(selectedCall.callerPhone)}>
-                <Phone size={16} className="mr-2" />
+              <Button variant="outline" className="text-xs md:text-sm" onClick={() => handleCallBack(selectedCall.callerPhone)}>
+                <Phone size={14} className="mr-2" />
                 Call Back
               </Button>
             </div>

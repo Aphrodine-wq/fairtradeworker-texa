@@ -362,36 +362,36 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
 
   return (
     <div className="min-h-screen bg-background p-[1pt]">
-      <div className="container mx-auto px-4 md:px-8 py-12 max-w-5xl">
+      <div className="container mx-auto px-2 sm:px-4 md:px-8 py-6 md:py-12 max-w-5xl">
       {step === 'tier-select' && (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-3xl">What size project do you have?</CardTitle>
-            <CardDescription className="text-base">
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-2xl md:text-3xl">What size project do you have?</CardTitle>
+            <CardDescription className="text-sm md:text-base">
               Choose the category that best matches your project
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-6">
+          <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-4 md:p-6">
             <button
               onClick={() => {
                 setSelectedTier('QUICK_FIX')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-3 md:gap-4 p-4 md:p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Wrench weight="fill" className="text-green-600 dark:text-green-400" size={28} />
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Wrench weight="fill" className="text-green-600 dark:text-green-400" size={24} />
                 </div>
                 <TierBadge tier="QUICK_FIX" />
               </div>
-              <div className="text-left space-y-2">
-                <h3 className="font-semibold text-xl">Quick Fix</h3>
-                <p className="text-sm text-muted-foreground">$50 - $500</p>
-                <p className="text-sm text-muted-foreground">
+              <div className="text-left space-y-1 md:space-y-2">
+                <h3 className="font-semibold text-lg md:text-xl">Quick Fix</h3>
+                <p className="text-xs md:text-sm text-muted-foreground">$50 - $500</p>
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Leaky faucet, clogged drain, outlet repair, running toilet
                 </p>
-                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="pt-1 md:pt-2 space-y-1 text-xs text-muted-foreground">
                   <div>⚡ Same-day service</div>
                   <div>👤 One contractor</div>
                   <div>🕐 1-4 hours</div>
@@ -404,21 +404,21 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('STANDARD')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-3 md:gap-4 p-4 md:p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-                  <House weight="fill" className="text-amber-600 dark:text-amber-400" size={28} />
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                  <House weight="fill" className="text-amber-600 dark:text-amber-400" size={24} />
                 </div>
                 <TierBadge tier="STANDARD" />
               </div>
-              <div className="text-left space-y-2">
-                <h3 className="font-semibold text-xl">Standard Job</h3>
-                <p className="text-sm text-muted-foreground">$500 - $5,000</p>
-                <p className="text-sm text-muted-foreground">
+              <div className="text-left space-y-1 md:space-y-2">
+                <h3 className="font-semibold text-lg md:text-xl">Standard Job</h3>
+                <p className="text-xs md:text-sm text-muted-foreground">$500 - $5,000</p>
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Water heater, AC repair, fence section, deck repair
                 </p>
-                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="pt-1 md:pt-2 space-y-1 text-xs text-muted-foreground">
                   <div>📅 1-5 days</div>
                   <div>👤 One contractor</div>
                   <div>💵 Simple payment</div>
@@ -431,21 +431,21 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('MAJOR_PROJECT')
                 setStep('project-select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-3 md:gap-4 p-4 md:p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
-                  <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={28} />
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                  <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={24} />
                 </div>
                 <TierBadge tier="MAJOR_PROJECT" />
               </div>
-              <div className="text-left space-y-2">
-                <h3 className="font-semibold text-xl">Major Project</h3>
-                <p className="text-sm text-muted-foreground">$5,000 - $50,000</p>
-                <p className="text-sm text-muted-foreground">
+              <div className="text-left space-y-1 md:space-y-2">
+                <h3 className="font-semibold text-lg md:text-xl">Major Project</h3>
+                <p className="text-xs md:text-sm text-muted-foreground">$5,000 - $50,000</p>
+                <p className="text-xs md:text-sm text-muted-foreground">
                   Kitchen remodel, bathroom reno, roof, room addition
                 </p>
-                <div className="pt-2 space-y-1 text-xs text-muted-foreground">
+                <div className="pt-1 md:pt-2 space-y-1 text-xs text-muted-foreground">
                   <div>📆 1-8 weeks</div>
                   <div>👥 Multiple trades</div>
                   <div>📋 Milestone payments</div>

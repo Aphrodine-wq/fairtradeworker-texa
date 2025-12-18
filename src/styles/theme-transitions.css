@@ -10,7 +10,7 @@
 *::before,
 *::after {
   transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 75ms;
+  transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -168,7 +168,7 @@
 /* Mobile-specific fixes */
 @media (max-width: 768px) {
   * {
-    transition-duration: 100ms; /* Faster on mobile */
+    transition-duration: 250ms; /* Slower for better visibility on mobile */
   }
   
   /* Touch-friendly adjustments */
@@ -356,7 +356,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 75ms, border-color 75ms, color 75ms;
+  transition: background-color 300ms, border-color 300ms, color 300ms;
 }
 
 /* Dialogs and modals */
@@ -365,7 +365,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 75ms, border-color 75ms, color 75ms;
+  transition: background-color 300ms, border-color 300ms, color 300ms;
 }
 
 /* Tooltips */
@@ -374,7 +374,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 75ms, border-color 75ms, color 75ms;
+  transition: background-color 300ms, border-color 300ms, color 300ms;
 }
 
 /* Popovers */
@@ -382,7 +382,7 @@ html {
   background-color: var(--bg-primary);
   border-color: var(--border-color);
   color: var(--text-primary);
-  transition: background-color 75ms, border-color 75ms, color 75ms;
+  transition: background-color 300ms, border-color 300ms, color 300ms;
 }
 
 /* ============================================
@@ -395,7 +395,7 @@ select {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   border-color: var(--border-color);
-  transition: background-color 75ms, border-color 75ms, color 75ms;
+  transition: background-color 300ms, border-color 300ms, color 300ms;
 }
 
 input:focus,

@@ -277,21 +277,34 @@ class ErrorBoundary extends Component<
 
   render() {
     if (this.state.hasError) {
+      const isMinifiedError = this.state.error?.message?.includes('Minified React error')
+      const errorMessage = isMinifiedError 
+        ? 'A React error occurred. Please refresh the page to continue.'
+        : this.state.error?.message || 'An error occurred while loading this page'
+      
       return (
-        <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-4 md:p-8">
           <div className="text-center max-w-md">
-            <h2 className="text-2xl font-bold text-black dark:text-white mb-4">Something went wrong</h2>
-            <p className="text-black dark:text-white mb-6">
-              {this.state.error?.message || 'An error occurred while loading this page'}
+            <h2 className="text-xl md:text-2xl font-bold text-black dark:text-white mb-4">Something went wrong</h2>
+            <p className="text-sm md:text-base text-black dark:text-white mb-6">
+              {errorMessage}
             </p>
-            <Button 
-              onClick={() => {
-                this.setState({ hasError: false, error: null })
-                this.props.onReset()
-              }}
-            >
-              Try Again
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+              <Button 
+                onClick={() => {
+                  this.setState({ hasError: false, error: null })
+                  this.props.onReset()
+                }}
+              >
+                Try Again
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => window.location.reload()}
+              >
+                Refresh Page
+              </Button>
+            </div>
           </div>
         </div>
       )
@@ -303,9 +316,10 @@ class ErrorBoundary extends Component<
 
 function LoadingFallback() {
   return (
-    <div className="flex items-center justify-center min-h-[400px] opacity-0">
+    <div className="flex items-center justify-center min-h-[400px]">
       <div className="text-center">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+        <p className="mt-4 text-sm text-muted-foreground">Loading...</p>
       </div>
     </div>
   )
