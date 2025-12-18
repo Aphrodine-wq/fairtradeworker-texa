@@ -38,6 +38,15 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   // Voice intake position (persisted in localStorage)
   const [voiceIntakePosition, setVoiceIntakePosition] = useKV<MenuPosition | null>("crm-void-voice-intake-position", null)
   
+  // Music Player position (persisted in localStorage)
+  const [musicPlayerPosition, setMusicPlayerPosition] = useKV<MenuPosition | null>("crm-void-music-player-position", { x: 0, y: 200 })
+  
+  // Clock position (persisted in localStorage)
+  const [clockPosition, setClockPosition] = useKV<MenuPosition | null>("crm-void-clock-position", { x: window.innerWidth / 2 - 100, y: -window.innerHeight / 2 + 100 })
+  
+  // Bento Grid position (persisted in localStorage)
+  const [bentoGridPosition, setBentoGridPosition] = useKV<MenuPosition | null>("crm-void-bento-grid-position", { x: -window.innerWidth / 2 + 100, y: -window.innerHeight / 2 + 100 })
+  
   // Track which menu is being dragged
   const [draggingMenu, setDraggingMenu] = useState<MainMenuId | null>(null)
   
@@ -91,28 +100,126 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setActiveMainMenu(null)
   }, [onNavigate])
 
-  // Handle menu drag end - save new position
+  // Handle menu drag end - save new position with collision detection
   const handleMenuDragEnd = useCallback((menuId: MainMenuId, position: { x: number; y: number }) => {
-    setMenuPositions((current) => ({
-      ...current,
-      [menuId]: position,
-    }))
+    setMenuPositions((current) => {
+      const constrained = constrainToBounds(position.x, position.y, 60)
+      const updated = {
+        ...current,
+        [menuId]: constrained,
+      }
+      // Resolve collisions
+      const resolved = resolveMenuCollisions(updated)
+      return resolved
+    })
     setDraggingMenu(null)
-  }, [setMenuPositions])
+  }, [setMenuPositions, constrainToBounds, resolveMenuCollisions])
 
   // Handle voice intake drag end - save new position
   const handleVoiceIntakeDragEnd = useCallback((position: { x: number; y: number }) => {
-    setVoiceIntakePosition(position)
+    const constrained = constrainToBounds(position.x, position.y, 100, 100)
+    setVoiceIntakePosition(constrained)
   }, [setVoiceIntakePosition])
+  
+  // Handle music player drag end
+  const handleMusicPlayerDragEnd = useCallback((position: { x: number; y: number }) => {
+    const constrained = constrainToBounds(position.x, position.y, 200, 200)
+    setMusicPlayerPosition(constrained)
+  }, [setMusicPlayerPosition])
+  
+  // Handle clock drag end
+  const handleClockDragEnd = useCallback((position: { x: number; y: number }) => {
+    const constrained = constrainToBounds(position.x, position.y, 100, 150)
+    setClockPosition(constrained)
+  }, [setClockPosition])
+  
+  // Handle bento grid drag end
+  const handleBentoGridDragEnd = useCallback((position: { x: number; y: number }) => {
+    const constrained = constrainToBounds(position.x, position.y, 200, 200)
+    setBentoGridPosition(constrained)
+  }, [setBentoGridPosition])
+  
+  // Constrain position to viewport bounds
+  const constrainToBounds = useCallback((x: number, y: number, width: number = 80, height: number = 80) => {
+    const maxX = window.innerWidth / 2 - width
+    const maxY = window.innerHeight / 2 - height
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y))
+    }
+  }, [])
+  
+  // Check for collisions between menus
+  const checkCollision = useCallback((pos1: MenuPosition, pos2: MenuPosition, radius: number = 60) => {
+    const dx = pos1.x - pos2.x
+    const dy = pos1.y - pos2.y
+    const distance = Math.sqrt(dx * dx + dy * dy)
+    return distance < radius * 2
+  }, [])
+  
+  // Resolve menu collisions by adjusting positions
+  const resolveMenuCollisions = useCallback((positions: Record<MainMenuId, MenuPosition>) => {
+    const menuIds = Object.keys(positions) as MainMenuId[]
+    const resolved: Record<MainMenuId, MenuPosition> = { ...positions }
+    const menuRadius = 60
+    
+    for (let i = 0; i < menuIds.length; i++) {
+      for (let j = i + 1; j < menuIds.length; j++) {
+        const id1 = menuIds[i]
+        const id2 = menuIds[j]
+        const pos1 = resolved[id1]
+        const pos2 = resolved[id2]
+        
+        if (checkCollision(pos1, pos2, menuRadius)) {
+          // Push menus apart
+          const dx = pos1.x - pos2.x
+          const dy = pos1.y - pos2.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          const minDistance = menuRadius * 2.2
+          
+          if (distance > 0) {
+            const pushX = (dx / distance) * (minDistance - distance) / 2
+            const pushY = (dy / distance) * (minDistance - distance) / 2
+            
+            resolved[id1] = constrainToBounds(pos1.x + pushX, pos1.y + pushY, menuRadius)
+            resolved[id2] = constrainToBounds(pos2.x - pushX, pos2.y - pushY, menuRadius)
+          }
+        }
+      }
+    }
+    
+    return resolved
+  }, [checkCollision, constrainToBounds])
 
-  // Calculate main menu positions - horizontal row layout with proper spacing
-  const menuSpacing = 140 // Increased spacing between menus
+  // Calculate main menu positions - horizontal row layout with proper spacing and collision avoidance
+  const menuSpacing = 160 // Increased spacing between menus
   const startX = -(MAIN_MENU_CONFIGS.length * menuSpacing) / 2
-  const verticalOffset = -250 // Position menus above center to avoid overlap with voice intake
-  const menuPositionsLinear = MAIN_MENU_CONFIGS.map((_, index) => ({
-    x: startX + (index * menuSpacing),
-    y: verticalOffset // Position above center
-  }))
+  const verticalOffset = -280 // Position menus above center to avoid overlap with voice intake
+  
+  const menuPositionsLinear = useMemo(() => {
+    const positions = MAIN_MENU_CONFIGS.map((_, index) => ({
+      x: startX + (index * menuSpacing),
+      y: verticalOffset
+    }))
+    
+    // Apply saved positions and resolve collisions
+    const withSaved = positions.map((pos, index) => {
+      const menuId = MAIN_MENU_CONFIGS[index].id
+      return menuPositions?.[menuId] || pos
+    })
+    
+    // Convert to record format for collision resolution
+    const positionsRecord: Record<MainMenuId, MenuPosition> = {} as Record<MainMenuId, MenuPosition>
+    MAIN_MENU_CONFIGS.forEach((config, index) => {
+      positionsRecord[config.id] = withSaved[index]
+    })
+    
+    // Resolve collisions
+    const resolved = resolveMenuCollisions(positionsRecord)
+    
+    // Convert back to array
+    return MAIN_MENU_CONFIGS.map(config => resolved[config.id])
+  }, [menuPositions, startX, verticalOffset, resolveMenuCollisions])
 
   // Handle ESC key to close main menu
   useEffect(() => {
@@ -161,34 +268,43 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       {/* Starfield background */}
       <VoidBackground />
 
-      {/* Void Clock - Top Right */}
+      {/* Void Clock - Draggable */}
+      <VoidClock 
+        position={clockPosition || undefined}
+        onDragEnd={handleClockDragEnd}
+        isDraggable={true}
+      />
+
+      {/* Music Player - Draggable */}
+      <MusicPlayer 
+        position={musicPlayerPosition || undefined}
+        onDragEnd={handleMusicPlayerDragEnd}
+        isDraggable={true}
+      />
+
+      {/* Bento Grid - Draggable */}
       <motion.div
-        className="absolute top-8 right-8 z-30"
+        className="absolute z-30"
+        style={{
+          left: '50%',
+          top: '50%',
+        }}
         initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.5 }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1,
+          x: bentoGridPosition?.x || 0,
+          y: bentoGridPosition?.y || 0,
+        }}
+        transition={{ delay: 0.7, type: 'spring', stiffness: 400, damping: 30 }}
       >
-        <VoidClock />
-      </motion.div>
-
-      {/* Music Player - Top Right, below clock */}
-      <motion.div
-        className="absolute top-48 right-8 z-30"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, type: 'spring', stiffness: 900, damping: 18 }}
-      >
-        <MusicPlayer />
-      </motion.div>
-
-      {/* Bento Grid - Top Left (below title) */}
-      <motion.div
-        className="absolute top-24 left-8 z-30"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, type: 'spring', stiffness: 900, damping: 18 }}
-      >
-        <CRMVoidBentoGrid user={user} onNavigate={onNavigate} />
+        <CRMVoidBentoGrid 
+          user={user} 
+          onNavigate={onNavigate}
+          position={bentoGridPosition || undefined}
+          onDragEnd={handleBentoGridDragEnd}
+          isDraggable={true}
+        />
       </motion.div>
 
       {/* Central Voice Intake Hub - Draggable */}

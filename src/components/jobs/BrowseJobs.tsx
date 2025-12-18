@@ -923,6 +923,62 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'table' | 'carousel'>('carousel')
   const [visibleCount, setVisibleCount] = useState(50)
 
+  // Automatically add mock images to jobs that don't have photos
+  useEffect(() => {
+    if (!jobs || jobs.length === 0) return
+    
+    // Check if any jobs need images
+    const jobsNeedingImages = jobs.filter(job => {
+      const hasPhotos = job.photos && job.photos.length > 0
+      const hasValidPhotos = hasPhotos && job.photos?.some(p => p && p.trim() && (p.startsWith('http') || p.startsWith('data:') || p.startsWith('/')))
+      return !hasValidPhotos
+    })
+    
+    if (jobsNeedingImages.length > 0) {
+      // Only update jobs that need images
+      const updatedJobs = jobs.map(job => {
+        const hasValidPhotos = job.photos && job.photos.length > 0 && job.photos.some(p => p && p.trim() && (p.startsWith('http') || p.startsWith('data:') || p.startsWith('/')))
+        if (!hasValidPhotos) {
+          // Generate 2 mock images for this job
+          const photos: string[] = []
+          for (let i = 0; i < 2; i++) {
+            // Use job title to generate relevant image
+            const titleLower = job.title.toLowerCase()
+            let searchTerm = 'home improvement'
+            
+            // Simple keyword matching for better image relevance
+            if (titleLower.includes('faucet') || titleLower.includes('sink') || titleLower.includes('plumbing')) {
+              searchTerm = 'kitchen plumbing'
+            } else if (titleLower.includes('electrical') || titleLower.includes('panel') || titleLower.includes('outlet')) {
+              searchTerm = 'electrical panel'
+            } else if (titleLower.includes('drywall') || titleLower.includes('wall')) {
+              searchTerm = 'drywall repair'
+            } else if (titleLower.includes('paint')) {
+              searchTerm = 'house painting'
+            } else if (titleLower.includes('deck')) {
+              searchTerm = 'wooden deck'
+            } else if (titleLower.includes('roof')) {
+              searchTerm = 'roofing'
+            } else if (titleLower.includes('hvac') || titleLower.includes('ac') || titleLower.includes('heating')) {
+              searchTerm = 'hvac system'
+            } else if (titleLower.includes('bathroom')) {
+              searchTerm = 'bathroom renovation'
+            } else if (titleLower.includes('kitchen')) {
+              searchTerm = 'kitchen renovation'
+            }
+            
+            const seed = job.title.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) + i
+            photos.push(`https://source.unsplash.com/800x600/?${encodeURIComponent(searchTerm)}&sig=${seed}`)
+          }
+          return { ...job, photos }
+        }
+        return job
+      })
+      setJobs(updatedJobs)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run once on mount to add mock images
+
   const myScheduledJobs = useMemo(() => {
     return (jobs || []).filter(job =>
       job.bids.some(bid => bid.contractorId === user.id && bid.status === 'accepted')

@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, PanInfo } from 'framer-motion'
+import { DotsSixVertical } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
+
+interface VoidClockProps {
+  position?: { x: number; y: number }
+  onDragEnd?: (position: { x: number; y: number }) => void
+  isDraggable?: boolean
+}
 
 const days = [
   "Sunday",
@@ -27,8 +34,10 @@ const months = [
   "Dec"
 ]
 
-export function VoidClock() {
+export function VoidClock({ position, onDragEnd, isDraggable = true }: VoidClockProps) {
   const [time, setTime] = useState(new Date())
+  const [isDragging, setIsDragging] = useState(false)
+  const [clockPosition, setClockPosition] = useState(position || { x: 0, y: 0 })
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,6 +46,32 @@ export function VoidClock() {
 
     return () => clearInterval(interval)
   }, [])
+  
+  useEffect(() => {
+    if (position) {
+      setClockPosition(position)
+    }
+  }, [position])
+  
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false)
+    if (onDragEnd) {
+      const newX = clockPosition.x + info.offset.x
+      const newY = clockPosition.y + info.offset.y
+      const constrained = constrainToBounds(newX, newY, 100, 150)
+      setClockPosition(constrained)
+      onDragEnd(constrained)
+    }
+  }
+  
+  const constrainToBounds = (x: number, y: number, width: number, height: number) => {
+    const maxX = window.innerWidth / 2 - width
+    const maxY = window.innerHeight / 2 - height
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y))
+    }
+  }
 
   const month = time.getMonth()
   const day = time.getDay()
@@ -56,15 +91,56 @@ export function VoidClock() {
   return (
     <motion.div
       className={cn(
-        "glass-card rounded-2xl p-6",
-        "backdrop-blur-[12px]",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.04)]",
-        "min-w-[200px]"
+        "absolute",
+        "z-30"
       )}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      style={{
+        left: '50%',
+        top: '50%',
+        cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'default',
+      }}
+      initial={false}
+      animate={{ 
+        x: clockPosition.x, 
+        y: clockPosition.y,
+        opacity: 1,
+        scale: isDragging ? 1.05 : 1,
+      }}
+      drag={isDraggable}
+      dragMomentum={false}
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={handleDragEnd}
+      whileDrag={{ scale: 1.05, zIndex: 50 }}
+      transition={{ 
+        type: 'spring', 
+        stiffness: 900, 
+        damping: 18,
+        mass: 0.35,
+      }}
     >
+      <motion.div
+        className={cn(
+          "glass-card rounded-3xl p-6",
+          "backdrop-blur-[16px]",
+          "shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(255,255,255,0.12)]",
+          "min-w-[200px]",
+          "bg-white/90 dark:bg-black/90",
+          "border border-white/20 dark:border-white/10",
+          "relative"
+        )}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1,
+        }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      >
+      {isDraggable && (
+        <div className="absolute top-2 right-2 text-black/30 dark:text-white/30">
+          <DotsSixVertical size={16} className="cursor-grab active:cursor-grabbing" />
+        </div>
+      )}
       {/* Analog Clock */}
       <div className="relative w-32 h-32 mx-auto mb-4">
         {/* Clock face */}

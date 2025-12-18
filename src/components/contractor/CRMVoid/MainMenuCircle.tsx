@@ -106,7 +106,6 @@ export function MainMenuCircle({
         stiffness: 900, 
         damping: 18,
         mass: 0.35,
-        delay: angle / 360 * 0.05
       }}
     >
       {/* Circular expansion background - similar to CSS .circular-menu.active:after */}
@@ -142,16 +141,21 @@ export function MainMenuCircle({
         data-main-menu={id}
         className={cn(
           "relative flex flex-col items-center justify-center overflow-hidden",
-          "w-20 h-20 -ml-10 -mt-10 rounded-full",
+          "w-24 h-24 -ml-12 -mt-12 rounded-2xl",
           "transition-all duration-300",
-          "shadow-lg hover:shadow-xl",
+          "shadow-lg hover:shadow-2xl",
+          "backdrop-blur-md",
           isActive 
-            ? "bg-black dark:bg-white" 
-            : "bg-white dark:bg-black backdrop-blur-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
-          isPinned && "ring-2 ring-primary ring-offset-2"
+            ? "bg-gradient-to-br from-black to-gray-900 dark:from-white dark:to-gray-100" 
+            : "bg-white/90 dark:bg-black/90 hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+          isPinned && "ring-2 ring-cyan-400 ring-offset-2 ring-offset-transparent"
         )}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ 
+          scale: 1.15,
+          rotate: [0, -2, 2, -2, 0],
+          transition: { duration: 0.5 }
+        }}
+        whileTap={{ scale: 0.9 }}
         style={{ willChange: 'transform' }}
       >
         {/* Ripple effects */}
@@ -207,21 +211,32 @@ export function MainMenuCircle({
             )}
           </button>
         )}
-        {/* Icon */}
-        <div className={cn(
-          "text-2xl mb-1",
-          isActive ? "text-white dark:text-black" : "text-black dark:text-white"
-        )}>
+        {/* Icon with modern animation */}
+        <motion.div 
+          className={cn(
+            "text-3xl mb-1",
+            isActive ? "text-white dark:text-black" : "text-black dark:text-white"
+          )}
+          animate={isActive ? { 
+            scale: [1, 1.1, 1],
+            rotate: [0, 5, -5, 0]
+          } : {}}
+          transition={{ duration: 0.6, repeat: isActive ? Infinity : 0, repeatDelay: 2 }}
+        >
           {icon}
-        </div>
+        </motion.div>
         
-        {/* Label */}
-        <span className={cn(
-          "text-[10px] font-medium text-center leading-tight",
-          isActive ? "text-white dark:text-black" : "text-black dark:text-white"
-        )}>
+        {/* Label with modern styling */}
+        <motion.span 
+          className={cn(
+            "text-[11px] font-bold text-center leading-tight tracking-wide",
+            isActive ? "text-white dark:text-black" : "text-black dark:text-white"
+          )}
+          animate={isActive ? { opacity: [1, 0.7, 1] } : {}}
+          transition={{ duration: 1.5, repeat: isActive ? Infinity : 0 }}
+        >
           {label}
-        </span>
+        </motion.span>
       </motion.button>
     </motion.div>
   )

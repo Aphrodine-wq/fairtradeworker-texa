@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, PanInfo } from 'framer-motion'
 import { 
   Play, Pause, SkipBack, SkipForward, SpeakerHigh, SpeakerSlash,
-  MusicNote, X, Radio
+  MusicNote, X, Radio, DotsSixVertical
 } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
@@ -14,9 +14,12 @@ import { getPandoraConfig, authenticatePandora } from '@/lib/music/pandora'
 
 interface MusicPlayerProps {
   className?: string
+  position?: { x: number; y: number }
+  onDragEnd?: (position: { x: number; y: number }) => void
+  isDraggable?: boolean
 }
 
-export function MusicPlayer({ className }: MusicPlayerProps) {
+export function MusicPlayer({ className, position, onDragEnd, isDraggable = true }: MusicPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
@@ -27,8 +30,38 @@ export function MusicPlayer({ className }: MusicPlayerProps) {
   const [currentTrackIndex, setCurrentTrackIndex] = useKV<number>('crm-void-current-track', 0)
   const [service, setService] = useKV<MusicService>('crm-void-music-service', MusicService.LOCAL)
   const [showServiceSelect, setShowServiceSelect] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const [playerPosition, setPlayerPosition] = useState(position || { x: 0, y: 0 })
   
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  
+  // Update position when prop changes
+  useEffect(() => {
+    if (position) {
+      setPlayerPosition(position)
+    }
+  }, [position])
+  
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false)
+    if (onDragEnd) {
+      const newX = playerPosition.x + info.offset.x
+      const newY = playerPosition.y + info.offset.y
+      const constrainedPos = constrainToBounds(newX, newY)
+      setPlayerPosition(constrainedPos)
+      onDragEnd(constrainedPos)
+    }
+  }
+  
+  // Constrain position to viewport bounds
+  const constrainToBounds = (x: number, y: number) => {
+    const maxX = window.innerWidth / 2 - 200 // Half player width
+    const maxY = window.innerHeight / 2 - 150 // Half player height
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y))
+    }
+  }
 
   // Check service authentication status
   useEffect(() => {
@@ -148,47 +181,82 @@ export function MusicPlayer({ className }: MusicPlayerProps) {
   return (
     <motion.div
       className={cn(
-        "glass-card rounded-2xl p-4",
-        "backdrop-blur-[12px]",
-        "shadow-[0_4px_20px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_20px_rgba(255,255,255,0.04)]",
-        "min-w-[180px]",
+        "absolute",
         className
       )}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      style={{
+        left: '50%',
+        top: '50%',
+        zIndex: isDragging ? 50 : 30,
+        cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'default',
+      }}
+      initial={false}
+      animate={{ 
+        x: playerPosition.x, 
+        y: playerPosition.y,
+        opacity: 1,
+        scale: isDragging ? 1.05 : 1,
+      }}
+      drag={isDraggable}
+      dragMomentum={false}
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={handleDragEnd}
+      whileDrag={{ scale: 1.05, zIndex: 50 }}
+      transition={{ 
+        type: 'spring', 
+        stiffness: 900, 
+        damping: 18,
+        mass: 0.35,
+      }}
     >
+      <motion.div
+        className={cn(
+          "glass-card rounded-3xl p-6",
+          "backdrop-blur-[16px]",
+          "shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(255,255,255,0.12)]",
+          "min-w-[320px] max-w-[400px]",
+          "bg-white/90 dark:bg-black/90",
+          "border border-white/20 dark:border-white/10",
+        )}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      >
       {!isMinimized ? (
-        <div className="space-y-2">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-1.5">
-              {service === MusicService.SPOTIFY ? (
-                <MusicNote size={16} className="text-green-500" weight="fill" />
-              ) : service === MusicService.PANDORA ? (
-                <Radio size={16} className="text-blue-500" weight="fill" />
-              ) : (
-                <MusicNote size={16} className="text-cyan-400" weight="fill" />
+        <div className="space-y-4">
+          {/* Header with drag handle */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              {isDraggable && (
+                <DotsSixVertical size={16} className="text-black/40 dark:text-white/40 cursor-grab active:cursor-grabbing" />
               )}
-              <span className="text-xs font-semibold text-black dark:text-white">Music</span>
+              {service === MusicService.SPOTIFY ? (
+                <MusicNote size={20} className="text-green-500" weight="fill" />
+              ) : service === MusicService.PANDORA ? (
+                <Radio size={20} className="text-blue-500" weight="fill" />
+              ) : (
+                <MusicNote size={20} className="text-cyan-400" weight="fill" />
+              )}
+              <span className="text-sm font-bold text-black dark:text-white">Music Player</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setShowServiceSelect(!showServiceSelect)}
-                className="h-5 w-5 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
+                className="h-7 w-7 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 rounded-lg"
                 title="Select service"
               >
-                <MusicNote size={10} />
+                <MusicNote size={14} />
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsMinimized(true)}
-                className="h-5 w-5 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
+                className="h-7 w-7 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 rounded-lg"
               >
-                <X size={12} />
+                <X size={14} />
               </Button>
             </div>
           </div>
@@ -252,65 +320,65 @@ export function MusicPlayer({ className }: MusicPlayerProps) {
             )}
           </AnimatePresence>
 
-          {/* Compact Controls */}
-          <div className="flex items-center justify-center gap-1.5">
+          {/* Modern Controls */}
+          <div className="flex items-center justify-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={handlePrevious}
-              className="h-7 w-7 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10"
+              className="h-10 w-10 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-all hover:scale-110"
             >
-              <SkipBack size={12} weight="fill" />
+              <SkipBack size={18} weight="fill" />
             </Button>
             <Button
               variant="default"
-              size="sm"
+              size="lg"
               onClick={handlePlayPause}
-              className="h-8 w-8 p-0 bg-cyan-600 hover:bg-cyan-500 text-white rounded-full"
+              className="h-14 w-14 p-0 bg-gradient-to-br from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
             >
               {isPlaying ? (
-                <Pause size={14} weight="fill" />
+                <Pause size={20} weight="fill" />
               ) : (
-                <Play size={14} weight="fill" />
+                <Play size={20} weight="fill" className="ml-0.5" />
               )}
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleNext}
-              className="h-7 w-7 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10"
+              className="h-10 w-10 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-all hover:scale-110"
             >
-              <SkipForward size={12} weight="fill" />
+              <SkipForward size={18} weight="fill" />
             </Button>
           </div>
 
-          {/* Compact Progress */}
-          <div className="space-y-0.5">
+          {/* Progress Bar */}
+          <div className="space-y-2">
             <Slider
               value={[currentTime]}
               max={duration || 100}
               step={0.1}
               onValueChange={handleSeek}
-              className="w-full h-1"
+              className="w-full h-2"
             />
-            <div className="flex justify-between text-[10px] text-black/60 dark:text-white/60">
+            <div className="flex justify-between text-xs font-medium text-black/70 dark:text-white/70">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
             </div>
           </div>
 
-          {/* Compact Volume */}
-          <div className="flex items-center gap-1.5">
+          {/* Volume Control */}
+          <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={toggleMute}
-              className="h-5 w-5 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"
+              className="h-8 w-8 p-0 text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/10 dark:hover:bg-white/10 rounded-lg transition-all"
             >
               {isMuted ? (
-                <SpeakerSlash size={10} weight="fill" />
+                <SpeakerSlash size={16} weight="fill" />
               ) : (
-                <SpeakerHigh size={10} weight="fill" />
+                <SpeakerHigh size={16} weight="fill" />
               )}
             </Button>
             <Slider
@@ -318,15 +386,15 @@ export function MusicPlayer({ className }: MusicPlayerProps) {
               max={1}
               step={0.01}
               onValueChange={handleVolumeChange}
-              className="flex-1 h-1"
+              className="flex-1 h-2"
             />
           </div>
 
           {/* Track info */}
           {playlist && playlist.length > 0 && (
-            <div className="text-center pt-1">
-              <p className="text-[10px] text-black/70 dark:text-white/70">
-                {currentTrackIndex + 1}/{playlist.length}
+            <div className="text-center pt-2 border-t border-black/10 dark:border-white/10">
+              <p className="text-xs font-medium text-black/70 dark:text-white/70">
+                Track {currentTrackIndex + 1} of {playlist.length}
               </p>
             </div>
           )}
@@ -341,12 +409,13 @@ export function MusicPlayer({ className }: MusicPlayerProps) {
             variant="ghost"
             size="sm"
             onClick={() => setIsMinimized(false)}
-            className="h-8 w-8 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10 rounded-full"
+            className="h-10 w-10 p-0 text-black/70 dark:text-white/70 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-all hover:scale-110"
           >
-            <MusicNote size={16} className="text-cyan-400" weight="fill" />
+            <MusicNote size={20} className="text-cyan-400" weight="fill" />
           </Button>
         </motion.div>
       )}
+      </motion.div>
     </motion.div>
   )
 }

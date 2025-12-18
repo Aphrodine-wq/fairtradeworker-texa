@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import { ReactNode } from 'react'
+import { motion, PanInfo } from 'framer-motion'
+import { ReactNode, useState, useEffect } from 'react'
+import { DotsSixVertical } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 import { 
   Briefcase, ChartBar, UserPlus, CurrencyDollar, 
@@ -62,12 +63,43 @@ function BentoCard({ title, description, icon, value, className, onClick, backgr
 interface CRMVoidBentoGridProps {
   user: any
   onNavigate?: (page: string) => void
+  position?: { x: number; y: number }
+  onDragEnd?: (position: { x: number; y: number }) => void
+  isDraggable?: boolean
 }
 
-export function CRMVoidBentoGrid({ user, onNavigate }: CRMVoidBentoGridProps) {
+export function CRMVoidBentoGrid({ user, onNavigate, position, onDragEnd, isDraggable = true }: CRMVoidBentoGridProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [customers] = useKV<CRMCustomer[]>("crm-customers", [])
   const [leads] = useKV<any[]>("captured-leads", [])
+  const [isDragging, setIsDragging] = useState(false)
+  const [gridPosition, setGridPosition] = useState(position || { x: 0, y: 0 })
+  
+  useEffect(() => {
+    if (position) {
+      setGridPosition(position)
+    }
+  }, [position])
+  
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false)
+    if (onDragEnd) {
+      const newX = gridPosition.x + info.offset.x
+      const newY = gridPosition.y + info.offset.y
+      const constrained = constrainToBounds(newX, newY, 200, 200)
+      setGridPosition(constrained)
+      onDragEnd(constrained)
+    }
+  }
+  
+  const constrainToBounds = (x: number, y: number, width: number, height: number) => {
+    const maxX = window.innerWidth / 2 - width
+    const maxY = window.innerHeight / 2 - height
+    return {
+      x: Math.max(-maxX, Math.min(maxX, x)),
+      y: Math.max(-maxY, Math.min(maxY, y))
+    }
+  }
 
   // Calculate stats
   const activeJobs = (jobs || []).filter(j => j.status === 'active' || j.status === 'pending').length
@@ -113,10 +145,41 @@ export function CRMVoidBentoGrid({ user, onNavigate }: CRMVoidBentoGridProps) {
   ]
 
   return (
-    <div className="grid grid-cols-2 gap-3 max-w-md">
-      {features.map((feature, idx) => (
-        <BentoCard key={idx} {...feature} />
-      ))}
-    </div>
+    <motion.div
+      className={cn(
+        "glass-card rounded-3xl p-4",
+        "backdrop-blur-[16px]",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(255,255,255,0.12)]",
+        "bg-white/90 dark:bg-black/90",
+        "border border-white/20 dark:border-white/10",
+        "relative"
+      )}
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ 
+        opacity: 1, 
+        scale: isDragging ? 1.05 : 1,
+      }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+      drag={isDraggable}
+      dragMomentum={false}
+      dragElastic={0.1}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={handleDragEnd}
+      whileDrag={{ scale: 1.05, zIndex: 50 }}
+      style={{
+        cursor: isDraggable ? (isDragging ? 'grabbing' : 'grab') : 'default',
+      }}
+    >
+      {isDraggable && (
+        <div className="absolute top-2 right-2 text-black/30 dark:text-white/30 z-10">
+          <DotsSixVertical size={16} className="cursor-grab active:cursor-grabbing" />
+        </div>
+      )}
+      <div className="grid grid-cols-2 gap-3 max-w-md">
+        {features.map((feature, idx) => (
+          <BentoCard key={idx} {...feature} />
+        ))}
+      </div>
+    </motion.div>
   )
 }
