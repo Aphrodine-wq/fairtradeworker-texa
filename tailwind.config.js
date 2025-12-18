@@ -235,7 +235,7 @@ export default {
           borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
         },
         '.hover-lift': {
-          transition: 'all 0.4s ease',
+          transition: 'all 0.3s ease',
         },
         '.hover-lift:hover': {
           transform: 'translateY(-5px)',
