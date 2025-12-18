@@ -30,7 +30,7 @@ export function VoidDesktop({ onIconDoubleClick, onIconClick, onIconRightClick }
       const row = Math.floor(index / cols)
       const spacing = 120
       const startX = 100
-      const startY = 150
+      const startY = 200 // Account for toolbar height
 
       const defaultPosition = savedPosition || {
         x: startX + (col * spacing),

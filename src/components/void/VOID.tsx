@@ -210,8 +210,9 @@ export function VOID({ user, onNavigate }: VOIDProps) {
   })
 
   return (
-    <VoidCanvas>
-      <div className="h-screen w-screen overflow-hidden relative">
+    <div className="fixed inset-0 z-[9999] bg-[#0a0a0f]">
+      <VoidCanvas>
+        <div className="h-full w-full overflow-hidden relative">
         {/* Top Toolbar */}
         <VoidToolbar
           onSearch={(query) => {
@@ -228,7 +229,7 @@ export function VOID({ user, onNavigate }: VOIDProps) {
         />
 
         {/* Desktop Icons */}
-        <div className={cn("pt-24", mobile.isMobile && "pt-20")}>
+        <div className={cn("absolute inset-0", "pt-28", mobile.isMobile && "pt-20")}>
           <VoidDesktop
             onIconClick={(menuId) => setActiveMenu(menuId)}
             onIconDoubleClick={handleIconDoubleClick}
@@ -297,5 +298,6 @@ export function VOID({ user, onNavigate }: VOIDProps) {
         </AnimatePresence>
       </div>
     </VoidCanvas>
+    </div>
   )
 }

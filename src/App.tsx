@@ -10,6 +10,7 @@ import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
 import { useIOSOptimizations } from "@/hooks/use-mobile"
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts"
 import { initializeDemoData } from "@/lib/demoData"
+import { cn } from "@/lib/utils"
 import type { User, UserRole, Job, Invoice, Territory } from "@/lib/types"
 import { migrateTerritoriesData } from "@/lib/territory/migration"
 import { toast } from "sonner"
@@ -1199,15 +1200,22 @@ function App() {
           </Suspense>
         </ErrorBoundary>
       )}
-      <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
-      {isDemoMode && currentUser && (
-        <DemoModeBanner 
-          userName={currentUser.fullName} 
-          userRole={currentUser.role}
-        />
+      {currentPage !== 'crm' && (
+        <>
+          <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
+          {isDemoMode && currentUser && (
+            <DemoModeBanner 
+              userName={currentUser.fullName} 
+              userRole={currentUser.role}
+            />
+          )}
+          <OfflineIndicator />
+        </>
       )}
-      <OfflineIndicator />
-      <main className="flex-1 pt-16 w-full bg-white dark:bg-black overflow-x-hidden">
+      <main className={cn(
+        "flex-1 w-full overflow-x-hidden",
+        currentPage === 'crm' ? "pt-0" : "pt-16 bg-white dark:bg-black"
+      )}>
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={<LoadingFallback />}>
             {renderPage()}
