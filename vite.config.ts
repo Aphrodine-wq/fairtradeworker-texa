@@ -43,8 +43,8 @@ export default defineConfig({
     },
   },
   build: {
-    // Target modern browsers for better optimization
-    target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
+    // Target browsers with better Safari compatibility
+    target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari13'],
     // Enable minification with esbuild (faster than terser)
     minify: 'esbuild',
     // Configure chunk size warning limit
