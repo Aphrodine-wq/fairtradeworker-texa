@@ -19,6 +19,29 @@
 }
 
 :root {
+  /* Safari fallbacks - RGB values */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #a5b4fc;
+  --secondary-foreground: #000000;
+  --accent: #4f46e5;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --muted: #ffffff;
+  --muted-foreground: #000000;
+  --border: #000000;
+  --input: #ffffff;
+  --ring: #000000;
+  --radius: 0.5rem;
+  
+  /* Modern browsers - oklch values (override above if supported) */
   --background: oklch(1 0 0); /* Pure white background in light mode */
   --foreground: oklch(0 0 0); /* Pure black text in light mode */
 
@@ -46,6 +69,28 @@
 }
 
 .dark {
+  /* Safari fallbacks - RGB values */
+  --background: #000000;
+  --foreground: #ffffff;
+  --card: #000000;
+  --card-foreground: #ffffff;
+  --popover: #000000;
+  --popover-foreground: #ffffff;
+  --primary: #818cf8;
+  --primary-foreground: #ffffff;
+  --secondary: #4c1d95;
+  --secondary-foreground: #ffffff;
+  --accent: #7c3aed;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --muted: #000000;
+  --muted-foreground: #ffffff;
+  --border: #ffffff;
+  --input: #000000;
+  --ring: #ffffff;
+  
+  /* Modern browsers - oklch values (override above if supported) */
   --background: oklch(0 0 0); /* Pure black background in dark mode */
   --foreground: oklch(1 0 0); /* Pure white text in dark mode */
 
