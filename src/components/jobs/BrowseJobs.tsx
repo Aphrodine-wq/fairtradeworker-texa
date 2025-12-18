@@ -1,6 +1,6 @@
 
-import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense, useRef } from "react"
-import { motion } from "framer-motion"
+import { useState, useMemo, memo, useCallback, useEffect, lazy, Suspense, useRef, createContext, useContext } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { universalCardHover } from "@/lib/animations"
 import { SkeletonGrid } from "@/components/ui/SkeletonLoader"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,11 +20,12 @@ const JobMap = lazy(() => import("./JobMap").then(mod => ({ default: mod.JobMap 
 import { JobQA } from "./JobQA"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { toast } from "sonner"
-import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle, CaretLeft, CaretRight, Microphone, VideoCamera, Camera, Notebook } from "@phosphor-icons/react"
+import { Wrench, CurrencyDollar, Package, Images, Funnel, MapTrifold, List, Timer, Eye, Users, CircleNotch, Sparkle, CaretLeft, CaretRight, Microphone, VideoCamera, Camera, Notebook, X, Rows } from "@phosphor-icons/react"
 import type { Job, Bid, User, JobSize, BidTemplate, JobInputType } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
 import { revenueConfig } from "@/lib/revenueConfig"
 import { cn } from "@/lib/utils"
+import { useOutsideClick } from "@/hooks/use-outside-click"
 
 // Media type badge configuration
 const MEDIA_TYPE_CONFIG: Record<JobInputType, { icon: typeof Microphone; label: string; color: string; bgColor: string }> = {
@@ -54,6 +55,346 @@ function MediaTypeBadge({ type, size = 'sm' }: { type?: JobInputType; size?: 'sm
     </Badge>
   )
 }
+
+// Apple Cards Carousel Context
+const AppleCarouselContext = createContext<{
+  onCardClose: (index: number) => void
+  currentIndex: number
+}>({
+  onCardClose: () => {},
+  currentIndex: 0,
+})
+
+// Apple Cards Carousel Component
+function AppleCarousel({ children, initialScroll = 0 }: { children: React.ReactNode[]; initialScroll?: number }) {
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollLeft = initialScroll
+      checkScrollability()
+    }
+  }, [initialScroll])
+
+  const checkScrollability = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current
+      setCanScrollLeft(scrollLeft > 0)
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth)
+    }
+  }
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -350, behavior: "smooth" })
+    }
+  }
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: 350, behavior: "smooth" })
+    }
+  }
+
+  const handleCardClose = (index: number) => {
+    if (carouselRef.current) {
+      const cardWidth = window.innerWidth < 768 ? 280 : 400
+      const gap = 16
+      const scrollPosition = (cardWidth + gap) * index
+      carouselRef.current.scrollTo({
+        left: scrollPosition,
+        behavior: "smooth",
+      })
+      setCurrentIndex(index)
+    }
+  }
+
+  return (
+    <AppleCarouselContext.Provider value={{ onCardClose: handleCardClose, currentIndex }}>
+      <div className="relative w-full">
+        <div
+          className="flex w-full overflow-x-scroll overscroll-x-auto py-6 md:py-10 scroll-smooth [scrollbar-width:none]"
+          ref={carouselRef}
+          onScroll={checkScrollability}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          <div className="flex flex-row justify-start gap-4 pl-4 pr-[20%]">
+            {children.map((child, index) => (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: {
+                    duration: 0.5,
+                    delay: Math.min(0.1 * index, 0.5),
+                    ease: "easeOut",
+                  },
+                }}
+                key={index}
+                className="rounded-3xl flex-shrink-0"
+              >
+                {child}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-end gap-2 mr-6 mt-2">
+          <button
+            className="relative z-40 h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center disabled:opacity-50 transition-all hover:scale-105"
+            onClick={scrollLeft}
+            disabled={!canScrollLeft}
+          >
+            <CaretLeft className="h-6 w-6 text-gray-500 dark:text-gray-300" weight="bold" />
+          </button>
+          <button
+            className="relative z-40 h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center disabled:opacity-50 transition-all hover:scale-105"
+            onClick={scrollRight}
+            disabled={!canScrollRight}
+          >
+            <CaretRight className="h-6 w-6 text-gray-500 dark:text-gray-300" weight="bold" />
+          </button>
+        </div>
+      </div>
+    </AppleCarouselContext.Provider>
+  )
+}
+
+// Apple Card Component for Jobs
+const AppleJobCard = memo(function AppleJobCard({
+  job,
+  index,
+  onPlaceBid,
+  userRole
+}: {
+  job: Job
+  index: number
+  onPlaceBid: (job: Job) => void
+  userRole?: 'contractor' | 'operator' | 'homeowner'
+}) {
+  const [open, setOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { onCardClose } = useContext(AppleCarouselContext)
+
+  const photos = useMemo(() => {
+    const jobPhotos = job.photos || []
+    return jobPhotos.filter((photo): photo is string => 
+      Boolean(photo && typeof photo === 'string' && photo.trim() && (photo.startsWith('http') || photo.startsWith('data:') || photo.startsWith('/'))
+    ))
+  }, [job.photos])
+
+  const heroImage = photos[0] || 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop&q=60'
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        handleClose()
+      }
+    }
+
+    if (open) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "auto"
+    }
+
+    window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [open])
+
+  useOutsideClick(containerRef, () => handleClose())
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    onCardClose(index)
+  }
+
+  const sizeConfig = {
+    small: { label: 'Small Job', color: 'text-green-400', bg: 'bg-green-500/20' },
+    medium: { label: 'Medium Job', color: 'text-yellow-400', bg: 'bg-yellow-500/20' },
+    large: { label: 'Large Job', color: 'text-red-400', bg: 'bg-red-500/20' }
+  }
+
+  const size = sizeConfig[job.size] || sizeConfig.small
+
+  return (
+    <>
+      <AnimatePresence>
+        {open && (
+          <div className="fixed inset-0 h-screen z-50 overflow-auto">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="bg-black/80 backdrop-blur-lg h-full w-full fixed inset-0"
+            />
+            <motion.div
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 100 }}
+              ref={containerRef}
+              className="max-w-5xl mx-auto bg-white dark:bg-neutral-900 h-fit z-[60] my-10 p-4 md:p-10 rounded-3xl font-sans relative"
+            >
+              <button
+                className="sticky top-4 h-8 w-8 right-0 ml-auto bg-black dark:bg-white rounded-full flex items-center justify-center z-10"
+                onClick={handleClose}
+              >
+                <X className="h-5 w-5 text-white dark:text-black" weight="bold" />
+              </button>
+              
+              {/* Hero Image */}
+              <div className="relative h-64 md:h-80 -mx-4 md:-mx-10 -mt-4 md:-mt-10 mb-6 rounded-t-3xl overflow-hidden">
+                <img src={heroImage} alt={job.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 md:bottom-6 md:left-6">
+                  <Badge className={cn(size.bg, size.color, "border-0 mb-2")}>
+                    {getJobSizeEmoji(job.size)} {size.label}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {job.title}
+                  </h2>
+                  <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="flex items-center gap-1">
+                      <CurrencyDollar size={16} weight="duotone" />
+                      ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
+                    </span>
+                    <span>•</span>
+                    <span>{job.bids.length} {job.bids.length === 1 ? 'bid' : 'bids'}</span>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {job.description}
+                </p>
+
+                {job.aiScope?.scope && (
+                  <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2 flex items-center gap-2">
+                      <Sparkle size={18} weight="duotone" className="text-primary" />
+                      AI Scope Analysis
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">{job.aiScope.scope}</p>
+                  </div>
+                )}
+
+                {job.aiScope?.materials && job.aiScope.materials.length > 0 && (
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Materials Needed</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {job.aiScope.materials.map((material, idx) => (
+                        <Badge key={idx} variant="outline" className="text-sm">
+                          <Package size={14} className="mr-1" weight="duotone" />
+                          {material}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {photos.length > 1 && (
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Job Photos</h3>
+                    <div className="grid grid-cols-4 gap-2">
+                      {photos.slice(0, 8).map((photo, idx) => (
+                        <div key={idx} className="aspect-square rounded-lg overflow-hidden">
+                          <img src={photo} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <Button 
+                    onClick={() => {
+                      handleClose()
+                      onPlaceBid(job)
+                    }}
+                    size="lg" 
+                    className="w-full h-14 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+                  >
+                    Place Bid • $0 Fee
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+      
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={handleOpen}
+        className="rounded-3xl bg-gray-100 dark:bg-neutral-900 h-80 w-72 md:h-[32rem] md:w-96 overflow-hidden flex flex-col items-start justify-start relative z-10 group"
+      >
+        <div className="absolute h-full top-0 inset-x-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 z-30 pointer-events-none" />
+        
+        {/* Category Badge */}
+        <div className="absolute top-4 left-4 z-40">
+          <Badge className={cn(size.bg, size.color, "border-0 backdrop-blur-sm")}>
+            {getJobSizeEmoji(job.size)} {size.label}
+          </Badge>
+          {job.mediaType && (
+            <div className="mt-2">
+              <MediaTypeBadge type={job.mediaType} />
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="absolute bottom-0 left-0 right-0 z-40 p-5 md:p-6">
+          <p className="text-white/80 text-xs md:text-sm font-medium mb-1">
+            ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
+          </p>
+          <h3 className="text-white text-lg md:text-2xl font-bold max-w-xs text-left [text-wrap:balance] mb-3 line-clamp-2">
+            {job.title}
+          </h3>
+          <div className="flex items-center gap-3 text-white/70 text-xs md:text-sm mb-4">
+            <span>{job.bids.length} {job.bids.length === 1 ? 'bid' : 'bids'}</span>
+            <span>•</span>
+            <span>{Math.round((Date.now() - new Date(job.createdAt).getTime()) / (1000 * 60 * 60))}h ago</span>
+          </div>
+          
+          {/* Place Bid Button */}
+          <Button 
+            onClick={(e) => {
+              e.stopPropagation()
+              onPlaceBid(job)
+            }}
+            className="w-full bg-white/90 hover:bg-white text-black font-bold group-hover:bg-[#00FF00] transition-colors"
+          >
+            Place Bid • $0 Fee
+          </Button>
+        </div>
+
+        {/* Background Image */}
+        <img
+          className="object-cover absolute z-10 inset-0 w-full h-full transition duration-300 group-hover:scale-105"
+          src={heroImage}
+          alt={job.title}
+          loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement
+            target.src = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop&q=60'
+          }}
+        />
+      </motion.button>
+    </>
+  )
+})
 
 // Carousel Lane component with scroll arrows
 function CarouselLane({ children }: { children: React.ReactNode }) {
@@ -577,7 +918,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [sizeFilter, setSizeFilter] = useState<JobSize | 'all'>('all')
   const [mediaTypeFilter, setMediaTypeFilter] = useState<JobInputType | 'all'>('all')
-  const [viewMode, setViewMode] = useState<'list' | 'map' | 'table'>('list')
+  const [viewMode, setViewMode] = useState<'list' | 'map' | 'table' | 'carousel'>('carousel')
   const [visibleCount, setVisibleCount] = useState(50)
 
   const myScheduledJobs = useMemo(() => {
@@ -901,8 +1242,12 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                   {/* View Mode Toggle */}
                   <div className="flex items-center gap-3 md:border-l md:pl-4">
                     <span className="text-xs md:text-sm font-medium text-muted-foreground hidden sm:inline">View:</span>
-                    <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table')}>
+                    <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as 'list' | 'map' | 'table' | 'carousel')}>
                       <TabsList className="bg-muted/50 h-auto p-1">
+                        <TabsTrigger value="carousel" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as carousel">
+                          <Rows weight="duotone" size={16} />
+                          <span className="hidden sm:inline">Cards</span>
+                        </TabsTrigger>
                         <TabsTrigger value="list" className="gap-2 py-2 px-3 text-xs md:text-sm data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black" aria-label="View jobs as grid">
                           <List weight="duotone" size={16} />
                           <span className="hidden sm:inline">Grid</span>
@@ -1113,6 +1458,32 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
             ) : isLoadingJobs && sortedOpenJobs.length === 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 <SkeletonGrid count={6} columns={3} />
+              </div>
+            ) : viewMode === 'carousel' ? (
+              /* Apple Cards Carousel View */
+              <div className="w-full overflow-hidden -mx-4 md:-mx-6 lg:-mx-8">
+                <AppleCarousel>
+                  {sortedOpenJobs.slice(0, 20).map((job, index) => (
+                    <AppleJobCard
+                      key={job.id}
+                      job={job}
+                      index={index}
+                      onPlaceBid={handleBidClick}
+                      userRole={user.role}
+                    />
+                  ))}
+                </AppleCarousel>
+                {sortedOpenJobs.length > 20 && (
+                  <div className="text-center pb-6">
+                    <Button
+                      variant="outline"
+                      onClick={() => setViewMode('list')}
+                      className="text-sm"
+                    >
+                      View All {sortedOpenJobs.length} Jobs in Grid View
+                    </Button>
+                  </div>
+                )}
               </div>
             ) : (
               <>

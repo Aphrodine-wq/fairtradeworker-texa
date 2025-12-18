@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ReactNode } from 'react'
+import { PushPin, PushPinSlash } from '@phosphor-icons/react'
 import { cn } from '@/lib/utils'
 
 interface MainMenuCircleProps {
@@ -13,6 +14,8 @@ interface MainMenuCircleProps {
   color: string
   bgColor: string
   borderColor: string
+  isPinned?: boolean
+  onPinToggle?: () => void
 }
 
 export function MainMenuCircle({
@@ -26,6 +29,8 @@ export function MainMenuCircle({
   color,
   bgColor,
   borderColor,
+  isPinned = false,
+  onPinToggle,
 }: MainMenuCircleProps) {
   // Calculate position from angle and radius
   const x = Math.cos((angle * Math.PI) / 180) * radius
@@ -48,10 +53,10 @@ export function MainMenuCircle({
       }}
       transition={{ 
         type: 'spring', 
-        stiffness: 400, 
-        damping: 30,
-        mass: 0.6,
-        delay: angle / 360 * 0.2
+        stiffness: 900, 
+        damping: 18,
+        mass: 0.35,
+        delay: angle / 360 * 0.05
       }}
     >
       {/* Circular expansion background - similar to CSS .circular-menu.active:after */}
@@ -74,9 +79,9 @@ export function MainMenuCircle({
             exit={{ scale: 1, opacity: 0 }}
             transition={{ 
               type: 'spring',
-              stiffness: 200,
-              damping: 20,
-              mass: 0.8
+              stiffness: 800,
+              damping: 18,
+              mass: 0.35
             }}
           />
         )}
@@ -91,12 +96,36 @@ export function MainMenuCircle({
           "transition-all duration-300",
           "border-2",
           isActive 
-            ? "bg-black dark:bg-white border-black dark:border-white shadow-lg" 
-            : "bg-white dark:bg-black border-black dark:border-white hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+            ? "bg-black dark:bg-white border-black dark:border-black shadow-lg" 
+            : "bg-white dark:bg-black border-black dark:border-black hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+          isPinned && "ring-2 ring-black dark:ring-black ring-offset-2"
         )}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
+        style={{ willChange: 'transform' }}
       >
+        {/* Pin button */}
+        {onPinToggle && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onPinToggle()
+            }}
+            className={cn(
+              "absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center z-10",
+              "bg-black dark:bg-white text-white dark:text-black",
+              "hover:scale-110 transition-transform",
+              "shadow-sm"
+            )}
+            aria-label={isPinned ? "Unpin menu" : "Pin menu"}
+          >
+            {isPinned ? (
+              <PushPin size={12} weight="fill" />
+            ) : (
+              <PushPinSlash size={12} weight="fill" />
+            )}
+          </button>
+        )}
         {/* Icon */}
         <div className={cn(
           "text-2xl mb-1",

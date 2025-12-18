@@ -48,12 +48,9 @@ export function SubMenuCircle({
   // Absolute position from center
   const x = parentX + relativeX
   const y = parentY + relativeY
-  
-  // Counter-rotate content so it stays upright
-  const contentRotation = -anglePerItem
 
-  // Staggered animation delay - faster for sleek animations
-  const delay = index * 0.08
+  // Staggered animation delay - dramatically reduced for smoother animations
+  const delay = index * 0.02
 
   return (
     <motion.div
@@ -87,9 +84,9 @@ export function SubMenuCircle({
       }}
       transition={{ 
         type: 'spring', 
-        stiffness: 400, 
-        damping: 30,
-        mass: 0.6,
+        stiffness: 900, 
+        damping: 18,
+        mass: 0.35,
         delay,
       }}
     >
@@ -107,16 +104,17 @@ export function SubMenuCircle({
         whileTap={{ scale: 0.95 }}
         style={{ 
           willChange: 'transform', 
-          transform: `translateZ(0) rotate(${contentRotation}deg)`
+          transform: 'translateZ(0)'
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        transition={{ type: "spring", stiffness: 900, damping: 18, mass: 0.35 }}
       >
         {/* Icon container */}
         <motion.div
           className="w-14 h-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center mb-2"
           whileHover={{ scale: 1.1, rotate: 5 }}
           whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          style={{ willChange: 'transform' }}
+          transition={{ type: "spring", stiffness: 900, damping: 18, mass: 0.35 }}
         >
           <div className="text-2xl text-black dark:text-white">
             {icon}
