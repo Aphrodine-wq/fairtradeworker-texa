@@ -644,15 +644,14 @@ const styles = StyleSheet.create({
   tierButton: {
     padding: Spacing.lg,
     borderRadius: BorderRadius.lg,
-    borderWidth: 2,
-    borderColor: Colors.border,
     backgroundColor: Colors.surface,
     alignItems: 'center',
     marginBottom: Spacing.md,
+    ...Shadows.lg,
   },
   tierButtonSelected: {
-    borderColor: Colors.primary,
     backgroundColor: 'rgba(249, 115, 22, 0.05)',
+    ...Shadows.xl,
   },
   tierEmoji: {
     fontSize: 40,
@@ -686,14 +685,12 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    borderColor: Colors.border,
     backgroundColor: Colors.surface,
+    ...Shadows.md,
   },
   projectButtonCustom: {
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: Colors.primary,
+    backgroundColor: 'rgba(249, 115, 22, 0.05)',
+    ...Shadows.lg,
   },
   projectEmoji: {
     fontSize: 32,
