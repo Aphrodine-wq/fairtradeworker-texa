@@ -304,6 +304,10 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
     }
   }, [onOpenCustomizer])
 
+  const handleSavePreferences = useCallback((prefs: any) => {
+    savePreferences(prefs.items)
+  }, [savePreferences])
+
   return (
     <>
       <ThemeToggle />
