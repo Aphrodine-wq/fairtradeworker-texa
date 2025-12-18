@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useLocalKV as useKV } from '@/hooks/useLocalKV'
 import type { User, CRMCustomer } from '@/lib/types'
 
 import { VoidBackground } from './VoidBackground'
@@ -11,6 +12,7 @@ import { MainMenuCircle } from './MainMenuCircle'
 import { SubMenuCircle } from './SubMenuCircle'
 import { LeadCaptureMenu } from './LeadCaptureMenu'
 import { VoidClock } from './VoidClock'
+import { CRMVoidBentoGrid } from './CRMVoidBentoGrid'
 import { MAIN_MENU_CONFIGS, type MainMenuId } from './MainMenuConfig'
 
 interface CRMVoidProps {
@@ -21,6 +23,7 @@ interface CRMVoidProps {
 export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeMainMenu, setActiveMainMenu] = useState<MainMenuId | null>(null)
   const [showVoiceIntake, setShowVoiceIntake] = useState(false)
+  const [pinnedMenus, setPinnedMenus] = useKV<MainMenuId[]>("crm-void-pinned-menus", [])
   
   // Prevent body scroll when CRM Void is active
   useEffect(() => {
@@ -44,6 +47,17 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
       setActiveMainMenu(menuId)
     }
   }, [activeMainMenu])
+
+  const handlePinToggle = useCallback((menuId: MainMenuId) => {
+    setPinnedMenus((current) => {
+      const isPinned = (current || []).includes(menuId)
+      if (isPinned) {
+        return (current || []).filter(id => id !== menuId)
+      } else {
+        return [...(current || []), menuId]
+      }
+    })
+  }, [setPinnedMenus])
 
   const handleSubMenuClick = useCallback((page: string, subMenuId: string) => {
     // Check if this is the "Import Customer Data" sub-menu
@@ -144,6 +158,16 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         <VoidClock />
       </motion.div>
 
+      {/* Bento Grid - Top Left (below title) */}
+      <motion.div
+        className="absolute top-24 left-8 z-30"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7, type: 'spring', stiffness: 900, damping: 18 }}
+      >
+        <CRMVoidBentoGrid user={user} onNavigate={onNavigate} />
+      </motion.div>
+
       {/* Main content area - ensure no scrolling and perfect centering */}
       <div className="relative z-10 flex items-center justify-center h-screen w-screen overflow-hidden">
         {/* Centered container for all elements */}
@@ -169,6 +193,8 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                   color={menuConfig.color}
                   bgColor={menuConfig.bgColor}
                   borderColor={menuConfig.borderColor}
+                  isPinned={(pinnedMenus || []).includes(menuConfig.id)}
+                  onPinToggle={() => handlePinToggle(menuConfig.id)}
                 />
                 
                 {/* Menu Title - appears when sub-menus are expanded */}

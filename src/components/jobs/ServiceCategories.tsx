@@ -200,92 +200,25 @@ interface ServiceCategoriesProps {
 }
 
 export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
-  // Bold, vibrant color scheme - diverse assortment of colors
-  const boldColors = [
-    { bg: "bg-red-500 dark:bg-red-600", text: "text-white dark:text-white", index: 0 },
-    { bg: "bg-orange-500 dark:bg-orange-600", text: "text-white dark:text-white", index: 1 },
-    { bg: "bg-amber-500 dark:bg-amber-600", text: "text-white dark:text-white", index: 2 },
-    { bg: "bg-emerald-500 dark:bg-emerald-600", text: "text-white dark:text-white", index: 3 },
-    { bg: "bg-cyan-500 dark:bg-cyan-600", text: "text-white dark:text-white", index: 4 },
-    { bg: "bg-blue-500 dark:bg-blue-600", text: "text-white dark:text-white", index: 5 },
-    { bg: "bg-violet-500 dark:bg-violet-600", text: "text-white dark:text-white", index: 6 },
-    { bg: "bg-fuchsia-500 dark:bg-fuchsia-600", text: "text-white dark:text-white", index: 7 },
-    { bg: "bg-rose-500 dark:bg-rose-600", text: "text-white dark:text-white", index: 8 },
-    { bg: "bg-lime-500 dark:bg-lime-600", text: "text-white dark:text-white", index: 9 },
-    { bg: "bg-sky-500 dark:bg-sky-600", text: "text-white dark:text-white", index: 10 },
-    { bg: "bg-yellow-500 dark:bg-yellow-600", text: "text-white dark:text-white", index: 11 },
+  // Rainbow gradient scheme - vibrant, eye-catching gradients
+  const rainbowGradients = [
+    { bg: "bg-gradient-to-br from-red-500 to-orange-500", text: "text-white", index: 0 },
+    { bg: "bg-gradient-to-br from-orange-500 to-yellow-500", text: "text-white", index: 1 },
+    { bg: "bg-gradient-to-br from-yellow-500 to-green-500", text: "text-white", index: 2 },
+    { bg: "bg-gradient-to-br from-green-500 to-cyan-500", text: "text-white", index: 3 },
+    { bg: "bg-gradient-to-br from-cyan-500 to-blue-500", text: "text-white", index: 4 },
+    { bg: "bg-gradient-to-br from-blue-500 to-purple-500", text: "text-white", index: 5 },
+    { bg: "bg-gradient-to-br from-purple-500 to-pink-500", text: "text-white", index: 6 },
+    { bg: "bg-gradient-to-br from-pink-500 to-rose-500", text: "text-white", index: 7 },
+    { bg: "bg-gradient-to-br from-rose-500 to-red-500", text: "text-white", index: 8 },
+    { bg: "bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500", text: "text-white", index: 9 },
+    { bg: "bg-gradient-to-br from-yellow-500 via-green-500 to-cyan-500", text: "text-white", index: 10 },
+    { bg: "bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500", text: "text-white", index: 11 },
   ]
 
-  // Color similarity groups - colors that are too similar should not be adjacent
-  const colorGroups = [
-    [0, 1], // red, orange (similar)
-    [1, 2], // orange, amber (similar)
-    [5, 6], // blue, indigo (similar)
-    [6, 7], // indigo, purple (similar)
-    [7, 8], // purple, pink (similar)
-  ]
-
-  // Function to check if two colors are similar
-  const areSimilar = (idx1: number, idx2: number): boolean => {
-    return colorGroups.some(group => 
-      (group.includes(idx1) && group.includes(idx2))
-    )
-  }
-
-  // Assign colors ensuring no similar colors are adjacent
-  // Grid is 3 columns, so we need to check horizontal and vertical neighbors
-  const assignColors = (): Map<string, typeof boldColors[0]> => {
-    const colorMap = new Map<string, typeof boldColors[0]>()
-    const usedIndices = new Set<number>()
-    
-    // Try to assign colors with constraint checking
-    const tryAssignColor = (categoryId: string, position: number): typeof boldColors[0] => {
-      const row = Math.floor(position / 3)
-      const col = position % 3
-      
-      // Get neighbors (horizontal and vertical)
-      const neighbors: number[] = []
-      if (col > 0) neighbors.push(position - 1) // left
-      if (col < 2) neighbors.push(position + 1) // right
-      if (row > 0) neighbors.push(position - 3) // top
-      if (row < 2) neighbors.push(position + 3) // bottom
-      
-      // Get colors already assigned to neighbors
-      const neighborColors = neighbors
-        .map((pos, idx) => {
-          const cat = mainCategories[pos]
-          return cat ? colorMap.get(cat.id) : null
-        })
-        .filter(Boolean)
-        .map(c => c!.index)
-      
-      // Find a color that's not similar to any neighbor
-      const availableColors = boldColors.filter(color => {
-        if (usedIndices.has(color.index)) return false
-        return !neighborColors.some(neighborIdx => areSimilar(color.index, neighborIdx))
-      })
-      
-      // If no perfect match, use any available color
-      const selectedColor = availableColors.length > 0 
-        ? availableColors[0]
-        : boldColors.find(c => !usedIndices.has(c.index)) || boldColors[0]
-      
-      usedIndices.add(selectedColor.index)
-      return selectedColor
-    }
-    
-    mainCategories.forEach((category, index) => {
-      const color = tryAssignColor(category.id, index)
-      colorMap.set(category.id, color)
-    })
-    
-    return colorMap
-  }
-
-  const categoryColorMap = useMemo(() => assignColors(), [])
-
-  const getCategoryColor = (categoryId: string) => {
-    return categoryColorMap.get(categoryId) || boldColors[0]
+  // Assign rainbow gradients to categories - cycle through for variety
+  const getCategoryGradient = (index: number) => {
+    return rainbowGradients[index % rainbowGradients.length]
   }
 
   // Multi-select state
@@ -399,9 +332,9 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
 
       {/* Symmetrical 3x3 grid layout */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-        {mainCategories.map((category) => {
+        {mainCategories.map((category, index) => {
           const Icon = category.icon
-          const color = getCategoryColor(category.id)
+          const gradient = getCategoryGradient(index)
           const isSelected = selectedCategories.includes(category.id)
           return (
             <motion.div
@@ -427,12 +360,12 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
                     style={{ willChange: 'transform' }}
                   >
                     <div
-                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${color.bg} relative`}
+                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 border-0 ${gradient.bg} relative shadow-lg`}
                     >
                       <Icon 
                         size={28} 
                         weight="fill" 
-                        className={color.text}
+                        className={gradient.text}
                       />
                       {isSelected && (
                         <div className="absolute -top-1 -right-1 w-5 h-5 bg-black dark:bg-white rounded-full flex items-center justify-center">
