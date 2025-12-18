@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Layout - Before & After Comparison</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #111;
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .panel {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            background: #111;
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .badge {
+            background: #ef4444;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .badge.success {
+            background: #10b981;
+        }
+        
+        /* BEFORE LAYOUT - Has scrolling issues */
+        .before-content {
+            height: 600px;
+            overflow: hidden;
+            padding: 24px;
+        }
+        
+        .before-content .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .before-content .tabs {
+            margin-bottom: 24px;
+        }
+        
+        .before-content .call-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            /* This causes vertical scrolling */
+            height: auto;
+        }
+        
+        /* AFTER LAYOUT - Fits on one page */
+        .after-content {
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+        }
+        
+        .after-content .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-shrink: 0;
+        }
+        
+        .after-content .stat-card {
+            padding: 16px;
+        }
+        
+        .after-content .stat-value {
+            font-size: 24px;
+        }
+        
+        .after-content .stat-label {
+            font-size: 12px;
+        }
+        
+        .after-content .tabs-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab.active {
+            border-bottom-color: #111;
+        }
+        
+        .after-content .call-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+        }
+        
+        .call-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            background: white;
+            transition: box-shadow 0.2s;
+        }
+        
+        .call-card:hover {
+            box-shadow: 4px 4px 0 #000;
+        }
+        
+        .before-content .call-card {
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .call-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 8px;
+        }
+        
+        .call-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .before-content .call-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .call-meta {
+            font-size: 11px;
+            color: #6b7280;
+            display: flex;
+            gap: 12px;
+        }
+        
+        .before-content .call-meta {
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .call-description {
+            font-size: 12px;
+            color: #374151;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .before-content .call-description {
+            font-size: 13px;
+            line-height: 1.5;
+            -webkit-line-clamp: 3;
+        }
+        
+        .urgency-badge {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .call-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        
+        .btn {
+            padding: 4px 12px;
+            font-size: 11px;
+            border: 1px solid #e5e7eb;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: #111;
+            color: white;
+            border-color: #111;
+        }
+        
+        .improvement-list {
+            background: white;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .improvement-list h2 {
+            color: #10b981;
+            margin-bottom: 16px;
+        }
+        
+        .improvement-list ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .improvement-list li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+        
+        .improvement-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .scroll-indicator {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 8px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            border-top: 2px solid #ef4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CRM Layout Improvement - Before & After</h1>
+        
+        <div class="comparison">
+            <!-- BEFORE -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span>❌ BEFORE: Had Vertical Scrolling</span>
+                    <span class="badge">Problem</span>
+                </div>
+                <div class="before-content">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Total Calls</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">New Calls</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Voicemails</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Private Jobs</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs">
+                        <button class="tab active">Calls (12)</button>
+                        <button class="tab">Private Jobs (5)</button>
+                    </div>
+                    
+                    <div class="call-list">
+                        <div class="call-card">
+                            <div class="call-header">
+                                <div>
+                                    <div class="call-title">John Smith <span class="urgency-badge">HIGH</span></div>
+                                    <div class="call-meta">
+                                        <span>📞 (555) 123-4567</span>
+                                        <span>🕐 Dec 17, 2:30 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="call-description">
+                                Leaking pipe in basement needs immediate attention. Water is pooling near the furnace and I'm worried about damage.
+                            </div>
+                            <div class="call-actions">
+                                <button class="btn btn-primary">Create Job</button>
+                                <button class="btn">▶️</button>
+                                <button class="btn">📞</button>
+                            </div>
+                        </div>
+                        
+                        <div class="call-card">
+                            <div class="call-header">
+                                <div>
+                                    <div class="call-title">Sarah Johnson <span class="urgency-badge">MEDIUM</span></div>
+                                    <div class="call-meta">
+                                        <span>📞 (555) 987-6543</span>
+                                        <span>🕐 Dec 17, 1:15 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="call-description">
+                                Kitchen cabinet door came off the hinges. Looking for someone to fix it this week if possible.
+                            </div>
+                            <div class="call-actions">
+                                <button class="btn btn-primary">Create Job</button>
+                                <button class="btn">▶️</button>
+                                <button class="btn">📞</button>
+                            </div>
+                        </div>
+                        
+                        <div class="call-card">
+                            <div class="call-header">
+                                <div>
+                                    <div class="call-title">Mike Davis <span class="urgency-badge">LOW</span></div>
+                                    <div class="call-meta">
+                                        <span>📞 (555) 456-7890</span>
+                                        <span>🕐 Dec 16, 4:45 PM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="call-description">
+                                Interested in getting a quote for bathroom renovation. No rush, just exploring options.
+                            </div>
+                            <div class="call-actions">
+                                <button class="btn btn-primary">Create Job</button>
+                                <button class="btn">▶️</button>
+                                <button class="btn">📞</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scroll-indicator">
+                    ⚠️ Content extends beyond viewport - requires scrolling
+                </div>
+            </div>
+            
+            <!-- AFTER -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span>✅ AFTER: Fits on One Page</span>
+                    <span class="badge success">Fixed</span>
+                </div>
+                <div class="after-content">
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Total Calls</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">New Calls</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Voicemails</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Private Jobs</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tabs-container">
+                        <div class="tabs">
+                            <button class="tab active">Calls (12)</button>
+                            <button class="tab">Private Jobs (5)</button>
+                        </div>
+                        
+                        <div class="call-list">
+                            <div class="call-card">
+                                <div class="call-header">
+                                    <div>
+                                        <div class="call-title">John Smith <span class="urgency-badge">HIGH</span></div>
+                                        <div class="call-meta">
+                                            <span>📞 (555) 123-4567</span>
+                                            <span>🕐 Dec 17, 2:30 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="call-actions">
+                                        <button class="btn btn-primary">Create</button>
+                                        <button class="btn">▶️</button>
+                                        <button class="btn">📞</button>
+                                    </div>
+                                </div>
+                                <div class="call-description">
+                                    Leaking pipe in basement needs immediate attention. Water is pooling near the furnace...
+                                </div>
+                            </div>
+                            
+                            <div class="call-card">
+                                <div class="call-header">
+                                    <div>
+                                        <div class="call-title">Sarah Johnson <span class="urgency-badge">MEDIUM</span></div>
+                                        <div class="call-meta">
+                                            <span>📞 (555) 987-6543</span>
+                                            <span>🕐 Dec 17, 1:15 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="call-actions">
+                                        <button class="btn btn-primary">Create</button>
+                                        <button class="btn">▶️</button>
+                                        <button class="btn">📞</button>
+                                    </div>
+                                </div>
+                                <div class="call-description">
+                                    Kitchen cabinet door came off the hinges. Looking for someone to fix it this week...
+                                </div>
+                            </div>
+                            
+                            <div class="call-card">
+                                <div class="call-header">
+                                    <div>
+                                        <div class="call-title">Mike Davis <span class="urgency-badge">LOW</span></div>
+                                        <div class="call-meta">
+                                            <span>📞 (555) 456-7890</span>
+                                            <span>🕐 Dec 16, 4:45 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="call-actions">
+                                        <button class="btn btn-primary">Create</button>
+                                        <button class="btn">▶️</button>
+                                        <button class="btn">📞</button>
+                                    </div>
+                                </div>
+                                <div class="call-description">
+                                    Interested in getting a quote for bathroom renovation. No rush, just exploring...
+                                </div>
+                            </div>
+                            
+                            <div class="call-card">
+                                <div class="call-header">
+                                    <div>
+                                        <div class="call-title">Emma Wilson <span class="urgency-badge">HIGH</span></div>
+                                        <div class="call-meta">
+                                            <span>📞 (555) 234-5678</span>
+                                            <span>🕐 Dec 16, 11:20 AM</span>
+                                        </div>
+                                    </div>
+                                    <div class="call-actions">
+                                        <button class="btn btn-primary">Create</button>
+                                        <button class="btn">▶️</button>
+                                        <button class="btn">📞</button>
+                                    </div>
+                                </div>
+                                <div class="call-description">
+                                    HVAC system stopped working overnight. House is very cold and we have small children...
+                                </div>
+                            </div>
+                            
+                            <div class="call-card">
+                                <div class="call-header">
+                                    <div>
+                                        <div class="call-title">Robert Lee <span class="urgency-badge">LOW</span></div>
+                                        <div class="call-meta">
+                                            <span>📞 (555) 345-6789</span>
+                                            <span>🕐 Dec 15, 3:00 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="call-actions">
+                                        <button class="btn btn-primary">Create</button>
+                                        <button class="btn">▶️</button>
+                                        <button class="btn">📞</button>
+                                    </div>
+                                </div>
+                                <div class="call-description">
+                                    Looking for deck repair estimates. Several boards are loose and need replacement...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="improvement-list">
+            <h2>✅ Key Improvements Made</h2>
+            <ul>
+                <li><strong>Flexbox Layout:</strong> Changed from space-y-6 to flex column with height constraints</li>
+                <li><strong>Compact Stats:</strong> Reduced padding (p-6 → p-4) and font sizes (text-3xl → text-2xl) in stat cards</li>
+                <li><strong>Proper Overflow:</strong> Added overflow-y-auto only to tab content areas, not the entire page</li>
+                <li><strong>Smaller Cards:</strong> Reduced call card padding and font sizes throughout</li>
+                <li><strong>Condensed Layout:</strong> Removed expandable transcript sections to save vertical space</li>
+                <li><strong>Grid Optimization:</strong> Changed stats from grid-cols-1 md:grid-cols-4 to grid-cols-2 md:grid-cols-4</li>
+                <li><strong>Line Clamping:</strong> Added line-clamp-2 to descriptions to prevent excessive text overflow</li>
+                <li><strong>Modal Fix:</strong> Changed fixed modal from inset-4 to proper centered overlay with max-height constraint</li>
+                <li><strong>Page Wrapper:</strong> Updated ReceptionistPage to use flex layout with proper height distribution</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
