@@ -396,30 +396,29 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
 
         {/* Addon toggles */}
         <div className="absolute bottom-3 flex gap-3">
-            <div className="flex items-center gap-1.5">
-              <Switch
-                id="email-addon"
-                checked={enableEmail}
-                onCheckedChange={setEnableEmail}
-                className="data-[state=checked]:bg-cyan-600 scale-75"
-              />
-              <Label htmlFor="email-addon" className="text-white/60 text-[10px] flex items-center gap-0.5">
-                <EnvelopeSimple size={10} />
-                Email
-              </Label>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Switch
-                id="sms-addon"
-                checked={enableSMS}
-                onCheckedChange={setEnableSMS}
-                className="data-[state=checked]:bg-cyan-600 scale-75"
-              />
-              <Label htmlFor="sms-addon" className="text-white/60 text-[10px] flex items-center gap-0.5">
-                <ChatText size={10} />
-                SMS
-              </Label>
-            </div>
+          <div className="flex items-center gap-1.5">
+            <Switch
+              id="email-addon"
+              checked={enableEmail}
+              onCheckedChange={setEnableEmail}
+              className="data-[state=checked]:bg-cyan-600 scale-75"
+            />
+            <Label htmlFor="email-addon" className="text-white/60 text-[10px] flex items-center gap-0.5">
+              <EnvelopeSimple size={10} />
+              Email
+            </Label>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Switch
+              id="sms-addon"
+              checked={enableSMS}
+              onCheckedChange={setEnableSMS}
+              className="data-[state=checked]:bg-cyan-600 scale-75"
+            />
+            <Label htmlFor="sms-addon" className="text-white/60 text-[10px] flex items-center gap-0.5">
+              <ChatText size={10} />
+              SMS
+            </Label>
           </div>
         </div>
       </div>
