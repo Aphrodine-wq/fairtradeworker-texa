@@ -69,7 +69,7 @@ export function ReferralLeaderboard({ user, period = 'monthly' }: ReferralLeader
                 className={`p-4 border-2 flex items-center justify-between ${
                   entry.id === user?.id
                     ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                    : 'border-black dark:border-white'
+                    : 'border-0 shadow-sm'
                 }`}
               >
                 <div className="flex items-center gap-4 flex-1">

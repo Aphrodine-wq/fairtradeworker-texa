@@ -417,14 +417,14 @@ export function WarrantyTracker({ user }: WarrantyTrackerProps) {
                   />
                 </div>
               </div>
-              <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+              <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                 <DialogFooter className="gap-3">
                   <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
                     Cancel
                   </Button>
                   <Button 
                     onClick={handleAddWarranty} 
-                    className="h-11 border-2 border-black dark:border-white"
+                    className="h-11 border-0 shadow-md hover:shadow-lg"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (

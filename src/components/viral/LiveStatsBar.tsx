@@ -93,7 +93,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
       icon: Lightning,
       color: "text-black dark:text-white",
       bgColor: "bg-white dark:bg-black",
-      borderColor: "border-black/10 dark:border-white/10"
+      borderColor: "border-0 shadow-sm"
     },
     {
       label: "Avg Bid Time",
@@ -101,7 +101,7 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
       icon: Clock,
       color: "text-black dark:text-white",
       bgColor: "bg-white dark:bg-black",
-      borderColor: "border-black/10 dark:border-white/10"
+      borderColor: "border-0 shadow-sm"
     },
     {
       label: "Completed This Week",
@@ -109,12 +109,12 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
       icon: TrendUp,
       color: "text-black dark:text-white",
       bgColor: "bg-white dark:bg-black",
-      borderColor: "border-black/10 dark:border-white/10"
+      borderColor: "border-0 shadow-sm"
     }
   ]
 
   return (
-    <div className="rounded-md border border-black/20 dark:border-white/20 mx-auto max-w-2xl my-8 relative z-10 shadow-sm" style={{ backgroundColor: bgColor }}>
+    <div className="rounded-md border-0 shadow-sm mx-auto max-w-2xl my-8 relative z-10 shadow-sm" style={{ backgroundColor: bgColor }}>
       <div className="flex flex-col md:flex-row gap-4 justify-center py-4 px-4">
         {stats.map((stat, idx) => {
           const Icon = stat.icon
@@ -122,13 +122,13 @@ export function LiveStatsBar({ jobs }: LiveStatsBarProps) {
             <motion.div 
               key={stat.label} 
               className={cn(
-                "flex-1 px-6 py-3 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center gap-3 shadow-sm"
+                "flex-1 px-6 py-3 rounded-md bg-white dark:bg-black border-0 shadow-sm flex items-center gap-3 shadow-sm"
               )}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.08, duration: 0.3 }}
             >
-              <div className={cn("p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm", stat.color)}>
+              <div className={cn("p-2 rounded-md bg-white dark:bg-black border-0 shadow-sm shadow-sm", stat.color)}>
                 <Icon size={24} weight="bold" className="text-black dark:text-white" />
               </div>
               <div>

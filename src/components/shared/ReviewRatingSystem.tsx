@@ -153,7 +153,7 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
             className="mt-2 min-h-[150px]"
           />
           {sentiment && reviewText.trim().length > 20 && (
-            <div className="mt-2 p-3 border border-black/20 dark:border-white/20 rounded-md bg-white dark:bg-black">
+            <div className="mt-2 p-3 border-0 shadow-md hover:shadow-lg rounded-md bg-white dark:bg-black">
               <div className="flex items-center gap-2 mb-2">
                 {sentiment.overall === 'positive' ? (
                   <TrendUp className="h-4 w-4 text-green-600 dark:text-green-400" />
@@ -192,7 +192,7 @@ export function ReviewRatingSystem({ user, job, onComplete }: ReviewRatingSystem
           {photos.length > 0 && (
             <div className="grid grid-cols-3 gap-4 mt-4">
               {photos.map((photo, idx) => (
-                <img key={idx} src={photo} alt={`Review ${idx + 1}`} className="w-full h-24 object-cover border border-black/20 dark:border-white/20" />
+                <img key={idx} src={photo} alt={`Review ${idx + 1}`} className="w-full h-24 object-cover border-0 shadow-md hover:shadow-lg" />
               ))}
             </div>
           )}

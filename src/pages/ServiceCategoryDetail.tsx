@@ -13,22 +13,44 @@ interface ServiceCategoryDetailProps {
 }
 
 export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategoryDetailProps) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([])
 
   useEffect(() => {
-    // Get categoryId from props, sessionStorage, or URL
+    // Get selected categories from sessionStorage (supports multiple)
+    const storedCategories = sessionStorage.getItem('selectedCategories')
+    if (storedCategories) {
+      try {
+        const parsed = JSON.parse(storedCategories)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setSelectedCategoryIds(parsed)
+          return
+        }
+      } catch (e) {
+        // Fall through to single category logic
+      }
+    }
+    
+    // Fallback to single category from props or sessionStorage
     const id = categoryId || sessionStorage.getItem('selectedCategory') || null
-    setSelectedCategoryId(id)
+    if (id) {
+      setSelectedCategoryIds([id])
+    }
   }, [categoryId])
 
-  const category = mainCategories.find(c => c.id === selectedCategoryId)
+  // Get all selected categories
+  const selectedCategories = mainCategories.filter(c => selectedCategoryIds.includes(c.id))
+  
+  // Combine all services from selected categories
+  const allServices = selectedCategories.flatMap(category => 
+    category.services.map(service => ({ ...service, categoryId: category.id, categoryTitle: category.title }))
+  )
 
-  if (!category) {
+  if (selectedCategories.length === 0) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full py-8 md:py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Category Not Found
+            No Categories Selected
           </h1>
           <button
             onClick={() => onNavigate('home')}
@@ -104,11 +126,22 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
           style={{ willChange: 'transform, opacity' }}
         >
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-            {category.title}
+            {selectedCategories.length === 1 
+              ? selectedCategories[0].title 
+              : `${selectedCategories.length} Selected Categories`}
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
             Select one or more services for your project
           </p>
+          {selectedCategories.length > 1 && (
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+              {selectedCategories.map((cat) => (
+                <Badge key={cat.id} variant="outline" className="text-sm px-3 py-1">
+                  {cat.title}
+                </Badge>
+              ))}
+            </div>
+          )}
           {selectedServices.length > 0 && (
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
               {selectedServices.map((service) => (
@@ -141,7 +174,7 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto"
         >
-          {category.services.map((service) => {
+          {allServices.map((service) => {
             const Icon = service.icon
             return (
               <motion.div
@@ -182,6 +215,11 @@ export function ServiceCategoryDetail({ categoryId, onNavigate }: ServiceCategor
                         <Check size={20} className="text-black dark:text-white" weight="bold" />
                       )}
                     </div>
+                    {selectedCategories.length > 1 && (
+                      <Badge variant="outline" className="text-xs mt-1">
+                        {service.categoryTitle}
+                      </Badge>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>

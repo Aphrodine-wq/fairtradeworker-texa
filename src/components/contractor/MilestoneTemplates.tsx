@@ -110,7 +110,7 @@ export function MilestoneTemplates({ user, onUseTemplate }: MilestoneTemplatesPr
                 className={`cursor-pointer border-2 transition-all ${
                   selectedTemplate === t.id
                     ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                    : 'border-black dark:border-white'
+                    : 'border-0 shadow-sm'
                 }`}
                 onClick={() => setSelectedTemplate(t.id)}
               >

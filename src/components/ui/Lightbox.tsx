@@ -60,7 +60,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-4 right-4 z-10 text-white dark:text-black hover:bg-white/20 dark:hover:bg-black/20 rounded-md border border-white/20 dark:border-black/20 h-12 w-12"
+            className="absolute top-4 right-4 z-10 text-white dark:text-black hover:bg-white/20 dark:hover:bg-black/20 rounded-md border-0 shadow-sm h-12 w-12"
             onClick={onClose}
           >
             <X size={28} weight="bold" />
@@ -71,7 +71,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md border-2 border-white dark:border-black h-12 w-12"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md border-0 shadow-lg h-12 w-12"
                 onClick={handlePrevious}
               >
                 <CaretLeft size={32} weight="bold" />
@@ -80,7 +80,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
               <Button
                 variant="ghost"
                 size="icon"
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md border-2 border-white dark:border-black h-12 w-12"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 text-white dark:text-black hover:bg-white dark:hover:bg-black hover:text-black dark:hover:text-white rounded-md border-0 shadow-lg h-12 w-12"
                 onClick={handleNext}
               >
                 <CaretRight size={32} weight="bold" />
@@ -94,7 +94,7 @@ export function Lightbox({ images, initialIndex, isOpen, onClose }: LightboxProp
                 key={currentIndex}
                 src={images[currentIndex]}
                 alt={`Photo ${currentIndex + 1}`}
-                className="max-w-full max-h-full object-contain rounded-md border border-white/20 dark:border-black/20 shadow-lg"
+                className="max-w-full max-h-full object-contain rounded-md border-0 shadow-sm shadow-lg"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}

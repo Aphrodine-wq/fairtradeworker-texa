@@ -5,13 +5,13 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const toggleVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md border border-black/20 dark:border-white/20 text-sm font-semibold tracking-tight hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-black dark:data-[state=on]:bg-white data-[state=on]:text-white dark:data-[state=on]:text-black [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-black dark:focus-visible:border-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white outline-none transition-all duration-200 aria-invalid:border-[#FF0000] aria-invalid:ring-2 aria-invalid:ring-[#FF0000] whitespace-nowrap shadow-sm",
+  "inline-flex items-center justify-center gap-2 rounded-md border-0 shadow-sm text-sm font-semibold tracking-tight hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-black dark:data-[state=on]:bg-white data-[state=on]:text-white dark:data-[state=on]:text-black [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-0 focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white outline-none transition-all duration-200 aria-invalid:border-[#FF0000] aria-invalid:ring-2 aria-invalid:ring-[#FF0000] whitespace-nowrap shadow-sm",
   {
     variants: {
       variant: {
         default: "bg-white dark:bg-black",
         outline:
-          "border border-black/20 dark:border-white/20 bg-white dark:bg-black shadow-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+          "border-0 shadow-sm bg-white dark:bg-black shadow-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
       },
       size: {
         default: "h-9 px-2 min-w-9",

@@ -149,7 +149,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
               {recentlyUsed.map(contractor => (
                 <Card 
                   key={contractor.id}
-                  className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg hover:border-black/20 dark:hover:border-white/20 transition-colors cursor-pointer"
+                  className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg hover:shadow-lg transition-colors cursor-pointer"
                   onClick={() => handleQuickRehire(contractor)}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -311,7 +311,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
               return (
                 <div className="space-y-4">
                   {contractorUser.companyEmail && (
-                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                    <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                       <div className="flex items-center gap-3 mb-2">
                         <EnvelopeSimple size={20} className="text-black dark:text-white" />
                         <span className="font-semibold">Email</span>
@@ -337,7 +337,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
                   )}
 
                   {contractorUser.companyPhone && (
-                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                    <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                       <div className="flex items-center gap-3 mb-2">
                         <Phone size={20} className="text-black dark:text-white" />
                         <span className="font-semibold">Phone</span>
@@ -370,7 +370,7 @@ export function SavedContractors({ user, onNavigate }: SavedContractorsProps) {
                   )}
 
                   {contractorUser.companyAddress && (
-                    <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                    <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                       <div className="flex items-center gap-3 mb-2">
                         <Hammer size={20} className="text-black dark:text-white" />
                         <span className="font-semibold">Business Address</span>

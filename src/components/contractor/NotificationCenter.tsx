@@ -139,8 +139,8 @@ export function NotificationCenter({ user }: { user: User }) {
                 key={notification.id}
                 className={`bg-white dark:bg-black border-2 ${
                   !notification.read 
-                    ? 'border-black dark:border-white shadow-sm' 
-                    : 'border-black dark:border-white shadow-sm'
+                    ? 'border-0 shadow-sm shadow-sm' 
+                    : 'border-0 shadow-sm shadow-sm'
                 }`}
               >
                 <CardContent className="p-6">
@@ -162,7 +162,7 @@ export function NotificationCenter({ user }: { user: User }) {
                           </Badge>
                         </div>
                         {!notification.read && (
-                          <div className="h-2 w-2 rounded-md bg-black dark:bg-white border border-black dark:border-white flex-shrink-0 mt-2" />
+                          <div className="h-2 w-2 rounded-md bg-black dark:bg-white border border-0 shadow-sm flex-shrink-0 mt-2" />
                         )}
                       </div>
                       <p className="text-muted-foreground mb-3">

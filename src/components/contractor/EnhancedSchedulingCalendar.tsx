@@ -251,7 +251,7 @@ export function EnhancedSchedulingCalendar({ user }: { user: User }) {
                     </div>
                   </div>
                 </div>
-                <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                   <div className="flex gap-3 justify-end">
                     <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-11">
                       Cancel

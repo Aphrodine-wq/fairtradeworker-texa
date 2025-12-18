@@ -131,7 +131,7 @@ export function ProSupportChat({ user }: ProSupportChatProps) {
                   <div
                     className={`max-w-[80%] p-3 border-2 ${
                       msg.from === 'user'
-                        ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
+                        ? 'bg-black dark:bg-white text-white dark:text-black border-0 shadow-sm'
                         : 'bg-white dark:bg-black text-black dark:text-white border-[#00FF00] dark:border-[#00FF00]'
                     }`}
                   >

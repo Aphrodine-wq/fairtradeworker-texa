@@ -212,7 +212,7 @@ export const PricingPage = memo(function PricingPage({ user, onNavigate }: Prici
                   <CardTitle className="text-xl font-bold">Homeowner Free</CardTitle>
                 </div>
                 <div className="space-y-1">
-                  <div className="text-4xl font-extrabold text-foreground">Free</div>
+                  <div className="text-4xl font-extrabold text-foreground">$0</div>
                   <CardDescription className="text-sm">Post jobs at no cost</CardDescription>
                 </div>
               </CardHeader>

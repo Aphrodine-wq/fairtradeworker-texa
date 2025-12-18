@@ -993,6 +993,18 @@ function App() {
             <ClientPortal user={currentUser} />
           </Suspense>
         ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'custom-branding':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <CustomBranding user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
+      case 'pro-support':
+        return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProSupportChat user={currentUser} />
+          </Suspense>
+        ) : <HomePage onNavigate={handleNavigate} onDemoLogin={handleDemoLogin} />
       case 'calendar-sync':
         return (currentUser?.role === 'contractor' || currentUser?.role === 'operator') ? (
           <Suspense fallback={<LoadingFallback />}>

@@ -31,44 +31,37 @@ export function HeroSection({
   secondaryAction?: { label: string; href?: string; onClick?: () => void }
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ 
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }}
-      style={{ willChange: 'transform, opacity' }}
-    >
-      <GlassCard className="p-8 mb-12">
-      <div className="text-center space-y-6">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
-          {title}
-        </h1>
-        <p className="max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">{subtitle}</p>
-        <div className="flex justify-center gap-3 flex-wrap">
-          {primaryAction && (
-            <Button 
-              className="px-5 py-3 text-base"
-              onClick={primaryAction.onClick}
-            >
-              {primaryAction.label}
-            </Button>
-          )}
-          {secondaryAction && (
-            <Button 
-              variant="outline" 
-              className="px-5 py-3 text-base"
-              onClick={secondaryAction.onClick}
-            >
-              {secondaryAction.label}
-            </Button>
-          )}
+    <div className="mb-12">
+      <GlassCard className="p-8 md:p-12">
+        <div className="text-center space-y-6">
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+            {title}
+          </h1>
+          <p className="max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">{subtitle}</p>
+          <div className="flex justify-center gap-4 flex-wrap mt-8">
+            {primaryAction && (
+              <Button 
+                size="lg"
+                className="px-8 py-6 text-lg font-semibold"
+                onClick={primaryAction.onClick}
+              >
+                {primaryAction.label}
+              </Button>
+            )}
+            {secondaryAction && (
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="px-8 py-6 text-lg font-semibold"
+                onClick={secondaryAction.onClick}
+              >
+                {secondaryAction.label}
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
-    </GlassCard>
-    </motion.div>
+      </GlassCard>
+    </div>
   )
 }
 
@@ -283,7 +276,7 @@ export function PricingSection({
   const pricingTiers = [
     {
       name: "Homeowner Free",
-      price: "Free",
+      price: "$0",
       description: "Post jobs at no cost",
       features: ["Post unlimited jobs", "Receive bids", "Basic messaging", "No fees"],
       ctaLabel: "Get Started"
@@ -459,7 +452,7 @@ export function ThemePersistenceToggle() {
     >
       <span
         className={cn(
-          "absolute h-6 w-6 rounded-full border border-black/30 bg-[#242824] transition-transform duration-300",
+          "absolute h-6 w-6 rounded-full border-0 shadow-sm bg-[#242824] transition-transform duration-300",
           isDark ? "translate-x-[calc(100%-4px)]" : "translate-x-1"
         )}
       />

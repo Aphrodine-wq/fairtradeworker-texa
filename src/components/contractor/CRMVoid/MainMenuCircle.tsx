@@ -48,6 +48,7 @@ export function MainMenuCircle({
   const y = customPosition?.y ?? defaultY
   
   const [isDragging, setIsDragging] = useState(false)
+  const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
   
   const handleDragEnd = useCallback((event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     setIsDragging(false)
@@ -58,6 +59,25 @@ export function MainMenuCircle({
       onDragEnd({ x: newX, y: newY })
     }
   }, [x, y, onDragEnd])
+
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    // Get click position relative to the button
+    const rect = e.currentTarget.getBoundingClientRect()
+    const clickX = e.clientX - rect.left - rect.width / 2
+    const clickY = e.clientY - rect.top - rect.height / 2
+    
+    // Add ripple
+    const rippleId = Date.now()
+    setRipples(prev => [...prev, { id: rippleId, x: clickX, y: clickY }])
+    
+    // Remove ripple after animation
+    setTimeout(() => {
+      setRipples(prev => prev.filter(r => r.id !== rippleId))
+    }, 600)
+    
+    // Call original onClick
+    onClick()
+  }, [onClick])
 
   return (
     <motion.div
@@ -118,22 +138,53 @@ export function MainMenuCircle({
       </AnimatePresence>
 
       <motion.button
-        onClick={onClick}
+        onClick={handleClick}
         data-main-menu={id}
         className={cn(
-          "relative flex flex-col items-center justify-center",
+          "relative flex flex-col items-center justify-center overflow-hidden",
           "w-20 h-20 -ml-10 -mt-10 rounded-full",
           "transition-all duration-300",
           "shadow-lg hover:shadow-xl",
           isActive 
             ? "bg-black dark:bg-white" 
-            : "bg-white/90 dark:bg-black/90 backdrop-blur-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
+            : "bg-white dark:bg-black backdrop-blur-sm hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black",
           isPinned && "ring-2 ring-primary ring-offset-2"
         )}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         style={{ willChange: 'transform' }}
       >
+        {/* Ripple effects */}
+        <AnimatePresence>
+          {ripples.map((ripple) => (
+            <motion.div
+              key={ripple.id}
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                left: '50%',
+                top: '50%',
+                x: ripple.x,
+                y: ripple.y,
+                width: 4,
+                height: 4,
+                background: isActive 
+                  ? 'rgba(255, 255, 255, 0.6)' 
+                  : 'rgba(0, 0, 0, 0.3)',
+                transform: 'translate(-50%, -50%)',
+              }}
+              initial={{ scale: 0, opacity: 0.8 }}
+              animate={{ 
+                scale: 25,
+                opacity: 0,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.4, 0, 0.2, 1],
+              }}
+            />
+          ))}
+        </AnimatePresence>
         {/* Pin button */}
         {onPinToggle && (
           <button

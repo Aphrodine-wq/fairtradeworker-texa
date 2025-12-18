@@ -244,7 +244,7 @@ export function TerritoryManager({ user }: TerritoryManagerProps) {
                     )}
                   </div>
 
-                  <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Settings size={16} className="mr-2" />
                       Configure

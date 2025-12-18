@@ -407,7 +407,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('QUICK_FIX')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
                 <div className="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -434,10 +434,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('STANDARD')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                <div className="w-14 h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border-0 shadow-md hover:shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
                   <House weight="fill" className="text-amber-600 dark:text-amber-400" size={28} />
                 </div>
                 <TierBadge tier="STANDARD" />
@@ -461,10 +461,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('MAJOR_PROJECT')
                 setStep('project-select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                <div className="w-14 h-14 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
                   <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={28} />
                 </div>
                 <TierBadge tier="MAJOR_PROJECT" />
@@ -515,7 +515,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                   "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md transition-all text-left",
                   project.isCustom
                     ? "border-2 border-dashed border-gray-300 dark:border-gray-700 hover:shadow-xl"
-                    : "border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+                    : "border-0 shadow-md hover:shadow-lg hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
                 )}
               >
                 <div className="text-2xl sm:text-4xl">{project.emoji}</div>
@@ -599,7 +599,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                   transition={{ delay: 0.1, type: "spring", stiffness: 300 }}
             >
                   <motion.div 
-                    className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm"
+                    className="w-16 h-16 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg flex items-center justify-center shadow-sm"
                     whileHover={{ rotate: 5, scale: 1.1 }}
                   >
                 <Camera weight="fill" className="text-primary-foreground" size={32} />

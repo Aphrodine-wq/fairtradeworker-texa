@@ -87,7 +87,7 @@ export function JobDrafts({ user, onResume }: JobDraftsProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {activeDrafts.map((draft) => (
-          <div key={draft.id} className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between">
+          <div key={draft.id} className="p-4 border-0 shadow-md hover:shadow-lg flex items-start justify-between">
             <div className="flex-1">
               <h3 className="font-semibold text-black dark:text-white mb-2">
                 {draft.title || "Untitled Job"}

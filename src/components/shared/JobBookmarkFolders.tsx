@@ -112,7 +112,7 @@ export function JobBookmarkFolders({ user, jobs }: JobBookmarkFoldersProps) {
                   className={`p-4 border-2 cursor-pointer transition-all ${
                     selectedFolder === folder.id
                       ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                      : 'border-black dark:border-white'
+                      : 'border-0 shadow-sm'
                   }`}
                   onClick={() => setSelectedFolder(folder.id)}
                 >

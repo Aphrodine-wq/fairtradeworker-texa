@@ -830,7 +830,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
               </CardContent>
             </Card>
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogFooter>
               <div className="flex items-center justify-between w-full gap-3">
                 <Button

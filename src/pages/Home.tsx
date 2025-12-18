@@ -37,6 +37,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
 
         <ServiceCategories onNavigate={onNavigate} />
 
+        <div className="mt-16"></div>
+
         <FeatureSection
           onNavigate={onNavigate}
           features={[
@@ -80,56 +82,54 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         </div>
 
         {onDemoLogin && (
-          <Card className="mt-6 p-4 border-0 hover:shadow-xl transition-shadow">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Play weight="fill" size={18} className="text-primary" />
-                <h3 className="text-base font-semibold">Try Demo Mode</h3>
+          <Card className="mt-8 mb-8 p-6 border-0 hover:shadow-xl transition-shadow max-w-3xl mx-auto">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <Play weight="fill" size={24} className="text-primary" />
+                <h3 className="text-xl font-bold">Try Demo Mode</h3>
               </div>
-              <p className="text-sm text-muted-foreground">Explore with pre-populated demo accounts</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <p className="text-base text-muted-foreground">Explore the platform instantly with pre-populated demo accounts for each user type.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="h-9 text-xs" 
+                  size="lg"
+                  className="h-14 text-base font-semibold flex items-center justify-center gap-2" 
                   onClick={() => onDemoLogin(DEMO_USERS.homeowner)}
                 >
-                  <House weight="fill" className="mr-1.5" size={14} />
+                  <House weight="fill" size={20} />
                   Homeowner
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="h-9 text-xs" 
+                  size="lg"
+                  className="h-14 text-base font-semibold flex items-center justify-center gap-2" 
                   onClick={() => onDemoLogin(DEMO_USERS.contractor)}
                 >
-                  <Hammer weight="fill" className="mr-1.5" size={14} />
+                  <Hammer weight="fill" size={20} />
                   Contractor
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="h-9 text-xs" 
+                  size="lg"
+                  className="h-14 text-base font-semibold flex items-center justify-center gap-2" 
                   onClick={() => onDemoLogin(DEMO_USERS.operator)}
                 >
-                  <MapTrifold weight="fill" className="mr-1.5" size={14} />
+                  <MapTrifold weight="fill" size={20} />
                   Operator
                 </Button>
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="h-9 text-xs" 
+                  size="lg"
+                  className="h-14 text-base font-semibold flex items-center justify-center gap-2" 
                   onClick={() => onNavigate('admin-dashboard')}
                 >
-                  <Shield weight="fill" className="mr-1.5" size={14} />
+                  <Shield weight="fill" size={20} />
                   Admin
                 </Button>
               </div>
             </div>
           </Card>
         )}
-
-        <LiveStatsBar jobs={jobs || []} />
 
         <PricingSection user={currentUser} onNavigate={onNavigate} />
         

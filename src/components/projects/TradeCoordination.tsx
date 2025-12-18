@@ -430,7 +430,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
         }
       }}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
               <DialogDescription>
@@ -558,7 +558,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
             </div>
 
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -573,7 +573,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
               </Button>
               <Button
                 onClick={editingTrade ? handleUpdate : handleAdd}
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

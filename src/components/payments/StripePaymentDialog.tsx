@@ -253,7 +253,7 @@ export function StripePaymentDialog({
             </div>
 
             {paymentMethod === 'saved' ? (
-              <Card className="border-2 border-black dark:border-white">
+              <Card className="border-0 shadow-xl">
                 <CardContent className="pt-6 text-center space-y-4">
                   <Wallet size={48} className="mx-auto text-black dark:text-white" weight="fill" />
                   <div className="space-y-2">
@@ -265,7 +265,7 @@ export function StripePaymentDialog({
                 </CardContent>
               </Card>
             ) : paymentMethod === 'apple-pay' ? (
-              <Card className="border-2 border-black dark:border-white">
+              <Card className="border-0 shadow-xl">
                 <CardContent className="pt-6 text-center space-y-4">
                   <div className="text-6xl mb-2">🍎</div>
                   <div className="space-y-2">
@@ -280,7 +280,7 @@ export function StripePaymentDialog({
                 </CardContent>
               </Card>
             ) : paymentMethod === 'google-pay' ? (
-              <Card className="border-2 border-black dark:border-white">
+              <Card className="border-0 shadow-xl">
                 <CardContent className="pt-6 text-center space-y-4">
                   <div className="text-5xl mb-2 font-bold">G</div>
                   <div className="space-y-2">
@@ -295,7 +295,7 @@ export function StripePaymentDialog({
                 </CardContent>
               </Card>
             ) : paymentMethod === 'paypal' ? (
-              <Card className="border-2 border-black dark:border-white">
+              <Card className="border-0 shadow-xl">
                 <CardContent className="pt-6 text-center space-y-4">
                   <div className="text-4xl mb-2 font-bold text-blue-600 dark:text-blue-400">PayPal</div>
                   <div className="space-y-2">

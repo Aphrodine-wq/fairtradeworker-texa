@@ -315,7 +315,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Post Project Update</DialogTitle>
               <DialogDescription>
@@ -474,7 +474,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
             </div>
 
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -488,7 +488,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
               </Button>
               <Button 
                 onClick={handleAdd} 
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

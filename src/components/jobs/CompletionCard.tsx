@@ -82,7 +82,7 @@ export function CompletionCard({
       >
         <CardContent className="p-0">
           {/* Header */}
-          <div className="bg-white dark:bg-black text-black dark:text-white p-6 text-center border-b border-black/10 dark:border-white/10">
+          <div className="bg-white dark:bg-black text-black dark:text-white p-6 text-center border-b border-gray-200 dark:border-gray-800">
             <h2 className="text-2xl font-bold mb-2">✨ Job Completed!</h2>
             <p className="text-sm opacity-90">{formattedDate}</p>
           </div>

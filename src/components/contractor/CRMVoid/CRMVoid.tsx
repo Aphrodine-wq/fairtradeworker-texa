@@ -155,7 +155,7 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         transition={{ delay: 0.3 }}
       >
         <h1 className="text-4xl md:text-5xl font-bold text-center">
-          <span className="text-white dark:text-white">
+          <span className="text-white dark:text-white brightness-110">
             CRM Void System
           </span>
         </h1>

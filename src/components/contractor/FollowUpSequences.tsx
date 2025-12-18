@@ -282,7 +282,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Create Follow-Up Sequence</DialogTitle>
               <DialogDescription>
@@ -403,7 +403,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             </div>
           </div>
 
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogFooter className="gap-3">
               <Button variant="outline" onClick={() => setDialogOpen(false)} className="h-11">
                 Cancel

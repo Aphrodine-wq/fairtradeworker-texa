@@ -151,7 +151,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
                       className={`p-3 cursor-pointer border-2 transition-all ${
                         selectedThread === thread.id
                           ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                          : 'border-black dark:border-white'
+                          : 'border-0 shadow-sm'
                       }`}
                       onClick={() => setSelectedThread(thread.id)}
                     >
@@ -197,8 +197,8 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
                           <div
                             className={`max-w-[80%] p-3 border-2 ${
                               msg.from === user.id
-                                ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
-                                : 'bg-white dark:bg-black text-black dark:text-white border-black dark:border-white'
+                                ? 'bg-black dark:bg-white text-white dark:text-black border-0 shadow-sm'
+                                : 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm'
                             }`}
                           >
                             <p className="text-sm">{msg.text}</p>

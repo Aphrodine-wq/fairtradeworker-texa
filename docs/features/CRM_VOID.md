@@ -1,22 +1,86 @@
-# 🌌 CRM Void: The Infinite Workspace
+# CRM Void (Current Behavior)
 
-> *"Your business floats in the void. Your customers orbit around you."*
-
----
-
-## The Vision
-
-**CRM Void** reimagines what a Customer Relationship Management system can be. Instead of cramped tables, cluttered dashboards, and endless scrolling—we built a cosmos.
-
-You are the center. Your tools orbit you. Your voice creates customers from nothing.
+This page describes how CRM Void actually behaves in the product today. No lore, just what ships.
 
 ---
 
-## 🎬 The Experience
+## What you see
 
-### When You Enter
+- Full-screen fixed canvas with a starfield background (light: black stars on white; dark: colored stars on near-black). Nebulae and shooting stars render in dark mode only.
+- Center header text “CRM Void System” near the top; a clock in the top-right; the CRM bento grid pinned top-left.
+- Seven main menu circles orbiting around center, evenly spaced on a radius of ~350px. Each opens a ring of sub-menus when active.
+- Body scroll is locked while CRM Void is open to keep the experience focused.
 
-The screen fades to black. Then, slowly, **stars emerge**. Hundreds of them. Some twinkle. Some drift with parallax as you move your cursor. A soft purple-blue nebula glows in the distance.
+---
+
+## Main menus (7)
+
+- **Jobs**: Browse Jobs, Post Job, My Jobs, Bid Management, Job Analytics, Route Builder, Job Calendar, Find Opportunities.
+- **Teams**: Crew Dispatcher, Team Calendar, Collaboration Hub, Task Assignment, Team Analytics, Communication, Skill Trading, Team Settings.
+- **Customer Intake**: Import Customer Data, Add Customer, Customer List, CRM Pipeline, Customer Analytics, Follow-up Sequences, Lead Management, Relationship Tracking.
+- **AI**: AI Scoping, Bid Intelligence, Smart Replies, AI Insights, Voice Assistant, Auto Categorization, Predictive Analytics, AI Receptionist.
+- **Office**: Document Manager, Invoice Manager, Expense Tracking, Calendar Sync, Client Portal, Compliance Tracker, Quality Assurance, Tax Helper.
+- **Pro Tools**: Advanced Analytics, Custom Branding, Priority Support, Export Everything, Advanced Workflows, Pro Support Chat, Priority Job Alerts, Advanced CRM.
+- **Leads**: Quick Capture, Manual Entry, View Captured Leads, Sync to CRM, Lead Templates, Lead Analytics, Export Leads, Lead Settings.
+
+All sub-menus close automatically after navigation.
+
+---
+
+## Interaction model
+
+- **Toggle**: Clicking a main menu opens its sub-menus; clicking again closes it. ESC also closes the active menu. Clicking anywhere outside menus closes them after a brief guard delay.
+- **Sub-menu actions**: Selecting a sub-menu triggers navigation via `onNavigate` and immediately closes the menu set.
+- **Voice intake**: `Import Customer Data` opens the Voice Intake modal with the CentralVoiceHub; it closes on backdrop click or the close button.
+- **Lead capture panel**: When the Leads menu is active, the LeadCaptureMenu overlays centered in the viewport (scrollable if tall).
+
+---
+
+## Drag & pin behavior
+
+- Every main menu circle is draggable. Positions persist in localStorage under `crm-void-menu-positions`.
+- Pins are stored in `crm-void-pinned-menus` and add a subtle ring. Pins persist across reloads and survive drags.
+- Default layout: 7 circles distributed evenly by angle across a 350px radius; custom positions override those defaults.
+
+---
+
+## Visuals & styling
+
+- Menu and submenu buttons use borderless glass styling with soft shadows (`bg-white/90` light, `bg-black/90` dark) and hover shadows instead of borders.
+- Sub-menu clusters are pulled tighter (translate distance ~180px) for compact orbit rings.
+- Active main menus show a soft expanding pulse behind the circle; sub-menus animate in with a short spring and exit quickly.
+
+---
+
+## Background system (canvas)
+
+- Stars: count scales with viewport area (~width × height / 1200); sizes 0.8–3px; twinkle via per-star sine offsets; slight parallax from a z-based projection.
+- Colors: dark mode uses a small palette of soft whites/warm/cool tints; light mode draws black stars on white.
+- Nebulae: multiple colored blobs (purple, blue, pink, teal) drawn only in dark mode; radial gradients with mild opacity and elliptical stretch.
+- Shooting stars: up to 5 instances; rare random activation in dark mode; short white streaks that fade and reset.
+- Resizes: canvas resizes with the window and re-seeds stars/nebulae/shooting stars; animation runs via `requestAnimationFrame` with cleanup on unmount.
+
+---
+
+## Motion & performance
+
+- Framer Motion drives all menu animations and drag. Drag uses `dragMomentum={false}` and `dragElastic={0.1}` for control.
+- GPU-friendly transforms (`translate3d`/`translateZ(0)`) are applied on menu and submenu elements; shadows instead of borders keep the UI lightweight.
+- Body overflow is disabled while active to prevent background scroll jank.
+
+---
+
+## Persistence keys
+
+- `crm-void-menu-positions`: `{ [menuId]: { x: number; y: number } }`
+- `crm-void-pinned-menus`: `MainMenuId[]`
+
+---
+
+## Not in this build
+
+- No planetary/solar-system UI layers beyond the seven draggable menu circles.
+- No auto-playing cinematic entrance; menus render immediately with standard fades/springs.
 
 At the center: **a pulsing ring of light**. Your voice hub. Your command center.
 
@@ -196,6 +260,17 @@ When you hover an orbital section, a **faint line connects** it to the center hu
 | Click section | Panel slides in from that direction |
 | Drag section | Ghost trail, snap-to-angle |
 | Close panel | Fade + scale down |
+
+---
+
+## 🧭 Interaction Updates (Dec 2025)
+
+- **Free-drag orbit menus**: Grab any main circle and move it anywhere. Positions persist automatically via `crm-void-menu-positions` in local storage, so your layout survives refreshes.
+- **Pin states that stick**: Toggle the pin on any menu; pinned status is stored in `crm-void-pinned-menus` and shows a subtle ring. Pins survive drags and reloads.
+- **Sub-menu flow fixes**: All sub-menus now close after navigation; the Lead Capture microphone no longer blocks the rest of the submenu. The `Import Customer Data` submenu opens the Voice Intake modal without dropping clicks.
+- **Borderless glass UI**: Main and sub-menu buttons use seamless glass cards (no black borders), with integrated labels—no more floating title chips. Hover shadows give depth instead of outlines.
+- **Escape & click-away safety**: ESC closes active menus; clicking outside any menu/sub-menu collapses it. Body scroll is locked while CRM Void is active to keep focus in the experience.
+- **GPU-accelerated motion**: Animations run with translate3d layers and reduced-motion fallbacks to maintain 60fps on low-power devices.
 
 ---
 

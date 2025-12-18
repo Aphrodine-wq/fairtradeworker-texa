@@ -63,7 +63,7 @@ export function JobHistory({ user, onRepost }: JobHistoryProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         {completedJobs.map((job) => (
-          <div key={job.id} className="p-4 border border-black/20 dark:border-white/20">
+          <div key={job.id} className="p-4 border-0 shadow-md hover:shadow-lg">
             <div className="flex items-start justify-between mb-2">
               <div className="flex-1">
                 <h3 className="font-semibold text-black dark:text-white">{job.title}</h3>

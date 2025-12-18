@@ -72,7 +72,7 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
         <div className="flex h-14 items-center justify-between relative">
           <button 
             onClick={handleHomeClick}
-            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0"
+            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0 -ml-2"
             aria-label="Go to home"
           >
             <span className="font-heading font-bold text-2xl md:text-4xl leading-none text-black dark:text-white whitespace-nowrap">

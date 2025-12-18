@@ -154,7 +154,7 @@ export function PortfolioBuilder({ user }: PortfolioBuilderProps) {
                     <Label>Before</Label>
                     {pair.before ? (
                       <div className="relative mt-2">
-                        <img src={pair.before} alt="Before" className="w-full h-48 object-cover border border-black dark:border-white" />
+                        <img src={pair.before} alt="Before" className="w-full h-48 object-cover border-0 shadow-md hover:shadow-lg" />
                         <Button
                           size="sm"
                           variant="ghost"
@@ -179,7 +179,7 @@ export function PortfolioBuilder({ user }: PortfolioBuilderProps) {
                     <Label>After</Label>
                     {pair.after ? (
                       <div className="relative mt-2">
-                        <img src={pair.after} alt="After" className="w-full h-48 object-cover border border-black dark:border-white" />
+                        <img src={pair.after} alt="After" className="w-full h-48 object-cover border-0 shadow-md hover:shadow-lg" />
                         <Button
                           size="sm"
                           variant="ghost"

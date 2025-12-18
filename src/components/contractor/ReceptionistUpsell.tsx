@@ -134,7 +134,7 @@ export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps
                         className={`p-3 border-2 cursor-pointer transition-all ${
                           selectedCall === c.id
                             ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                            : 'border-black dark:border-white'
+                            : 'border-0 shadow-sm'
                         }`}
                         onClick={() => setSelectedCall(c.id)}
                       >
@@ -194,7 +194,7 @@ export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps
                         </div>
                       )}
 
-                      <div className="pt-3 border-t-2 border-black dark:border-white">
+                      <div className="pt-3 border-t-2 border-0 shadow-sm">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-bold text-lg text-black dark:text-white">Total</span>
                           <span className="font-bold text-xl text-black dark:text-white">

@@ -83,7 +83,7 @@ export function TableRowSkeleton({ columns = 4 }: { columns?: number }) {
   return (
     <tr className="animate-pulse">
       {Array.from({ length: columns }).map((_, i) => (
-        <td key={i} className="p-4 border-b border-black/10">
+        <td key={i} className="p-4 border-b border-gray-200 dark:border-gray-800">
           <div className="h-4 bg-black/10 w-full" />
         </td>
       ))}
@@ -151,7 +151,7 @@ export function StatusBadge({ status, label, size = 'md' }: StatusBadgeProps) {
 
   return (
     <span className={`
-      inline-flex items-center font-mono uppercase border-2 border-black
+      inline-flex items-center font-mono uppercase border-0 shadow-lg
       ${config.bgColor} ${config.textColor} ${sizeClasses}
     `}>
       {config.icon}
@@ -208,7 +208,7 @@ export function JobStatus({ status, showLabel = true }: JobStatusProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className={`w-3 h-3 ${config.color} border border-black`} />
+      <span className={`w-3 h-3 ${config.color} border-0 shadow-sm`} />
       {showLabel && (
         <span className="font-mono text-xs uppercase">{config.label}</span>
       )}
@@ -257,7 +257,7 @@ export function ProgressBar({
           {showPercent && <span className="font-mono text-sm font-bold">{clampedValue}%</span>}
         </div>
       )}
-      <div className={`w-full bg-white border-2 border-black ${sizeClasses[size]}`}>
+      <div className={`w-full bg-white border-0 shadow-lg ${sizeClasses[size]}`}>
         <div 
           className={`h-full ${colorClasses[color]} transition-all duration-500`}
           style={{ width: `${clampedValue}%` }}
@@ -281,7 +281,7 @@ export function StepProgress({ steps, currentStep }: StepProgressProps) {
           {/* Step circle */}
           <div className={`
             w-8 h-8 flex items-center justify-center font-mono font-bold text-sm
-            border-2 border-black
+            border-0 shadow-lg
             ${index < currentStep 
               ? 'bg-[#00FF00]' 
               : index === currentStep 

@@ -563,7 +563,7 @@ const JobCard = memo(function JobCard({
       
       {/* Fresh Job Banner */}
       {isFresh && !isPriorityLead && (
-        <div className="absolute top-0 left-0 right-0 z-10 bg-green-400 dark:bg-green-500 text-black px-4 py-2 flex items-center gap-2 border-b border-black/20 dark:border-white/20 shadow-sm">
+        <div className="absolute top-0 left-0 right-0 z-10 bg-green-400 dark:bg-green-500 text-black px-4 py-2 flex items-center gap-2 border-b border-gray-200 dark:border-gray-800 shadow-sm">
           <span className="font-black text-lg">⚡</span>
           <span className="font-black text-sm uppercase">FRESH JOB - FIRST TO BID GETS FEATURED!</span>
         </div>
@@ -1813,7 +1813,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                             placeholder="e.g., 'My standard intro'"
                             value={templateName}
                             onChange={(e) => setTemplateName(e.target.value)}
-                            className="h-11 text-base bg-white dark:bg-black border-black/10 dark:border-white/20"
+                            className="h-11 text-base bg-white dark:bg-black border-0 shadow-md"
                           />
                         </div>
                       )}
@@ -1866,7 +1866,7 @@ export function BrowseJobs({ user }: BrowseJobsProps) {
                 <Button
                   onClick={handleSubmitBid}
                   disabled={isSubmittingBid}
-                  className="h-14 px-12 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border border-black/20 dark:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-none"
+                  className="h-14 px-12 text-lg font-bold bg-black dark:bg-white text-white dark:text-black hover:bg-black/90 dark:hover:bg-white/90 border-0 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex-1 sm:flex-none"
                 >
                   {isSubmittingBid ? (
                     <>

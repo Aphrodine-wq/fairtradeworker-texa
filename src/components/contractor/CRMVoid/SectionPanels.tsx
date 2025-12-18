@@ -96,7 +96,7 @@ export function SectionPanel({ section, user, onClose, onNavigate }: SectionPane
           className={cn(
             "relative z-10 w-[95vw] max-w-5xl h-[80vh] max-h-[800px] rounded-lg",
             "glass-card border-0",
-            "bg-white/95 dark:bg-black/95 backdrop-blur-lg",
+            "bg-white dark:bg-black backdrop-blur-lg",
             "shadow-xl hover:shadow-2xl",
             "flex flex-col overflow-hidden",
             "transition-all duration-300"
@@ -158,7 +158,7 @@ function BusinessToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (pa
           className={cn(
             "p-6 rounded-lg text-left border-0",
             "glass-card hover:shadow-xl",
-            "bg-white/90 dark:bg-black/90 backdrop-blur-sm",
+            "bg-white dark:bg-black backdrop-blur-sm",
             "hover:scale-[1.02] transition-all duration-300"
           )}
           whileHover={{ scale: 1.02 }}
@@ -220,7 +220,7 @@ function ProToolsPanel({ user, onNavigate }: { user: User; onNavigate?: (page: s
           className={cn(
             "p-6 rounded-lg text-left border-0",
             "glass-card hover:shadow-xl",
-            "bg-white/90 dark:bg-black/90 backdrop-blur-sm",
+            "bg-white dark:bg-black backdrop-blur-sm",
             "hover:scale-[1.02] transition-all duration-300"
           )}
           whileHover={{ scale: 1.02 }}

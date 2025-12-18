@@ -211,7 +211,7 @@ export function VoidPlanet({
               className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap"
               style={{ top: config.size / 2 + 8 }}
             >
-              <div className="px-3 py-1.5 rounded-lg bg-black/80 dark:bg-white/90 backdrop-blur-sm border border-white/20 dark:border-black/20">
+              <div className="px-3 py-1.5 rounded-lg bg-black/80 dark:bg-white backdrop-blur-sm border-0 shadow-sm">
                 <p className="text-xs font-semibold text-white dark:text-black">
                   {config.name}
                 </p>

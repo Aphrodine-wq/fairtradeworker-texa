@@ -85,9 +85,9 @@ export function KeyboardShortcutsModal({ open, onOpenChange, customShortcuts = [
           )}
 
           {/* Help Text */}
-          <div className="p-4 bg-muted/30 rounded-lg border border-black/10 dark:border-white/10">
+          <div className="p-4 bg-muted/30 rounded-lg border-0 shadow-sm">
             <p className="text-xs text-black/60 dark:text-white/60">
-              <strong>Tip:</strong> Press <kbd className="px-2 py-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded text-xs">?</kbd> or <kbd className="px-2 py-1 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded text-xs">Ctrl + /</kbd> anytime to view this help.
+              <strong>Tip:</strong> Press <kbd className="px-2 py-1 bg-white dark:bg-black border-0 shadow-sm rounded text-xs">?</kbd> or <kbd className="px-2 py-1 bg-white dark:bg-black border-0 shadow-sm rounded text-xs">Ctrl + /</kbd> anytime to view this help.
             </p>
           </div>
         </div>
