@@ -105,12 +105,13 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setVoiceIntakePosition(position)
   }, [setVoiceIntakePosition])
 
-  // Calculate main menu positions - horizontal row layout
-  const menuSpacing = 120 // pixels between menus
+  // Calculate main menu positions - horizontal row layout with proper spacing
+  const menuSpacing = 140 // Increased spacing between menus
   const startX = -(MAIN_MENU_CONFIGS.length * menuSpacing) / 2
+  const verticalOffset = -250 // Position menus above center to avoid overlap with voice intake
   const menuPositionsLinear = MAIN_MENU_CONFIGS.map((_, index) => ({
     x: startX + (index * menuSpacing),
-    y: 0 // Center vertically
+    y: verticalOffset // Position above center
   }))
 
   // Handle ESC key to close main menu

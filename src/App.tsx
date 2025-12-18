@@ -4,7 +4,6 @@ import { Header } from "@/components/layout/Header"
 import { DemoModeBanner } from "@/components/layout/DemoModeBanner"
 import { Footer } from "@/components/layout/Footer"
 import { OfflineIndicator } from "@/components/layout/OfflineIndicator"
-import { LoadAnimation } from "@/components/ui/LoadAnimation"
 import { KeyboardShortcutsModal } from "@/components/ui/KeyboardShortcutsModal"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import { useServiceWorker, useOfflineQueue } from "@/hooks/useServiceWorker"
@@ -410,7 +409,6 @@ function App() {
   const [invoices, setInvoices] = useLocalKV<Invoice[]>("invoices", [])
   const [territories, setTerritories] = useLocalKV<Territory[]>("territories", [])
   const [bidTemplates, setBidTemplates] = useLocalKV<import("@/lib/types").BidTemplate[]>("bidTemplates", [])
-  const [showLoadAnimation, setShowLoadAnimation] = useState(true)
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false)
   const [gKeyPressed, setGKeyPressed] = useState(false)
   
@@ -419,14 +417,6 @@ function App() {
   
   // Initialize iOS optimizations
   useIOSOptimizations()
-  
-  // Hide load animation after initial load (smooth 400ms fade-in)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoadAnimation(false)
-    }, 400)
-    return () => clearTimeout(timer)
-  }, [])
 
   useEffect(() => {
     let mounted = true
@@ -1205,9 +1195,6 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-white dark:bg-black overflow-x-hidden">
-      {showLoadAnimation && (
-        <LoadAnimation onComplete={() => setShowLoadAnimation(false)} />
-      )}
       {currentUser?.isPro && (
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={null}>

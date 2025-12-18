@@ -113,7 +113,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const handleToolClick = (toolId: string) => {
     const routeMap: Record<string, string> = {
       receptionist: "receptionist",
-      invoices: "invoices",
+      invoices: "invoices-page", // Route to invoices page instead of invoices component
       expenses: "expenses",
       "tax-helper": "tax-helper",
       payments: "payments",

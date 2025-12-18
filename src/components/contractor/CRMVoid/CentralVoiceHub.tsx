@@ -32,7 +32,6 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
   const [transcript, setTranscript] = useState('')
   const [enableEmail, setEnableEmail] = useState(true)
   const [enableSMS, setEnableSMS] = useState(true)
-  const [alwaysListening, setAlwaysListening] = useState(false)
   
   // Text input state
   const [textInput, setTextInput] = useState({
@@ -46,20 +45,6 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
   const audioChunksRef = useRef<Blob[]>([])
   const streamRef = useRef<MediaStream | null>(null)
 
-  // Always listening mode - continuously monitor microphone
-  useEffect(() => {
-    if (alwaysListening && voiceState === 'idle') {
-      // Use a small delay to prevent immediate re-triggering
-      const timer = setTimeout(() => {
-        if (alwaysListening && voiceState === 'idle') {
-          startListening()
-        }
-      }, 100)
-      return () => clearTimeout(timer)
-    } else if (!alwaysListening && voiceState === 'listening') {
-      stopListening()
-    }
-  }, [alwaysListening, voiceState])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -103,24 +88,12 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
       
       mediaRecorder.onstop = async () => {
         const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
-        if (!alwaysListening) {
-          stream.getTracks().forEach(track => track.stop())
-        }
+        stream.getTracks().forEach(track => track.stop())
         await processAudio(blob)
-        // If always listening, restart after processing
-        if (alwaysListening && voiceState !== 'idle') {
-          setTimeout(() => {
-            if (alwaysListening) {
-              startListening()
-            }
-          }, 500)
-        }
       }
       
       mediaRecorderRef.current = mediaRecorder
-      // For always listening mode, record in shorter chunks for real-time processing
-      const timeslice = alwaysListening ? 3000 : 100 // 3 seconds for always listening, 100ms for manual
-      mediaRecorder.start(timeslice)
+      mediaRecorder.start(100)
       setVoiceState('listening')
       setTranscript('')
       
@@ -129,7 +102,7 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
       toast.error('Could not access microphone. Please check permissions.')
       setVoiceState('idle')
     }
-  }, [alwaysListening])
+  }, [])
 
   const stopListening = useCallback(() => {
     if (mediaRecorderRef.current && voiceState === 'listening') {
@@ -165,23 +138,10 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
       if (extractedCustomer) {
         addCustomer(extractedCustomer)
         setVoiceState('success')
-        if (alwaysListening) {
-          setTimeout(() => {
-            setVoiceState('idle')
-            startListening()
-          }, 2000)
-        } else {
-          setTimeout(() => setVoiceState('idle'), 2000)
-        }
+        setTimeout(() => setVoiceState('idle'), 2000)
       } else {
-        if (!alwaysListening) {
-          toast.error('Could not extract customer info. Try again or use text input.')
-        }
+        toast.error('Could not extract customer info. Try again or use text input.')
         setVoiceState('idle')
-        // If always listening, restart automatically
-        if (alwaysListening) {
-          setTimeout(() => startListening(), 1000)
-        }
       }
       
     } catch (error) {
@@ -435,20 +395,7 @@ export function CentralVoiceHub({ user, onCustomerAdded, position, onDragEnd, is
         </AnimatePresence>
 
         {/* Addon toggles */}
-        <div className="absolute bottom-3 flex flex-col gap-2 items-center">
-          <div className="flex items-center gap-1.5">
-            <Switch
-              id="always-listening"
-              checked={alwaysListening}
-              onCheckedChange={setAlwaysListening}
-              className="data-[state=checked]:bg-cyan-600 scale-75"
-            />
-            <Label htmlFor="always-listening" className="text-white/60 text-[10px] flex items-center gap-0.5">
-              <Microphone size={10} />
-              Always On
-            </Label>
-          </div>
-          <div className="flex gap-3">
+        <div className="absolute bottom-3 flex gap-3">
             <div className="flex items-center gap-1.5">
               <Switch
                 id="email-addon"

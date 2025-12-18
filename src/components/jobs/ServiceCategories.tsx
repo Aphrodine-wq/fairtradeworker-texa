@@ -30,6 +30,7 @@ export interface MainCategory {
   title: string
   icon: typeof Wrench
   services: ServiceItem[]
+  image?: string
 }
 
 // All services organized by category
@@ -144,54 +145,63 @@ export const mainCategories: MainCategory[] = [
     title: 'Emergency & Quick Fixes',
     icon: Warning,
     services: allServicesByCategory.emergency,
+    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop',
   },
   {
     id: 'plumbing',
     title: 'Plumbing & Water',
     icon: Wrench,
     services: allServicesByCategory.plumbing,
+    image: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&h=300&fit=crop',
   },
   {
     id: 'electrical',
     title: 'Electrical & Lighting',
     icon: Lightning,
     services: allServicesByCategory.electrical,
+    image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=300&fit=crop',
   },
   {
     id: 'hvac',
     title: 'HVAC & Air',
     icon: Thermometer,
     services: allServicesByCategory.hvac,
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=300&fit=crop',
   },
   {
     id: 'repair',
     title: 'Home Repair & Maintenance',
     icon: Hammer,
     services: allServicesByCategory.repair,
+    image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400&h=300&fit=crop',
   },
   {
     id: 'outdoor',
     title: 'Outdoor & Yard',
     icon: Tree,
     services: allServicesByCategory.outdoor,
+    image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&h=300&fit=crop',
   },
   {
     id: 'remodeling',
     title: 'Remodeling & Construction',
     icon: House,
     services: allServicesByCategory.remodeling,
+    image: 'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400&h=300&fit=crop',
   },
   {
     id: 'cleaning',
     title: 'Cleaning & Specialty',
     icon: Broom,
     services: allServicesByCategory.cleaning,
+    image: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop',
   },
   {
     id: 'quick-services',
     title: 'Quick Services',
     icon: Clock,
     services: allServicesByCategory['quick-services'],
+    image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400&h=300&fit=crop',
   },
 ]
 
@@ -250,29 +260,62 @@ export function ServiceCategories({ onNavigate }: ServiceCategoriesProps) {
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
               <Card
-                className="cursor-pointer h-full border-0 hover:shadow-lg transition-all"
+                className="cursor-pointer h-full border-0 hover:shadow-lg transition-all overflow-hidden"
                 onClick={() => handleCategoryClick(category.id)}
               >
-                <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    style={{ willChange: 'transform' }}
-                  >
-                    <div
-                      className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${colorStyle.bg} relative shadow-lg`}
-                    >
-                      <Icon 
-                        size={28} 
-                        weight="fill" 
-                        className={colorStyle.text}
+                <CardContent className="p-0 flex flex-col">
+                  {/* Category Image */}
+                  {category.image && (
+                    <div className="relative h-32 w-full overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          // Fallback to icon if image fails to load
+                          e.currentTarget.style.display = 'none'
+                        }}
                       />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute bottom-2 left-2 right-2">
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${colorStyle.bg} shadow-lg`}
+                        >
+                          <Icon 
+                            size={20} 
+                            weight="fill" 
+                            className={colorStyle.text}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </motion.div>
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-                    {category.title}
-                  </h3>
+                  )}
+                  {/* Fallback to icon if no image */}
+                  {!category.image && (
+                    <div className="p-5 flex flex-col items-center text-center space-y-3">
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        style={{ willChange: 'transform' }}
+                      >
+                        <div
+                          className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${colorStyle.bg} relative shadow-lg`}
+                        >
+                          <Icon 
+                            size={28} 
+                            weight="fill" 
+                            className={colorStyle.text}
+                          />
+                        </div>
+                      </motion.div>
+                    </div>
+                  )}
+                  <div className="p-5 pt-3">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white text-center">
+                      {category.title}
+                    </h3>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
