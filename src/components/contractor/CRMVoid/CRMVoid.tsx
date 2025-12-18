@@ -1,7 +1,8 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
+import { useLocalKV } from '@/hooks/useLocalKV'
 import { cn } from '@/lib/utils'
 import type { User, CRMCustomer } from '@/lib/types'
 
@@ -16,9 +17,45 @@ interface CRMVoidProps {
   onNavigate?: (page: string) => void
 }
 
+interface MenuPosition {
+  x: number
+  y: number
+}
+
+type MenuPositions = Record<MainMenuId, MenuPosition>
+
 export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
   const [activeMainMenu, setActiveMainMenu] = useState<MainMenuId | null>(null)
   const [showVoiceIntake, setShowVoiceIntake] = useState(false)
+  
+  // Calculate default positions (6 menus, 60 degrees apart, 400px radius)
+  const defaultPositions = useMemo<MenuPositions>(() => {
+    const mainMenuRadius = 400
+    const positions: MenuPositions = {} as MenuPositions
+    
+    MAIN_MENU_CONFIGS.forEach((menuConfig, index) => {
+      const angle = index * 60
+      positions[menuConfig.id] = {
+        x: Math.cos((angle * Math.PI) / 180) * mainMenuRadius,
+        y: Math.sin((angle * Math.PI) / 180) * mainMenuRadius,
+      }
+    })
+    
+    return positions
+  }, [])
+  
+  // Load and persist menu positions
+  const [menuPositions, setMenuPositions] = useLocalKV<MenuPositions>(
+    'crm-void-menu-positions',
+    defaultPositions
+  )
+  
+  // Initialize positions if not set
+  useEffect(() => {
+    if (!menuPositions || Object.keys(menuPositions).length === 0) {
+      setMenuPositions(defaultPositions)
+    }
+  }, [menuPositions, defaultPositions, setMenuPositions])
   
   // Prevent body scroll when CRM Void is active
   useEffect(() => {
@@ -59,9 +96,18 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
     setActiveMainMenu(null)
   }, [onNavigate])
 
-  // Calculate main menu positions (6 circles, 60 degrees apart)
-  const mainMenuRadius = 400
-  const mainMenuAngles = MAIN_MENU_CONFIGS.map((_, index) => index * 60)
+  const handleDragEnd = useCallback((menuId: MainMenuId, x: number, y: number) => {
+    // Update position for this menu
+    setMenuPositions(prev => ({
+      ...prev,
+      [menuId]: { x, y }
+    }))
+  }, [setMenuPositions])
+  
+  // Get current positions (use stored or default)
+  const currentPositions = useMemo(() => {
+    return menuPositions || defaultPositions
+  }, [menuPositions, defaultPositions])
 
   // Handle ESC key to close main menu
   useEffect(() => {
@@ -130,26 +176,57 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
         <div className="relative w-full h-full flex items-center justify-center">
 
           {/* Main Menu Circles */}
-          {MAIN_MENU_CONFIGS.map((menuConfig, index) => {
-            const angle = mainMenuAngles[index]
-            const x = Math.cos((angle * Math.PI) / 180) * mainMenuRadius
-            const y = Math.sin((angle * Math.PI) / 180) * mainMenuRadius
-            const Icon = menuConfig.icon
+          {MAIN_MENU_CONFIGS.map((menuConfig) => {
+            const position = currentPositions[menuConfig.id] || { x: 0, y: 0 }
             
             return (
               <div key={menuConfig.id}>
                 <MainMenuCircle
                   id={menuConfig.id}
                   label={menuConfig.label}
-                  icon={<Icon size={28} weight="duotone" />}
-                  angle={angle}
-                  radius={mainMenuRadius}
+                  x={position.x}
+                  y={position.y}
                   isActive={activeMainMenu === menuConfig.id}
                   onClick={() => handleMainMenuClick(menuConfig.id)}
+                  onDragEnd={(x, y) => handleDragEnd(menuConfig.id, x, y)}
                   color={menuConfig.color}
                   bgColor={menuConfig.bgColor}
                   borderColor={menuConfig.borderColor}
                 />
+                
+                {/* Menu Title - appears when menu is active */}
+                <AnimatePresence>
+                  {activeMainMenu === menuConfig.id && (
+                    <motion.div
+                      className="absolute"
+                      style={{
+                        left: '50%',
+                        top: '50%',
+                        zIndex: 19,
+                      }}
+                      initial={{ 
+                        x: position.x, 
+                        y: position.y - 100, 
+                        opacity: 0 
+                      }}
+                      animate={{ 
+                        x: position.x, 
+                        y: position.y - 120, 
+                        opacity: 1 
+                      }}
+                      exit={{ 
+                        x: position.x,
+                        y: position.y - 100, 
+                        opacity: 0 
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h2 className="text-2xl font-bold text-white text-center whitespace-nowrap px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm">
+                        {menuConfig.label}
+                      </h2>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 
                 {/* Sub-Menu Circles - appear when main menu is active */}
                 <AnimatePresence>
@@ -161,12 +238,12 @@ export function CRMVoid({ user, onNavigate }: CRMVoidProps) {
                           id={subMenu.id}
                           label={subMenu.label}
                           icon={subMenu.icon}
-                          parentAngle={angle}
-                          parentRadius={mainMenuRadius}
-                          parentX={x}
-                          parentY={y}
+                          parentX={position.x}
+                          parentY={position.y}
                           index={subIndex}
                           total={menuConfig.subMenus.length}
+                          size={subMenu.size || 'standard'}
+                          tooltip={subMenu.tooltip}
                           onClick={() => handleSubMenuClick(subMenu.page, subMenu.id)}
                           color={menuConfig.color}
                           bgColor={menuConfig.bgColor}

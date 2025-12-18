@@ -1,67 +1,73 @@
 import { motion } from 'framer-motion'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { cn } from '@/lib/utils'
+import type { SubMenuSize } from './MainMenuConfig'
 
 interface SubMenuCircleProps {
   id: string
   label: string
   icon: ReactNode
-  parentAngle: number
-  parentRadius: number
   parentX: number
   parentY: number
   index: number
   total: number
+  size?: SubMenuSize
+  tooltip?: string
   onClick: () => void
   color: string
   bgColor: string
   borderColor: string
 }
 
+// Size mapping
+const SIZE_MAP = {
+  important: { size: 100, iconSize: 28 }, // 100px
+  standard: { size: 80, iconSize: 24 },   // 80px
+  secondary: { size: 60, iconSize: 20 },  // 60px
+}
+
+// Expansion distance - increased for more spacing
+const EXPANSION_DISTANCE = 240 // Increased from 160px
+
 export function SubMenuCircle({
   id,
   label,
   icon,
-  parentAngle,
-  parentRadius,
   parentX,
   parentY,
   index,
   total,
+  size = 'standard',
+  tooltip,
   onClick,
   color,
   bgColor,
   borderColor,
 }: SubMenuCircleProps) {
-  // Arc positioning pattern - similar to CSS circular menu
-  // Position items in a semi-circle arc around parent
-  // Using transform-based positioning like CSS translate3d
-  // Adjusted for 160px radius (subMenuRadius) with proper scaling
-  const subMenuRadius = 160
-  const arcPositions = [
-    { x: 20, y: -140 },    // Item 1: top-right
-    { x: -70, y: -126 },   // Item 2: top
-    { x: -130, y: -64 },   // Item 3: top-left
-    { x: -140, y: 20 },    // Item 4: left
-    { x: -130, y: 104 },   // Item 5: bottom-left
-    { x: -70, y: 166 },    // Item 6: bottom
-    { x: 20, y: 180 },     // Item 7: bottom-right
-    { x: 110, y: 166 },    // Item 8: right
-  ]
-
-  // Use arc positions, cycling if more than 8 items
-  const position = arcPositions[index % arcPositions.length]
+  const [showTooltip, setShowTooltip] = useState(false)
   
-  // Adjust for parent position - position relative to parent center
-  const relativeX = position.x
-  const relativeY = position.y
+  // Get size configuration
+  const sizeConfig = SIZE_MAP[size]
+  const itemSize = sizeConfig.size
+  
+  // Circular expansion pattern: rotate(360deg / total * index) translateX(-distance)
+  const angle = (360 / total) * index
+  const angleRad = (angle * Math.PI) / 180
+  
+  // Calculate position using rotation and translation
+  const translateX = -EXPANSION_DISTANCE - 30 // Extra spacing
+  const relativeX = Math.cos(angleRad) * translateX
+  const relativeY = Math.sin(angleRad) * translateX
   
   // Absolute position from center
   const x = parentX + relativeX
   const y = parentY + relativeY
+  
+  // Counter-rotation to keep content upright
+  const counterRotation = -angle
 
-  // Staggered animation delay - faster for sleek animations
-  const delay = index * 0.08
+  // Staggered animation delay
+  const delay = index * 0.05
 
   return (
     <motion.div
@@ -74,8 +80,8 @@ export function SubMenuCircle({
         transform: 'translateZ(0)',
       }}
       initial={{ 
-        x, 
-        y, 
+        x: parentX, 
+        y: parentY, 
         opacity: 0, 
         scale: 0.8,
       }}
@@ -86,56 +92,86 @@ export function SubMenuCircle({
         scale: 1,
       }}
       exit={{ 
+        x: parentX,
+        y: parentY,
         opacity: 0, 
         scale: 0.8,
         transition: {
-          duration: 0.1,
+          duration: 0.3,
           ease: 'easeIn'
         }
       }}
       transition={{ 
-        type: 'spring', 
-        stiffness: 400, 
-        damping: 30,
-        mass: 0.6,
+        duration: 0.5,
         delay,
+        ease: [0.175, 0.885, 0.32, 1.275], // cubic-bezier matching SCSS
       }}
+      onMouseEnter={() => tooltip && setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
     >
-      <motion.button
-        onClick={onClick}
-        data-sub-menu={id}
-        className={cn(
-          "relative flex flex-col items-center justify-center",
-          "w-20 h-20 -ml-10 -mt-10 rounded-xl",
-          "border-0 hover:shadow-xl transition-shadow",
-          "bg-white dark:bg-black",
-          "cursor-pointer"
-        )}
-        whileHover={{ scale: 1.05, y: -4 }}
-        whileTap={{ scale: 0.95 }}
-        style={{ willChange: 'transform', transform: 'translateZ(0)' }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      >
-        {/* Icon container */}
+      {/* Tooltip */}
+      {showTooltip && tooltip && (
         <motion.div
-          className="w-14 h-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center mb-2"
-          whileHover={{ scale: 1.1, rotate: 5 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 rounded-lg bg-black/80 text-white text-xs whitespace-nowrap z-50"
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 5 }}
         >
-          <div className="text-2xl text-black dark:text-white">
+          {tooltip}
+          <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/80" />
+        </motion.div>
+      )}
+      
+      <motion.div
+        style={{
+          transform: `rotate(${counterRotation}deg)`,
+          width: `${itemSize}px`,
+          height: `${itemSize}px`,
+        }}
+        className="flex items-center justify-center"
+      >
+        <motion.button
+          onClick={onClick}
+          data-sub-menu={id}
+          className={cn(
+            "relative flex flex-col items-center justify-center",
+            "rounded-full",
+            "border-0 transition-all duration-200",
+            "bg-white/20",
+            "text-white/70",
+            "cursor-pointer"
+          )}
+          style={{
+            width: `${itemSize}px`,
+            height: `${itemSize}px`,
+            fontSize: `${itemSize / 2}px`,
+          }}
+          whileHover={{ 
+            scale: 1.1,
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            color: 'rgba(255, 255, 255, 1)',
+            boxShadow: `0 0 0 ${itemSize / 40}px rgba(255, 255, 255, 0.3)`,
+          }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        >
+          {/* Icon */}
+          <div 
+            className="flex items-center justify-center mb-1"
+            style={{ 
+              transform: `scale(${sizeConfig.iconSize / 20})`,
+              transformOrigin: 'center',
+            }}
+          >
             {icon}
           </div>
-        </motion.div>
-        
-        {/* Label */}
-        <span className={cn(
-          "text-xs font-semibold text-center leading-tight px-1",
-          "text-black dark:text-white"
-        )}>
-          {label}
-        </span>
-      </motion.button>
+          
+          {/* Label */}
+          <span className="text-center leading-tight px-1 font-medium" style={{ fontSize: `${itemSize / 4.5}px` }}>
+            {label}
+          </span>
+        </motion.button>
+      </motion.div>
     </motion.div>
   )
 }
