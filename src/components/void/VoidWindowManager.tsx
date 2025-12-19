@@ -15,6 +15,9 @@ import { Cashflow } from './modules/Cashflow'
 import { Vault } from './modules/Vault'
 import { Funnel } from './modules/Funnel'
 import { Milestones } from './modules/Milestones'
+import { Calendar } from './modules/Calendar'
+import { Notes } from './modules/Notes'
+import { Tasks } from './modules/Tasks'
 
 // Map menuId to component
 const WINDOW_CONTENT_MAP: Record<string, React.ComponentType<any>> = {
@@ -31,6 +34,9 @@ const WINDOW_CONTENT_MAP: Record<string, React.ComponentType<any>> = {
   vault: Vault,
   funnel: Funnel,
   milestones: Milestones,
+  calendar: Calendar,
+  notes: Notes,
+  tasks: Tasks,
 }
 
 export function VoidWindowManager() {

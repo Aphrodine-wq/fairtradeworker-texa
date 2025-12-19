@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
 import { Button } from '@/components/ui/button'
 import { sanitizeString } from '@/lib/void/validation'
 import { getRockPaperScissorsResult, PRODUCTIVITY_QUIZ_QUESTIONS, type MiniGameType } from '@/lib/void/buddyPersonality'
 import type { BuddyState } from '@/lib/void/types'
+import { cn } from '@/lib/utils'
 
 interface VoidBuddyPanelProps {
   onClose?: () => void
@@ -16,9 +17,13 @@ interface VoidBuddyPanelProps {
   miniGame?: MiniGameType
   onStartMiniGame?: (gameType: MiniGameType) => void
   onCloseMiniGame?: () => void
+  isListening?: boolean
+  onStartVoiceCommand?: () => void
+  onStopVoiceCommand?: () => void
+  availableCommands?: string[]
 }
 
-export function VoidBuddyPanel({ 
+export const VoidBuddyPanel = memo(function VoidBuddyPanel({ 
   userName, 
   onMessageClick, 
   stats,
@@ -27,6 +32,10 @@ export function VoidBuddyPanel({
   miniGame,
   onStartMiniGame,
   onCloseMiniGame,
+  isListening = false,
+  onStartVoiceCommand,
+  onStopVoiceCommand,
+  availableCommands = [],
 }: VoidBuddyPanelProps) {
   const { buddyMessages, addBuddyMessage } = useVoidStore()
   const [rpsChoice, setRpsChoice] = useState<'rock' | 'paper' | 'scissors' | null>(null)
@@ -86,7 +95,7 @@ export function VoidBuddyPanel({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-4 overflow-y-auto space-y-4">
+      <div className="flex-1 p-4 overflow-hidden flex flex-col space-y-4">
         {/* Mini Games Section */}
         {miniGame && (
           <div className="mb-4 p-3 rounded border" style={{ borderColor: 'var(--border)', background: 'var(--surface-hover)' }}>
@@ -288,7 +297,7 @@ export function VoidBuddyPanel({
         
         {/* Stats Section */}
         {stats && (
-          <div>
+          <div className="flex-shrink-0">
             <h3 
               className="void-body-caption mb-2 uppercase tracking-wide"
               style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -311,50 +320,92 @@ export function VoidBuddyPanel({
           </div>
         )}
 
-        {/* Messages Section - Always Visible */}
-        <div>
+        {/* Messages Section - iPhone Messages Style */}
+        <div className="flex-1 flex flex-col min-h-0">
           <h3 
-            className="void-body-caption mb-2 uppercase tracking-wide"
+            className="void-body-caption mb-2 uppercase tracking-wide flex-shrink-0"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
           >
             💬 MESSAGES
           </h3>
-          <div className="space-y-2 max-h-32 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto space-y-1.5 px-1" style={{ maxHeight: '200px' }}>
             {buddyMessages.length > 0 ? (
-              buddyMessages.map((msg) => (
-                <motion.div
-                  key={msg.id}
-                  className="void-body-small p-2 rounded cursor-pointer transition-all hover:scale-105"
-                  style={{
-                    color: 'var(--text-primary, var(--void-text-primary))',
-                    background: 'var(--surface-hover, var(--void-surface-hover))',
-                    borderRadius: 'var(--radius-sm, 8px)',
-                  }}
-                  onClick={() => onMessageClick?.(msg.id)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  title="Click me for a response! 😏"
-                >
-                  {sanitizeString(msg.message, 200)}
-                </motion.div>
-              ))
+              buddyMessages.map((msg, index) => {
+                const isBuddy = true // All messages are from Buddy
+                const showTimestamp = index === 0 || 
+                  (buddyMessages[index - 1] && 
+                   msg.timestamp - buddyMessages[index - 1].timestamp > 300000) // 5 minutes
+                
+                return (
+                  <motion.div
+                    key={msg.id}
+                    className="flex flex-col"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                  >
+                    {showTimestamp && (
+                      <div className="text-center text-xs text-gray-500 dark:text-gray-400 my-1">
+                        {new Date(msg.timestamp).toLocaleTimeString('en-US', { 
+                          hour: 'numeric', 
+                          minute: '2-digit',
+                          hour12: true 
+                        })}
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        "flex",
+                        isBuddy ? "justify-start" : "justify-end"
+                      )}
+                    >
+                      <motion.div
+                        className={cn(
+                          "max-w-[75%] rounded-2xl px-3 py-2 cursor-pointer",
+                          "transition-all hover:scale-[1.02] active:scale-[0.98]",
+                          isBuddy 
+                            ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm" 
+                            : "bg-[#007AFF] text-white rounded-br-sm"
+                        )}
+                        onClick={() => onMessageClick?.(msg.id)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        title="Click me for a response! 😏"
+                        style={{
+                          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                        }}
+                      >
+                        <div className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {sanitizeString(msg.message, 200)}
+                        </div>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                )
+              })
             ) : (
-              <div 
-                className="void-body-small p-2 rounded"
-                style={{
-                  color: 'var(--text-primary, var(--void-text-primary))',
-                  background: 'var(--surface-hover, var(--void-surface-hover))',
-                  borderRadius: 'var(--radius-sm, 8px)',
-                }}
+              <motion.div
+                className="flex justify-start"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
               >
-                {`Morning ${sanitizeString(userName, 100)}! ${streak ? `Streak: ${streak.current} days 🔥` : 'Welcome back!'}`}
-              </div>
+                <div
+                  className="max-w-[75%] rounded-2xl rounded-bl-sm px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  style={{
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <div className="text-sm leading-relaxed">
+                    {`Morning ${sanitizeString(userName, 100)}! ${streak ? `Streak: ${streak.current} days 🔥` : 'Welcome back!'}`}
+                  </div>
+                </div>
+              </motion.div>
             )}
           </div>
         </div>
 
         {/* Priorities */}
-        <div>
+        <div className="flex-shrink-0">
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -387,7 +438,7 @@ export function VoidBuddyPanel({
 
         {/* Mini Games */}
         {!miniGame && (
-          <div>
+          <div className="flex-shrink-0">
             <h3 
               className="void-body-caption mb-2 uppercase tracking-wide"
               style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -423,8 +474,47 @@ export function VoidBuddyPanel({
           </div>
         )}
 
+        {/* Voice Commands */}
+        <div className="flex-shrink-0">
+          <h3 
+            className="void-body-caption mb-2 uppercase tracking-wide"
+            style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+          >
+            🎤 VOICE COMMANDS
+          </h3>
+          <div className="flex flex-wrap gap-2 mb-2">
+            {isListening ? (
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="text-xs h-7 bg-red-500/20 border-red-500 text-red-600 dark:text-red-400"
+                onClick={onStopVoiceCommand}
+              >
+                ⏹ Stop Listening
+              </Button>
+            ) : (
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="text-xs h-7"
+                onClick={onStartVoiceCommand}
+              >
+                🎤 Start Listening
+              </Button>
+            )}
+          </div>
+          {availableCommands.length > 0 && (
+            <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+              <div className="font-semibold">Try saying:</div>
+              {availableCommands.slice(0, 3).map((cmd, idx) => (
+                <div key={idx}>• {cmd}</div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Suggested Actions */}
-        <div>
+        <div className="flex-shrink-0">
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -466,7 +556,7 @@ export function VoidBuddyPanel({
         </div>
 
         {/* Insights */}
-        <div>
+        <div className="flex-shrink-0">
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -483,7 +573,7 @@ export function VoidBuddyPanel({
         </div>
 
         {/* Soundscape */}
-        <div>
+        <div className="flex-shrink-0">
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -500,4 +590,4 @@ export function VoidBuddyPanel({
       </div>
     </motion.div>
   )
-}
+})

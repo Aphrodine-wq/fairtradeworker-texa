@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage, Notification, VirtualDesktop, VoidFile } from './types'
 import type { Theme } from '@/lib/themes'
+import { getCurrentTheme, applyTheme, getEffectiveTheme } from '@/lib/themes'
 import type { Track } from '@/lib/music/types'
 import { arrayToSet, validateVolume, validateGridPosition, validateWindowSize, sanitizeString, validateWithFallback, ThemeSchema, VoiceStateSchema, VoicePermissionSchema, BuddyStateSchema, BuddyMessageSchema } from './validation'
 import { createFileSystem } from './fileSystem'
@@ -221,7 +222,7 @@ export const useVoidStore = create<VoidStore>()(
       activeWindowId: null,
       nextZIndex: 1000,
       sortOption: null,
-      theme: 'light' as Theme,
+      theme: getCurrentTheme() as Theme,
       
       // Desktop slice initial state
       desktopBackground: null,
@@ -609,6 +610,15 @@ export const useVoidStore = create<VoidStore>()(
       // Theme actions
       setTheme: (theme: Theme) => {
         set({ theme })
+        // Apply theme immediately when changed
+        applyTheme(theme)
+        const effective = getEffectiveTheme(theme)
+        if (effective === 'dark') {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+        localStorage.setItem('void-theme', theme)
       },
       
       // Desktop slice actions
@@ -646,6 +656,14 @@ export const useVoidStore = create<VoidStore>()(
       
       // Notification actions
       addNotification: (notification: Notification) => {
+        // Sync with FTW if needed
+        if (typeof window !== 'undefined' && (window as any).ftwNotifications) {
+          try {
+            (window as any).ftwNotifications.add(notification)
+          } catch (e) {
+            console.warn('Failed to sync notification with FTW:', e)
+          }
+        }
         set((state) => {
           const newNotifications = [notification, ...state.notifications].slice(0, 100) // Limit to 100
           const newUnreadCount = newNotifications.filter(n => !n.read).length

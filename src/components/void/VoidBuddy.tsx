@@ -1,21 +1,25 @@
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect, useRef, memo } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 import { useBuddyContext } from '@/hooks/useBuddyContext'
 import { useBuddyReactions } from '@/hooks/useBuddyReactions'
+import { useBuddyVoiceCommands } from '@/hooks/useBuddyVoiceCommands'
 import { VoidBuddyIcon } from './VoidBuddyIcon'
 import { VoidBuddyPanel } from './VoidBuddyPanel'
+import { VoidVoiceCapture } from './VoidVoiceCapture'
 import { 
   getClickResponse, shouldTroll, shouldRagebait, getTrollMessage, getRagebaitMessage, 
   getEmotionForInteraction, getIdleMessage, getRandomEvent, getTimeBasedRoast, 
   getComparisonRoast, getStatsRoast, getStreakMessage,
   determineMood, getMoodResponse, type BuddyInteraction, type MiniGameType 
 } from '@/lib/void/buddyPersonality'
+import type { User } from '@/lib/types'
 
 interface VoidBuddyProps {
   userName: string
+  user?: User
 }
 
-export function VoidBuddy({ userName }: VoidBuddyProps) {
+export function VoidBuddy({ userName, user }: VoidBuddyProps) {
   const { 
     buddyState, 
     addBuddyMessage, 
@@ -33,6 +37,12 @@ export function VoidBuddy({ userName }: VoidBuddyProps) {
   
   useBuddyContext() // Initialize context checking
   useBuddyReactions() // Track user actions and trigger reactions
+  
+  // Voice commands
+  const { isListening, startListening, stopListening, commands: availableCommands } = useBuddyVoiceCommands((command) => {
+    // Command recognized callback
+    updateBuddyStats({ totalClicks: (buddyState.stats?.totalClicks || 0) + 1 })
+  })
 
   // Track streak
   useEffect(() => {
@@ -324,6 +334,10 @@ export function VoidBuddy({ userName }: VoidBuddyProps) {
         streak={buddyState.streak}
         mood={buddyState.mood}
         miniGame={miniGame}
+        isListening={isListening}
+        onStartVoiceCommand={startListening}
+        onStopVoiceCommand={stopListening}
+        availableCommands={availableCommands}
         onMessageClick={() => {
           // Handle message click - troll response
           const trollResponse = Math.random() > 0.5 ? getTrollMessage() : getRagebaitMessage()
@@ -340,6 +354,12 @@ export function VoidBuddy({ userName }: VoidBuddyProps) {
         onStartMiniGame={(gameType) => setMiniGame(gameType)}
         onCloseMiniGame={() => setMiniGame(null)}
       />
+      {/* Voice Capture below Buddy panel */}
+      {user && (
+        <div className="mt-2">
+          <VoidVoiceCapture user={user} />
+        </div>
+      )}
     </div>
   )
 }

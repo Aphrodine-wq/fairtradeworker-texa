@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, memo } from 'react'
 import { motion, PanInfo } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidContextMenu } from './VoidContextMenu'
@@ -17,7 +17,7 @@ const RESIZE_HANDLE_SIZE = 4
 const MIN_WINDOW_WIDTH = 400
 const MIN_WINDOW_HEIGHT = 300
 
-export function VoidWindow({ window }: VoidWindowProps) {
+export const VoidWindow = memo(function VoidWindow({ window }: VoidWindowProps) {
   const {
     closeWindow,
     minimizeWindow,
@@ -54,6 +54,10 @@ export function VoidWindow({ window }: VoidWindowProps) {
   const handleDragStart = () => {
     setIsDragging(true)
     focusWindow(window.id)
+    // Add visual feedback during drag
+    if (windowRef.current) {
+      windowRef.current.style.cursor = 'grabbing'
+    }
   }
 
   const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
@@ -80,6 +84,11 @@ export function VoidWindow({ window }: VoidWindowProps) {
 
   const handleDragEnd = () => {
     setIsDragging(false)
+    
+    // Restore cursor
+    if (windowRef.current) {
+      windowRef.current.style.cursor = ''
+    }
     
     // Apply snap if zone detected
     if (snapZone && !window.maximized) {
@@ -266,14 +275,18 @@ export function VoidWindow({ window }: VoidWindowProps) {
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
       whileDrag={{
-        scale: 1.05,
-        rotate: 1.5,
+        scale: 1.02,
+        rotate: 0.5,
         zIndex: 100,
         boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+        cursor: 'grabbing',
         transition: {
           duration: 0.08,
           ease: 'cubic-bezier(0.2, 0, 0, 1)',
         },
+      }}
+      style={{
+        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {/* Title Bar */}
@@ -370,4 +383,15 @@ export function VoidWindow({ window }: VoidWindowProps) {
       )}
     </motion.div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Custom comparison for memo
+  return prevProps.window.id === nextProps.window.id &&
+         prevProps.window.position.x === nextProps.window.position.x &&
+         prevProps.window.position.y === nextProps.window.position.y &&
+         prevProps.window.size.width === nextProps.window.size.width &&
+         prevProps.window.size.height === nextProps.window.size.height &&
+         prevProps.window.minimized === nextProps.window.minimized &&
+         prevProps.window.maximized === nextProps.window.maximized &&
+         prevProps.window.pip === nextProps.window.pip &&
+         prevProps.window.zIndex === nextProps.window.zIndex
+})

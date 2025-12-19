@@ -3,6 +3,7 @@
  * Quick settings and controls panel
  */
 
+import * as React from 'react'
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sun, Moon, WifiHigh, WifiSlash, Bell, BellSlash, Target, Globe, MusicNote, TrendUp } from '@phosphor-icons/react'
@@ -44,6 +45,20 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
       window.removeEventListener('offline', handleOffline)
     }
   })
+
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!isOpen) return
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [isOpen, onClose])
 
   // Mock stats (would come from store/API)
   const todayStats = {
@@ -120,12 +135,38 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                 <div className="void-control-section-title">QUICK TOGGLES</div>
                 <div className="void-control-toggles">
                   <button
-                    className={`void-control-toggle ${theme === 'dark' ? 'active' : ''}`}
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    title="Dark Mode"
+                    className={`void-control-toggle ${theme === 'dark' || theme === 'auto' ? 'active' : ''}`}
+                    onClick={() => {
+                      // Cycle through: dark -> light -> auto -> dark
+                      let nextTheme: Theme
+                      if (theme === 'dark') {
+                        nextTheme = 'light'
+                      } else if (theme === 'light') {
+                        nextTheme = 'auto'
+                      } else {
+                        nextTheme = 'dark'
+                      }
+                      setTheme(nextTheme)
+                      const { applyTheme, getEffectiveTheme } = require('@/lib/themes')
+                      applyTheme(nextTheme)
+                      const effective = getEffectiveTheme(nextTheme)
+                      if (effective === 'dark') {
+                        document.documentElement.classList.add('dark')
+                      } else {
+                        document.documentElement.classList.remove('dark')
+                      }
+                      localStorage.setItem('void-theme', nextTheme)
+                    }}
+                    title={`Theme: ${theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}`}
                   >
-                    {theme === 'dark' ? <Moon weight="regular" className="void-control-toggle-icon" size={24} /> : <Sun weight="regular" className="void-control-toggle-icon" size={24} />}
-                    <span className="void-control-toggle-label">Dark</span>
+                    {theme === 'dark' ? (
+                      <Moon weight="regular" className="void-control-toggle-icon" size={24} />
+                    ) : theme === 'light' ? (
+                      <Sun weight="regular" className="void-control-toggle-icon" size={24} />
+                    ) : (
+                      <Sun weight="regular" className="void-control-toggle-icon" size={24} style={{ opacity: 0.6 }} />
+                    )}
+                    <span className="void-control-toggle-label">{theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}</span>
                   </button>
 
                   <button

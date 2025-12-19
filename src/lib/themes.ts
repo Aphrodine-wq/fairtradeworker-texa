@@ -3,7 +3,7 @@
  * TypeScript theme objects that map to CSS variables
  */
 
-export type Theme = 'dark' | 'light'
+export type Theme = 'dark' | 'light' | 'auto'
 
 export interface ThemeColors {
   // Surface colors
@@ -98,10 +98,13 @@ export function getThemeColors(theme: Theme): ThemeColors {
  * Sets both legacy --void-* variables and new design system variables
  */
 export function applyTheme(theme: Theme): void {
-  const colors = getThemeColors(theme)
+  const effectiveTheme = getEffectiveTheme(theme)
+  const colors = getThemeColors(effectiveTheme)
   
-  // Set data-theme attribute for CSS selectors
-  document.documentElement.setAttribute('data-theme', theme)
+  // Set data-theme attribute for CSS selectors (use effective theme)
+  document.documentElement.setAttribute('data-theme', effectiveTheme)
+  // Also store the actual theme preference (may be 'auto')
+  document.documentElement.setAttribute('data-theme-preference', theme)
   
   // Set CSS variables
   const root = document.documentElement.style
@@ -130,12 +133,12 @@ export function applyTheme(theme: Theme): void {
   const targetStyle = voidDesktop?.style || root
   
   targetStyle.setProperty('--bg', colors.background)
-  targetStyle.setProperty('--bg-elevated', theme === 'dark' ? '#020204' : '#fefefe')
+  targetStyle.setProperty('--bg-elevated', effectiveTheme === 'dark' ? '#020204' : '#fefefe')
   targetStyle.setProperty('--surface', colors.surface)
   targetStyle.setProperty('--surface-secondary', colors.surfaceSecondary)
-  targetStyle.setProperty('--surface-hover', theme === 'dark' ? '#141419' : '#f0f1f5')
+  targetStyle.setProperty('--surface-hover', effectiveTheme === 'dark' ? '#141419' : '#f0f1f5')
   targetStyle.setProperty('--border', colors.border)
-  targetStyle.setProperty('--border-hover', theme === 'dark' ? '#2a2a3a' : '#d0d2da')
+  targetStyle.setProperty('--border-hover', effectiveTheme === 'dark' ? '#2a2a3a' : '#d0d2da')
   targetStyle.setProperty('--border-active', colors.accent)
   targetStyle.setProperty('--text-primary', colors.textPrimary)
   targetStyle.setProperty('--text-secondary', colors.textSecondary)
@@ -146,18 +149,30 @@ export function applyTheme(theme: Theme): void {
 }
 
 /**
+ * Get effective theme (resolves 'auto' to actual theme)
+ */
+export function getEffectiveTheme(theme: Theme): 'dark' | 'light' {
+  if (theme === 'auto') {
+    if (typeof window === 'undefined') return 'light'
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    return systemPrefersDark ? 'dark' : 'light'
+  }
+  return theme
+}
+
+/**
  * Get current theme from localStorage or system preference
  */
 export function getCurrentTheme(): Theme {
   if (typeof window === 'undefined') return 'light'
   
   const stored = localStorage.getItem('void-theme') as Theme | null
-  if (stored && (stored === 'dark' || stored === 'light')) {
+  if (stored && (stored === 'dark' || stored === 'light' || stored === 'auto')) {
     return stored
   }
   
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-  return systemPrefersDark ? 'dark' : 'light'
+  // Default to 'auto' if nothing stored
+  return 'auto'
 }
 
 /**
@@ -168,7 +183,8 @@ export function initTheme(): void {
   applyTheme(theme)
   
   // Also set dark class for compatibility
-  if (theme === 'dark') {
+  const effectiveTheme = getEffectiveTheme(theme)
+  if (effectiveTheme === 'dark') {
     document.documentElement.classList.add('dark')
   } else {
     document.documentElement.classList.remove('dark')

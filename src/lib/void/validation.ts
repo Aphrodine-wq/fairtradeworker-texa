@@ -46,7 +46,7 @@ export const WindowDataSchema = z.object({
 })
 
 // Theme validation
-export const ThemeSchema = z.enum(['dark', 'light'])
+export const ThemeSchema = z.enum(['dark', 'light', 'auto'])
 
 // Voice state validation
 export const VoiceStateSchema = z.enum(['idle', 'recording', 'processing', 'error'])

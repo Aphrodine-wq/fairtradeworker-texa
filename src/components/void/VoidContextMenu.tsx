@@ -3,6 +3,7 @@
  * Universal context menu for desktop, icons, and windows
  */
 
+import * as React from 'react'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { motion } from 'framer-motion'
 import type { ContextMenuItem, ContextMenuType } from '@/lib/void/contextMenus'
@@ -55,6 +56,12 @@ function ContextMenuSubItem({ item }: { item: ContextMenuItem }) {
       onSelect={() => {
         if (item.action && !item.disabled) {
           item.action()
+          // Close menu after action
+          const root = document.querySelector('[data-radix-context-menu-root]')
+          if (root) {
+            const event = new Event('contextmenu-close', { bubbles: true })
+            root.dispatchEvent(event)
+          }
         }
       }}
     >
@@ -73,8 +80,31 @@ export function VoidContextMenu({
   children,
   onOpenChange,
 }: VoidContextMenuProps) {
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpenChange = React.useCallback((newOpen: boolean) => {
+    setOpen(newOpen)
+    if (onOpenChange) {
+      onOpenChange(newOpen)
+    }
+  }, [onOpenChange])
+
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!open) return
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleOpenChange(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [open, handleOpenChange])
+
   return (
-    <ContextMenuPrimitive.Root onOpenChange={onOpenChange}>
+    <ContextMenuPrimitive.Root open={open} onOpenChange={handleOpenChange}>
       <ContextMenuPrimitive.Trigger asChild>
         {children}
       </ContextMenuPrimitive.Trigger>
@@ -83,6 +113,8 @@ export function VoidContextMenu({
           className={`void-system-context-menu void-context-menu void-context-menu-${type}`}
           sideOffset={5}
           alignOffset={-5}
+          onEscapeKeyDown={() => handleOpenChange(false)}
+          onPointerDownOutside={() => handleOpenChange(false)}
           asChild
         >
           <motion.div

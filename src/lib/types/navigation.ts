@@ -451,12 +451,12 @@ export const DEFAULT_NAVIGATION: Record<UserRole, NavItem[]> = {
     },
     { 
       id: 'crm', 
-      label: 'Void', 
-      page: 'crm', 
+      label: 'VOID', 
+      page: 'void', 
       visible: true, 
       order: 3, 
       required: false,
-      iconName: 'Users'
+      // No icon - removed per request
     },
     { 
       id: 'business-tools', 

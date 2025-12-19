@@ -208,6 +208,27 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
         {visibleNav.map((item) => {
           const Icon = getNavIcon(item.iconName)
           const isActive = activeTab === item.id || activeTab === item.page
+          const isVoid = item.id === 'crm' || item.page === 'void'
+          
+          // Special styling for VOID navigation item - vibrant blue, no icon
+          if (isVoid) {
+            return (
+              <NavButton
+                key={item.id}
+                onClick={() => handleNav(item.page, item.id)}
+                isActive={isActive}
+                className={cn(
+                  "font-bold text-[#005ce6] dark:text-[#3b82f6]",
+                  "hover:text-[#0047b3] dark:hover:text-[#60a5fa]",
+                  "hover:bg-[#005ce6]/10 dark:hover:bg-[#3b82f6]/10",
+                  isActive && "bg-[#005ce6]/20 dark:bg-[#3b82f6]/20 text-[#005ce6] dark:text-[#3b82f6] border-2 border-[#005ce6] dark:border-[#3b82f6] shadow-lg",
+                  "transition-all duration-200"
+                )}
+              >
+                {item.label}
+              </NavButton>
+            )
+          }
           
           if (item.category === 'action') {
             return (
@@ -373,6 +394,27 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
             {visibleNav.map((item) => {
               const Icon = getNavIcon(item.iconName)
               const isActive = activeTab === item.id || activeTab === item.page
+              const isVoid = item.id === 'crm' || item.page === 'void'
+              
+              // Special styling for VOID navigation item - vibrant blue, no icon
+              if (isVoid) {
+                return (
+                  <Button
+                    key={item.id}
+                    variant={isActive ? 'secondary' : 'ghost'}
+                    onClick={() => handleNav(item.page, item.id)}
+                    className={cn(
+                      "justify-start min-h-[44px] font-bold",
+                      "text-[#005ce6] dark:text-[#3b82f6]",
+                      "hover:text-[#0047b3] dark:hover:text-[#60a5fa]",
+                      "hover:bg-[#005ce6]/10 dark:hover:bg-[#3b82f6]/10",
+                      isActive && "bg-[#005ce6]/20 dark:bg-[#3b82f6]/20 text-[#005ce6] dark:text-[#3b82f6] border-2 border-[#005ce6] dark:border-[#3b82f6]"
+                    )}
+                  >
+                    {item.label}
+                  </Button>
+                )
+              }
               
               if (item.category === 'action') {
                 return (
