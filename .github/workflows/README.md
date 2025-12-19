@@ -1,6 +1,6 @@
-# Manual Vercel Deployment Workflow
+# Vercel Deployment Workflow
 
-This GitHub Actions workflow allows you to manually trigger a deployment to Vercel.
+This GitHub Actions workflow provides both automatic and manual deployment to Vercel.
 
 ## Prerequisites
 
@@ -23,7 +23,18 @@ Before you can use this workflow, you need to configure the following secrets in
 
 ## How to Use
 
-### Triggering a Manual Deployment
+### Automatic Deployments
+
+The workflow automatically triggers on:
+
+1. **Push to main branch** → Deploys to production
+2. **Pull requests to main** → Deploys to preview environment
+
+No manual intervention required! Every push to main will automatically deploy to production on Vercel.
+
+### Manual Deployments
+
+You can also trigger deployments manually:
 
 1. Go to your GitHub repository
 2. Click on the "Actions" tab
@@ -45,11 +56,21 @@ The workflow performs the following steps:
 5. **Build Project** - Builds the project artifacts using Vercel
 6. **Deploy** - Deploys the built artifacts to Vercel
 
+## Deployment Behavior
+
+| Trigger Type | Branch | Environment |
+|-------------|--------|-------------|
+| Push | main | production |
+| Pull Request | main | preview |
+| Manual | any | user-selected |
+
 ## Environment Variables
 
-The workflow uses the `workflow_dispatch` trigger which allows manual execution with inputs:
+The workflow intelligently selects the deployment environment:
 
-- **environment**: Choose between `production` or `preview` deployment
+- **Manual trigger**: Uses the selected environment input
+- **Push to main**: Automatically uses production
+- **Pull request**: Automatically uses preview
 
 ## Notes
 
