@@ -13,8 +13,9 @@ const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 export default defineConfig({
   plugins: [
     react({
-      // Enable faster refresh and better tree-shaking
-      jsxImportSource: undefined,
+      // Use automatic JSX runtime (React 17+)
+      // This allows JSX without importing React in every file
+      jsxRuntime: 'automatic',
     }),
     tailwindcss(),
     // DO NOT REMOVE

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { WiremapBackground } from '@/components/void/WiremapBackground'
 import { BackgroundSystem } from '@/components/void/BackgroundSystem'
 import { MediaToolbar } from '@/components/media/MediaToolbar'
