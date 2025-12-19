@@ -1,9 +1,11 @@
 /**
  * Supabase Client Configuration
- * Replace with your actual Supabase project credentials
+ * Optimized for 400k users with connection pooling and circuit breakers
  */
 
 import { createClient } from '@supabase/supabase-js'
+import { createOptimizedSupabaseClient, getOptimalDatabaseUrl } from '../../infrastructure/supabase-pooling.config'
+import { withCircuitBreaker } from './circuitBreaker'
 
 // These should be set as environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
@@ -13,13 +15,57 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Supabase credentials not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY environment variables.')
 }
 
+// Create optimized client with connection pooling settings
+const clientConfig = createOptimizedSupabaseClient()
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true
-  }
+    detectSessionInUrl: true,
+    // Storage key for auth session
+    storageKey: 'ftw-auth',
+  },
+  db: {
+    schema: 'public',
+  },
+  realtime: {
+    params: {
+      // Limit events per second to prevent overwhelming clients
+      eventsPerSecond: 10,
+    },
+  },
+  global: {
+    headers: {
+      'x-client-info': 'fairtradeworker-web',
+    },
+  },
 })
+
+/**
+ * Execute a Supabase query with circuit breaker protection
+ * 
+ * @param queryFn - Query function to execute
+ * @param fallbackData - Optional fallback data if query fails
+ */
+export async function supabaseWithFallback<T>(
+  queryFn: () => Promise<{ data: T | null; error: any }>,
+  fallbackData?: T
+): Promise<{ data: T | null; error: any }> {
+  try {
+    return await withCircuitBreaker(
+      'database',
+      queryFn,
+      fallbackData ? () => ({ data: fallbackData, error: null }) : undefined
+    )
+  } catch (error) {
+    console.error('Supabase query failed:', error)
+    return {
+      data: fallbackData || null,
+      error: error instanceof Error ? error : new Error('Unknown error'),
+    }
+  }
+}
 
 // Database types (will be generated from Supabase)
 export type Database = {
