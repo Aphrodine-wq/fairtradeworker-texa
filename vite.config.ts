@@ -13,9 +13,8 @@ const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 export default defineConfig({
   plugins: [
     react({
-      // Use automatic JSX runtime (React 17+)
-      // This allows JSX without importing React in every file
-      jsxRuntime: 'automatic',
+      // @vitejs/plugin-react-swc uses automatic JSX runtime by default
+      // No configuration needed - it automatically handles JSX without React imports
     }),
     tailwindcss(),
     // DO NOT REMOVE
