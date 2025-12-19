@@ -1,5 +1,5 @@
 import type { User } from "@/lib/types"
-import { VOID } from "@/components/void/VOID"
+import { CRMDashboard } from "@/components/contractor/CRMDashboard"
 
 interface EnhancedCRMProps {
   user: User
@@ -7,5 +7,5 @@ interface EnhancedCRMProps {
 }
 
 export function EnhancedCRM({ user, onNavigate }: EnhancedCRMProps) {
-  return <VOID user={user} onNavigate={onNavigate} />
+  return <CRMDashboard user={user} />
 }

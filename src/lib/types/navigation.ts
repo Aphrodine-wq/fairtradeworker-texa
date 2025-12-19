@@ -451,7 +451,7 @@ export const DEFAULT_NAVIGATION: Record<UserRole, NavItem[]> = {
     },
     { 
       id: 'crm', 
-      label: 'Void', 
+      label: 'CRM', 
       page: 'crm', 
       visible: true, 
       order: 3, 

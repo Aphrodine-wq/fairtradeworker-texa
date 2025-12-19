@@ -208,8 +208,6 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
         {visibleNav.map((item) => {
           const Icon = getNavIcon(item.iconName)
           const isActive = activeTab === item.id || activeTab === item.page
-          const isVoid = item.id === 'crm' || item.label === 'Void'
-          
           if (item.category === 'action') {
             return (
               <Button
@@ -218,30 +216,6 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
                 className="min-h-[44px] ml-1 bg-foreground text-background hover:bg-foreground/90 transition-all font-bold px-4"
               >
                 {Icon && <Icon weight="fill" className="mr-1.5" size={16} />}
-                {item.label}
-              </Button>
-            )
-          }
-          
-          // Special styling for VOID navigation
-          if (isVoid) {
-            return (
-              <Button
-                key={item.id}
-                onClick={() => handleNav(item.page, item.id)}
-                className={cn(
-                  "min-h-[44px] relative transition-all font-bold px-4",
-                  "bg-gradient-to-r from-[#00f5ff] to-[#0099ff] text-black",
-                  "hover:from-[#33f7ff] hover:to-[#00b3ff]",
-                  "shadow-lg shadow-[#00f5ff]/50 hover:shadow-[#00f5ff]/70",
-                  "border-2 border-[#00f5ff]/30 hover:border-[#00f5ff]/50",
-                  isActive && "ring-2 ring-[#00f5ff] ring-offset-2 ring-offset-background",
-                  "animate-pulse hover:animate-none"
-                )}
-                style={{
-                  textShadow: '0 0 10px rgba(0, 245, 255, 0.5)',
-                }}
-              >
                 {item.label}
               </Button>
             )
@@ -398,7 +372,6 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
             {visibleNav.map((item) => {
               const Icon = getNavIcon(item.iconName)
               const isActive = activeTab === item.id || activeTab === item.page
-              const isVoid = item.id === 'crm' || item.label === 'Void'
               
               if (item.category === 'action') {
                 return (
@@ -408,24 +381,6 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
                     className="justify-start min-h-[44px] bg-foreground text-background hover:bg-foreground/90 mt-2"
                   >
                     {Icon && <Icon size={20} className="mr-3" weight="fill" />}
-                    {item.label}
-                  </Button>
-                )
-              }
-              
-              // Special styling for VOID navigation (mobile)
-              if (isVoid) {
-                return (
-                  <Button
-                    key={item.id}
-                    onClick={() => handleNav(item.page, item.id)}
-                    className={cn(
-                      "justify-start min-h-[44px] mt-2 font-bold",
-                      "bg-gradient-to-r from-[#00f5ff] to-[#0099ff] text-black",
-                      "hover:from-[#33f7ff] hover:to-[#00b3ff]",
-                      "shadow-lg shadow-[#00f5ff]/50"
-                    )}
-                  >
                     {item.label}
                   </Button>
                 )
