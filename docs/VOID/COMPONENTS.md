@@ -12,6 +12,8 @@ WebGL wiremap background component.
 
 **Location**: `components/void/WiremapBackground.tsx`
 
+**Integration Status**: ✅ Automatically integrated in `VOID.tsx` (v1.2.0+). Conditionally rendered based on `wiremapEnabled` from store.
+
 **Props:**
 ```typescript
 interface WiremapBackgroundProps {
@@ -19,7 +21,15 @@ interface WiremapBackgroundProps {
 }
 ```
 
-**Usage:**
+**Usage (Automatic):**
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} />
+// WiremapBackground automatically included when wiremapEnabled is true
+```
+
+**Usage (Manual):**
 ```tsx
 import { WiremapBackground } from '@/components/void/WiremapBackground'
 
@@ -65,6 +75,8 @@ Drag-drop background upload system.
 
 **Location**: `components/void/BackgroundSystem.tsx`
 
+**Integration Status**: ✅ Automatically integrated in `VOID.tsx` (v1.2.0+). Part of Background Layer (LAYER 1: z: 0-1).
+
 **Props:**
 ```typescript
 interface BackgroundSystemProps {
@@ -72,7 +84,15 @@ interface BackgroundSystemProps {
 }
 ```
 
-**Usage:**
+**Usage (Automatic):**
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} />
+// BackgroundSystem automatically included
+```
+
+**Usage (Manual):**
 ```tsx
 import { BackgroundSystem } from '@/components/void/BackgroundSystem'
 
@@ -367,7 +387,32 @@ setTheme('dark')
 
 ## Component Composition
 
-### Basic VOID Page
+### Recommended: Using VOID Component (v1.2.0+)
+
+**Recommended approach** - All background and theme systems are automatically integrated:
+
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+export default function VoidDesktop({ user }: { user: User }) {
+  return (
+    <VOID 
+      user={user}
+      onNavigate={(page) => navigate(page)}
+    />
+  )
+}
+```
+
+The VOID component automatically includes:
+- ✅ BackgroundSystem
+- ✅ WiremapBackground (when enabled)
+- ✅ Theme initialization
+- ✅ All layer components
+
+### Manual Composition (Legacy/Advanced)
+
+For advanced use cases requiring manual composition:
 
 ```tsx
 import { WiremapBackground } from '@/components/void/WiremapBackground'

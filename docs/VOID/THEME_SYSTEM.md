@@ -339,6 +339,9 @@ export type Theme = 'dark' | 'light' | 'custom'
 
 ### Flash on Load
 
+**Note**: As of v1.2.0, `initTheme()` is automatically called in `VOID.tsx` via `useLayoutEffect`, preventing flash on load. If using the `VOID` component, no manual initialization is needed.
+
+For manual integration:
 - Call `initTheme()` before first render
 - Use inline script in `<head>`
 - Set `data-theme` attribute early

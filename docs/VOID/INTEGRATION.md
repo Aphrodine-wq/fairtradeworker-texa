@@ -64,16 +64,44 @@ const VoidDesktopPage = lazy(() =>
 
 ## Basic Integration
 
-### Minimal Setup
+**Note**: As of v1.2.0, BackgroundSystem, WiremapBackground, and theme initialization are automatically integrated into the main `VOID.tsx` component. You don't need to manually add these components.
+
+### Using VOID Component
+
+```tsx
+// pages/void/index.tsx
+import { VOID } from '@/components/void/VOID'
+
+export default function VoidDesktop({ user }: { user: User }) {
+  return (
+    <VOID 
+      user={user}
+      onNavigate={(page) => navigate(page)}
+    />
+  )
+}
+```
+
+The VOID component automatically includes:
+- ✅ BackgroundSystem (custom wallpapers with drag-and-drop)
+- ✅ WiremapBackground (when `wiremapEnabled` is true)
+- ✅ Theme initialization (automatic via `initTheme()`)
+- ✅ All layer components (boot screen, lock screen, toolbar, desktop, windows, etc.)
+
+### Manual Integration (Legacy/Advanced)
+
+If you need to integrate components manually (not recommended):
 
 ```tsx
 // pages/void/index.tsx
 import { WiremapBackground } from '@/components/void/WiremapBackground'
+import { BackgroundSystem } from '@/components/void/BackgroundSystem'
 import { VoidThemeToggle } from '@/components/void/ThemeToggle'
 
 export default function VoidDesktop() {
   return (
     <div className="void-desktop">
+      <BackgroundSystem />
       <WiremapBackground />
       <VoidThemeToggle />
       {/* Your content */}
@@ -87,16 +115,16 @@ export default function VoidDesktop() {
 ```tsx
 import { MediaToolbar } from '@/components/media/MediaToolbar'
 import { useCRMMoodSync } from '@/hooks/useCRMMoodSync'
+import { VOID } from '@/components/void/VOID'
 
-export default function VoidDesktop() {
+export default function VoidDesktop({ user }: { user: User }) {
   useCRMMoodSync() // Auto-pause during voice recording
   
   return (
-    <div className="void-desktop">
-      <WiremapBackground />
+    <>
+      <VOID user={user} />
       <MediaToolbar />
-      {/* Your content */}
-    </div>
+    </>
   )
 }
 ```
@@ -237,7 +265,22 @@ useMediaSession({
 
 ## Background System
 
-### Enabling Background System
+**Note**: As of v1.2.0, BackgroundSystem is automatically integrated into `VOID.tsx`. It's part of the Background Layer (LAYER 1: z: 0-1) and requires no manual setup.
+
+### Automatic Integration
+
+The BackgroundSystem is automatically included when using the `VOID` component:
+
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} />
+// BackgroundSystem is automatically included
+```
+
+### Manual Integration (Advanced)
+
+If you need to use BackgroundSystem standalone:
 
 ```tsx
 import { BackgroundSystem } from '@/components/void/BackgroundSystem'
@@ -268,6 +311,19 @@ const backgrounds = [
 ```
 
 ## Wiremap Customization
+
+**Note**: As of v1.2.0, WiremapBackground is automatically integrated into `VOID.tsx` and conditionally renders based on `wiremapEnabled` from the store.
+
+### Automatic Integration
+
+The WiremapBackground is automatically included when using the `VOID` component and `wiremapEnabled` is true:
+
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} />
+// WiremapBackground automatically renders when wiremapEnabled is true
+```
 
 ### Adjusting Node Count
 
@@ -364,11 +420,14 @@ const VoidDesktopPage = lazy(() =>
 
 ### Conditional Loading
 
+**Note**: WiremapBackground is already conditionally loaded in `VOID.tsx` based on `wiremapEnabled`. For manual integration:
+
 ```typescript
 // Only load wiremap on desktop
 const isDesktop = !useIsMobile()
+const { wiremapEnabled } = useVoidStore()
 
-{isDesktop && <WiremapBackground />}
+{isDesktop && wiremapEnabled && <WiremapBackground />}
 ```
 
 ## Testing Integration
@@ -401,9 +460,12 @@ jest.mock('@/components/void/WiremapBackground', () => ({
 
 ### Theme Not Applying
 
-1. Check `initTheme()` is called
-2. Verify CSS variables are loaded
-3. Check `data-theme` attribute
+**Note**: As of v1.2.0, `initTheme()` is automatically called in `VOID.tsx` via `useLayoutEffect`. If using the `VOID` component, theme initialization is automatic.
+
+1. Verify `initTheme()` is called (automatic in VOID.tsx)
+2. Check CSS variables are loaded (void-design-system.css is imported)
+3. Check `data-theme` attribute on document root
+4. Verify theme is set in store: `useVoidStore.getState().theme`
 
 ### Wiremap Not Rendering
 
@@ -424,6 +486,23 @@ jest.mock('@/components/void/WiremapBackground', () => ({
 3. **Performance**: Monitor FPS, throttle when needed
 4. **Accessibility**: Use ARIA labels
 5. **Testing**: Mock external APIs
+
+## Automatic Integration (v1.2.0+)
+
+As of version 1.2.0, the following components are automatically integrated into `VOID.tsx`:
+
+- ✅ **BackgroundSystem**: Automatically included in Background Layer
+- ✅ **WiremapBackground**: Conditionally rendered based on `wiremapEnabled`
+- ✅ **Theme Initialization**: Automatic via `initTheme()` in `useLayoutEffect`
+- ✅ **CSS Imports**: All required stylesheets automatically imported
+
+You only need to use the `VOID` component - all background and theme functionality is included:
+
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} onNavigate={handleNavigate} />
+```
 
 ---
 

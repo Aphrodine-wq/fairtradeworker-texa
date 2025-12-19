@@ -126,6 +126,13 @@ See [TECHNICAL_SPECIFICATION.md](./TECHNICAL_SPECIFICATION.md#security--stabilit
 
 ## Version History
 
+- **v1.2.0** (December 2025): Complete Integration Update
+  - BackgroundSystem and WiremapBackground fully integrated into VOID.tsx
+  - Automatic theme initialization via useLayoutEffect
+  - Background layer (LAYER 1) properly structured per OS specification
+  - All components wrapped in error boundaries
+  - Missing CSS imports added (void-design-system.css, void-effects.css)
+  - Production-ready integration following layer stack architecture
 - **v1.1.0** (December 2025): Security & Stability Update
   - Comprehensive security enhancements
   - Runtime validation with Zod schemas
