@@ -384,20 +384,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         responseMessage = 'You have been unsubscribed from FTW job alerts. Text "START" to re-subscribe.'
         break
         
-      case 'digest':
+      case 'digest': {
         // Send morning digest
-        const preferences = await getContractorPreferences(fromPhone)
+        const _preferences = await getContractorPreferences(fromPhone)
         const digestJobs = await searchJobs({}, fromPhone)
         const topMatches = digestJobs.slice(0, 5)
         responseMessage = `☀️ Your top 5 matches today:\n${topMatches.map((j, i) => `${i + 1}. $${j.price} ${j.title}`).join('\n')}\nReply # to claim`
         searchSessions.set(fromPhone, { jobs: topMatches, timestamp: Date.now() })
         break
+      }
         
-      case 'prefs':
+      case 'prefs': {
         responseMessage = 'Set preferences at fairtradeworker.com/prefs or reply:\n• "skip under 300" - min price\n• "max 20 miles" - distance\n• "digest on/off" - morning digest'
         break
+      }
         
-      case 'claim':
+      case 'claim': {
         const session = searchSessions.get(fromPhone)
         if (!session || !session.jobs.length) {
           responseMessage = 'No recent search. Text a query first (e.g., "fence 77002")'
@@ -405,9 +407,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           responseMessage = await claimJob(query.jobNumber!, fromPhone, session.jobs)
         }
         break
+      }
         
       case 'search':
-      default:
+      default: {
         // Perform job search
         const jobs = await searchJobs(query, fromPhone)
         const smsMessages = formatJobsForSMS(jobs)
@@ -416,6 +419,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Store session for claim handling
         searchSessions.set(fromPhone, { jobs, timestamp: Date.now() })
         break
+      }
     }
     
     // Return TwiML response

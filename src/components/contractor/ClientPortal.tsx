@@ -73,7 +73,7 @@ export function ClientPortal({ user, job }: ClientPortalProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -92,7 +92,7 @@ export function ClientPortal({ user, job }: ClientPortalProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+        <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
           <Label>Portal URL</Label>
           <div className="flex gap-2 mt-2">
             <Input value={portalUrl} readOnly className="flex-1 font-mono text-sm" />

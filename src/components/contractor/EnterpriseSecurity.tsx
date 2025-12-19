@@ -103,7 +103,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
         </TabsList>
 
         <TabsContent value="encryption" className="space-y-6 mt-6">
-          <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+          <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
             <CardHeader>
               <CardTitle className="text-lg">Data Encryption</CardTitle>
               <CardDescription>
@@ -127,7 +127,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
               </div>
 
               {encryptionConfig.enabled && (
-                <div className="space-y-4 pt-4 border-t border-black/10 dark:border-white/10">
+                <div className="space-y-4 pt-4 border-t border-gray-200 dark:border-gray-800">
                   <div>
                     <Label>Encryption Algorithm</Label>
                     <div className="mt-2">
@@ -171,7 +171,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
           </Card>
 
           <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <Lock weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Data at Rest</h3>
@@ -181,7 +181,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <Shield weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Data in Transit</h3>
@@ -191,7 +191,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <FileX weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Access Control</h3>
@@ -210,7 +210,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
               const audit = audits.find(a => a.type === type)
 
               return (
-                <Card key={type} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={type} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg uppercase">{type}</CardTitle>
@@ -246,7 +246,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
                         </div>
 
                         {audit.findings.length > 0 && (
-                          <div className="space-y-2 pt-2 border-t border-black/10 dark:border-white/10">
+                          <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                             {audit.findings.slice(0, 2).map(finding => (
                               <div key={finding.id} className="text-sm">
                                 <div className="flex items-center gap-2 mb-1">
@@ -317,7 +317,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
           </div>
 
           {sandboxes.length === 0 ? (
-            <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+            <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
               <TestTube size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground mb-4">No sandbox environments created yet</p>
               <Button onClick={handleCreateSandbox}>Create Your First Sandbox</Button>
@@ -325,7 +325,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {sandboxes.map(sandbox => (
-                <Card key={sandbox.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={sandbox.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{sandbox.name}</CardTitle>
@@ -354,7 +354,7 @@ export function EnterpriseSecurity({ user }: EnterpriseSecurityProps) {
                           {Object.keys(sandbox.data).length}
                         </span>
                       </div>
-                      <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                      <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                         <Button size="sm" variant="outline" className="flex-1">
                           Open Sandbox
                         </Button>

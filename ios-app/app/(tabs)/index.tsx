@@ -11,11 +11,13 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Button, Card } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive, responsive } from '@/src/hooks';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { currentUser, isDemoMode, demoLogin, jobs } = useAppStore();
+  const { isTablet } = useResponsive();
 
   const todayJobs = jobs.filter((job) => {
     const today = new Date().toDateString();
@@ -29,18 +31,18 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      <ScrollView style={styles.container} contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}>
         {/* Hero Section */}
-        <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>
+        <View style={[styles.heroSection, isTablet && styles.heroSectionTablet]}>
+          <Text style={[styles.heroTitle, isTablet && styles.heroTitleTablet]}>
             Zero-fee home services marketplace.
           </Text>
-          <Text style={styles.heroSubtitle}>
+          <Text style={[styles.heroSubtitle, isTablet && styles.heroSubtitleTablet]}>
             AI scopes in 60 seconds. Contractors/Subcontractors keep 100%.
           </Text>
 
           {/* Quick Actions */}
-          <View style={styles.quickActions}>
+          <View style={[styles.quickActions, isTablet && styles.quickActionsTablet]}>
             <Button
               title="I'm a Homeowner"
               size="lg"
@@ -71,79 +73,82 @@ export default function HomeScreen() {
           </Card>
         </View>
 
-        {/* Demo Mode Section */}
-        <Card variant="elevated" padding="lg" style={styles.demoCard}>
-          <View style={styles.demoHeader}>
-            <Ionicons name="play-circle" size={24} color={Colors.primary} />
-            <Text style={styles.demoTitle}>Try Demo Mode</Text>
+        {/* Two-column layout for tablet */}
+        <View style={isTablet ? styles.twoColumnContainer : null}>
+          {/* Demo Mode Section */}
+          <Card variant="elevated" padding="lg" style={[styles.demoCard, isTablet && styles.demoCardTablet]}>
+            <View style={styles.demoHeader}>
+              <Ionicons name="play-circle" size={24} color={Colors.primary} />
+              <Text style={styles.demoTitle}>Try Demo Mode</Text>
+            </View>
+            <Text style={styles.demoDescription}>
+              Explore the platform instantly with pre-populated demo accounts for each user type.
+            </Text>
+            <View style={[styles.demoButtons, isTablet && styles.demoButtonsTablet]}>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.primary }]}
+                onPress={() => handleDemoLogin('homeowner')}
+              >
+                <Ionicons name="home" size={20} color={Colors.primary} />
+                <Text style={[styles.demoButtonText, { color: Colors.primary }]}>
+                  Homeowner
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.secondary }]}
+                onPress={() => handleDemoLogin('contractor')}
+              >
+                <Ionicons name="hammer" size={20} color={Colors.secondary} />
+                <Text style={[styles.demoButtonText, { color: Colors.secondary }]}>
+                  Contractor/Subcontractor
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.demoButton, { borderColor: Colors.accent }]}
+                onPress={() => handleDemoLogin('operator')}
+              >
+                <Ionicons name="map" size={20} color={Colors.accent} />
+                <Text style={[styles.demoButtonText, { color: Colors.accent }]}>
+                  Operator
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Card>
+
+          {/* How It Works Section */}
+          <View style={[styles.howItWorksSection, isTablet && styles.howItWorksSectionTablet]}>
+            <Text style={styles.sectionTitle}>How it works</Text>
+            
+            <Card variant="elevated" padding="md" style={styles.stepCard}>
+              <View style={[styles.stepIcon, { backgroundColor: Colors.primary }]}>
+                <Ionicons name="home" size={24} color={Colors.textInverse} />
+              </View>
+              <Text style={styles.stepTitle}>Post Your Job</Text>
+              <Text style={styles.stepDescription}>
+                Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
+              </Text>
+            </Card>
+
+            <Card variant="elevated" padding="md" style={styles.stepCard}>
+              <View style={[styles.stepIcon, { backgroundColor: Colors.secondary }]}>
+                <Ionicons name="hammer" size={24} color={Colors.textInverse} />
+              </View>
+              <Text style={styles.stepTitle}>Get Bids</Text>
+              <Text style={styles.stepDescription}>
+                Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
+              </Text>
+            </Card>
+
+            <Card variant="elevated" padding="md" style={styles.stepCard}>
+              <View style={[styles.stepIcon, { backgroundColor: Colors.accent }]}>
+                <Ionicons name="checkmark-circle" size={24} color={Colors.textPrimary} />
+              </View>
+              <Text style={styles.stepTitle}>Zero Fees</Text>
+              <Text style={styles.stepDescription}>
+                Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
+              </Text>
+            </Card>
           </View>
-          <Text style={styles.demoDescription}>
-            Explore the platform instantly with pre-populated demo accounts for each user type.
-          </Text>
-          <View style={styles.demoButtons}>
-            <TouchableOpacity
-              style={[styles.demoButton, { borderColor: Colors.primary }]}
-              onPress={() => handleDemoLogin('homeowner')}
-            >
-              <Ionicons name="home" size={20} color={Colors.primary} />
-              <Text style={[styles.demoButtonText, { color: Colors.primary }]}>
-                Homeowner
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.demoButton, { borderColor: Colors.secondary }]}
-              onPress={() => handleDemoLogin('contractor')}
-            >
-              <Ionicons name="hammer" size={20} color={Colors.secondary} />
-              <Text style={[styles.demoButtonText, { color: Colors.secondary }]}>
-                Contractor/Subcontractor
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.demoButton, { borderColor: Colors.accent }]}
-              onPress={() => handleDemoLogin('operator')}
-            >
-              <Ionicons name="map" size={20} color={Colors.accent} />
-              <Text style={[styles.demoButtonText, { color: Colors.accent }]}>
-                Operator
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Card>
-
-        {/* How It Works Section */}
-        <View style={styles.howItWorksSection}>
-          <Text style={styles.sectionTitle}>How it works</Text>
-          
-          <Card variant="elevated" padding="md" style={styles.stepCard}>
-            <View style={[styles.stepIcon, { backgroundColor: Colors.primary }]}>
-              <Ionicons name="home" size={24} color={Colors.textInverse} />
-            </View>
-            <Text style={styles.stepTitle}>Post Your Job</Text>
-            <Text style={styles.stepDescription}>
-              Upload a video, voice note, or photos. Our AI analyzes your project and provides an instant scope and price estimate.
-            </Text>
-          </Card>
-
-          <Card variant="elevated" padding="md" style={styles.stepCard}>
-            <View style={[styles.stepIcon, { backgroundColor: Colors.secondary }]}>
-              <Ionicons name="hammer" size={24} color={Colors.textInverse} />
-            </View>
-            <Text style={styles.stepTitle}>Get Bids</Text>
-            <Text style={styles.stepDescription}>
-              Licensed contractors in your area review your job and submit competitive bids. You choose who to hire.
-            </Text>
-          </Card>
-
-          <Card variant="elevated" padding="md" style={styles.stepCard}>
-            <View style={[styles.stepIcon, { backgroundColor: Colors.accent }]}>
-              <Ionicons name="checkmark-circle" size={24} color={Colors.textPrimary} />
-            </View>
-            <Text style={styles.stepTitle}>Zero Fees</Text>
-            <Text style={styles.stepDescription}>
-              Contractors/Subcontractors keep 100% of what you pay. No hidden fees, no commissions. Fair trade for everyone.
-            </Text>
-          </Card>
         </View>
 
         {/* Live Stats */}
@@ -181,9 +186,18 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingBottom: Spacing.xxxl,
   },
+  contentTablet: {
+    padding: Spacing.tablet.xl,
+    paddingBottom: Spacing.tablet.xxxl,
+    alignItems: 'center',
+  },
   heroSection: {
     alignItems: 'center',
     marginBottom: Spacing.xl,
+  },
+  heroSectionTablet: {
+    marginBottom: Spacing.tablet.xxl,
+    maxWidth: Layout.maxContentWidth.tablet,
   },
   heroTitle: {
     fontSize: Typography.fontSize['3xl'],
@@ -192,16 +206,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: Spacing.md,
   },
+  heroTitleTablet: {
+    fontSize: 42,
+    marginBottom: Spacing.tablet.lg,
+  },
   heroSubtitle: {
     fontSize: Typography.fontSize.lg,
     color: Colors.textSecondary,
     textAlign: 'center',
     marginBottom: Spacing.xl,
   },
+  heroSubtitleTablet: {
+    fontSize: Typography.fontSize.xl,
+    marginBottom: Spacing.tablet.xl,
+  },
   quickActions: {
     width: '100%',
     gap: Spacing.md,
     marginBottom: Spacing.xl,
+  },
+  quickActionsTablet: {
+    flexDirection: 'row',
+    gap: Spacing.tablet.lg,
+    maxWidth: Layout.maxContentWidth.tablet,
   },
   actionButton: {
     width: '100%',
@@ -221,8 +248,18 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.accent,
   },
+  twoColumnContainer: {
+    flexDirection: 'row',
+    gap: Spacing.tablet.xl,
+    maxWidth: Layout.maxContentWidth.tablet,
+    alignItems: 'flex-start',
+  },
   demoCard: {
     marginBottom: Spacing.xl,
+  },
+  demoCardTablet: {
+    flex: 1,
+    marginBottom: 0,
   },
   demoHeader: {
     flexDirection: 'row',
@@ -244,6 +281,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: Spacing.sm,
   },
+  demoButtonsTablet: {
+    flexDirection: 'column',
+    gap: Spacing.tablet.md,
+  },
   demoButton: {
     flex: 1,
     flexDirection: 'row',
@@ -261,6 +302,10 @@ const styles = StyleSheet.create({
   },
   howItWorksSection: {
     marginBottom: Spacing.xl,
+  },
+  howItWorksSectionTablet: {
+    flex: 1,
+    marginBottom: 0,
   },
   sectionTitle: {
     fontSize: Typography.fontSize['2xl'],

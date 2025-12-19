@@ -51,7 +51,7 @@ export function ProfitCalculator({ user, job, bidAmount: initialBid }: ProfitCal
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -123,7 +123,7 @@ export function ProfitCalculator({ user, job, bidAmount: initialBid }: ProfitCal
           </div>
         </div>
 
-        <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+        <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-black dark:text-white">Bid Amount</span>
@@ -141,7 +141,7 @@ export function ProfitCalculator({ user, job, bidAmount: initialBid }: ProfitCal
               <span className="text-black dark:text-white">Overhead ({overhead}%)</span>
               <span className="text-black dark:text-white">-${overheadCost.toLocaleString()}</span>
             </div>
-            <div className="border-t-2 border-black dark:border-white pt-3 mt-3">
+            <div className="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-semibold text-black dark:text-white">Net Profit</span>
                 <span className={`text-2xl font-bold ${netProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>

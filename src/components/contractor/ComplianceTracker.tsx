@@ -136,7 +136,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                 </Button>
               </DialogTrigger>
               <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-                <div className="px-8 pt-6 pb-4 border-b-2 border-black dark:border-white flex-shrink-0">
+                <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
                   <DialogHeader className="text-left">
                     <DialogTitle className="text-2xl">Add Compliance Item</DialogTitle>
                     <DialogDescription>Track licenses, insurance, permits, certifications</DialogDescription>
@@ -216,7 +216,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                     </div>
                   </div>
                 </div>
-                <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                   <div className="flex gap-3 justify-end">
                     <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-11">
                       Cancel
@@ -245,7 +245,7 @@ export function ComplianceTracker({ user }: { user: User }) {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {expiredItems.map(item => (
-                    <div key={item.id} className="p-3 bg-[#FF0000] rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                    <div key={item.id} className="p-3 bg-[#FF0000] rounded-md border-0 shadow-sm shadow-sm">
                       <div className="font-semibold text-black dark:text-white">{item.name}</div>
                       <div className="text-sm text-muted-foreground">
                         Expired: {new Date(item.expirationDate).toLocaleDateString()}
@@ -275,7 +275,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                       (new Date(item.expirationDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
                     )
                     return (
-                      <div key={item.id} className="p-3 bg-[#FFFF00] rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+                      <div key={item.id} className="p-3 bg-[#FFFF00] rounded-md border-0 shadow-sm shadow-sm">
                         <div className="font-semibold text-black dark:text-white">{item.name}</div>
                         <div className="text-sm text-muted-foreground">
                           Expires in {daysUntilExp} day{daysUntilExp !== 1 ? 's' : ''}
@@ -326,7 +326,7 @@ export function ComplianceTracker({ user }: { user: User }) {
                     ? 'border-red-200 dark:border-red-800'
                     : item.status === 'expiring-soon'
                       ? 'border-yellow-200 dark:border-yellow-800'
-                      : 'border-black/10 dark:border-white/10'
+                      : 'border-0 shadow-sm'
                 }`}
               >
                 <CardHeader>

@@ -238,8 +238,8 @@ export function UnifiedCustomerProfile({ customerId, user, onClose }: UnifiedCus
             )}
             {customer.address && (
               <div className="flex items-start gap-2 text-sm">
-                <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
-                <span className="text-gray-700">{customer.address}</span>
+                <MapPin className="w-4 h-4 text-gray-500 dark:text-gray-400 mt-0.5" />
+                <span className="text-gray-700 dark:text-gray-300">{customer.address}</span>
               </div>
             )}
             {customer.tags && customer.tags.length > 0 && (

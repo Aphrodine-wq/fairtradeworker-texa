@@ -274,7 +274,7 @@ export function InstantInvite({ user }: InstantInviteProps) {
             <Button
               onClick={handleSendSMSInvite}
               disabled={isSending}
-              className="w-full border-2 border-black dark:border-white"
+              className="w-full border-0 shadow-md hover:shadow-lg"
             >
               {isSending ? (
                 <>
@@ -348,7 +348,7 @@ export function InstantInvite({ user }: InstantInviteProps) {
             </div>
             <Button
               onClick={handleSendEmailInvite}
-              className="w-full border-2 border-black dark:border-white"
+              className="w-full border-0 shadow-md hover:shadow-lg"
               size="lg"
               disabled={isSending}
             >

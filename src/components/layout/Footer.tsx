@@ -1,4 +1,4 @@
-import { Heart } from "@phosphor-icons/react"
+import { Heart, FacebookLogo, InstagramLogo, TwitterLogo, LinkedinLogo } from "@phosphor-icons/react"
 
 interface FooterProps {
   onNavigate?: (page: string) => void
@@ -11,7 +11,7 @@ export function Footer({ onNavigate }: FooterProps) {
     company: [
       { label: 'About', page: 'about' },
       { label: 'Contact', page: 'contact' },
-      { label: 'Careers', page: 'careers', disabled: true },
+      { label: 'Careers', page: 'careers' },
     ],
     legal: [
       { label: 'Privacy Policy', page: 'privacy' },
@@ -20,7 +20,15 @@ export function Footer({ onNavigate }: FooterProps) {
     resources: [
       { label: 'Free Tools', page: 'free-tools' },
       { label: 'Help Center', page: 'help' },
-      { label: 'Blog', page: 'blog', disabled: true },
+      { label: 'Blog', page: 'blog' },
+    ],
+    platformFeatures: [
+      { label: 'AI Scoping', page: 'photo-scoper' },
+      { label: 'Smart Invoicing', page: 'invoices' },
+      { label: 'Analytics Dashboard', page: 'revenue-dashboard' },
+      { label: 'CRM Suite', page: 'crm' },
+      { label: 'Boosted Listings', page: 'pricing' },
+      { label: 'Secure Payments', page: 'payments' },
     ],
   }
 
@@ -33,7 +41,7 @@ export function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="bg-white dark:bg-black">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div>
             <button
@@ -112,6 +120,27 @@ export function Footer({ onNavigate }: FooterProps) {
               ))}
             </ul>
           </div>
+
+          {/* Platform Features Links */}
+          <div>
+            <h3 className="font-black uppercase text-sm mb-4">Platform Features</h3>
+            <ul className="space-y-2">
+              {footerLinks.platformFeatures.map((link) => (
+                <li key={link.page}>
+                  <button
+                    onClick={() => handleClick(link.page, link.disabled)}
+                    disabled={link.disabled}
+                    className={`text-sm font-medium hover:text-[#00FF00] transition-colors ${
+                      link.disabled ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {link.label}
+                    {link.disabled && ' (Coming Soon)'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom Bar */}
@@ -120,22 +149,58 @@ export function Footer({ onNavigate }: FooterProps) {
             <p className="text-sm font-mono">
               © {currentYear} FairTradeWorker. All rights reserved.
             </p>
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-3 items-center">
+              <a
+                href="https://facebook.com/fairtradeworker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all group"
+                aria-label="Facebook"
+              >
+                <FacebookLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" 
+                />
+              </a>
+              <a
+                href="https://instagram.com/fairtradeworker"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-950/20 transition-all group"
+                aria-label="Instagram"
+              >
+                <InstagramLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors" 
+                />
+              </a>
               <a
                 href="https://twitter.com/fairtradeworker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium hover:text-[#00FF00] transition-colors"
+                className="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-all group"
+                aria-label="X (Twitter)"
               >
-                Twitter
+                <TwitterLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white transition-colors" 
+                />
               </a>
               <a
                 href="https://linkedin.com/company/fairtradeworker"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium hover:text-[#00FF00] transition-colors"
+                className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/20 transition-all group"
+                aria-label="LinkedIn"
               >
-                LinkedIn
+                <LinkedinLogo 
+                  size={24} 
+                  weight="fill" 
+                  className="text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors" 
+                />
               </a>
             </div>
           </div>

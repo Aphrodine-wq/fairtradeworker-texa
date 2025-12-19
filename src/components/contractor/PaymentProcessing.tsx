@@ -170,7 +170,7 @@ export function PaymentProcessing({ user }: { user: User }) {
           </div>
 
           {/* Transactions */}
-          <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+          <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
             <CardHeader>
               <CardTitle>Transaction History</CardTitle>
               <CardDescription>All payment and payout transactions</CardDescription>
@@ -180,7 +180,7 @@ export function PaymentProcessing({ user }: { user: User }) {
                 {filteredTransactions.map(transaction => {
                   const MethodIcon = getMethodIcon(transaction.method)
                   return (
-                    <Card key={transaction.id} className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+                    <Card key={transaction.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">

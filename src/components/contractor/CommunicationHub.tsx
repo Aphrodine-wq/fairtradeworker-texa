@@ -94,8 +94,8 @@ export function CommunicationHub({ user }: { user: User }) {
             <CardContent className="p-0">
               <div className="grid grid-cols-1 lg:grid-cols-3 h-[600px]">
                 {/* Conversations List */}
-                <div className="border border-black/20 dark:border-white/20 flex flex-col">
-                  <div className="p-4 border-b-2 border-black dark:border-white">
+                <div className="border-0 shadow-md hover:shadow-lg flex flex-col">
+                  <div className="p-4 border-b border-gray-200 dark:border-gray-800">
                     <div className="relative">
                       <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-black dark:text-white" size={20} weight="duotone" />
                       <Input
@@ -111,12 +111,12 @@ export function CommunicationHub({ user }: { user: User }) {
                       <div
                         key={conv.id}
                         onClick={() => setSelectedConversation(conv.id)}
-                        className={`p-4 border-b-2 border-black dark:border-white cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-all ${
+                        className={`p-4 border-b border-gray-200 dark:border-gray-800 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-all ${
                           selectedConversation === conv.id ? 'bg-black dark:bg-white text-white dark:text-black' : ''
                         }`}
                       >
                         <div className="flex items-start gap-3">
-                          <div className="h-10 w-10 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <div className="h-10 w-10 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg flex items-center justify-center flex-shrink-0 shadow-sm">
                             <User weight="fill" size={20} className="text-primary" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -154,7 +154,7 @@ export function CommunicationHub({ user }: { user: User }) {
                   {currentConversation ? (
                     <>
                       {/* Chat Header */}
-                      <div className="p-4 border border-black/20 dark:border-white/20 flex items-center justify-between bg-white dark:bg-black">
+                      <div className="p-4 border-0 shadow-md hover:shadow-lg flex items-center justify-between bg-white dark:bg-black">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                             <User weight="fill" size={20} className="text-primary" />
@@ -185,7 +185,7 @@ export function CommunicationHub({ user }: { user: User }) {
                               key={msg.id}
                               className={`flex ${isFromMe ? 'justify-end' : 'justify-start'}`}
                             >
-                              <div className={`max-w-[70%] rounded-md border border-black/20 dark:border-white/20 p-3 font-mono shadow-sm ${
+                              <div className={`max-w-[70%] rounded-md border-0 shadow-md hover:shadow-lg p-3 font-mono shadow-sm ${
                                 isFromMe
                                   ? 'bg-black dark:bg-white text-white dark:text-black'
                                   : 'bg-white dark:bg-black text-black dark:text-white'
@@ -203,7 +203,7 @@ export function CommunicationHub({ user }: { user: User }) {
                       </div>
 
                       {/* Message Input */}
-                      <div className="p-4 border-t-2 border-black dark:border-white bg-white dark:bg-black">
+                      <div className="p-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
                         <div className="flex gap-2">
                           <Input
                             placeholder="Type a message..."

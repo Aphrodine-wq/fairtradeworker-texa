@@ -61,10 +61,10 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
 
   const getTypeBadge = (type: ProjectUpdate['type']) => {
     const variants = {
-      progress: { className: 'bg-green-100 text-green-700', label: 'Progress' },
-      issue: { className: 'bg-red-100 text-red-700', label: 'Issue' },
-      milestone: { className: 'bg-blue-100 text-blue-700', label: 'Milestone' },
-      general: { className: 'bg-gray-100 text-gray-700', label: 'General' }
+      progress: { className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400', label: 'Progress' },
+      issue: { className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400', label: 'Issue' },
+      milestone: { className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400', label: 'Milestone' },
+      general: { className: 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300', label: 'General' }
     }
     const variant = variants[type]
     return <Badge className={variant.className}>{variant.label}</Badge>
@@ -315,7 +315,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Post Project Update</DialogTitle>
               <DialogDescription>
@@ -474,7 +474,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
             </div>
 
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -488,7 +488,7 @@ export function ProjectUpdates({ job, user, onUpdate }: ProjectUpdatesProps) {
               </Button>
               <Button 
                 onClick={handleAdd} 
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

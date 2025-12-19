@@ -1,28 +1,88 @@
 /* ===========================================
-   FairTradeWorker - Enhanced Global Theme Transition Fix
+   FairTradeWorker - GPU-Optimized Theme Transitions
    =========================================== */
 
 /* ============================================
-   1. ENHANCED TRANSITION SYSTEM
+   1. PERFORMANCE-FIRST TRANSITION SYSTEM
    ============================================ */
 
+/* GPU acceleration for all transitions */
+body,
+main,
+section,
+article,
+aside,
+header,
+footer,
+nav,
+div:not([class*="animate"]),
+[class*="bg-"] {
+  transition: background-color 0.12s cubic-bezier(0.2, 0, 0.2, 1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Borders - faster for snappy feedback */
+[class*="border"],
+button,
+input,
+select,
+textarea,
+[data-slot="card"] {
+  transition: border-color 0.1s, box-shadow 0.15s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  transform: translateZ(0);
+}
+
+/* Text - quick color change */
+p,
+span,
+h1, h2, h3, h4, h5, h6,
+a,
+label,
+[class*="text-"],
+svg,
+[class*="icon"] {
+  transition: color 0.1s, fill 0.1s, stroke 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+/* Shadows - slightly longer for depth perception */
+[class*="shadow"],
+[class*="backdrop"] {
+  transition: box-shadow 0.2s, backdrop-filter 0.15s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
+  will-change: box-shadow;
+}
+
+/* Minimal fallback - only essential properties */
 *,
 *::before,
 *::after {
-  transition-property: background-color, border-color, color, fill, stroke, box-shadow, opacity, transform;
-  transition-duration: 75ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-property: background-color, border-color, color, opacity;
+  transition-duration: 0.1s;
+  transition-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 /* Performance optimization - disable transitions during heavy operations */
 .reduce-motion *,
 .reduce-motion *::before,
-.reduce-motion *::after {
-  transition-duration: 0ms !important;
+.reduce-motion *::after,
+.no-transitions *,
+.no-transitions *::before,
+.no-transitions *::after {
+  transition: none !important;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ============================================
-   2. ENHANCED BRUTALIST THEME VARIABLES
+   2. ENHANCED THEME VARIABLES
    ============================================ */
 
 :root {
@@ -34,23 +94,23 @@
   --text-secondary: #333333;
   --text-tertiary: #666666;
   --border-color: #000000;
-  --shadow-color: #000000;
+  --shadow-color: transparent;
   
   /* Accent colors */
   --accent-green: #00FF00;
   --accent-red: #FF0000;
   --accent-yellow: #FFFF00;
   
-  /* Border widths for brutalist style */
+  /* Border widths */
   --border-thin: 2px;
   --border-thick: 4px;
   
-  /* Shadows */
-  --shadow-sm: 2px 2px 0 var(--shadow-color);
-  --shadow-md: 4px 4px 0 var(--shadow-color);
-  --shadow-lg: 8px 8px 0 var(--shadow-color);
+  /* Shadows - DISABLED in light mode for clean flat design */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
   
-  /* Spacing (pixel-perfect for brutalist) */
+  /* Spacing */
   --spacing-xxs: 1px;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -69,35 +129,40 @@
   --text-tertiary: #999999;
   --border-color: #FFFFFF;
   --shadow-color: #FFFFFF;
+  
+  /* Dark mode gets shadows */
+  --shadow-sm: 2px 2px 0 var(--shadow-color);
+  --shadow-md: 4px 4px 0 var(--shadow-color);
+  --shadow-lg: 8px 8px 0 var(--shadow-color);
 }
 
 /* ============================================
-   3. UTILITY CLASSES FOR BRUTALIST DESIGN
+   3. UTILITY CLASSES
    ============================================ */
 
 /* Border utilities */
-.border-brutal {
+.border-modern {
   border-width: var(--border-thin);
   border-style: solid;
   border-color: var(--border-color);
 }
 
-.border-brutal-thick {
+.border-modern-thick {
   border-width: var(--border-thick);
   border-style: solid;
   border-color: var(--border-color);
 }
 
 /* Shadow utilities */
-.shadow-brutal-sm {
+.shadow-modern-sm {
   box-shadow: var(--shadow-sm);
 }
 
-.shadow-brutal-md {
+.shadow-modern-md {
   box-shadow: var(--shadow-md);
 }
 
-.shadow-brutal-lg {
+.shadow-modern-lg {
   box-shadow: var(--shadow-lg);
 }
 
@@ -124,7 +189,7 @@
 /* Glass card fix (if you're using glass morphism) */
 .glass-card {
   background-color: var(--bg-primary);
-  backdrop-filter: blur(0px); /* Brutalist - no blur */
+  backdrop-filter: blur(0px);
   border: var(--border-thick) solid var(--border-color);
   box-shadow: var(--shadow-lg);
 }
@@ -140,12 +205,12 @@
    ============================================ */
 
 /* Keyframe animations */
-@keyframes brutal-pulse {
+@keyframes modern-pulse {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(2px, 2px); }
 }
 
-@keyframes brutal-bounce {
+@keyframes modern-bounce {
   0%, 100% { transform: translate(0, 0); }
   25% { transform: translate(4px, 0); }
   50% { transform: translate(4px, 4px); }
@@ -202,9 +267,8 @@
   }
 }
 
-/* Remove empty/brutalist placeholder menus that appear during transitions */
+/* Remove empty placeholder menus that appear during transitions */
 .empty-menu,
-.brutalist-placeholder,
 .floating-menu {
   display: none !important;
   opacity: 0 !important;
@@ -282,7 +346,7 @@
    ============================================ */
 
 /* High contrast focus indicators */
-.focus-brutal {
+.focus-modern {
   outline: var(--border-thick) solid var(--accent-green);
   outline-offset: 2px;
 }
@@ -304,9 +368,19 @@
    11. DARK MODE TRANSITION SMOOTHING
    ============================================ */
 
-/* Smooth dark mode transition - optimized to <100ms */
+/* Smooth dark mode transition with layered timing */
 html {
-  transition: color 1500ms cubic-bezier(0.4, 0, 0.2, 1), background-color 1500ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme transitioning state - prevents choppy updates */
+.theme-transitioning * {
+  will-change: background-color, border-color, color, fill, stroke, box-shadow;
+}
+
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  will-change: background-color, border-color, color, fill, stroke, box-shadow;
 }
 
 /* ============================================
@@ -416,7 +490,7 @@ select:disabled {
    15. SCROLLBAR STYLING
    ============================================ */
 
-/* Custom scrollbars that match brutalist aesthetic */
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;

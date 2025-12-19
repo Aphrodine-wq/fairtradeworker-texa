@@ -155,7 +155,7 @@ export function CustomObjectsBuilder({ user }: CustomObjectsBuilderProps) {
                   placeholder="e.g., Project, Equipment, Vendor"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                 <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
                   Cancel
                 </Button>
@@ -169,7 +169,7 @@ export function CustomObjectsBuilder({ user }: CustomObjectsBuilderProps) {
       </div>
 
       {customObjects.length === 0 ? (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+        <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
           <PuzzlePiece size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
           <p className="text-muted-foreground mb-4">No custom objects created yet</p>
           <Button onClick={() => setShowCreateDialog(true)}>Create Your First Custom Object</Button>
@@ -177,7 +177,7 @@ export function CustomObjectsBuilder({ user }: CustomObjectsBuilderProps) {
       ) : (
         <div className="grid md:grid-cols-2 gap-4">
           {customObjects.map(obj => (
-            <Card key={obj.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card key={obj.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -295,7 +295,7 @@ export function CustomObjectsBuilder({ user }: CustomObjectsBuilderProps) {
                             onCheckedChange={(checked) => setNewField({ ...newField, required: checked })}
                           />
                         </div>
-                        <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+                        <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                           <Button variant="outline" onClick={() => setShowFieldDialog(false)}>
                             Cancel
                           </Button>
@@ -307,7 +307,7 @@ export function CustomObjectsBuilder({ user }: CustomObjectsBuilderProps) {
                     </DialogContent>
                   </Dialog>
 
-                  <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Settings size={16} className="mr-2" />
                       Configure

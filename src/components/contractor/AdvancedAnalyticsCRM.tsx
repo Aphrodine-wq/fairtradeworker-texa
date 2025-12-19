@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { 
-  ChartLine, ChartBar, TrendingUp, DollarSign, Users, 
-  Calendar, Target, BarChart, PieChart, Download,
+  ChartLine, ChartBar, TrendUp, CurrencyDollar, Users,
+  Calendar, Target, Download,
   Plus, X, Settings
 } from "@phosphor-icons/react"
 import { useLocalKV as useKV } from "@/hooks/useLocalKV"
@@ -148,7 +148,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-black dark:text-white flex items-center gap-2">
-            <BarChart weight="duotone" size={28} className="text-black dark:text-white" />
+            <ChartBar weight="duotone" size={28} className="text-black dark:text-white" />
             Advanced Analytics & Business Intelligence
           </h2>
           <p className="text-muted-foreground mt-1">
@@ -185,10 +185,10 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
         <TabsContent value="overview" className="space-y-6 mt-6">
           {/* Key Metrics */}
           <div className="grid md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
-                  <DollarSign weight="duotone" size={24} className="text-black dark:text-white" />
+                  <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
                   <span className="text-xs text-muted-foreground">Total Revenue</span>
                 </div>
                 <div className="text-2xl font-bold text-black dark:text-white">
@@ -200,7 +200,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Users weight="duotone" size={24} className="text-black dark:text-white" />
@@ -215,7 +215,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Target weight="duotone" size={24} className="text-black dark:text-white" />
@@ -230,7 +230,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Calendar weight="duotone" size={24} className="text-black dark:text-white" />
@@ -248,7 +248,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
 
           {/* Charts */}
           <div className="grid md:grid-cols-2 gap-6">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Customer Status Distribution</CardTitle>
               </CardHeader>
@@ -271,7 +271,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Revenue by Source</CardTitle>
               </CardHeader>
@@ -309,7 +309,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
           </div>
 
           {forecasts.length === 0 ? (
-            <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+            <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
               <ChartLine size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground mb-4">No forecasts generated yet</p>
               <Button onClick={generateForecast}>Generate Your First Forecast</Button>
@@ -317,7 +317,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
           ) : (
             <div className="space-y-4">
               {forecasts.slice().reverse().map(forecast => (
-                <Card key={forecast.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={forecast.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">
@@ -338,7 +338,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
                         <Progress value={forecast.confidence} className="h-3" />
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black/10 dark:border-white/10">
+                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-800">
                         <div>
                           <div className="text-xs text-muted-foreground mb-1">Pipeline Value</div>
                           <div className="font-semibold text-black dark:text-white">
@@ -382,8 +382,8 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
           </div>
 
           {dashboards.length === 0 ? (
-            <Card className="p-12 text-center border border-black/20 dark:border-white/20">
-              <BarChart size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
+            <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
+              <ChartBar size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground mb-4">No custom dashboards yet</p>
               <Button>Create Your First Dashboard</Button>
             </Card>
@@ -392,7 +392,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               {dashboards.map(dashboard => (
                 <Card 
                   key={dashboard.id} 
-                  className="bg-white dark:bg-black border border-black/20 dark:border-white/20 cursor-pointer hover:shadow-md transition-all"
+                  className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all"
                   onClick={() => setSelectedDashboard(dashboard.id)}
                 >
                   <CardHeader>
@@ -414,7 +414,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
 
         <TabsContent value="reports" className="space-y-6 mt-6">
           <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 cursor-pointer hover:shadow-md transition-all">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all">
               <CardContent className="p-6">
                 <ChartBar weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Sales Performance</h3>
@@ -427,7 +427,7 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 cursor-pointer hover:shadow-md transition-all">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all">
               <CardContent className="p-6">
                 <Users weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Customer Analysis</h3>
@@ -440,9 +440,9 @@ export function AdvancedAnalyticsCRM({ user }: AdvancedAnalyticsCRMProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 cursor-pointer hover:shadow-md transition-all">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all">
               <CardContent className="p-6">
-                <TrendingUp weight="duotone" size={32} className="text-black dark:text-white mb-3" />
+                <TrendUp weight="duotone" size={32} className="text-black dark:text-white mb-3" />
                 <h3 className="font-semibold text-black dark:text-white mb-2">Pipeline Report</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Pipeline health, stage analysis, and conversion metrics

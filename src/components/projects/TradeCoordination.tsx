@@ -81,7 +81,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getStatusBadge = (status: TradeContractor['status']) => {
     const variants = {
-      'invited': { className: 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10', label: 'Invited' },
+      'invited': { className: 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm', label: 'Invited' },
       'accepted': { className: 'bg-blue-100 text-blue-700', label: 'Accepted' },
       'active': { className: 'bg-green-100 text-green-700', label: 'Active' },
       'completed': { className: 'bg-green-600 text-white', label: 'Completed' }
@@ -92,7 +92,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
 
   const getRoleBadge = (role: TradeContractor['role']) => {
     return role === 'lead' 
-      ? <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10">Contractor</Badge>
+      ? <Badge className="bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm">Contractor</Badge>
       : <Badge variant="outline">Subcontractor</Badge>
   }
 
@@ -430,7 +430,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
         }
       }}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">{editingTrade ? 'Edit Contractor/Subcontractor' : 'Add Contractor/Subcontractor'}</DialogTitle>
               <DialogDescription>
@@ -558,7 +558,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
             </div>
 
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <div className="flex gap-3">
               <Button
                 variant="outline"
@@ -573,7 +573,7 @@ export function TradeCoordination({ job, onUpdate, isHomeowner }: TradeCoordinat
               </Button>
               <Button
                 onClick={editingTrade ? handleUpdate : handleAdd}
-                className="flex-1 h-11 border-2 border-black dark:border-white"
+                className="flex-1 h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

@@ -23,11 +23,14 @@ import {
   UserPlus,
   Buildings,
   Copy,
-  Check
+  Check,
+  Wrench,
+  BarChart
 } from "@phosphor-icons/react"
 import type { User, Job, Territory } from "@/lib/types"
 import { useMemo, useState, useEffect } from "react"
 import { OperatorProductivityDashboard } from "@/components/operator/OperatorProductivityDashboard"
+import { OperatorCRM } from "@/components/operator/OperatorCRM"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
@@ -62,25 +65,35 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
   }
 
   // Operators can only control one territory
+  // BACKWARD COMPATIBLE: Works with both old and new territory formats
   const myTerritory = useMemo(() => {
     if (!user.territoryId) return null
-    return (territories || []).find(t => t.id === user.territoryId) || null
-  }, [territories, user.territoryId])
+    // Try to find by user.territoryId (old format) or by operatorId/claimedBy (new format)
+    return (territories || []).find(t => 
+      t.id === user.territoryId || 
+      t.operatorId === user.id || 
+      t.claimedBy === user.id
+    ) || null
+  }, [territories, user.territoryId, user.id])
 
-  const territoryJobs = useMemo(() => 
-    (jobs || []).filter(j => j.territoryId === user.territoryId),
-    [jobs, user.territoryId]
-  )
+  // BACKWARD COMPATIBLE: Filtering works with both old and new territory formats
+  const territoryJobs = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (jobs || []).filter(j => j.territoryId === territoryId)
+  }, [jobs, user.territoryId, myTerritory])
 
-  const territoryContractors = useMemo(() => 
-    (users || []).filter(u => u.role === 'contractor' && u.territoryId === user.territoryId),
-    [users, user.territoryId]
-  )
+  const territoryContractors = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (users || []).filter(u => u.role === 'contractor' && u.territoryId === territoryId)
+  }, [users, user.territoryId, myTerritory])
 
-  const territoryHomeowners = useMemo(() => 
-    (users || []).filter(u => u.role === 'homeowner' && u.territoryId === user.territoryId),
-    [users, user.territoryId]
-  )
+  const territoryHomeowners = useMemo(() => {
+    if (!user.territoryId && !myTerritory) return []
+    const territoryId = user.territoryId || myTerritory?.id
+    return (users || []).filter(u => u.role === 'homeowner' && u.territoryId === territoryId)
+  }, [users, user.territoryId, myTerritory])
 
   const activeJobs = useMemo(() => 
     territoryJobs.filter(j => j.status === 'in-progress'),
@@ -236,7 +249,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container mx-auto px-4 md:px-8 pt-10 pb-12">
+      <div className="w-full px-4 md:px-8 pt-10 pb-12">
         <Tabs defaultValue="overview" className="w-full">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -252,15 +265,22 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                 Operators are contractors who perform well in their zip code. You get priority access to leads in your territory.
               </p>
             </div>
-            <Button onClick={() => onNavigate('territory-map')} size="lg">
-              <MapTrifold className="mr-2" />
-              View Territory Map
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={() => onNavigate('territory-map')} size="lg" variant="outline">
+                <MapTrifold className="mr-2" />
+                View Territory Map
+              </Button>
+              <Button onClick={() => onNavigate('territory-claim')} size="lg">
+                <MapTrifold className="mr-2" />
+                Claim Territory
+              </Button>
+            </div>
           </div>
 
           <TabsList className="mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="productivity">Productivity Tools</TabsTrigger>
+            <TabsTrigger value="crm">Operator CRM</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
@@ -276,7 +296,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {activeJobs.length} active
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
               </div>
@@ -291,7 +311,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                     {contractorsByTier.pro} PRO members
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Users className="h-6 w-6 text-secondary-foreground" />
                 </div>
               </div>
@@ -319,18 +339,99 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   <p className="text-3xl font-bold mt-1">{territoryHealth}/100</p>
                   <Progress value={territoryHealth} className="mt-2 h-1" />
                 </div>
-                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
                   <Target className="h-6 w-6 text-primary" />
                 </div>
               </div>
             </Card>
           </div>
 
-              {/* Rest of overview content will go here - keeping existing content structure */}
-              {/* For now, placeholder to maintain structure */}
-              <div className="text-center py-8 text-muted-foreground">
-                Overview content (existing dashboard content can be added here)
+              {/* Quick Actions */}
+              <div className="space-y-3">
+                <h2 className="text-xl font-bold text-black dark:text-white">Quick Actions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('browse-jobs')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <Wrench className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Browse Jobs</p>
+                        <p className="text-sm text-muted-foreground">Find opportunities</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('territory-map')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Territory Map</p>
+                        <p className="text-sm text-muted-foreground">View coverage</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('territory-claim')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <MapTrifold className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Claim Territory</p>
+                        <p className="text-sm text-muted-foreground">Browse & claim</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => {
+                      const tabs = document.querySelector('[value="productivity"]') as HTMLElement
+                      if (tabs) tabs.click()
+                    }}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <Target className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Productivity Tools</p>
+                        <p className="text-sm text-muted-foreground">Optimize workflow</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => setReferralDialogOpen(true)}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <UserPlus className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Referral Link</p>
+                        <p className="text-sm text-muted-foreground">Grow network</p>
+                      </div>
+                    </div>
+                  </Card>
+
+                  <Card className="p-6 hover:border-primary/50 transition-colors cursor-pointer"
+                    onClick={() => onNavigate('dashboard')}>
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-md bg-black dark:bg-white border-0 flex items-center justify-center shadow-sm">
+                        <BarChart className="h-6 w-6 text-primary" weight="duotone" />
+                      </div>
+                      <div>
+                        <p className="font-semibold">Analytics</p>
+                        <p className="text-sm text-muted-foreground">View insights</p>
+                      </div>
+                    </div>
+                  </Card>
                 </div>
+              </div>
               </div>
           </TabsContent>
 
@@ -341,12 +442,20 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
               contractors={territoryContractors}
             />
           </TabsContent>
+
+          <TabsContent value="crm">
+            <OperatorCRM 
+              jobs={territoryJobs}
+              contractors={territoryContractors}
+              homeowners={territoryHomeowners}
+            />
+          </TabsContent>
         </Tabs>
       </div>
 
       {/* Referral Link Dialog */}
       <Dialog open={referralDialogOpen} onOpenChange={setReferralDialogOpen}>
-        <DialogContent className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <DialogContent className="bg-white dark:bg-black border-0 shadow-xl">
           <DialogHeader>
             <DialogTitle className="text-black dark:text-white">Your Operator Referral Link</DialogTitle>
             <DialogDescription className="text-muted-foreground">
@@ -361,7 +470,7 @@ export function OperatorDashboard({ user, onNavigate }: OperatorDashboardProps) 
                   id="referral-link"
                   value={referralLink}
                   readOnly
-                  className="font-mono text-sm bg-white dark:bg-black border border-black/20 dark:border-white/20 text-black dark:text-white"
+                  className="font-mono text-sm bg-white dark:bg-black border-0 shadow-md text-black dark:text-white"
                 />
                 <Button
                   onClick={handleCopyReferral}

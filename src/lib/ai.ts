@@ -35,8 +35,9 @@ const AI_CONFIG: Record<string, AIConfig> = {
   },
 }
 
-// Job type classification cache
+// Job type classification cache with LRU eviction
 const JOB_TYPE_CACHE: Map<string, CachedScope> = new Map()
+const MAX_CACHE_SIZE = 200 // Maximum number of cached entries
 
 interface CachedScope {
   scope: string
@@ -251,7 +252,15 @@ export async function fakeAIScope(file: File): Promise<{
       cached: false,
     }
     
-    // Cache the result
+    // Cache the result with LRU eviction
+    if (JOB_TYPE_CACHE.size >= MAX_CACHE_SIZE) {
+      // Remove oldest entry (first key)
+      const firstKey = JOB_TYPE_CACHE.keys().next().value
+      if (firstKey) {
+        JOB_TYPE_CACHE.delete(firstKey)
+      }
+    }
+    
     JOB_TYPE_CACHE.set(cacheKey, {
       scope: result.scope,
       priceLow: result.priceLow,
@@ -263,6 +272,10 @@ export async function fakeAIScope(file: File): Promise<{
     return result
   } catch (error) {
     console.error('AI scope generation failed, using fallback:', error)
+    // Log AI response errors for debugging
+    if (error instanceof Error) {
+      console.error('AI error details:', error.message, error.stack)
+    }
     
     const fallbackScopes = [
       {

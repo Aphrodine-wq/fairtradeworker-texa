@@ -94,7 +94,7 @@ export function InventoryManagement({ user }: { user: User }) {
                 </Button>
               </DialogTrigger>
               <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-                <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+                <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
                   <DialogHeader className="text-left">
                     <DialogTitle className="text-2xl">Add Inventory Item</DialogTitle>
                     <DialogDescription>Track materials and supplies</DialogDescription>
@@ -164,7 +164,7 @@ export function InventoryManagement({ user }: { user: User }) {
                     </div>
                   </div>
                 </div>
-                <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+                <div className="px-8 py-4 border-t border-0 shadow-sm flex-shrink-0">
                   <div className="flex gap-3 justify-end">
                     <Button variant="outline" onClick={() => setShowAddDialog(false)} className="h-11">
                       Cancel
@@ -239,7 +239,7 @@ export function InventoryManagement({ user }: { user: User }) {
                   className={`bg-white dark:bg-black border-2 ${
                     isLowStock 
                       ? 'border-red-200 dark:border-red-800' 
-                      : 'border-black/10 dark:border-white/10'
+                      : 'border-0 shadow-sm'
                   }`}
                 >
                   <CardHeader>
@@ -300,7 +300,7 @@ export function InventoryManagement({ user }: { user: User }) {
             })}
 
             {items.length === 0 && (
-              <Card className="col-span-full bg-white dark:bg-black border border-black/10 dark:border-white/10">
+              <Card className="col-span-full bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                 <CardContent className="p-12 text-center">
                   <Package size={64} className="mx-auto mb-4 text-muted-foreground opacity-50" />
                   <p className="text-muted-foreground text-lg">No inventory items yet</p>

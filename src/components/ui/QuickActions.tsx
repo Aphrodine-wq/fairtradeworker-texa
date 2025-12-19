@@ -56,7 +56,7 @@ export function QuickAction({
           <div className="flex items-center gap-2">
             <h3 className="font-black uppercase text-sm">{title}</h3>
             {badge && (
-              <span className="font-mono text-xs bg-[#FFFF00] px-2 py-0.5 border border-black">
+              <span className="font-mono text-xs bg-[#FFFF00] px-2 py-0.5 border-0 shadow-sm">
                 {badge}
               </span>
             )}
@@ -225,7 +225,7 @@ export function MilestoneCelebration({ type, value, onDismiss }: MilestoneProps)
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
       <div className="bg-white/95 backdrop-blur-lg border border-white/10 shadow-xl max-w-md w-full animate-in zoom-in-95 duration-200 rounded-lg">
         {/* Header with icon */}
-        <div className="bg-[#00FF00] p-6 text-center border-b-4 border-black">
+        <div className="bg-[#00FF00] p-6 text-center border-b-4 border-gray-200 dark:border-gray-800">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white border-2 border-black mb-4">
             {config.icon}
           </div>
@@ -246,7 +246,7 @@ export function MilestoneCelebration({ type, value, onDismiss }: MilestoneProps)
         </div>
 
         {/* Action */}
-        <div className="p-4 border-t-2 border-black">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <button
             onClick={onDismiss}
             className="w-full bg-black text-white py-3 font-black uppercase text-lg hover:bg-gray-800 transition-colors rounded-md shadow-md"

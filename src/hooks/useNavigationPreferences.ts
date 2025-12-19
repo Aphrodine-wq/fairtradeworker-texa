@@ -34,18 +34,27 @@ export function useNavigationPreferences(user: User | null) {
   }, [user, preferences])
 
   const savePreferences = (items: NavItem[]) => {
-    if (!user) return
-    
-    // Ensure items are sorted by order
-    const sortedItems = [...items].sort((a, b) => a.order - b.order)
-    
-    const prefs: NavigationPreferences = {
-      items: sortedItems,
-      version: '1.0.0',
-      lastUpdated: new Date().toISOString()
+    if (!user) {
+      console.warn('Cannot save preferences: user not available')
+      return
     }
     
-    setPreferences(prefs)
+    try {
+      // Ensure items are sorted by order
+      const sortedItems = [...items].sort((a, b) => a.order - b.order)
+      
+      const prefs: NavigationPreferences = {
+        items: sortedItems,
+        version: '1.0.0',
+        lastUpdated: new Date().toISOString()
+      }
+      
+      setPreferences(prefs)
+    } catch (error) {
+      console.error('Error saving navigation preferences:', error)
+      // Re-throw to allow caller to handle (e.g., show user notification)
+      throw error
+    }
   }
 
   const resetToDefaults = () => {

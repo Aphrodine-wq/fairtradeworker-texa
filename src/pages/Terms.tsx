@@ -15,7 +15,7 @@ export function TermsPage() {
         ]}
         primaryLabel="Post Job" />
 
-      <div className="pt-20 pb-16 px-4 md:px-8 max-w-4xl mx-auto space-y-8">
+      <div className="w-full pt-20 pb-16 px-4 md:px-8 space-y-8">
         {/* Hero Section */}
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center gap-3">

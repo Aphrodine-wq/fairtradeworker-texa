@@ -21,7 +21,7 @@ export const SkeletonLoader = memo(function SkeletonLoader({
   if (variant === 'card') {
     return (
       <div 
-        className={cn("border-2 border-black dark:border-white bg-white dark:bg-black p-6 space-y-4", className)}
+        className={cn("border-0 shadow-lg bg-white dark:bg-black p-6 space-y-4", className)}
         style={{ width, height }}
       >
         <div className={cn(baseClasses, "h-6 w-3/4")} />
@@ -71,7 +71,7 @@ export const SkeletonLoader = memo(function SkeletonLoader({
 
 export const JobCardSkeleton = memo(function JobCardSkeleton() {
   return (
-    <div className="border-2 border-black dark:border-white bg-white dark:bg-black p-6 space-y-4 animate-pulse">
+    <div className="border-0 shadow-lg bg-white dark:bg-black p-6 space-y-4 animate-pulse">
       <div className="flex items-start gap-4">
         <div className="w-24 h-24 bg-black/10 dark:bg-white/10 flex-shrink-0" />
         <div className="flex-1 space-y-3">
@@ -84,7 +84,7 @@ export const JobCardSkeleton = memo(function JobCardSkeleton() {
           </div>
         </div>
       </div>
-      <div className="border-t-2 border-black dark:border-white pt-4 space-y-2">
+      <div className="border-t border-gray-200 dark:border-gray-800 pt-4 space-y-2">
         <div className="h-4 bg-black/10 dark:bg-white/10 w-full" />
         <div className="h-4 bg-black/10 dark:bg-white/10 w-4/5" />
       </div>

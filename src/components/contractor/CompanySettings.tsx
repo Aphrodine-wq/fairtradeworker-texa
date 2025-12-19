@@ -362,7 +362,7 @@ export function CompanySettings({ user, onUpdate }: CompanySettingsProps) {
             <Button 
               onClick={handleSave}
               disabled={isSaving}
-              className="border-2 border-black dark:border-white"
+              className="border-0 shadow-lg hover:shadow-xl"
             >
               {isSaving ? (
                 <>

@@ -187,7 +187,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
               const recentSyncs = (syncs || []).filter(s => s.integrationId === integration.id).slice(0, 5)
 
               return (
-                <Card key={integration.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={integration.id} className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -216,7 +216,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
                         </div>
                       )}
 
-                      <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                      <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                         <Button
                           size="sm"
                           variant="outline"
@@ -243,7 +243,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
                       </div>
 
                       {recentSyncs.length > 0 && (
-                        <div className="pt-2 border-t border-black/10 dark:border-white/10">
+                        <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
                           <div className="text-xs text-muted-foreground mb-2">Recent Syncs</div>
                           <div className="space-y-1">
                             {recentSyncs.map(sync => (
@@ -284,7 +284,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
               return (
                 <Card 
                   key={integration.type}
-                  className={`bg-white dark:bg-black border-2 ${isConnected ? 'border-green-500' : 'border-black/20 dark:border-white/20'} ${
+                  className={`bg-white dark:bg-black border-2 ${isConnected ? 'border-green-500' : 'border-0 shadow-sm'} ${
                     isConnected ? 'opacity-60' : 'cursor-pointer hover:shadow-md transition-all'
                   }`}
                   onClick={() => !isConnected && setShowConnectDialog(true)}
@@ -324,7 +324,7 @@ export function IntegrationHub({ user }: IntegrationHubProps) {
             return (
               <Card 
                 key={integration.type}
-                className={`bg-white dark:bg-black border border-black/20 dark:border-white/20 ${
+                className={`bg-white dark:bg-black border-0 shadow-md hover:shadow-lg ${
                   isConnected ? 'opacity-60' : 'cursor-pointer hover:shadow-md transition-all'
                 }`}
                 onClick={() => !isConnected && setShowConnectDialog(true)}

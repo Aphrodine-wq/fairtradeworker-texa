@@ -141,7 +141,7 @@ export function ReportingSuite({ user }: { user: User }) {
 
           {/* Report Tabs */}
           <Tabs value={reportType} onValueChange={(v: any) => setReportType(v)}>
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
               <TabsTrigger value="financial">Financial</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
               <TabsTrigger value="operational">Operational</TabsTrigger>

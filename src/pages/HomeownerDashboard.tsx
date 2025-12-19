@@ -151,7 +151,7 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
         ]}
         primaryLabel="Post Job"
       />
-      <div className="container mx-auto px-4 md:px-8 pt-20 pb-12">
+      <div className="w-full px-4 md:px-8 pt-20 pb-12">
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div>

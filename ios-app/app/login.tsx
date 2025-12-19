@@ -12,11 +12,13 @@ import {
 import { useRouter } from 'expo-router';
 import { Button, TextInput, Card } from '@/src/components/ui';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 
 export default function LoginScreen() {
   const router = useRouter();
   const { users, login } = useAppStore();
+  const { isTablet } = useResponsive();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -53,10 +55,10 @@ export default function LoginScreen() {
       >
         <ScrollView
           style={styles.container}
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}
           keyboardShouldPersistTaps="handled"
         >
-          <Card variant="elevated" padding="lg" style={styles.card}>
+          <Card variant="elevated" padding="lg" style={[styles.card, isTablet && styles.cardTablet]}>
             <Text style={styles.title}>Welcome Back</Text>
             <Text style={styles.description}>
               Enter your email to access your account
@@ -122,7 +124,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: Spacing.lg,
   },
+  contentTablet: {
+    alignItems: 'center',
+    padding: Spacing.tablet.xl,
+  },
   card: {
+    width: '100%',
+  },
+  cardTablet: {
+    maxWidth: 480,
     width: '100%',
   },
   title: {

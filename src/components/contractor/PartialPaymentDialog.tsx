@@ -97,7 +97,7 @@ export const PartialPaymentDialog = memo(function PartialPaymentDialog({
             </Card>
           </div>
 
-          <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+          <Card className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
             <CardContent className="pt-6">
               <p className="text-sm text-muted-foreground">Amount Remaining</p>
               <p className="text-3xl font-bold text-primary">{formatCurrency(amountRemaining)}</p>
@@ -111,7 +111,7 @@ export const PartialPaymentDialog = memo(function PartialPaymentDialog({
                 {invoice.partialPayments.map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex items-center justify-between p-3 bg-muted rounded-md border border-black/20 dark:border-white/20 shadow-sm"
+                    className="flex items-center justify-between p-3 bg-muted rounded-md border-0 shadow-md hover:shadow-lg shadow-sm"
                   >
                     <div className="flex items-center gap-2">
                       <CheckCircle weight="fill" className="text-[#00FF00]" />

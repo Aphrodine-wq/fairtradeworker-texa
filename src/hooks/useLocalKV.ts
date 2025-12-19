@@ -5,6 +5,29 @@ import { encryptData, decryptData } from '@/lib/security'
 // Cache for decrypted values to avoid repeated decryption
 const decryptionCache = new Map<string, { data: any; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+const MAX_CACHE_SIZE = 100 // Maximum number of cached entries
+
+// Clean up cache: remove expired entries and enforce size limit
+function cleanupCache() {
+  const now = Date.now()
+  
+  // Remove expired entries
+  for (const [key, value] of decryptionCache.entries()) {
+    if (now - value.timestamp > CACHE_TTL) {
+      decryptionCache.delete(key)
+    }
+  }
+  
+  // If still over limit, remove oldest entries (LRU)
+  if (decryptionCache.size > MAX_CACHE_SIZE) {
+    const entries = Array.from(decryptionCache.entries())
+    entries.sort((a, b) => a[1].timestamp - b[1].timestamp) // Sort by timestamp (oldest first)
+    const toRemove = entries.slice(0, decryptionCache.size - MAX_CACHE_SIZE)
+    for (const [key] of toRemove) {
+      decryptionCache.delete(key)
+    }
+  }
+}
 
 // Compression utility (simple JSON compression)
 function compressData(data: string): string {
@@ -33,8 +56,16 @@ export function useLocalKV<T>(
   
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
+      // Safari iOS localStorage access can fail in private browsing mode
+      if (typeof window === 'undefined' || !window.localStorage) {
+        return initialValue
+      }
+
       const item = window.localStorage.getItem(key)
       if (!item) return initialValue
+      
+      // Clean up cache periodically
+      cleanupCache()
       
       // Check cache first
       const cached = decryptionCache.get(key)
@@ -44,17 +75,13 @@ export function useLocalKV<T>(
       
       let parsed: T
       if (encrypt) {
-        // Decrypt if encrypted
-        decryptData(item).then(decrypted => {
-          parsed = JSON.parse(decrypted)
-          decryptionCache.set(key, { data: parsed, timestamp: Date.now() })
-        }).catch(() => {
-          // Fallback: try parsing as plain JSON
-          parsed = JSON.parse(item)
-        })
-        // For initial render, try synchronous decryption or use cached
+        // For initial render, use cached value or try parsing as plain JSON
+        // Async decryption will happen in useEffect
         try {
-          parsed = JSON.parse(item) as T // Fallback for initial render
+          // Try to parse as plain JSON first (fallback)
+          parsed = JSON.parse(item) as T
+          // Cache it for now, will be updated when async decryption completes
+          decryptionCache.set(key, { data: parsed, timestamp: Date.now() })
         } catch {
           return initialValue
         }
@@ -69,7 +96,23 @@ export function useLocalKV<T>(
       
       return parsed
     } catch (error) {
+      // Safari iOS specific error handling
+      if (error instanceof DOMException) {
+        // QuotaExceededError or other DOM exceptions
+        if (error.name === 'QuotaExceededError' || error.code === 22) {
+          console.warn(`localStorage quota exceeded for ${key}, using initial value`)
+          return initialValue
+        }
+        // SecurityError can occur in Safari private browsing
+        if (error.name === 'SecurityError' || error.code === 18) {
+          console.warn(`localStorage access denied for ${key} (possibly private browsing), using initial value`)
+          return initialValue
+        }
+      }
       console.warn(`Error loading ${key} from localStorage:`, error)
+      if (error instanceof Error) {
+        console.error('Parse error details:', error.message)
+      }
       return initialValue
     }
   })
@@ -77,10 +120,16 @@ export function useLocalKV<T>(
   const isInitialized = useRef(false)
   const pendingUpdate = useRef<T | null>(null)
 
-  // Debounced save function
+  // Debounced save function with Safari iOS error handling
   const debouncedSave = useCallback(
     debounce(async (value: T) => {
       try {
+        // Check if localStorage is available
+        if (typeof window === 'undefined' || !window.localStorage) {
+          console.warn(`localStorage not available for ${key}`)
+          return
+        }
+
         let dataToStore = JSON.stringify(value)
         
         // Compress if enabled
@@ -93,10 +142,57 @@ export function useLocalKV<T>(
           dataToStore = await encryptData(dataToStore)
         }
         
-        window.localStorage.setItem(key, dataToStore)
+        // Safari iOS specific error handling for localStorage.setItem
+        try {
+          window.localStorage.setItem(key, dataToStore)
+        } catch (storageError) {
+          // Handle quota exceeded error
+          if (storageError instanceof DOMException) {
+            if (storageError.name === 'QuotaExceededError' || storageError.code === 22) {
+              console.warn(`localStorage quota exceeded for ${key}, attempting to clear old data`)
+              
+              // Try to clear old entries to free up space
+              try {
+                const keysToRemove: string[] = []
+                for (let i = 0; i < window.localStorage.length; i++) {
+                  const storageKey = window.localStorage.key(i)
+                  if (storageKey && storageKey.startsWith('crm-void-') && storageKey !== key) {
+                    keysToRemove.push(storageKey)
+                  }
+                }
+                // Remove oldest entries first
+                keysToRemove.slice(0, 5).forEach(k => {
+                  try {
+                    window.localStorage.removeItem(k)
+                  } catch {
+                    // Ignore individual removal errors
+                  }
+                })
+                
+                // Try again after clearing
+                window.localStorage.setItem(key, dataToStore)
+                console.info(`Successfully saved ${key} after clearing old data`)
+              } catch (clearError) {
+                console.error(`Failed to save ${key} even after clearing old data:`, clearError)
+                // Don't throw - gracefully degrade
+              }
+              return
+            }
+            
+            // SecurityError in Safari private browsing
+            if (storageError.name === 'SecurityError' || storageError.code === 18) {
+              console.warn(`localStorage access denied for ${key} (possibly private browsing)`)
+              return
+            }
+          }
+          
+          // Re-throw other errors
+          throw storageError
+        }
         
         // Update cache
         if (encrypt) {
+          cleanupCache() // Clean before adding new entry
           decryptionCache.set(key, { data: value, timestamp: Date.now() })
         }
         
@@ -113,6 +209,7 @@ export function useLocalKV<T>(
         }
       } catch (error) {
         console.error(`Error saving ${key} to localStorage:`, error)
+        // Don't throw - gracefully degrade to in-memory only
       }
     }, debounceMs),
     [key, encrypt, compress, debounceMs]
@@ -125,6 +222,44 @@ export function useLocalKV<T>(
       pendingUpdate.current = null
     }
   }, [storedValue, debouncedSave])
+
+  // Handle async decryption for encrypted values
+  useEffect(() => {
+    if (!encrypt) return
+    
+    try {
+      const item = window.localStorage?.getItem(key)
+      if (!item) return
+      
+      // Check if we already have a cached decrypted value
+      const cached = decryptionCache.get(key)
+      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        return
+      }
+      
+      // Perform async decryption and update state if different
+      decryptData(item).then(decrypted => {
+        try {
+          const parsed = JSON.parse(decrypted) as T
+          decryptionCache.set(key, { data: parsed, timestamp: Date.now() })
+          // Only update if the value is different (to avoid unnecessary re-renders)
+          setStoredValue(prev => {
+            if (JSON.stringify(prev) !== JSON.stringify(parsed)) {
+              return parsed
+            }
+            return prev
+          })
+        } catch (parseError) {
+          console.warn(`Failed to parse decrypted data for ${key}:`, parseError)
+        }
+      }).catch(() => {
+        // Decryption failed, keep using the fallback value
+        console.warn(`Decryption failed for ${key}, using fallback value`)
+      })
+    } catch (error) {
+      // Ignore errors in async decryption
+    }
+  }, [key, encrypt])
 
   // Try to initialize from Spark KV on mount, but don't block on it
   useEffect(() => {

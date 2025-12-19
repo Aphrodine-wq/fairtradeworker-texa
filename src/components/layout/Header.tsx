@@ -1,5 +1,5 @@
 import { memo, useState, useEffect, useCallback } from "react"
-import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List, Sliders } from "@phosphor-icons/react"
+import { Wrench, Hammer, MapPin, SignOut, Users, ChartLine, Camera, Briefcase, Lightning, Sparkle, List, Sliders, Gear } from "@phosphor-icons/react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -72,17 +72,17 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
         <div className="flex h-14 items-center justify-between relative">
           <button 
             onClick={handleHomeClick}
-            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0"
+            className="flex items-center gap-2.5 min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white focus-visible:ring-offset-2 rounded-md hover:bg-white dark:hover:bg-black transition-all px-2 py-1 flex-shrink-0 -ml-2"
             aria-label="Go to home"
           >
-            <span className="font-heading font-bold text-xl md:text-3xl leading-none text-black dark:text-white">
+            <span className="font-heading font-bold text-2xl md:text-4xl leading-none text-black dark:text-white whitespace-nowrap">
                 FairTradeWorker
               </span>
           </button>
 
           <nav className={cn(
-            "flex items-center gap-1.5 md:absolute md:left-1/2 md:transform md:-translate-x-1/2",
-            !user && "hidden md:flex"
+            "flex items-center gap-1.5",
+            user ? "md:absolute md:left-1/2 md:transform md:-translate-x-1/2" : "ml-auto hidden md:flex"
           )}>
             {!user ? (
               <>
@@ -182,6 +182,11 @@ NavButton.displayName = 'NavButton'
 const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, customizerOpen = false, onOpenCustomizer, onCloseCustomizer }: NavProps) => {
   const { navigation, savePreferences, resetToDefaults } = useNavigationPreferences(user)
   const visibleNav = getVisibleNavItems(navigation)
+  
+  // Log navigation changes for debugging
+  useEffect(() => {
+    console.log('[DesktopNav] Navigation updated:', navigation.length, 'items')
+  }, [navigation])
 
   const handleNav = useCallback((page: string, tab: string) => {
     setActiveTab(tab)
@@ -189,7 +194,12 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
   }, [setActiveTab, onNavigate])
 
   const handleSavePreferences = useCallback((prefs: any) => {
+    console.log('[DesktopNav] Saving preferences:', prefs)
     savePreferences(prefs.items)
+    // Force a small delay to ensure localStorage is updated before navigation refreshes
+    setTimeout(() => {
+      console.log('[DesktopNav] Preferences saved, navigation should update')
+    }, 100)
   }, [savePreferences])
 
   return (
@@ -198,6 +208,7 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
         {visibleNav.map((item) => {
           const Icon = getNavIcon(item.iconName)
           const isActive = activeTab === item.id || activeTab === item.page
+          const isVoid = item.id === 'crm' || item.label === 'Void'
           
           if (item.category === 'action') {
             return (
@@ -207,6 +218,30 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
                 className="min-h-[44px] ml-1 bg-foreground text-background hover:bg-foreground/90 transition-all font-bold px-4"
               >
                 {Icon && <Icon weight="fill" className="mr-1.5" size={16} />}
+                {item.label}
+              </Button>
+            )
+          }
+          
+          // Special styling for VOID navigation
+          if (isVoid) {
+            return (
+              <Button
+                key={item.id}
+                onClick={() => handleNav(item.page, item.id)}
+                className={cn(
+                  "min-h-[44px] relative transition-all font-bold px-4",
+                  "bg-gradient-to-r from-[#00f5ff] to-[#0099ff] text-black",
+                  "hover:from-[#33f7ff] hover:to-[#00b3ff]",
+                  "shadow-lg shadow-[#00f5ff]/50 hover:shadow-[#00f5ff]/70",
+                  "border-2 border-[#00f5ff]/30 hover:border-[#00f5ff]/50",
+                  isActive && "ring-2 ring-[#00f5ff] ring-offset-2 ring-offset-background",
+                  "animate-pulse hover:animate-none"
+                )}
+                style={{
+                  textShadow: '0 0 10px rgba(0, 245, 255, 0.5)',
+                }}
+              >
                 {item.label}
               </Button>
             )
@@ -271,12 +306,36 @@ const DesktopNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, 
               <DropdownMenuSeparator />
             </>
           )}
+          <DropdownMenuItem 
+            onClick={() => onNavigate('settings')}
+            className="cursor-pointer"
+          >
+            <Gear className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={onLogout} className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10">
             <SignOut className="mr-2 h-4 w-4" />
             <span>Log Out</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Desktop Navigation Customizer Dialog */}
+      {customizerOpen && (
+        <NavigationCustomizerDialog
+          user={user!}
+          open={customizerOpen}
+          onOpenChange={(open) => {
+            if (!open && onCloseCustomizer) {
+              onCloseCustomizer()
+            }
+          }}
+          currentNav={navigation}
+          onSave={handleSavePreferences}
+          onReset={resetToDefaults}
+        />
+      )}
     </>
   )
 })
@@ -339,6 +398,7 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
             {visibleNav.map((item) => {
               const Icon = getNavIcon(item.iconName)
               const isActive = activeTab === item.id || activeTab === item.page
+              const isVoid = item.id === 'crm' || item.label === 'Void'
               
               if (item.category === 'action') {
                 return (
@@ -348,6 +408,24 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
                     className="justify-start min-h-[44px] bg-foreground text-background hover:bg-foreground/90 mt-2"
                   >
                     {Icon && <Icon size={20} className="mr-3" weight="fill" />}
+                    {item.label}
+                  </Button>
+                )
+              }
+              
+              // Special styling for VOID navigation (mobile)
+              if (isVoid) {
+                return (
+                  <Button
+                    key={item.id}
+                    onClick={() => handleNav(item.page, item.id)}
+                    className={cn(
+                      "justify-start min-h-[44px] mt-2 font-bold",
+                      "bg-gradient-to-r from-[#00f5ff] to-[#0099ff] text-black",
+                      "hover:from-[#33f7ff] hover:to-[#00b3ff]",
+                      "shadow-lg shadow-[#00f5ff]/50"
+                    )}
+                  >
                     {item.label}
                   </Button>
                 )
@@ -374,6 +452,19 @@ const MobileNav = memo(({ user, onNavigate, onLogout, activeTab, setActiveTab, o
               >
                 <Sliders size={20} className="mr-3" />
                 Customize Navigation
+              </Button>
+            </SheetClose>
+
+            <div className="h-px bg-border my-4" />
+
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                onClick={() => onNavigate('settings')}
+                className="justify-start min-h-[44px]"
+              >
+                <Gear size={20} className="mr-3" />
+                Settings
               </Button>
             </SheetClose>
 

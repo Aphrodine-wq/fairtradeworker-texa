@@ -5,7 +5,7 @@ function Skeleton({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       data-slot="skeleton"
-      className={cn("bg-white dark:bg-black border border-black/20 dark:border-white/20 animate-pulse rounded-md", className)}
+      className={cn("bg-white dark:bg-black border-0 shadow-sm animate-pulse rounded-md", className)}
       {...props}
     />
   )

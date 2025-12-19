@@ -16,7 +16,7 @@
 
 <div align="center">
 
-# ZERO FEES. ZERO BS. ZERO MIDDLEMEN.
+# ZERO FEES. ZERO BS. ZERO MIDDLEMEN
 
 **The home services marketplace where contractors keep 100% of what they earn.**
 
@@ -24,6 +24,8 @@
 [![TypeScript](https://img.shields.io/badge/TYPESCRIPT-100%25-3178c6?style=for-the-badge&labelColor=000000)](https://typescriptlang.org)
 
 </div>
+
+> NOTE: The canonical, expanded project overview is now `SuperREADME.md` at the repository root. See [SuperREADME.md](SuperREADME.md) for architecture, developer setup, docs index, and archival policy.
 
 ---
 
@@ -38,6 +40,7 @@ FairTradeWorker is a marketplace platform that connects homeowners with contract
 ## ✨ KEY FEATURES
 
 ### For Contractors
+
 - **Zero Fees** - Keep 100% of every job
 - **Job Matching** - Browse and bid on projects in your area
 - **Construction CRM** - Industry-specific CRM with pipeline, documents, financials, collaboration, and reporting
@@ -46,6 +49,7 @@ FairTradeWorker is a marketplace platform that connects homeowners with contract
 - **Enterprise CRM** - AI insights, advanced analytics, integrations (QuickBooks, Procore), security, workflows
 
 ### For Homeowners
+
 - **Flat Fee** - Simple pricing, no surprises
 - **Quality Contractors** - Verified, licensed professionals
 - **Direct Communication** - Connect directly with contractors
@@ -60,11 +64,11 @@ FairTradeWorker generates revenue through multiple streams while keeping contrac
 ### Primary Revenue Streams
 
 1. **Homeowner Posting Fees**
-   - Flat fee per job posting
+   - Tiered platform fee: $15 flat for quick fixes, 3% for standard jobs, 2.5% for major projects with extended draw schedules
    - Simple, transparent pricing
 
 2. **Pro Subscriptions**
-   - Monthly subscription for contractors ($50/month)
+   - Monthly subscription for contractors ($59/month)
    - Access to advanced business tools and AI features
    - Optional upgrade for power users
 
@@ -93,6 +97,7 @@ This model ensures contractors maximize their income while the platform remains 
 - **AI (hosted-first):** Smart Claude Tiering (Haiku/Sonnet) with pre-routing + RAG context and open-source helpers for background/CRM tasks (see Super README + `docs/AI_CONFIG.md`)
 
 ## 🧠 NEW AI & REVENUE HIGHLIGHTS
+
 - Hosted-first AI stack with routing/classification, embeddings + RAG, and enhanced scoping.
 - CRM intelligence (lead scoring, sentiment, CLV), smart follow-ups, contractor matching.
 - Revenue CTAs added (config-driven): affiliate materials/tools, insurance/financing links, donations, premium lead upsell, API/tools directory.
@@ -136,33 +141,35 @@ src/
 FairTradeWorker uses a modern shadow-based design system (updated December 16, 2025):
 
 ### Visual Philosophy
+
 - **Depth:** Shadow-based (no borders) - `shadow-lg hover:shadow-xl`
 - **Cards:** Rounded corners (`rounded-xl`), elevated appearance
 - **Buttons:** 3D effects with layered shadows, hover transforms
 - **Colors:** Clean grayscale with accent colors
 
 ### Theme Transitions
+
 - **Duration:** 5-second smooth transitions
 - **Implementation:** CSS transitions on all color properties
 - **Dark Mode:** Full support with proper contrast
 
 ### Key Components
+
 - **Netflix-style Browse Jobs:** Horizontal scrolling lanes with carousel arrows
 - **3D Buttons:** Layered shadow system with hover lift effect
 - **Cards:** Borderless with shadow depth
 
 ### Recent Updates
-- ✅ December 17, 2025: Mobile UI improvements for seamless experience
-  - Fixed theme toggle overlapping logo on mobile
-  - Enhanced iOS/Safari compatibility (fixed black screen issue)
-  - Optimized page sizing for mobile devices
-  - Updated service columns to 2-column layout on mobile (3 rows)
-  - Updated "Post Your Job" menu to 2-column layout on mobile
-- ✅ December 16, 2025: Major UI/UX overhaul with shadow-based design
+
+- ✅ December 2025: CRM Void enhancements (drag-and-drop for all elements, modernized music player, menu collision detection)
+- ✅ December 2025: Mock job images system for Browse Jobs
+- ✅ December 2025: Comprehensive documentation update and reorganization
+- ✅ December 2025: Enhanced menu animations and modern UI improvements
 - ✅ Comprehensive testing suite (150+ tests, 95% coverage)
 - ✅ AI Receptionist with 100% reliability features
 - ✅ Complete Supabase migrations (9 migration files)
-- 📖 See `docs/RECENT_UPDATES.md` for complete details
+- 📖 See `SUPERREADME.md` for ultra-detailed documentation
+- 📖 See `docs/README.md` for complete documentation index
 
 ---
 
@@ -187,6 +194,7 @@ FairTradeWorker uses an intelligent two-tier Claude AI approach to optimize cost
 ### Cost Optimization
 
 **Realistic Monthly Usage (50K jobs):**
+
 - 45K Simple Jobs: $11.25 (Haiku)
 - 5K Complex Jobs: $15.00 (Sonnet)
 - **Total AI Cost: ~$26.25/month**

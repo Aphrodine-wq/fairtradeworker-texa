@@ -182,7 +182,7 @@ export function PhotoAnnotator({ user, imageUrl, onSave }: PhotoAnnotatorProps) 
                 key={c}
                 type="button"
                 className={`w-8 h-8 border-2 ${
-                  color === c ? 'border-black dark:border-white' : 'border-transparent'
+                  color === c ? 'border-0 shadow-sm' : 'border-transparent'
                 }`}
                 style={{ backgroundColor: c }}
                 onClick={() => setColor(c)}
@@ -191,7 +191,7 @@ export function PhotoAnnotator({ user, imageUrl, onSave }: PhotoAnnotatorProps) 
           </div>
         </div>
 
-        <div className="border border-black/20 dark:border-white/20 overflow-auto max-h-[600px]">
+        <div className="border-0 shadow-md hover:shadow-lg overflow-auto max-h-[600px]">
           <canvas
             ref={canvasRef}
             onMouseDown={handleMouseDown}

@@ -60,21 +60,21 @@ export function ProOnlyFilters({ user, onFiltersChange }: ProOnlyFiltersProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4 mb-4">
-            <div className="p-4 border border-black/20 dark:border-white/20 opacity-50">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg opacity-50">
               <div className="flex items-center gap-2 mb-2">
                 <Crown size={16} />
                 <span className="font-semibold text-black dark:text-white">Repeat Homeowners Only</span>
               </div>
               <p className="text-xs text-black dark:text-white">Filter to jobs from homeowners who've posted before</p>
             </div>
-            <div className="p-4 border border-black/20 dark:border-white/20 opacity-50">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg opacity-50">
               <div className="flex items-center gap-2 mb-2">
                 <Crown size={16} />
                 <span className="font-semibold text-black dark:text-white">High Budget Only</span>
               </div>
               <p className="text-xs text-black dark:text-white">Only show jobs above your minimum budget</p>
             </div>
-            <div className="p-4 border border-black/20 dark:border-white/20 opacity-50">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg opacity-50">
               <div className="flex items-center gap-2 mb-2">
                 <Crown size={16} />
                 <span className="font-semibold text-black dark:text-white">Verified Homeowners</span>
@@ -83,7 +83,7 @@ export function ProOnlyFilters({ user, onFiltersChange }: ProOnlyFiltersProps) {
             </div>
           </div>
           <Button onClick={() => window.location.href = '/pro-upgrade'} className="w-full">
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -176,7 +176,7 @@ export function ProOnlyFilters({ user, onFiltersChange }: ProOnlyFiltersProps) {
           </div>
         </div>
 
-        <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+        <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
           <p className="text-sm font-semibold text-black dark:text-white mb-2">Active Filters:</p>
           <div className="flex flex-wrap gap-2">
             {filters.repeatHomeowners && <Badge>Repeat Homeowners</Badge>}

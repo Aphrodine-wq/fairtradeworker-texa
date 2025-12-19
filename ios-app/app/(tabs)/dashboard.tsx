@@ -11,11 +11,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { Button, Card, Badge } from '@/src/components/ui';
 import { JobCard } from '@/src/components/jobs/JobCard';
 import { useAppStore } from '@/src/store';
-import { Colors, Spacing, Typography, BorderRadius } from '@/src/constants/theme';
+import { Colors, Spacing, Typography, BorderRadius, Layout } from '@/src/constants/theme';
+import { useResponsive } from '@/src/hooks';
 
 export default function DashboardScreen() {
   const router = useRouter();
   const { currentUser, isDemoMode, jobs, invoices } = useAppStore();
+  const { isTablet } = useResponsive();
 
   if (!currentUser) {
     return (
@@ -52,7 +54,7 @@ export default function DashboardScreen() {
 
     return (
       <SafeAreaView style={styles.safeArea}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+        <ScrollView style={styles.container} contentContainerStyle={[styles.content, isTablet && styles.contentTablet]}>
           {isDemoMode && (
             <View style={styles.demoBanner}>
               <Ionicons name="information-circle" size={20} color={Colors.primary} />
@@ -71,7 +73,7 @@ export default function DashboardScreen() {
           </View>
 
           {/* Stats */}
-          <View style={styles.statsRow}>
+          <View style={[styles.statsRow, isTablet && styles.statsRowTablet]}>
             <Card variant="elevated" padding="md" style={styles.statCard}>
               <Text style={styles.statNumber}>{openJobs.length}</Text>
               <Text style={styles.statLabel}>Open Jobs</Text>
@@ -98,14 +100,17 @@ export default function DashboardScreen() {
                 </Text>
               </Card>
             ) : (
-              myJobs.slice(0, 3).map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                  onPress={() => router.push(`/job/${job.id}`)}
-                  variant="compact"
-                />
-              ))
+              <View style={isTablet ? styles.jobsGrid : null}>
+                {myJobs.slice(0, isTablet ? 6 : 3).map((job) => (
+                  <View key={job.id} style={isTablet ? styles.jobGridItem : null}>
+                    <JobCard
+                      job={job}
+                      onPress={() => router.push(`/job/${job.id}`)}
+                      variant="compact"
+                    />
+                  </View>
+                ))}
+              </View>
             )}
           </View>
         </ScrollView>
@@ -336,6 +341,11 @@ const styles = StyleSheet.create({
     padding: Spacing.lg,
     paddingBottom: Spacing.xxxl,
   },
+  contentTablet: {
+    padding: Spacing.tablet.xl,
+    paddingBottom: Spacing.tablet.xxxl,
+    alignItems: 'center',
+  },
   loginPrompt: {
     flex: 1,
     alignItems: 'center',
@@ -395,6 +405,11 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     marginBottom: Spacing.xl,
   },
+  statsRowTablet: {
+    gap: Spacing.tablet.lg,
+    maxWidth: Layout.maxContentWidth.tablet,
+    width: '100%',
+  },
   statCard: {
     flex: 1,
     alignItems: 'center',
@@ -417,6 +432,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.textPrimary,
     marginBottom: Spacing.md,
+  },
+  jobsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: Spacing.tablet.md,
+  },
+  jobGridItem: {
+    width: '48%',
   },
   emptyText: {
     fontSize: Typography.fontSize.md,

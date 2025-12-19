@@ -1,7 +1,11 @@
 import { Heart, Shield, Hammer, House, MapTrifold, Zap, Gauge, Lightning } from "@phosphor-icons/react"
 import { HeroSection, StatsSection, GlassCard, FeatureSection } from "@/components/ui/MarketingSections"
 
-export function AboutPage() {
+interface AboutPageProps {
+  onNavigate?: (page: string) => void
+}
+
+export function AboutPage({ onNavigate }: AboutPageProps) {
   const stats = [
     { label: "Contractors onboarded", value: "4,800+", icon: Hammer },
     { label: "Homeowners served", value: "12,000+", icon: House },
@@ -46,13 +50,13 @@ export function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 w-full">
+      <div className="w-full pt-10 pb-16 px-4 sm:px-6 lg:px-8 space-y-12">
         <HeroSection
           title="Built for fair, zero-fee home services"
           subtitle="We connect homeowners and contractors with transparent pricing, AI-powered scoping, and a marketplace where quality—not fees—wins."
-          primaryAction={{ label: "Get started", href: "#" }}
-          secondaryAction={{ label: "See how it works", href: "#" }}
+          primaryAction={{ label: "Get started", onClick: () => onNavigate?.('signup') }}
+          secondaryAction={{ label: "See how it works", onClick: () => onNavigate?.('home') }}
         />
 
         <StatsSection stats={stats} />

@@ -39,21 +39,21 @@ export function ReferralCodeCard({ code, userName, earnings, usedCount }: Referr
   }
 
   return (
-    <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+    <Card className="p-6 bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-heading text-lg font-semibold">Your Referral Code</h3>
             <p className="text-sm text-muted-foreground mt-1">Share with neighbors and earn $20 each</p>
           </div>
-          <div className="flex items-center gap-2 text-black dark:text-white bg-white dark:bg-black border border-black/10 dark:border-white/10 px-3 py-1 rounded-full">
+          <div className="flex items-center gap-2 text-black dark:text-white bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl px-3 py-1 rounded-full">
             <CurrencyDollar size={16} weight="bold" />
             <span className="font-bold">${earnings}</span>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="flex-1 bg-background border border-black/20 dark:border-white/20 rounded-lg px-4 py-3">
+          <div className="flex-1 bg-background border-0 shadow-md hover:shadow-lg rounded-lg px-4 py-3">
             <p className="text-2xl font-heading font-bold tracking-wider text-black dark:text-white">{code}</p>
           </div>
         </div>

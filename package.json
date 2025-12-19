@@ -1,12 +1,12 @@
 {
-    "name": "spark-template",
+    "name": "fairtradeworker",
     "private": true,
     "version": "0.0.1",
     "type": "module",
     "scripts": {
         "dev": "vite",
         "kill": "fuser -k 5000/tcp",
-        "build": "tsc -b --noCheck && vite build",
+        "build": "vite build",
         "build:analyze": "ANALYZE=true npm run build",
         "lint": "eslint .",
         "optimize": "vite optimize",
@@ -16,6 +16,9 @@
         "test:coverage": "vitest --coverage"
     },
     "dependencies": {
+        "@dnd-kit/core": "^6.3.1",
+        "@dnd-kit/sortable": "^8.0.0",
+        "@dnd-kit/utilities": "^3.2.2",
         "@github/spark": ">=0.43.1 <1",
         "@heroicons/react": "^2.2.0",
         "@hookform/resolvers": "^4.1.3",
@@ -53,6 +56,7 @@
         "@tailwindcss/container-queries": "^0.1.1",
         "@tailwindcss/vite": "^4.1.11",
         "@tanstack/react-query": "^5.83.1",
+        "bootstrap-icons": "^1.13.1",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "cmdk": "^1.1.1",
@@ -78,7 +82,8 @@
         "tw-animate-css": "^1.2.4",
         "uuid": "^11.1.0",
         "vaul": "^1.1.2",
-        "zod": "^3.25.76"
+        "zod": "^3.25.76",
+        "zustand": "^4.5.7"
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
@@ -90,11 +95,13 @@
         "@vitejs/plugin-react-swc": "^4.2.2",
         "@vitest/coverage-v8": "^4.0.15",
         "@vitest/ui": "^4.0.15",
+        "cspell": "^9.4.0",
         "eslint": "^9.28.0",
         "eslint-plugin-react-hooks": "^5.2.0",
         "eslint-plugin-react-refresh": "^0.4.19",
         "globals": "^16.0.0",
         "jsdom": "^27.3.0",
+        "markdownlint-cli2": "^0.20.0",
         "rollup-plugin-visualizer": "^6.0.5",
         "tailwindcss": "^4.1.11",
         "typescript": "~5.7.2",

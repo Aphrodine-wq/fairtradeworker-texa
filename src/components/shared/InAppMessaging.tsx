@@ -138,7 +138,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[600px]">
             {/* Threads List */}
-            <div className="border border-black/20 dark:border-white/20 overflow-y-auto">
+            <div className="border-0 shadow-md hover:shadow-lg overflow-y-auto">
               <div className="p-2 space-y-2">
                 {threads.length === 0 ? (
                   <p className="text-center text-black dark:text-white py-8 text-sm">
@@ -151,7 +151,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
                       className={`p-3 cursor-pointer border-2 transition-all ${
                         selectedThread === thread.id
                           ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                          : 'border-black dark:border-white'
+                          : 'border-0 shadow-sm'
                       }`}
                       onClick={() => setSelectedThread(thread.id)}
                     >
@@ -180,7 +180,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
             </div>
 
             {/* Messages */}
-            <div className="md:col-span-2 flex flex-col border border-black/20 dark:border-white/20">
+            <div className="md:col-span-2 flex flex-col border-0 shadow-md hover:shadow-lg">
               {currentThread ? (
                 <>
                   <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -197,8 +197,8 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
                           <div
                             className={`max-w-[80%] p-3 border-2 ${
                               msg.from === user.id
-                                ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
-                                : 'bg-white dark:bg-black text-black dark:text-white border-black dark:border-white'
+                                ? 'bg-black dark:bg-white text-white dark:text-black border-0 shadow-sm'
+                                : 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm'
                             }`}
                           >
                             <p className="text-sm">{msg.text}</p>
@@ -220,7 +220,7 @@ export function InAppMessaging({ user, otherUserId, job }: InAppMessagingProps) 
                     )}
                     <div ref={messagesEndRef} />
                   </div>
-                  <div className="p-4 border-t-2 border-black dark:border-white">
+                  <div className="p-4 border-t border-gray-200 dark:border-gray-800">
                     <div className="flex gap-2">
                       <Input
                         value={newMessage}

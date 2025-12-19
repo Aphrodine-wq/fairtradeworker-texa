@@ -1,0 +1,237 @@
+/**
+ * VOID Design System - Complete CSS Variable System
+ * Based on DESIGN_SYSTEM.md specifications
+ * Scoped to .void-desktop to avoid affecting rest of platform
+ */
+
+.void-desktop,
+.void-desktop :root {
+  /* === BACKGROUND LAYERS === */
+  --bg: #000000;                    /* Pure OLED black */
+  --bg-elevated: #020204;           /* Nano-elevated (1% white) */
+  --surface: #0a0a0f;               /* Glass base (4% white) */
+  --surface-secondary: #141419;     /* Secondary panels (8% white) */
+  --surface-hover: #141419;         /* Hover state (8% white) */
+  
+  /* === BORDERS & SEPARATORS === */
+  --border: #1a1a24;                /* 8% white */
+  --border-hover: #2a2a3a;          /* 12% white */
+  --border-active: #00f5ff;         /* Accent on interaction */
+  
+  /* === TEXT HIERARCHY (7.5:1 contrast) === */
+  --text-primary: #ffffff;          /* 100% white */
+  --text-secondary: #a0a0b0;        /* 65% white */
+  --text-tertiary: #6a6a7a;         /* 40% white (disabled) */
+  --text-accent: #00f5ff;           /* Accent for links */
+  
+  /* === ACCENTS (Cyan Only) === */
+  --accent: #00f5ff;                /* Electric cyan */
+  --accent-hover: #33f7ff;          /* +20% brightness */
+  --accent-glow: 0 0 40px rgba(0, 245, 255, 0.6);
+  --accent-glow-subtle: 0 0 20px rgba(0, 245, 255, 0.3);
+  
+  /* === STATE COLORS (Windows Palette) === */
+  --success: #10b981;               /* Emerald 500 */
+  --warning: #f59e0b;               /* Amber 500 */
+  --error: #ef4444;                 /* Red 500 */
+  
+  /* === SHADOWS (Dual-Layer) === */
+  --shadow-ambient: 0 8px 32px rgba(0,0,0,0.35);
+  --shadow-directional: 0 4px 16px rgba(0,0,0,0.2);
+  --shadow-hover: 0 12px 48px rgba(0,0,0,0.45);
+  
+  /* === RADIUS (4px base unit) === */
+  --radius-sm: 8px;   /* Buttons, inputs */
+  --radius-md: 12px;  /* Cards, windows */
+  --radius-lg: 16px;  /* Large panels */
+  --radius-xl: 24px;  /* Modals */
+  
+  /* === BLUR === */
+  --blur-sm: 12px;
+  --blur-md: 20px;    /* Standard glass */
+  --blur-lg: 32px;
+  
+  /* === TRANSITIONS (120fps) === */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-snap: cubic-bezier(0.2, 0, 0, 1);
+  --ease-linear: linear;
+  
+  /* === DURATION HIERARCHY === */
+  --duration-micro: 80ms;    /* Button press, instant feedback */
+  --duration-fast: 120ms;    /* Hover, drag start */
+  --duration-normal: 200ms;  /* Window open/close */
+  --duration-slow: 300ms;    /* Panel expand, page transitions */
+}
+
+/* LIGHT MODE OVERRIDES */
+.void-desktop[data-theme="light"],
+.void-desktop [data-theme="light"] {
+  --bg: #ffffff;
+  --bg-elevated: #fefefe;
+  --surface: #f8f9fc;
+  --surface-secondary: #f0f1f5;
+  --surface-hover: #f0f1f5;
+  
+  --border: #e2e4ea;
+  --border-hover: #d0d2da;
+  --border-active: #005ce6;
+  
+  --text-primary: #000000;
+  --text-secondary: #4b5563;
+  --text-tertiary: #9ca3af;
+  --text-accent: #005ce6;
+  
+  --accent: #005ce6;
+  --accent-hover: #0047b3;
+  --accent-glow: 0 0 40px rgba(0, 92, 230, 0.4);
+  --accent-glow-subtle: 0 0 20px rgba(0, 92, 230, 0.2);
+  
+  --shadow-ambient: 0 8px 32px rgba(0,0,0,0.1);
+  --shadow-directional: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-hover: 0 12px 48px rgba(0,0,0,0.15);
+}
+
+/* === TYPOGRAPHY === */
+.void-typography {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display */
+.void-display-1 {
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 700;
+}
+
+.void-display-2 {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+/* Headings */
+.void-heading-1 {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.void-heading-2 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.void-heading-3 {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+/* Body */
+.void-body-large {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.void-body-regular {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.void-body-small {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.void-body-caption {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+/* UI */
+.void-button-text {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.void-input-text {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.void-label-text {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+}
+
+.void-mono-text {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  font-family: 'SF Mono', Monaco, monospace;
+}
+
+/* === GRID SYSTEM === */
+.void-desktop {
+  display: grid;
+  grid-template-columns: repeat(400, 0.5fr); /* 0.5fr = 2px increments */
+  grid-template-rows: repeat(400, 0.5fr);
+  gap: 1px; /* 1px gutters */
+  padding: 32px 40px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: var(--bg);
+}
+
+.void-icon {
+  grid-column: span 1;
+  grid-row: span 1;
+  place-self: center;
+  width: 100%;
+  height: 100%;
+  min-width: 48px; /* Minimum touch target */
+  min-height: 48px;
+}
+
+/* === TOOLBAR === */
+.void-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: grid;
+  grid-template-columns: 48px 1fr auto auto auto auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+/* === REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

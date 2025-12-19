@@ -34,31 +34,31 @@ const variantConfig: Record<TipVariant, {
   info: {
     icon: <Info size={20} weight="bold" />,
     bgColor: 'bg-white',
-    borderColor: 'border-black',
+    borderColor: 'border-0',
     accentColor: 'bg-black'
   },
   tip: {
     icon: <Lightbulb size={20} weight="bold" />,
     bgColor: 'bg-[#FFFF00]/20',
-    borderColor: 'border-black',
+    borderColor: 'border-0',
     accentColor: 'bg-[#FFFF00]'
   },
   money: {
     icon: <CurrencyDollar size={20} weight="bold" />,
     bgColor: 'bg-[#00FF00]/10',
-    borderColor: 'border-black',
+    borderColor: 'border-0',
     accentColor: 'bg-[#00FF00]'
   },
   highlight: {
     icon: <Lightning size={20} weight="fill" />,
     bgColor: 'bg-white',
-    borderColor: 'border-black',
+    borderColor: 'border-0',
     accentColor: 'bg-[#00FF00]'
   },
   help: {
     icon: <Question size={20} weight="bold" />,
     bgColor: 'bg-white',
-    borderColor: 'border-black',
+    borderColor: 'border-0',
     accentColor: 'bg-black'
   }
 };

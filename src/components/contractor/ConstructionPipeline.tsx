@@ -206,7 +206,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
       {/* Pipeline Stats */}
       <div className="grid md:grid-cols-5 gap-4">
         {stages.map(stage => (
-          <Card key={stage} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+          <Card key={stage} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-muted-foreground">{stageLabels[stage]}</span>
@@ -248,7 +248,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
                   {stageItems.map(item => (
                     <Card
                       key={item.id}
-                      className="bg-white dark:bg-black border border-black/20 dark:border-white/20 cursor-pointer hover:shadow-md transition-all"
+                      className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl cursor-pointer hover:shadow-md transition-all"
                       onClick={() => setSelectedItem(item)}
                     >
                       <CardContent className="p-4">
@@ -275,7 +275,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
                             </span>
                           </div>
                           {item.job && (
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 border-t border-black/10 dark:border-white/10">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground pt-1 border-t border-gray-200 dark:border-gray-800">
                               {item.job.size && (
                                 <Badge variant="secondary" className="text-xs">
                                   {item.job.size}
@@ -293,7 +293,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
                     </Card>
                   ))}
                   {stageItems.length === 0 && (
-                    <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20 border-dashed">
+                    <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl border-dashed">
                       <CardContent className="p-8 text-center">
                         <p className="text-sm text-muted-foreground">No items</p>
                       </CardContent>
@@ -345,7 +345,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
                   </div>
                 </div>
                 {selectedItem.job && (
-                  <div className="pt-4 border-t border-black/10 dark:border-white/10">
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
                     <h4 className="font-semibold text-sm mb-2 text-black dark:text-white">Job Details</h4>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
@@ -370,7 +370,7 @@ export function ConstructionPipeline({ user }: ConstructionPipelineProps) {
                   </div>
                 )}
                 {selectedItem.bid && (
-                  <div className="pt-4 border-t border-black/10 dark:border-white/10">
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-800">
                     <h4 className="font-semibold text-sm mb-2 text-black dark:text-white">Bid Details</h4>
                     <p className="text-sm text-muted-foreground">{selectedItem.bid.message}</p>
                   </div>

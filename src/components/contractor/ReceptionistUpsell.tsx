@@ -9,24 +9,29 @@ import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { 
   Sparkles,
   DollarSign,
   TrendingUp,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Phone,
+  ArrowRight
 } from "@phosphor-icons/react"
 import { useLocalKV } from "@/hooks/useLocalKV"
 import type { User } from "@/lib/types"
 import type { ReceptionistCall } from "@/lib/receptionist"
 import { generateUpsells, generateInstantQuote } from "@/lib/receptionistUpsell"
 import { toast } from "sonner"
+import { AIReceptionistIntegration } from "./AIReceptionistIntegration"
 
 interface ReceptionistUpsellProps {
   user: User
+  onNavigate?: (page: string) => void
 }
 
-export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
+export function ReceptionistUpsell({ user, onNavigate }: ReceptionistUpsellProps) {
   const isPro = user?.isPro || false
   const [calls] = useLocalKV<ReceptionistCall[]>("receptionist-calls", [])
   const [upsellEnabled, setUpsellEnabled] = useLocalKV<boolean>(`receptionist-upsell-enabled-${user?.id}`, true)
@@ -60,7 +65,7 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -69,6 +74,10 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
 
   return (
     <div className="space-y-6">
+      {/* Main Integration Component */}
+      <AIReceptionistIntegration user={user} onNavigate={onNavigate} />
+
+      {/* Upsell & Quoting Section */}
       <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -125,7 +134,7 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
                         className={`p-3 border-2 cursor-pointer transition-all ${
                           selectedCall === c.id
                             ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                            : 'border-black dark:border-white'
+                            : 'border-0 shadow-sm'
                         }`}
                         onClick={() => setSelectedCall(c.id)}
                       >
@@ -143,7 +152,7 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
 
               {quote && (
                 <div className="space-y-4">
-                  <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+                  <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-bold text-black dark:text-white">Instant Quote</h3>
                       <Badge variant="default">
@@ -160,10 +169,10 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
                       </div>
 
                       {upsells.length > 0 && (
-                        <div className="pt-3 border-t-2 border-black dark:border-white">
+                        <div className="pt-3 border-t border-gray-200 dark:border-gray-800">
                           <p className="font-semibold text-black dark:text-white mb-2">Suggested Upsells</p>
                           {upsells.map((upsell, idx) => (
-                            <div key={idx} className="p-3 mb-2 border border-black/20 dark:border-white/20">
+                            <div key={idx} className="p-3 mb-2 border-0 shadow-md hover:shadow-lg">
                               <div className="flex items-start justify-between mb-2">
                                 <div className="flex-1">
                                   <p className="font-semibold text-black dark:text-white">{upsell.service}</p>
@@ -185,7 +194,7 @@ export function ReceptionistUpsell({ user }: ReceptionistUpsellProps) {
                         </div>
                       )}
 
-                      <div className="pt-3 border-t-2 border-black dark:border-white">
+                      <div className="pt-3 border-t-2 border-0 shadow-sm">
                         <div className="flex items-center justify-between mb-2">
                           <span className="font-bold text-lg text-black dark:text-white">Total</span>
                           <span className="font-bold text-xl text-black dark:text-white">

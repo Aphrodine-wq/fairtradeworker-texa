@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -25,7 +25,8 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
   const [jobs] = useKV<Job[]>("jobs", [])
   const [referrals] = useKV<ContractorReferral[]>("contractor-referrals", [])
 
-  const initializeTerritories = () => {
+  // Move side effect to useEffect instead of useMemo
+  useEffect(() => {
     if (!territories || territories.length === 0) {
       const initialTerritories: Territory[] = TEXAS_COUNTIES.map((county, idx) => ({
         id: idx + 1,
@@ -33,12 +34,20 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
         status: 'available' as const
       }))
       setTerritories(initialTerritories)
-      return initialTerritories
+    }
+  }, [territories, setTerritories])
+
+  const currentTerritories = useMemo(() => {
+    if (!territories || territories.length === 0) {
+      // Return default territories for display (side effect handled in useEffect above)
+      return TEXAS_COUNTIES.map((county, idx) => ({
+        id: idx + 1,
+        countyName: `${county} County`,
+        status: 'available' as const
+      }))
     }
     return territories
-  }
-
-  const currentTerritories = useMemo(() => initializeTerritories(), [territories])
+  }, [territories])
 
   const handleClaimTerritory = (territory: Territory) => {
     if (territory.status === 'claimed') {
@@ -47,25 +56,40 @@ export function TerritoryMap({ user }: TerritoryMapProps) {
     }
 
     // Operators can only control one territory
-    const existingTerritory = (currentTerritories || []).find(t => t.operatorId === user.id)
+    // BACKWARD COMPATIBLE: Check both old and new formats
+    const existingTerritory = (currentTerritories || []).find(t => 
+      t.operatorId === user.id || t.claimedBy === user.id
+    )
     if (existingTerritory) {
       toast.error(`You already control ${existingTerritory.countyName}. Operators can only manage one territory.`)
       return
     }
 
+    // Upgrade to enhanced format if legacy
+    const updatedTerritory: Territory = {
+      ...territory,
+      status: 'claimed' as const,
+      operatorId: user.id,
+      operatorName: user.fullName,
+      claimedBy: user.id, // New format
+      claimedAt: new Date().toISOString(), // New format
+      version: 'enhanced', // Mark as enhanced
+    }
+
     setTerritories((current) =>
       (current || []).map(t =>
-        t.id === territory.id
-          ? { ...t, status: 'claimed' as const, operatorId: user.id, operatorName: user.fullName }
-          : t
+        t.id === territory.id ? updatedTerritory : t
       )
     )
 
     toast.success(`${territory.countyName} claimed successfully!`)
   }
 
+  // BACKWARD COMPATIBLE: Works with both old and new territory formats
   const { myTerritories, availableTerritories } = useMemo(() => ({
-    myTerritories: (currentTerritories || []).filter(t => t.operatorId === user.id),
+    myTerritories: (currentTerritories || []).filter(t => 
+      t.operatorId === user.id || t.claimedBy === user.id
+    ),
     availableTerritories: (currentTerritories || []).filter(t => t.status === 'available')
   }), [currentTerritories, user.id])
 

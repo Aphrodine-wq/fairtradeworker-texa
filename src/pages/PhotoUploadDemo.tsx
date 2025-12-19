@@ -17,7 +17,7 @@ export function PhotoUploadDemo() {
         links={[{ label: 'Home', href: '#' }, { label: 'Photo Upload', href: '#', active: true }]}
         primaryLabel="Post Job" />
 
-      <div className="pt-20 pb-12 px-4 max-w-5xl mx-auto space-y-6">
+      <div className="w-full pt-20 pb-12 px-4 sm:px-6 lg:px-8 space-y-6">
         <HeroSection
           title="Real-time photo uploads"
           subtitle="Live progress, retries, and status—ready for AI scoping and documentation."

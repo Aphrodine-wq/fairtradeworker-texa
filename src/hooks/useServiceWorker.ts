@@ -54,6 +54,28 @@ export function useServiceWorker() {
     };
   }, []);
 
+  // Separate effect to handle cleanup of updatefound listener
+  useEffect(() => {
+    if (!registration) return;
+
+    const handleUpdateFound = () => {
+      const newWorker = registration.installing;
+      if (newWorker) {
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            setNeedsUpdate(true);
+          }
+        });
+      }
+    };
+
+    registration.addEventListener('updatefound', handleUpdateFound);
+
+    return () => {
+      registration.removeEventListener('updatefound', handleUpdateFound);
+    };
+  }, [registration]);
+
   const registerServiceWorker = async () => {
     try {
       setIsInstalling(true);
@@ -64,17 +86,6 @@ export function useServiceWorker() {
 
       setRegistration(reg);
       setIsInstalling(false);
-
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-        if (newWorker) {
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              setNeedsUpdate(true);
-            }
-          });
-        }
-      });
 
       await navigator.serviceWorker.ready;
       console.log('[SW] Service worker ready');

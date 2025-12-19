@@ -36,7 +36,7 @@ const defaultTheme = {
       "ipad-pro": "1024px",
     },
     colors: {
-      // BRUTALIST PRIMARY PALETTE
+      // PRIMARY PALETTE
       white: '#FFFFFF',
       black: '#000000',
       success: '#00FF00',

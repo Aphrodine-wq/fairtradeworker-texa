@@ -1,0 +1,133 @@
+/**
+ * VOID OS - Z-Index Layer System
+ * Defines the complete z-index hierarchy for all OS layers
+ */
+
+.void-desktop,
+.void-desktop :root {
+  /* === LAYER 7: OVERLAYS (z: 9800-10100) === */
+  --layer-overlay-lock: 10000;
+  --layer-overlay-boot: 10100;
+  --layer-overlay-modal: 9800;
+  --layer-overlay-toast: 9900;
+  
+  /* === LAYER 6: SYSTEM UI (z: 9300-9700) === */
+  --layer-system-spotlight: 9500;
+  --layer-system-control-center: 9400;
+  --layer-system-notification-center: 9300;
+  --layer-system-context-menu: 9600;
+  
+  /* === LAYER 5: TOOLBAR (z: 9100) === */
+  --layer-toolbar: 9100;
+  
+  /* === LAYER 4: WINDOWS (z: 1000-9000) === */
+  --layer-window-base: 1000;
+  --layer-window-max: 9000;
+  
+  /* === LAYER 3: WIDGETS (z: 200) === */
+  --layer-widget-buddy: 200;
+  --layer-widget-spotify: 201;
+  --layer-widget-notes: 202;
+  
+  /* === LAYER 2: DESKTOP (z: 10-100) === */
+  --layer-desktop-icons: 10;
+  --layer-desktop-dock: 50;
+  --layer-desktop-taskbar: 60;
+  --layer-desktop-selection: 100;
+  
+  /* === LAYER 1: BACKGROUND (z: 0-1) === */
+  --layer-background-wallpaper: 0;
+  --layer-background-wiremap: 1;
+  --layer-background-overlay: 1;
+}
+
+/* === LAYER 7: OVERLAYS === */
+.void-overlay-lock {
+  z-index: var(--layer-overlay-lock);
+}
+
+.void-overlay-boot {
+  z-index: var(--layer-overlay-boot);
+}
+
+.void-overlay-modal {
+  z-index: var(--layer-overlay-modal);
+}
+
+.void-overlay-toast {
+  z-index: var(--layer-overlay-toast);
+}
+
+/* === LAYER 6: SYSTEM UI === */
+.void-system-spotlight {
+  z-index: var(--layer-system-spotlight);
+}
+
+.void-system-control-center {
+  z-index: var(--layer-system-control-center);
+}
+
+.void-system-notification-center {
+  z-index: var(--layer-system-notification-center);
+}
+
+.void-system-context-menu {
+  z-index: var(--layer-system-context-menu);
+}
+
+/* === LAYER 5: TOOLBAR === */
+.void-toolbar {
+  z-index: var(--layer-toolbar);
+}
+
+/* === LAYER 4: WINDOWS === */
+.void-window {
+  z-index: var(--layer-window-base);
+}
+
+.void-window-active {
+  /* Active window gets higher z-index dynamically */
+}
+
+/* === LAYER 3: WIDGETS === */
+.void-widget-buddy {
+  z-index: var(--layer-widget-buddy);
+}
+
+.void-widget-spotify {
+  z-index: var(--layer-widget-spotify);
+}
+
+.void-widget-notes {
+  z-index: var(--layer-widget-notes);
+}
+
+/* === LAYER 2: DESKTOP === */
+.void-desktop-icons {
+  z-index: var(--layer-desktop-icons);
+}
+
+.void-desktop-dock {
+  z-index: var(--layer-desktop-dock);
+}
+
+.void-desktop-taskbar {
+  z-index: var(--layer-desktop-taskbar);
+}
+
+.void-desktop-selection {
+  z-index: var(--layer-desktop-selection);
+}
+
+/* === LAYER 1: BACKGROUND === */
+.void-background-wallpaper {
+  z-index: var(--layer-background-wallpaper);
+}
+
+.void-background-wiremap {
+  z-index: var(--layer-background-wiremap);
+}
+
+.void-background-overlay {
+  z-index: var(--layer-background-overlay);
+}

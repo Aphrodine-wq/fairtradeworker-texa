@@ -231,7 +231,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
                     placeholder="e.g., Main floor, Room 201"
                   />
                 </div>
-                <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+                <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                   <Button variant="outline" onClick={() => setShowTaskDialog(false)}>
                     Cancel
                   </Button>
@@ -302,7 +302,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
                     rows={4}
                   />
                 </div>
-                <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+                <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                   <Button variant="outline" onClick={() => setShowMessageDialog(false)}>
                     Cancel
                   </Button>
@@ -336,7 +336,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
 
       {/* Task Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Total Tasks</span>
@@ -347,7 +347,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Pending</span>
@@ -358,7 +358,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">In Progress</span>
@@ -369,7 +369,7 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Completed</span>
@@ -387,14 +387,14 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
         <div className="space-y-4">
           <h3 className="font-semibold text-lg text-black dark:text-white">Tasks</h3>
           {filteredTasks.length === 0 ? (
-            <Card className="p-8 text-center border border-black/20 dark:border-white/20">
+            <Card className="p-8 text-center border-0 shadow-lg hover:shadow-xl">
               <CheckCircle size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground">No tasks yet</p>
             </Card>
           ) : (
             <div className="space-y-3">
               {filteredTasks.map(task => (
-                <Card key={task.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={task.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardContent className="p-4">
                     <div className="space-y-3">
                       <div className="flex items-start justify-between">
@@ -454,14 +454,14 @@ export function ConstructionCollaboration({ user }: ConstructionCollaborationPro
         <div className="space-y-4">
           <h3 className="font-semibold text-lg text-black dark:text-white">Team Messages</h3>
           {filteredMessages.length === 0 ? (
-            <Card className="p-8 text-center border border-black/20 dark:border-white/20">
+            <Card className="p-8 text-center border-0 shadow-lg hover:shadow-xl">
               <ChatCircle size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
               <p className="text-muted-foreground">No messages yet</p>
             </Card>
           ) : (
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
               {filteredMessages.map(message => (
-                <Card key={message.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={message.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardContent className="p-4">
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">

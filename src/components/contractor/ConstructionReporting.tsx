@@ -187,7 +187,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
 
         <TabsContent value="lifecycle" className="space-y-6 mt-6">
           <div className="grid md:grid-cols-4 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Hammer weight="duotone" size={24} className="text-black dark:text-white" />
@@ -199,7 +199,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <CheckCircle weight="duotone" size={24} className="text-green-500" />
@@ -211,7 +211,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Clock weight="duotone" size={24} className="text-blue-500" />
@@ -223,7 +223,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Calendar weight="duotone" size={24} className="text-purple-500" />
@@ -237,7 +237,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
             </Card>
           </div>
 
-          <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+          <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
             <CardHeader>
               <CardTitle>Completion Rate</CardTitle>
             </CardHeader>
@@ -263,7 +263,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
             {jobProfitability
               .sort((a, b) => b.profit - a.profit)
               .map(job => (
-                <Card key={job.jobId} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={job.jobId} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{job.jobTitle}</CardTitle>
@@ -315,7 +315,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
 
         <TabsContent value="forecasting" className="space-y-6 mt-6">
           <div className="grid md:grid-cols-3 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Next Month Forecast</CardTitle>
               </CardHeader>
@@ -333,7 +333,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Next Quarter Forecast</CardTitle>
               </CardHeader>
@@ -351,7 +351,7 @@ export function ConstructionReporting({ user }: ConstructionReportingProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Pipeline Value</CardTitle>
               </CardHeader>

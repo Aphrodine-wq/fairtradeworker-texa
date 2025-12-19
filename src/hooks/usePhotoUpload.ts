@@ -120,6 +120,10 @@ export function usePhotoUpload(options: UploadOptions = {}) {
       return file
     } catch (error) {
       console.error('Compression failed, using original:', error)
+      // Log error for debugging
+      if (error instanceof Error) {
+        console.error('Compression error details:', error.message, error.stack)
+      }
       return file
     }
   }, [opts.enableCompression, opts.compressionQuality, opts.maxWidth, opts.maxHeight, opts.maxSize])
@@ -182,11 +186,17 @@ export function usePhotoUpload(options: UploadOptions = {}) {
 
       await simulateUpload(photo.id)
 
-      setPhotos(prev => prev.map(p => 
-        p.id === photo.id ? { ...p, status: 'complete' as const, progress: 100 } : p
-      ))
-
-      const completedPhoto = photos.find(p => p.id === photo.id)
+      setPhotos(prev => {
+        const updated = prev.map(p => 
+          p.id === photo.id ? { ...p, status: 'complete' as const, progress: 100 } : p
+        )
+        // Use functional update to get latest state
+        const completedPhoto = updated.find(p => p.id === photo.id)
+        if (completedPhoto) {
+          opts.onComplete(completedPhoto)
+        }
+        return updated
+      })
       if (completedPhoto) {
         opts.onComplete(completedPhoto)
       }

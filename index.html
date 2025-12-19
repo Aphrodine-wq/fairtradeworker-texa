@@ -56,6 +56,10 @@
     <!-- Prefetch likely next routes -->
     <link rel="prefetch" href="/src/pages/Login.tsx" as="script">
     <link rel="prefetch" href="/src/pages/Signup.tsx" as="script">
+    
+    <!-- Preload critical resources for faster initial load -->
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="preload" href="/src/styles/theme.css" as="style">
 </head>
 
 <body>

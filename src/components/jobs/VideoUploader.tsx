@@ -370,7 +370,7 @@ export function VideoUploader({ onUploadComplete, onCancel }: VideoUploaderProps
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed border-black dark:border-white rounded-md p-12 text-center transition-all cursor-pointer shadow-sm ${isDragging 
+            border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-12 text-center transition-all cursor-pointer shadow-sm hover:shadow-md ${isDragging 
               ? 'bg-black dark:bg-white text-white dark:text-black' 
               : 'hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]'
             }

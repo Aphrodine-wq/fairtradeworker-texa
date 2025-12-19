@@ -78,24 +78,24 @@ export function ReviewInsights({ user }: ReviewInsightsProps) {
         <CardContent className="space-y-6">
           {/* Overall Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
               <p className="text-sm text-muted-foreground">Average Rating</p>
               <p className="text-3xl font-bold flex items-center gap-2 mt-1">
                 {insights.avgRating.toFixed(1)}
                 <Star className="h-6 w-6 text-yellow-400 fill-yellow-400" />
               </p>
             </div>
-            <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
               <p className="text-sm text-muted-foreground">Total Reviews</p>
               <p className="text-3xl font-bold mt-1">{insights.totalReviews}</p>
             </div>
-            <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
               <p className="text-sm text-muted-foreground">Strengths</p>
               <p className="text-3xl font-bold text-green-600 dark:text-green-400 mt-1">
                 {insights.strengths.length}
               </p>
             </div>
-            <div className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+            <div className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
               <p className="text-sm text-muted-foreground">Improvements</p>
               <p className="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-1">
                 {insights.improvements.length}
@@ -166,7 +166,7 @@ export function ReviewInsights({ user }: ReviewInsightsProps) {
               </h3>
               <div className="space-y-3">
                 {insights.insights.slice(0, 5).map((insight, idx) => (
-                  <div key={idx} className="p-4 border border-black/20 dark:border-white/20 rounded-md">
+                  <div key={idx} className="p-4 border-0 shadow-md hover:shadow-lg rounded-md">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {insight.category === 'strength' ? (

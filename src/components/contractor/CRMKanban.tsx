@@ -113,16 +113,16 @@ export function CRMKanban({ user }: CRMKanbanProps) {
             >
               <div className={`flex items-center justify-between p-4 rounded-md border-2 transition-all ${
                 isDragOver 
-                  ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black' 
-                  : 'border-black dark:border-white bg-white dark:bg-black'
+                  ? 'border-0 bg-black dark:bg-white text-white dark:text-black shadow-lg' 
+                  : 'border-0 bg-white dark:bg-black shadow-md hover:shadow-lg'
               }`}>
                 <h3 className={`font-semibold ${column.color}`}>{column.title}</h3>
-                <Badge variant="secondary" className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Badge variant="secondary" className="bg-white dark:bg-black border-0 shadow-sm">
                   {columnCustomers.length}
                 </Badge>
               </div>
 
-              <div className={`flex flex-col gap-3 min-h-[300px] p-2 rounded-md border border-black/20 dark:border-white/20 transition-all ${
+              <div className={`flex flex-col gap-3 min-h-[300px] p-2 rounded-md border-0 transition-all ${
                 isDragOver ? column.bgColor : 'bg-white dark:bg-black'
               }`}>
                 {columnCustomers.map((customer) => {
@@ -136,7 +136,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                       onDragEnd={handleDragEnd}
                       className={`cursor-move transition-all duration-200 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] hover:scale-[1.02] ${
                         isDragging ? 'opacity-50 scale-95' : ''
-                      } bg-white dark:bg-black border border-black/20 dark:border-white/20`}
+                      } bg-white dark:bg-black border-0 shadow-md hover:shadow-lg`}
                     >
                       <CardHeader className="p-4 pb-2">
                         <CardTitle className="text-base font-semibold text-black dark:text-white">
@@ -170,7 +170,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                               <Badge 
                                 key={i} 
                                 variant="outline" 
-                                className="text-xs py-0 px-1.5 border border-black/20 dark:border-white/20"
+                                className="text-xs py-0 px-1.5 border-0 shadow-sm"
                               >
                                 <Tag size={10} weight="fill" className="mr-1" />
                                 {tag}
@@ -186,7 +186,7 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                           </div>
                         )}
 
-                        <div className="text-xs text-black dark:text-white pt-1 border border-black/20 dark:border-white/20">
+                        <div className="text-xs text-black dark:text-white pt-1 border-t border-gray-200 dark:border-gray-800">
                           Last: {formatDate(customer.lastContact)}
                         </div>
                       </CardContent>
@@ -197,8 +197,8 @@ export function CRMKanban({ user }: CRMKanbanProps) {
                 {columnCustomers.length === 0 && (
                   <div className={`flex items-center justify-center p-8 text-sm text-black dark:text-white border-2 border-dashed rounded-md transition-all font-mono ${
                       isDragOver 
-                        ? 'border-black dark:border-white bg-black dark:bg-white text-white dark:text-black'
-                      : 'border border-black/20 dark:border-white/20'
+                        ? 'border-gray-400 dark:border-gray-600 bg-gray-100 dark:bg-gray-800'
+                      : 'border-gray-300 dark:border-gray-700'
                   }`}>
                     {isDragOver ? 'Drop here!' : 'Drop customers here'}
                   </div>

@@ -133,13 +133,13 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
   const getStatusColor = (status: TradeBudget['status']) => {
     switch (status) {
       case 'complete':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'under':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'on-track':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
       case 'over':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-md hover:shadow-lg'
     }
   }
   
@@ -171,10 +171,10 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <CurrencyDollar className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
@@ -185,7 +185,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-4 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Total Budget</div>
               <div className="text-2xl font-bold">
                 ${budgetData.totalBudget.toLocaleString()}
@@ -197,7 +197,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
               )}
             </div>
             
-            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-4 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Total Spent</div>
               <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalSpent.toLocaleString()}
@@ -207,7 +207,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
               </div>
             </div>
             
-            <div className="p-4 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-4 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <div className="text-sm text-muted-foreground mb-1">Remaining</div>
               <div className="text-2xl font-bold text-black dark:text-white">
                 ${budgetData.totalRemaining.toLocaleString()}
@@ -232,7 +232,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
           </div>
           
           {budgetData.percentSpent > 90 && budgetData.totalRemaining > 0 && (
-            <div className="flex items-center gap-2 p-3 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="flex items-center gap-2 p-3 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <Warning className="w-5 h-5 text-black dark:text-white shrink-0" weight="fill" />
               <div className="text-sm text-black dark:text-white">
                 <span className="font-medium">Budget Alert:</span> You've spent {budgetData.percentSpent.toFixed(1)}% of the total budget
@@ -245,7 +245,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
       <Card>
         <CardHeader>
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+            <div className="p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
               <Wrench className="w-6 h-6 text-black dark:text-white" weight="bold" />
             </div>
             <div>
@@ -263,7 +263,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
           {tradeBreakdown.map((trade, idx) => (
             <div 
               key={idx}
-              className="p-4 rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all shadow-sm"
+              className="p-4 rounded-md border-0 shadow-md hover:shadow-lg bg-white dark:bg-black hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff] transition-all shadow-sm"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
@@ -323,7 +323,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
               </div>
               
               {trade.status === 'over' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm font-mono">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm font-mono">
                   <Warning className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
                   <span className="text-xs text-black dark:text-white">
                     This trade is approaching budget limit
@@ -332,7 +332,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
               )}
               
               {trade.status === 'complete' && (
-                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm font-mono">
+                <div className="mt-3 flex items-center gap-2 p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm font-mono">
                   <CheckCircle className="w-4 h-4 text-black dark:text-white shrink-0" weight="fill" />
                   <span className="text-xs text-black dark:text-white">
                     All payments complete for this trade
@@ -348,7 +348,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+              <div className="p-2 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
                 <TrendUp className="w-6 h-6 text-black dark:text-white" weight="bold" />
               </div>
               <div>
@@ -378,7 +378,7 @@ export function BudgetTracking({ job, onCreateInvoiceFromChangeOrder, userRole }
                     </div>
                     <Badge 
                       variant="outline"
-                      className="bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10"
+                      className="bg-white dark:bg-black text-black dark:text-white border-0 shadow-lg hover:shadow-xl"
                     >
                       {sc.status === 'approved' && '✓ Approved'}
                       {sc.status === 'rejected' && '✗ Rejected'}

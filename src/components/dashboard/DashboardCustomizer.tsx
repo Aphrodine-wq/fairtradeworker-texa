@@ -80,7 +80,7 @@ const AVAILABLE_TOOLS: Array<{
   { id: 'notifications', label: 'Notifications', page: 'notifications', iconName: 'Bell', icon: Bell, category: 'management' },
   // Sales & CRM
   { id: 'leads', label: 'Lead Management', page: 'leads', iconName: 'Users', icon: Users, category: 'sales' },
-  { id: 'crm', label: 'CRM', page: 'crm', iconName: 'Users', icon: Users, category: 'sales' },
+  { id: 'crm', label: 'Void', page: 'crm', iconName: 'Users', icon: Users, category: 'sales' },
   { id: 'reports', label: 'Reports', page: 'reports', iconName: 'ClipboardText', icon: ClipboardText, category: 'analytics' },
   // Operations
   { id: 'inventory', label: 'Inventory', page: 'inventory', iconName: 'Package', icon: Package, category: 'operations' },

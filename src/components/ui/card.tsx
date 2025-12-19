@@ -1,40 +1,47 @@
 import { ComponentProps } from "react"
-
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { universalCardHover } from "@/lib/animations"
 
 interface CardProps extends ComponentProps<"div"> {
   /** Enable glass effect for Pro features */
   glass?: boolean
+  /** Disable hover animations */
+  disableHover?: boolean
 }
 
-function Card({ className, glass = false, ...props }: CardProps) {
-  if (glass) {
-    // Pro glass variant - semi-transparent with subtle blur
+function Card({ className, glass = false, disableHover = false, ...props }: CardProps) {
+  const baseClasses = glass
+    ? "bg-glass-light dark:bg-glass-dark backdrop-blur-xs"
+    : "bg-white dark:bg-black"
+  
+  const commonClasses = cn(
+    baseClasses,
+    "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
+    "shadow-lg relative overflow-hidden group border-0",
+    className
+  )
+
+  if (disableHover) {
     return (
       <div
         data-slot="card"
-        className={cn(
-          "bg-glass-light dark:bg-glass-dark backdrop-blur-xs",
-          "text-black dark:text-white flex flex-col gap-5 rounded-xl py-5",
-          "shadow-lg hover:shadow-xl",
-          "transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
-          "hover:-translate-y-0.5",
-          "relative overflow-hidden group",
-          className
-        )}
+        className={commonClasses}
         {...props}
       />
     )
   }
 
-  // Default card (non-glass) - modern professional style
+  // Use framer-motion for smooth animations
   return (
-    <div
+    <motion.div
       data-slot="card"
-      className={cn(
-        "bg-white dark:bg-black text-black dark:text-white flex flex-col gap-5 rounded-xl py-5 shadow-lg hover:shadow-xl transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] relative overflow-hidden group",
-        className
-      )}
+      className={commonClasses}
+      variants={universalCardHover}
+      initial="rest"
+      whileHover="hover"
+      whileTap={{ scale: 0.98 }}
+      style={{ willChange: 'transform, box-shadow' }}
       {...props}
     />
   )

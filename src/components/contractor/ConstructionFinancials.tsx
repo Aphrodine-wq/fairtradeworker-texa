@@ -128,7 +128,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
 
       {/* Key Metrics */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <CurrencyDollar weight="duotone" size={24} className="text-black dark:text-white" />
@@ -140,7 +140,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <TrendingUp weight="duotone" size={24} className="text-green-500" />
@@ -152,7 +152,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <Receipt weight="duotone" size={24} className="text-orange-500" />
@@ -164,7 +164,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               {financialMetrics.profitMargin >= 20 ? (
@@ -191,7 +191,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
         <TabsContent value="profitability" className="space-y-4 mt-6">
           <div className="space-y-3">
             {financialMetrics.jobProfitability.map(job => (
-              <Card key={job.jobId} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+              <Card key={job.jobId} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{job.jobTitle}</CardTitle>
@@ -247,7 +247,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
 
         <TabsContent value="budgets" className="space-y-4 mt-6">
           <div className="grid md:grid-cols-2 gap-4">
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Budget Overview</CardTitle>
               </CardHeader>
@@ -281,7 +281,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
               </CardContent>
             </Card>
 
-            <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg">Financial Health</CardTitle>
               </CardHeader>
@@ -336,7 +336,7 @@ export function ConstructionFinancials({ user }: ConstructionFinancialsProps) {
               .filter(inv => inv.status === 'paid')
               .slice(0, 10)
               .map(invoice => (
-                <Card key={invoice.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+                <Card key={invoice.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>

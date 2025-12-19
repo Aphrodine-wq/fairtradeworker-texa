@@ -77,7 +77,7 @@ export function MobileCRM({ user }: MobileCRMProps) {
       </div>
 
       {/* Sync Status */}
-      <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+      <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Sync Status</CardTitle>
@@ -161,7 +161,7 @@ export function MobileCRM({ user }: MobileCRMProps) {
 
       {/* Pending Changes */}
       {mobileSync?.pendingChanges && mobileSync.pendingChanges.length > 0 && (
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardHeader>
             <CardTitle className="text-lg">Pending Changes</CardTitle>
             <CardDescription>
@@ -197,7 +197,7 @@ export function MobileCRM({ user }: MobileCRMProps) {
 
       {/* Mobile Features */}
       <div className="grid md:grid-cols-2 gap-4">
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <DeviceMobile weight="duotone" size={24} className="text-black dark:text-white" />
@@ -225,7 +225,7 @@ export function MobileCRM({ user }: MobileCRMProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <WifiSlash weight="duotone" size={24} className="text-black dark:text-white" />
@@ -255,7 +255,7 @@ export function MobileCRM({ user }: MobileCRMProps) {
       </div>
 
       {/* Download Instructions */}
-      <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+      <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <CardHeader>
           <CardTitle className="text-lg">Get Mobile App</CardTitle>
           <CardDescription>

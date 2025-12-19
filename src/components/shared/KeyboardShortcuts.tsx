@@ -92,7 +92,7 @@ export function KeyboardShortcuts({ user, onShortcut }: KeyboardShortcutsProps) 
   const general = shortcuts.filter(s => s.category === 'general')
 
   return (
-    <Card className="fixed inset-4 z-50 overflow-auto border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+    <Card className="fixed inset-4 z-50 overflow-auto border-0 shadow-xl bg-white dark:bg-black">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Keyboard weight="duotone" size={24} />
@@ -107,7 +107,7 @@ export function KeyboardShortcuts({ user, onShortcut }: KeyboardShortcutsProps) 
           <h3 className="font-semibold text-black dark:text-white mb-3">Navigation</h3>
           <div className="grid grid-cols-2 gap-3">
             {navigation.map((s) => (
-              <div key={s.key} className="flex items-center justify-between p-2 border border-black/20 dark:border-white/20">
+              <div key={s.key} className="flex items-center justify-between p-2 border-0 shadow-xl">
                 <span className="text-sm text-black dark:text-white">{s.description}</span>
                 <Badge variant="outline" className="font-mono">{s.key}</Badge>
               </div>
@@ -119,7 +119,7 @@ export function KeyboardShortcuts({ user, onShortcut }: KeyboardShortcutsProps) 
           <h3 className="font-semibold text-black dark:text-white mb-3">Actions</h3>
           <div className="grid grid-cols-2 gap-3">
             {actions.map((s) => (
-              <div key={s.key} className="flex items-center justify-between p-2 border border-black/20 dark:border-white/20">
+              <div key={s.key} className="flex items-center justify-between p-2 border-0 shadow-xl">
                 <span className="text-sm text-black dark:text-white">{s.description}</span>
                 <Badge variant="outline" className="font-mono">{s.key}</Badge>
               </div>
@@ -131,7 +131,7 @@ export function KeyboardShortcuts({ user, onShortcut }: KeyboardShortcutsProps) 
           <h3 className="font-semibold text-black dark:text-white mb-3">General</h3>
           <div className="grid grid-cols-2 gap-3">
             {general.map((s) => (
-              <div key={s.key} className="flex items-center justify-between p-2 border border-black/20 dark:border-white/20">
+              <div key={s.key} className="flex items-center justify-between p-2 border-0 shadow-xl">
                 <span className="text-sm text-black dark:text-white">{s.description}</span>
                 <Badge variant="outline" className="font-mono">{s.key}</Badge>
               </div>

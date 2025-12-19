@@ -22,7 +22,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       description: "Calculate profit margins and hourly rates instantly",
       icon: Calculator,
       color: "bg-white dark:bg-black",
-      borderColor: "border-black dark:border-white",
+      borderColor: "border-0",
       iconBg: "bg-black dark:bg-white"
     },
     {
@@ -31,7 +31,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       description: "Never lose track of warranties you've given",
       icon: ShieldCheck,
       color: "bg-white dark:bg-black",
-      borderColor: "border-black dark:border-white",
+      borderColor: "border-0",
       iconBg: "bg-[#00FF00] dark:bg-[#00FF00]"
     },
     {
@@ -52,7 +52,7 @@ export function FreeToolsHub({ user, onToolSelect }: FreeToolsHubProps) {
       description: "Quick access to your trusted contractors",
       icon: Heart,
       color: "bg-white dark:bg-black",
-      borderColor: "border-black dark:border-white",
+      borderColor: "border-0",
       iconBg: "bg-black dark:bg-white"
     },
     {

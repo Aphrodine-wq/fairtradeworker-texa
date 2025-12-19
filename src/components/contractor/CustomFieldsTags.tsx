@@ -97,7 +97,7 @@ export function CustomFieldsTags({ user }: CustomFieldsTagsProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -144,7 +144,7 @@ export function CustomFieldsTags({ user }: CustomFieldsTagsProps) {
               {customFields.map((field) => (
                 <div
                   key={field.id}
-                  className="p-4 border border-black/20 dark:border-white/20 flex items-center justify-between"
+                  className="p-4 border-0 shadow-md hover:shadow-lg flex items-center justify-between"
                 >
                   <div>
                     <h3 className="font-semibold text-black dark:text-white">{field.name}</h3>

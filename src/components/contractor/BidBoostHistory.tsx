@@ -68,7 +68,7 @@ export function BidBoostHistory({ user }: BidBoostHistoryProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -125,7 +125,7 @@ export function BidBoostHistory({ user }: BidBoostHistoryProps) {
                 return (
                   <div
                     key={boost.id}
-                    className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between"
+                    className="p-4 border-0 shadow-md hover:shadow-lg flex items-start justify-between"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">

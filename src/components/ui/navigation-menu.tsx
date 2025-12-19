@@ -59,7 +59,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black px-4 py-2 text-sm font-semibold tracking-tight hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-black dark:data-[state=open]:hover:bg-white data-[state=open]:text-white dark:data-[state=open]:text-black data-[state=open]:focus:bg-black dark:data-[state=open]:focus:bg-white data-[state=open]:bg-black dark:data-[state=open]:bg-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white outline-none transition-all duration-200 focus-visible:outline-1 shadow-sm"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md border-0 shadow-sm bg-white dark:bg-black px-4 py-2 text-sm font-semibold tracking-tight hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black focus:bg-black dark:focus:bg-white focus:text-white dark:focus:text-black disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-black dark:data-[state=open]:hover:bg-white data-[state=open]:text-white dark:data-[state=open]:text-black data-[state=open]:focus:bg-black dark:data-[state=open]:focus:bg-white data-[state=open]:bg-black dark:data-[state=open]:bg-white focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white outline-none transition-all duration-200 focus-visible:outline-1 shadow-sm"
 )
 
 function NavigationMenuTrigger({

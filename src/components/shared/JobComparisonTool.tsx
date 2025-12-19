@@ -64,7 +64,7 @@ export function JobComparisonTool({ user }: JobComparisonToolProps) {
                 className={`p-4 border-2 cursor-pointer transition-all ${
                   selectedJobs.includes(job.id)
                     ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10 dark:bg-[#00FF00]/10'
-                    : 'border-black dark:border-white'
+                    : 'border-gray-200 dark:border-gray-800'
                 }`}
                 onClick={() => toggleJob(job.id)}
               >
@@ -110,52 +110,52 @@ export function JobComparisonTool({ user }: JobComparisonToolProps) {
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
-                  <tr className="border-b-2 border-black dark:border-white">
+                  <tr className="border-b-2 border-gray-200 dark:border-gray-800">
                     <th className="p-2 text-left text-black dark:text-white">Criteria</th>
                     {comparisonJobs.map((job) => (
-                      <th key={job.id} className="p-2 text-left text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <th key={job.id} className="p-2 text-left text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         {job.title}
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-black dark:border-white">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     <td className="p-2 font-semibold text-black dark:text-white">Budget Range</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         ${job.aiScope.priceLow.toLocaleString()} - ${job.aiScope.priceHigh.toLocaleString()}
                       </td>
                     ))}
                   </tr>
-                  <tr className="border-b border-black dark:border-white">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     <td className="p-2 font-semibold text-black dark:text-white">Location</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         {job.address || 'N/A'}
                       </td>
                     ))}
                   </tr>
-                  <tr className="border-b border-black dark:border-white">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     <td className="p-2 font-semibold text-black dark:text-white">Category</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         <Badge variant="outline">{job.category || 'General'}</Badge>
                       </td>
                     ))}
                   </tr>
-                  <tr className="border-b border-black dark:border-white">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     <td className="p-2 font-semibold text-black dark:text-white">Size</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white capitalize">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800 capitalize">
                         {job.size}
                       </td>
                     ))}
                   </tr>
-                  <tr className="border-b border-black dark:border-white">
+                  <tr className="border-b border-gray-200 dark:border-gray-800">
                     <td className="p-2 font-semibold text-black dark:text-white">Posted</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         {new Date(job.createdAt).toLocaleDateString()}
                       </td>
                     ))}
@@ -163,7 +163,7 @@ export function JobComparisonTool({ user }: JobComparisonToolProps) {
                   <tr>
                     <td className="p-2 font-semibold text-black dark:text-white">Bids</td>
                     {comparisonJobs.map((job) => (
-                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-black dark:border-white">
+                      <td key={job.id} className="p-2 text-black dark:text-white border-l-2 border-gray-200 dark:border-gray-800">
                         {job.bids?.length || 0}
                       </td>
                     ))}

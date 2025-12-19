@@ -85,7 +85,7 @@ export function ProSupportChat({ user }: ProSupportChatProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -113,7 +113,7 @@ export function ProSupportChat({ user }: ProSupportChatProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col h-[600px]">
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 mb-4 border border-black/20 dark:border-white/20">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4 mb-4 border-0 shadow-md hover:shadow-lg">
             {messages.length === 0 ? (
               <div className="text-center py-12">
                 <Headset size={48} weight="duotone" className="mx-auto mb-4 text-black dark:text-white opacity-50" />
@@ -131,7 +131,7 @@ export function ProSupportChat({ user }: ProSupportChatProps) {
                   <div
                     className={`max-w-[80%] p-3 border-2 ${
                       msg.from === 'user'
-                        ? 'bg-black dark:bg-white text-white dark:text-black border-black dark:border-white'
+                        ? 'bg-black dark:bg-white text-white dark:text-black border-0 shadow-sm'
                         : 'bg-white dark:bg-black text-black dark:text-white border-[#00FF00] dark:border-[#00FF00]'
                     }`}
                   >

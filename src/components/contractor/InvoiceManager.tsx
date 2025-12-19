@@ -108,7 +108,7 @@ function SaveTemplateDialog({
             />
           </div>
 
-          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="text-sm text-muted-foreground bg-muted p-3 rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <strong>Included:</strong> {lineItems.length} line items, {taxRate}% tax rate
             {customNotes && ', custom notes'}
           </div>
@@ -435,7 +435,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button onClick={() => onNavigate('pro-upgrade')}>Upgrade to Pro - $39/mo</Button>
+            <Button onClick={() => onNavigate('pro-upgrade')}>Upgrade to Pro - $59/mo</Button>
           </CardContent>
         </Card>
       )}
@@ -575,13 +575,13 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                       
                       <div className="mt-4 space-y-2">
                         {invoice.useCompanyLogo === false && (
-                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-2 rounded-md flex items-center gap-2 font-mono">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-0 shadow-md hover:shadow-lg p-2 rounded-md flex items-center gap-2 font-mono">
                             <ImageIcon size={14} weight="duotone" />
                             Using FairTradeWorker Texas generic logo
                           </div>
                         )}
                         {invoice.customNotes && (
-                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-2 rounded-md font-mono">
+                          <div className="text-xs text-black dark:text-white bg-white dark:bg-black border-0 shadow-md hover:shadow-lg p-2 rounded-md font-mono">
                             <strong>Notes:</strong> {invoice.customNotes}
                           </div>
                         )}
@@ -610,7 +610,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Create New Invoice</DialogTitle>
               <DialogDescription>
@@ -710,7 +710,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
             </div>
 
             {!user.companyLogo && (
-              <div className="text-sm text-black dark:text-white bg-white dark:bg-black border border-black/20 dark:border-white/20 p-3 rounded-md font-mono">
+              <div className="text-sm text-black dark:text-white bg-white dark:bg-black border-0 shadow-md hover:shadow-lg p-3 rounded-md font-mono">
                 💡 <strong>Tip:</strong> Add your company logo in settings to brand your invoices professionally.
                 For now, invoices will use the FairTradeWorker Texas logo to ensure tax compliance.
               </div>
@@ -783,7 +783,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                       </div>
                       <div className="space-y-1">
                         <Label className="text-xs">Total</Label>
-                        <div className="h-10 flex items-center px-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-semibold">
+                        <div className="h-10 flex items-center px-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-semibold">
                           {formatCurrency(item.total)}
                         </div>
                       </div>
@@ -830,7 +830,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
               </CardContent>
             </Card>
           </div>
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogFooter>
               <div className="flex items-center justify-between w-full gap-3">
                 <Button
@@ -847,7 +847,7 @@ export const InvoiceManager = memo(function InvoiceManager({ user, onNavigate }:
                 </Button>
                 <Button 
                   onClick={handleCreateInvoice} 
-                  className="h-11 border-2 border-black dark:border-white"
+                  className="h-11 border-0 shadow-md hover:shadow-lg"
                   disabled={isCreatingInvoice}
                 >
                   {isCreatingInvoice ? (

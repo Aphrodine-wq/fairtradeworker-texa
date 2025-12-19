@@ -29,10 +29,13 @@ export interface User {
   feesAvoided?: number
   availableNow?: boolean
   availableNowSince?: string
+  phone?: string
 }
 
 export type JobSize = 'small' | 'medium' | 'large'
 export type JobTier = 'QUICK_FIX' | 'STANDARD' | 'MAJOR_PROJECT'
+
+export type JobInputType = 'audio' | 'video' | 'photo' | 'text'
 
 export interface Job {
   id: string
@@ -41,7 +44,9 @@ export interface Job {
   title: string
   description: string
   mediaUrl?: string
-  mediaType?: 'audio' | 'photo'
+  mediaType?: JobInputType
+  videoUrl?: string // For video jobs
+  audioUrl?: string // For audio/voice jobs
   photos?: string[]
   aiScope: {
     scope: string
@@ -77,6 +82,7 @@ export interface Job {
   bundledTasks?: BundledTask[]
   questions?: Question[]
   viewingContractors?: string[] // Array of contractor IDs currently viewing this job
+  selectedServices?: string[] // Array of service IDs selected for this job
   // AI Receptionist fields
   isPrivate?: boolean // Private job (bypasses marketplace)
   source?: 'ai_receptionist' | 'marketplace' | 'direct'
@@ -89,6 +95,12 @@ export interface Job {
     urgency?: 'low' | 'medium' | 'high' | 'emergency'
     estimatedScope?: string
   }
+  // PostJob media tracking properties
+  hasVoiceRecording?: boolean
+  photoCount?: number
+  videoCount?: number
+  hasAudioFile?: boolean
+  recordings?: string[]
 }
 
 export interface Bid {
@@ -105,8 +117,6 @@ export interface Bid {
   isBoosted?: boolean // Bid boost feature
   boostedUntil?: string // Boost expiration timestamp
   boostCount?: number // Number of boosts used on this job (max 2)
-  responseTimeMinutes?: number
-  isLightningBid?: boolean
   selectedTimeSlot?: string
 }
 
@@ -370,12 +380,62 @@ export interface BankAccount {
   verifiedAt?: string
 }
 
+// BACKWARD COMPATIBLE: All existing fields remain required, new fields are optional
 export interface Territory {
-  id: number
-  countyName: string
-  operatorId?: string
-  operatorName?: string
-  status: 'available' | 'claimed'
+  // Existing required fields (DO NOT CHANGE - used throughout system)
+  id: number // MUST remain number (matches user.territoryId)
+  countyName: string // MUST remain (used in OperatorDashboard, TerritoryMap, etc.)
+  status: 'available' | 'claimed' // MUST remain (used in filtering)
+  operatorId?: string // MUST remain optional (used in OperatorDashboard)
+  operatorName?: string // MUST remain optional (used in OperatorDashboard)
+  
+  // New optional fields (all optional for backward compatibility)
+  fipsCode?: string // Unique county identifier (FIPS code)
+  state?: string // Full state name
+  stateCode?: string // 2-letter state code
+  population?: number // County population
+  ruralityClassification?: 'rural' | 'small' | 'medium' | 'metro' // NCHS classification
+  projectedJobOutput?: number // Population × 500
+  oneTimeFee?: number // One-time territory claim fee
+  monthlyFee?: number // Monthly subscription fee
+  claimedBy?: string // User ID (alternative to operatorId for new system)
+  claimedAt?: string // ISO timestamp of claim
+  entityType?: 'individual' | 'llc' | 'corporation' // Entity type for claim
+  entityEmail?: string // Entity email
+  entityTaxId?: string // Entity tax ID (for businesses)
+  isFirst300Free?: boolean // Whether this was a First 300 free claim
+  subscriptionId?: string // Stripe subscription ID
+  subscriptionStatus?: 'active' | 'canceled' | 'past_due' // Subscription status
+  version?: 'legacy' | 'enhanced' // Track which format territory uses
+}
+
+// New types for enhanced territory system
+export type RuralityTier = 'rural' | 'small' | 'medium' | 'metro'
+
+export interface TerritoryClaim {
+  entityType: 'individual' | 'llc' | 'corporation'
+  entityEmail: string
+  entityName?: string // For businesses
+  entityTaxId?: string // Required for LLC/Corporation
+}
+
+export interface TerritoryFilter {
+  state?: string // State code filter
+  rurality?: RuralityTier[] // Array of rurality classifications
+  populationMin?: number // Minimum population
+  populationMax?: number // Maximum population
+  search?: string // Search by county name or FIPS code
+}
+
+export type TerritoryView = 'map' | 'list'
+
+export interface PricingInfo {
+  oneTimeFee: number
+  monthlyFee: number
+  totalFirstYear: number
+  ruralityTier: RuralityTier
+  isFree: boolean
+  projectedJobOutput: number
 }
 
 export function calculateJobSize(priceHigh: number): JobSize {
@@ -740,24 +800,24 @@ export interface CustomObjectPermissions {
   delete: string[]
 }
 
-export interface Territory {
+export interface ContractorTerritory {
   id: string
   contractorId: string
   name: string
   type: 'geographic' | 'product' | 'hybrid'
-  boundaries: TerritoryBoundary[]
+  boundaries: ContractorTerritoryBoundary[]
   assignedUsers: string[]
-  rules: TerritoryRule[]
+  rules: ContractorTerritoryRule[]
   createdAt: string
 }
 
-export interface TerritoryBoundary {
+export interface ContractorTerritoryBoundary {
   type: 'zipcode' | 'city' | 'state' | 'radius' | 'custom'
   value: string | number
   coordinates?: { lat: number; lng: number; radius?: number }
 }
 
-export interface TerritoryRule {
+export interface ContractorTerritoryRule {
   field: string
   operator: 'equals' | 'contains' | 'greater-than' | 'less-than'
   value: any

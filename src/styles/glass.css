@@ -1,36 +1,106 @@
-/* Modern Glassmorphism System - No Brutalism */
+/* Modern Glassmorphism System - Windows Aero + iOS Hybrid */
+/* VOID-specific glass styles - scoped to .void-desktop */
 
-:root {
-  /* Glass colors */
-  --glass-light: rgba(255, 255, 255, 0.85);
-  --glass-dark: rgba(0, 0, 0, 0.75);
+.void-desktop :root,
+.void-desktop {
+  /* Glass colors - use design system variables */
+  --void-glass-bg: var(--surface, rgba(10, 10, 15, 0.9));
+  --void-glass-border: var(--border, #1a1a24);
+  --void-glass-shadow: var(--shadow-ambient, 0 8px 32px rgba(0,0,0,0.35));
 }
 
-/* Glass Card - Modern glassmorphism with subtle blur */
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05);
-  /* Minimal border only for accessibility if needed */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.void-desktop[data-theme="light"] {
+  --void-glass-bg: var(--surface, rgba(248, 249, 252, 0.9));
+  --void-glass-border: var(--border, #e2e4ea);
+  --void-glass-shadow: var(--shadow-ambient, 0 8px 32px rgba(0,0,0,0.1));
 }
 
-.dark .glass-card {
-  background: rgba(0, 0, 0, 0.75);
-  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.07), 0 1px 3px rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* Glass Panel - Windows Aero + iOS hybrid (VOID only) */
+.void-desktop .glass-panel {
+  background: var(--void-glass-bg, var(--surface));
+  backdrop-filter: blur(var(--blur-md, 20px));
+  -webkit-backdrop-filter: blur(var(--blur-md, 20px));
+  border: 1px solid var(--void-glass-border, var(--border));
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 
+    var(--void-glass-shadow, var(--shadow-ambient)),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
-/* Glass Overlay - For modals and overlays */
-.glass-overlay {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+/* Fallback for browsers without backdrop-filter (VOID only) */
+@supports not (backdrop-filter: blur(20px)) {
+  .void-desktop .glass-panel {
+    background: var(--void-glass-bg, var(--surface));
+  }
 }
 
-.dark .glass-overlay {
-  background: rgba(255, 255, 255, 0.1);
+/* Glass Card - Modern glassmorphism with subtle blur (VOID only) */
+.void-desktop .glass-card {
+  background: var(--surface, rgba(255, 255, 255, 0.85));
+  backdrop-filter: blur(var(--blur-sm, 12px));
+  -webkit-backdrop-filter: blur(var(--blur-sm, 12px));
+  box-shadow: var(--shadow-directional, 0 4px 16px rgba(0,0,0,0.2));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 12px);
+}
+
+.void-desktop[data-theme="dark"] .glass-card {
+  background: var(--surface, rgba(10, 10, 15, 0.9));
+}
+
+/* Glass Overlay - For modals and overlays (VOID only) */
+.void-desktop .glass-overlay {
+  background: var(--background-overlay, rgba(0, 0, 0, 0.4));
+  backdrop-filter: blur(var(--blur-sm, 12px));
+  -webkit-backdrop-filter: blur(var(--blur-sm, 12px));
+}
+
+.void-desktop[data-theme="light"] .glass-overlay {
+  background: var(--background-overlay, rgba(255, 255, 255, 0.4));
+}
+
+/* Theme-aware glass window (VOID only) */
+.void-desktop .glass-window {
+  background: var(--void-glass-bg, var(--surface));
+  backdrop-filter: blur(var(--blur-md, 20px));
+  -webkit-backdrop-filter: blur(var(--blur-md, 20px));
+  border: 1px solid var(--void-glass-border, var(--border));
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 
+    var(--void-glass-shadow, var(--shadow-ambient)),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+/* Glass button with hover effects (VOID only) */
+.void-desktop .glass-button {
+  background: var(--void-glass-bg, var(--surface));
+  backdrop-filter: blur(var(--blur-sm, 12px));
+  -webkit-backdrop-filter: blur(var(--blur-sm, 12px));
+  border: 1px solid var(--void-glass-border, var(--border));
+  border-radius: var(--radius-sm, 8px);
+  box-shadow: 
+    var(--shadow-directional, 0 4px 16px rgba(0,0,0,0.2)),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.void-desktop .glass-button:hover {
+  background: var(--surface-hover, var(--surface-secondary));
+  border-color: var(--border-hover);
+  box-shadow: 
+    var(--shadow-hover, 0 12px 48px rgba(0,0,0,0.45)),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transform: translateY(-1px);
+}
+
+.void-desktop .glass-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    var(--shadow-directional, 0 4px 16px rgba(0,0,0,0.2)),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 }
 
 /* Respect motion preferences */

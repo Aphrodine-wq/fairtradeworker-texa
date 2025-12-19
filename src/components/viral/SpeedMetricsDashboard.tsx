@@ -79,11 +79,11 @@ export const SpeedMetricsDashboard = memo(function SpeedMetricsDashboard({ jobs,
   const getStatusColor = (status: MetricStatus) => {
     switch (status) {
       case 'success':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm'
       case 'warning':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm'
       case 'danger':
-        return 'bg-white dark:bg-black text-black dark:text-white border border-black/10 dark:border-white/10'
+        return 'bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm'
     }
   }
 

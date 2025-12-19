@@ -112,7 +112,7 @@ export function JobBookmarkFolders({ user, jobs }: JobBookmarkFoldersProps) {
                   className={`p-4 border-2 cursor-pointer transition-all ${
                     selectedFolder === folder.id
                       ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                      : 'border-black dark:border-white'
+                      : 'border-0 shadow-sm'
                   }`}
                   onClick={() => setSelectedFolder(folder.id)}
                 >
@@ -159,7 +159,7 @@ export function JobBookmarkFolders({ user, jobs }: JobBookmarkFoldersProps) {
                 if (!job) return null
 
                 return (
-                  <div key={jobId} className="p-4 border border-black/20 dark:border-white/20 flex items-start justify-between">
+                  <div key={jobId} className="p-4 border-0 shadow-md hover:shadow-lg flex items-start justify-between">
                     <div className="flex-1">
                       <h3 className="font-semibold text-black dark:text-white">{job.title}</h3>
                       <p className="text-sm text-black dark:text-white mt-1">{job.address}</p>

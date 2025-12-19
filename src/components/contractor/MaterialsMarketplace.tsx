@@ -120,7 +120,7 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
       </div>
 
       {aiMaterialsList && aiMaterialsList.length > 0 && (
-        <Card className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 shadow-sm">
+        <Card className="p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg shadow-sm">
           <div className="flex items-start gap-3">
             <Wrench className="w-5 h-5 text-black dark:text-white flex-shrink-0 mt-1" weight="duotone" />
             <div className="flex-1">
@@ -227,7 +227,7 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
               <div className="space-y-4">
                 <div className="space-y-2 max-h-[400px] overflow-y-auto">
                   {cart.map((item) => (
-                    <div key={item.id} className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm">
+                    <div key={item.id} className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex-1">
                           <div className="font-medium text-sm">{item.name}</div>
@@ -300,9 +300,9 @@ export function MaterialsMarketplace({ jobScope, aiMaterialsList }: MaterialsMar
         </div>
       </div>
 
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-6 bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
         <div className="flex items-start gap-4">
-          <div className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md flex-shrink-0 shadow-sm">
+          <div className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md flex-shrink-0 shadow-sm">
             <Percent className="w-6 h-6 text-black dark:text-white" weight="bold" />
           </div>
           <div className="flex-1">

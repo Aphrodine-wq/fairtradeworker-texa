@@ -41,19 +41,36 @@ export function useDeviceInfo(): DeviceInfo {
   const [deviceInfo, setDeviceInfo] = useState<DeviceInfo>(() => getDeviceInfo())
 
   useEffect(() => {
-    const handleResize = () => {
+    const updateMobileState = () => {
       setDeviceInfo(getDeviceInfo())
     }
 
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('orientationchange', handleResize)
+    // Throttle resize handler for better performance
+    let timeoutId: NodeJS.Timeout | null = null
+    const throttledUpdate = () => {
+      if (timeoutId) return
+      timeoutId = setTimeout(() => {
+        updateMobileState()
+        timeoutId = null
+      }, 100)
+    }
+
+    const handleOrientationChange = () => {
+      // Clear cached insets on orientation change
+      cachedSafeAreaInsets = null
+      updateMobileState()
+    }
+
+    window.addEventListener('resize', throttledUpdate)
+    window.addEventListener('orientationchange', handleOrientationChange)
 
     // Initial update
     setDeviceInfo(getDeviceInfo())
 
     return () => {
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('orientationchange', handleResize)
+      if (timeoutId) clearTimeout(timeoutId)
+      window.removeEventListener('resize', throttledUpdate)
+      window.removeEventListener('orientationchange', handleOrientationChange)
     }
   }, [])
 

@@ -13,7 +13,7 @@ import { useLocalKV as useKV } from "@/hooks/useLocalKV"
 import { Briefcase, CurrencyDollar, CheckCircle, Crown, Buildings, TrendUp, MapTrifold, Sun, Sparkle, Shield, Percent, Calendar, Lightning } from "@phosphor-icons/react"
 import { BrowseJobs } from "@/components/jobs/BrowseJobs"
 import { Invoices } from "./Invoices"
-import { EnhancedCRMDashboard } from "./EnhancedCRMDashboard"
+import { SimpleCRMDashboard } from "./SimpleCRMDashboard"
 import { ContractorReferralSystem } from "@/components/viral/ContractorReferralSystem"
 import { CompanySettings } from "./CompanySettings"
 import { RouteBuilder } from "./RouteBuilder"
@@ -129,7 +129,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </div>
           <div className="flex items-center gap-4 flex-wrap">
             {/* Available Now Toggle */}
-            <div className="flex items-center gap-3 px-4 py-2 rounded-md border border-black/20 dark:border-white/20 bg-white dark:bg-black shadow-sm">
+            <div className="flex items-center gap-3 px-4 py-2 rounded-md border-0 bg-white dark:bg-black shadow-sm hover:shadow-md">
               <div className="flex items-center gap-2">
                 {user.availableNow && (
                   <div className="w-2 h-2 rounded-full bg-black dark:bg-white animate-pulse" />
@@ -143,7 +143,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
               />
             </div>
             {user.isPro && (
-              <Badge className="bg-white dark:bg-black text-black dark:text-white border border-black/20 dark:border-white/20 px-4 py-2 text-base font-semibold">
+              <Badge className="bg-white dark:bg-black text-black dark:text-white border-0 shadow-sm px-4 py-2 text-base font-semibold">
                 <Crown weight="fill" className="mr-2" />
                 PRO Member
               </Badge>
@@ -178,7 +178,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
             </CardContent>
           </Card>
 
-          <Card className={user.referralEarnings > 0 ? "border border-black/20/10 dark:border-white/10" : ""}>
+          <Card className={user.referralEarnings > 0 ? "border-0 shadow-lg hover:shadow-xl" : ""}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Referral Earnings
@@ -212,7 +212,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         </div>
         
         {feesSaved > 0 && (
-          <Card className="border border-black/20/10 dark:border-white/10 bg-white dark:bg-black">
+          <Card className="border-0 shadow-lg hover:shadow-xl bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -232,7 +232,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
         )}
 
         {!user.isPro && (
-          <Card className="border border-black/20/10 dark:border-white/10 bg-white dark:bg-black">
+          <Card className="border-0 shadow-lg hover:shadow-xl bg-white dark:bg-black">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <h3 className="text-xl font-semibold mb-2">Upgrade to Pro</h3>
@@ -313,7 +313,7 @@ export function ContractorDashboard({ user, onNavigate }: ContractorDashboardPro
           </TabsContent>
           
           <TabsContent value="crm" className="mt-6">
-            <EnhancedCRMDashboard user={user} />
+            <SimpleCRMDashboard user={user} />
           </TabsContent>
           
           <TabsContent value="replies" className="mt-6">

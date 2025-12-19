@@ -128,7 +128,7 @@ export function DisputeCenter({ user, job }: DisputeCenterProps) {
         <CardContent className="space-y-4">
           <div>
             <p className="text-sm font-semibold text-black dark:text-white mb-2">Issue Description</p>
-            <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <p className="text-sm text-black dark:text-white p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
               {jobDispute.description}
             </p>
           </div>
@@ -138,7 +138,7 @@ export function DisputeCenter({ user, job }: DisputeCenterProps) {
               <p className="text-sm font-semibold text-black dark:text-white mb-2">Evidence</p>
               <div className="grid grid-cols-3 gap-2">
                 {jobDispute.evidence.map((img, idx) => (
-                  <img key={idx} src={img} alt={`Evidence ${idx + 1}`} className="w-full h-24 object-cover border border-black/20 dark:border-white/20" />
+                  <img key={idx} src={img} alt={`Evidence ${idx + 1}`} className="w-full h-24 object-cover border-0 shadow-md hover:shadow-lg" />
                 ))}
               </div>
             </div>
@@ -146,12 +146,12 @@ export function DisputeCenter({ user, job }: DisputeCenterProps) {
 
           <div>
             <p className="text-sm font-semibold text-black dark:text-white mb-2">Messages</p>
-            <div className="space-y-2 max-h-60 overflow-y-auto border border-black/20 dark:border-white/20 p-3">
+            <div className="space-y-2 max-h-60 overflow-y-auto border-0 shadow-md hover:shadow-lg p-3">
               {jobDispute.messages.length === 0 ? (
                 <p className="text-sm text-black dark:text-white">No messages yet</p>
               ) : (
                 jobDispute.messages.map((msg, idx) => (
-                  <div key={idx} className={`p-2 ${msg.from === user.id ? 'bg-black dark:bg-white text-white dark:text-black ml-auto max-w-[80%]' : 'bg-white dark:bg-black text-black dark:text-white mr-auto max-w-[80%]'} border border-black/20 dark:border-white/20`}>
+                  <div key={idx} className={`p-2 ${msg.from === user.id ? 'bg-black dark:bg-white text-white dark:text-black ml-auto max-w-[80%]' : 'bg-white dark:bg-black text-black dark:text-white mr-auto max-w-[80%]'} border-0 shadow-md hover:shadow-lg`}>
                     <p className="text-sm">{msg.text}</p>
                     <p className="text-xs mt-1 opacity-70">
                       {new Date(msg.timestamp).toLocaleString()}
@@ -245,7 +245,7 @@ export function DisputeCenter({ user, job }: DisputeCenterProps) {
           {evidence.length > 0 && (
             <div className="grid grid-cols-3 gap-2 mt-4">
               {evidence.map((img, idx) => (
-                <img key={idx} src={img} alt={`Evidence ${idx + 1}`} className="w-full h-24 object-cover border border-black/20 dark:border-white/20" />
+                <img key={idx} src={img} alt={`Evidence ${idx + 1}`} className="w-full h-24 object-cover border-0 shadow-md hover:shadow-lg" />
               ))}
             </div>
           )}

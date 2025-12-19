@@ -89,10 +89,10 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
   }
 
   const getProfitQuality = (margin: number) => {
-    if (margin >= 40) return { text: "Excellent", color: "bg-[#00FF00] border border-black/20 dark:border-white/20", icon: TrendUp }
-    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border border-black/20 dark:border-white/20", icon: TrendUp }
-    if (margin >= 15) return { text: "Fair", color: "bg-[#FFFF00] border border-black/20 dark:border-white/20", icon: TrendUp }
-    return { text: "Low", color: "bg-[#FF0000] text-white border border-black/20 dark:border-white/20", icon: TrendDown }
+    if (margin >= 40) return { text: "Excellent", color: "bg-[#00FF00] border-0 shadow-md hover:shadow-lg", icon: TrendUp }
+    if (margin >= 25) return { text: "Good", color: "bg-white dark:bg-black border-0 shadow-md hover:shadow-lg", icon: TrendUp }
+    if (margin >= 15) return { text: "Fair", color: "bg-[#FFFF00] border-0 shadow-md hover:shadow-lg", icon: TrendUp }
+    return { text: "Low", color: "bg-[#FF0000] text-white border-0 shadow-md hover:shadow-lg", icon: TrendDown }
   }
 
   const getHourlyRateQuality = (rate: number) => {
@@ -226,7 +226,7 @@ export function JobCostCalculator({ user }: JobCostCalculatorProps = {}) {
           </div>
 
           <div className="border-t pt-6 space-y-4">
-            <div className="flex items-center justify-between p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm font-mono">
+            <div className="flex items-center justify-between p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm font-mono">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Profit Margin</p>
                 <p className="text-3xl font-bold">{breakdown.profitMargin.toFixed(1)}%</p>

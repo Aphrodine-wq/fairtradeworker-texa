@@ -143,7 +143,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
 
           {/* Main Tabs */}
           <Tabs defaultValue="expenses" className="w-full">
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
               <TabsTrigger value="expenses">Track Expenses</TabsTrigger>
               <TabsTrigger value="reports">Reports</TabsTrigger>
               <TabsTrigger value="tax">Tax Integration</TabsTrigger>
@@ -247,7 +247,7 @@ export function EnhancedExpenseTracking({ user }: { user: User }) {
                   <CardDescription>Export expenses for tax filing</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="p-4 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md shadow-sm">
+                  <div className="p-4 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md shadow-sm">
                     <h3 className="font-semibold mb-2">Tax Deductible Expenses</h3>
                     <p className="text-sm text-muted-foreground mb-4">
                       Most business expenses are tax deductible. Track them here and export for your tax professional.

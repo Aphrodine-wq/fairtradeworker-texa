@@ -202,7 +202,7 @@ export function FeedbackToast({ type, message, onDismiss }: FeedbackToastProps) 
   return (
     <div className={`
       ${config.bgColor} ${config.textColor}
-      border-2 border-black shadow-[4px_4px_0_#000]
+      border-0 shadow-xl shadow-[4px_4px_0_#000]
       px-4 py-3 flex items-center gap-3
       animate-in slide-in-from-top-2 duration-200
     `}>
@@ -336,11 +336,11 @@ export function ConfirmDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
       <div 
-        className="bg-white border-4 border-black shadow-[8px_8px_0_#000] max-w-md w-full animate-in zoom-in-95 duration-200"
+        className="bg-white border-0 shadow-2xl shadow-[8px_8px_0_#000] max-w-md w-full animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b-2 border-black">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-800">
           <h2 className="font-black text-xl uppercase">{title}</h2>
         </div>
 
@@ -350,16 +350,16 @@ export function ConfirmDialog({
         </div>
 
         {/* Actions */}
-        <div className="p-4 border-t-2 border-black flex gap-3 justify-end">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-800 flex gap-3 justify-end">
           <button
             onClick={onCancel}
-            className="px-4 py-2 font-bold uppercase border-2 border-black hover:bg-black/5 transition-colors"
+            className="px-4 py-2 font-bold uppercase border-0 shadow-xl hover:bg-black/5 transition-colors"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
-            className={`px-4 py-2 font-bold uppercase border-2 border-black transition-colors ${confirmColors[variant]}`}
+            className={`px-4 py-2 font-bold uppercase border-0 shadow-xl transition-colors ${confirmColors[variant]}`}
           >
             {confirmLabel}
           </button>

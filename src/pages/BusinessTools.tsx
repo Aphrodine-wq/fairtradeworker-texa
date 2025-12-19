@@ -113,7 +113,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
   const handleToolClick = (toolId: string) => {
     const routeMap: Record<string, string> = {
       receptionist: "receptionist",
-      invoices: "invoices",
+      invoices: "invoices-page", // Route to invoices page instead of invoices component
       expenses: "expenses",
       "tax-helper": "tax-helper",
       payments: "payments",
@@ -163,7 +163,7 @@ export function BusinessTools({ user, onNavigate }: BusinessToolsProps) {
 
   return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="pt-10 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="w-full pt-10 pb-12 px-4 sm:px-6 lg:px-8">
         <HeroSection
           title="All-in-one toolkit for contractors and operators"
           subtitle="Finance, CRM, operations, and automation—most tools are free; PRO unlocks AI-powered growth."

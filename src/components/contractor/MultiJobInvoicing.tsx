@@ -88,7 +88,7 @@ export function MultiJobInvoicing({ user }: MultiJobInvoicingProps) {
         </CardHeader>
         <CardContent>
           <Button onClick={() => window.location.href = '/pro-upgrade'}>
-            Upgrade to Pro - $50/mo
+            Upgrade to Pro - $59/mo
           </Button>
         </CardContent>
       </Card>
@@ -122,7 +122,7 @@ export function MultiJobInvoicing({ user }: MultiJobInvoicingProps) {
                     className={`p-4 border-2 cursor-pointer transition-all ${
                       selectedJobs.has(job.id)
                         ? 'border-[#00FF00] dark:border-[#00FF00] bg-[#00FF00]/10'
-                        : 'border-black dark:border-white'
+                        : 'border-0 shadow-sm'
                     }`}
                     onClick={() => toggleJob(job.id)}
                   >
@@ -144,7 +144,7 @@ export function MultiJobInvoicing({ user }: MultiJobInvoicingProps) {
               </div>
 
               {selectedJobs.size > 0 && (
-                <div className="p-4 border border-black/20 dark:border-white/20 bg-white dark:bg-black">
+                <div className="p-4 border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <p className="text-sm text-black dark:text-white">

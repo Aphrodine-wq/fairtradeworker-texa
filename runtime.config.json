@@ -1,3 +1,12 @@
 {
-  "app": "cb3ca5107e37fae65c1f"
+  "app": "cb3ca5107e37fae65c1f",
+  "features": {
+    "hiddenEnterpriseFeatures": ["DataWarehouse", "EnterpriseSecurity", "CustomObjectsBuilder"]
+  },
+  "pricing": {
+    "contractorProMonthly": 59,
+    "homeownerProMonthly": 25,
+    "platformFeeTiered": true,
+    "platformFeeDescription": "Tiered platform fee: $15 flat for quick fixes, 3% for standard jobs, 2.5% for major projects with extended draw schedules"
+  }
 }

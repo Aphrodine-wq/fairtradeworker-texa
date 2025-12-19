@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -8,7 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Switch } from "@/components/ui/switch"
 import { PhotoUploader } from "@/components/ui/PhotoUploader"
-import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree, Timer, Plus, Trash } from "@phosphor-icons/react"
+import { Camera, Microphone, FileText, Upload, Wrench, House, CirclesThree, Timer, Plus, Trash, VideoCamera } from "@phosphor-icons/react"
 import { fakeAIScope } from "@/lib/ai"
 import { ScopeResults } from "./ScopeResults"
 import { ReferralCodeCard } from "@/components/viral/ReferralCodeCard"
@@ -30,7 +31,7 @@ interface JobPosterProps {
   onNavigate: (page: string) => void
 }
 
-type InputMethod = 'photos' | 'audio' | 'text' | null
+type InputMethod = 'photos' | 'audio' | 'video' | 'text' | null
 type ProjectType = 'kitchen-remodel' | 'bathroom-remodel' | 'roof-replacement' | 'deck-build' | 'fence-installation' | 'room-addition' | 'custom' | null
 type Step = 'tier-select' | 'project-select' | 'scope-builder' | 'select' | 'input' | 'processing' | 'results' | 'posted'
 
@@ -105,6 +106,18 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       setPostingStartTime(Date.now())
     }
   }, [step, postingStartTime])
+
+  // Check for initial input method from sessionStorage
+  useEffect(() => {
+    const storedMethod = sessionStorage.getItem('postJobMethod')
+    if (storedMethod && (storedMethod === 'photos' || storedMethod === 'audio' || storedMethod === 'video' || storedMethod === 'text')) {
+      const method = storedMethod as InputMethod
+      setInputMethod(method)
+      setStep('input')
+      // Clear sessionStorage after reading
+      sessionStorage.removeItem('postJobMethod')
+    }
+  }, [])
 
   const handleMethodSelect = (method: InputMethod) => {
     setInputMethod(method)
@@ -240,6 +253,22 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       tier = 'STANDARD'
     }
     
+    // Get selected services from sessionStorage
+    const storedServices = sessionStorage.getItem('selectedServices')
+    let selectedServices: string[] = []
+    if (storedServices) {
+      try {
+        const services = JSON.parse(storedServices)
+        selectedServices = services.map((s: {id: string, title: string}) => s.id)
+      } catch (e) {
+        // Fallback to old single service format
+        const oldService = sessionStorage.getItem('selectedService')
+        if (oldService) {
+          selectedServices = [oldService]
+        }
+      }
+    }
+
     const newJob: Job = {
       id: `job-${Date.now()}`,
       homeownerId: user.id,
@@ -260,6 +289,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
       createdAt: new Date().toISOString(),
       postedInSeconds,
       bids: [],
+      selectedServices: selectedServices.length > 0 ? selectedServices : undefined,
       milestones: tier === 'MAJOR_PROJECT' && projectScope && selectedProjectType
         ? generateMilestonesFromTemplate(
             `job-${Date.now()}`,
@@ -377,7 +407,7 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('QUICK_FIX')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
                 <div className="w-14 h-14 rounded-lg bg-green-100 dark:bg-green-950 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -404,10 +434,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('STANDARD')
                 setStep('select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                <div className="w-14 h-14 rounded-md bg-[#FFFF00] dark:bg-[#FFFF00] border-0 shadow-md hover:shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
                   <House weight="fill" className="text-amber-600 dark:text-amber-400" size={28} />
                 </div>
                 <TierBadge tier="STANDARD" />
@@ -431,10 +461,10 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 setSelectedTier('MAJOR_PROJECT')
                 setStep('project-select')
               }}
-              className="flex flex-col gap-4 p-6 rounded-md border border-black/20 dark:border-white/20 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
+              className="flex flex-col gap-4 p-6 rounded-md border-0 shadow-md hover:shadow-lg hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all group"
             >
               <div className="flex items-start justify-between">
-                <div className="w-14 h-14 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
+                <div className="w-14 h-14 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm">
                   <CirclesThree weight="fill" className="text-blue-600 dark:text-blue-400" size={28} />
                 </div>
                 <TierBadge tier="MAJOR_PROJECT" />
@@ -484,8 +514,8 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
                 className={cn(
                   "flex items-center gap-3 sm:gap-4 p-3 sm:p-5 rounded-md transition-all text-left",
                   project.isCustom
-                    ? "border-2 border-dashed border-black dark:border-white hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
-                    : "border border-black/20 dark:border-white/20 hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
+                    ? "border-2 border-dashed border-gray-300 dark:border-gray-700 hover:shadow-xl"
+                    : "border-0 shadow-md hover:shadow-lg hover:shadow-[4px_4px_0_#000] dark:hover:shadow-[4px_4px_0_#fff]"
                 )}
               >
                 <div className="text-2xl sm:text-4xl">{project.emoji}</div>
@@ -528,7 +558,20 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
         </div>
       )}
 
+      <AnimatePresence mode="wait">
       {step === 'select' && (
+          <motion.div
+            key="select"
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ 
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              duration: 0.4
+            }}
+          >
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2 mb-2">
@@ -545,48 +588,95 @@ export function JobPoster({ user, onNavigate }: JobPosterProps) {
               Choose how you'd like to describe your project
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-4">
-            <button
+              <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <motion.button
               onClick={() => handleMethodSelect('photos')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1, type: "spring", stiffness: 300 }}
             >
-              <div className="w-16 h-16 rounded-md bg-black dark:bg-white border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+                  <motion.div 
+                    className="w-16 h-16 rounded-md bg-black dark:bg-white border-0 shadow-md hover:shadow-lg flex items-center justify-center shadow-sm"
+                    whileHover={{ rotate: 5, scale: 1.1 }}
+                  >
                 <Camera weight="fill" className="text-primary-foreground" size={32} />
-              </div>
+                  </motion.div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg">Photos</h3>
                 <p className="text-sm text-muted-foreground">Show us the issue</p>
               </div>
-            </button>
+                </motion.button>
 
-            <button
+                <motion.button
               onClick={() => handleMethodSelect('audio')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
             >
-              <div className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center">
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center"
+                    whileHover={{ rotate: -5, scale: 1.1 }}
+                  >
                 <Microphone weight="fill" className="text-secondary-foreground" size={32} />
-              </div>
+                  </motion.div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg">Voice</h3>
                 <p className="text-sm text-muted-foreground">Describe it verbally</p>
               </div>
-            </button>
+                </motion.button>
 
-            <button
+                <motion.button
               onClick={() => handleMethodSelect('text')}
-              className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all"
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 300 }}
             >
-              <div className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center">
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-accent flex items-center justify-center"
+                    whileHover={{ rotate: 5, scale: 1.1 }}
+                  >
                 <FileText weight="fill" className="text-accent-foreground" size={32} />
-              </div>
+                  </motion.div>
               <div className="text-center">
                 <h3 className="font-semibold text-lg">Text</h3>
                 <p className="text-sm text-muted-foreground">Type the details</p>
               </div>
-            </button>
+                </motion.button>
+
+                <motion.button
+                  onClick={() => handleMethodSelect('video')}
+                  className="flex flex-col items-center gap-4 p-6 rounded-xl border-2 border-border hover:border-primary hover:shadow-lg transition-all bg-white dark:bg-black"
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4, type: "spring", stiffness: 300 }}
+                >
+                  <motion.div 
+                    className="w-16 h-16 rounded-xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center"
+                    whileHover={{ rotate: -5, scale: 1.1 }}
+                  >
+                    <VideoCamera weight="fill" className="text-primary" size={32} />
+                  </motion.div>
+                  <div className="text-center">
+                    <h3 className="font-semibold text-lg">Video</h3>
+                    <p className="text-sm text-muted-foreground">Record a video</p>
+                  </div>
+                </motion.button>
           </CardContent>
         </Card>
+          </motion.div>
       )}
+      </AnimatePresence>
 
       {step === 'input' && inputMethod && (
         <Card>

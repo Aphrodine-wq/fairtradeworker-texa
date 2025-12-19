@@ -181,7 +181,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
   }, [notes, deletingNoteId])
 
   const getCategoryColor = (cat: string) => {
-    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border border-black/20 dark:border-white/20"
+    return NOTE_CATEGORIES.find(c => c.value === cat)?.color || "bg-white dark:bg-black border-0 shadow-md hover:shadow-lg"
   }
 
   const getCategoryLabel = (cat: string) => {
@@ -202,10 +202,10 @@ export function QuickNotes({ user }: QuickNotesProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="p-6 bg-white dark:bg-black border border-black/10 dark:border-white/10">
+      <Card className="p-6 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-md bg-white dark:bg-black border border-black/20 dark:border-white/20 flex items-center justify-center shadow-sm">
+            <div className="w-12 h-12 rounded-md bg-white dark:bg-black border-0 shadow-md hover:shadow-lg flex items-center justify-center shadow-sm">
               <Note weight="fill" className="text-black dark:text-white" size={24} />
             </div>
             <div>
@@ -224,7 +224,7 @@ export function QuickNotes({ user }: QuickNotesProps) {
               </Button>
             </DialogTrigger>
             <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-              <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+              <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
                 <DialogHeader className="text-left">
                   <DialogTitle className="text-2xl">Add Quick Note</DialogTitle>
                 </DialogHeader>
@@ -299,14 +299,14 @@ export function QuickNotes({ user }: QuickNotesProps) {
                   />
                 </div>
               </div>
-              <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+              <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
                 <DialogFooter className="gap-3">
                   <Button variant="outline" onClick={() => setIsAddDialogOpen(false)} className="h-11">
                     Cancel
                   </Button>
                   <Button 
                     onClick={handleAddNote} 
-                    className="h-11 border-2 border-black dark:border-white"
+                    className="h-11 border-0 shadow-md hover:shadow-lg"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
@@ -327,17 +327,17 @@ export function QuickNotes({ user }: QuickNotesProps) {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3 mt-6">
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Total Notes</p>
             <p className="text-3xl font-bold text-black dark:text-white">{notes?.length || 0}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">Pinned</p>
             <p className="text-3xl font-bold text-black dark:text-white">{pinnedCount}</p>
           </div>
 
-          <div className="p-4 bg-white dark:bg-black rounded-md border border-black/20 dark:border-white/20 shadow-sm">
+          <div className="p-4 bg-white dark:bg-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm">
             <p className="text-sm text-muted-foreground mb-1">This Week</p>
             <p className="text-3xl font-bold text-black dark:text-white">
               {notes?.filter(n => {
@@ -408,8 +408,8 @@ export function QuickNotes({ user }: QuickNotesProps) {
           {filteredNotes.map(note => (
             <Card 
               key={note.id} 
-              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border border-black/20 dark:border-white/20 ${
-                note.isPinned ? 'border border-black/20 dark:border-white/20 bg-white dark:bg-black' : ''
+              className={`p-4 hover:shadow-[6px_6px_0_#000] dark:hover:shadow-[6px_6px_0_#fff] transition-all border-0 shadow-md hover:shadow-lg ${
+                note.isPinned ? 'border-0 shadow-md hover:shadow-lg bg-white dark:bg-black' : ''
               }`}
             >
               <div className="flex items-start justify-between mb-3">

@@ -36,7 +36,7 @@ export function BidIntelligence({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm"
+          className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm"
         >
           <div className="flex items-center gap-1 mb-1">
             <Target size={14} className="text-black dark:text-white" />
@@ -51,7 +51,7 @@ export function BidIntelligence({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md font-mono shadow-sm"
+          className="p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md font-mono shadow-sm"
         >
           <div className="flex items-center gap-1 mb-1">
             <TrendUp size={14} className="text-black dark:text-white" />
@@ -66,7 +66,7 @@ export function BidIntelligence({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="col-span-2 p-3 bg-black dark:bg-white text-white dark:text-black rounded-md border border-black/20 dark:border-white/20 shadow-sm font-mono"
+          className="col-span-2 p-3 bg-black dark:bg-white text-white dark:text-black rounded-md border-0 shadow-md hover:shadow-lg shadow-sm font-mono"
         >
           <div className="flex items-center gap-1 mb-1">
             <Clock size={14} className="text-primary" />

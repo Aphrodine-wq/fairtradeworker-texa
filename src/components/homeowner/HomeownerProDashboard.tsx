@@ -148,7 +148,7 @@ export function HomeownerProDashboard({ user }: HomeownerProDashboardProps) {
           <CardContent>
             <div className="space-y-3">
               {completedJobs.slice(0, 3).map((job) => (
-                <div key={job.id} className="flex items-center justify-between p-2 border border-black/10 dark:border-white/10 rounded">
+                <div key={job.id} className="flex items-center justify-between p-2 border-0 shadow-md hover:shadow-lg rounded">
                   <div>
                     <p className="font-medium text-sm">{job.title}</p>
                     <p className="text-xs text-muted-foreground">90-day guarantee active</p>
@@ -176,7 +176,7 @@ export function HomeownerProDashboard({ user }: HomeownerProDashboardProps) {
             {completedJobs.slice(0, 5).map((job) => {
               const invoice = myInvoices.find(inv => inv.jobId === job.id && inv.status === 'paid')
               return (
-                <div key={job.id} className="flex items-center justify-between p-4 border border-black/10 dark:border-white/10 rounded">
+                <div key={job.id} className="flex items-center justify-between p-4 border-0 shadow-md hover:shadow-lg rounded">
                   <div>
                     <p className="font-medium">{job.title}</p>
                     <p className="text-sm text-muted-foreground">

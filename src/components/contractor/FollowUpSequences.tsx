@@ -186,7 +186,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button>Upgrade to Pro - $39/mo</Button>
+            <Button>Upgrade to Pro - $59/mo</Button>
           </CardContent>
         </Card>
       )}
@@ -255,7 +255,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
                   {sequence.steps.map((step, i) => (
                     <div
                       key={step.id}
-                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border border-black/20 dark:border-white/20 rounded-md text-sm font-mono shadow-sm"
+                      className="flex items-start gap-3 p-3 bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md text-sm font-mono shadow-sm"
                     >
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                         {i + 1}
@@ -282,7 +282,7 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="overflow-hidden flex flex-col p-0 gap-0 h-[95vh]">
-          <div className="px-8 pt-6 pb-4 border-b border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 pt-6 pb-4 border-b border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogHeader className="text-left">
               <DialogTitle className="text-2xl">Create Follow-Up Sequence</DialogTitle>
               <DialogDescription>
@@ -403,14 +403,14 @@ export function FollowUpSequences({ user }: FollowUpSequencesProps) {
             </div>
           </div>
 
-          <div className="px-8 py-4 border-t border-black/10 dark:border-white/10 flex-shrink-0">
+          <div className="px-8 py-4 border-t border-gray-200 dark:border-gray-800 flex-shrink-0">
             <DialogFooter className="gap-3">
               <Button variant="outline" onClick={() => setDialogOpen(false)} className="h-11">
                 Cancel
               </Button>
               <Button 
                 onClick={handleSave} 
-                className="h-11 border-2 border-black dark:border-white"
+                className="h-11 border-0 shadow-md hover:shadow-lg"
                 disabled={isSaving}
               >
                 {isSaving ? (

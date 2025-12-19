@@ -223,7 +223,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="flex justify-end gap-2 pt-4 border-t border-black/10 dark:border-white/10">
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-200 dark:border-gray-800">
                 <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
                   Cancel
                 </Button>
@@ -239,7 +239,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
 
       {/* Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Total Documents</span>
@@ -250,7 +250,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Contracts</span>
@@ -261,7 +261,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Blueprints</span>
@@ -272,7 +272,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+        <Card className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Change Orders</span>
@@ -328,7 +328,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
 
       {/* Documents List */}
       {filteredDocuments.length === 0 ? (
-        <Card className="p-12 text-center border border-black/20 dark:border-white/20">
+        <Card className="p-12 text-center border-0 shadow-lg hover:shadow-xl">
           <FileText size={48} className="mx-auto text-muted-foreground mb-4" weight="duotone" />
           <p className="text-muted-foreground mb-4">No documents found</p>
           <Button onClick={() => setShowUploadDialog(true)}>Upload Your First Document</Button>
@@ -336,7 +336,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredDocuments.map(doc => (
-            <Card key={doc.id} className="bg-white dark:bg-black border border-black/20 dark:border-white/20">
+            <Card key={doc.id} className="bg-white dark:bg-black border-0 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3 flex-1">
@@ -384,7 +384,7 @@ export function ConstructionDocuments({ user }: ConstructionDocumentsProps) {
                       ))}
                     </div>
                   )}
-                  <div className="flex gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                  <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                     <Button size="sm" variant="outline" className="flex-1">
                       <Eye size={14} className="mr-2" />
                       View
