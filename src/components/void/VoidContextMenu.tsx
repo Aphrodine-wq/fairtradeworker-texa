@@ -3,7 +3,7 @@
  * Universal context menu for desktop, icons, and windows
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { motion } from 'framer-motion'
 import type { ContextMenuItem, ContextMenuType } from '@/lib/void/contextMenus'
@@ -77,14 +77,26 @@ export function VoidContextMenu({
   const [open, setOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
 
+  const handleClose = useCallback(() => {
+    setIsClosing(true)
+    // Wait for animation to complete before actually closing
+    setTimeout(() => {
+      setOpen(false)
+      setIsClosing(false)
+      onOpenChange?.(false)
+    }, 200) // Match the fade-out animation duration
+  }, [onOpenChange])
+
   // Auto-dismiss timer (5 seconds of inactivity)
   useEffect(() => {
     if (!open) return
 
     let timeoutId: NodeJS.Timeout
+    let lastInteraction = Date.now()
 
     const resetTimer = () => {
       clearTimeout(timeoutId)
+      lastInteraction = Date.now()
       timeoutId = setTimeout(() => {
         handleClose()
       }, 5000) // Auto-close after 5 seconds
@@ -92,17 +104,32 @@ export function VoidContextMenu({
 
     resetTimer()
 
-    // Reset timer on any interaction
-    const handleInteraction = () => resetTimer()
-    window.addEventListener('mousemove', handleInteraction)
-    window.addEventListener('keydown', handleInteraction)
+    // Throttled mouse move handler to avoid performance issues
+    let isThrottled = false
+    const handleMouseMove = () => {
+      if (!isThrottled) {
+        isThrottled = true
+        // Only reset if it's been at least 100ms since last interaction
+        if (Date.now() - lastInteraction > 100) {
+          resetTimer()
+        }
+        setTimeout(() => {
+          isThrottled = false
+        }, 100)
+      }
+    }
+
+    const handleKeyDown = () => resetTimer()
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
+    window.addEventListener('keydown', handleKeyDown)
 
     return () => {
       clearTimeout(timeoutId)
-      window.removeEventListener('mousemove', handleInteraction)
-      window.removeEventListener('keydown', handleInteraction)
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [open])
+  }, [open, handleClose])
 
   // Handle Escape key
   useEffect(() => {
@@ -116,9 +143,9 @@ export function VoidContextMenu({
 
     window.addEventListener('keydown', handleEscape)
     return () => window.removeEventListener('keydown', handleEscape)
-  }, [open, onOpenChange])
+  }, [open, handleClose])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsClosing(true)
     // Wait for animation to complete before actually closing
     setTimeout(() => {
@@ -126,9 +153,9 @@ export function VoidContextMenu({
       setIsClosing(false)
       onOpenChange?.(false)
     }, 200) // Match the fade-out animation duration
-  }
+  }, [onOpenChange])
 
-  const handleOpenChange = (newOpen: boolean) => {
+  const handleOpenChange = useCallback((newOpen: boolean) => {
     if (newOpen) {
       setOpen(newOpen)
       setIsClosing(false)
@@ -136,7 +163,7 @@ export function VoidContextMenu({
     } else {
       handleClose()
     }
-  }
+  }, [handleClose, onOpenChange])
 
   return (
     <ContextMenuPrimitive.Root open={open} onOpenChange={handleOpenChange} modal={false}>
