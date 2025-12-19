@@ -145,16 +145,6 @@ export function VoidContextMenu({
     return () => window.removeEventListener('keydown', handleEscape)
   }, [open, handleClose])
 
-  const handleClose = useCallback(() => {
-    setIsClosing(true)
-    // Wait for animation to complete before actually closing
-    setTimeout(() => {
-      setOpen(false)
-      setIsClosing(false)
-      onOpenChange?.(false)
-    }, 200) // Match the fade-out animation duration
-  }, [onOpenChange])
-
   const handleOpenChange = useCallback((newOpen: boolean) => {
     if (newOpen) {
       setOpen(newOpen)
