@@ -11,21 +11,22 @@ The repository is now configured to automatically deploy to Vercel whenever chan
 ### Automatic Deployments
 
 1. **Push to `main` branch** → Production deployment
+   - **ONLY the main branch triggers production deployments**
    - Every commit pushed to the main branch will automatically trigger a production deployment
    - No manual intervention required
    - Deployment happens automatically via GitHub Actions
+   - **All other branches are disabled for deployment to focus on MVP**
 
-2. **Pull Request to `main` branch** → Preview deployment
-   - Every pull request targeting the main branch gets its own preview deployment
-   - Allows testing changes before merging
-   - Preview URL is unique for each PR
+2. **Pull Request to `main` branch** → Preview deployment (DISABLED)
+   - Preview deployments are currently disabled to maintain focus on the main branch MVP
+   - Changes should be tested locally before merging to main
 
 ### Manual Deployments
 
-You can also manually trigger deployments through the GitHub Actions UI:
-- Go to Actions → Deploy to Vercel → Run workflow
-- Choose between production or preview environment
-- Useful for deploying from other branches or re-deploying
+Manual deployments are restricted to maintain focus on the main branch:
+- Only main branch deployments are enabled
+- Go to Actions → Deploy to Vercel → Run workflow (production only)
+- All deployments must go through the main branch for MVP consistency
 
 ## How It Works
 
