@@ -23,6 +23,34 @@ interface VoidErrorBoundaryState {
 
 const MAX_ERROR_COUNT = 3
 
+const ERROR_CODES = {
+  NETWORK_OFFLINE: 'E001',
+  API_ERROR: 'E003',
+  AUTH_EXPIRED: 'E100',
+  PERMISSION_DENIED: 'E102',
+  DATA_NOT_FOUND: 'E200',
+  STORAGE_FULL: 'E300',
+  RENDER_ERROR: 'E401',
+  UNKNOWN_ERROR: 'E999',
+} as const
+
+type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES]
+
+function getErrorCode(error: Error | null): ErrorCode {
+  if (!error) return ERROR_CODES.UNKNOWN_ERROR
+  
+  const message = error.message.toLowerCase()
+  if (message.includes('network') || message.includes('fetch')) return ERROR_CODES.NETWORK_OFFLINE
+  if (message.includes('api') || message.includes('http')) return ERROR_CODES.API_ERROR
+  if (message.includes('auth') || message.includes('token')) return ERROR_CODES.AUTH_EXPIRED
+  if (message.includes('permission') || message.includes('denied')) return ERROR_CODES.PERMISSION_DENIED
+  if (message.includes('not found') || message.includes('404')) return ERROR_CODES.DATA_NOT_FOUND
+  if (message.includes('quota') || message.includes('storage')) return ERROR_CODES.STORAGE_FULL
+  if (message.includes('render') || message.includes('component')) return ERROR_CODES.RENDER_ERROR
+  
+  return ERROR_CODES.UNKNOWN_ERROR
+}
+
 export class VoidErrorBoundary extends Component<VoidErrorBoundaryProps, VoidErrorBoundaryState> {
   private resetTimeoutId: NodeJS.Timeout | null = null
 
@@ -42,8 +70,9 @@ export class VoidErrorBoundary extends Component<VoidErrorBoundaryProps, VoidErr
       error,
     }
   }
-
+  
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    this.errorCode = getErrorCode(error)
     // Log error without exposing sensitive data
     const safeError = {
       message: error.message,
@@ -107,6 +136,22 @@ export class VoidErrorBoundary extends Component<VoidErrorBoundaryProps, VoidErr
       errorInfo: null,
     })
   }
+  
+  handleCopyError = () => {
+    const errorDetails = {
+      code: this.errorCode,
+      message: this.state.error?.message,
+      stack: this.state.error?.stack,
+      componentStack: this.state.errorInfo?.componentStack,
+      timestamp: new Date().toISOString(),
+    }
+    
+    const text = JSON.stringify(errorDetails, null, 2)
+    navigator.clipboard.writeText(text).then(() => {
+      // Show toast notification (would use notification system)
+      console.log('Error details copied to clipboard')
+    }).catch(console.error)
+  }
 
   render() {
     if (this.state.hasError && this.state.error) {
@@ -116,17 +161,26 @@ export class VoidErrorBoundary extends Component<VoidErrorBoundaryProps, VoidErr
           <div className="void-error-boundary void-error-permanent">
             <div className="void-error-content">
               <AlertTriangleIcon className="void-error-icon" />
-              <h2 className="void-error-title">VOID Component Error</h2>
+              <h2 className="void-error-title">System Unstable</h2>
               <p className="void-error-message">
-                This component encountered multiple errors. Please refresh the page.
+                VOID has encountered multiple errors. Please reload the application.
               </p>
-              <button
-                onClick={() => window.location.reload()}
-                className="void-error-button"
-              >
-                <RefreshCwIcon />
-                Refresh Page
-              </button>
+              <div className="void-error-code">Error: {this.errorCode}</div>
+              <div className="void-error-actions">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="void-error-button"
+                >
+                  <RefreshCwIcon />
+                  Reload VOID
+                </button>
+                <button
+                  onClick={this.handleCopyError}
+                  className="void-error-button void-error-button-secondary"
+                >
+                  Copy Error Details
+                </button>
+              </div>
             </div>
           </div>
         )
@@ -144,22 +198,27 @@ export class VoidErrorBoundary extends Component<VoidErrorBoundaryProps, VoidErr
             <AlertTriangleIcon className="void-error-icon" />
             <h2 className="void-error-title">Something went wrong</h2>
             <p className="void-error-message">
-              {process.env.NODE_ENV === 'development'
-                ? this.state.error.message
-                : 'An error occurred in this component. It will attempt to recover automatically.'}
+              {this.state.error.message || 'An unexpected error occurred'}
             </p>
-            <button
-              onClick={this.handleReset}
-              className="void-error-button"
-            >
-              <RefreshCwIcon />
-              Try Again
-            </button>
-            {this.state.errorCount > 0 && (
-              <p className="void-error-count">
-                Recovery attempt {this.state.errorCount} of {MAX_ERROR_COUNT}
-              </p>
-            )}
+            <div className="void-error-code">Error: {this.errorCode}</div>
+            <p className="void-error-safe-message">
+              Your data is safe. This error has been logged.
+            </p>
+            <div className="void-error-actions">
+              <button
+                onClick={this.handleReset}
+                className="void-error-button"
+              >
+                <RefreshCwIcon />
+                Try Again
+              </button>
+              <button
+                onClick={this.handleCopyError}
+                className="void-error-button void-error-button-secondary"
+              >
+                Copy Error Details
+              </button>
+            </div>
           </div>
         </div>
       )

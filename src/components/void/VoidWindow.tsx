@@ -4,6 +4,7 @@ import { useVoidStore } from '@/lib/void/store'
 import { cn } from '@/lib/utils'
 import type { WindowData } from '@/lib/void/types'
 import { validateWindowSize, validateGridPosition, sanitizeString } from '@/lib/void/validation'
+import { isNearEdge, getSnapPosition, type SnapZone } from '@/lib/void/windowSnap'
 import '@/styles/void-desktop.css'
 
 interface VoidWindowProps {
@@ -19,15 +20,23 @@ export function VoidWindow({ window }: VoidWindowProps) {
     closeWindow,
     minimizeWindow,
     maximizeWindow,
+    togglePip,
     updateWindowPosition,
     updateWindowSize,
     focusWindow,
     activeWindowId,
   } = useVoidStore()
 
+  // Get window dimensions for snap calculations
+  const getWindowDimensions = () => ({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1920,
+    height: typeof window !== 'undefined' ? window.innerHeight : 1080,
+  })
+
   const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState<string | null>(null)
   const [resizeStart, setResizeStart] = useState<{ x: number; y: number; width: number; height: number } | null>(null)
+  const [snapZone, setSnapZone] = useState<SnapZone | null>(null)
   const windowRef = useRef<HTMLDivElement>(null)
 
   const isActive = activeWindowId === window.id
@@ -45,15 +54,45 @@ export function VoidWindow({ window }: VoidWindowProps) {
 
   const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (!window.maximized) {
+      const newX = window.position.x + info.offset.x
+      const newY = window.position.y + info.offset.y
+      
+      // Check for snap zones
+      const edgeCheck = isNearEdge(newX, newY, window.innerWidth, window.innerHeight)
+      if (edgeCheck.zone) {
+        setSnapZone(edgeCheck.zone)
+      } else {
+        setSnapZone(null)
+      }
+      
       updateWindowPosition(window.id, {
-        x: window.position.x + info.offset.x,
-        y: window.position.y + info.offset.y,
+        x: newX,
+        y: newY,
       })
     }
   }
 
   const handleDragEnd = () => {
     setIsDragging(false)
+    
+    // Apply snap if zone detected
+    if (snapZone && !window.maximized) {
+      const { width, height } = getWindowDimensions()
+      const snapPos = getSnapPosition(
+        snapZone,
+        width,
+        height
+      )
+      updateWindowPosition(window.id, { x: snapPos.x, y: snapPos.y })
+      updateWindowSize(window.id, { width: snapPos.width, height: snapPos.height })
+      
+      // If maximizing, set maximized state
+      if (snapZone === 'maximize') {
+        maximizeWindow(window.id)
+      }
+    }
+    
+    setSnapZone(null)
   }
 
   const handleResizeStart = (handle: string, e: React.MouseEvent) => {
@@ -197,6 +236,17 @@ export function VoidWindow({ window }: VoidWindowProps) {
             }}
             aria-label="Maximize"
           />
+          <button
+            className="void-window-button pip"
+            onClick={(e) => {
+              e.stopPropagation()
+              togglePip(window.id)
+            }}
+            aria-label="Picture in Picture"
+            title="Picture in Picture"
+          >
+            ⛶
+          </button>
           <button
             className="void-window-button close"
             onClick={(e) => {

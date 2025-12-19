@@ -1,0 +1,300 @@
+/**
+ * VOID OS Settings Styles
+ */
+
+.void-settings {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface, #0a0a0f);
+  color: var(--text-primary, #ffffff);
+}
+
+.void-settings-container {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.void-settings-sidebar {
+  width: 240px;
+  border-right: 1px solid var(--border, #1a1a24);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-hover, #151520);
+}
+
+.void-settings-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border, #1a1a24);
+}
+
+.void-settings-search-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.void-settings-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-primary, #ffffff);
+  font-family: var(--font-sans, -apple-system, 'Segoe UI', sans-serif);
+}
+
+.void-settings-search-input::placeholder {
+  color: var(--text-tertiary, #6a6a7a);
+}
+
+.void-settings-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.void-settings-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+  text-align: left;
+}
+
+.void-settings-nav-item:hover {
+  background: var(--surface, #0a0a0f);
+  color: var(--text-primary, #ffffff);
+}
+
+.void-settings-nav-item.active {
+  background: var(--accent, #00f5ff);
+  color: var(--bg, #000000);
+}
+
+.void-settings-nav-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.void-settings-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+}
+
+.void-settings-section {
+  max-width: 800px;
+}
+
+.void-settings-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 32px;
+}
+
+.void-settings-group {
+  margin-bottom: 32px;
+}
+
+.void-settings-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 12px;
+}
+
+.void-settings-theme-options {
+  display: flex;
+  gap: 12px;
+}
+
+.void-settings-theme-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: var(--surface-hover, #151520);
+  border: 2px solid var(--border, #1a1a24);
+  border-radius: var(--radius-md, 12px);
+  color: var(--text-secondary, #a0a0b0);
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-theme-option:hover {
+  border-color: var(--accent, #00f5ff);
+  color: var(--accent, #00f5ff);
+}
+
+.void-settings-theme-option.active {
+  background: var(--accent, #00f5ff);
+  border-color: var(--accent, #00f5ff);
+  color: var(--bg, #000000);
+}
+
+.void-settings-theme-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.void-settings-toggle-group {
+  display: flex;
+  gap: 8px;
+}
+
+.void-settings-toggle {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--surface-hover, #151520);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-toggle:hover {
+  border-color: var(--accent, #00f5ff);
+  color: var(--accent, #00f5ff);
+}
+
+.void-settings-toggle.active {
+  background: var(--accent, #00f5ff);
+  border-color: var(--accent, #00f5ff);
+  color: var(--bg, #000000);
+}
+
+.void-settings-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.void-settings-switch input[type="checkbox"] {
+  width: 40px;
+  height: 24px;
+  appearance: none;
+  background: var(--surface-hover, #151520);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-switch input[type="checkbox"]:checked {
+  background: var(--accent, #00f5ff);
+  border-color: var(--accent, #00f5ff);
+}
+
+.void-settings-switch input[type="checkbox"]::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-primary, #ffffff);
+  top: 2px;
+  left: 2px;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-switch input[type="checkbox"]:checked::before {
+  left: 20px;
+}
+
+.void-settings-switch label {
+  font-size: 14px;
+  color: var(--text-primary, #ffffff);
+  cursor: pointer;
+}
+
+.void-settings-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--surface-hover, #151520);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--text-primary, #ffffff);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-select:hover {
+  border-color: var(--accent, #00f5ff);
+}
+
+.void-settings-select:focus {
+  outline: none;
+  border-color: var(--accent, #00f5ff);
+}
+
+.void-settings-about {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 48px;
+  text-align: center;
+}
+
+.void-settings-about-logo {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--accent, #00f5ff);
+}
+
+.void-settings-about-version {
+  font-size: 16px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.void-settings-about-description {
+  font-size: 14px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.void-settings-placeholder {
+  padding: 48px;
+  text-align: center;
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 14px;
+}
+
+/* Dark mode adjustments */
+[data-theme="light"] .void-settings {
+  background: var(--surface, #fefefe);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .void-settings-nav-item,
+  .void-settings-theme-option,
+  .void-settings-toggle,
+  .void-settings-switch input[type="checkbox"] {
+    transition: none;
+  }
+}

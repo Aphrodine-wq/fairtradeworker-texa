@@ -110,9 +110,31 @@ For issues or questions:
 3. Check browser console for errors
 4. Verify browser compatibility
 
+## Security & Stability
+
+VOID includes comprehensive security measures (December 2025 update):
+
+- **Runtime Validation**: Zod schema validation for all store state
+- **Secure Storage**: Storage wrapper with integrity checks and quota management
+- **Error Boundaries**: Comprehensive error handling with auto-recovery
+- **XSS Prevention**: Content sanitization across all components
+- **API Security**: Rate limiting, secure token storage, request validation
+- **Input Validation**: All user inputs validated and sanitized
+- **Critical Bug Fix**: Set serialization issue resolved
+
+See [TECHNICAL_SPECIFICATION.md](./TECHNICAL_SPECIFICATION.md#security--stability) for complete security documentation.
+
 ## Version History
 
-- **v1.0.0** (Current): Initial implementation
+- **v1.1.0** (December 2025): Security & Stability Update
+  - Comprehensive security enhancements
+  - Runtime validation with Zod schemas
+  - Secure storage wrapper
+  - Error boundaries with auto-recovery
+  - XSS prevention measures
+  - API security layer
+  - Critical Set serialization bug fix
+- **v1.0.0** (Initial): Initial implementation
   - Visual effects system
   - Media integration
   - Theme system

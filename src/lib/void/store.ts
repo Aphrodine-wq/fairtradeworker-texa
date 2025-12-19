@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage } from './types'
+import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage, Notification, VirtualDesktop, VoidFile } from './types'
 import type { Theme } from '@/lib/themes'
 import type { Track } from '@/lib/music/types'
 import { arrayToSet, validateVolume, validateGridPosition, validateWindowSize, sanitizeString, validateWithFallback, ThemeSchema, VoiceStateSchema, VoicePermissionSchema, BuddyStateSchema, BuddyMessageSchema } from './validation'
+import { createFileSystem } from './fileSystem'
 
 interface VoidStore {
   // Icons
@@ -54,6 +55,7 @@ interface VoidStore {
   closeWindow: (id: string) => void
   minimizeWindow: (id: string) => void
   maximizeWindow: (id: string) => void
+  togglePip: (id: string) => void
   updateWindowPosition: (id: string, position: { x: number; y: number }) => void
       updateWindowSize: (id: string, size: { width: number; height: number }) => void
       focusWindow: (id: string) => void
@@ -82,11 +84,46 @@ interface VoidStore {
       setWiremapEnabled: (enabled: boolean) => void
       setWiremapNodeCount: (count: number) => void
       
-      // Media slice actions
-      setCurrentTrack: (track: Track | null) => void
-      setIsPlaying: (playing: boolean) => void
-      setVolume: (volume: number) => void
-      setIsMuted: (muted: boolean) => void
+  // Media slice actions
+  setCurrentTrack: (track: Track | null) => void
+  setIsPlaying: (playing: boolean) => void
+  setVolume: (volume: number) => void
+  setIsMuted: (muted: boolean) => void
+  
+  // Lock screen
+  isLocked: boolean
+  lockScreenPin: string | null
+  setLocked: (locked: boolean) => void
+  setLockScreenPin: (pin: string | null) => void
+  
+  // Notifications
+  notifications: Notification[]
+  unreadCount: number
+  addNotification: (notification: Notification) => void
+  markAsRead: (id: string) => void
+  markAllAsRead: () => void
+  clearAll: () => void
+  
+  // Spotlight
+  spotlightOpen: boolean
+  spotlightQuery: string
+  setSpotlightOpen: (open: boolean) => void
+  setSpotlightQuery: (query: string) => void
+  
+  // Virtual Desktops
+  virtualDesktops: VirtualDesktop[]
+  activeDesktopId: string
+  createDesktop: (desktop: VirtualDesktop) => void
+  switchDesktop: (id: string) => void
+  moveWindowToDesktop: (windowId: string, desktopId: string) => void
+  
+  // File System
+  fileSystem: VoidFile[]
+  currentPath: string | null
+  createFile: (file: Omit<VoidFile, 'id' | 'createdAt' | 'updatedAt'>) => void
+  deleteFile: (id: string) => void
+  moveFile: (id: string, newParentId: string | null) => void
+  setCurrentPath: (path: string | null) => void
 }
 
 // Default icon definitions
@@ -180,6 +217,10 @@ export const useVoidStore = create<VoidStore>()(
       isPlaying: false,
       volume: 0.7,
       isMuted: false,
+      
+      // Lock screen initial state
+      isLocked: false,
+      lockScreenPin: null,
       
       // Voice initial state
       voiceState: 'idle',
@@ -340,10 +381,33 @@ export const useVoidStore = create<VoidStore>()(
               ? {
                   ...w,
                   maximized: !w.maximized,
+                  pip: false, // Exit PiP when maximizing
                   position: !w.maximized ? { x: 24, y: 24 } : w.position,
                   size: !w.maximized
                     ? { width: window.innerWidth - 48, height: window.innerHeight - 48 - 48 } // Account for toolbar and taskbar
                     : { width: 800, height: 600 },
+                }
+              : w
+          ),
+        })
+      },
+      
+      togglePip: (id: string) => {
+        const state = get()
+        set({
+          windows: state.windows.map(w =>
+            w.id === id
+              ? {
+                  ...w,
+                  pip: !w.pip,
+                  maximized: false, // Exit maximize when entering PiP
+                  // PiP windows are smaller and positioned bottom-right
+                  position: !w.pip
+                    ? { x: window.innerWidth - 320, y: window.innerHeight - 240 - 48 }
+                    : w.position,
+                  size: !w.pip
+                    ? { width: 300, height: 200 }
+                    : w.size,
                 }
               : w
           ),
@@ -483,6 +547,131 @@ export const useVoidStore = create<VoidStore>()(
       setIsMuted: (muted: boolean) => {
         set({ isMuted: muted })
       },
+      
+      // Lock screen actions
+      setLocked: (locked: boolean) => {
+        set({ isLocked: locked })
+      },
+      setLockScreenPin: (pin: string | null) => {
+        set({ lockScreenPin: pin })
+      },
+      
+      // Notification actions
+      addNotification: (notification: Notification) => {
+        set((state) => {
+          const newNotifications = [notification, ...state.notifications].slice(0, 100) // Limit to 100
+          const newUnreadCount = newNotifications.filter(n => !n.read).length
+          return {
+            notifications: newNotifications,
+            unreadCount: newUnreadCount,
+          }
+        })
+      },
+      markAsRead: (id: string) => {
+        set((state) => {
+          const updatedNotifications = state.notifications.map(n =>
+            n.id === id ? { ...n, read: true } : n
+          )
+          const newUnreadCount = updatedNotifications.filter(n => !n.read).length
+          return {
+            notifications: updatedNotifications,
+            unreadCount: newUnreadCount,
+          }
+        })
+      },
+      markAllAsRead: () => {
+        set((state) => ({
+          notifications: state.notifications.map(n => ({ ...n, read: true })),
+          unreadCount: 0,
+        }))
+      },
+      clearAll: () => {
+        set({
+          notifications: [],
+          unreadCount: 0,
+        })
+      },
+      
+      // Spotlight actions
+      setSpotlightOpen: (open: boolean) => {
+        set({ spotlightOpen: open })
+      },
+      setSpotlightQuery: (query: string) => {
+        set({ spotlightQuery: query })
+      },
+      
+      // Virtual Desktop actions
+      createDesktop: (desktop: VirtualDesktop) => {
+        set((state) => ({
+          virtualDesktops: [...state.virtualDesktops, desktop],
+        }))
+      },
+      switchDesktop: (id: string) => {
+        const state = get()
+        const desktop = state.virtualDesktops.find(d => d.id === id)
+        if (desktop) {
+          set({ activeDesktopId: id })
+        }
+      },
+      moveWindowToDesktop: (windowId: string, desktopId: string) => {
+        set((state) => ({
+          virtualDesktops: state.virtualDesktops.map(desktop => {
+            // Remove from all desktops
+            const windows = desktop.windows.filter(id => id !== windowId)
+            
+            // Add to target desktop
+            if (desktop.id === desktopId && !windows.includes(windowId)) {
+              return {
+                ...desktop,
+                windows: [...windows, windowId],
+              }
+            }
+            
+            return {
+              ...desktop,
+              windows,
+            }
+          }),
+        }))
+      },
+      
+      // File System actions
+      createFile: (file: Omit<VoidFile, 'id' | 'createdAt' | 'updatedAt'>) => {
+        const newFile: VoidFile = {
+          ...file,
+          id: `file-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        }
+        set((state) => ({
+          fileSystem: [...state.fileSystem, newFile],
+        }))
+      },
+      deleteFile: (id: string) => {
+        set((state) => ({
+          fileSystem: state.fileSystem.filter(f => f.id !== id),
+        }))
+      },
+      moveFile: (id: string, newParentId: string | null) => {
+        set((state) => {
+          const file = state.fileSystem.find(f => f.id === id)
+          if (!file) return state
+          
+          const newParent = newParentId ? state.fileSystem.find(f => f.id === newParentId) : null
+          const newPath = newParent ? `${newParent.path}/${file.name}` : `/VOID/${file.name}`
+          
+          return {
+            fileSystem: state.fileSystem.map(f =>
+              f.id === id
+                ? { ...f, parentId: newParentId, path: newPath, updatedAt: Date.now() }
+                : f
+            ),
+          }
+        })
+      },
+      setCurrentPath: (path: string | null) => {
+        set({ currentPath: path })
+      },
     }),
     {
       name: 'void-desktop-storage',
@@ -502,6 +691,13 @@ export const useVoidStore = create<VoidStore>()(
         isMuted: state.isMuted,
         voicePermission: state.voicePermission,
         buddyState: state.buddyState,
+        isLocked: state.isLocked,
+        lockScreenPin: state.lockScreenPin,
+        notifications: state.notifications.slice(0, 50), // Persist last 50
+        virtualDesktops: state.virtualDesktops,
+        activeDesktopId: state.activeDesktopId,
+        fileSystem: state.fileSystem,
+        currentPath: state.currentPath,
       }),
       merge: (persistedState: any, currentState: VoidStore): VoidStore => {
         // Check version and migrate if needed
@@ -667,6 +863,63 @@ export const useVoidStore = create<VoidStore>()(
               message: sanitizeString(msg.message, 1000),
             }))
             .slice(0, 100) // Limit to 100 messages
+        }
+        
+        // Validate notifications
+        if (!Array.isArray(merged.notifications)) {
+          merged.notifications = currentState.notifications
+        } else {
+          merged.notifications = merged.notifications
+            .filter((n: any) => n && typeof n.id === 'string' && typeof n.type === 'string')
+            .slice(0, 100)
+        }
+        
+        // Calculate unread count
+        merged.unreadCount = Array.isArray(merged.notifications)
+          ? merged.notifications.filter((n: any) => !n.read).length
+          : 0
+        
+        // Validate spotlight state
+        if (typeof merged.spotlightOpen !== 'boolean') {
+          merged.spotlightOpen = currentState.spotlightOpen
+        }
+        if (typeof merged.spotlightQuery !== 'string') {
+          merged.spotlightQuery = currentState.spotlightQuery
+        }
+        
+        // Validate virtual desktops
+        if (!Array.isArray(merged.virtualDesktops)) {
+          merged.virtualDesktops = currentState.virtualDesktops
+        } else {
+          merged.virtualDesktops = merged.virtualDesktops
+            .filter((d: any) => d && typeof d.id === 'string' && typeof d.name === 'string')
+            .slice(0, 10) // Limit to 10 desktops
+        }
+        
+        // Validate active desktop
+        if (typeof merged.activeDesktopId !== 'string') {
+          merged.activeDesktopId = currentState.activeDesktopId
+        } else {
+          // Ensure active desktop exists
+          const desktopExists = merged.virtualDesktops.some((d: any) => d.id === merged.activeDesktopId)
+          if (!desktopExists && merged.virtualDesktops.length > 0) {
+            merged.activeDesktopId = merged.virtualDesktops[0].id
+          } else if (!desktopExists) {
+            merged.activeDesktopId = currentState.activeDesktopId
+          }
+        }
+        
+        // Validate file system
+        if (!Array.isArray(merged.fileSystem)) {
+          merged.fileSystem = currentState.fileSystem
+        } else {
+          merged.fileSystem = merged.fileSystem
+            .filter((f: any) => f && typeof f.id === 'string' && typeof f.name === 'string')
+        }
+        
+        // Validate current path
+        if (typeof merged.currentPath !== 'string' && merged.currentPath !== null) {
+          merged.currentPath = currentState.currentPath
         }
         
         return merged

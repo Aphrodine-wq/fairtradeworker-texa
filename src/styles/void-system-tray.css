@@ -1,0 +1,120 @@
+/**
+ * VOID OS System Tray Styles
+ */
+
+.void-system-tray {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  height: 100%;
+}
+
+.void-tray-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm, 8px);
+  color: var(--text-secondary, #a0a0b0);
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-tray-icon:hover {
+  background: var(--surface-hover, #151520);
+  color: var(--text-primary, #ffffff);
+}
+
+.void-tray-icon-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.void-tray-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent, #00f5ff);
+  color: var(--bg, #000000);
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.void-tray-music-pulse {
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--accent, #00f5ff);
+  border-radius: var(--radius-sm, 8px);
+  opacity: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+.void-tray-clock-text {
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 4px;
+  color: var(--text-primary, #ffffff);
+}
+
+.void-tray-clock-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  padding: 16px;
+  background: var(--surface, #0a0a0f);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--shadow-ambient, 0 8px 32px rgba(0, 0, 0, 0.3));
+  backdrop-filter: blur(var(--blur-md, 20px));
+  -webkit-backdrop-filter: blur(var(--blur-md, 20px));
+  z-index: var(--layer-system-context-menu, 9600);
+}
+
+.void-tray-clock-menu-date {
+  font-size: 14px;
+  color: var(--text-secondary, #a0a0b0);
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.void-tray-clock-menu-time {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .void-tray-music-pulse {
+    animation: none;
+  }
+  
+  .void-tray-icon {
+    transition: none;
+  }
+}

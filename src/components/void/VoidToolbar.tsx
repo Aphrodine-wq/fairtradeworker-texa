@@ -1,12 +1,24 @@
-// Placeholder - Will be implemented in Phase 4 of desktop system
-export function VoidToolbar({ user, onNavigate }: { user: any; onNavigate?: (page: string) => void }) {
+import { VoidSystemTray } from './VoidSystemTray'
+import type { User } from '@/lib/types'
+import '@/styles/void-os-layers.css'
+import '@/styles/void-toolbar.css'
+
+interface VoidToolbarProps {
+  user: User
+  onNavigate?: (page: string) => void
+}
+
+export function VoidToolbar({ user, onNavigate }: VoidToolbarProps) {
   return (
-    <div className="fixed top-0 left-0 right-0 h-16 bg-[var(--void-surface)] border-b border-[var(--void-border)] z-50 flex items-center justify-between px-4">
-      <div className="text-xl font-bold" style={{ fontFamily: 'var(--void-font-display)' }}>
-        VOID
+    <div className="void-toolbar void-toolbar-container">
+      {/* Left: Logo */}
+      <div className="void-toolbar-left">
+        <div className="void-toolbar-logo">VOID</div>
       </div>
-      <div className="text-sm text-[var(--void-text-muted)]">
-        {user?.fullName || 'User'}
+
+      {/* Right: System Tray */}
+      <div className="void-toolbar-right">
+        <VoidSystemTray user={user} />
       </div>
     </div>
   )

@@ -56,6 +56,17 @@
   transition: all var(--duration-fast, 120ms) var(--ease-standard);
 }
 
+.void-error-button-secondary {
+  background: var(--surface-hover, #151520);
+  color: var(--text-primary, #ffffff);
+  border: 1px solid var(--border, #1a1a24);
+}
+
+.void-error-button-secondary:hover {
+  background: var(--surface, #0a0a0f);
+  border-color: var(--accent, #00f5ff);
+}
+
 .void-error-button:hover {
   background: var(--accent-hover, #33f7ff);
   transform: translateY(-1px);
@@ -65,10 +76,34 @@
   transform: translateY(0);
 }
 
+.void-error-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
 .void-error-count {
   font-size: 12px;
   color: var(--text-tertiary, #6a6a7a);
   margin-top: 16px;
+}
+
+.void-error-code {
+  font-size: 12px;
+  font-family: monospace;
+  color: var(--text-tertiary, #6a6a7a);
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--surface-hover, #151520);
+  border-radius: var(--radius-sm, 8px);
+  display: inline-block;
+}
+
+.void-error-safe-message {
+  font-size: 13px;
+  color: var(--text-secondary, #a0a0b0);
+  margin-top: 12px;
 }
 
 .void-error-permanent {

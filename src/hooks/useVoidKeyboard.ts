@@ -2,18 +2,120 @@ import { useEffect, useRef } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 
 export function useVoidKeyboard() {
-  const { windows, closeWindow, openWindow, activeWindowId, focusWindow, voiceState, setVoiceState, voicePermission } = useVoidStore()
+  const {
+    windows,
+    closeWindow,
+    openWindow,
+    activeWindowId,
+    focusWindow,
+    voiceState,
+    setVoiceState,
+    voicePermission,
+    minimizeWindow,
+    spotlightOpen,
+    setSpotlightOpen,
+    setTheme,
+    theme,
+  } = useVoidStore()
   const spacebarPressedRef = useRef(false)
   const spacebarTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // ⌘K / Ctrl+K - Spotlight Search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSpotlightOpen(!spotlightOpen)
+        return
+      }
+
+      // Escape - Close Spotlight or modals
+      if (e.key === 'Escape') {
+        if (spotlightOpen) {
+          setSpotlightOpen(false)
+          return
+        }
+      }
+
+      // ⌘, / Ctrl+, - Settings
+      if ((e.metaKey || e.ctrlKey) && e.key === ',') {
+        e.preventDefault()
+        // Open settings window
+        openWindow('settings')
+        return
+      }
+
+      // ⌘ Space - Toggle Buddy
+      if ((e.metaKey || e.ctrlKey) && e.key === ' ' && !e.shiftKey) {
+        e.preventDefault()
+        // Toggle buddy (will be implemented)
+        return
+      }
+
       // ⌘W / Ctrl+W - Close active window
       if ((e.metaKey || e.ctrlKey) && e.key === 'w') {
         e.preventDefault()
         if (activeWindowId) {
           closeWindow(activeWindowId)
         }
+        return
+      }
+
+      // ⌘M / Ctrl+M - Minimize active window
+      if ((e.metaKey || e.ctrlKey) && e.key === 'm' && !e.shiftKey) {
+        e.preventDefault()
+        if (activeWindowId) {
+          minimizeWindow(activeWindowId)
+        }
+        return
+      }
+
+      // ⌘ Tab - Switch windows
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Tab') {
+        e.preventDefault()
+        const visibleWindows = windows.filter(w => !w.minimized).sort((a, b) => b.zIndex - a.zIndex)
+        if (visibleWindows.length > 1) {
+          const currentIndex = visibleWindows.findIndex(w => w.id === activeWindowId)
+          const nextIndex = (currentIndex + 1) % visibleWindows.length
+          focusWindow(visibleWindows[nextIndex].id)
+        }
+        return
+      }
+
+      // CRM Shortcuts
+      // ⌘⇧L - New Lead
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'L') {
+        e.preventDefault()
+        openWindow('leads')
+        return
+      }
+
+      // ⌘⇧C - New Customer
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'C') {
+        e.preventDefault()
+        openWindow('customers')
+        return
+      }
+
+      // ⌘⇧P - New Project
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'P') {
+        e.preventDefault()
+        // Open project window
+        return
+      }
+
+      // ⌘⇧I - New Invoice
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'I') {
+        e.preventDefault()
+        // Open invoice window
+        return
+      }
+
+      // ⌘⇧E - New Estimate
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'E') {
+        e.preventDefault()
+        // Open estimate window
+        return
       }
 
       // Ctrl+Shift+V - Open voice capture
@@ -86,5 +188,19 @@ export function useVoidKeyboard() {
         clearTimeout(spacebarTimerRef.current)
       }
     }
-  }, [windows, activeWindowId, closeWindow, openWindow, focusWindow, voiceState, setVoiceState, voicePermission])
+  }, [
+    windows,
+    activeWindowId,
+    closeWindow,
+    openWindow,
+    focusWindow,
+    minimizeWindow,
+    voiceState,
+    setVoiceState,
+    voicePermission,
+    spotlightOpen,
+    setSpotlightOpen,
+    theme,
+    setTheme,
+  ])
 }

@@ -1,0 +1,44 @@
+/**
+ * VOID OS Toolbar Styles
+ */
+
+.void-toolbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: var(--surface, #0a0a0f);
+  border-bottom: 1px solid var(--border, #1a1a24);
+  backdrop-filter: blur(var(--blur-md, 20px));
+  -webkit-backdrop-filter: blur(var(--blur-md, 20px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: var(--layer-toolbar, 9100);
+}
+
+.void-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.void-toolbar-logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text-primary, #ffffff);
+  font-family: var(--font-sans, -apple-system, 'Segoe UI', sans-serif);
+}
+
+.void-toolbar-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Dark mode adjustments */
+[data-theme="light"] .void-toolbar-container {
+  background: var(--surface, #fefefe);
+}
