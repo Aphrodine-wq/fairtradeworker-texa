@@ -18,6 +18,7 @@ VOID is a revolutionary desktop interface system that combines Windows Aero aest
 10. [Integration Guide](./INTEGRATION.md)
 11. [Usage Guide](./USAGE.md)
 12. [Troubleshooting](./TROUBLESHOOTING.md)
+13. **[Harsh Truths & Reality Check](./HARSH_TRUTHS.md)** ⚠️ - **READ THIS FIRST** - Honest assessment of what's actually implemented vs. what's documented
 
 ## Quick Start
 
@@ -102,13 +103,24 @@ Each major component has detailed documentation:
 - **USAGE.md**: Step-by-step usage guides
 - **TROUBLESHOOTING.md**: Common issues and solutions
 
+## ⚠️ Important: Read HARSH_TRUTHS.md First
+
+**Before claiming VOID is production-ready**, read [HARSH_TRUTHS.md](./HARSH_TRUTHS.md) for an honest assessment of:
+- What actually works
+- What's broken or incomplete
+- What's missing
+- What needs to be fixed
+
+The documentation may claim features are "complete" but many are not properly integrated into the user experience.
+
 ## Getting Help
 
 For issues or questions:
-1. Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
-2. Review component documentation
-3. Check browser console for errors
-4. Verify browser compatibility
+1. **Read [HARSH_TRUTHS.md](./HARSH_TRUTHS.md)** for honest status assessment
+2. Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
+3. Review component documentation
+4. Check browser console for errors
+5. Verify browser compatibility
 
 ## Security & Stability
 

@@ -608,11 +608,22 @@ This specification covers VOID as a complete operating system with:
 19. ✅ Features — 10 core modules
 20. ✅ Security — Auth, encryption, audit
 
-**Status**: ✅ All features implemented and production-ready
+**Status**: ⚠️ **PROTOTYPE** — See [HARSH_TRUTHS.md](./HARSH_TRUTHS.md) for honest assessment
 
-## Integration Status (v1.2.0)
+## ⚠️ Known Issues & Missing Integrations
 
-As of December 2025, all core components are fully integrated into `VOID.tsx`:
+**CRITICAL**: This specification documents what *should* exist, not what *actually* works. See [HARSH_TRUTHS.md](./HARSH_TRUTHS.md) for reality check.
+
+### Missing Integrations
+- ❌ **Context Menus**: `VoidContextMenu` component exists but is NOT integrated into `VoidDesktop` or `VoidWindow`
+- ⚠️ **File System**: Exists but only accessible via `openWindow('filesystem')` — no desktop integration
+- ⚠️ **Settings**: Only accessible via `⌘,` shortcut — no visible access points
+- ⚠️ **Plugin Manager**: Exists but has no entry point in UI
+- ⚠️ **Modules**: All 10 modules exist but have no desktop icons or launcher
+
+### Integration Status (v1.2.0)
+
+As of December 2025, core components are integrated into `VOID.tsx`:
 
 - ✅ **BackgroundSystem**: Integrated in Background Layer (z: 0-1)
 - ✅ **WiremapBackground**: Conditionally rendered based on `wiremapEnabled`
@@ -621,4 +632,6 @@ As of December 2025, all core components are fully integrated into `VOID.tsx`:
 - ✅ **Error Boundaries**: All components wrapped for safety
 - ✅ **CSS Imports**: All required stylesheets included
 
-The VOID component is production-ready and requires no manual integration of background or theme systems.
+**However**, many features exist as components but are not properly integrated into the user experience. See [HARSH_TRUTHS.md](./HARSH_TRUTHS.md) for complete assessment.
+
+The VOID component is **functional** but **not production-ready** without fixing context menu integration and adding proper access points for all features.
