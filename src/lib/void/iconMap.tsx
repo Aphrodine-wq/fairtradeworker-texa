@@ -25,6 +25,9 @@ import {
   Lock,
   Funnel,
   Flag,
+  Video,
+  PlayCircle,
+  FilmStrip,
 } from '@phosphor-icons/react'
 
 export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
@@ -43,9 +46,9 @@ export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
   marketplace: Storefront,
   settings: Gear,
   'voice-capture': Microphone,
-  // Module icons
+  // Module icons - Upgraded for 2K resolution
   livewire: RadioButton,
-  facelink: VideoCamera,
+  facelink: Video, // Upgraded to high-res Video icon
   blueprint: Ruler,
   scope: Target,
   dispatch: Calendar,

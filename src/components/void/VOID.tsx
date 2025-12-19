@@ -24,6 +24,7 @@ import { setupInactivityTimer } from '@/lib/void/session'
 import { initTheme } from '@/lib/themes'
 import { BackgroundSystem } from './BackgroundSystem'
 import { WiremapBackground } from './WiremapBackground'
+import { StarWireframe } from './StarWireframe'
 import type { User } from '@/lib/types'
 import '@/styles/void-desktop.css'
 import '@/styles/void-voice.css'
@@ -106,6 +107,9 @@ export function VOID({ user, onNavigate }: VOIDProps) {
         <div className="absolute inset-0 void-overlay-background" style={{ zIndex: 0 }}>
           <VoidErrorBoundary>
             <BackgroundSystem />
+          </VoidErrorBoundary>
+          <VoidErrorBoundary>
+            <StarWireframe />
           </VoidErrorBoundary>
           {wiremapEnabled && (
             <VoidErrorBoundary>

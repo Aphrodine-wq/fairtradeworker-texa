@@ -5,7 +5,6 @@ import { useBuddyReactions } from '@/hooks/useBuddyReactions'
 import { VoidBuddyIcon } from './VoidBuddyIcon'
 import { VoidBuddyMessages } from './VoidBuddyMessages'
 import { VoidVoiceCapture } from './VoidVoiceCapture'
-import { Microphone } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { 
   getClickResponse, shouldTroll, shouldRagebait, getTrollMessage, getRagebaitMessage, 
@@ -15,59 +14,6 @@ import {
 } from '@/lib/void/buddyPersonality'
 import type { User } from '@/lib/types'
 
-// Voice Capture Button Component - Microphone icon only (black circle, white icon)
-function VoiceCaptureButton({ user }: { user: User }) {
-  const { voiceState, setVoiceState, voicePermission } = useVoidStore()
-  
-  const handleClick = () => {
-    if (voicePermission === 'denied') {
-      setVoiceState('permission-prompt')
-    } else if (voiceState === 'idle') {
-      setVoiceState('recording')
-    }
-  }
-  
-  const getButtonState = () => {
-    if (voiceState === 'recording' || voiceState === 'processing') return 'recording'
-    if (voiceState === 'validation' || voiceState === 'extracting') return 'processing'
-    return 'idle'
-  }
-  
-  const state = getButtonState()
-  
-  return (
-    <>
-      <motion.button
-        onClick={handleClick}
-        className="w-12 h-12 rounded-full flex items-center justify-center transition-all"
-        style={{
-          background: state === 'recording' 
-            ? '#FF3B30'
-            : '#000000',
-          color: '#ffffff',
-          boxShadow: state === 'recording' 
-            ? '0 4px 20px rgba(255, 59, 48, 0.6)' 
-            : '0 4px 12px rgba(0, 0, 0, 0.4)',
-        }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        animate={{
-          scale: state === 'recording' ? [1, 1.1, 1] : 1,
-        }}
-        transition={{
-          scale: { duration: 1, repeat: state === 'recording' ? Infinity : 0 }
-        }}
-      >
-        <Microphone 
-          weight={state === 'recording' ? 'fill' : 'regular'} 
-          size={24}
-          className={state === 'recording' ? 'animate-pulse' : ''}
-        />
-      </motion.button>
-      <VoidVoiceCapture user={user} />
-    </>
-  )
-}
 
 interface VoidBuddyProps {
   user?: User
@@ -417,7 +363,7 @@ export function VoidBuddy({ user }: VoidBuddyProps) {
   return (
     <>
       <div
-        className="fixed z-50 flex flex-row items-center gap-4"
+        className="fixed z-50 flex flex-col items-center"
         style={position}
       >
         {/* Icon always visible - now larger */}
@@ -425,32 +371,25 @@ export function VoidBuddy({ user }: VoidBuddyProps) {
           <VoidBuddyIcon onExpand={handleIconClick} />
         </div>
         
-        {/* Buddy's name - to the right of icon */}
+        {/* Buddy's name - below icon */}
         <motion.h3
-          className="text-xl font-semibold"
+          className="text-xl font-semibold mt-2 text-center"
           style={{
             color: 'var(--text-primary, var(--void-text-primary))',
             textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
           }}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           Buddy
         </motion.h3>
-        
-        {/* Voice Capture Button - Microphone icon below Buddy */}
-        {user && (
-          <div className="mt-4">
-            <VoiceCaptureButton user={user} />
-          </div>
-        )}
       </div>
       
       {/* iPhone-style messages falling from the right */}
       <VoidBuddyMessages buddyPosition={position} />
       
-      {/* Voice Capture Modal */}
+      {/* Voice Capture Modal - still accessible via keyboard shortcuts */}
       {user && <VoidVoiceCapture user={user} />}
     </>
   )
