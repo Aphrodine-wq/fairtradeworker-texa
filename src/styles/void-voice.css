@@ -1,0 +1,108 @@
+/* VOID Voice Icon Styles */
+
+.void-voice-icon {
+  position: relative;
+}
+
+.void-voice-icon.recording {
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.6));
+}
+
+.void-voice-icon.processing {
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.6));
+}
+
+.void-voice-icon.complete {
+  filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.8));
+}
+
+/* Voice Dialog Styles */
+.void-voice-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--void-surface);
+  border: 1px solid var(--void-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  min-width: 400px;
+  max-width: 600px;
+}
+
+.void-voice-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+}
+
+/* Waveform visualization */
+.void-waveform {
+  width: 100%;
+  height: 80px;
+  background: var(--void-surface-hover);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.void-waveform-bar {
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to top, var(--void-accent), var(--void-accent-alt));
+  border-radius: 2px 2px 0 0;
+  transition: height 0.1s ease-out;
+}
+
+/* Entity editor styles */
+.void-entity-field {
+  padding: 12px;
+  border: 1px solid var(--void-border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+
+.void-entity-field.high-confidence {
+  border-color: var(--void-success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.void-entity-field.medium-confidence {
+  border-color: var(--void-warning);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.void-entity-field.low-confidence {
+  border-color: var(--void-error);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.void-confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.void-confidence-badge.high {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--void-success);
+}
+
+.void-confidence-badge.medium {
+  background: rgba(245, 158, 11, 0.2);
+  color: var(--void-warning);
+}
+
+.void-confidence-badge.low {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--void-error);
+}
