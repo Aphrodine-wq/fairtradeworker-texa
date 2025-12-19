@@ -52,6 +52,7 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
         'void-icon',
         pinnedIcons.has(icon.id) && 'pinned'
       )}
+      data-id={icon.id}
       data-dragging={isDragging}
       {...attributes}
       {...(!pinnedIcons.has(icon.id) ? listeners : {})}
@@ -60,11 +61,11 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
     >
       <div className="void-icon-content">
         <IconComponent 
-          className="w-10 h-10" 
+          className="w-12 h-12" 
           weight="regular"
           style={{ 
             color: 'var(--text-secondary, var(--void-text-secondary))',
-            filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3))',
+            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))',
           }}
         />
         <span 

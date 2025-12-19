@@ -66,27 +66,31 @@ export function VoidDesktop() {
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, delta } = event
+    const { active, delta, over } = event
     const iconId = active.id as string
     
-    if (!containerRef.current || !delta || pinnedIcons.has(iconId)) {
+    if (!containerRef.current || pinnedIcons.has(iconId)) {
+      setDraggedId(null)
+      return
+    }
+
+    // Get the actual DOM element position for pixel-perfect placement
+    const activeElement = document.querySelector(`[data-id="${iconId}"]`) as HTMLElement
+    if (!activeElement) {
       setDraggedId(null)
       return
     }
 
     const rect = containerRef.current.getBoundingClientRect()
-    const currentPos = iconPositions[iconId]
-    if (!currentPos) {
-      setDraggedId(null)
-      return
-    }
+    const elementRect = activeElement.getBoundingClientRect()
+    
+    // Calculate position relative to desktop grid
+    const relativeX = elementRect.left - rect.left + elementRect.width / 2
+    const relativeY = elementRect.top - rect.top + elementRect.height / 2
 
     const cellSize = getCellSize()
-    const deltaCol = Math.round(delta.x / cellSize.width)
-    const deltaRow = Math.round(delta.y / cellSize.height)
-
-    const newCol = Math.max(1, Math.min(200, currentPos.col + deltaCol))
-    const newRow = Math.max(1, Math.min(200, currentPos.row + deltaRow))
+    const newCol = Math.max(1, Math.min(200, Math.round(relativeX / cellSize.width)))
+    const newRow = Math.max(1, Math.min(200, Math.round(relativeY / cellSize.height)))
 
     // Check for collisions with other icons
     const hasCollision = icons.some(icon => {

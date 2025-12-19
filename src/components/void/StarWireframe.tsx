@@ -38,8 +38,8 @@ export function StarWireframe() {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Initialize stars
-    const starCount = 150
+    // Initialize stars - MORE STARS for better visibility
+    const starCount = 300
     const stars: Star[] = []
     
     for (let i = 0; i < starCount; i++) {
@@ -47,19 +47,18 @@ export function StarWireframe() {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         z: Math.random() * 2000,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        vz: Math.random() * 2 + 1,
-        size: Math.random() * 2 + 1,
-        brightness: Math.random() * 0.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        vz: Math.random() * 3 + 2,
+        size: Math.random() * 3 + 2,
+        brightness: Math.random() * 0.7 + 0.7,
       })
     }
     starsRef.current = stars
 
-    // Get theme colors
-    const isDark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    const starColor = isDark ? '#ffffff' : '#000000'
-    const lineColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
+    // Always use white glowing stars for visibility on black background
+    const starColor = '#ffffff'
+    const lineColor = 'rgba(255, 255, 255, 0.5)'
 
     // Animation loop
     const animate = () => {
@@ -82,9 +81,22 @@ export function StarWireframe() {
         const px = star.x * k + canvas.width / 2
         const py = star.y * k + canvas.height / 2
 
-        // Draw star
+        // Draw star with glow effect
         const size = star.size * k
         const alpha = (1 - star.z / 2000) * star.brightness
+        
+        // Outer glow
+        const gradient = ctx.createRadialGradient(px, py, 0, px, py, size * 3)
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`)
+        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${alpha * 0.5})`)
+        gradient.addColorStop(1, `rgba(255, 255, 255, 0)`)
+        
+        ctx.fillStyle = gradient
+        ctx.beginPath()
+        ctx.arc(px, py, size * 3, 0, Math.PI * 2)
+        ctx.fill()
+        
+        // Bright center
         ctx.fillStyle = starColor
         ctx.globalAlpha = alpha
         ctx.beginPath()
@@ -102,14 +114,19 @@ export function StarWireframe() {
           const dy = py - py2
           const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (distance < 150) {
+          if (distance < 200) {
+            // Glowing lines
+            const lineAlpha = (1 - distance / 200) * 0.7 * alpha
             ctx.strokeStyle = lineColor
-            ctx.globalAlpha = (1 - distance / 150) * 0.3 * alpha
-            ctx.lineWidth = 1
+            ctx.globalAlpha = lineAlpha
+            ctx.lineWidth = 2
+            ctx.shadowBlur = 10
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)'
             ctx.beginPath()
             ctx.moveTo(px, py)
             ctx.lineTo(px2, py2)
             ctx.stroke()
+            ctx.shadowBlur = 0
           }
         }
       }
@@ -133,8 +150,9 @@ export function StarWireframe() {
       ref={canvasRef}
       className="fixed inset-0 w-full h-full pointer-events-none"
       style={{
-        zIndex: 0,
-        opacity: 0.8,
+        zIndex: 1,
+        opacity: 1,
+        mixBlendMode: 'screen', // Makes white glow stand out on dark backgrounds
       }}
     />
   )
