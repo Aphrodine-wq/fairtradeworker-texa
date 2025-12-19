@@ -4,6 +4,7 @@ import { useVoidStore } from '@/lib/void/store'
 import { VoidIcon } from './VoidIcon'
 import { VoidVoiceIcon } from './VoidVoiceIcon'
 import { getIconForId } from '@/lib/void/iconMap'
+import { validateGridPosition } from '@/lib/void/validation'
 import '@/styles/void-desktop.css'
 
 export function VoidDesktop() {
@@ -92,7 +93,11 @@ export function VoidDesktop() {
     })
 
     if (!hasCollision) {
-      updateIconPosition(iconId, { row: newRow, col: newCol })
+      // Validate position before updating
+      const validatedPos = validateGridPosition({ row: newRow, col: newCol })
+      if (validatedPos) {
+        updateIconPosition(iconId, validatedPos)
+      }
     }
 
     setDraggedId(null)

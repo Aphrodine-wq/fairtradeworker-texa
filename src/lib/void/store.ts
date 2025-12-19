@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage } from './types'
 import type { Theme } from '@/lib/themes'
 import type { Track } from '@/lib/music/types'
+import { arrayToSet, validateVolume, validateGridPosition, validateWindowSize, sanitizeString, validateWithFallback, ThemeSchema, VoiceStateSchema, VoicePermissionSchema, BuddyStateSchema, BuddyMessageSchema } from './validation'
 
 interface VoidStore {
   // Icons
@@ -140,6 +141,20 @@ const initializeIcons = (): { icons: IconData[]; positions: Record<string, GridP
 }
 
 const { icons: initialIcons, positions: initialPositions } = initializeIcons()
+
+// Store version for migration
+const STORE_VERSION = '1.0.0'
+
+// Migration function for future schema changes
+function migrateStoreState(state: any, version: string): any {
+  // Future migrations can be added here
+  // Example:
+  // if (version === '1.0.0') {
+  //   // Migrate to 1.1.0
+  //   return { ...state, newField: defaultValue }
+  // }
+  return state
+}
 
 export const useVoidStore = create<VoidStore>()(
   persist(
@@ -472,6 +487,7 @@ export const useVoidStore = create<VoidStore>()(
     {
       name: 'void-desktop-storage',
       partialize: (state) => ({
+        _version: STORE_VERSION,
         iconPositions: state.iconPositions,
         pinnedIcons: Array.from(state.pinnedIcons),
         iconUsage: state.iconUsage,
@@ -487,6 +503,174 @@ export const useVoidStore = create<VoidStore>()(
         voicePermission: state.voicePermission,
         buddyState: state.buddyState,
       }),
+      merge: (persistedState: any, currentState: VoidStore): VoidStore => {
+        // Check version and migrate if needed
+        const version = persistedState?._version || '0.0.0'
+        let migratedState = migrateStoreState(persistedState, version)
+        
+        // Remove version metadata
+        delete migratedState._version
+        
+        const merged = { ...currentState, ...migratedState }
+        
+        // Convert array back to Set for pinnedIcons with validation
+        merged.pinnedIcons = arrayToSet(merged.pinnedIcons)
+        
+        // Validate and sanitize all fields with safe defaults
+        if (!Array.isArray(merged.icons)) {
+          merged.icons = currentState.icons
+        } else {
+          // Validate each icon
+          merged.icons = merged.icons.filter((icon: any) => {
+            return icon && typeof icon.id === 'string' && icon.id.length > 0
+          }).slice(0, 100) // Limit to 100 icons
+        }
+        
+        if (typeof merged.iconPositions !== 'object' || merged.iconPositions === null) {
+          merged.iconPositions = currentState.iconPositions
+        } else {
+          // Validate icon positions
+          const validPositions: Record<string, GridPosition> = {}
+          for (const [id, pos] of Object.entries(merged.iconPositions)) {
+            const validPos = validateGridPosition(pos)
+            if (validPos && typeof id === 'string' && id.length > 0) {
+              validPositions[id] = validPos
+            }
+          }
+          merged.iconPositions = validPositions
+        }
+        
+        if (typeof merged.iconUsage !== 'object' || merged.iconUsage === null) {
+          merged.iconUsage = currentState.iconUsage
+        } else {
+          // Validate icon usage counts
+          const validUsage: Record<string, number> = {}
+          for (const [id, count] of Object.entries(merged.iconUsage)) {
+            if (typeof id === 'string' && typeof count === 'number' && count >= 0 && count < 1000000) {
+              validUsage[id] = Math.floor(count)
+            }
+          }
+          merged.iconUsage = validUsage
+        }
+        
+        if (!Array.isArray(merged.windows)) {
+          merged.windows = currentState.windows
+        } else {
+          // Validate windows
+          merged.windows = merged.windows
+            .filter((w: any) => w && typeof w.id === 'string' && w.id.length > 0)
+            .map((w: any) => {
+              const validSize = validateWindowSize(w.size)
+              return {
+                ...w,
+                size: validSize || { width: 800, height: 600 },
+                position: validateGridPosition(w.position) || { row: 0, col: 0 },
+                zIndex: typeof w.zIndex === 'number' && w.zIndex >= 0 ? Math.floor(w.zIndex) : currentState.nextZIndex,
+              }
+            })
+            .slice(0, 50) // Limit to 50 windows
+        }
+        
+        if (typeof merged.nextZIndex !== 'number' || merged.nextZIndex < 0) {
+          merged.nextZIndex = currentState.nextZIndex
+        } else {
+          merged.nextZIndex = Math.max(1000, Math.min(1000000, Math.floor(merged.nextZIndex)))
+        }
+        
+        merged.volume = validateVolume(merged.volume)
+        
+        if (typeof merged.wiremapNodeCount !== 'number' || merged.wiremapNodeCount < 1) {
+          merged.wiremapNodeCount = currentState.wiremapNodeCount
+        } else {
+          merged.wiremapNodeCount = Math.max(1, Math.min(200, Math.floor(merged.wiremapNodeCount)))
+        }
+        
+        // Validate theme with schema
+        merged.theme = validateWithFallback(
+          ThemeSchema,
+          merged.theme,
+          currentState.theme,
+          false
+        )
+        
+        // Validate voice state
+        merged.voiceState = validateWithFallback(
+          VoiceStateSchema,
+          merged.voiceState,
+          currentState.voiceState,
+          false
+        )
+        
+        // Validate voice permission
+        merged.voicePermission = validateWithFallback(
+          VoicePermissionSchema,
+          merged.voicePermission,
+          currentState.voicePermission,
+          false
+        )
+        
+        // Validate buddy state
+        merged.buddyState = validateWithFallback(
+          BuddyStateSchema,
+          merged.buddyState,
+          currentState.buddyState,
+          false
+        )
+        
+        // Validate buddy messages
+        if (Array.isArray(merged.buddyMessages)) {
+          merged.buddyMessages = merged.buddyMessages
+            .map((msg: any) => validateWithFallback(
+              BuddyMessageSchema,
+              msg,
+              null,
+              false
+            ))
+            .filter((msg: any) => msg !== null)
+            .slice(0, 100)
+        } else {
+          merged.buddyMessages = currentState.buddyMessages
+        }
+        
+        // Sanitize voice transcript
+        if (typeof merged.voiceTranscript === 'string') {
+          merged.voiceTranscript = sanitizeString(merged.voiceTranscript, 10000)
+        } else {
+          merged.voiceTranscript = currentState.voiceTranscript
+        }
+        
+        // Validate buddy state
+        if (typeof merged.buddyState !== 'object' || merged.buddyState === null) {
+          merged.buddyState = currentState.buddyState
+        } else {
+          merged.buddyState = {
+            collapsed: typeof merged.buddyState.collapsed === 'boolean' ? merged.buddyState.collapsed : currentState.buddyState.collapsed,
+            position: merged.buddyState.position || currentState.buddyState.position,
+            docked: typeof merged.buddyState.docked === 'boolean' ? merged.buddyState.docked : currentState.buddyState.docked,
+            lastMessageTime: typeof merged.buddyState.lastMessageTime === 'number' && merged.buddyState.lastMessageTime >= 0
+              ? Math.floor(merged.buddyState.lastMessageTime)
+              : currentState.buddyState.lastMessageTime,
+            emotion: ['neutral', 'happy', 'thinking', 'excited', 'error'].includes(merged.buddyState.emotion)
+              ? merged.buddyState.emotion
+              : currentState.buddyState.emotion,
+          }
+        }
+        
+        // Validate buddy messages
+        if (!Array.isArray(merged.buddyMessages)) {
+          merged.buddyMessages = currentState.buddyMessages
+        } else {
+          merged.buddyMessages = merged.buddyMessages
+            .filter((msg: any) => msg && typeof msg.id === 'string' && typeof msg.message === 'string')
+            .map((msg: any) => ({
+              ...msg,
+              message: sanitizeString(msg.message, 1000),
+            }))
+            .slice(0, 100) // Limit to 100 messages
+        }
+        
+        return merged
+      },
     }
   )
 )

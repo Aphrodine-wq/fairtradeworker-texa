@@ -11,12 +11,35 @@ export function VoicePermissionDialog() {
 
   const handleAllow = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // Validate media devices support
+      if (typeof navigator === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Media devices not supported')
+      }
+
+      // Request permission with security constraints
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 16000,
+        },
+      })
+      
+      // Validate stream
+      if (!stream || stream.getAudioTracks().length === 0) {
+        throw new Error('No audio track available')
+      }
+      
       // Stop the stream immediately - we just needed permission
-      stream.getTracks().forEach(track => track.stop())
+      stream.getTracks().forEach(track => {
+        track.stop()
+        track.enabled = false
+      })
       setVoicePermission('granted')
       setVoiceState('idle')
     } catch (error) {
+      console.error('[Voice] Permission error:', error)
       setVoicePermission('denied')
       setVoiceState('idle')
     }

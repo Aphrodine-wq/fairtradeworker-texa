@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 import { spotifyAPI } from '@/lib/music/spotify'
 import { MusicService } from '@/lib/music/types'
+import { rateLimit } from '@/lib/void/apiSecurity'
 
 /**
  * Hook for CRM mood sync integration
@@ -12,15 +13,26 @@ import { MusicService } from '@/lib/music/types'
  */
 export function useCRMMoodSync() {
   const { voiceState, setIsPlaying, currentTrack, isPlaying } = useVoidStore()
+  const lastActionTimeRef = useRef<number>(0)
 
   // Auto-pause during voice recording
   useEffect(() => {
     if (voiceState === 'recording' && isPlaying) {
+      // Rate limit actions
+      const now = Date.now()
+      if (now - lastActionTimeRef.current < 1000) {
+        return // Throttle to once per second
+      }
+      lastActionTimeRef.current = now
+      
       setIsPlaying(false)
       // Resume when recording stops
       return () => {
         if (voiceState !== 'recording') {
-          setIsPlaying(true)
+          const resumeLimit = rateLimit('crm-resume', 10, 60000) // 10 resumes per minute
+          if (resumeLimit.allowed) {
+            setIsPlaying(true)
+          }
         }
       }
     }
@@ -45,10 +57,23 @@ export function useCRMMoodSync() {
 
     // Win celebration
     const handleWin = () => {
+      // Rate limit celebration sounds
+      const limit = rateLimit('celebration-sound', 5, 60000) // 5 per minute
+      if (!limit.allowed) return
+      
+      // Validate audio file path
+      const audioPath = '/sounds/celebration.mp3'
+      if (typeof audioPath !== 'string' || !audioPath.startsWith('/sounds/')) {
+        console.warn('[CRM] Invalid audio path')
+        return
+      }
+      
       // Play short, subtle celebration sound
-      const audio = new Audio('/sounds/celebration.mp3')
+      const audio = new Audio(audioPath)
       audio.volume = 0.3
-      audio.play().catch(console.error)
+      audio.play().catch((error) => {
+        console.error('[CRM] Failed to play celebration sound:', error)
+      })
     }
 
     // In a real implementation, these would be event listeners from buddyContext

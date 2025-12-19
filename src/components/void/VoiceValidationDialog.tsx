@@ -7,6 +7,7 @@ import { useLocalKV } from '@/hooks/useLocalKV'
 import type { CRMCustomer } from '@/lib/types'
 import { toast } from 'sonner'
 import type { User } from '@/lib/types'
+import { sanitizeString } from '@/lib/void/validation'
 
 interface VoiceValidationDialogProps {
   user: User
@@ -38,23 +39,32 @@ export function VoiceValidationDialog({ user }: VoiceValidationDialogProps) {
 
   const handleSave = async (entities: ExtractedEntities) => {
     try {
-      // Create lead from extracted entities
+      // Create lead from extracted entities with sanitization
+      const sanitizedName = sanitizeString(String(entities.name?.value || 'Unknown'), 200)
+      const sanitizedEmail = entities.email?.value ? sanitizeString(String(entities.email.value), 200) : undefined
+      const sanitizedPhone = entities.phone?.value ? sanitizeString(String(entities.phone.value), 50) : undefined
+      const sanitizedProject = entities.project?.value ? sanitizeString(String(entities.project.value), 500) : undefined
+      const sanitizedBudget = entities.budget?.value ? sanitizeString(String(entities.budget.value), 50) : undefined
+      const sanitizedUrgency = entities.urgency?.value ? sanitizeString(String(entities.urgency.value), 50) : undefined
+      
+      const notes = sanitizedProject
+        ? `Project: ${sanitizedProject}${sanitizedBudget ? ` | Budget: $${sanitizedBudget}` : ''}`
+        : undefined
+      
       const newCustomer: CRMCustomer = {
-        id: `customer-${Date.now()}-${Math.random()}`,
+        id: `customer-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         contractorId: user.id,
-        name: String(entities.name?.value || 'Unknown'),
-        email: entities.email?.value ? String(entities.email.value) : undefined,
-        phone: entities.phone?.value ? String(entities.phone.value) : undefined,
+        name: sanitizedName,
+        email: sanitizedEmail,
+        phone: sanitizedPhone,
         invitedVia: 'email',
         invitedAt: new Date().toISOString(),
         status: 'lead',
         source: 'voice_capture' as any,
         lifetimeValue: 0,
         lastContact: new Date().toISOString(),
-        tags: entities.urgency?.value ? [entities.urgency.value] : [],
-        notes: entities.project?.value
-          ? `Project: ${entities.project.value}${entities.budget?.value ? ` | Budget: $${entities.budget.value}` : ''}`
-          : undefined,
+        tags: sanitizedUrgency ? [sanitizedUrgency] : [],
+        notes: notes ? sanitizeString(notes, 1000) : undefined,
         createdAt: new Date().toISOString(),
       }
 

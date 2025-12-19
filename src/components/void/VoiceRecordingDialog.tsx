@@ -7,6 +7,7 @@ import { useVoiceTranscription } from '@/hooks/useVoiceTranscription'
 import { VoiceWaveform } from './VoiceWaveform'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { sanitizeString } from '@/lib/void/validation'
 import '@/styles/void-voice.css'
 
 const SUPPORTED_LANGUAGES = [
@@ -95,7 +96,7 @@ export function VoiceRecordingDialog() {
                 {isRecording && !isPaused ? 'Speaking... (release when done)' : isPaused ? 'Paused' : 'Processing...'}
               </p>
               <p className="text-sm text-[var(--void-text)]">
-                {transcript || voiceTranscript || 'Waiting for speech...'}
+                {sanitizeString(transcript || voiceTranscript || 'Waiting for speech...', 10000)}
               </p>
             </div>
 

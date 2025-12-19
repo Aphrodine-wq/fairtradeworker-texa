@@ -1,5 +1,9 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useVoidStore } from '@/lib/void/store'
+import { sanitizeString } from '@/lib/void/validation'
+
+const MAX_RECORDING_DURATION = 5 * 60 * 1000 // 5 minutes
+const MAX_BLOB_SIZE = 10 * 1024 * 1024 // 10MB
 
 export function useVoidVoice() {
   const { setVoiceState, setVoiceRecording, setVoiceTranscript } = useVoidStore()
@@ -10,6 +14,8 @@ export function useVoidVoice() {
   const audioStreamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<Blob[]>([])
   const recognitionRef = useRef<any>(null) // SpeechRecognition
+  const recordingStartTimeRef = useRef<number>(0)
+  const durationTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   // Initialize Speech Recognition
   useEffect(() => {
@@ -25,7 +31,9 @@ export function useVoidVoice() {
         for (let i = event.resultIndex; i < event.results.length; i++) {
           transcript += event.results[i][0].transcript
         }
-        setVoiceTranscript(transcript)
+        // Sanitize transcript to prevent XSS
+        const sanitized = sanitizeString(transcript, 10000)
+        setVoiceTranscript(sanitized)
       }
 
       recognitionRef.current.onerror = (event: any) => {
@@ -41,7 +49,26 @@ export function useVoidVoice() {
 
   const startRecording = useCallback(async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // Validate permission first
+      if (typeof navigator === 'undefined' || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Media devices not supported')
+      }
+
+      // Request permission with constraints
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+          sampleRate: 16000, // Limit sample rate for security
+        },
+      })
+      
+      // Validate stream
+      if (!stream || stream.getAudioTracks().length === 0) {
+        throw new Error('No audio track available')
+      }
+      
       audioStreamRef.current = stream
 
       const mediaRecorder = new MediaRecorder(stream, {
@@ -49,20 +76,48 @@ export function useVoidVoice() {
       })
       mediaRecorderRef.current = mediaRecorder
       chunksRef.current = []
+      recordingStartTimeRef.current = Date.now()
+
+      // Set duration limit
+      durationTimerRef.current = setTimeout(() => {
+        if (isRecording) {
+          stopRecording()
+        }
+      }, MAX_RECORDING_DURATION)
 
       mediaRecorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
           chunksRef.current.push(e.data)
+          
+          // Check total size
+          const totalSize = chunksRef.current.reduce((sum, chunk) => sum + chunk.size, 0)
+          if (totalSize > MAX_BLOB_SIZE) {
+            console.warn('[Voice] Recording size limit reached')
+            stopRecording()
+          }
         }
       }
 
       mediaRecorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
-        setVoiceRecording(blob)
+        
+        // Validate blob size
+        if (blob.size > MAX_BLOB_SIZE) {
+          console.error('[Voice] Recording too large, discarding')
+          setVoiceRecording(null)
+        } else {
+          setVoiceRecording(blob)
+        }
+        
         stream.getTracks().forEach(track => track.stop())
+        
+        if (durationTimerRef.current) {
+          clearTimeout(durationTimerRef.current)
+          durationTimerRef.current = null
+        }
       }
 
-      mediaRecorder.start()
+      mediaRecorder.start(1000) // Collect data every second
       setIsRecording(true)
       setIsPaused(false)
 
@@ -77,14 +132,31 @@ export function useVoidVoice() {
 
       setVoiceState('recording')
     } catch (error) {
-      console.error('Failed to start recording:', error)
+      console.error('[Voice] Failed to start recording:', error)
       setVoiceState('idle')
+      
+      // Clean up on error
+      if (audioStreamRef.current) {
+        audioStreamRef.current.getTracks().forEach(track => track.stop())
+        audioStreamRef.current = null
+      }
+      if (durationTimerRef.current) {
+        clearTimeout(durationTimerRef.current)
+        durationTimerRef.current = null
+      }
+      
       throw error
     }
-  }, [setVoiceState, setVoiceRecording])
+  }, [setVoiceState, setVoiceRecording, isRecording])
 
   const stopRecording = useCallback(() => {
     if (mediaRecorderRef.current && isRecording) {
+      // Clear duration timer
+      if (durationTimerRef.current) {
+        clearTimeout(durationTimerRef.current)
+        durationTimerRef.current = null
+      }
+      
       mediaRecorderRef.current.stop()
       setIsRecording(false)
       setIsPaused(false)
@@ -100,7 +172,10 @@ export function useVoidVoice() {
 
       // Stop audio stream
       if (audioStreamRef.current) {
-        audioStreamRef.current.getTracks().forEach(track => track.stop())
+        audioStreamRef.current.getTracks().forEach(track => {
+          track.stop()
+          track.enabled = false
+        })
         audioStreamRef.current = null
       }
 
@@ -150,11 +225,17 @@ export function useVoidVoice() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      if (durationTimerRef.current) {
+        clearTimeout(durationTimerRef.current)
+      }
       if (mediaRecorderRef.current && isRecording) {
         mediaRecorderRef.current.stop()
       }
       if (audioStreamRef.current) {
-        audioStreamRef.current.getTracks().forEach(track => track.stop())
+        audioStreamRef.current.getTracks().forEach(track => {
+          track.stop()
+          track.enabled = false
+        })
       }
       if (recognitionRef.current) {
         try {

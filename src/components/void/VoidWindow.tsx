@@ -3,6 +3,7 @@ import { motion, PanInfo } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
 import { cn } from '@/lib/utils'
 import type { WindowData } from '@/lib/void/types'
+import { validateWindowSize, validateGridPosition, sanitizeString } from '@/lib/void/validation'
 import '@/styles/void-desktop.css'
 
 interface VoidWindowProps {
@@ -94,7 +95,11 @@ export function VoidWindow({ window }: VoidWindowProps) {
         newY = window.position.y + deltaY
       }
 
-      updateWindowSize(window.id, { width: newWidth, height: newHeight })
+      // Validate window size before updating
+      const validatedSize = validateWindowSize({ width: newWidth, height: newHeight })
+      if (validatedSize) {
+        updateWindowSize(window.id, validatedSize)
+      }
       if (newX !== window.position.x || newY !== window.position.y) {
         updateWindowPosition(window.id, { x: newX, y: newY })
       }
@@ -172,7 +177,9 @@ export function VoidWindow({ window }: VoidWindowProps) {
     >
       {/* Title Bar */}
       <div className="void-window-titlebar">
-        <span className="void-window-title">{window.title}</span>
+        <span className="void-window-title" title={sanitizeString(window.title, 200)}>
+          {sanitizeString(window.title, 200)}
+        </span>
         <div className="void-window-controls">
           <button
             className="void-window-button minimize"
@@ -212,7 +219,7 @@ export function VoidWindow({ window }: VoidWindowProps) {
       >
         {window.content || (
           <div style={{ color: 'var(--text-secondary, var(--void-text-secondary))', fontSize: '15px', lineHeight: '22px' }}>
-            Window content for {window.menuId || window.title}
+            Window content for {sanitizeString(window.menuId || window.title, 200)}
           </div>
         )}
       </div>

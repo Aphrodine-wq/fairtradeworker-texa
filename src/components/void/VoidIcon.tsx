@@ -3,6 +3,7 @@ import { CSS } from '@dnd-kit/utilities'
 import { useVoidStore } from '@/lib/void/store'
 import { cn } from '@/lib/utils'
 import type { IconData } from '@/lib/void/types'
+import { sanitizeString } from '@/lib/void/validation'
 
 interface VoidIconProps {
   icon: IconData
@@ -59,8 +60,9 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
         <span 
           className="void-icon-label void-body-small"
           style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+          title={sanitizeString(icon.label, 100)}
         >
-          {icon.label}
+          {sanitizeString(icon.label, 100)}
         </span>
       </div>
     </div>

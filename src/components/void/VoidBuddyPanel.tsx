@@ -3,6 +3,7 @@ import { X } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { sanitizeString } from '@/lib/void/validation'
 
 interface VoidBuddyPanelProps {
   onClose: () => void
@@ -78,7 +79,9 @@ export function VoidBuddyPanel({ onClose, userName }: VoidBuddyPanelProps) {
           className="void-body-regular"
           style={{ color: 'var(--text-primary, var(--void-text-primary))' }}
         >
-          {latestMessage?.message || `Morning ${userName}! Streak: ${streak} days 🔥`}
+          {latestMessage?.message 
+            ? sanitizeString(latestMessage.message, 1000)
+            : `Morning ${sanitizeString(userName, 100)}! Streak: ${streak} days 🔥`}
         </div>
 
         {/* Priorities */}

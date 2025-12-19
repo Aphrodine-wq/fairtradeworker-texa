@@ -8,6 +8,7 @@ import { initTheme } from '@/lib/themes'
 import { useCRMMoodSync } from '@/hooks/useCRMMoodSync'
 import '@/styles/void-design-system.css'
 import '@/styles/void-effects.css'
+import '@/styles/void-error-boundary.css'
 
 export default function VoidDesktopPage() {
   const { wiremapEnabled } = useVoidStore()

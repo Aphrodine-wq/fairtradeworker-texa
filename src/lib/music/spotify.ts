@@ -5,6 +5,8 @@
 
 import type { Track, Playlist, MusicServiceConfig, MusicServiceAPI } from './types'
 import { MusicService } from './types'
+import { secureTokenStorage, secureAPIRequest, sanitizeAPIResponse, validateAPIRequest } from '@/lib/void/apiSecurity'
+import { sanitizeString } from '@/lib/void/validation'
 
 const SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID || ''
 const SPOTIFY_REDIRECT_URI = `${window.location.origin}/auth/spotify/callback`
@@ -33,15 +35,25 @@ const SPOTIFY_TOKEN_KEY = 'spotify-token-config'
  */
 export function getSpotifyConfig(): MusicServiceConfig | null {
   try {
+    const tokenStorage = secureTokenStorage()
+    const accessToken = tokenStorage.get('spotify')
+    
+    if (!accessToken) return null
+    
+    // Get additional config from localStorage (non-sensitive data)
     const stored = localStorage.getItem(SPOTIFY_TOKEN_KEY)
     if (!stored) return null
     
     const config = JSON.parse(stored) as MusicServiceConfig
     // Check if token is expired
     if (config.expiresAt && Date.now() > config.expiresAt) {
-      return { ...config, isAuthenticated: false }
+      return { ...config, isAuthenticated: false, accessToken: null }
     }
-    return config
+    
+    return {
+      ...config,
+      accessToken, // Use securely stored token
+    }
   } catch {
     return null
   }
@@ -52,9 +64,22 @@ export function getSpotifyConfig(): MusicServiceConfig | null {
  */
 export function saveSpotifyConfig(config: MusicServiceConfig): void {
   try {
-    localStorage.setItem(SPOTIFY_TOKEN_KEY, JSON.stringify(config))
+    const tokenStorage = secureTokenStorage()
+    
+    // Store token securely
+    if (config.accessToken && config.expiresAt) {
+      tokenStorage.set('spotify', config.accessToken, config.expiresAt)
+    }
+    
+    // Store non-sensitive config in localStorage
+    const { accessToken, refreshToken, ...publicConfig } = config
+    localStorage.setItem(SPOTIFY_TOKEN_KEY, JSON.stringify({
+      ...publicConfig,
+      hasToken: !!accessToken,
+      hasRefreshToken: !!refreshToken,
+    }))
   } catch (error) {
-    console.error('Failed to save Spotify config:', error)
+    console.error('[Spotify] Failed to save config:', error)
   }
 }
 
@@ -77,9 +102,25 @@ export async function authenticateSpotify(): Promise<boolean> {
  */
 export async function handleSpotifyCallback(code: string): Promise<MusicServiceConfig | null> {
   try {
+    // Validate code input
+    if (typeof code !== 'string' || code.length === 0 || code.length > 500) {
+      throw new Error('Invalid authorization code')
+    }
+
+    // Validate request
+    const validation = validateAPIRequest({
+      endpoint: '/api/spotify/token',
+      method: 'POST',
+      body: { code, redirect_uri: SPOTIFY_REDIRECT_URI },
+    })
+
+    if (!validation.valid) {
+      throw new Error(validation.error || 'Invalid request')
+    }
+
     // In production, this should be done server-side for security
     // For now, we'll use a proxy endpoint or client-side exchange
-    const response = await fetch('/api/spotify/token', {
+    const response = await secureAPIRequest('/api/spotify/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, redirect_uri: SPOTIFY_REDIRECT_URI })
@@ -89,19 +130,27 @@ export async function handleSpotifyCallback(code: string): Promise<MusicServiceC
       throw new Error('Token exchange failed')
     }
 
-    const data = await response.json()
+    const rawData = await response.json()
+    const data = sanitizeAPIResponse(rawData) as any
+
+    // Validate response data
+    if (!data.access_token || typeof data.access_token !== 'string') {
+      throw new Error('Invalid token response')
+    }
+
+    const expiresIn = typeof data.expires_in === 'number' ? data.expires_in : 3600
     const config: MusicServiceConfig = {
       service: MusicService.SPOTIFY,
       isAuthenticated: true,
-      accessToken: data.access_token,
-      refreshToken: data.refresh_token,
-      expiresAt: Date.now() + (data.expires_in * 1000)
+      accessToken: sanitizeString(data.access_token, 500),
+      refreshToken: data.refresh_token ? sanitizeString(data.refresh_token, 500) : undefined,
+      expiresAt: Date.now() + (expiresIn * 1000)
     }
 
     saveSpotifyConfig(config)
     return config
   } catch (error) {
-    console.error('Spotify callback error:', error)
+    console.error('[Spotify] Callback error:', error)
     return null
   }
 }
@@ -111,7 +160,12 @@ export async function handleSpotifyCallback(code: string): Promise<MusicServiceC
  */
 export async function refreshSpotifyToken(refreshToken: string): Promise<MusicServiceConfig | null> {
   try {
-    const response = await fetch('/api/spotify/refresh', {
+    // Validate refresh token
+    if (typeof refreshToken !== 'string' || refreshToken.length === 0 || refreshToken.length > 500) {
+      throw new Error('Invalid refresh token')
+    }
+
+    const response = await secureAPIRequest('/api/spotify/refresh', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: refreshToken })
@@ -121,27 +175,42 @@ export async function refreshSpotifyToken(refreshToken: string): Promise<MusicSe
       throw new Error('Token refresh failed')
     }
 
-    const data = await response.json()
+    const rawData = await response.json()
+    const data = sanitizeAPIResponse(rawData) as any
+
+    if (!data.access_token || typeof data.access_token !== 'string') {
+      throw new Error('Invalid token response')
+    }
+
+    const expiresIn = typeof data.expires_in === 'number' ? data.expires_in : 3600
     const config: MusicServiceConfig = {
       service: MusicService.SPOTIFY,
       isAuthenticated: true,
-      accessToken: data.access_token,
-      refreshToken: refreshToken,
-      expiresAt: Date.now() + (data.expires_in * 1000)
+      accessToken: sanitizeString(data.access_token, 500),
+      refreshToken: sanitizeString(refreshToken, 500),
+      expiresAt: Date.now() + (expiresIn * 1000)
     }
 
     saveSpotifyConfig(config)
     return config
   } catch (error) {
-    console.error('Spotify token refresh error:', error)
+    console.error('[Spotify] Token refresh error:', error)
     return null
   }
 }
 
 /**
- * Make authenticated Spotify API request
+ * Make authenticated Spotify API request with security measures
  */
 async function spotifyRequest(endpoint: string, options: RequestInit = {}): Promise<Response> {
+  // Validate endpoint
+  if (typeof endpoint !== 'string' || endpoint.length === 0 || endpoint.length > 500) {
+    throw new Error('Invalid endpoint')
+  }
+
+  // Sanitize endpoint - remove any potential injection
+  const sanitizedEndpoint = sanitizeString(endpoint.replace(/[^a-zA-Z0-9\/\?\=\&\-_]/g, ''), 500)
+
   const config = getSpotifyConfig()
   if (!config?.accessToken) {
     throw new Error('Not authenticated with Spotify')
@@ -158,7 +227,18 @@ async function spotifyRequest(endpoint: string, options: RequestInit = {}): Prom
     }
   }
 
-  const response = await fetch(`${SPOTIFY_API_BASE}${endpoint}`, {
+  // Validate request
+  const validation = validateAPIRequest({
+    endpoint: `${SPOTIFY_API_BASE}${sanitizedEndpoint}`,
+    method: options.method,
+    body: options.body as unknown,
+  })
+
+  if (!validation.valid) {
+    throw new Error(validation.error || 'Invalid request')
+  }
+
+  const response = await secureAPIRequest(`${SPOTIFY_API_BASE}${sanitizedEndpoint}`, {
     ...options,
     headers: {
       'Authorization': `Bearer ${config.accessToken}`,
@@ -173,7 +253,7 @@ async function spotifyRequest(endpoint: string, options: RequestInit = {}): Prom
       const newConfig = await refreshSpotifyToken(config.refreshToken)
       if (newConfig) {
         // Retry request with new token
-        return fetch(`${SPOTIFY_API_BASE}${endpoint}`, {
+        return secureAPIRequest(`${SPOTIFY_API_BASE}${sanitizedEndpoint}`, {
           ...options,
           headers: {
             'Authorization': `Bearer ${newConfig.accessToken}`,
@@ -198,13 +278,19 @@ export async function getSpotifyPlaylists(): Promise<Playlist[]> {
     const response = await spotifyRequest('/me/playlists?limit=50')
     if (!response.ok) throw new Error('Failed to fetch playlists')
 
-    const data = await response.json()
-    return data.items.map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      description: item.description,
+    const rawData = await response.json()
+    const data = sanitizeAPIResponse(rawData) as any
+    
+    if (!data.items || !Array.isArray(data.items)) {
+      return []
+    }
+    
+    return data.items.slice(0, 50).map((item: any) => ({
+      id: sanitizeString(String(item.id || ''), 200),
+      name: sanitizeString(String(item.name || ''), 200),
+      description: item.description ? sanitizeString(String(item.description), 500) : undefined,
       service: MusicService.SPOTIFY,
-      artwork: item.images?.[0]?.url,
+      artwork: item.images?.[0]?.url ? sanitizeString(String(item.images[0].url), 500) : undefined,
       tracks: [] // Will be populated when playlist is selected
     }))
   } catch (error) {
@@ -222,15 +308,25 @@ export async function getSpotifyCurrentlyPlaying(): Promise<Track | null> {
     if (response.status === 204) return null // No track playing
     if (!response.ok) throw new Error('Failed to fetch current track')
 
-    const data = await response.json()
+    const rawData = await response.json()
+    const data = sanitizeAPIResponse(rawData) as any
+    
+    if (!data.item) {
+      return null
+    }
+    
+    const artists = Array.isArray(data.item.artists)
+      ? data.item.artists.slice(0, 10).map((a: any) => sanitizeString(String(a.name || ''), 100)).join(', ')
+      : ''
+    
     return {
-      id: data.item.id,
-      title: data.item.name,
-      artist: data.item.artists.map((a: any) => a.name).join(', '),
-      album: data.item.album.name,
-      duration: Math.floor(data.item.duration_ms / 1000),
-      artwork: data.item.album.images?.[0]?.url,
-      uri: data.item.uri,
+      id: sanitizeString(String(data.item.id || ''), 200),
+      title: sanitizeString(String(data.item.name || ''), 200),
+      artist: artists,
+      album: data.item.album?.name ? sanitizeString(String(data.item.album.name), 200) : '',
+      duration: typeof data.item.duration_ms === 'number' ? Math.floor(data.item.duration_ms / 1000) : 0,
+      artwork: data.item.album?.images?.[0]?.url ? sanitizeString(String(data.item.album.images[0].url), 500) : undefined,
+      uri: data.item.uri ? sanitizeString(String(data.item.uri), 500) : undefined,
       service: MusicService.SPOTIFY
     }
   } catch (error) {
@@ -246,12 +342,18 @@ export async function playSpotifyTrack(track: Track): Promise<void> {
   try {
     if (!track.uri) throw new Error('Track URI required')
     
+    // Validate and sanitize URI
+    const sanitizedUri = sanitizeString(track.uri, 500)
+    if (!sanitizedUri.startsWith('spotify:track:')) {
+      throw new Error('Invalid track URI')
+    }
+    
     await spotifyRequest('/me/player/play', {
       method: 'PUT',
-      body: JSON.stringify({ uris: [track.uri] })
+      body: JSON.stringify({ uris: [sanitizedUri] })
     })
   } catch (error) {
-    console.error('Error playing Spotify track:', error)
+    console.error('[Spotify] Error playing track:', error)
     throw error
   }
 }
@@ -273,12 +375,17 @@ export async function pauseSpotifyPlayback(): Promise<void> {
  */
 export async function setSpotifyVolume(volume: number): Promise<void> {
   try {
-    const volumePercent = Math.round(volume * 100)
+    // Validate volume
+    if (typeof volume !== 'number' || volume < 0 || volume > 1) {
+      throw new Error('Invalid volume value')
+    }
+    
+    const volumePercent = Math.max(0, Math.min(100, Math.round(volume * 100)))
     await spotifyRequest(`/me/player/volume?volume_percent=${volumePercent}`, {
       method: 'PUT'
     })
   } catch (error) {
-    console.error('Error setting Spotify volume:', error)
+    console.error('[Spotify] Error setting volume:', error)
     throw error
   }
 }
@@ -293,18 +400,24 @@ export function updateSpotifyMediaSession(track: Track | null, isPlaying: boolea
 
   const { mediaSession } = navigator
 
+  // Sanitize track metadata
+  const sanitizedTitle = sanitizeString(track.title || '', 200)
+  const sanitizedArtist = sanitizeString(track.artist || '', 200)
+  const sanitizedAlbum = sanitizeString(track.album || '', 200)
+  const sanitizedArtwork = track.artwork ? sanitizeString(track.artwork, 500) : undefined
+
   mediaSession.metadata = new MediaMetadata({
-    title: track.title,
-    artist: track.artist,
-    album: track.album || '',
-    artwork: track.artwork
+    title: sanitizedTitle,
+    artist: sanitizedArtist,
+    album: sanitizedAlbum,
+    artwork: sanitizedArtwork
       ? [
-          { src: track.artwork, sizes: '96x96', type: 'image/png' },
-          { src: track.artwork, sizes: '128x128', type: 'image/png' },
-          { src: track.artwork, sizes: '192x192', type: 'image/png' },
-          { src: track.artwork, sizes: '256x256', type: 'image/png' },
-          { src: track.artwork, sizes: '384x384', type: 'image/png' },
-          { src: track.artwork, sizes: '512x512', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '96x96', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '128x128', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '192x192', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '256x256', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '384x384', type: 'image/png' },
+          { src: sanitizedArtwork, sizes: '512x512', type: 'image/png' },
         ]
       : [],
   })
@@ -437,7 +550,13 @@ export const spotifyAPI: MusicServiceAPI = {
     await setSpotifyVolume(volume)
   },
   async seek(position) {
-    await spotifyRequest(`/me/player/seek?position_ms=${position * 1000}`, {
+    // Validate position
+    if (typeof position !== 'number' || position < 0) {
+      throw new Error('Invalid seek position')
+    }
+    
+    const positionMs = Math.floor(position * 1000)
+    await spotifyRequest(`/me/player/seek?position_ms=${positionMs}`, {
       method: 'PUT'
     })
   },
