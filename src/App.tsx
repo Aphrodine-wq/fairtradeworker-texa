@@ -1200,29 +1200,22 @@ function App() {
           </Suspense>
         </ErrorBoundary>
       )}
-      {currentPage !== 'crm' && (
-        <>
-          <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
-          {isDemoMode && currentUser && (
-            <DemoModeBanner 
-              userName={currentUser.fullName} 
-              userRole={currentUser.role}
-            />
-          )}
-          <OfflineIndicator />
-        </>
+      <Header user={currentUser || null} onNavigate={handleNavigate} onLogout={handleLogout} />
+      {isDemoMode && currentUser && (
+        <DemoModeBanner 
+          userName={currentUser.fullName} 
+          userRole={currentUser.role}
+        />
       )}
-      <main className={cn(
-        "flex-1 w-full overflow-x-hidden",
-        currentPage === 'crm' ? "pt-0" : "pt-16 bg-white dark:bg-black"
-      )}>
+      <OfflineIndicator />
+      <main className="flex-1 w-full overflow-x-hidden pt-16 bg-white dark:bg-black">
         <ErrorBoundary onReset={() => setCurrentPage('home')}>
           <Suspense fallback={<LoadingFallback />}>
             {renderPage()}
           </Suspense>
         </ErrorBoundary>
       </main>
-      {currentPage !== 'crm' && <Footer onNavigate={handleNavigate} />}
+      <Footer onNavigate={handleNavigate} />
       <KeyboardShortcutsModal 
         open={shortcutsModalOpen} 
         onOpenChange={setShortcutsModalOpen}
