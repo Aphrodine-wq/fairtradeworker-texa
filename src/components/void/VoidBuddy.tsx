@@ -15,7 +15,7 @@ import {
 } from '@/lib/void/buddyPersonality'
 import type { User } from '@/lib/types'
 
-// Voice Capture Button Component - Always visible below Buddy
+// Voice Capture Button Component - Microphone icon only (black circle, white icon)
 function VoiceCaptureButton({ user }: { user: User }) {
   const { voiceState, setVoiceState, voicePermission } = useVoidStore()
   
@@ -39,30 +39,30 @@ function VoiceCaptureButton({ user }: { user: User }) {
     <>
       <motion.button
         onClick={handleClick}
-        className="w-full px-4 py-3 rounded-2xl flex items-center justify-center gap-3 transition-all"
+        className="w-12 h-12 rounded-full flex items-center justify-center transition-all"
         style={{
           background: state === 'recording' 
-            ? 'linear-gradient(135deg, #FF3B30 0%, #FF2D55 100%)'
-            : 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
-          color: '#fff',
-          boxShadow: '0 4px 12px rgba(0, 122, 255, 0.4)',
-        }}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        animate={{
+            ? '#FF3B30'
+            : '#000000',
+          color: '#ffffff',
           boxShadow: state === 'recording' 
             ? '0 4px 20px rgba(255, 59, 48, 0.6)' 
-            : '0 4px 12px rgba(0, 122, 255, 0.4)',
+            : '0 4px 12px rgba(0, 0, 0, 0.4)',
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        animate={{
+          scale: state === 'recording' ? [1, 1.1, 1] : 1,
+        }}
+        transition={{
+          scale: { duration: 1, repeat: state === 'recording' ? Infinity : 0 }
         }}
       >
         <Microphone 
           weight={state === 'recording' ? 'fill' : 'regular'} 
-          size={20}
+          size={24}
           className={state === 'recording' ? 'animate-pulse' : ''}
         />
-        <span className="text-sm font-semibold">
-          {state === 'recording' ? 'Recording...' : state === 'processing' ? 'Processing...' : 'Voice Capture'}
-        </span>
       </motion.button>
       <VoidVoiceCapture user={user} />
     </>
@@ -417,31 +417,31 @@ export function VoidBuddy({ user }: VoidBuddyProps) {
   return (
     <>
       <div
-        className="fixed z-50 flex flex-col items-center"
+        className="fixed z-50 flex flex-row items-center gap-4"
         style={position}
       >
-        {/* Buddy's name - centered above icon, seamless */}
+        {/* Icon always visible - now larger */}
+        <div>
+          <VoidBuddyIcon onExpand={handleIconClick} />
+        </div>
+        
+        {/* Buddy's name - to the right of icon */}
         <motion.h3
-          className="text-xl font-semibold mb-4 text-center"
+          className="text-xl font-semibold"
           style={{
             color: 'var(--text-primary, var(--void-text-primary))',
             textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
           }}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           Buddy
         </motion.h3>
         
-        {/* Icon always visible - now larger */}
-        <div className="mb-2">
-          <VoidBuddyIcon onExpand={handleIconClick} />
-        </div>
-        
-        {/* Voice Capture Button - Always visible below Buddy */}
+        {/* Voice Capture Button - Microphone icon below Buddy */}
         {user && (
-          <div className="mt-4" style={{ width: '280px' }}>
+          <div className="mt-4">
             <VoiceCaptureButton user={user} />
           </div>
         )}

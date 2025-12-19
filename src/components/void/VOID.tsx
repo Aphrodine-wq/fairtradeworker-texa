@@ -6,6 +6,7 @@ import { VoidBuddy } from './VoidBuddy'
 import { VoidVoiceCapture } from './VoidVoiceCapture'
 import { VoidToolbar } from './VoidToolbar'
 import { VoidTaskbar } from './VoidTaskbar'
+import { VoidBottomNav } from './VoidBottomNav'
 import { VoidErrorBoundary } from './VoidErrorBoundary'
 import { VoidBootScreen } from './VoidBootScreen'
 import { VoidLockScreen } from './VoidLockScreen'
@@ -159,17 +160,22 @@ export function VOID({ user, onNavigate }: VOIDProps) {
           </VoidErrorBoundary>
         )}
 
-        {/* Toolbar */}
+        {/* Top Toolbar */}
         <VoidErrorBoundary resetKeys={[user.id]}>
           <VoidToolbar user={user} onNavigate={onNavigate} />
         </VoidErrorBoundary>
 
         {/* Desktop */}
-        <div className="absolute inset-0 pt-16">
+        <div className="absolute inset-0" style={{ paddingTop: '48px', paddingBottom: '48px' }}>
           <VoidErrorBoundary>
             <VoidDesktop />
           </VoidErrorBoundary>
         </div>
+        
+        {/* Bottom Navigation */}
+        <VoidErrorBoundary>
+          <VoidBottomNav user={user} onNavigate={onNavigate} />
+        </VoidErrorBoundary>
 
         {/* Dock (if enabled in settings) */}
         {!isMobile && (

@@ -18,7 +18,7 @@ export function VoidDesktop() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 4, // 4px magnetic threshold for better accuracy
+        distance: 1, // 1px for maximum precision
       },
     })
   )

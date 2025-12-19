@@ -275,19 +275,214 @@ function SettingsContent({
         </div>
       )
 
-    // Placeholder for other categories
     case 'privacy':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Privacy & Security</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Analytics</label>
+            <div className="void-settings-switch">
+              <input
+                type="checkbox"
+                id="analytics"
+                checked={settings.analyticsEnabled}
+                onChange={(e) => updateSetting('analyticsEnabled', e.target.checked)}
+              />
+              <label htmlFor="analytics">Enable usage analytics</label>
+            </div>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Crash Reporting</label>
+            <div className="void-settings-switch">
+              <input
+                type="checkbox"
+                id="crashReporting"
+                checked={settings.crashReportingEnabled}
+                onChange={(e) => updateSetting('crashReportingEnabled', e.target.checked)}
+              />
+              <label htmlFor="crashReporting">Send crash reports</label>
+            </div>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Data Collection</label>
+            <p className="void-settings-description">
+              We collect minimal data to improve your experience. All data is encrypted and anonymized.
+            </p>
+          </div>
+        </div>
+      )
+
     case 'accounts':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Accounts</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Active Account</label>
+            <div className="void-settings-account-card">
+              <div className="void-settings-account-info">
+                <div className="void-settings-account-name">Primary Account</div>
+                <div className="void-settings-account-email">user@example.com</div>
+              </div>
+              <button className="void-settings-button">Manage</button>
+            </div>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Connected Accounts</label>
+            <div className="void-settings-list">
+              <div className="void-settings-list-item">
+                <span>Google</span>
+                <button className="void-settings-button-small">Disconnect</button>
+              </div>
+              <div className="void-settings-list-item">
+                <span>Spotify</span>
+                <button className="void-settings-button-small">Disconnect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+
     case 'integrations':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Integrations</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Available Integrations</label>
+            <div className="void-settings-list">
+              <div className="void-settings-list-item">
+                <span>Spotify</span>
+                <button className="void-settings-button-small">Connect</button>
+              </div>
+              <div className="void-settings-list-item">
+                <span>Google Calendar</span>
+                <button className="void-settings-button-small">Connect</button>
+              </div>
+              <div className="void-settings-list-item">
+                <span>Slack</span>
+                <button className="void-settings-button-small">Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+
     case 'billing':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Billing & Subscription</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Current Plan</label>
+            <div className="void-settings-plan-card">
+              <div className="void-settings-plan-name">Pro Plan</div>
+              <div className="void-settings-plan-price">$29/month</div>
+              <button className="void-settings-button">Upgrade</button>
+            </div>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Payment Method</label>
+            <div className="void-settings-payment-card">
+              <span>•••• •••• •••• 4242</span>
+              <button className="void-settings-button-small">Update</button>
+            </div>
+          </div>
+        </div>
+      )
+
     case 'team':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Team Management</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Team Members</label>
+            <div className="void-settings-list">
+              <div className="void-settings-list-item">
+                <span>John Doe (Owner)</span>
+                <button className="void-settings-button-small">Manage</button>
+              </div>
+              <div className="void-settings-list-item">
+                <span>Jane Smith (Member)</span>
+                <button className="void-settings-button-small">Manage</button>
+              </div>
+            </div>
+            <button className="void-settings-button">Invite Member</button>
+          </div>
+        </div>
+      )
+
     case 'data':
+      return (
+        <div className="void-settings-section">
+          <h2 className="void-settings-section-title">Data Management</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Export Data</label>
+            <p className="void-settings-description">
+              Download all your data in JSON format
+            </p>
+            <button className="void-settings-button">Export Data</button>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Clear Cache</label>
+            <p className="void-settings-description">
+              Clear cached data to free up space
+            </p>
+            <button className="void-settings-button">Clear Cache</button>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Delete All Data</label>
+            <p className="void-settings-description void-settings-warning">
+              This action cannot be undone. All your data will be permanently deleted.
+            </p>
+            <button className="void-settings-button void-settings-button-danger">Delete All Data</button>
+          </div>
+        </div>
+      )
+
     case 'advanced':
       return (
         <div className="void-settings-section">
-          <h2 className="void-settings-section-title">{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
-          <div className="void-settings-placeholder">
-            Settings for {category} coming soon...
+          <h2 className="void-settings-section-title">Advanced</h2>
+          
+          <div className="void-settings-group">
+            <label className="void-settings-label">Developer Mode</label>
+            <div className="void-settings-switch">
+              <input
+                type="checkbox"
+                id="developerMode"
+                checked={settings.developerMode}
+                onChange={(e) => updateSetting('developerMode', e.target.checked)}
+              />
+              <label htmlFor="developerMode">Enable developer tools</label>
+            </div>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Performance Mode</label>
+            <select
+              className="void-settings-select"
+              value={settings.performanceMode}
+              onChange={(e) => updateSetting('performanceMode', e.target.value)}
+            >
+              <option value="auto">Auto</option>
+              <option value="high">High Performance</option>
+              <option value="low">Low Power</option>
+            </select>
+          </div>
+
+          <div className="void-settings-group">
+            <label className="void-settings-label">Debug Information</label>
+            <button className="void-settings-button">Show Debug Info</button>
           </div>
         </div>
       )

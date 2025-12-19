@@ -185,8 +185,9 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
       ref={canvasRef}
       className={`fixed inset-0 w-full h-full pointer-events-none ${className}`}
       style={{
-        zIndex: 0,
+        zIndex: 1,
         background: 'transparent',
+        opacity: 0.6, // Make wiremap more visible
       }}
       width={typeof window !== 'undefined' ? window.innerWidth : 1920}
       height={typeof window !== 'undefined' ? window.innerHeight : 1080}

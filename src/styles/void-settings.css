@@ -284,6 +284,118 @@
   font-size: 14px;
 }
 
+.void-settings-button {
+  padding: 10px 20px;
+  background: var(--accent, #00f5ff);
+  color: var(--bg, #000000);
+  border: none;
+  border-radius: var(--radius-md, 12px);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+  margin-top: 8px;
+}
+
+.void-settings-button:hover {
+  background: var(--accent-hover, #00d4e6);
+  transform: translateY(-1px);
+}
+
+.void-settings-button-danger {
+  background: var(--error, #ff3b30);
+  color: #ffffff;
+}
+
+.void-settings-button-danger:hover {
+  background: #ff2d20;
+}
+
+.void-settings-button-small {
+  padding: 6px 12px;
+  background: var(--surface-hover, #151520);
+  color: var(--text-primary, #ffffff);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-sm, 8px);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast, 120ms) var(--ease-standard);
+}
+
+.void-settings-button-small:hover {
+  background: var(--surface, #0a0a0f);
+  border-color: var(--accent, #00f5ff);
+}
+
+.void-settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.void-settings-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: var(--surface-hover, #151520);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-sm, 8px);
+}
+
+.void-settings-description {
+  font-size: 13px;
+  color: var(--text-secondary, #a0a0b0);
+  margin-top: 4px;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.void-settings-warning {
+  color: var(--error, #ff3b30);
+}
+
+.void-settings-account-card,
+.void-settings-plan-card,
+.void-settings-payment-card {
+  padding: 16px;
+  background: var(--surface-hover, #151520);
+  border: 1px solid var(--border, #1a1a24);
+  border-radius: var(--radius-md, 12px);
+  margin-top: 8px;
+}
+
+.void-settings-account-info {
+  margin-bottom: 12px;
+}
+
+.void-settings-account-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 4px;
+}
+
+.void-settings-account-email {
+  font-size: 13px;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.void-settings-plan-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  margin-bottom: 4px;
+}
+
+.void-settings-plan-price {
+  font-size: 14px;
+  color: var(--text-secondary, #a0a0b0);
+  margin-bottom: 12px;
+}
+
 /* Dark mode adjustments */
 [data-theme="light"] .void-settings {
   background: var(--surface, #fefefe);
