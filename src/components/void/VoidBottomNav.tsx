@@ -1,8 +1,10 @@
 /**
  * VOID OS Bottom Navigation Bar
+ * Modern CRM-style navigation with glassmorphism
  * Provides quick access to common functions
  */
 
+import React from 'react'
 import { Home, Search, Settings, Bell, User, MusicNote, GridFour } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import type { User as UserType } from '@/lib/types'
@@ -15,25 +17,33 @@ interface VoidBottomNavProps {
 
 export function VoidBottomNav({ user, onNavigate }: VoidBottomNavProps) {
   const { openWindow, spotlightOpen, setSpotlightOpen, currentTrack, setControlCenterOpen } = useVoidStore()
+  const [activePage, setActivePage] = React.useState('home')
 
   const navItems = [
     {
       id: 'home',
       label: 'Home',
       icon: Home,
-      action: () => onNavigate?.('home'),
+      action: () => {
+        setActivePage('home')
+        onNavigate?.('home')
+      },
     },
     {
       id: 'search',
       label: 'Search',
       icon: Search,
-      action: () => setSpotlightOpen(!spotlightOpen),
+      action: () => {
+        setActivePage('search')
+        setSpotlightOpen(!spotlightOpen)
+      },
     },
     {
       id: 'music',
       label: 'Music',
       icon: MusicNote,
       action: () => {
+        setActivePage('music')
         // Music player is always visible in MediaToolbar
         // This button can open control center or just focus music
         openWindow('music')
@@ -41,15 +51,19 @@ export function VoidBottomNav({ user, onNavigate }: VoidBottomNavProps) {
     },
     {
       id: 'notifications',
-      label: 'Notifications',
+      label: 'Alerts',
       icon: Bell,
-      action: () => openWindow('notifications'),
+      action: () => {
+        setActivePage('notifications')
+        openWindow('notifications')
+      },
     },
     {
       id: 'modules',
-      label: 'Modules',
+      label: 'Apps',
       icon: GridFour,
       action: () => {
+        setActivePage('modules')
         // Open modules window or spotlight
         setSpotlightOpen(true)
       },
@@ -58,25 +72,29 @@ export function VoidBottomNav({ user, onNavigate }: VoidBottomNavProps) {
       id: 'settings',
       label: 'Settings',
       icon: Settings,
-      action: () => openWindow('settings'),
+      action: () => {
+        setActivePage('settings')
+        openWindow('settings')
+      },
     },
   ]
 
   return (
-    <nav className="void-bottom-nav">
+    <nav className="void-bottom-nav" role="navigation" aria-label="Main navigation">
       <div className="void-bottom-nav-container">
         {navItems.map((item) => {
           const Icon = item.icon
-          const isActive = item.id === 'music' && currentTrack
+          const isActive = activePage === item.id || (item.id === 'music' && currentTrack)
           return (
             <button
               key={item.id}
               className={`void-bottom-nav-item ${isActive ? 'active' : ''}`}
               onClick={item.action}
               aria-label={item.label}
+              aria-current={isActive ? 'page' : undefined}
               title={item.label}
             >
-              <Icon weight={isActive ? 'fill' : 'regular'} size={20} />
+              <Icon weight={isActive ? 'fill' : 'regular'} size={22} />
               <span className="void-bottom-nav-label">{item.label}</span>
             </button>
           )
