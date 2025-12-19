@@ -164,6 +164,8 @@ FairTradeWorker uses a modern shadow-based design system (updated December 16, 2
 
 ### Recent Updates
 
+- ⚠️ **December 2025: VOID Desktop System Deprioritized** - VOID features are on hold to focus on MVP and core marketplace functionality
+- ✅ December 2025: Vercel deployment restricted to main branch only for production stability
 - ✅ December 2025: CRM Void enhancements (drag-and-drop for all elements, modernized music player, menu collision detection)
 - ✅ December 2025: Mock job images system for Browse Jobs
 - ✅ December 2025: Comprehensive documentation update and reorganization
