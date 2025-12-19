@@ -31,8 +31,13 @@
 }
 
 .void-tray-icon-svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  /* Optimize for 2K displays */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  shape-rendering: geometricPrecision;
 }
 
 .void-tray-badge {

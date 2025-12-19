@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
 
 interface VoidBuddyIconProps {
-  onExpand: () => void
+  onExpand?: () => void
 }
 
 export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
@@ -40,7 +40,7 @@ export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
   return (
     <motion.button
       className="relative w-16 h-16 cursor-pointer select-none"
-      onClick={onExpand}
+      onClick={onExpand || undefined}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ scale: 1.05 }}

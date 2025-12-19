@@ -5,7 +5,7 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sun, Moon, Wifi, WifiOff, Bell, BellOff, Target, Globe, Music, TrendingUp } from 'lucide-react'
+import { Sun, Moon, WifiHigh, WifiSlash, Bell, BellSlash, Target, Globe, MusicNote, TrendUp } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import '@/styles/void-control-center.css'
 
@@ -80,7 +80,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
               {/* Display Brightness */}
               <div className="void-control-section">
                 <div className="void-control-section-header">
-                  <Sun className="void-control-section-icon" />
+                  <Sun weight="regular" className="void-control-section-icon" size={24} />
                   <span className="void-control-section-title">DISPLAY</span>
                 </div>
                 <div className="void-control-slider-container">
@@ -99,7 +99,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
               {/* Sound Volume */}
               <div className="void-control-section">
                 <div className="void-control-section-header">
-                  <Music className="void-control-section-icon" />
+                  <MusicNote weight="regular" className="void-control-section-icon" size={24} />
                   <span className="void-control-section-title">SOUND</span>
                 </div>
                 <div className="void-control-slider-container">
@@ -124,7 +124,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     title="Dark Mode"
                   >
-                    {theme === 'dark' ? <Moon className="void-control-toggle-icon" /> : <Sun className="void-control-toggle-icon" />}
+                    {theme === 'dark' ? <Moon weight="regular" className="void-control-toggle-icon" size={24} /> : <Sun weight="regular" className="void-control-toggle-icon" size={24} />}
                     <span className="void-control-toggle-label">Dark</span>
                   </button>
 
@@ -134,7 +134,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                     title="WiFi"
                     disabled
                   >
-                    {isOnline ? <Wifi className="void-control-toggle-icon" /> : <WifiOff className="void-control-toggle-icon" />}
+                    {isOnline ? <WifiHigh weight="regular" className="void-control-toggle-icon" size={24} /> : <WifiSlash weight="regular" className="void-control-toggle-icon" size={24} />}
                     <span className="void-control-toggle-label">WiFi</span>
                   </button>
 
@@ -143,7 +143,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                     onClick={() => setDoNotDisturb(!doNotDisturb)}
                     title="Do Not Disturb"
                   >
-                    {doNotDisturb ? <BellOff className="void-control-toggle-icon" /> : <Bell className="void-control-toggle-icon" />}
+                    {doNotDisturb ? <BellSlash weight="regular" className="void-control-toggle-icon" size={24} /> : <Bell weight="regular" className="void-control-toggle-icon" size={24} />}
                     <span className="void-control-toggle-label">DND</span>
                   </button>
 
@@ -152,7 +152,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                     onClick={() => setFocusMode(!focusMode)}
                     title="Focus Mode"
                   >
-                    <Target className="void-control-toggle-icon" />
+                    <Target weight="regular" className="void-control-toggle-icon" size={24} />
                     <span className="void-control-toggle-label">Focus</span>
                   </button>
 
@@ -161,7 +161,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                     onClick={() => setWiremapEnabled(!wiremapEnabled)}
                     title="Wiremap"
                   >
-                    <Globe className="void-control-toggle-icon" />
+                    <Globe weight="regular" className="void-control-toggle-icon" size={24} />
                     <span className="void-control-toggle-label">Wire</span>
                   </button>
                 </div>
@@ -171,7 +171,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
               {currentTrack && (
                 <div className="void-control-section">
                   <div className="void-control-section-header">
-                    <Music className="void-control-section-icon" />
+                    <MusicNote weight="regular" className="void-control-section-icon" size={24} />
                     <span className="void-control-section-title">NOW PLAYING</span>
                   </div>
                   <div className="void-control-now-playing">
@@ -189,7 +189,7 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
               {/* Today Stats */}
               <div className="void-control-section">
                 <div className="void-control-section-header">
-                  <TrendingUp className="void-control-section-icon" />
+                  <TrendUp weight="regular" className="void-control-section-icon" size={24} />
                   <span className="void-control-section-title">TODAY</span>
                 </div>
                 <div className="void-control-stats">

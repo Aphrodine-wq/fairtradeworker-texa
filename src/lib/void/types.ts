@@ -76,7 +76,7 @@ export interface BuddyMessage {
 
 export interface BuddyState {
   collapsed: boolean
-  position: { x: number; y: number } | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
+  position: { x: number; y: number } | 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right'
   docked: boolean
   lastMessageTime: number
   emotion: BuddyEmotion

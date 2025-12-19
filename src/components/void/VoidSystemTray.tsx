@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react'
-import { Bell, Music, Wifi, WifiOff, Sun, Moon, Volume2, VolumeX, Clock, User } from 'lucide-react'
+import { Bell, MusicNote, WifiHigh, WifiSlash, Sun, Moon, SpeakerHigh, SpeakerX, Clock, User } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidNotificationCenter } from './VoidNotificationCenter'
 import { VoidControlCenter } from './VoidControlCenter'
@@ -78,7 +78,7 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           onClick={() => setNotificationCenterOpen(!notificationCenterOpen)}
           aria-label="Notifications"
         >
-          <Bell className="void-tray-icon-svg" />
+          <Bell weight="regular" className="void-tray-icon-svg" size={24} />
           {unreadCount > 0 && (
             <span className="void-tray-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
           )}
@@ -92,7 +92,7 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
             aria-label="Now Playing"
             title={`${currentTrack.title} - ${currentTrack.artist}`}
           >
-            <Music className="void-tray-icon-svg" />
+            <MusicNote weight="regular" className="void-tray-icon-svg" size={24} />
             {isPlaying && <div className="void-tray-music-pulse" />}
           </button>
         )}
@@ -103,9 +103,9 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           title={isOnline ? 'Connected' : 'Offline'}
         >
           {isOnline ? (
-            <Wifi className="void-tray-icon-svg" />
+            <WifiHigh weight="regular" className="void-tray-icon-svg" size={24} />
           ) : (
-            <WifiOff className="void-tray-icon-svg" />
+            <WifiSlash weight="regular" className="void-tray-icon-svg" size={24} />
           )}
         </div>
 
@@ -117,9 +117,9 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {theme === 'dark' ? (
-            <Sun className="void-tray-icon-svg" />
+            <Sun weight="regular" className="void-tray-icon-svg" size={24} />
           ) : (
-            <Moon className="void-tray-icon-svg" />
+            <Moon weight="regular" className="void-tray-icon-svg" size={24} />
           )}
         </button>
 
@@ -134,9 +134,9 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           title={`Volume: ${Math.round(volume * 100)}%`}
         >
           {isMuted ? (
-            <VolumeX className="void-tray-icon-svg" />
+            <SpeakerX weight="regular" className="void-tray-icon-svg" size={24} />
           ) : (
-            <Volume2 className="void-tray-icon-svg" />
+            <SpeakerHigh weight="regular" className="void-tray-icon-svg" size={24} />
           )}
         </button>
 
@@ -147,7 +147,7 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           aria-label="Time and date"
           title={formatDate()}
         >
-          <Clock className="void-tray-icon-svg" />
+          <Clock weight="regular" className="void-tray-icon-svg" size={24} />
           <span className="void-tray-clock-text">{formatTime()}</span>
           {showTimeMenu && (
             <div className="void-tray-clock-menu">
@@ -164,7 +164,7 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
             aria-label="Profile"
             title={user.fullName || user.email}
           >
-            <User className="void-tray-icon-svg" />
+            <User weight="regular" className="void-tray-icon-svg" size={24} />
           </button>
         )}
       </div>

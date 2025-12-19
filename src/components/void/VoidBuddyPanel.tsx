@@ -1,17 +1,15 @@
 import { motion } from 'framer-motion'
-import { X } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { sanitizeString } from '@/lib/void/validation'
 
 interface VoidBuddyPanelProps {
-  onClose: () => void
+  onClose?: () => void
   userName: string
 }
 
-export function VoidBuddyPanel({ onClose, userName }: VoidBuddyPanelProps) {
-  const { buddyMessages, buddyState } = useVoidStore()
+export function VoidBuddyPanel({ userName }: VoidBuddyPanelProps) {
+  const { buddyMessages } = useVoidStore()
   const latestMessage = buddyMessages[buddyMessages.length - 1]
 
   // Calculate streak (mock for now)
@@ -39,7 +37,7 @@ export function VoidBuddyPanel({ onClose, userName }: VoidBuddyPanelProps) {
     >
       {/* Header */}
       <div 
-        className="h-12 px-4 border-b flex items-center justify-between"
+        className="h-12 px-4 border-b flex items-center justify-center"
         style={{
           background: 'var(--surface-hover, var(--void-surface-hover))',
           borderColor: 'var(--border, var(--void-border))',
@@ -51,37 +49,46 @@ export function VoidBuddyPanel({ onClose, userName }: VoidBuddyPanelProps) {
         >
           Buddy
         </span>
-        <button
-          onClick={onClose}
-          className="w-6 h-6 rounded flex items-center justify-center transition-colors"
-          style={{
-            transitionDuration: 'var(--duration-fast, 120ms)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--surface-hover)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent'
-          }}
-          aria-label="Close"
-        >
-          <X 
-            className="w-4 h-4" 
-            style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
-          />
-        </button>
       </div>
 
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
-        {/* Greeting */}
-        <div 
-          className="void-body-regular"
-          style={{ color: 'var(--text-primary, var(--void-text-primary))' }}
-        >
-          {latestMessage?.message 
-            ? sanitizeString(latestMessage.message, 1000)
-            : `Morning ${sanitizeString(userName, 100)}! Streak: ${streak} days 🔥`}
+        {/* Messages Section - Always Visible */}
+        <div>
+          <h3 
+            className="void-body-caption mb-2 uppercase tracking-wide"
+            style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+          >
+            💬 MESSAGES
+          </h3>
+          <div className="space-y-2 max-h-32 overflow-y-auto">
+            {buddyMessages.length > 0 ? (
+              buddyMessages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className="void-body-small p-2 rounded"
+                  style={{
+                    color: 'var(--text-primary, var(--void-text-primary))',
+                    background: 'var(--surface-hover, var(--void-surface-hover))',
+                    borderRadius: 'var(--radius-sm, 8px)',
+                  }}
+                >
+                  {sanitizeString(msg.message, 200)}
+                </div>
+              ))
+            ) : (
+              <div 
+                className="void-body-small p-2 rounded"
+                style={{
+                  color: 'var(--text-primary, var(--void-text-primary))',
+                  background: 'var(--surface-hover, var(--void-surface-hover))',
+                  borderRadius: 'var(--radius-sm, 8px)',
+                }}
+              >
+                {`Morning ${sanitizeString(userName, 100)}! Streak: ${streak} days 🔥`}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Priorities */}

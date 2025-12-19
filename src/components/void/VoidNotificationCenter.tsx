@@ -4,7 +4,7 @@
  */
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle, Bell, BellOff } from 'lucide-react'
+import { X, CheckCircle, WarningCircle, Info, Warning, Bell, BellSlash } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import { getNotificationIcon, formatNotificationTime, groupNotificationsByDate } from '@/lib/void/notifications'
 import type { Notification } from '@/lib/void/notifications'
@@ -16,15 +16,15 @@ interface VoidNotificationCenterProps {
 }
 
 function NotificationIcon({ type }: { type: Notification['type'] }) {
-  const iconProps = { className: 'void-notification-icon', size: 20 }
+  const iconProps = { className: 'void-notification-icon', size: 20, weight: 'regular' as const }
   
   switch (type) {
     case 'success':
       return <CheckCircle {...iconProps} />
     case 'error':
-      return <AlertCircle {...iconProps} />
+      return <WarningCircle {...iconProps} />
     case 'warning':
-      return <AlertTriangle {...iconProps} />
+      return <Warning {...iconProps} />
     default:
       return <Info {...iconProps} />
   }
@@ -114,7 +114,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
             {/* Header */}
             <div className="void-notification-center-header">
               <div className="void-notification-center-title">
-                <Bell className="void-notification-center-title-icon" />
+                <Bell weight="regular" className="void-notification-center-title-icon" size={24} />
                 <span>Notifications</span>
                 {unreadCount > 0 && (
                   <span className="void-notification-center-badge">{unreadCount}</span>
@@ -127,7 +127,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
                     onClick={markAllAsRead}
                     title="Mark all as read"
                   >
-                    <CheckCircle className="void-notification-center-action-icon" />
+                    <CheckCircle weight="regular" className="void-notification-center-action-icon" size={20} />
                   </button>
                 )}
                 {hasNotifications && (
@@ -136,7 +136,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
                     onClick={clearAll}
                     title="Clear all"
                   >
-                    <BellOff className="void-notification-center-action-icon" />
+                    <BellSlash weight="regular" className="void-notification-center-action-icon" size={20} />
                   </button>
                 )}
                 <button
@@ -144,7 +144,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
                   onClick={onClose}
                   title="Close"
                 >
-                  <X className="void-notification-center-action-icon" />
+                  <X weight="regular" className="void-notification-center-action-icon" size={20} />
                 </button>
               </div>
             </div>
@@ -153,7 +153,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
             <div className="void-notification-center-content">
               {!hasNotifications ? (
                 <div className="void-notification-center-empty">
-                  <BellOff className="void-notification-center-empty-icon" />
+                  <BellSlash weight="regular" className="void-notification-center-empty-icon" size={48} />
                   <div className="void-notification-center-empty-text">No notifications</div>
                 </div>
               ) : (

@@ -245,7 +245,7 @@ export const useVoidStore = create<VoidStore>()(
       // Buddy initial state
       buddyState: {
         collapsed: false,
-        position: 'top-left',
+        position: 'top-center',
         docked: false,
         lastMessageTime: 0,
         emotion: 'neutral',
