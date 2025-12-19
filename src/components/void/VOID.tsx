@@ -20,10 +20,15 @@ import { VoidClipboardManager } from './VoidClipboardManager'
 import { useVoidStore } from '@/lib/void/store'
 import { initAccessibility } from '@/lib/void/accessibility'
 import { setupInactivityTimer } from '@/lib/void/session'
+import { initTheme } from '@/lib/themes'
+import { BackgroundSystem } from './BackgroundSystem'
+import { WiremapBackground } from './WiremapBackground'
 import type { User } from '@/lib/types'
 import '@/styles/void-desktop.css'
 import '@/styles/void-voice.css'
 import '@/styles/void-os-layers.css'
+import '@/styles/void-design-system.css'
+import '@/styles/void-effects.css'
 
 // Lazy load heavy components
 const VoidMobileNav = lazy(() => import('./VoidMobileNav').then(m => ({ default: m.VoidMobileNav })))
@@ -43,6 +48,17 @@ function LoadingFallback() {
 
 
 export function VOID({ user, onNavigate }: VOIDProps) {
+  // Initialize theme immediately before first render (synchronous)
+  React.useLayoutEffect(() => {
+    try {
+      initTheme()
+    } catch (error) {
+      console.error('[VOID] Theme initialization error:', error)
+      // Fallback: ensure at least basic theme is set
+      document.documentElement.setAttribute('data-theme', 'dark')
+    }
+  }, [])
+  
   // Initialize keyboard shortcuts
   useVoidKeyboard()
   
@@ -57,7 +73,7 @@ export function VOID({ user, onNavigate }: VOIDProps) {
     return cleanup
   }, [])
 
-  const { isLocked, spotlightOpen, virtualDesktops, activeDesktopId } = useVoidStore()
+  const { isLocked, spotlightOpen, virtualDesktops, activeDesktopId, wiremapEnabled } = useVoidStore()
   const [missionControlOpen, setMissionControlOpen] = useState(false)
   const [clipboardOpen, setClipboardOpen] = useState(false)
   const [bootComplete, setBootComplete] = useState(false)
@@ -84,6 +100,18 @@ export function VOID({ user, onNavigate }: VOIDProps) {
     <div className="fixed inset-0 z-[9999] overflow-hidden void-desktop" style={{ backgroundColor: 'var(--void-bg)' }}>
       <VoidErrorBoundary>
         {/* Boot Screen (handled above) */}
+        
+        {/* Background Layer (z: 0-1) */}
+        <div className="absolute inset-0 void-overlay-background" style={{ zIndex: 0 }}>
+          <VoidErrorBoundary>
+            <BackgroundSystem />
+          </VoidErrorBoundary>
+          {wiremapEnabled && (
+            <VoidErrorBoundary>
+              <WiremapBackground />
+            </VoidErrorBoundary>
+          )}
+        </div>
         
         {/* Lock Screen */}
         {isLocked && (
