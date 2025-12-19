@@ -75,6 +75,34 @@ export function VoidContextMenu({
   onOpenChange,
 }: VoidContextMenuProps) {
   const [open, setOpen] = useState(false)
+  const [isClosing, setIsClosing] = useState(false)
+
+  // Auto-dismiss timer (5 seconds of inactivity)
+  useEffect(() => {
+    if (!open) return
+
+    let timeoutId: NodeJS.Timeout
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        handleClose()
+      }, 5000) // Auto-close after 5 seconds
+    }
+
+    resetTimer()
+
+    // Reset timer on any interaction
+    const handleInteraction = () => resetTimer()
+    window.addEventListener('mousemove', handleInteraction)
+    window.addEventListener('keydown', handleInteraction)
+
+    return () => {
+      clearTimeout(timeoutId)
+      window.removeEventListener('mousemove', handleInteraction)
+      window.removeEventListener('keydown', handleInteraction)
+    }
+  }, [open])
 
   // Handle Escape key
   useEffect(() => {
@@ -82,8 +110,7 @@ export function VoidContextMenu({
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setOpen(false)
-        onOpenChange?.(false)
+        handleClose()
       }
     }
 
@@ -91,9 +118,24 @@ export function VoidContextMenu({
     return () => window.removeEventListener('keydown', handleEscape)
   }, [open, onOpenChange])
 
+  const handleClose = () => {
+    setIsClosing(true)
+    // Wait for animation to complete before actually closing
+    setTimeout(() => {
+      setOpen(false)
+      setIsClosing(false)
+      onOpenChange?.(false)
+    }, 200) // Match the fade-out animation duration
+  }
+
   const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen)
-    onOpenChange?.(newOpen)
+    if (newOpen) {
+      setOpen(newOpen)
+      setIsClosing(false)
+      onOpenChange?.(newOpen)
+    } else {
+      handleClose()
+    }
   }
 
   return (
@@ -103,31 +145,28 @@ export function VoidContextMenu({
       </ContextMenuPrimitive.Trigger>
       <ContextMenuPrimitive.Portal>
         <ContextMenuPrimitive.Content
-          className={`void-system-context-menu void-context-menu void-context-menu-${type}`}
+          className={`void-system-context-menu void-context-menu void-context-menu-${type} ${isClosing ? 'closing' : ''}`}
           sideOffset={5}
           alignOffset={-5}
           onEscapeKeyDown={(e) => {
             e.preventDefault()
-            setOpen(false)
-            onOpenChange?.(false)
+            handleClose()
           }}
           onPointerDownOutside={(e) => {
             e.preventDefault()
-            setOpen(false)
-            onOpenChange?.(false)
+            handleClose()
           }}
           onInteractOutside={(e) => {
             e.preventDefault()
-            setOpen(false)
-            onOpenChange?.(false)
+            handleClose()
           }}
           asChild
         >
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            initial={{ opacity: 0, scale: 0.96, y: -4 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -10 }}
-            transition={{ duration: 0.15 }}
+            exit={{ opacity: 0, scale: 0.96, y: -4 }}
+            transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
             onClick={(e) => e.stopPropagation()}
           >
             {items.map((item, index) => (
