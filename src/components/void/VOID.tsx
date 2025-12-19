@@ -180,7 +180,7 @@ export function VOID({ user, onNavigate }: VOIDProps) {
 
         {/* Buddy (includes Voice Capture below panel) */}
         <VoidErrorBoundary>
-          <VoidBuddy userName={user.fullName || 'there'} user={user} />
+          <VoidBuddy user={user} />
         </VoidErrorBoundary>
 
         {/* Windows */}

@@ -3,39 +3,140 @@ import { useVoidStore } from '@/lib/void/store'
 import { useBuddyContext } from '@/hooks/useBuddyContext'
 import { useBuddyReactions } from '@/hooks/useBuddyReactions'
 import { VoidBuddyIcon } from './VoidBuddyIcon'
-import { VoidBuddyPanel } from './VoidBuddyPanel'
+import { VoidBuddyMessages } from './VoidBuddyMessages'
 import { VoidVoiceCapture } from './VoidVoiceCapture'
+import { Microphone } from '@phosphor-icons/react'
+import { motion } from 'framer-motion'
 import { 
   getClickResponse, shouldTroll, shouldRagebait, getTrollMessage, getRagebaitMessage, 
   getEmotionForInteraction, getIdleMessage, getRandomEvent, getTimeBasedRoast, 
   getComparisonRoast, getStatsRoast, getStreakMessage,
-  determineMood, getMoodResponse, type BuddyInteraction, type MiniGameType 
+  determineMood, getMoodResponse, type BuddyInteraction
 } from '@/lib/void/buddyPersonality'
 import type { User } from '@/lib/types'
 
+// Voice Capture Button Component - Always visible below Buddy
+function VoiceCaptureButton({ user }: { user: User }) {
+  const { voiceState, setVoiceState, voicePermission } = useVoidStore()
+  
+  const handleClick = () => {
+    if (voicePermission === 'denied') {
+      setVoiceState('permission-prompt')
+    } else if (voiceState === 'idle') {
+      setVoiceState('recording')
+    }
+  }
+  
+  const getButtonState = () => {
+    if (voiceState === 'recording' || voiceState === 'processing') return 'recording'
+    if (voiceState === 'validation' || voiceState === 'extracting') return 'processing'
+    return 'idle'
+  }
+  
+  const state = getButtonState()
+  
+  return (
+    <>
+      <motion.button
+        onClick={handleClick}
+        className="w-full px-4 py-3 rounded-2xl flex items-center justify-center gap-3 transition-all"
+        style={{
+          background: state === 'recording' 
+            ? 'linear-gradient(135deg, #FF3B30 0%, #FF2D55 100%)'
+            : 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+          color: '#fff',
+          boxShadow: '0 4px 12px rgba(0, 122, 255, 0.4)',
+        }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        animate={{
+          boxShadow: state === 'recording' 
+            ? '0 4px 20px rgba(255, 59, 48, 0.6)' 
+            : '0 4px 12px rgba(0, 122, 255, 0.4)',
+        }}
+      >
+        <Microphone 
+          weight={state === 'recording' ? 'fill' : 'regular'} 
+          size={20}
+          className={state === 'recording' ? 'animate-pulse' : ''}
+        />
+        <span className="text-sm font-semibold">
+          {state === 'recording' ? 'Recording...' : state === 'processing' ? 'Processing...' : 'Voice Capture'}
+        </span>
+      </motion.button>
+      <VoidVoiceCapture user={user} />
+    </>
+  )
+}
+
 interface VoidBuddyProps {
-  userName: string
   user?: User
 }
 
-export function VoidBuddy({ userName, user }: VoidBuddyProps) {
+export function VoidBuddy({ user }: VoidBuddyProps) {
+  // Safely access store with null checks
+  let storeState
+  try {
+    storeState = useVoidStore()
+  } catch (error) {
+    console.error('[VoidBuddy] Store access error:', error)
+    storeState = null
+  }
+  
+  // Safe defaults
+  const safeDefaults = {
+    buddyState: {
+      collapsed: false,
+      position: 'top-center' as const,
+      docked: false,
+      lastMessageTime: 0,
+      emotion: 'neutral' as const,
+      mood: 'sassy' as const,
+      stats: {
+        windowsOpened: 0,
+        windowsClosed: 0,
+        totalClicks: 0,
+        idleMinutes: 0,
+        errors: 0,
+        filesCreated: 0,
+        settingsOpened: 0,
+        startTime: Date.now(),
+      },
+      streak: {
+        current: 0,
+        longest: 0,
+        lastInteraction: Date.now(),
+        broken: false,
+      },
+    },
+    addBuddyMessage: () => {},
+    setBuddyEmotion: () => {},
+    updateBuddyStats: () => {},
+    setBuddyMood: () => {},
+    updateBuddyStreak: () => {},
+  }
+  
   const { 
-    buddyState, 
-    addBuddyMessage, 
-    setBuddyEmotion, 
-    updateBuddyStats, 
-    setBuddyMood, 
-    updateBuddyStreak,
-  } = useVoidStore()
+    buddyState = safeDefaults.buddyState, 
+    addBuddyMessage = safeDefaults.addBuddyMessage, 
+    setBuddyEmotion = safeDefaults.setBuddyEmotion, 
+    updateBuddyStats = safeDefaults.updateBuddyStats, 
+    setBuddyMood = safeDefaults.setBuddyMood, 
+    updateBuddyStreak = safeDefaults.updateBuddyStreak,
+  } = storeState || safeDefaults
+  
   const [clickCount, setClickCount] = useState(0)
   const [interactions, setInteractions] = useState<BuddyInteraction[]>([])
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now())
-  const [miniGame, setMiniGame] = useState<MiniGameType>(null)
   const randomEventTimerRef = useRef<NodeJS.Timeout | null>(null)
   const lastInteractionDateRef = useRef(new Date().toDateString())
   
-  useBuddyContext() // Initialize context checking
-  useBuddyReactions() // Track user actions and trigger reactions
+  // CRITICAL FIX: Hooks must be called at top level, not inside useEffect
+  // These hooks use other hooks internally, so they must be called unconditionally
+  // If they throw errors during render, React error boundary will catch them
+  // Wrapping in error boundary at component level ensures graceful degradation
+  useBuddyContext()
+  useBuddyReactions()
 
   // Track streak
   useEffect(() => {
@@ -311,45 +412,46 @@ export function VoidBuddy({ userName, user }: VoidBuddyProps) {
     }
   }
 
+  const position = getPosition()
+
   return (
-    <div
-      className="fixed z-50 flex flex-col items-center"
-      style={getPosition()}
-    >
-      {/* Icon always visible */}
-      <div className="mb-2">
-        <VoidBuddyIcon onExpand={handleIconClick} />
-      </div>
-      {/* Panel always visible below icon */}
-      <VoidBuddyPanel 
-        userName={userName}
-        stats={buddyState.stats}
-        streak={buddyState.streak}
-        mood={buddyState.mood}
-        miniGame={miniGame}
-        onMessageClick={() => {
-          // Handle message click - troll response
-          const trollResponse = Math.random() > 0.5 ? getTrollMessage() : getRagebaitMessage()
-          addBuddyMessage({
-            id: `buddy-response-${Date.now()}`,
-            message: trollResponse,
-            emotion: 'happy',
-            timestamp: Date.now(),
-            priority: 'low',
-          })
-          setBuddyEmotion('happy')
-          setTimeout(() => setBuddyEmotion('neutral'), 3000)
-        }}
-        onStartMiniGame={(gameType) => setMiniGame(gameType)}
-        onCloseMiniGame={() => setMiniGame(null)}
-      />
-      
-      {/* Voice Capture below Buddy panel */}
-      {user && (
-        <div className="mt-2" style={{ width: '360px' }}>
-          <VoidVoiceCapture user={user} />
+    <>
+      <div
+        className="fixed z-50 flex flex-col items-center"
+        style={position}
+      >
+        {/* Buddy's name - centered above icon, seamless */}
+        <motion.h3
+          className="text-xl font-semibold mb-4 text-center"
+          style={{
+            color: 'var(--text-primary, var(--void-text-primary))',
+            textShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+          }}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        >
+          Buddy
+        </motion.h3>
+        
+        {/* Icon always visible - now larger */}
+        <div className="mb-2">
+          <VoidBuddyIcon onExpand={handleIconClick} />
         </div>
-      )}
-    </div>
+        
+        {/* Voice Capture Button - Always visible below Buddy */}
+        {user && (
+          <div className="mt-4" style={{ width: '280px' }}>
+            <VoiceCaptureButton user={user} />
+          </div>
+        )}
+      </div>
+      
+      {/* iPhone-style messages falling from the right */}
+      <VoidBuddyMessages buddyPosition={position} />
+      
+      {/* Voice Capture Modal */}
+      {user && <VoidVoiceCapture user={user} />}
+    </>
   )
 }

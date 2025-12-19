@@ -39,20 +39,36 @@ export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
 
   return (
     <motion.button
-      className="relative w-16 h-16 cursor-pointer select-none"
+      className="relative w-32 h-32 cursor-pointer select-none"
       onClick={onExpand || undefined}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.08, rotate: [0, -2, 2, -2, 0] }}
+      whileTap={{ scale: 0.92 }}
       animate={{
-        // Subtle breathing when idle
-        scale: isIdle ? [1, 1.02, 1] : 1,
+        // Realistic breathing animation when idle
+        scale: isIdle ? [1, 1.03, 1] : 1,
+        // Subtle floating motion
+        y: isIdle ? [0, -2, 0] : 0,
+        // Gentle rotation for life-like feel
+        rotate: isIdle ? [0, 0.5, -0.5, 0] : 0,
       }}
       transition={{
-        duration: 3,
-        repeat: isIdle ? Infinity : 0,
-        ease: 'easeInOut',
+        scale: {
+          duration: 2.5,
+          repeat: isIdle ? Infinity : 0,
+          ease: 'easeInOut',
+        },
+        y: {
+          duration: 3,
+          repeat: isIdle ? Infinity : 0,
+          ease: 'easeInOut',
+        },
+        rotate: {
+          duration: 4,
+          repeat: isIdle ? Infinity : 0,
+          ease: 'easeInOut',
+        },
       }}
       style={{ willChange: 'transform' }}
       aria-label="Buddy AI Assistant"
@@ -67,14 +83,18 @@ export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
           border: '1px solid var(--border)',
         }}
       >
-        {/* Animated accent gradient border */}
+        {/* Animated accent gradient border with more realistic pulse */}
         <motion.div
           className="absolute inset-0 rounded-2xl border-2"
           style={{ borderColor: 'var(--accent)' }}
           animate={{
-            opacity: isHovered ? [0.3, 0.6, 0.3] : 0.2,
+            opacity: isHovered ? [0.4, 0.7, 0.4] : [0.15, 0.25, 0.15],
+            scale: isHovered ? [1, 1.02, 1] : [1, 1.01, 1],
           }}
-          transition={{ duration: 2, repeat: Infinity }}
+          transition={{ 
+            opacity: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+            scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+          }}
         />
         
         {/* Tech grid pattern (subtle) */}
@@ -88,34 +108,77 @@ export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
         
         {/* Face elements */}
         <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-          {/* Eyes: Professional dots */}
-          <div className="flex gap-3 mb-1.5">
+          {/* Eyes: More realistic with subtle movement - scaled up */}
+          <div className="flex gap-6 mb-3">
             <motion.div 
-              className="w-2 h-2 rounded-full"
+              className="w-5 h-5 rounded-full relative"
               style={{ backgroundColor: isProcessing ? 'var(--accent)' : 'var(--text-primary)' }}
               animate={{ 
                 scaleY: isBlinking ? 0.1 : 1,
+                scaleX: isBlinking ? 1.1 : 1,
+                // Subtle eye movement when not blinking
+                x: isBlinking ? 0 : [0, 0.5, -0.5, 0],
               }}
-              transition={{ duration: 0.12, ease: 'easeInOut' }}
-            />
+              transition={{ 
+                scaleY: { duration: 0.12, ease: 'easeInOut' },
+                scaleX: { duration: 0.12, ease: 'easeInOut' },
+                x: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
+              }}
+            >
+              {/* Eye shine */}
+              <motion.div
+                className="absolute top-1 left-1 w-2 h-2 rounded-full"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
             <motion.div 
-              className="w-2 h-2 rounded-full"
+              className="w-5 h-5 rounded-full relative"
               style={{ backgroundColor: isProcessing ? 'var(--accent)' : 'var(--text-primary)' }}
-              animate={{ scaleY: isBlinking ? 0.1 : 1 }}
-              transition={{ duration: 0.12, ease: 'easeInOut' }}
-            />
+              animate={{ 
+                scaleY: isBlinking ? 0.1 : 1,
+                scaleX: isBlinking ? 1.1 : 1,
+                // Subtle eye movement when not blinking
+                x: isBlinking ? 0 : [0, -0.5, 0.5, 0],
+              }}
+              transition={{ 
+                scaleY: { duration: 0.12, ease: 'easeInOut' },
+                scaleX: { duration: 0.12, ease: 'easeInOut' },
+                x: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 },
+              }}
+            >
+              {/* Eye shine */}
+              <motion.div
+                className="absolute top-1 left-1 w-2 h-2 rounded-full"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
+                animate={{ opacity: [0.8, 1, 0.8] }}
+                transition={{ duration: 2, repeat: Infinity, delay: 0.1 }}
+              />
+            </motion.div>
           </div>
           
-          {/* Mouth: Minimal line with emotion */}
+          {/* Mouth: More expressive with realistic animations - scaled up */}
           <motion.div
-            className="border-b-2 rounded-full"
+            className="border-b-2 rounded-full relative"
             style={{
-              borderColor: emotion === 'error' ? 'var(--error)' : 'var(--text-primary)',
-              width: emotion === 'happy' ? '12px' : emotion === 'thinking' ? '0' : '8px',
-              borderWidth: emotion === 'happy' ? '3px' : '2px',
+              borderColor: emotion === 'error' ? 'var(--error)' : emotion === 'happy' ? 'var(--success)' : 'var(--text-primary)',
+              width: emotion === 'happy' ? '28px' : emotion === 'thinking' ? '0' : emotion === 'excited' ? '32px' : '16px',
+              borderWidth: emotion === 'happy' ? '4px' : emotion === 'excited' ? '4px' : '3px',
               opacity: emotion === 'thinking' ? 0.5 : 1,
             }}
-            transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+            animate={{
+              // Subtle mouth movement for more life
+              scaleX: emotion === 'happy' ? [1, 1.1, 1] : emotion === 'excited' ? [1, 1.15, 1] : 1,
+              y: emotion === 'happy' ? [0, -1, 0] : 0,
+            }}
+            transition={{ 
+              type: 'spring', 
+              stiffness: 300, 
+              damping: 15,
+              scaleX: { duration: 2, repeat: Infinity, ease: 'easeInOut' },
+              y: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+            }}
           />
           
           {/* Processing indicator (three dots) */}
