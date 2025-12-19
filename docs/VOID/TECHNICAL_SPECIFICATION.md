@@ -1811,6 +1811,95 @@ workerRef.current
 
 ---
 
+## Security & Stability
+
+### Security Enhancements (December 2025)
+
+VOID includes comprehensive security measures implemented across all system layers:
+
+#### Runtime Validation
+- **Zod Schema Validation**: All store state validated with Zod schemas (`src/lib/void/validation.ts`)
+- **Type Guards**: Runtime type checking for all operations
+- **Input Sanitization**: All user inputs sanitized to prevent XSS
+- **Data Integrity**: Checksums and validation on storage operations
+
+#### Secure Storage
+- **Secure Storage Wrapper**: `src/lib/void/secureStorage.ts`
+  - Data validation before storage
+  - Integrity checks (checksums)
+  - Storage quota management (5MB limit)
+  - Error handling with graceful fallbacks
+  - Token obfuscation for sensitive data
+
+#### Error Boundaries
+- **Comprehensive Error Handling**: `VoidErrorBoundary` component (`src/components/void/VoidErrorBoundary.tsx`)
+- **Auto-Recovery**: Automatic retry with error count limiting (max 3 attempts)
+- **Graceful Degradation**: Components fail safely without breaking entire system
+- **Error Reporting**: Safe error logging without exposing sensitive data
+
+#### XSS Prevention
+- **Content Sanitization**: All user-generated content sanitized (`sanitizeString` function)
+- **No Dangerous HTML**: No `dangerouslySetInnerHTML` usage
+- **Input Validation**: All dynamic content validated before rendering
+- **String Sanitization**: Comprehensive string cleaning functions
+
+#### API Security
+- **Rate Limiting**: 100 requests/minute per endpoint (`src/lib/void/apiSecurity.ts`)
+- **Secure Token Storage**: Obfuscated token storage with expiration
+- **Request Validation**: All API requests validated before execution
+- **SSRF Prevention**: Domain whitelisting for external requests
+- **Response Sanitization**: All API responses sanitized
+
+#### Background System Security
+- **File Type Validation**: Whitelist of allowed MIME types (JPEG, PNG, WebP, AVIF, GIF)
+- **File Size Limits**: 2MB maximum file size
+- **Dimension Validation**: Image dimension limits (100px-4096px)
+- **Processing Timeouts**: 10-second timeout for image processing
+- **File Name Sanitization**: Dangerous characters removed
+
+#### Voice Recording Security
+- **Permission Validation**: Explicit permission checks before recording
+- **Duration Limits**: 5-minute maximum recording duration
+- **Blob Size Limits**: 10MB maximum blob size
+- **Transcript Sanitization**: All transcripts sanitized before storage
+- **Secure Stream Handling**: Proper cleanup of media streams
+
+### Critical Bug Fixes
+
+#### Set Serialization Fix (December 2025)
+- **Issue**: `pinnedIcons` Set serialized to array but not converted back, causing `c.has is not a function` error
+- **Root Cause**: Zustand persist middleware serialized Set to Array but lacked deserialization
+- **Solution**: Added `merge` function to Zustand persist config to properly rehydrate Sets
+- **Impact**: Fixed critical runtime error affecting all users with persisted state
+- **Files Modified**: `src/lib/void/store.ts`
+
+### Backward Compatibility
+
+All security enhancements maintain full backward compatibility:
+- Existing localStorage data automatically migrated
+- No breaking changes to component props or store actions
+- Graceful fallbacks for all new validations
+- Version detection for future migrations (v1.0.0)
+
+### Security Files
+
+**New Security Files Created:**
+- `src/lib/void/validation.ts` - Validation utilities and Zod schemas
+- `src/lib/void/secureStorage.ts` - Secure storage wrapper
+- `src/lib/void/apiSecurity.ts` - API security utilities
+- `src/components/void/VoidErrorBoundary.tsx` - Error boundary component
+- `src/styles/void-error-boundary.css` - Error boundary styles
+
+**Files Enhanced with Security:**
+- `src/lib/void/store.ts` - Runtime validation, Set serialization fix
+- `src/components/void/BackgroundSystem.tsx` - File validation, timeouts
+- `src/components/void/VoidDesktop.tsx` - Input validation
+- `src/components/void/VoidWindow.tsx` - Input validation, XSS prevention
+- `src/hooks/useVoidVoice.ts` - Voice security measures
+- `src/lib/music/spotify.ts` - API security enhancements
+
+---
+
 ## Future Roadmap
 
 ### Planned Features
@@ -1833,9 +1922,26 @@ workerRef.current
 
 ---
 
-**Document Version**: 1.0.0  
+**Document Version**: 1.1.0  
 **Last Updated**: December 2025  
 **Maintained By**: VOID Development Team
+
+### Version History
+
+- **v1.1.0** (December 2025): Security & Stability Update
+  - Comprehensive security enhancements
+  - Runtime validation with Zod schemas
+  - Secure storage wrapper
+  - Error boundaries with auto-recovery
+  - XSS prevention measures
+  - API security layer
+  - Critical Set serialization bug fix
+- **v1.0.0** (Initial): Initial implementation
+  - Visual effects system
+  - Media integration
+  - Theme system
+  - Background system
+  - WebGL wiremap
 
 ---
 
