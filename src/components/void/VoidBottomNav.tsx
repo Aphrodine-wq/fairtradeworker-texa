@@ -5,7 +5,7 @@
  */
 
 import React from 'react'
-import { Home, Search, Settings, Bell, User, MusicNote, GridFour } from '@phosphor-icons/react'
+import { Home, Search, Settings, Bell, MusicNote, GridFour } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import type { User as UserType } from '@/lib/types'
 import '@/styles/void-bottom-nav.css'
@@ -16,7 +16,7 @@ interface VoidBottomNavProps {
 }
 
 export function VoidBottomNav({ user, onNavigate }: VoidBottomNavProps) {
-  const { openWindow, spotlightOpen, setSpotlightOpen, currentTrack, setControlCenterOpen } = useVoidStore()
+  const { openWindow, spotlightOpen, setSpotlightOpen, currentTrack } = useVoidStore()
   const [activePage, setActivePage] = React.useState('home')
 
   const navItems = [
@@ -94,7 +94,7 @@ export function VoidBottomNav({ user, onNavigate }: VoidBottomNavProps) {
               aria-current={isActive ? 'page' : undefined}
               title={item.label}
             >
-              <Icon weight={isActive ? 'fill' : 'regular'} size={22} />
+              <Icon weight={isActive ? 'fill' : 'regular'} size={20} />
               <span className="void-bottom-nav-label">{item.label}</span>
             </button>
           )
