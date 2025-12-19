@@ -18,7 +18,8 @@ VOID is a revolutionary desktop interface system that combines Windows Aero aest
 10. [Integration Guide](./INTEGRATION.md)
 11. [Usage Guide](./USAGE.md)
 12. [Troubleshooting](./TROUBLESHOOTING.md)
-13. **[Harsh Truths & Reality Check](./HARSH_TRUTHS.md)** ⚠️ - **READ THIS FIRST** - Honest assessment of what's actually implemented vs. what's documented
+13. **[Buddy AI Assistant](./BUDDY.md)** 🤖 - Complete guide to VOID's AI assistant
+14. **[Harsh Truths & Reality Check](./HARSH_TRUTHS.md)** ⚠️ - **READ THIS FIRST** - Honest assessment of what's actually implemented vs. what's documented
 
 ## Quick Start
 
