@@ -318,6 +318,8 @@ export function calculateVirtualScroll(
 /**
  * Lazy load a component
  */
+import React from 'react'
+
 export function lazyLoad<T extends React.ComponentType<any>>(
   importFn: () => Promise<{ default: T }>
 ): React.LazyExoticComponent<T> {

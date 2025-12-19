@@ -1,4 +1,4 @@
-import { Suspense, lazy, ErrorBoundary } from 'react'
+import React, { Suspense, lazy, ErrorBoundary } from 'react'
 import { useVoidKeyboard } from '@/hooks/useVoidKeyboard'
 import { VoidDesktop } from './VoidDesktop'
 import { VoidWindowManager } from './VoidWindowManager'
