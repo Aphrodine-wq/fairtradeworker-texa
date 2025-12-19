@@ -53,16 +53,18 @@ export function VoidWindow({ window }: VoidWindowProps) {
   }
 
   const handleDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (!window.maximized) {
+    if (!window.maximized && !window.pip) {
       const newX = window.position.x + info.offset.x
       const newY = window.position.y + info.offset.y
       
-      // Check for snap zones
-      const edgeCheck = isNearEdge(newX, newY, window.innerWidth, window.innerHeight)
-      if (edgeCheck.zone) {
-        setSnapZone(edgeCheck.zone)
-      } else {
-        setSnapZone(null)
+      // Check for snap zones (only for non-PiP windows)
+      if (!window.pip) {
+        const edgeCheck = isNearEdge(newX, newY, typeof window !== 'undefined' ? window.innerWidth : 1920, typeof window !== 'undefined' ? window.innerHeight : 1080)
+        if (edgeCheck.zone) {
+          setSnapZone(edgeCheck.zone)
+        } else {
+          setSnapZone(null)
+        }
       }
       
       updateWindowPosition(window.id, {
@@ -163,13 +165,13 @@ export function VoidWindow({ window }: VoidWindowProps) {
   return (
     <motion.div
       ref={windowRef}
-      className={cn('void-window', isActive && 'active')}
+      className={cn('void-window', isActive && 'active', window.maximized && 'maximized', window.pip && 'pip')}
       style={{
-        left: window.maximized ? 24 : `${window.position.x}px`,
-        top: window.maximized ? 24 : `${window.position.y}px`,
-        width: window.maximized ? 'calc(100% - 48px)' : `${window.size.width}px`,
-        height: window.maximized ? 'calc(100% - 96px)' : `${window.size.height}px`, // Account for toolbar (48px) + taskbar (48px)
-        zIndex: window.zIndex,
+        left: window.pip ? window.position.x : window.maximized ? 24 : window.position.x,
+        top: window.pip ? window.position.y : window.maximized ? 24 : window.position.y,
+        width: window.pip ? window.size.width : window.maximized ? window.innerWidth - 48 : window.size.width,
+        height: window.pip ? window.size.height : window.maximized ? window.innerHeight - 48 - 48 : window.size.height,
+        zIndex: window.pip ? 10000 : window.zIndex, // PiP always on top
       }}
       initial={{ 
         scale: 0.88, 
@@ -197,7 +199,7 @@ export function VoidWindow({ window }: VoidWindowProps) {
         willChange: 'transform, filter, opacity',
       }}
       onClick={() => focusWindow(window.id)}
-      drag={!window.maximized}
+      drag={!window.maximized && !window.pip}
       dragMomentum={false}
       dragElastic={0.1}
       onDragStart={handleDragStart}
@@ -273,6 +275,20 @@ export function VoidWindow({ window }: VoidWindowProps) {
           </div>
         )}
       </div>
+
+      {/* Snap Zone Indicator */}
+      {snapZone && !window.maximized && (
+        <motion.div
+          className="void-window-snap-indicator"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+        >
+          <div className="void-window-snap-label">
+            {snapZone === 'maximize' ? 'Maximize' : `Snap ${snapZone.replace('-', ' ')}`}
+          </div>
+        </motion.div>
+      )}
 
       {/* Resize Handles */}
       {!window.maximized && (

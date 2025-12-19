@@ -5,6 +5,7 @@ import type { Theme } from '@/lib/themes'
 import type { Track } from '@/lib/music/types'
 import { arrayToSet, validateVolume, validateGridPosition, validateWindowSize, sanitizeString, validateWithFallback, ThemeSchema, VoiceStateSchema, VoicePermissionSchema, BuddyStateSchema, BuddyMessageSchema } from './validation'
 import { createFileSystem } from './fileSystem'
+import { getDefaultDesktops } from './virtualDesktops'
 
 interface VoidStore {
   // Icons
@@ -221,6 +222,18 @@ export const useVoidStore = create<VoidStore>()(
       // Lock screen initial state
       isLocked: false,
       lockScreenPin: null,
+      
+      // Notifications initial state
+      notifications: [],
+      unreadCount: 0,
+      
+      // Spotlight initial state
+      spotlightOpen: false,
+      spotlightQuery: '',
+      
+      // Virtual Desktops initial state
+      virtualDesktops: getDefaultDesktops(),
+      activeDesktopId: getDefaultDesktops()[0]?.id || 'desktop-1',
       
       // Voice initial state
       voiceState: 'idle',
