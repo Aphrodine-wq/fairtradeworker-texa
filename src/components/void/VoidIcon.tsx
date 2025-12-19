@@ -4,6 +4,7 @@ import { useVoidStore } from '@/lib/void/store'
 import { cn } from '@/lib/utils'
 import type { IconData } from '@/lib/void/types'
 import { sanitizeString } from '@/lib/void/validation'
+import { dragSystem } from '@/lib/void/dragSystem'
 
 interface VoidIconProps {
   icon: IconData
@@ -26,15 +27,26 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
     disabled: pinnedIcons.has(icon.id),
   })
 
+  // Advanced visual feedback with physics-based effects
+  const dragState = isDragging ? dragSystem.getDragState(icon.id) : undefined
+  const momentum = dragState?.momentum
+  const momentumMagnitude = momentum ? Math.sqrt(momentum.x ** 2 + momentum.y ** 2) : 0
+  const hasSnapZone = dragState?.snapZone && dragState.snapZone.strength > 0.5
+  const hasCollision = !!dragState?.collision
+
+  // Enhanced drag style with physics-based visual feedback
   const dragStyle = {
     ...style,
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.9 : 1,
-    scale: isDragging ? 1.1 : 1,
+    opacity: isDragging ? 0.85 : 1,
+    scale: isDragging ? (1.15 + momentumMagnitude * 0.001) : 1,
     zIndex: isDragging ? 1000 : 'auto',
-    filter: isDragging ? 'brightness(1.3) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3))' : 'none',
-    transition: isDragging ? 'none' : 'all 0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+    filter: isDragging 
+      ? `brightness(${1.4 + momentumMagnitude * 0.0001}) drop-shadow(0 ${8 + momentumMagnitude * 0.01}px ${16 + momentumMagnitude * 0.01}px rgba(0, 0, 0, 0.4)) ${hasSnapZone ? 'hue-rotate(180deg)' : ''} ${hasCollision ? 'contrast(1.2)' : ''}`
+      : 'none',
+    transition: isDragging ? 'none' : 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
     cursor: isDragging ? 'grabbing' : 'grab',
+    rotate: isDragging && momentum ? `${Math.atan2(momentum.y, momentum.x) * (180 / Math.PI)}deg` : '0deg',
   } as React.CSSProperties
 
   const handleDoubleClick = () => {

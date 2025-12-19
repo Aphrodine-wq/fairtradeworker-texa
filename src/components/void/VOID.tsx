@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from 'react'
+import React, { Suspense, lazy, useState, useMemo, useCallback } from 'react'
 import { useVoidKeyboard } from '@/hooks/useVoidKeyboard'
 import { VoidDesktop } from './VoidDesktop'
 import { VoidWindowManager } from './VoidWindowManager'
@@ -32,8 +32,11 @@ import '@/styles/void-os-layers.css'
 import '@/styles/void-design-system.css'
 import '@/styles/void-effects.css'
 
-// Lazy load heavy components
-const VoidMobileNav = lazy(() => import('./VoidMobileNav').then(m => ({ default: m.VoidMobileNav })))
+// Lazy load heavy components with optimized loading
+const VoidMobileNav = lazy(() => 
+  import('./VoidMobileNav').then(m => ({ default: m.VoidMobileNav }))
+    .catch(() => ({ default: () => null })) // Graceful fallback
+)
 
 interface VOIDProps {
   user: User
@@ -75,17 +78,33 @@ export function VOID({ user, onNavigate }: VOIDProps) {
     return cleanup
   }, [])
 
-  const { isLocked, spotlightOpen, virtualDesktops, activeDesktopId, wiremapEnabled } = useVoidStore()
+  // Optimized store selectors - only subscribe to what we need
+  const isLocked = useVoidStore(state => state.isLocked)
+  const spotlightOpen = useVoidStore(state => state.spotlightOpen)
+  const wiremapEnabled = useVoidStore(state => state.wiremapEnabled)
+  
   const [missionControlOpen, setMissionControlOpen] = useState(false)
   const [clipboardOpen, setClipboardOpen] = useState(false)
   const [bootComplete, setBootComplete] = useState(false)
 
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+  // Memoize mobile detection
+  const isMobile = useMemo(() => 
+    typeof window !== 'undefined' && window.innerWidth < 768,
+    []
+  )
 
-  // Handle boot sequence completion
-  const handleBootComplete = () => {
+  // Memoized callbacks to prevent unnecessary re-renders
+  const handleBootComplete = useCallback(() => {
     setBootComplete(true)
-  }
+  }, [])
+
+  const handleCloseClipboard = useCallback(() => {
+    setClipboardOpen(false)
+  }, [])
+
+  const handleCloseMissionControl = useCallback(() => {
+    setMissionControlOpen(false)
+  }, [])
 
   // Show boot screen until boot is complete
   if (!bootComplete) {
@@ -149,7 +168,7 @@ export function VOID({ user, onNavigate }: VOIDProps) {
           <VoidErrorBoundary>
             <VoidClipboardManager
               isOpen={clipboardOpen}
-              onClose={() => setClipboardOpen(false)}
+              onClose={handleCloseClipboard}
             />
           </VoidErrorBoundary>
         )}
@@ -159,7 +178,7 @@ export function VOID({ user, onNavigate }: VOIDProps) {
           <VoidErrorBoundary>
             <VoidMissionControl
               isOpen={missionControlOpen}
-              onClose={() => setMissionControlOpen(false)}
+              onClose={handleCloseMissionControl}
             />
           </VoidErrorBoundary>
         )}

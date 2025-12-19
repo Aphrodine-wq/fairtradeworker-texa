@@ -1,10 +1,11 @@
 /**
  * VOID OS Boot Screen
- * Displays boot progress with VOID branding
+ * Shows Buddy's face, bigger and centered
  */
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { useBootSequence } from '@/hooks/useBootSequence'
+import { VoidBuddyIcon } from './VoidBuddyIcon'
 import '@/styles/void-boot.css'
 
 interface VoidBootScreenProps {
@@ -34,60 +35,46 @@ export function VoidBootScreen({ userId, userName, onComplete }: VoidBootScreenP
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="void-boot-content">
-            {/* VOID Logo */}
+          <div className="void-boot-content flex flex-col items-center justify-center min-h-screen">
+            {/* Buddy's Face - Bigger and Centered */}
             <motion.div
-              className="void-boot-logo"
-              initial={{ scale: 0.8, opacity: 0 }}
+              className="flex items-center justify-center mb-8"
+              initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              <div className="void-boot-logo-inner">
-                <div className="void-boot-logo-text">VOID</div>
+              <div className="scale-[3]"> {/* 3x bigger */}
+                <VoidBuddyIcon />
               </div>
             </motion.div>
 
-            {/* Progress Bar */}
+            {/* Subtle loading indicator */}
             <motion.div
-              className="void-boot-progress-container"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="void-boot-progress-bar">
-                <motion.div
-                  className="void-boot-progress-fill"
-                  initial={{ width: '0%' }}
-                  animate={{ width: `${progress.progress}%` }}
-                  transition={{ duration: 0.3, ease: 'easeOut' }}
-                />
-              </div>
-              <div className="void-boot-progress-text">
-                {progress.progress}%
-              </div>
-            </motion.div>
-
-            {/* Status Message */}
-            <motion.div
-              className="void-boot-message"
+              className="mt-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
             >
-              {progress.message}
+              <div className="flex gap-2">
+                {[0, 1, 2].map(i => (
+                  <motion.div
+                    key={i}
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: 'var(--void-accent, var(--accent))' }}
+                    animate={{ 
+                      scale: [1, 1.3, 1],
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{ 
+                      duration: 1,
+                      delay: i * 0.2,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
+                    }}
+                  />
+                ))}
+              </div>
             </motion.div>
-
-            {/* Welcome Message */}
-            {userName && progress.phase === 'desktop-ready' && (
-              <motion.div
-                className="void-boot-welcome"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.7 }}
-              >
-                Welcome back, {userName}
-              </motion.div>
-            )}
           </div>
         </motion.div>
       )}

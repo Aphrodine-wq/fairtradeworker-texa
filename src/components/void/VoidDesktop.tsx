@@ -1,5 +1,5 @@
-import { useRef, useState, useCallback } from 'react'
-import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core'
+import { useRef, useState, useCallback, useMemo, memo } from 'react'
+import { DndContext, DragEndEvent, DragStartEvent, DragMoveEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidIcon } from './VoidIcon'
 import { VoidVoiceIcon } from './VoidVoiceIcon'
@@ -7,20 +7,32 @@ import { VoidContextMenu } from './VoidContextMenu'
 import { getIconForId } from '@/lib/void/iconMap'
 import { validateGridPosition } from '@/lib/void/validation'
 import { getDesktopContextMenu, getIconContextMenu } from '@/lib/void/contextMenus'
+import { dragSystem } from '@/lib/void/dragSystem'
 import '@/styles/void-desktop.css'
 
-export function VoidDesktop() {
+// Memoized component to prevent unnecessary re-renders
+export const VoidDesktop = memo(function VoidDesktop() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { icons, iconPositions, pinnedIcons, sortIcons, updateIconPosition, openWindow, setDesktopBackground, createFile } = useVoidStore()
   const [draggedId, setDraggedId] = useState<string | null>(null)
+  const [dragState, setDragState] = useState<ReturnType<typeof dragSystem.getDragState>>(undefined)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Advanced sensor configuration with multiple activation strategies
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 1, // 1px for maximum precision
+        delay: 0,
+        tolerance: 0,
       },
     })
+  )
+
+  // Memoize icons data for drag system
+  const iconsData = useMemo(() => 
+    icons.map(icon => ({ id: icon.id, position: icon.position })),
+    [icons]
   )
 
   // Calculate grid cell size
@@ -62,51 +74,74 @@ export function VoidDesktop() {
   }, [getCellSize])
 
   const handleDragStart = (event: DragStartEvent) => {
-    setDraggedId(event.active.id as string)
+    const iconId = event.active.id as string
+    setDraggedId(iconId)
+    
+    // Initialize advanced drag system
+    const state = dragSystem.handleDragStart(event)
+    setDragState(state)
+  }
+
+  const handleDragMove = (event: DragMoveEvent) => {
+    if (!containerRef.current) return
+    
+    const rect = containerRef.current.getBoundingClientRect()
+    const gridSize = { width: rect.width, height: rect.height }
+    
+    // Update advanced drag system
+    const state = dragSystem.handleDragMove(event, iconsData)
+    if (state) {
+      setDragState(state)
+    }
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
-    const { active, delta, over } = event
+    const { active } = event
     const iconId = active.id as string
     
     if (!containerRef.current || pinnedIcons.has(iconId)) {
       setDraggedId(null)
-      return
-    }
-
-    // Get the actual DOM element position for pixel-perfect placement
-    const activeElement = document.querySelector(`[data-id="${iconId}"]`) as HTMLElement
-    if (!activeElement) {
-      setDraggedId(null)
+      setDragState(undefined)
+      dragSystem.clearDragState(iconId)
       return
     }
 
     const rect = containerRef.current.getBoundingClientRect()
-    const elementRect = activeElement.getBoundingClientRect()
+    const gridSize = { width: rect.width, height: rect.height }
     
-    // Calculate position relative to desktop grid
-    const relativeX = elementRect.left - rect.left + elementRect.width / 2
-    const relativeY = elementRect.top - rect.top + elementRect.height / 2
+    // Get advanced drag result with momentum and snap zones
+    const dragResult = dragSystem.handleDragEnd(event, gridSize)
+    
+    if (!dragResult) {
+      setDraggedId(null)
+      setDragState(undefined)
+      return
+    }
 
+    // Use advanced drag system's final position (includes momentum and snap)
+    const { finalPosition } = dragResult
+
+    // Enhanced collision detection with radius
     const cellSize = getCellSize()
-    const newCol = Math.max(1, Math.min(200, Math.round(relativeX / cellSize.width)))
-    const newRow = Math.max(1, Math.min(200, Math.round(relativeY / cellSize.height)))
-
-    // Check for collisions with other icons
     const hasCollision = icons.some(icon => {
       if (icon.id === iconId) return false
-      return icon.position.row === newRow && icon.position.col === newCol
+      const distance = Math.sqrt(
+        Math.pow((icon.position.col - finalPosition.col) * cellSize.width, 2) +
+        Math.pow((icon.position.row - finalPosition.row) * cellSize.height, 2)
+      )
+      return distance < cellSize.width * 0.8 // 80% of cell size collision radius
     })
 
     if (!hasCollision) {
       // Validate position before updating
-      const validatedPos = validateGridPosition({ row: newRow, col: newCol })
+      const validatedPos = validateGridPosition(finalPosition)
       if (validatedPos) {
         updateIconPosition(iconId, validatedPos)
       }
     }
 
     setDraggedId(null)
+    setDragState(undefined)
   }
 
   // Desktop context menu handlers
@@ -242,6 +277,7 @@ export function VoidDesktop() {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
+      onDragMove={handleDragMove}
       onDragEnd={handleDragEnd}
     >
       {/* Hidden file input for background upload */}
@@ -372,4 +408,4 @@ export function VoidDesktop() {
       </VoidContextMenu>
     </DndContext>
   )
-}
+})
