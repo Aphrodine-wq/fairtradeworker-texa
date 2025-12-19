@@ -90,13 +90,13 @@ export function VoidBuddyMessages({ buddyPosition }: VoidBuddyMessagesProps) {
     }
   }, [visibleMessages])
 
-  // Calculate position UNDERNEATH Buddy
+  // Calculate position for each message (stacked vertically)
   const getMessagePosition = (index: number) => {
     try {
-      // Position messages underneath Buddy, centered horizontally
-      // Buddy icon is 128px (w-32), so center messages below it
+      // Messages are positioned relative to the container which is already below Buddy
+      // Stack messages vertically with 100px spacing
       const horizontalOffset = -150 // Center messages (300px / 2 = 150px)
-      const verticalOffset = 180 + (index * 100) // Start 180px below Buddy, stack with 100px spacing
+      const verticalOffset = index * 100 // Stack with 100px spacing
       
       return {
         left: `${horizontalOffset}px`,
@@ -108,20 +108,49 @@ export function VoidBuddyMessages({ buddyPosition }: VoidBuddyMessagesProps) {
       // Fallback position if calculation fails
       return {
         left: '-150px',
-        top: `${180 + (index * 100)}px`,
+        top: `${index * 100}px`,
         maxWidth: '300px',
         transform: 'translateX(50%)',
       }
     }
   }
 
+  // Calculate absolute position below Buddy's area
+  // Buddy icon: 128px (w-32 h-32)
+  // Buddy name: ~24px + 8px margin = ~32px
+  // Total Buddy height: ~160px
+  const getAbsolutePosition = () => {
+    if (buddyPosition.top) {
+      // Buddy is positioned from top
+      const topValue = parseInt(buddyPosition.top) || 80
+      return {
+        top: `${topValue + 160 + 20}px`, // Buddy height + spacing
+        left: buddyPosition.left || '50%',
+        right: buddyPosition.right,
+        transform: buddyPosition.transform || 'translateX(-50%)',
+      }
+    } else if (buddyPosition.bottom) {
+      // Buddy is positioned from bottom
+      const bottomValue = parseInt(buddyPosition.bottom) || 60
+      return {
+        bottom: `${bottomValue + 160 + 20}px`, // Buddy height + spacing
+        left: buddyPosition.left || '50%',
+        right: buddyPosition.right,
+        transform: buddyPosition.transform || 'translateX(-50%)',
+      }
+    }
+    // Default: top-center
+    return {
+      top: '260px', // 80px (Buddy top) + 160px (Buddy height) + 20px (spacing)
+      left: '50%',
+      transform: 'translateX(-50%)',
+    }
+  }
+
   return (
     <div
       className="fixed z-[60] pointer-events-none"
-      style={{
-        ...buddyPosition,
-        transform: buddyPosition.transform || 'none',
-      }}
+      style={getAbsolutePosition()}
     >
       <AnimatePresence>
         {visibleMessages.filter(msg => msg && msg.id && msg.message).map((msg, index) => (

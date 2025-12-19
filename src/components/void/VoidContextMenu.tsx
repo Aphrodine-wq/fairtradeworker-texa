@@ -97,7 +97,7 @@ export function VoidContextMenu({
   }
 
   return (
-    <ContextMenuPrimitive.Root open={open} onOpenChange={handleOpenChange}>
+    <ContextMenuPrimitive.Root open={open} onOpenChange={handleOpenChange} modal={false}>
       <ContextMenuPrimitive.Trigger asChild>
         {children}
       </ContextMenuPrimitive.Trigger>
@@ -106,11 +106,18 @@ export function VoidContextMenu({
           className={`void-system-context-menu void-context-menu void-context-menu-${type}`}
           sideOffset={5}
           alignOffset={-5}
-          onEscapeKeyDown={() => {
+          onEscapeKeyDown={(e) => {
+            e.preventDefault()
             setOpen(false)
             onOpenChange?.(false)
           }}
-          onPointerDownOutside={() => {
+          onPointerDownOutside={(e) => {
+            e.preventDefault()
+            setOpen(false)
+            onOpenChange?.(false)
+          }}
+          onInteractOutside={(e) => {
+            e.preventDefault()
             setOpen(false)
             onOpenChange?.(false)
           }}

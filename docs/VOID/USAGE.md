@@ -106,13 +106,31 @@ setWiremapNodeCount(30) // Mobile
 ### Icon Interaction
 
 - **Hover**: Scale up (1.05x) with glow effect
-- **Drag**: Drag to reposition
+- **Drag**: Click and drag icon to reposition (uses native HTML5 Drag and Drop API)
 - **Double-Click**: Open window
 - **Right-Click**: Context menu
 
+### Drag and Drop
+
+VOID uses native HTML5 Drag and Drop API for icon positioning:
+
+1. **Start Drag**: Click and hold on an icon, then drag
+2. **Visual Feedback**: Icon scales to 1.2x with enhanced brightness and shadow
+3. **Status Indicator**: "DRAGGING" text appears in center of screen
+4. **Grid Snapping**: Icon automatically snaps to nearest grid cell
+5. **Drop**: Release mouse button to place icon
+6. **Status Indicator**: "DROPPING" text appears briefly
+7. **Collision Detection**: Icons cannot overlap (80% cell size collision radius)
+
+**Features:**
+- **Pinned Icons**: Pinned icons cannot be dragged
+- **Precise Placement**: Automatic grid snapping for alignment
+- **Collision Prevention**: Icons cannot be placed on top of each other
+- **Visual Feedback**: Clear indicators during drag operations
+
 ### Icon Management
 
-- **Pin**: Pin icons to keep in place
+- **Pin**: Pin icons to keep in place (disables drag)
 - **Sort**: Sort by name, date, or usage
 - **Usage Tracking**: Icons track usage for sorting
 
