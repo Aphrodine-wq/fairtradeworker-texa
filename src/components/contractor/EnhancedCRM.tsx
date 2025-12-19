@@ -1,5 +1,5 @@
 import type { User } from "@/lib/types"
-import { Card } from "@/components/ui/card"
+import { VOID } from "@/components/void/VOID"
 
 interface EnhancedCRMProps {
   user: User
@@ -7,14 +7,5 @@ interface EnhancedCRMProps {
 }
 
 export function EnhancedCRM({ user, onNavigate }: EnhancedCRMProps) {
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="p-8 text-center">
-        <h1 className="text-3xl font-bold mb-4">Void CRM</h1>
-        <p className="text-muted-foreground">
-          This feature is currently under development.
-        </p>
-      </Card>
-    </div>
-  )
+  return <VOID user={user} onNavigate={onNavigate} />
 }
