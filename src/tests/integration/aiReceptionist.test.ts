@@ -75,11 +75,14 @@ describe('AI Receptionist Webhook', () => {
     it('should reject non-POST requests', async () => {
       mockReq.method = 'GET'
       
-      // Import and run handler (mock implementation)
-      const result = mockRes.data
+      // Import handler
+      const handler = (await import('@/../api/receptionist/inbound')).default
+      
+      // Call handler with GET request
+      await handler(mockReq as any, mockRes as any)
       
       expect(mockRes.statusCode).toBe(405)
-      expect(result?.errorCode).toBe('METHOD_NOT_ALLOWED')
+      expect(mockRes.data?.errorCode).toBe('METHOD_NOT_ALLOWED')
     })
     
     it('should validate Twilio webhook signature', async () => {

@@ -12,7 +12,8 @@ import { useVoidStore } from '@/lib/void/store'
 vi.mock('framer-motion', () => ({
   motion: {
     div: ({ children, ...props }: any) => <div {...props}>{children}</div>
-  }
+  },
+  AnimatePresence: ({ children }: any) => children
 }))
 
 describe('VoidDesktop', () => {
@@ -67,45 +68,48 @@ describe('VoidDesktop', () => {
     }
   })
 
-  it('should handle icon drop', async () => {
-    const store = useVoidStore.getState()
-    if (store.icons.length === 0) return
+    it('should handle icon drop', async () => {
+      const store = useVoidStore.getState()
+      if (store.icons.length === 0) return
 
-    const iconId = store.icons[0].id
-    const initialPosition = store.iconPositions[iconId] || { x: 0, y: 0 }
+      const iconId = store.icons[0].id
+      const initialPosition = store.iconPositions[iconId] || { row: 0, col: 0 }
 
-    render(<VoidDesktop />)
-    const desktop = document.querySelector('.void-desktop') as HTMLElement
+      render(<VoidDesktop />)
+      const desktop = document.querySelector('.void-desktop') as HTMLElement
 
-    if (desktop) {
-      // Simulate drag over
-      const dragOverEvent = new DragEvent('dragover', { bubbles: true, cancelable: true })
-      Object.defineProperty(dragOverEvent, 'dataTransfer', {
-        value: { dropEffect: 'move' }
-      })
-      fireEvent(desktop, dragOverEvent)
+      if (desktop) {
+        // Simulate drag over
+        const dragOverEvent = new DragEvent('dragover', { bubbles: true, cancelable: true })
+        Object.defineProperty(dragOverEvent, 'dataTransfer', {
+          value: { dropEffect: 'move' }
+        })
+        fireEvent(desktop, dragOverEvent)
 
-      // Simulate drop
-      const dropEvent = new DragEvent('drop', { bubbles: true })
-      Object.defineProperty(dropEvent, 'dataTransfer', {
-        value: {
-          getData: vi.fn(() => iconId)
-        }
-      })
-      
-      // Get drop coordinates from event
-      Object.defineProperty(dropEvent, 'clientX', { value: 500 })
-      Object.defineProperty(dropEvent, 'clientY', { value: 300 })
-      
-      fireEvent(desktop, dropEvent)
+        // Simulate drop
+        const dropEvent = new DragEvent('drop', { bubbles: true })
+        Object.defineProperty(dropEvent, 'dataTransfer', {
+          value: {
+            getData: vi.fn(() => iconId)
+          }
+        })
+        
+        // Get drop coordinates from event
+        Object.defineProperty(dropEvent, 'clientX', { value: 500 })
+        Object.defineProperty(dropEvent, 'clientY', { value: 300 })
+        
+        fireEvent(desktop, dropEvent)
 
-      await waitFor(() => {
-        const newPosition = store.iconPositions[iconId]
-        // Position should be updated (snapped to grid)
-        expect(newPosition).toBeDefined()
-      })
-    }
-  })
+        await waitFor(() => {
+          const newPosition = store.iconPositions[iconId]
+          // Position should be updated (snapped to grid)
+          expect(newPosition).toBeDefined()
+          // Should have row and col properties
+          expect(newPosition).toHaveProperty('row')
+          expect(newPosition).toHaveProperty('col')
+        })
+      }
+    })
 
   it('should show dragging indicator during drag', () => {
     render(<VoidDesktop />)

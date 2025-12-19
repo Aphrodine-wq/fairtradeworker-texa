@@ -12,7 +12,7 @@ describe('VOID Drag and Drop System', () => {
     const store = useVoidStore.getState()
     // Reset icon positions
     Object.keys(store.iconPositions).forEach(id => {
-      store.updateIconPosition(id, { x: 0, y: 0 })
+      store.updateIconPosition(id, { row: 0, col: 0 })
     })
   })
 
@@ -45,10 +45,18 @@ describe('VOID Drag and Drop System', () => {
       if (store.icons.length === 0) return
 
       const iconId = store.icons[0].id
+      // Ensure icon is not already pinned
+      if (store.pinnedIcons.has(iconId)) {
+        store.unpinIcon(iconId)
+      }
+      
       store.pinIcon(iconId)
 
-      // Pinned icons should have draggable="false"
+      // Pinned icons should be in the pinnedIcons set
       expect(store.pinnedIcons.has(iconId)).toBe(true)
+      // Icon should also have pinned property set
+      const icon = store.icons.find(i => i.id === iconId)
+      expect(icon?.pinned).toBe(true)
     })
   })
 
@@ -58,7 +66,7 @@ describe('VOID Drag and Drop System', () => {
       if (store.icons.length === 0) return
 
       const iconId = store.icons[0].id
-      const newPosition: GridPosition = { x: 5, y: 3 }
+      const newPosition: GridPosition = { row: 5, col: 3 }
 
       // Simulate drop (normally handled by VoidDesktop component)
       store.updateIconPosition(iconId, newPosition)
@@ -71,15 +79,14 @@ describe('VOID Drag and Drop System', () => {
       if (store.icons.length === 0) return
 
       const iconId = store.icons[0].id
-      // Grid is typically 80px, so positions should be multiples
-      const rawPosition = { x: 127, y: 89 } // Not on grid
-      const expectedSnapped = { x: 1, y: 1 } // Snapped to grid (assuming 80px grid)
+      // Grid uses row/col coordinates
+      const rawPosition: GridPosition = { row: 5, col: 3 }
 
       store.updateIconPosition(iconId, rawPosition)
       
       // Position should be updated (actual snapping happens in component)
       const position = store.iconPositions[iconId]
-      expect(position).toBeDefined()
+      expect(position).toEqual(rawPosition)
     })
 
     it('should prevent overlapping icons', () => {
@@ -89,7 +96,7 @@ describe('VOID Drag and Drop System', () => {
       const icon1Id = store.icons[0].id
       const icon2Id = store.icons[1].id
 
-      const position: GridPosition = { x: 2, y: 2 }
+      const position: GridPosition = { row: 2, col: 2 }
       store.updateIconPosition(icon1Id, position)
       store.updateIconPosition(icon2Id, position)
 
@@ -117,16 +124,28 @@ describe('VOID Drag and Drop System', () => {
 
     it('should not allow dragging maximized windows', () => {
       const store = useVoidStore.getState()
+      // Close any existing settings window
+      const existing = store.windows.find(w => w.menuId === 'settings')
+      if (existing) {
+        store.closeWindow(existing.id)
+      }
+      
       store.openWindow('settings')
       const window = store.windows.find(w => w.menuId === 'settings')
       
       if (window) {
+        // Ensure window is not maximized initially
+        if (window.maximized) {
+          store.maximizeWindow(window.id) // Toggle off
+        }
+        
+        // Maximize the window
         store.maximizeWindow(window.id)
-        const initialPosition = window.position
+        const updatedWindow = store.windows.find(w => w.id === window.id)
         
         // Maximized windows shouldn't be draggable
         // This is enforced in the component, not the store
-        const updatedWindow = store.windows.find(w => w.id === window.id)
+        // Store just tracks the maximized state
         expect(updatedWindow?.maximized).toBe(true)
       }
     })

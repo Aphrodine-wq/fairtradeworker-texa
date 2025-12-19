@@ -36,11 +36,18 @@ describe('VOID Store', () => {
       const iconId = store.icons[0]?.id
       if (!iconId) return
 
+      // Ensure icon is not already pinned
+      if (store.pinnedIcons.has(iconId)) {
+        store.unpinIcon(iconId)
+      }
+
       store.pinIcon(iconId)
       expect(store.pinnedIcons.has(iconId)).toBe(true)
+      expect(store.icons.find(i => i.id === iconId)?.pinned).toBe(true)
 
       store.unpinIcon(iconId)
       expect(store.pinnedIcons.has(iconId)).toBe(false)
+      expect(store.icons.find(i => i.id === iconId)?.pinned).toBe(false)
     })
 
     it('should record icon usage', () => {
@@ -48,16 +55,26 @@ describe('VOID Store', () => {
       const iconId = store.icons[0]?.id
       if (!iconId) return
 
-      const initialUsage = store.iconUsage[iconId] || 0
-      store.recordIconUsage(iconId)
-
-      expect(store.iconUsage[iconId]).toBe(initialUsage + 1)
+      // Clear any existing usage
+      const currentUsage = store.iconUsage[iconId] || 0
+      // Reset to 0 by clearing and re-adding
+      const newStore = useVoidStore.getState()
+      const initialUsage = newStore.iconUsage[iconId] || 0
+      
+      newStore.recordIconUsage(iconId)
+      const updatedStore = useVoidStore.getState()
+      expect(updatedStore.iconUsage[iconId]).toBe(initialUsage + 1)
     })
   })
 
   describe('Window Management', () => {
     it('should open a window', () => {
       const store = useVoidStore.getState()
+      // Close any existing settings window first
+      const existing = store.windows.find(w => w.menuId === 'settings')
+      if (existing) {
+        store.closeWindow(existing.id)
+      }
       const initialWindowCount = store.windows.length
 
       store.openWindow('settings')
@@ -142,11 +159,16 @@ describe('VOID Store', () => {
   describe('Theme Management', () => {
     it('should set theme', () => {
       const store = useVoidStore.getState()
-      store.setTheme('light')
-      expect(store.theme).toBe('light')
+      const initialTheme = store.theme
+      
+      // Test setting to opposite theme
+      const newTheme = initialTheme === 'light' ? 'dark' : 'light'
+      store.setTheme(newTheme)
+      expect(store.theme).toBe(newTheme)
 
-      store.setTheme('dark')
-      expect(store.theme).toBe('dark')
+      // Test setting back
+      store.setTheme(initialTheme)
+      expect(store.theme).toBe(initialTheme)
     })
   })
 
@@ -171,24 +193,39 @@ describe('VOID Store', () => {
       const store = useVoidStore.getState()
       const initialPlaying = store.isPlaying
 
-      store.setIsPlaying(!initialPlaying)
-      expect(store.isPlaying).toBe(!initialPlaying)
+      // Toggle to opposite state
+      const newPlayingState = !initialPlaying
+      store.setIsPlaying(newPlayingState)
+      expect(store.isPlaying).toBe(newPlayingState)
+      
+      // Toggle back
+      store.setIsPlaying(initialPlaying)
+      expect(store.isPlaying).toBe(initialPlaying)
     })
 
     it('should set volume', () => {
       const store = useVoidStore.getState()
+      const initialVolume = store.volume
+      
       store.setVolume(0.75)
       expect(store.volume).toBe(0.75)
+      
+      // Restore initial volume
+      store.setVolume(initialVolume)
     })
 
     it('should clamp volume between 0 and 1', () => {
       const store = useVoidStore.getState()
+      const initialVolume = store.volume
       
       store.setVolume(1.5)
       expect(store.volume).toBe(1)
 
       store.setVolume(-0.5)
       expect(store.volume).toBe(0)
+      
+      // Restore initial volume
+      store.setVolume(initialVolume)
     })
   })
 
@@ -198,27 +235,39 @@ describe('VOID Store', () => {
       const initialCount = store.buddyMessages.length
 
       const message = {
-        id: 'test-msg',
-        text: 'Hello!',
+        id: `test-msg-${Date.now()}`,
+        message: 'Hello!',
+        emotion: 'neutral' as const,
         timestamp: Date.now(),
-        type: 'user' as const
+        priority: 'low' as const
       }
 
       store.addBuddyMessage(message)
-      expect(store.buddyMessages.length).toBe(initialCount + 1)
-      expect(store.buddyMessages[store.buddyMessages.length - 1]).toEqual(message)
+      const updatedStore = useVoidStore.getState()
+      expect(updatedStore.buddyMessages.length).toBe(initialCount + 1)
+      expect(updatedStore.buddyMessages[updatedStore.buddyMessages.length - 1]).toEqual(message)
     })
 
     it('should update buddy position', () => {
       const store = useVoidStore.getState()
+      const initialPosition = store.buddyState.position
+      
       store.setBuddyPosition('bottom-right')
       expect(store.buddyState.position).toBe('bottom-right')
+      
+      // Restore initial position
+      store.setBuddyPosition(initialPosition)
     })
 
     it('should update buddy emotion', () => {
       const store = useVoidStore.getState()
+      const initialEmotion = store.buddyState.emotion
+      
       store.setBuddyEmotion('happy')
       expect(store.buddyState.emotion).toBe('happy')
+      
+      // Restore initial emotion
+      store.setBuddyEmotion(initialEmotion)
     })
   })
 })
