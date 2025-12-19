@@ -1,0 +1,195 @@
+import { useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useVoidStore } from '@/lib/void/store'
+import { sanitizeString } from '@/lib/void/validation'
+import type { BuddyState } from '@/lib/void/types'
+
+interface VoidBuddyPanelProps {
+  onClose?: () => void
+  userName: string
+  onMessageClick?: (messageId: string) => void
+  stats?: BuddyState['stats']
+  streak?: BuddyState['streak']
+  mood?: BuddyState['mood']
+}
+
+// Format timestamp for iPhone-style messages
+function formatMessageTime(timestamp: number): string {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now.getTime() - date.getTime()
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+
+  if (minutes < 1) return 'now'
+  if (minutes < 60) return `${minutes}m`
+  if (hours < 24) return `${hours}h`
+  if (days < 7) return `${days}d`
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+export function VoidBuddyPanel({ 
+  userName, 
+  onMessageClick, 
+  streak,
+}: VoidBuddyPanelProps) {
+  const { buddyMessages } = useVoidStore()
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [buddyMessages])
+
+  // Get theme for dark mode styling
+  const theme = document.documentElement.getAttribute('data-theme') || 'light'
+  const isDark = theme === 'dark'
+  
+  return (
+    <motion.div
+      className="glass-panel overflow-hidden flex flex-col"
+      style={{
+        width: '360px',
+        height: '480px',
+        borderRadius: '20px',
+        background: isDark 
+          ? 'rgba(28, 28, 30, 0.85)' 
+          : 'rgba(255, 255, 255, 0.85)',
+        backdropFilter: 'blur(40px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+        border: isDark 
+          ? '0.5px solid rgba(255, 255, 255, 0.1)' 
+          : '0.5px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: isDark
+          ? '0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+          : '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+        willChange: 'transform',
+      }}
+      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+      transition={{ 
+        type: 'spring', 
+        damping: 25, 
+        stiffness: 300,
+        duration: 0.2,
+      }}
+    >
+      {/* No header - seamless design */}
+
+      {/* Content - Scrollable area for messages - Seamless, no boxes */}
+      <div className="flex-1 flex flex-col min-h-0 px-3 py-4" style={{ overflow: 'hidden' }}>
+
+        {/* Messages Section - iPhone Style */}
+        <div className="flex-1 flex flex-col min-h-0">
+          <div 
+            className="flex-1 overflow-y-auto px-2 py-4 space-y-2"
+            style={{
+              scrollBehavior: 'smooth',
+              WebkitOverflowScrolling: 'touch',
+              background: isDark 
+                ? 'linear-gradient(to bottom, #1C1C1E 0%, #000000 100%)'
+                : 'linear-gradient(to bottom, #E5E5EA 0%, #F2F2F7 100%)',
+            }}
+          >
+            {buddyMessages.length > 0 ? (
+              <AnimatePresence initial={false}>
+                {buddyMessages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="flex items-start gap-2"
+                    style={{ justifyContent: 'flex-start' }}
+                  >
+                    {/* Avatar/Buddy indicator */}
+                    <div 
+                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{
+                        background: 'linear-gradient(135deg, #00f5ff 0%, #0099ff 100%)',
+                        color: '#000',
+                      }}
+                    >
+                      B
+                    </div>
+                    
+                    {/* Message bubble */}
+                    <div className="flex flex-col items-start max-w-[75%]">
+                      <motion.div
+                        className="px-4 py-2 rounded-2xl cursor-pointer"
+                        style={{
+                          background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+                          color: '#fff',
+                          borderRadius: '18px 18px 18px 4px', // iOS left bubble style
+                          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                        }}
+                        onClick={() => onMessageClick?.(msg.id)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        title="Click me for a response! 😏"
+                      >
+                        <div className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {sanitizeString(msg.message, 200)}
+                        </div>
+                      </motion.div>
+                      
+                      {/* Timestamp */}
+                      <div 
+                        className="text-xs mt-1 px-2"
+                        style={{ color: 'var(--text-tertiary, var(--void-text-muted))' }}
+                      >
+                        {formatMessageTime(msg.timestamp)}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex items-start gap-2"
+              >
+                <div 
+                  className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                  style={{
+                    background: 'linear-gradient(135deg, #00f5ff 0%, #0099ff 100%)',
+                    color: '#000',
+                  }}
+                >
+                  B
+                </div>
+                <div className="flex flex-col items-start max-w-[75%]">
+                  <div
+                    className="px-4 py-2 rounded-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+                      color: '#fff',
+                      borderRadius: '18px 18px 18px 4px',
+                      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    <div className="text-sm leading-relaxed">
+                      {`Morning ${sanitizeString(userName, 100)}! ${streak ? `Streak: ${streak.current} days 🔥` : 'Welcome back!'}`}
+                    </div>
+                  </div>
+                  <div 
+                    className="text-xs mt-1 px-2"
+                    style={{ color: 'var(--text-tertiary, var(--void-text-muted))' }}
+                  >
+                    now
+                  </div>
+                </div>
+              </motion.div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+
+      </div>
+    </motion.div>
+  )
+}
