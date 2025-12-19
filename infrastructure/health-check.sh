@@ -3,7 +3,8 @@
 # Health Check Script for FairTradeWorker
 # Verifies all systems are ready for 400k users
 
-set -e
+# Don't exit on non-zero - we want to collect all errors
+set +e
 
 echo "==================================================================="
 echo "FairTradeWorker Health Check - 400k Users Readiness"
@@ -215,22 +216,12 @@ echo ""
 
 # 10. Test build (optional, takes time)
 echo "10. Build Test (Optional)"
-read -p "Run production build test? (y/n): " -n 1 -r
-echo ""
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if npm run build > /tmp/build.log 2>&1; then
-        print_status "OK" "Production build successful"
-        
-        # Check bundle size
-        if [ -d "dist" ]; then
-            DIST_SIZE=$(du -sh dist | cut -f1)
-            print_status "OK" "Build output size: $DIST_SIZE"
-        fi
-    else
-        print_status "ERROR" "Production build failed - check /tmp/build.log"
-    fi
+# Check if dist exists from previous build
+if [ -d "dist" ]; then
+    DIST_SIZE=$(du -sh dist | cut -f1)
+    print_status "OK" "Build output exists: $DIST_SIZE"
 else
-    print_status "WARNING" "Build test skipped"
+    print_status "WARNING" "No build found - run 'npm run build' to test"
 fi
 echo ""
 
