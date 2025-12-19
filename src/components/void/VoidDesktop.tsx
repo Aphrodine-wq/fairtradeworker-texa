@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, memo } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { DndContext, DragEndEvent, DragStartEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidIcon } from './VoidIcon'
@@ -7,10 +7,9 @@ import { VoidContextMenu } from './VoidContextMenu'
 import { getIconForId } from '@/lib/void/iconMap'
 import { validateGridPosition } from '@/lib/void/validation'
 import { getDesktopContextMenu, getIconContextMenu } from '@/lib/void/contextMenus'
-import { cn } from '@/lib/utils'
 import '@/styles/void-desktop.css'
 
-export const VoidDesktop = memo(function VoidDesktop() {
+export function VoidDesktop() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { icons, iconPositions, pinnedIcons, sortIcons, updateIconPosition, openWindow, setDesktopBackground, createFile } = useVoidStore()
   const [draggedId, setDraggedId] = useState<string | null>(null)
@@ -19,7 +18,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 4, // 4px magnetic threshold for more accurate snap-to-grid
+        distance: 4, // 4px magnetic threshold for better accuracy
       },
     })
   )
@@ -64,24 +63,11 @@ export const VoidDesktop = memo(function VoidDesktop() {
 
   const handleDragStart = (event: DragStartEvent) => {
     setDraggedId(event.active.id as string)
-    // Add visual feedback - create drag preview
-    const draggedElement = document.querySelector(`[data-draggable-id="${event.active.id}"]`)
-    if (draggedElement) {
-      (draggedElement as HTMLElement).style.opacity = '0.5'
-      (draggedElement as HTMLElement).style.transform = 'scale(0.95)'
-    }
   }
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, delta } = event
     const iconId = active.id as string
-    
-    // Restore visual feedback
-    const draggedElement = document.querySelector(`[data-draggable-id="${iconId}"]`)
-    if (draggedElement) {
-      (draggedElement as HTMLElement).style.opacity = '1'
-      (draggedElement as HTMLElement).style.transform = 'scale(1)'
-    }
     
     if (!containerRef.current || !delta || pinnedIcons.has(iconId)) {
       setDraggedId(null)
@@ -96,30 +82,21 @@ export const VoidDesktop = memo(function VoidDesktop() {
     }
 
     const cellSize = getCellSize()
-    // Improved accuracy: use more precise calculation
-    const relativeX = event.activatorEvent instanceof MouseEvent 
-      ? event.activatorEvent.clientX - rect.left 
-      : delta.x + (currentPos.col * cellSize.width)
-    const relativeY = event.activatorEvent instanceof MouseEvent
-      ? event.activatorEvent.clientY - rect.top
-      : delta.y + (currentPos.row * cellSize.height)
+    const deltaCol = Math.round(delta.x / cellSize.width)
+    const deltaRow = Math.round(delta.y / cellSize.height)
 
-    // More accurate snap-to-grid with smaller threshold (4px instead of 8px)
-    const newCol = Math.round(relativeX / cellSize.width)
-    const newRow = Math.round(relativeY / cellSize.height)
-
-    const clampedCol = Math.max(1, Math.min(200, newCol))
-    const clampedRow = Math.max(1, Math.min(200, newRow))
+    const newCol = Math.max(1, Math.min(200, currentPos.col + deltaCol))
+    const newRow = Math.max(1, Math.min(200, currentPos.row + deltaRow))
 
     // Check for collisions with other icons
     const hasCollision = icons.some(icon => {
       if (icon.id === iconId) return false
-      return icon.position.row === clampedRow && icon.position.col === clampedCol
+      return icon.position.row === newRow && icon.position.col === newCol
     })
 
     if (!hasCollision) {
       // Validate position before updating
-      const validatedPos = validateGridPosition({ row: clampedRow, col: clampedCol })
+      const validatedPos = validateGridPosition({ row: newRow, col: newCol })
       if (validatedPos) {
         updateIconPosition(iconId, validatedPos)
       }
@@ -233,7 +210,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
     arrangeItem.submenu[4].action = handleAutoArrange // Auto Arrange (index 4 after separator)
   }
 
-  // Add "Open Module" submenu with all modules
+  // Add "Open Module" submenu with all 10 modules
   const moduleModules = [
     { id: 'livewire', label: 'Livewire' },
     { id: 'facelink', label: 'Facelink' },
@@ -245,9 +222,6 @@ export const VoidDesktop = memo(function VoidDesktop() {
     { id: 'vault', label: 'Vault' },
     { id: 'funnel', label: 'Funnel' },
     { id: 'milestones', label: 'Milestones' },
-    { id: 'calendar', label: 'Calendar' },
-    { id: 'notes', label: 'Notes' },
-    { id: 'tasks', label: 'Tasks' },
   ]
 
   desktopMenuItems.splice(desktopMenuItems.length - 2, 0, {
@@ -376,14 +350,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
                 type="icon"
                 items={iconMenuItems}
               >
-                <div 
-                  style={cssPos}
-                  data-draggable-id={icon.id}
-                  className={cn(
-                    "transition-all duration-150",
-                    draggedId === icon.id && "opacity-50 scale-95 z-50"
-                  )}
-                >
+                <div style={cssPos}>
                   <VoidIcon
                     icon={{
                       ...icon,
@@ -401,4 +368,4 @@ export const VoidDesktop = memo(function VoidDesktop() {
       </VoidContextMenu>
     </DndContext>
   )
-})
+}

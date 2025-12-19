@@ -3,7 +3,7 @@
  * Universal context menu for desktop, icons, and windows
  */
 
-import * as React from 'react'
+import { useState, useEffect } from 'react'
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
 import { motion } from 'framer-motion'
 import type { ContextMenuItem, ContextMenuType } from '@/lib/void/contextMenus'
@@ -56,12 +56,6 @@ function ContextMenuSubItem({ item }: { item: ContextMenuItem }) {
       onSelect={() => {
         if (item.action && !item.disabled) {
           item.action()
-          // Close menu after action
-          const root = document.querySelector('[data-radix-context-menu-root]')
-          if (root) {
-            const event = new Event('contextmenu-close', { bubbles: true })
-            root.dispatchEvent(event)
-          }
         }
       }}
     >
@@ -80,28 +74,27 @@ export function VoidContextMenu({
   children,
   onOpenChange,
 }: VoidContextMenuProps) {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
-  const handleOpenChange = React.useCallback((newOpen: boolean) => {
-    setOpen(newOpen)
-    if (onOpenChange) {
-      onOpenChange(newOpen)
-    }
-  }, [onOpenChange])
-
-  // Close on Escape key
-  React.useEffect(() => {
+  // Handle Escape key
+  useEffect(() => {
     if (!open) return
 
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        handleOpenChange(false)
+        setOpen(false)
+        onOpenChange?.(false)
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [open, handleOpenChange])
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [open, onOpenChange])
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen)
+    onOpenChange?.(newOpen)
+  }
 
   return (
     <ContextMenuPrimitive.Root open={open} onOpenChange={handleOpenChange}>
@@ -113,8 +106,14 @@ export function VoidContextMenu({
           className={`void-system-context-menu void-context-menu void-context-menu-${type}`}
           sideOffset={5}
           alignOffset={-5}
-          onEscapeKeyDown={() => handleOpenChange(false)}
-          onPointerDownOutside={() => handleOpenChange(false)}
+          onEscapeKeyDown={() => {
+            setOpen(false)
+            onOpenChange?.(false)
+          }}
+          onPointerDownOutside={() => {
+            setOpen(false)
+            onOpenChange?.(false)
+          }}
           asChild
         >
           <motion.div
@@ -122,6 +121,7 @@ export function VoidContextMenu({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
             transition={{ duration: 0.15 }}
+            onClick={(e) => e.stopPropagation()}
           >
             {items.map((item, index) => (
               <ContextMenuSubItem key={index} item={item} />

@@ -103,7 +103,8 @@ export function applyTheme(theme: Theme): void {
   
   // Set data-theme attribute for CSS selectors (use effective theme)
   document.documentElement.setAttribute('data-theme', effectiveTheme)
-  // Also store the actual theme preference (may be 'auto')
+  
+  // Store the actual theme preference (including 'auto')
   document.documentElement.setAttribute('data-theme-preference', theme)
   
   // Set CSS variables
@@ -133,12 +134,12 @@ export function applyTheme(theme: Theme): void {
   const targetStyle = voidDesktop?.style || root
   
   targetStyle.setProperty('--bg', colors.background)
-  targetStyle.setProperty('--bg-elevated', effectiveTheme === 'dark' ? '#020204' : '#fefefe')
+  targetStyle.setProperty('--bg-elevated', theme === 'dark' ? '#020204' : '#fefefe')
   targetStyle.setProperty('--surface', colors.surface)
   targetStyle.setProperty('--surface-secondary', colors.surfaceSecondary)
-  targetStyle.setProperty('--surface-hover', effectiveTheme === 'dark' ? '#141419' : '#f0f1f5')
+  targetStyle.setProperty('--surface-hover', theme === 'dark' ? '#141419' : '#f0f1f5')
   targetStyle.setProperty('--border', colors.border)
-  targetStyle.setProperty('--border-hover', effectiveTheme === 'dark' ? '#2a2a3a' : '#d0d2da')
+  targetStyle.setProperty('--border-hover', theme === 'dark' ? '#2a2a3a' : '#d0d2da')
   targetStyle.setProperty('--border-active', colors.accent)
   targetStyle.setProperty('--text-primary', colors.textPrimary)
   targetStyle.setProperty('--text-secondary', colors.textSecondary)
@@ -171,8 +172,8 @@ export function getCurrentTheme(): Theme {
     return stored
   }
   
-  // Default to 'auto' if nothing stored
-  return 'auto'
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+  return systemPrefersDark ? 'dark' : 'light'
 }
 
 /**
@@ -182,11 +183,12 @@ export function initTheme(): void {
   const theme = getCurrentTheme()
   applyTheme(theme)
   
-  // Also set dark class for compatibility
-  const effectiveTheme = getEffectiveTheme(theme)
-  if (effectiveTheme === 'dark') {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
+  // Listen for system theme changes if in auto mode
+  if (theme === 'auto' && typeof window !== 'undefined') {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = () => {
+      applyTheme('auto') // Re-apply to get new effective theme
+    }
+    mediaQuery.addEventListener('change', handleChange)
   }
 }

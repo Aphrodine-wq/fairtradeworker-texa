@@ -11,7 +11,6 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const workerRef = useRef<Worker | null>(null)
   const offscreenCanvasRef = useRef<OffscreenCanvas | null>(null)
-  const hasTransferredRef = useRef<boolean>(false)
   const { theme } = useVoidStore()
   const isMobile = useIsMobile()
   const [isInitialized, setIsInitialized] = useState(false)
@@ -19,10 +18,9 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
   // Adaptive node count: 80 desktop / 40 mobile
   const nodeCount = isMobile ? 40 : 80
 
-  // Effect 1: One-time canvas transfer and worker initialization (mount only)
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas || hasTransferredRef.current) return
+    if (!canvas) return
 
     // Check if OffscreenCanvas is supported
     if (!('OffscreenCanvas' in window)) {
@@ -31,13 +29,27 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
       return
     }
 
-    // Create OffscreenCanvas - ONLY ONCE
-    try {
-      const offscreen = canvas.transferControlToOffscreen()
-      offscreenCanvasRef.current = offscreen
-      hasTransferredRef.current = true
+    // Create OffscreenCanvas
+    const offscreen = canvas.transferControlToOffscreen()
+    offscreenCanvasRef.current = offscreen
 
-      // Create Web Worker
+    // Create Web Worker
+    // Note: In production, this should be a bundled worker file
+    // For now, we'll use a data URL or inline worker
+    const workerCode = `
+      // Worker will be loaded from a separate file in production
+      // For development, we'll use a simplified inline version
+      self.onmessage = function(e) {
+        const { type, config } = e.data
+        if (type === 'init') {
+          // Initialize wiremap rendering
+          postMessage({ type: 'ready' })
+        }
+      }
+    `
+
+    try {
+      // Try to load worker from file
       const worker = new Worker(
         new URL('@/lib/void/wiremapWorker.ts', import.meta.url),
         { type: 'module' }
@@ -55,8 +67,7 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
         console.error('Wiremap worker error:', error)
       }
 
-      // Initialize worker with initial config
-      const colors = getThemeColors(theme)
+      // Initialize worker
       worker.postMessage(
         {
           type: 'init',
@@ -64,9 +75,9 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
             nodeCount,
             width: canvas.width || window.innerWidth,
             height: canvas.height || window.innerHeight,
-            nodeColor: colors.wiremap.node,
-            lineColor: colors.wiremap.line,
-            rippleColor: colors.wiremap.ripple,
+            nodeColor: getThemeColors(theme).wiremap.node,
+            lineColor: getThemeColors(theme).wiremap.line,
+            rippleColor: getThemeColors(theme).wiremap.ripple,
           },
           canvas: offscreen,
         },
@@ -82,12 +93,10 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
         workerRef.current.terminate()
         workerRef.current = null
       }
-      // Note: Cannot reset hasTransferredRef here because canvas is already transferred
-      // Component unmount means the canvas element will be destroyed anyway
     }
-  }, []) // Empty deps - only run on mount
+  }, [nodeCount, theme])
 
-  // Effect 2: Update theme colors when theme changes (no canvas transfer)
+  // Update theme colors when theme changes
   useEffect(() => {
     if (!workerRef.current || !isInitialized) return
 
@@ -101,23 +110,6 @@ export function WiremapBackground({ className = '' }: WiremapBackgroundProps) {
       },
     })
   }, [theme, isInitialized])
-
-  // Effect 3: Update node count when it changes (no canvas transfer)
-  useEffect(() => {
-    if (!workerRef.current || !isInitialized) return
-
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    workerRef.current.postMessage({
-      type: 'update',
-      config: {
-        nodeCount,
-        width: canvas.width || window.innerWidth,
-        height: canvas.height || window.innerHeight,
-      },
-    })
-  }, [nodeCount, isInitialized])
 
   // Handle mouse movement
   useEffect(() => {

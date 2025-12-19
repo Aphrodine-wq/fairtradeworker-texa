@@ -3,7 +3,7 @@
  * Slide-in panel showing all notifications
  */
 
-import * as React from 'react'
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, CheckCircle, WarningCircle, Info, Warning, Bell, BellSlash } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
@@ -91,8 +91,8 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
   const grouped = groupNotificationsByDate(notifications)
   const hasNotifications = notifications.length > 0
 
-  // Close on Escape key
-  React.useEffect(() => {
+  // Escape key handler
+  useEffect(() => {
     if (!isOpen) return
 
     const handleEscape = (e: KeyboardEvent) => {
@@ -101,8 +101,8 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
   return (
@@ -125,6 +125,7 @@ export function VoidNotificationCenter({ isOpen, onClose }: VoidNotificationCent
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="void-notification-center-header">

@@ -29,7 +29,11 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
   const dragStyle = {
     ...style,
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.7 : 1,
+    scale: isDragging ? 1.15 : 1,
+    zIndex: isDragging ? 1000 : 'auto',
+    filter: isDragging ? 'brightness(1.2) drop-shadow(0 10px 20px rgba(0, 245, 255, 0.5))' : 'none',
+    transition: isDragging ? 'none' : 'all 0.2s cubic-bezier(0.2, 0, 0, 1)',
   }
 
   const handleDoubleClick = () => {
@@ -47,6 +51,7 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
         'void-icon',
         pinnedIcons.has(icon.id) && 'pinned'
       )}
+      data-dragging={isDragging}
       {...attributes}
       {...(!pinnedIcons.has(icon.id) ? listeners : {})}
       onDoubleClick={handleDoubleClick}

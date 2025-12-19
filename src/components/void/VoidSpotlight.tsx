@@ -47,6 +47,7 @@ export function VoidSpotlight() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="void-spotlight-content">
               {/* Search Input */}

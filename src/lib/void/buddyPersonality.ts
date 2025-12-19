@@ -570,3 +570,109 @@ export const COMPARISON_ROASTS = [
 export function getComparisonRoast(): string {
   return COMPARISON_ROASTS[Math.floor(Math.random() * COMPARISON_ROASTS.length)]
 }
+
+// ========== NEW FEATURES: WEATHER, JOKES, QUOTES, PRODUCTIVITY TIPS ==========
+
+export const BUDDY_JOKES = [
+  "Why did the developer go broke? Because he used up all his cache! 💰",
+  "How do you comfort a JavaScript bug? You console it! 🐛",
+  "Why do programmers prefer dark mode? Because light attracts bugs! 🐛",
+  "What's a programmer's favorite hangout? Foo Bar! 🍺",
+  "Why don't programmers like nature? It has too many bugs! 🌳",
+  "How many programmers does it take to change a light bulb? None, that's a hardware problem! 💡",
+  "Why did the programmer quit his job? He didn't get arrays! 📊",
+  "What's the object-oriented way to become wealthy? Inheritance! 💰",
+  "Why do Java developers wear glasses? Because they can't C#! 👓",
+  "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?' 🍻",
+]
+
+export function getJoke(): string {
+  return BUDDY_JOKES[Math.floor(Math.random() * BUDDY_JOKES.length)]
+}
+
+export const BUDDY_QUOTES = [
+  "The only way to do great work is to love what you do. - Steve Jobs",
+  "Innovation distinguishes between a leader and a follower. - Steve Jobs",
+  "It's not about ideas. It's about making ideas happen. - Scott Belsky",
+  "The way to get started is to quit talking and begin doing. - Walt Disney",
+  "Don't be afraid to give up the good to go for the great. - John D. Rockefeller",
+  "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+  "Success is not final, failure is not fatal: it is the courage to continue that counts. - Winston Churchill",
+  "The only limit to our realization of tomorrow will be our doubts of today. - Franklin D. Roosevelt",
+  "It does not matter how slowly you go as long as you do not stop. - Confucius",
+  "The way to get started is to quit talking and begin doing. - Walt Disney",
+]
+
+export function getQuote(): string {
+  return BUDDY_QUOTES[Math.floor(Math.random() * BUDDY_QUOTES.length)]
+}
+
+export const PRODUCTIVITY_TIPS = [
+  "💡 Try the Pomodoro Technique: 25 minutes of focused work, then a 5-minute break!",
+  "📝 Break large tasks into smaller, manageable chunks. Progress feels good!",
+  "🎯 Set specific, achievable goals for today. You've got this!",
+  "⏰ Time-block your calendar. Schedule your work like important meetings!",
+  "🚫 Eliminate distractions. Close unnecessary tabs and silence notifications!",
+  "✅ Start with your hardest task when your energy is highest!",
+  "🔄 Take regular breaks. Your brain needs rest to stay sharp!",
+  "📊 Track your time to see where it actually goes. Knowledge is power!",
+  "🎵 Use focus music or white noise to maintain concentration!",
+  "🏆 Celebrate small wins. Every completed task is progress!",
+]
+
+export function getProductivityTip(): string {
+  return PRODUCTIVITY_TIPS[Math.floor(Math.random() * PRODUCTIVITY_TIPS.length)]
+}
+
+export const DAILY_CHALLENGES = [
+  { challenge: "Complete 3 tasks before lunch", reward: "A sense of accomplishment! 🏆" },
+  { challenge: "Take 5-minute breaks every hour", reward: "Better focus and less burnout! 💪" },
+  { challenge: "Close 5 browser tabs you don't need", reward: "A cleaner workspace! 🧹" },
+  { challenge: "Reply to 3 pending messages", reward: "Clearer communication! 📧" },
+  { challenge: "Organize your desktop icons", reward: "A more organized mind! 📁" },
+  { challenge: "Learn one new keyboard shortcut", reward: "Faster workflow! ⚡" },
+  { challenge: "Write down 3 goals for tomorrow", reward: "Better planning! 📋" },
+  { challenge: "Complete one task you've been avoiding", reward: "Relief and progress! ✅" },
+]
+
+export function getDailyChallenge(): { challenge: string; reward: string } {
+  return DAILY_CHALLENGES[Math.floor(Math.random() * DAILY_CHALLENGES.length)]
+}
+
+// Simple weather function (mock - would integrate with real API)
+export function getWeather(): string {
+  const conditions = ['sunny', 'cloudy', 'rainy', 'windy']
+  const temps = [65, 72, 68, 75, 70]
+  const condition = conditions[Math.floor(Math.random() * conditions.length)]
+  const temp = temps[Math.floor(Math.random() * temps.length)]
+  const emoji = condition === 'sunny' ? '☀️' : condition === 'cloudy' ? '☁️' : condition === 'rainy' ? '🌧️' : '💨'
+  return `${emoji} It's ${condition} and ${temp}°F outside. Perfect weather for... staying inside and working! 😏`
+}
+
+// Command handler
+export function handleBuddyCommand(command: string): string | null {
+  const cmd = command.toLowerCase().trim()
+  
+  if (cmd.includes('weather') || cmd.includes('temp')) {
+    return getWeather()
+  }
+  
+  if (cmd.includes('joke') || cmd.includes('funny')) {
+    return getJoke()
+  }
+  
+  if (cmd.includes('quote') || cmd.includes('inspire')) {
+    return getQuote()
+  }
+  
+  if (cmd.includes('tip') || cmd.includes('productivity') || cmd.includes('help')) {
+    return getProductivityTip()
+  }
+  
+  if (cmd.includes('challenge') || cmd.includes('goal')) {
+    const challenge = getDailyChallenge()
+    return `🎯 Today's Challenge: ${challenge.challenge}\n\nReward: ${challenge.reward}`
+  }
+  
+  return null
+}

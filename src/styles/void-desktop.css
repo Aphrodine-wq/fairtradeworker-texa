@@ -39,6 +39,15 @@
   box-shadow: var(--accent-glow-subtle, 0 0 20px rgba(0, 245, 255, 0.3));
 }
 
+.void-icon[data-dragging="true"] {
+  transform: scale(1.15) !important;
+  opacity: 0.8;
+  filter: brightness(1.2) drop-shadow(0 10px 25px rgba(0, 245, 255, 0.6));
+  z-index: 1000;
+  cursor: grabbing !important;
+  transition: none !important;
+}
+
 .void-icon.pinned {
   filter: drop-shadow(var(--accent-glow-subtle, 0 0 4px rgba(0, 245, 255, 0.6)));
 }

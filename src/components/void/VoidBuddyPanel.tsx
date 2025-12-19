@@ -1,11 +1,10 @@
-import { useState, memo } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
 import { Button } from '@/components/ui/button'
 import { sanitizeString } from '@/lib/void/validation'
-import { getRockPaperScissorsResult, PRODUCTIVITY_QUIZ_QUESTIONS, type MiniGameType } from '@/lib/void/buddyPersonality'
+import { getRockPaperScissorsResult, PRODUCTIVITY_QUIZ_QUESTIONS, handleBuddyCommand, type MiniGameType } from '@/lib/void/buddyPersonality'
 import type { BuddyState } from '@/lib/void/types'
-import { cn } from '@/lib/utils'
 
 interface VoidBuddyPanelProps {
   onClose?: () => void
@@ -17,13 +16,25 @@ interface VoidBuddyPanelProps {
   miniGame?: MiniGameType
   onStartMiniGame?: (gameType: MiniGameType) => void
   onCloseMiniGame?: () => void
-  isListening?: boolean
-  onStartVoiceCommand?: () => void
-  onStopVoiceCommand?: () => void
-  availableCommands?: string[]
 }
 
-export const VoidBuddyPanel = memo(function VoidBuddyPanel({ 
+// Format timestamp for iPhone-style messages
+function formatMessageTime(timestamp: number): string {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = now.getTime() - date.getTime()
+  const minutes = Math.floor(diff / 60000)
+  const hours = Math.floor(diff / 3600000)
+  const days = Math.floor(diff / 86400000)
+
+  if (minutes < 1) return 'now'
+  if (minutes < 60) return `${minutes}m`
+  if (hours < 24) return `${hours}h`
+  if (days < 7) return `${days}d`
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+export function VoidBuddyPanel({ 
   userName, 
   onMessageClick, 
   stats,
@@ -32,10 +43,6 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
   miniGame,
   onStartMiniGame,
   onCloseMiniGame,
-  isListening = false,
-  onStartVoiceCommand,
-  onStopVoiceCommand,
-  availableCommands = [],
 }: VoidBuddyPanelProps) {
   const { buddyMessages, addBuddyMessage } = useVoidStore()
   const [rpsChoice, setRpsChoice] = useState<'rock' | 'paper' | 'scissors' | null>(null)
@@ -44,6 +51,12 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
   const [guessNumber, setGuessNumber] = useState<number | null>(null)
   const [guessInput, setGuessInput] = useState('')
   const [guessResult, setGuessResult] = useState<string | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [buddyMessages])
 
   return (
     <motion.div
@@ -94,9 +107,9 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-4 overflow-hidden flex flex-col space-y-4">
-        {/* Mini Games Section */}
+      {/* Content - Scrollable area for messages */}
+      <div className="flex-1 flex flex-col min-h-0" style={{ overflow: 'hidden' }}>
+        {/* Mini Games Section - Show above messages if active */}
         {miniGame && (
           <div className="mb-4 p-3 rounded border" style={{ borderColor: 'var(--border)', background: 'var(--surface-hover)' }}>
             <div className="flex items-center justify-between mb-2">
@@ -297,7 +310,7 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
         
         {/* Stats Section */}
         {stats && (
-          <div className="flex-shrink-0">
+          <div>
             <h3 
               className="void-body-caption mb-2 uppercase tracking-wide"
               style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -320,92 +333,114 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
           </div>
         )}
 
-        {/* Messages Section - iPhone Messages Style */}
+        {/* Messages Section - iPhone Style */}
         <div className="flex-1 flex flex-col min-h-0">
-          <h3 
-            className="void-body-caption mb-2 uppercase tracking-wide flex-shrink-0"
-            style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+          <div 
+            className="flex-1 overflow-y-auto px-2 py-4 space-y-2"
+            style={{
+              scrollBehavior: 'smooth',
+              WebkitOverflowScrolling: 'touch',
+              background: 'linear-gradient(to bottom, #E5E5EA 0%, #F2F2F7 100%)',
+            }}
           >
-            💬 MESSAGES
-          </h3>
-          <div className="flex-1 overflow-y-auto space-y-1.5 px-1" style={{ maxHeight: '200px' }}>
             {buddyMessages.length > 0 ? (
-              buddyMessages.map((msg, index) => {
-                const isBuddy = true // All messages are from Buddy
-                const showTimestamp = index === 0 || 
-                  (buddyMessages[index - 1] && 
-                   msg.timestamp - buddyMessages[index - 1].timestamp > 300000) // 5 minutes
-                
-                return (
+              <AnimatePresence initial={false}>
+                {buddyMessages.map((msg, index) => (
                   <motion.div
                     key={msg.id}
-                    className="flex flex-col"
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    className="flex items-start gap-2"
+                    style={{ justifyContent: 'flex-start' }}
                   >
-                    {showTimestamp && (
-                      <div className="text-center text-xs text-gray-500 dark:text-gray-400 my-1">
-                        {new Date(msg.timestamp).toLocaleTimeString('en-US', { 
-                          hour: 'numeric', 
-                          minute: '2-digit',
-                          hour12: true 
-                        })}
-                      </div>
-                    )}
-                    <div
-                      className={cn(
-                        "flex",
-                        isBuddy ? "justify-start" : "justify-end"
-                      )}
+                    {/* Avatar/Buddy indicator */}
+                    <div 
+                      className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{
+                        background: 'linear-gradient(135deg, #00f5ff 0%, #0099ff 100%)',
+                        color: '#000',
+                      }}
                     >
+                      B
+                    </div>
+                    
+                    {/* Message bubble */}
+                    <div className="flex flex-col items-start max-w-[75%]">
                       <motion.div
-                        className={cn(
-                          "max-w-[75%] rounded-2xl px-3 py-2 cursor-pointer",
-                          "transition-all hover:scale-[1.02] active:scale-[0.98]",
-                          isBuddy 
-                            ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm" 
-                            : "bg-[#007AFF] text-white rounded-br-sm"
-                        )}
+                        className="px-4 py-2 rounded-2xl cursor-pointer"
+                        style={{
+                          background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+                          color: '#fff',
+                          borderRadius: '18px 18px 18px 4px', // iOS left bubble style
+                          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                        }}
                         onClick={() => onMessageClick?.(msg.id)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         title="Click me for a response! 😏"
-                        style={{
-                          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-                        }}
                       >
                         <div className="text-sm leading-relaxed whitespace-pre-wrap break-words">
                           {sanitizeString(msg.message, 200)}
                         </div>
                       </motion.div>
+                      
+                      {/* Timestamp */}
+                      <div 
+                        className="text-xs mt-1 px-2"
+                        style={{ color: 'var(--text-tertiary, var(--void-text-muted))' }}
+                      >
+                        {formatMessageTime(msg.timestamp)}
+                      </div>
                     </div>
                   </motion.div>
-                )
-              })
+                ))}
+              </AnimatePresence>
             ) : (
               <motion.div
-                className="flex justify-start"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
+                className="flex items-start gap-2"
               >
-                <div
-                  className="max-w-[75%] rounded-2xl rounded-bl-sm px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                <div 
+                  className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                    background: 'linear-gradient(135deg, #00f5ff 0%, #0099ff 100%)',
+                    color: '#000',
                   }}
                 >
-                  <div className="text-sm leading-relaxed">
-                    {`Morning ${sanitizeString(userName, 100)}! ${streak ? `Streak: ${streak.current} days 🔥` : 'Welcome back!'}`}
+                  B
+                </div>
+                <div className="flex flex-col items-start max-w-[75%]">
+                  <div
+                    className="px-4 py-2 rounded-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+                      color: '#fff',
+                      borderRadius: '18px 18px 18px 4px',
+                      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+                    }}
+                  >
+                    <div className="text-sm leading-relaxed">
+                      {`Morning ${sanitizeString(userName, 100)}! ${streak ? `Streak: ${streak.current} days 🔥` : 'Welcome back!'}`}
+                    </div>
+                  </div>
+                  <div 
+                    className="text-xs mt-1 px-2"
+                    style={{ color: 'var(--text-tertiary, var(--void-text-muted))' }}
+                  >
+                    now
                   </div>
                 </div>
               </motion.div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         </div>
 
         {/* Priorities */}
-        <div className="flex-shrink-0">
+        <div>
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -438,7 +473,7 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
 
         {/* Mini Games */}
         {!miniGame && (
-          <div className="flex-shrink-0">
+          <div>
             <h3 
               className="void-body-caption mb-2 uppercase tracking-wide"
               style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -474,89 +509,115 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
           </div>
         )}
 
-        {/* Voice Commands */}
-        <div className="flex-shrink-0">
+        {/* Quick Commands */}
+        <div className="p-2 border-t" style={{ borderColor: 'var(--border)' }}>
           <h3 
-            className="void-body-caption mb-2 uppercase tracking-wide"
+            className="void-body-caption mb-2 uppercase tracking-wide text-xs"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
           >
-            🎤 VOICE COMMANDS
+            💬 Quick Commands
           </h3>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {isListening ? (
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="text-xs h-7 bg-red-500/20 border-red-500 text-red-600 dark:text-red-400"
-                onClick={onStopVoiceCommand}
-              >
-                ⏹ Stop Listening
-              </Button>
-            ) : (
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="text-xs h-7"
-                onClick={onStartVoiceCommand}
-              >
-                🎤 Start Listening
-              </Button>
-            )}
-          </div>
-          {availableCommands.length > 0 && (
-            <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1">
-              <div className="font-semibold">Try saying:</div>
-              {availableCommands.slice(0, 3).map((cmd, idx) => (
-                <div key={idx}>• {cmd}</div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Suggested Actions */}
-        <div className="flex-shrink-0">
-          <h3 
-            className="void-body-caption mb-2 uppercase tracking-wide"
-            style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
-          >
-            ⚡ SUGGESTED ACTIONS
-          </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             <Button 
               size="sm" 
               variant="outline" 
-              className="text-xs h-7"
+              className="text-xs h-7 px-2"
               onClick={() => {
-                onMessageClick?.('action-draft-email')
+                const response = handleBuddyCommand('weather')
+                if (response) {
+                  addBuddyMessage({
+                    id: `buddy-weather-${Date.now()}`,
+                    message: response,
+                    emotion: 'neutral',
+                    timestamp: Date.now(),
+                    priority: 'low',
+                  })
+                }
               }}
             >
-              Draft Email
+              🌤️ Weather
             </Button>
             <Button 
               size="sm" 
               variant="outline" 
-              className="text-xs h-7"
+              className="text-xs h-7 px-2"
               onClick={() => {
-                onMessageClick?.('action-schedule')
+                const response = handleBuddyCommand('joke')
+                if (response) {
+                  addBuddyMessage({
+                    id: `buddy-joke-${Date.now()}`,
+                    message: response,
+                    emotion: 'happy',
+                    timestamp: Date.now(),
+                    priority: 'low',
+                  })
+                }
               }}
             >
-              Schedule
+              😂 Joke
             </Button>
             <Button 
               size="sm" 
               variant="outline" 
-              className="text-xs h-7"
+              className="text-xs h-7 px-2"
               onClick={() => {
-                onMessageClick?.('action-snooze')
+                const response = handleBuddyCommand('quote')
+                if (response) {
+                  addBuddyMessage({
+                    id: `buddy-quote-${Date.now()}`,
+                    message: response,
+                    emotion: 'thinking',
+                    timestamp: Date.now(),
+                    priority: 'low',
+                  })
+                }
               }}
             >
-              Snooze
+              💭 Quote
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="text-xs h-7 px-2"
+              onClick={() => {
+                const response = handleBuddyCommand('tip')
+                if (response) {
+                  addBuddyMessage({
+                    id: `buddy-tip-${Date.now()}`,
+                    message: response,
+                    emotion: 'excited',
+                    timestamp: Date.now(),
+                    priority: 'medium',
+                  })
+                }
+              }}
+            >
+              💡 Tip
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="text-xs h-7 px-2"
+              onClick={() => {
+                const response = handleBuddyCommand('challenge')
+                if (response) {
+                  addBuddyMessage({
+                    id: `buddy-challenge-${Date.now()}`,
+                    message: response,
+                    emotion: 'excited',
+                    timestamp: Date.now(),
+                    priority: 'medium',
+                  })
+                }
+              }}
+            >
+              🎯 Challenge
             </Button>
           </div>
         </div>
 
         {/* Insights */}
-        <div className="flex-shrink-0">
+        <div>
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -573,7 +634,7 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
         </div>
 
         {/* Soundscape */}
-        <div className="flex-shrink-0">
+        <div>
           <h3 
             className="void-body-caption mb-2 uppercase tracking-wide"
             style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
@@ -590,4 +651,4 @@ export const VoidBuddyPanel = memo(function VoidBuddyPanel({
       </div>
     </motion.div>
   )
-})
+}

@@ -3,10 +3,9 @@
  * Quick settings and controls panel
  */
 
-import * as React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sun, Moon, WifiHigh, WifiSlash, Bell, BellSlash, Target, Globe, MusicNote, TrendUp } from '@phosphor-icons/react'
+import { Sun, Moon, WifiHigh, WifiSlash, Bell, BellSlash, Target, Globe, MusicNote, TrendUp, X } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import '@/styles/void-control-center.css'
 
@@ -34,20 +33,8 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
   const [doNotDisturb, setDoNotDisturb] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
 
-  // Online status
-  useState(() => {
-    const handleOnline = () => setIsOnline(true)
-    const handleOffline = () => setIsOnline(false)
-    window.addEventListener('online', handleOnline)
-    window.addEventListener('offline', handleOffline)
-    return () => {
-      window.removeEventListener('online', handleOnline)
-      window.removeEventListener('offline', handleOffline)
-    }
-  })
-
-  // Close on Escape key
-  React.useEffect(() => {
+  // Escape key handler
+  useEffect(() => {
     if (!isOpen) return
 
     const handleEscape = (e: KeyboardEvent) => {
@@ -56,9 +43,21 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
+
+  // Online status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
 
   // Mock stats (would come from store/API)
   const todayStats = {
@@ -90,8 +89,30 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="void-control-center-content">
+              {/* Header with Close Button */}
+              <div className="void-control-center-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderBottom: '1px solid var(--border)' }}>
+                <span className="void-control-center-title" style={{ fontWeight: 'bold', fontSize: '14px', textTransform: 'uppercase' }}>Control Center</span>
+                <button
+                  onClick={onClose}
+                  className="void-control-center-close"
+                  style={{ 
+                    background: 'transparent', 
+                    border: 'none', 
+                    cursor: 'pointer',
+                    padding: '4px',
+                    borderRadius: '4px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  aria-label="Close"
+                >
+                  <X weight="regular" size={20} />
+                </button>
+              </div>
               {/* Display Brightness */}
               <div className="void-control-section">
                 <div className="void-control-section-header">
@@ -135,38 +156,12 @@ export function VoidControlCenter({ isOpen, onClose }: VoidControlCenterProps) {
                 <div className="void-control-section-title">QUICK TOGGLES</div>
                 <div className="void-control-toggles">
                   <button
-                    className={`void-control-toggle ${theme === 'dark' || theme === 'auto' ? 'active' : ''}`}
-                    onClick={() => {
-                      // Cycle through: dark -> light -> auto -> dark
-                      let nextTheme: Theme
-                      if (theme === 'dark') {
-                        nextTheme = 'light'
-                      } else if (theme === 'light') {
-                        nextTheme = 'auto'
-                      } else {
-                        nextTheme = 'dark'
-                      }
-                      setTheme(nextTheme)
-                      const { applyTheme, getEffectiveTheme } = require('@/lib/themes')
-                      applyTheme(nextTheme)
-                      const effective = getEffectiveTheme(nextTheme)
-                      if (effective === 'dark') {
-                        document.documentElement.classList.add('dark')
-                      } else {
-                        document.documentElement.classList.remove('dark')
-                      }
-                      localStorage.setItem('void-theme', nextTheme)
-                    }}
-                    title={`Theme: ${theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}`}
+                    className={`void-control-toggle ${theme === 'dark' ? 'active' : ''}`}
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    title="Dark Mode"
                   >
-                    {theme === 'dark' ? (
-                      <Moon weight="regular" className="void-control-toggle-icon" size={24} />
-                    ) : theme === 'light' ? (
-                      <Sun weight="regular" className="void-control-toggle-icon" size={24} />
-                    ) : (
-                      <Sun weight="regular" className="void-control-toggle-icon" size={24} style={{ opacity: 0.6 }} />
-                    )}
-                    <span className="void-control-toggle-label">{theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}</span>
+                    {theme === 'dark' ? <Moon weight="regular" className="void-control-toggle-icon" size={24} /> : <Sun weight="regular" className="void-control-toggle-icon" size={24} />}
+                    <span className="void-control-toggle-label">Dark</span>
                   </button>
 
                   <button

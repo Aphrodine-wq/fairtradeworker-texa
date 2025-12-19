@@ -1,8 +1,7 @@
-import { useState, useCallback, useEffect, useRef, memo } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 import { useBuddyContext } from '@/hooks/useBuddyContext'
 import { useBuddyReactions } from '@/hooks/useBuddyReactions'
-import { useBuddyVoiceCommands } from '@/hooks/useBuddyVoiceCommands'
 import { VoidBuddyIcon } from './VoidBuddyIcon'
 import { VoidBuddyPanel } from './VoidBuddyPanel'
 import { VoidVoiceCapture } from './VoidVoiceCapture'
@@ -37,12 +36,6 @@ export function VoidBuddy({ userName, user }: VoidBuddyProps) {
   
   useBuddyContext() // Initialize context checking
   useBuddyReactions() // Track user actions and trigger reactions
-  
-  // Voice commands
-  const { isListening, startListening, stopListening, commands: availableCommands } = useBuddyVoiceCommands((command) => {
-    // Command recognized callback
-    updateBuddyStats({ totalClicks: (buddyState.stats?.totalClicks || 0) + 1 })
-  })
 
   // Track streak
   useEffect(() => {
@@ -334,10 +327,6 @@ export function VoidBuddy({ userName, user }: VoidBuddyProps) {
         streak={buddyState.streak}
         mood={buddyState.mood}
         miniGame={miniGame}
-        isListening={isListening}
-        onStartVoiceCommand={startListening}
-        onStopVoiceCommand={stopListening}
-        availableCommands={availableCommands}
         onMessageClick={() => {
           // Handle message click - troll response
           const trollResponse = Math.random() > 0.5 ? getTrollMessage() : getRagebaitMessage()
@@ -354,9 +343,10 @@ export function VoidBuddy({ userName, user }: VoidBuddyProps) {
         onStartMiniGame={(gameType) => setMiniGame(gameType)}
         onCloseMiniGame={() => setMiniGame(null)}
       />
+      
       {/* Voice Capture below Buddy panel */}
       {user && (
-        <div className="mt-2">
+        <div className="mt-2" style={{ width: '360px' }}>
           <VoidVoiceCapture user={user} />
         </div>
       )}

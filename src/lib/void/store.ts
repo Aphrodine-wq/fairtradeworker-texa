@@ -2,7 +2,6 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage, Notification, VirtualDesktop, VoidFile } from './types'
 import type { Theme } from '@/lib/themes'
-import { getCurrentTheme, applyTheme, getEffectiveTheme } from '@/lib/themes'
 import type { Track } from '@/lib/music/types'
 import { arrayToSet, validateVolume, validateGridPosition, validateWindowSize, sanitizeString, validateWithFallback, ThemeSchema, VoiceStateSchema, VoicePermissionSchema, BuddyStateSchema, BuddyMessageSchema } from './validation'
 import { createFileSystem } from './fileSystem'
@@ -53,15 +52,19 @@ interface VoidStore {
   pinIcon: (id: string) => void
   unpinIcon: (id: string) => void
   sortIcons: (option: SortOption) => void
-  openWindow: (menuId: string) => void
-  closeWindow: (id: string) => void
-  minimizeWindow: (id: string) => void
-  maximizeWindow: (id: string) => void
-  togglePip: (id: string) => void
-  updateWindowPosition: (id: string, position: { x: number; y: number }) => void
+      openWindow: (menuId: string) => void
+      closeWindow: (id: string) => void
+      minimizeWindow: (id: string) => void
+      maximizeWindow: (id: string) => void
+      togglePip: (id: string) => void
+      updateWindowPosition: (id: string, position: { x: number; y: number }) => void
       updateWindowSize: (id: string, size: { width: number; height: number }) => void
       focusWindow: (id: string) => void
       recordIconUsage: (id: string) => void
+      groupWindows: (windowIds: string[]) => void
+      ungroupWindows: (groupId: string) => void
+      cascadeWindows: () => void
+      tileWindows: () => void
       
       // Voice actions
       setVoiceState: (state: VoiceState) => void
@@ -129,6 +132,9 @@ interface VoidStore {
   deleteFile: (id: string) => void
   moveFile: (id: string, newParentId: string | null) => void
   setCurrentPath: (path: string | null) => void
+  copyFile: (id: string, newParentId?: string | null) => void
+  renameFile: (id: string, newName: string) => void
+  searchFiles: (query: string) => VoidFile[]
 }
 
 // Default icon definitions
@@ -222,7 +228,7 @@ export const useVoidStore = create<VoidStore>()(
       activeWindowId: null,
       nextZIndex: 1000,
       sortOption: null,
-      theme: getCurrentTheme() as Theme,
+      theme: 'light' as Theme,
       
       // Desktop slice initial state
       desktopBackground: null,
@@ -487,6 +493,72 @@ export const useVoidStore = create<VoidStore>()(
         })
       },
       
+      // Window management enhancements
+      groupWindows: (windowIds: string[]) => {
+        // Group windows together (future enhancement)
+        console.log('[VOID] Grouping windows:', windowIds)
+      },
+      
+      ungroupWindows: (groupId: string) => {
+        // Ungroup windows (future enhancement)
+        console.log('[VOID] Ungrouping windows:', groupId)
+      },
+      
+      cascadeWindows: () => {
+        const state = get()
+        const visibleWindows = state.windows.filter(w => !w.minimized)
+        const offset = 30
+        const startX = 50
+        const startY = 50
+        
+        set({
+          windows: state.windows.map((window, index) => {
+            if (window.minimized) return window
+            const windowIndex = visibleWindows.findIndex(w => w.id === window.id)
+            return {
+              ...window,
+              position: {
+                x: startX + (windowIndex * offset),
+                y: startY + (windowIndex * offset),
+              },
+            }
+          }),
+        })
+      },
+      
+      tileWindows: () => {
+        const state = get()
+        const visibleWindows = state.windows.filter(w => !w.minimized)
+        if (visibleWindows.length === 0) return
+        
+        const cols = Math.ceil(Math.sqrt(visibleWindows.length))
+        const rows = Math.ceil(visibleWindows.length / cols)
+        const windowWidth = Math.max(400, (window.innerWidth - 100) / cols)
+        const windowHeight = Math.max(300, (window.innerHeight - 100) / rows)
+        
+        set({
+          windows: state.windows.map((window) => {
+            if (window.minimized) return window
+            const index = visibleWindows.findIndex(w => w.id === window.id)
+            if (index === -1) return window
+            
+            const col = index % cols
+            const row = Math.floor(index / cols)
+            return {
+              ...window,
+              position: {
+                x: 50 + (col * windowWidth) + (col * 10),
+                y: 50 + (row * windowHeight) + (row * 10),
+              },
+              size: {
+                width: windowWidth - 10,
+                height: windowHeight - 10,
+              },
+            }
+          }),
+        })
+      },
+      
       // Voice actions
       setVoiceState: (state: VoiceState) => {
         set({ voiceState: state })
@@ -610,15 +682,6 @@ export const useVoidStore = create<VoidStore>()(
       // Theme actions
       setTheme: (theme: Theme) => {
         set({ theme })
-        // Apply theme immediately when changed
-        applyTheme(theme)
-        const effective = getEffectiveTheme(theme)
-        if (effective === 'dark') {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-        localStorage.setItem('void-theme', theme)
       },
       
       // Desktop slice actions
@@ -656,14 +719,6 @@ export const useVoidStore = create<VoidStore>()(
       
       // Notification actions
       addNotification: (notification: Notification) => {
-        // Sync with FTW if needed
-        if (typeof window !== 'undefined' && (window as any).ftwNotifications) {
-          try {
-            (window as any).ftwNotifications.add(notification)
-          } catch (e) {
-            console.warn('Failed to sync notification with FTW:', e)
-          }
-        }
         set((state) => {
           const newNotifications = [notification, ...state.notifications].slice(0, 100) // Limit to 100
           const newUnreadCount = newNotifications.filter(n => !n.read).length
@@ -777,6 +832,44 @@ export const useVoidStore = create<VoidStore>()(
       },
       setCurrentPath: (path: string | null) => {
         set({ currentPath: path })
+      },
+      
+      // Enhanced file operations
+      copyFile: (id: string, newParentId?: string | null) => {
+        const state = get()
+        const file = state.fileSystem.find(f => f.id === id)
+        if (!file) return
+        
+        const newFile: VoidFile = {
+          ...file,
+          id: `file-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+          name: `${file.name} (copy)`,
+          parentId: newParentId ?? file.parentId,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        }
+        set((state) => ({
+          fileSystem: [...state.fileSystem, newFile],
+        }))
+      },
+      
+      renameFile: (id: string, newName: string) => {
+        set((state) => ({
+          fileSystem: state.fileSystem.map(f =>
+            f.id === id
+              ? { ...f, name: newName, updatedAt: Date.now() }
+              : f
+          ),
+        }))
+      },
+      
+      searchFiles: (query: string) => {
+        const state = get()
+        const lowerQuery = query.toLowerCase()
+        return state.fileSystem.filter(f =>
+          f.name.toLowerCase().includes(lowerQuery) ||
+          (f.metadata && JSON.stringify(f.metadata).toLowerCase().includes(lowerQuery))
+        )
       },
     }),
     {

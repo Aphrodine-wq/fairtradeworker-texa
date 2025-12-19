@@ -3,7 +3,6 @@
  * Status icons and controls in top-right of toolbar
  */
 
-import * as React from 'react'
 import { useState } from 'react'
 import { Bell, MusicNote, WifiHigh, WifiSlash, Sun, Moon, SpeakerHigh, SpeakerX, Clock, User, Gear, Package } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
@@ -30,20 +29,6 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
   const [notificationCenterOpen, setNotificationCenterOpen] = useState(false)
   const [controlCenterOpen, setControlCenterOpen] = useState(false)
   const [showTimeMenu, setShowTimeMenu] = useState(false)
-
-  // Close time menu on Escape key
-  React.useEffect(() => {
-    if (!showTimeMenu) return
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setShowTimeMenu(false)
-      }
-    }
-
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [showTimeMenu])
 
   // Online/offline status
   const [isOnline, setIsOnline] = useState(navigator.onLine)
@@ -125,37 +110,24 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           )}
         </div>
 
-        {/* Theme Toggle */}
+        {/* Theme Toggle - Cycles through dark, light, auto */}
         <button
           className="void-tray-icon void-tray-theme"
           onClick={() => {
-            // Cycle through: dark -> light -> auto -> dark
-            let nextTheme: Theme
-            if (theme === 'dark') {
-              nextTheme = 'light'
-            } else if (theme === 'light') {
-              nextTheme = 'auto'
-            } else {
-              nextTheme = 'dark'
-            }
+            const nextTheme = theme === 'dark' ? 'light' : theme === 'light' ? 'auto' : 'dark'
             setTheme(nextTheme)
-            const { applyTheme, getEffectiveTheme } = require('@/lib/themes')
+            // Apply theme immediately
+            const { applyTheme } = require('@/lib/themes')
             applyTheme(nextTheme)
-            const effective = getEffectiveTheme(nextTheme)
-            if (effective === 'dark') {
-              document.documentElement.classList.add('dark')
-            } else {
-              document.documentElement.classList.remove('dark')
-            }
             localStorage.setItem('void-theme', nextTheme)
           }}
           aria-label="Toggle theme"
-          title={`Theme: ${theme === 'auto' ? 'Auto' : theme === 'dark' ? 'Dark' : 'Light'}`}
+          title={`Theme: ${theme === 'dark' ? 'Dark' : theme === 'light' ? 'Light' : 'Auto'}`}
         >
           {theme === 'dark' ? (
-            <Sun weight="regular" className="void-tray-icon-svg" size={24} />
-          ) : theme === 'light' ? (
             <Moon weight="regular" className="void-tray-icon-svg" size={24} />
+          ) : theme === 'light' ? (
+            <Sun weight="regular" className="void-tray-icon-svg" size={24} />
           ) : (
             <Sun weight="regular" className="void-tray-icon-svg" size={24} style={{ opacity: 0.6 }} />
           )}
@@ -199,34 +171,21 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
         </button>
 
         {/* Clock/Calendar */}
-        <div className="void-tray-clock-wrapper" style={{ position: 'relative' }}>
-          <button
-            className="void-tray-icon void-tray-clock"
-            onClick={() => setShowTimeMenu(!showTimeMenu)}
-            aria-label="Time and date"
-            title={formatDate()}
-          >
-            <Clock weight="regular" className="void-tray-icon-svg" size={24} />
-            <span className="void-tray-clock-text">{formatTime()}</span>
-          </button>
+        <button
+          className="void-tray-icon void-tray-clock"
+          onClick={() => setShowTimeMenu(!showTimeMenu)}
+          aria-label="Time and date"
+          title={formatDate()}
+        >
+          <Clock weight="regular" className="void-tray-icon-svg" size={24} />
+          <span className="void-tray-clock-text">{formatTime()}</span>
           {showTimeMenu && (
-            <>
-              <div
-                className="void-tray-clock-backdrop"
-                style={{
-                  position: 'fixed',
-                  inset: 0,
-                  zIndex: 9998,
-                }}
-                onClick={() => setShowTimeMenu(false)}
-              />
-              <div className="void-tray-clock-menu" style={{ zIndex: 9999 }}>
-                <div className="void-tray-clock-menu-date">{formatDate()}</div>
-                <div className="void-tray-clock-menu-time">{formatTime()}</div>
-              </div>
-            </>
+            <div className="void-tray-clock-menu">
+              <div className="void-tray-clock-menu-date">{formatDate()}</div>
+              <div className="void-tray-clock-menu-time">{formatTime()}</div>
+            </div>
           )}
-        </div>
+        </button>
 
         {/* Profile */}
         {user && (
