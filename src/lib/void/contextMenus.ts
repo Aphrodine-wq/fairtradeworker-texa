@@ -14,7 +14,7 @@ export interface ContextMenuItem {
   submenu?: ContextMenuItem[]
 }
 
-export type ContextMenuType = 'desktop' | 'icon' | 'window'
+export type ContextMenuType = 'desktop' | 'icon' | 'window' | 'file'
 
 /**
  * Desktop context menu items
@@ -25,7 +25,9 @@ export function getDesktopContextMenu(
   onArrange?: () => void,
   onChangeBackground?: () => void,
   onDisplaySettings?: () => void,
-  onPaste?: () => void
+  onPaste?: () => void,
+  onOpenFileSystem?: () => void,
+  onSettings?: () => void
 ): ContextMenuItem[] {
   return [
     {
@@ -52,6 +54,9 @@ export function getDesktopContextMenu(
     { separator: true },
     { label: 'Change Background', icon: '🖼', action: onChangeBackground },
     { label: 'Display Settings', icon: '⚙️', action: onDisplaySettings },
+    { separator: true },
+    { label: 'Open File System', icon: '📁', action: onOpenFileSystem },
+    { label: 'Settings', icon: '⚙️', shortcut: '⌘,', action: onSettings },
     { separator: true },
     { label: 'Paste', icon: '📋', shortcut: '⌘V', action: onPaste, disabled: true },
   ]
@@ -109,5 +114,30 @@ export function getWindowContextMenu(
         { label: 'New Desktop', action: onMoveToDesktop },
       ],
     },
+  ]
+}
+
+/**
+ * File context menu items
+ */
+export function getFileContextMenu(
+  onOpen?: () => void,
+  onRename?: () => void,
+  onDelete?: () => void,
+  onCopy?: () => void,
+  onCut?: () => void,
+  onProperties?: () => void
+): ContextMenuItem[] {
+  return [
+    { label: 'Open', icon: '▶', action: onOpen },
+    { separator: true },
+    { label: 'Rename', icon: '✏️', shortcut: 'F2', action: onRename },
+    { separator: true },
+    { label: 'Cut', icon: '✂️', shortcut: '⌘X', action: onCut },
+    { label: 'Copy', icon: '📋', shortcut: '⌘C', action: onCopy },
+    { separator: true },
+    { label: 'Delete', icon: '🗑', shortcut: '⌘⌫', action: onDelete },
+    { separator: true },
+    { label: 'Properties', icon: 'ℹ️', action: onProperties },
   ]
 }

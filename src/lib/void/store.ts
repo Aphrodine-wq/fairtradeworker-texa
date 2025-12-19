@@ -129,6 +129,7 @@ interface VoidStore {
 
 // Default icon definitions
 const defaultIcons: Omit<IconData, 'position' | 'gridSize'>[] = [
+  // Existing icons
   { id: 'customers', label: 'Customers', icon: () => null, pinned: false, type: 'folder', menuId: 'customers' },
   { id: 'leads', label: 'Leads', icon: () => null, pinned: false, type: 'folder', menuId: 'leads' },
   { id: 'pipeline', label: 'Pipeline', icon: () => null, pinned: false, type: 'folder', menuId: 'pipeline' },
@@ -144,6 +145,17 @@ const defaultIcons: Omit<IconData, 'position' | 'gridSize'>[] = [
   { id: 'marketplace', label: 'Marketplace', icon: () => null, pinned: false, type: 'tool', menuId: 'marketplace' },
   { id: 'settings', label: 'Settings', icon: () => null, pinned: false, type: 'system', menuId: 'settings' },
   { id: 'voice-capture', label: 'Voice Capture', icon: () => null, pinned: false, type: 'tool', menuId: 'voice' },
+  // Module icons
+  { id: 'livewire', label: 'Livewire', icon: () => null, pinned: false, type: 'module', menuId: 'livewire' },
+  { id: 'facelink', label: 'Facelink', icon: () => null, pinned: false, type: 'module', menuId: 'facelink' },
+  { id: 'blueprint', label: 'Blueprint', icon: () => null, pinned: false, type: 'module', menuId: 'blueprint' },
+  { id: 'scope', label: 'Scope', icon: () => null, pinned: false, type: 'module', menuId: 'scope' },
+  { id: 'dispatch', label: 'Dispatch', icon: () => null, pinned: false, type: 'module', menuId: 'dispatch' },
+  { id: 'reputation', label: 'Reputation', icon: () => null, pinned: false, type: 'module', menuId: 'reputation' },
+  { id: 'cashflow', label: 'Cashflow', icon: () => null, pinned: false, type: 'module', menuId: 'cashflow' },
+  { id: 'vault', label: 'Vault', icon: () => null, pinned: false, type: 'module', menuId: 'vault' },
+  { id: 'funnel', label: 'Funnel', icon: () => null, pinned: false, type: 'module', menuId: 'funnel' },
+  { id: 'milestones', label: 'Milestones', icon: () => null, pinned: false, type: 'module', menuId: 'milestones' },
 ]
 
 // Initialize icons in a grid layout (starting at row 2, col 2)

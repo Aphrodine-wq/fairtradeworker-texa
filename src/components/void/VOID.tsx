@@ -137,8 +137,8 @@ export function VOID({ user, onNavigate }: VOIDProps) {
           </VoidErrorBoundary>
         )}
 
-        {/* Notification Center (handled by System Tray) */}
-        {/* Control Center (handled by System Tray) */}
+        {/* Notification Center and Control Center are handled by VoidSystemTray component */}
+        {/* They open when clicking the notification bell and music icon respectively */}
         {/* Clipboard Manager */}
         {clipboardOpen && (
           <VoidErrorBoundary>

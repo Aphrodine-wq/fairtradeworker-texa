@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, PanInfo } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
+import { VoidContextMenu } from './VoidContextMenu'
+import { getWindowContextMenu } from '@/lib/void/contextMenus'
 import { cn } from '@/lib/utils'
 import type { WindowData } from '@/lib/void/types'
 import { validateWindowSize, validateGridPosition, sanitizeString } from '@/lib/void/validation'
@@ -25,6 +27,8 @@ export function VoidWindow({ window }: VoidWindowProps) {
     updateWindowSize,
     focusWindow,
     activeWindowId,
+    virtualDesktops,
+    moveWindowToDesktop,
   } = useVoidStore()
 
   // Get window dimensions for snap calculations
@@ -162,6 +166,62 @@ export function VoidWindow({ window }: VoidWindowProps) {
 
   if (window.minimized) return null
 
+  // Window context menu handlers
+  const handleMinimize = () => {
+    minimizeWindow(window.id)
+  }
+
+  const handleMaximize = () => {
+    maximizeWindow(window.id)
+  }
+
+  const handleClose = () => {
+    closeWindow(window.id)
+  }
+
+  const handleMoveToDesktop1 = () => {
+    const desktop1 = virtualDesktops[0]
+    if (desktop1) {
+      moveWindowToDesktop(window.id, desktop1.id)
+    }
+  }
+
+  const handleMoveToDesktop2 = () => {
+    const desktop2 = virtualDesktops[1]
+    if (desktop2) {
+      moveWindowToDesktop(window.id, desktop2.id)
+    }
+  }
+
+  const handleMoveToDesktop3 = () => {
+    const desktop3 = virtualDesktops[2]
+    if (desktop3) {
+      moveWindowToDesktop(window.id, desktop3.id)
+    }
+  }
+
+  const handleNewDesktop = () => {
+    // Create new desktop and move window - stub for now
+    console.log('New Desktop - not fully implemented yet')
+  }
+
+  // Window context menu items
+  const windowMenuItems = getWindowContextMenu(
+    handleMinimize,
+    handleMaximize,
+    handleClose,
+    handleMoveToDesktop1 // Move to Desktop submenu (will be updated)
+  )
+
+  // Update "Move to Desktop" submenu with different handlers
+  const moveToDesktopItem = windowMenuItems.find(item => item.label === 'Move to Desktop')
+  if (moveToDesktopItem && moveToDesktopItem.submenu) {
+    moveToDesktopItem.submenu[0].action = handleMoveToDesktop1 // Desktop 1
+    moveToDesktopItem.submenu[1].action = handleMoveToDesktop2 // Desktop 2
+    moveToDesktopItem.submenu[2].action = handleMoveToDesktop3 // Desktop 3
+    moveToDesktopItem.submenu[4].action = handleNewDesktop // New Desktop (index 4 after separator)
+  }
+
   return (
     <motion.div
       ref={windowRef}
@@ -217,11 +277,15 @@ export function VoidWindow({ window }: VoidWindowProps) {
       }}
     >
       {/* Title Bar */}
-      <div className="void-window-titlebar">
-        <span className="void-window-title" title={sanitizeString(window.title, 200)}>
-          {sanitizeString(window.title, 200)}
-        </span>
-        <div className="void-window-controls">
+      <VoidContextMenu
+        type="window"
+        items={windowMenuItems}
+      >
+        <div className="void-window-titlebar">
+          <span className="void-window-title" title={sanitizeString(window.title, 200)}>
+            {sanitizeString(window.title, 200)}
+          </span>
+          <div className="void-window-controls">
           <button
             className="void-window-button minimize"
             onClick={(e) => {
@@ -258,7 +322,8 @@ export function VoidWindow({ window }: VoidWindowProps) {
             aria-label="Close"
           />
         </div>
-      </div>
+        </div>
+      </VoidContextMenu>
 
       {/* Content */}
       <div 

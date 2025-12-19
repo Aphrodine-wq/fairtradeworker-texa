@@ -16,6 +16,15 @@ import {
   Storefront,
   Gear,
   Microphone,
+  RadioButton,
+  VideoCamera,
+  Ruler,
+  Target,
+  Trophy,
+  Wallet,
+  Lock,
+  Funnel,
+  Flag,
 } from '@phosphor-icons/react'
 
 export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
@@ -34,6 +43,17 @@ export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
   marketplace: Storefront,
   settings: Gear,
   'voice-capture': Microphone,
+  // Module icons
+  livewire: RadioButton,
+  facelink: VideoCamera,
+  blueprint: Ruler,
+  scope: Target,
+  dispatch: Calendar,
+  reputation: Trophy,
+  cashflow: Wallet,
+  vault: Lock,
+  funnel: Funnel,
+  milestones: Flag,
 }
 
 export function getIconForId(id: string): ComponentType<{ className?: string }> {

@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react'
-import { Bell, MusicNote, WifiHigh, WifiSlash, Sun, Moon, SpeakerHigh, SpeakerX, Clock, User } from '@phosphor-icons/react'
+import { Bell, MusicNote, WifiHigh, WifiSlash, Sun, Moon, SpeakerHigh, SpeakerX, Clock, User, Gear, Package } from '@phosphor-icons/react'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidNotificationCenter } from './VoidNotificationCenter'
 import { VoidControlCenter } from './VoidControlCenter'
@@ -23,6 +23,7 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
     isMuted,
     theme,
     setTheme,
+    openWindow,
   } = useVoidStore()
 
   const [notificationCenterOpen, setNotificationCenterOpen] = useState(false)
@@ -121,6 +122,26 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           ) : (
             <Moon weight="regular" className="void-tray-icon-svg" size={24} />
           )}
+        </button>
+
+        {/* Settings */}
+        <button
+          className="void-tray-icon void-tray-settings"
+          onClick={() => openWindow('settings')}
+          aria-label="Settings"
+          title="Settings"
+        >
+          <Gear weight="regular" className="void-tray-icon-svg" size={24} />
+        </button>
+
+        {/* Plugins */}
+        <button
+          className="void-tray-icon void-tray-plugins"
+          onClick={() => openWindow('plugins')}
+          aria-label="Plugins"
+          title="Plugin Manager"
+        >
+          <Package weight="regular" className="void-tray-icon-svg" size={24} />
         </button>
 
         {/* Volume */}
