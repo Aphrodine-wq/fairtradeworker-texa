@@ -1,109 +1,266 @@
-# Performance Optimizations Applied
+# Performance Optimization Guide
 
-### 1. Automation Runner - Reduced Polling
+This document outlines the performance optimizations implemented in FairTradeWorker and best practices for maintaining optimal performance.
 
-- Removed dependencies array causing infinite loops
+## Current Performance Metrics
 
-**Before:** Loading all 254 Texas counties
+### Bundle Sizes (After Optimization)
 
-- Reduced DOM nodes from 2
-- Removed dependencies array causing infinite loops
-- Changed from `[user, customers, sequences, scheduledFollowUps, invoices]` to `[user?.id, user?.isPro]`
+- **Main bundle**: 105.85 kB (27.80 kB gzipped) - Down from 403.53 kB (116.94 kB gzipped)
+- **Vendor React**: 199.66 kB (62.97 kB gzipped)
+- **Vendor Icons**: 415.09 kB (95.10 kB gzipped)
+- **Vendor Radix**: 96.43 kB (27.37 kB gzipped)
+- **CSS**: 591.98 kB (99.48 kB gzipped)
 
-### 2. Territory Map - Reduced Counties
+### Performance Targets
 
-**Before:** Loading all 254 Texas counties
-**After:** Loading only 20 major counties
+Based on `infrastructure/scaling-config.ts`:
 
-- Reduced DOM nodes from 254 to 20 (92% reduction)
-- Limited rendering to first 50 territories
-- Memoized: myBids, acceptedBids, thisMonthEarnings, totalEar
+- **Page Load (P95)**: < 1000ms
+- **API Response (P50)**: < 100ms
+- **API Response (P95)**: < 500ms
+- **Uptime Target**: 99.9%
 
-- Memoized: myCustomers, activeCustomers, tota
+## Optimizations Implemented
 
-- Memoized: sortedOpenJobs with complex sorting logic
+### 1. Resource Hints
 
-- Memoized: currentTerritories, myT
+**Location**: `index.html`
 
-- EnhancedCRM
-- ProUpgrade
+- `dns-prefetch` for Google Fonts domains
+- `preconnect` for external resources
+- `preload` for critical fonts and CSS
+- `prefetch` for likely next routes (Login, Signup)
 
-**Benefits:**
+**Impact**: Reduces DNS lookup time and enables parallel resource loading.
 
+### 2. Dynamic Code Splitting
+
+**Location**: `vite.config.ts`
+
+Implemented function-based chunking strategy that automatically splits code by:
+
+- React core libraries
+- UI component libraries (Radix, Icons, Forms)
+- Heavy dependencies (Charts, Motion)
+- Utility libraries
+
+**Impact**:
+
+- Main bundle reduced by 73.8% (403.53 kB → 105.85 kB)
+- Improved caching (vendor chunks rarely change)
 - Faster initial page load
+- Better parallel loading
 
-**EnhancedCRM:**
+### 3. Service Worker Optimization
 
-## Performance Metrics Expected
+**Location**: `public/sw.js`
 
-### Before Optimizations
+Enhanced caching strategies:
 
-**BrowseJobs:**
+- **Cache-First**: Images and static assets (increased to 150 items, 50 for images)
+- **Stale-While-Revalidate**: JS/CSS chunks for instant loads
+- **Network-First**: HTML and API calls for fresh data
 
-- Prevents expensive sorting on every render
+**Impact**: Near-instant repeat visits, offline capability
 
-**TerritoryMap:**
+### 4. Vercel Configuration
 
-## Additional Recommendations
+**Location**: `vercel.json`
 
-- Reduces filtering operations
+Added comprehensive headers:
 
-1. **IndexedDB** instead of useKV for
-2. **Debounced search** and *
+- Long-term caching for assets (1 year)
+- Security headers (X-Frame-Options, CSP-lite)
+- Proper cache invalidation for HTML
+- Service worker configuration
 
-- ContractorDashboard
-- Monitor mem
-- Set up Lightho
+**Impact**: Better CDN caching, improved security
 
-## Testing C
+### 5. Build Optimizations
 
-- TerritoryMap
-- [ ] Dashboard calculati
+**Location**: `vite.config.ts`
 
-- [ ] Chrome
+- Modern browser targets (ES2020+)
+- CSS code splitting and minification
+- Tree shaking enabled
+- Module preload polyfill disabled (not needed for modern browsers)
+- Excluded heavy dependencies from dev pre-bundling
 
-### 6. Removed Infinite Re-render Triggers
+**Impact**: Smaller bundles, faster builds
 
-### Before Optimizations
+### 6. Performance Monitoring
 
-- Initial load: ~5-8 seconds
-- Territory map render: ~2-3 seconds
-- Dashboard calculations: ~500-800ms per render
-- Memory usage: 150-250MB
-- **Chrome crashes after 5-10 minutes of use**
+**Location**: `src/lib/performance.ts`
 
-### After Optimizations
+Added comprehensive monitoring:
 
-- Initial load: ~2-3 seconds (60% faster)
-- Territory map render: ~200-400ms (85% faster)
-- Dashboard calculations: ~50-100ms per render (85% faster)
-- Memory usage: 50-80MB (65% reduction)
-- **No crashes expected**
+- Performance Observer for Core Web Vitals (LCP, FID, CLS)
+- Resource timing analysis
+- Memory monitoring (Chrome only)
+- Long task detection
 
-## Additional Recommendations
+**Impact**: Visibility into performance issues, easier debugging
 
-### Future Optimizations
+## Best Practices
 
-1. **Virtual scrolling** for long lists (job lists, territory lists)
-2. **Pagination** instead of loading all data at once
-3. **Web Workers** for heavy calculations
-4. **IndexedDB** instead of useKV for large datasets
-5. **React.memo** on frequently re-rendering components
-6. **Debounced search** and **throttled scroll handlers**
+### For Developers
 
-### Monitoring
+#### 1. Use Lazy Loading
 
-- Use Chrome DevTools Performance tab to identify bottlenecks
-- Monitor memory usage in Task Manager
-- Use React DevTools Profiler to find slow renders
-- Set up Lighthouse CI for automated performance checks
+```tsx
+// ✅ Good - Lazy load heavy components
+const HeavyComponent = lazy(() => import('./HeavyComponent'))
 
-## Testing Checklist
+// ❌ Bad - Import everything upfront
+import HeavyComponent from './HeavyComponent'
+```
 
-- [ ] App loads without errors
-- [ ] Territory map renders smoothly
-- [ ] Dashboard calculations are fast
-- [ ] No memory leaks after 15 minutes of use
-- [ ] Smooth scrolling on job lists
-- [ ] No frame drops during navigation
-- [ ] Chrome doesn't crash after extended use
+#### 2. Optimize Images
+
+- Use WebP format where possible
+- Compress images before committing
+- Use appropriate dimensions (don't load 4K images for thumbnails)
+- Implement lazy loading for images below the fold
+
+#### 3. Minimize Re-renders
+
+```tsx
+// ✅ Good - Memoize expensive computations
+const expensiveValue = useMemo(() => computeExpensiveValue(data), [data])
+
+// ✅ Good - Memoize callbacks
+const handleClick = useCallback(() => doSomething(), [dependency])
+
+// ❌ Bad - Create new objects/functions every render
+const config = { setting: true }
+const handleClick = () => doSomething()
+```
+
+#### 4. Code Splitting Best Practices
+
+- Split by routes (already implemented via lazy imports in App.tsx)
+- Split large libraries (charts, PDF generators)
+- Keep shared code in common chunks
+
+#### 5. Avoid Bundle Bloat
+
+```bash
+# Analyze bundle before adding new dependencies
+npm run build:analyze
+
+# Check dependency size before installing
+npx bundle-phobia <package-name>
+```
+
+### For Production Deployments
+
+#### 1. Vercel Deployment
+
+The app is configured for optimal Vercel deployment:
+
+- Automatic Brotli/Gzip compression
+- Edge network distribution
+- Smart CDN caching
+
+#### 2. Environment Variables
+
+Set these for production:
+
+```bash
+NODE_ENV=production  # Disables debug logs, enables optimizations
+```
+
+#### 3. Monitoring
+
+Enable performance monitoring:
+
+```javascript
+// In browser console or localStorage
+localStorage.setItem('debug:performance', 'true')
+```
+
+Then check console for metrics after page load.
+
+## Performance Budget
+
+### Bundle Size Limits
+
+- **Main JS bundle**: < 150 kB (gzipped)
+- **Vendor bundles combined**: < 300 kB (gzipped)
+- **CSS bundle**: < 100 kB (gzipped)
+- **Individual route chunks**: < 50 kB (gzipped)
+
+### Runtime Limits
+
+- **Initial page load**: < 2s (3G network)
+- **Time to Interactive**: < 3s
+- **First Contentful Paint**: < 1.5s
+- **Largest Contentful Paint**: < 2.5s
+- **Cumulative Layout Shift**: < 0.1
+
+## Monitoring Commands
+
+```bash
+# Build with bundle analysis
+npm run build:analyze
+
+# Preview production build locally
+npm run preview
+
+# Development with performance monitoring
+# (automatically enabled in dev mode)
+npm run dev
+```
+
+## Future Optimizations
+
+### Planned Improvements
+
+1. **Image CDN**: Implement Cloudflare Images or similar for automatic optimization
+2. **Font Subsetting**: Load only required font characters
+3. **Critical CSS**: Inline critical CSS for faster First Paint
+4. **HTTP/3**: Enable when widely supported
+5. **Prefetch Strategy**: Intelligent prefetching based on user behavior
+6. **Service Worker Updates**: Background sync for offline actions
+
+### Experimental Features
+
+- **React Server Components**: When available for Vite
+- **Partial Hydration**: For static content areas
+- **Edge Functions**: Move some processing to edge
+
+## Resources
+
+- [Web.dev Performance](https://web.dev/performance/)
+- [Vite Performance Guide](https://vitejs.dev/guide/performance.html)
+- [Vercel Edge Network](https://vercel.com/docs/edge-network/overview)
+- [Core Web Vitals](https://web.dev/vitals/)
+
+## Troubleshooting
+
+### Build is slow
+
+1. Check if node_modules is too large (`du -sh node_modules`)
+2. Clear build cache: `rm -rf dist node_modules/.vite`
+3. Update dependencies: `npm update`
+
+### Bundle is too large
+
+1. Run `npm run build:analyze` to identify large dependencies
+2. Check if dependencies can be lazy-loaded
+3. Look for duplicate dependencies in the bundle
+
+### Page loads slowly
+
+1. Check Network tab in DevTools
+2. Look for render-blocking resources
+3. Verify service worker is active
+4. Check if resources are being cached
+
+### Memory issues
+
+1. Check console for memory warnings
+2. Use Chrome Memory Profiler
+3. Look for memory leaks in long-running pages
+4. Clear caches: `localStorage.clear()` and reload

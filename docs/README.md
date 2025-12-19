@@ -79,9 +79,13 @@ Complete documentation for the VOID desktop interface system:
 
 Historical documentation for reference:
 
+- **[2025-12 Consolidation](archive/2025-12-consolidation/)** - December 2025 documentation consolidation
 - [Session Logs](archive/session-logs/) - Development session notes
 - [Fixes](archive/fixes/) - Completed fix documentation
 - [Deprecated](archive/deprecated/) - Old documentation versions
+- [Archive List](ARCHIVE_LIST.md) - Complete index of archived documents
+
+> 📝 **Recent Update (December 19, 2025):** Major documentation consolidation completed. See [ARCHIVE_LIST.md](ARCHIVE_LIST.md) for details.
 
 ---
 
