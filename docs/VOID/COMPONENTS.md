@@ -94,6 +94,118 @@ import { VoidThemeToggle } from '@/components/void/ThemeToggle'
 - Hover effects
 - Accessibility labels
 
+### VoidIcon
+
+Desktop icon component with native HTML5 drag and drop support.
+
+**Location**: `components/void/VoidIcon.tsx`
+
+**Props:**
+```typescript
+interface VoidIconProps {
+  icon: IconData
+  style: React.CSSProperties
+  isDragging: boolean
+  onContextMenu: (e: React.MouseEvent) => void
+  onDragStart?: (e: React.DragEvent) => void
+}
+```
+
+**Usage:**
+```tsx
+import { VoidIcon } from '@/components/void/VoidIcon'
+
+<VoidIcon
+  icon={iconData}
+  style={gridPosition}
+  isDragging={false}
+  onContextMenu={handleContextMenu}
+  onDragStart={handleDragStart}
+/>
+```
+
+**Features:**
+- **Native HTML5 Drag**: Uses `draggable` attribute and `onDragStart` handler
+- **Icon Identifier Storage**: Stores icon ID in `dataTransfer.setData('text/plain', iconId)`
+- **Custom Drag Image**: Clones icon element with 1.2x scale and 0.8 opacity
+- **Visual Feedback**: Scale 1.2x, brightness 1.5x, enhanced shadows during drag
+- **Pin Support**: Disables drag for pinned icons
+- **Double-Click**: Opens associated window/menu
+
+**Implementation:**
+```typescript
+<div
+  draggable={!pinnedIcons.has(icon.id)}
+  onDragStart={handleDragStart}
+  data-id={icon.id}
+>
+  {/* Icon content */}
+</div>
+```
+
+### VoidDesktop
+
+Desktop grid container with native HTML5 drop zone support.
+
+**Location**: `components/void/VoidDesktop.tsx`
+
+**Props:** None (uses store for state)
+
+**Usage:**
+```tsx
+import { VoidDesktop } from '@/components/void/VoidDesktop'
+
+<VoidDesktop />
+```
+
+**Features:**
+- **Native HTML5 Drop Zone**: Uses `onDragOver` and `onDrop` handlers
+- **Grid Snapping**: Automatic snap to 200x200 grid
+- **Collision Detection**: 80% cell size collision radius
+- **Visual Status Indicators**: "DRAGGING" and "DROPPING" text overlays
+- **Context Menus**: Desktop and icon context menus
+- **File Upload**: Background image drag-drop support
+
+**Drop Zone Implementation:**
+```typescript
+<div
+  ref={containerRef}
+  className="void-desktop-grid"
+  onDragOver={handleDragOver}
+  onDrop={handleDrop}
+>
+  {/* Icons */}
+</div>
+```
+
+**Drag Over Handler:**
+```typescript
+const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault() // Required to allow drop
+  e.dataTransfer.dropEffect = 'move'
+}
+```
+
+**Drop Handler:**
+```typescript
+const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault()
+  const iconId = e.dataTransfer.getData('text/plain')
+  const gridPosition = snapToGrid(e.clientX, e.clientY)
+  // Collision detection and position update
+}
+```
+
+**Grid Snapping:**
+- 200x200 grid cells
+- Automatic rounding to nearest cell
+- Bounds clamping (1-200)
+
+**Collision Detection:**
+- 80% of cell size collision radius
+- Prevents icon overlap
+- Distance-based calculation
+
 ### BackgroundSystem
 
 Drag-drop background upload system.

@@ -1,5 +1,4 @@
-import { useRef, useState, useCallback, useMemo, memo } from 'react'
-import { DndContext, DragEndEvent, DragStartEvent, DragMoveEvent, PointerSensor, useSensor, useSensors, closestCenter } from '@dnd-kit/core'
+import { useRef, useState, useCallback, memo } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 import { VoidIcon } from './VoidIcon'
 import { VoidVoiceIcon } from './VoidVoiceIcon'
@@ -7,7 +6,6 @@ import { VoidContextMenu } from './VoidContextMenu'
 import { getIconForId } from '@/lib/void/iconMap'
 import { validateGridPosition } from '@/lib/void/validation'
 import { getDesktopContextMenu, getIconContextMenu } from '@/lib/void/contextMenus'
-import { dragSystem } from '@/lib/void/dragSystem'
 import '@/styles/void-desktop.css'
 
 // Memoized component to prevent unnecessary re-renders
@@ -15,26 +13,8 @@ export const VoidDesktop = memo(function VoidDesktop() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { icons, iconPositions, pinnedIcons, sortIcons, updateIconPosition, openWindow, setDesktopBackground, createFile } = useVoidStore()
   const [draggedId, setDraggedId] = useState<string | null>(null)
-  const [dragState, setDragState] = useState<ReturnType<typeof dragSystem.getDragState>>(undefined)
   const [isDropping, setIsDropping] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // Advanced sensor configuration with multiple activation strategies
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 1, // 1px for maximum precision
-        delay: 0,
-        tolerance: 0,
-      },
-    })
-  )
-
-  // Memoize icons data for drag system
-  const iconsData = useMemo(() => 
-    icons.map(icon => ({ id: icon.id, position: icon.position })),
-    [icons]
-  )
 
   // Calculate grid cell size
   const getCellSize = useCallback(() => {
@@ -74,73 +54,61 @@ export const VoidDesktop = memo(function VoidDesktop() {
     }
   }, [getCellSize])
 
-  const handleDragStart = (event: DragStartEvent) => {
-    const iconId = event.active.id as string
-    setDraggedId(iconId)
-    
-    // Initialize advanced drag system
-    const state = dragSystem.handleDragStart(event)
-    setDragState(state)
-  }
-
-  const handleDragMove = (event: DragMoveEvent) => {
-    if (!containerRef.current) return
-    
-    const rect = containerRef.current.getBoundingClientRect()
-    const gridSize = { width: rect.width, height: rect.height }
-    
-    // Update advanced drag system
-    const state = dragSystem.handleDragMove(event, iconsData)
-    if (state) {
-      setDragState(state)
+  // Native HTML5 Drag Start Handler
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    const iconId = e.currentTarget.getAttribute('data-id') || e.dataTransfer.getData('text/plain')
+    if (iconId) {
+      setDraggedId(iconId)
     }
   }
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active } = event
-    const iconId = active.id as string
+  // Native HTML5 Drag Over Handler - allows drop
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault() // Required to allow drop
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  // Native HTML5 Drop Handler
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
     
+    const iconId = e.dataTransfer.getData('text/plain')
+    if (!iconId || !containerRef.current || pinnedIcons.has(iconId)) {
+      setDraggedId(null)
+      setIsDropping(false)
+      return
+    }
+
     // Show "Dropping" state
     setIsDropping(true)
-    
-    if (!containerRef.current || pinnedIcons.has(iconId)) {
-      setDraggedId(null)
-      setDragState(undefined)
-      setIsDropping(false)
-      dragSystem.clearDragState(iconId)
-      return
-    }
 
+    // Get drop position
     const rect = containerRef.current.getBoundingClientRect()
-    const gridSize = { width: rect.width, height: rect.height }
-    
-    // Get drag result (NO MOMENTUM - direct placement)
-    const dragResult = dragSystem.handleDragEnd(event, gridSize)
-    
-    if (!dragResult) {
+    const clientX = e.clientX
+    const clientY = e.clientY
+
+    // Snap to grid
+    const gridPosition = snapToGrid(clientX, clientY)
+    if (!gridPosition) {
       setDraggedId(null)
-      setDragState(undefined)
       setIsDropping(false)
       return
     }
-
-    // Use final position (no momentum applied)
-    const { finalPosition } = dragResult
 
     // Enhanced collision detection with radius
     const cellSize = getCellSize()
     const hasCollision = icons.some(icon => {
       if (icon.id === iconId) return false
       const distance = Math.sqrt(
-        Math.pow((icon.position.col - finalPosition.col) * cellSize.width, 2) +
-        Math.pow((icon.position.row - finalPosition.row) * cellSize.height, 2)
+        Math.pow((icon.position.col - gridPosition.col) * cellSize.width, 2) +
+        Math.pow((icon.position.row - gridPosition.row) * cellSize.height, 2)
       )
       return distance < cellSize.width * 0.8 // 80% of cell size collision radius
     })
 
     if (!hasCollision) {
       // Validate position before updating
-      const validatedPos = validateGridPosition(finalPosition)
+      const validatedPos = validateGridPosition(gridPosition)
       if (validatedPos) {
         updateIconPosition(iconId, validatedPos)
       }
@@ -149,9 +117,14 @@ export const VoidDesktop = memo(function VoidDesktop() {
     // Clear states after a brief delay to show "Dropping" text
     setTimeout(() => {
       setDraggedId(null)
-      setDragState(undefined)
       setIsDropping(false)
     }, 200)
+  }
+
+  // Native HTML5 Drag End Handler (when drag is cancelled or ends)
+  const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+    setDraggedId(null)
+    setIsDropping(false)
   }
 
   // Desktop context menu handlers
@@ -283,13 +256,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
   })
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragMove={handleDragMove}
-      onDragEnd={handleDragEnd}
-    >
+    <>
       {/* Drag/Drop Status Indicator */}
       {(draggedId || isDropping) && (
         <div
@@ -326,6 +293,8 @@ export const VoidDesktop = memo(function VoidDesktop() {
         <div
           ref={containerRef}
           className="void-desktop-grid"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
         >
           {icons.map((icon) => {
             const IconComponent = getIconForId(icon.id)
@@ -428,6 +397,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
                     style={cssPos}
                     isDragging={draggedId === icon.id}
                     onContextMenu={() => {}} // Handled by VoidContextMenu
+                    onDragStart={handleDragStart}
                   />
                 </div>
               </VoidContextMenu>
@@ -435,6 +405,6 @@ export const VoidDesktop = memo(function VoidDesktop() {
           })}
         </div>
       </VoidContextMenu>
-    </DndContext>
+    </>
   )
 })

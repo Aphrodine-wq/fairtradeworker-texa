@@ -1473,51 +1473,107 @@ class WiremapRenderer {
 
 ---
 
-## Advanced Drag and Drop System
+## Native HTML5 Drag and Drop System
 
 ### Overview
 
-The VOID drag system provides precise icon positioning with visual feedback and intelligent collision detection. **Momentum physics are disabled** for direct, predictable placement.
+The VOID drag system uses native HTML5 Drag and Drop API for precise icon positioning with visual feedback and intelligent collision detection. This provides a standard, accessible drag experience without external dependencies.
 
-**Location**: `lib/void/dragSystem.ts`
+**Implementation**: `src/components/void/VoidIcon.tsx`, `src/components/void/VoidDesktop.tsx`
 
 ### Key Features
 
+- **Native HTML5 API**: Uses standard `draggable` attribute and drag events
 - **Visual Status Indicators**: Large "DRAGGING" and "DROPPING" text overlays during operations
-- **No Momentum Physics**: Direct placement only - no slingshot effect for precise control
-- **Snap Zones**: Magnetic alignment to nearby icons (20px threshold, 70% strength)
-- **Collision Detection**: 60px radius collision detection with visual feedback
-- **1px Precision**: Maximum precision with 1px activation distance
+- **Direct Placement**: Immediate positioning on drop - no momentum physics
+- **Grid Snapping**: Automatic snap to grid for precise alignment
+- **Collision Detection**: 80% cell size collision radius detection
 - **Visual Feedback**: Icons scale to 1.2x, brightness 1.5x, enhanced drop shadows during drag
 
-### Drag System Architecture
+### Implementation Architecture
 
+#### VoidIcon Component
+
+**Draggable Element Setup:**
 ```typescript
-export class AdvancedDragSystem {
-  private dragStates: Map<string, DragState>
-  private config: DragConfig
+<div
+  draggable={!pinnedIcons.has(icon.id)}
+  onDragStart={handleDragStart}
+  data-id={icon.id}
+>
+```
+
+**Drag Start Handler:**
+```typescript
+const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+  // Store the icon identifier in the drag event
+  e.dataTransfer.setData('text/plain', icon.id)
+  e.dataTransfer.effectAllowed = 'move'
   
-  handleDragStart(event: DragStartEvent): DragState
-  handleDragMove(event: DragMoveEvent, allIcons: IconData[]): DragState | null
-  handleDragEnd(event: DragEndEvent, gridSize: GridSize): DragResult | null
+  // Set custom drag image
+  if (iconRef.current) {
+    const dragImage = iconRef.current.cloneNode(true) as HTMLElement
+    dragImage.style.opacity = '0.8'
+    dragImage.style.transform = 'scale(1.2)'
+    e.dataTransfer.setDragImage(dragImage, 0, 0)
+  }
 }
 ```
 
-### Drag Configuration
+#### VoidDesktop Component
 
+**Drop Zone Setup:**
 ```typescript
-interface DragConfig {
-  friction: number              // 0.85 (not used - momentum disabled)
-  momentumDecay: number         // 0.92 (not used - momentum disabled)
-  snapThreshold: number        // 20px - distance for snap detection
-  snapStrength: number          // 0.7 - strength of snap (0-1)
-  collisionRadius: number      // 60px - collision detection radius
-  maxHistorySize: number        // 10 - maximum position history entries
-  enableMomentum: boolean      // false - DISABLED
-  enableSnapZones: boolean      // true
-  enableCollisionDetection: boolean // true
+<div
+  ref={containerRef}
+  className="void-desktop-grid"
+  onDragOver={handleDragOver}
+  onDrop={handleDrop}
+>
+```
+
+**Drag Over Handler (Required for Drop):**
+```typescript
+const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault() // Required to allow drop
+  e.dataTransfer.dropEffect = 'move'
 }
 ```
+
+**Drop Handler:**
+```typescript
+const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  e.preventDefault()
+  
+  const iconId = e.dataTransfer.getData('text/plain')
+  if (!iconId || pinnedIcons.has(iconId)) return
+
+  // Get drop position and snap to grid
+  const gridPosition = snapToGrid(e.clientX, e.clientY)
+  
+  // Collision detection
+  const hasCollision = icons.some(icon => {
+    if (icon.id === iconId) return false
+    const distance = Math.sqrt(
+      Math.pow((icon.position.col - gridPosition.col) * cellSize.width, 2) +
+      Math.pow((icon.position.row - gridPosition.row) * cellSize.height, 2)
+    )
+    return distance < cellSize.width * 0.8 // 80% collision radius
+  })
+
+  if (!hasCollision) {
+    updateIconPosition(iconId, gridPosition)
+  }
+}
+```
+
+### HTML5 Drag and Drop API Events
+
+1. **`draggable` Attribute**: Set to `true` on elements that should be draggable (disabled for pinned icons)
+2. **`onDragStart`**: Fires when drag begins - stores icon ID in `dataTransfer`
+3. **`onDragOver`**: Fires continuously while dragging over drop zone - must call `preventDefault()` to allow drop
+4. **`onDrop`**: Fires when element is dropped - handles position update
+5. **`onDragEnd`**: Fires when drag ends (cancelled or completed) - cleans up state
 
 ### Visual Status Indicators
 
@@ -1540,51 +1596,38 @@ interface DragConfig {
 - Pulse animation on "DROPPING" state
 - 200ms delay before clearing state
 
-### Drag State Tracking
+### Grid Snapping
 
 ```typescript
-interface DragState {
-  id: string
-  startTime: number
-  startPosition: { x: number; y: number }
-  currentPosition: { x: number; y: number }
-  velocity: { x: number; y: number }        // Tracked but not applied
-  acceleration: { x: number; y: number }     // Tracked but not applied
-  momentum: { x: number; y: number }         // Always zero (momentum disabled)
-  history: Array<{ x: number; y: number; timestamp: number }>
-  snapZone?: { row: number; col: number; strength: number }
-  collision?: { id: string; distance: number }
-}
-```
-
-### Snap Zone Detection
-
-```typescript
-private detectSnapZone(
-  x: number,
-  y: number,
-  allIcons: IconData[],
-  currentId: string
-): SnapZone | undefined {
-  // Finds nearest icon within 20px threshold
-  // Returns snap zone with strength (0-1) based on distance
-  // Strength > 0.5 triggers visual feedback (hue-rotate filter)
+const snapToGrid = (clientX: number, clientY: number): { row: number; col: number } | null => {
+  const rect = containerRef.current.getBoundingClientRect()
+  const cellSize = getCellSize()
+  
+  const relativeX = clientX - rect.left
+  const relativeY = clientY - rect.top
+  
+  const col = Math.round(relativeX / cellSize.width)
+  const row = Math.round(relativeY / cellSize.height)
+  
+  // Clamp to grid bounds (1-200)
+  return {
+    row: Math.max(1, Math.min(200, row)),
+    col: Math.max(1, Math.min(200, col)),
+  }
 }
 ```
 
 ### Collision Detection
 
 ```typescript
-private detectCollision(
-  x: number,
-  y: number,
-  allIcons: IconData[],
-  currentId: string
-): Collision | undefined {
-  // Checks 60px radius around drop position
-  // Returns collision info if icon would overlap
-  // Visual feedback: contrast(1.2) filter applied
-}
+const hasCollision = icons.some(icon => {
+  if (icon.id === iconId) return false
+  const distance = Math.sqrt(
+    Math.pow((icon.position.col - gridPosition.col) * cellSize.width, 2) +
+    Math.pow((icon.position.row - gridPosition.row) * cellSize.height, 2)
+  )
+  return distance < cellSize.width * 0.8 // 80% of cell size collision radius
+})
 ```
 
 ### Icon Visual Feedback
@@ -1597,16 +1640,15 @@ private detectCollision(
 - Z-Index: `auto → 1000`
 - Cursor: `grab → grabbing`
 
-**Snap Zone Active:**
-- Additional filter: `hue-rotate(180deg)`
+### Data Transfer
 
-**Collision Detected:**
-- Additional filter: `contrast(1.2)`
+The drag system uses `dataTransfer.setData('text/plain', iconId)` to store the icon identifier during drag operations. This allows the drop handler to identify which icon was dragged.
 
 ### Performance Optimizations
 
-- **Memoized Icons Data**: Icons array memoized to prevent unnecessary recalculations
-- **DOM Query Optimization**: Uses `data-id` attributes for efficient element lookup
+- **Native API**: No external dependencies - uses built-in browser APIs
+- **Minimal State**: Only tracks `draggedId` and `isDropping` states
+- **Efficient Grid Calculation**: Memoized cell size calculations
 - **State Cleanup**: Drag states cleared immediately after drop
 - **Minimal Re-renders**: Status indicators only render during active drag
 
@@ -1656,7 +1698,7 @@ src/
 │   │   ├── buddyContext.ts          # Buddy context
 │   │   ├── buddyLearning.ts         # Buddy learning
 │   │   ├── dataHooks.ts             # Data hooks
-│   │   ├── dragSystem.ts           # Advanced drag system (NO MOMENTUM)
+│   │   ├── dragSystem.ts           # Legacy drag system (deprecated - using native HTML5)
 │   │   ├── bootSequence.ts          # Extended boot sequence
 │   │   ├── validation.ts            # Validation utilities
 │   │   └── iconMap.tsx              # Icon mappings
@@ -2222,8 +2264,10 @@ All security enhancements maintain full backward compatibility:
 ### Version History
 
 - **v1.2.0** (December 2025): UI/UX Enhancement Update
-  - **Advanced Drag System**: Visual "DRAGGING"/"DROPPING" indicators, snap zones, collision detection
-  - **No Momentum Physics**: Removed slingshot effect for precise direct placement
+  - **Native HTML5 Drag and Drop**: Migrated from @dnd-kit to native HTML5 Drag and Drop API
+  - **Visual Status Indicators**: "DRAGGING"/"DROPPING" text overlays during operations
+  - **Grid Snapping**: Automatic snap to grid for precise icon placement
+  - **Collision Detection**: 80% cell size collision radius to prevent icon overlap
   - **Star Background System**: 200-350 floating glowing white stars (2-8px, high brightness)
   - **Extended Boot Animation**: 4-5 second boot sequence with Buddy face display (3x larger, centered)
   - **Upgraded Icons**: 64px icons (w-16 h-16) with bold weight for better visibility

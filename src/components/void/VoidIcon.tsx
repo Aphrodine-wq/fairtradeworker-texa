@@ -1,49 +1,51 @@
-import { useDraggable } from '@dnd-kit/core'
-import { CSS } from '@dnd-kit/utilities'
+import { useRef } from 'react'
 import { useVoidStore } from '@/lib/void/store'
 import { cn } from '@/lib/utils'
 import type { IconData } from '@/lib/void/types'
 import { sanitizeString } from '@/lib/void/validation'
-import { dragSystem } from '@/lib/void/dragSystem'
 
 interface VoidIconProps {
   icon: IconData
   style: React.CSSProperties
   isDragging: boolean
   onContextMenu: (e: React.MouseEvent) => void
+  onDragStart?: (e: React.DragEvent) => void
 }
 
-export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconProps) {
+export function VoidIcon({ icon, style, isDragging, onContextMenu, onDragStart }: VoidIconProps) {
   const { openWindow, recordIconUsage, pinnedIcons } = useVoidStore()
   const IconComponent = icon.icon
+  const iconRef = useRef<HTMLDivElement>(null)
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-  } = useDraggable({
-    id: icon.id,
-    disabled: pinnedIcons.has(icon.id),
-  })
-
-  // Simple visual feedback (NO MOMENTUM PHYSICS)
-  const dragState = isDragging ? dragSystem.getDragState(icon.id) : undefined
-  const hasSnapZone = dragState?.snapZone && dragState.snapZone.strength > 0.5
-  const hasCollision = !!dragState?.collision
+  // Native HTML5 drag handler
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    // Store the icon identifier in the drag event
+    e.dataTransfer.setData('text/plain', icon.id)
+    e.dataTransfer.effectAllowed = 'move'
+    
+    // Set drag image to the icon element itself
+    if (iconRef.current) {
+      const dragImage = iconRef.current.cloneNode(true) as HTMLElement
+      dragImage.style.opacity = '0.8'
+      dragImage.style.transform = 'scale(1.2)'
+      e.dataTransfer.setDragImage(dragImage, 0, 0)
+    }
+    
+    // Call parent handler if provided
+    onDragStart?.(e)
+  }
 
   // Simple drag style - no momentum effects
   const dragStyle = {
     ...style,
-    transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.9 : 1,
     scale: isDragging ? 1.2 : 1,
     zIndex: isDragging ? 1000 : 'auto',
     filter: isDragging 
-      ? `brightness(1.5) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) ${hasSnapZone ? 'hue-rotate(180deg)' : ''} ${hasCollision ? 'contrast(1.2)' : ''}`
+      ? `brightness(1.5) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))`
       : 'none',
     transition: isDragging ? 'none' : 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-    cursor: isDragging ? 'grabbing' : 'grab',
+    cursor: pinnedIcons.has(icon.id) ? 'default' : (isDragging ? 'grabbing' : 'grab'),
   } as React.CSSProperties
 
   const handleDoubleClick = () => {
@@ -55,16 +57,17 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
 
   return (
     <div
-      ref={setNodeRef}
+      ref={iconRef}
+      draggable={!pinnedIcons.has(icon.id)}
       style={dragStyle}
       className={cn(
         'void-icon',
-        pinnedIcons.has(icon.id) && 'pinned'
+        pinnedIcons.has(icon.id) && 'pinned',
+        isDragging && 'dragging'
       )}
       data-id={icon.id}
       data-dragging={isDragging}
-      {...attributes}
-      {...(!pinnedIcons.has(icon.id) ? listeners : {})}
+      onDragStart={handleDragStart}
       onDoubleClick={handleDoubleClick}
       onContextMenu={onContextMenu}
     >
