@@ -22,6 +22,7 @@
 
 [![Status](https://img.shields.io/badge/STATUS-PRODUCTION_READY-00ff00?style=for-the-badge&labelColor=000000)](https://fairtradeworker.com)
 [![TypeScript](https://img.shields.io/badge/TYPESCRIPT-100%25-3178c6?style=for-the-badge&labelColor=000000)](https://typescriptlang.org)
+[![Deploy with Vercel](https://vercel.com/button)](https://api.vercel.com/v1/integrations/deploy/prj_DhnFXknF379fkRQIm6yTuO3yhURW/e0q7uMeDKS)
 
 </div>
 
