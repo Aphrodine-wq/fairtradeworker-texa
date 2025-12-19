@@ -148,6 +148,8 @@ export function createOptimizedSupabaseClient() {
  * @param queryType - 'read' or 'write'
  * @returns Database URL to use
  */
+let readReplicaIndex = 0; // Round-robin counter for load balancing
+
 export function getOptimalDatabaseUrl(queryType: 'read' | 'write'): string {
   const primaryUrl = import.meta.env.VITE_SUPABASE_URL || '';
   
@@ -156,14 +158,15 @@ export function getOptimalDatabaseUrl(queryType: 'read' | 'write'): string {
     return primaryUrl;
   }
 
-  // For reads, use replica if available
+  // For reads, use replica if available (with round-robin)
   if (SUPABASE_POOLING_CONFIG.READ_REPLICAS.enabled) {
     const replicas = SUPABASE_POOLING_CONFIG.READ_REPLICAS.readReplicaUrls.filter(Boolean);
     
     if (replicas.length > 0) {
-      // Simple round-robin
-      const index = Math.floor(Math.random() * replicas.length);
-      return replicas[index] || primaryUrl;
+      // Round-robin distribution
+      const url = replicas[readReplicaIndex % replicas.length] || primaryUrl;
+      readReplicaIndex = (readReplicaIndex + 1) % replicas.length;
+      return url;
     }
   }
 

@@ -29,6 +29,7 @@ INCLUDE (id, title, size, estimated_days, homeowner_id);
 DROP INDEX IF EXISTS idx_jobs_title_search;
 DROP INDEX IF EXISTS idx_jobs_description_search;
 
+-- Use CONCURRENTLY to avoid locking the table during index creation
 CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_jobs_fulltext_search 
 ON jobs USING gin(
   to_tsvector('english', 
@@ -103,14 +104,20 @@ WHERE status = 'paid';
 -- CRM OPTIMIZATIONS (if crm_customers table exists)
 -- ===========================================================================
 
--- Index for contractor's CRM customers
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_crm_customers_contractor_status 
-ON crm_customers(contractor_id, status, updated_at DESC);
+-- Check if crm_customers table exists before creating indexes
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM pg_tables WHERE schemaname = 'public' AND tablename = 'crm_customers') THEN
+    -- Index for contractor's CRM customers
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_crm_customers_contractor_status 
+    ON crm_customers(contractor_id, status, updated_at DESC);
 
--- Index for customer pipeline stage
-CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_crm_customers_pipeline 
-ON crm_customers(contractor_id, pipeline_stage, last_contact_date DESC)
-WHERE status = 'active';
+    -- Index for customer pipeline stage
+    CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_crm_customers_pipeline 
+    ON crm_customers(contractor_id, pipeline_stage, last_contact_date DESC)
+    WHERE status = 'active';
+  END IF;
+END $$;
 
 -- ===========================================================================
 -- ANALYTICS & REPORTING OPTIMIZATIONS

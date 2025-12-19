@@ -41,10 +41,10 @@ export class CircuitBreaker {
     config?: Partial<CircuitBreakerConfig>
   ) {
     this.config = {
-      failureThreshold: config?.failureThreshold || SCALING_CONFIG.CIRCUIT_BREAKER.FAILURE_THRESHOLD,
-      successThreshold: config?.successThreshold || SCALING_CONFIG.CIRCUIT_BREAKER.SUCCESS_THRESHOLD,
-      timeout: config?.timeout || SCALING_CONFIG.CIRCUIT_BREAKER.TIMEOUT_MS,
-      resetTimeout: config?.resetTimeout || SCALING_CONFIG.CIRCUIT_BREAKER.RESET_TIMEOUT_MS,
+      failureThreshold: config?.failureThreshold ?? SCALING_CONFIG.CIRCUIT_BREAKER.FAILURE_THRESHOLD,
+      successThreshold: config?.successThreshold ?? SCALING_CONFIG.CIRCUIT_BREAKER.SUCCESS_THRESHOLD,
+      timeout: config?.timeout ?? SCALING_CONFIG.CIRCUIT_BREAKER.TIMEOUT_MS,
+      resetTimeout: config?.resetTimeout ?? SCALING_CONFIG.CIRCUIT_BREAKER.RESET_TIMEOUT_MS,
     };
 
     this.stats = {
