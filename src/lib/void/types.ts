@@ -80,6 +80,23 @@ export interface BuddyState {
   docked: boolean
   lastMessageTime: number
   emotion: BuddyEmotion
+  mood?: 'sassy' | 'annoyed' | 'proud' | 'concerned' | 'neutral'
+  stats?: {
+    windowsOpened: number
+    windowsClosed: number
+    totalClicks: number
+    idleMinutes: number
+    errors: number
+    filesCreated: number
+    settingsOpened: number
+    startTime: number
+  }
+  streak?: {
+    current: number
+    longest: number
+    lastInteraction: number
+    broken: boolean
+  }
 }
 
 // Virtual Desktops

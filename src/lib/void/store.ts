@@ -76,6 +76,9 @@ interface VoidStore {
       setBuddyEmotion: (emotion: BuddyState['emotion']) => void
       addBuddyMessage: (message: BuddyMessage) => void
       updateBuddyLastMessageTime: (time: number) => void
+      updateBuddyStats: (stats: Partial<BuddyState['stats']>) => void
+      setBuddyMood: (mood: BuddyState['mood']) => void
+      updateBuddyStreak: (streak: Partial<BuddyState['streak']>) => void
       
       // Theme actions
       setTheme: (theme: Theme) => void
@@ -261,6 +264,23 @@ export const useVoidStore = create<VoidStore>()(
         docked: false,
         lastMessageTime: 0,
         emotion: 'neutral',
+        mood: 'sassy',
+        stats: {
+          windowsOpened: 0,
+          windowsClosed: 0,
+          totalClicks: 0,
+          idleMinutes: 0,
+          errors: 0,
+          filesCreated: 0,
+          settingsOpened: 0,
+          startTime: Date.now(),
+        },
+        streak: {
+          current: 0,
+          longest: 0,
+          lastInteraction: Date.now(),
+          broken: false,
+        },
       },
       buddyMessages: [],
       
@@ -539,6 +559,49 @@ export const useVoidStore = create<VoidStore>()(
           buddyState: {
             ...get().buddyState,
             lastMessageTime: time,
+          },
+        })
+      },
+      
+      updateBuddyStats: (stats: Partial<BuddyState['stats']>) => {
+        const currentStats = get().buddyState.stats || {
+          windowsOpened: 0,
+          windowsClosed: 0,
+          totalClicks: 0,
+          idleMinutes: 0,
+          errors: 0,
+          filesCreated: 0,
+          settingsOpened: 0,
+          startTime: Date.now(),
+        }
+        set({
+          buddyState: {
+            ...get().buddyState,
+            stats: { ...currentStats, ...stats },
+          },
+        })
+      },
+      
+      setBuddyMood: (mood: BuddyState['mood']) => {
+        set({
+          buddyState: {
+            ...get().buddyState,
+            mood,
+          },
+        })
+      },
+      
+      updateBuddyStreak: (streak: Partial<BuddyState['streak']>) => {
+        const currentStreak = get().buddyState.streak || {
+          current: 0,
+          longest: 0,
+          lastInteraction: Date.now(),
+          broken: false,
+        }
+        set({
+          buddyState: {
+            ...get().buddyState,
+            streak: { ...currentStreak, ...streak },
           },
         })
       },
