@@ -105,6 +105,7 @@ const ServiceCategoryDetail = lazy(() => retryImport(() => import("@/pages/Servi
 const AdminDashboard = lazy(() => retryImport(() => import("@/pages/AdminDashboard").then(m => ({ default: m.AdminDashboard }))))
 const DonatePage = lazy(() => retryImport(() => import("@/pages/DonatePage").then(m => ({ default: m.DonatePage }))))
 const HelpCenter = lazy(() => retryImport(() => import("@/pages/HelpCenter").then(m => ({ default: m.HelpCenter }))))
+const VoidDesktopPage = lazy(() => retryImport(() => import("@/pages/void/index").then(m => ({ default: m.default }))))
 const HomeownerProUpgrade = lazy(() => retryImport(() => import("@/components/homeowner/HomeownerProUpgrade").then(m => ({ default: m.HomeownerProUpgrade }))))
 const AboutPage = lazy(() => retryImport(() =>
   import("@/pages/About").then(m => ({ default: m.AboutPage }))
@@ -327,7 +328,7 @@ const EarnRewardsPage = lazy(() => retryImport(() =>
   import("@/pages/quick-actions/EarnRewardsPage").then(m => ({ default: m.EarnRewardsPage }))
 ))
 
-type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'territory-claim' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help' | 'browse-jobs-page' | 'find-opportunities' | 'my-jobs-page' | 'manage-projects' | 'customer-crm' | 'manage-relationships' | 'invoices-page' | 'track-payments' | 'business-tools-page' | 'all-in-one-toolkit' | 'route-builder' | 'optimize-routes' | 'daily-briefing' | 'todays-overview' | 'certifications' | 'manage-credentials' | 'smart-replies' | 'quick-responses' | 'referrals' | 'earn-rewards'
+type Page = 'home' | 'login' | 'signup' | 'post-job' | 'post-job-voice' | 'post-job-photo' | 'post-job-video' | 'post-job-text' | 'unified-post-job' | 'service-category' | 'my-jobs' | 'browse-jobs' | 'dashboard' | 'crm' | 'invoices' | 'pro-upgrade' | 'homeowner-pro-upgrade' | 'territory-map' | 'territory-claim' | 'revenue-dashboard' | 'project-milestones' | 'photo-scoper' | 'admin-dashboard' | 'about' | 'contact' | 'privacy' | 'terms' | 'careers' | 'blog' | 'pricing' | 'settings' | 'free-tools' | 'business-tools' | 'tax-helper' | 'documents' | 'calendar' | 'communication' | 'notifications' | 'leads' | 'reports' | 'inventory' | 'quality' | 'compliance' | 'automation' | 'expenses' | 'payments' | 'receptionist' | 'bid-optimizer' | 'change-order' | 'crew-dispatcher' | 'lead-import' | 'quote-builder' | 'seasonal-forecast' | 'priority-alerts' | 'multi-invoice' | 'bid-analytics' | 'custom-fields' | 'export' | 'client-portal' | 'client-payment-portal' | 'profit-calc' | 'insurance-verify' | 'pro-filters' | 'bid-boost-history' | 'custom-branding' | 'pro-support' | 'calendar-sync' | 'receptionist-upsell' | 'voice-bids' | 'neighborhood-alerts' | 'skill-trading' | 'material-calc' | 'offline-mode' | 'project-stories' | 'seasonal-clubs' | 'sms-scope' | 'donate' | 'help' | 'browse-jobs-page' | 'find-opportunities' | 'my-jobs-page' | 'manage-projects' | 'customer-crm' | 'manage-relationships' | 'invoices-page' | 'track-payments' | 'business-tools-page' | 'all-in-one-toolkit' | 'route-builder' | 'optimize-routes' | 'daily-briefing' | 'todays-overview' | 'certifications' | 'manage-credentials' | 'smart-replies' | 'quick-responses' | 'referrals' | 'earn-rewards' | 'void'
 
 class ErrorBoundary extends Component<
   { children: ReactNode; onReset: () => void },
@@ -769,6 +770,12 @@ function App() {
         return (
           <Suspense fallback={<LoadingFallback />}>
             <HelpCenter onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'void':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <VoidDesktopPage />
           </Suspense>
         )
       case 'admin-dashboard':

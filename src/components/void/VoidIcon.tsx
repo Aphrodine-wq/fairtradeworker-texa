@@ -52,8 +52,16 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
       onContextMenu={onContextMenu}
     >
       <div className="void-icon-content">
-        <IconComponent className="w-8 h-8 text-[var(--void-accent)]" />
-        <span className="void-icon-label">{icon.label}</span>
+        <IconComponent 
+          className="w-8 h-8" 
+          style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+        />
+        <span 
+          className="void-icon-label void-body-small"
+          style={{ color: 'var(--text-secondary, var(--void-text-secondary))' }}
+        >
+          {icon.label}
+        </span>
       </div>
     </div>
   )

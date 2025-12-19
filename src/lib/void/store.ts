@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { IconData, WindowData, GridPosition, SortOption, VoiceState, VoicePermission, ExtractedEntities, BuddyState, BuddyMessage } from './types'
+import type { Theme } from '@/lib/themes'
+import type { Track } from '@/lib/music/types'
 
 interface VoidStore {
   // Icons
@@ -16,6 +18,20 @@ interface VoidStore {
   
   // Desktop
   sortOption: SortOption | null
+  
+  // Theme
+  theme: Theme
+  
+  // Desktop slice
+  desktopBackground: string | null
+  wiremapEnabled: boolean
+  wiremapNodeCount: number
+  
+  // Media slice
+  currentTrack: Track | null
+  isPlaying: boolean
+  volume: number
+  isMuted: boolean
   
   // Voice
   voiceState: VoiceState
@@ -56,6 +72,20 @@ interface VoidStore {
       setBuddyEmotion: (emotion: BuddyState['emotion']) => void
       addBuddyMessage: (message: BuddyMessage) => void
       updateBuddyLastMessageTime: (time: number) => void
+      
+      // Theme actions
+      setTheme: (theme: Theme) => void
+      
+      // Desktop slice actions
+      setDesktopBackground: (background: string | null) => void
+      setWiremapEnabled: (enabled: boolean) => void
+      setWiremapNodeCount: (count: number) => void
+      
+      // Media slice actions
+      setCurrentTrack: (track: Track | null) => void
+      setIsPlaying: (playing: boolean) => void
+      setVolume: (volume: number) => void
+      setIsMuted: (muted: boolean) => void
 }
 
 // Default icon definitions
@@ -123,6 +153,18 @@ export const useVoidStore = create<VoidStore>()(
       activeWindowId: null,
       nextZIndex: 1000,
       sortOption: null,
+      theme: 'light' as Theme,
+      
+      // Desktop slice initial state
+      desktopBackground: null,
+      wiremapEnabled: true,
+      wiremapNodeCount: 80,
+      
+      // Media slice initial state
+      currentTrack: null,
+      isPlaying: false,
+      volume: 0.7,
+      isMuted: false,
       
       // Voice initial state
       voiceState: 'idle',
@@ -396,6 +438,36 @@ export const useVoidStore = create<VoidStore>()(
           },
         })
       },
+      
+      // Theme actions
+      setTheme: (theme: Theme) => {
+        set({ theme })
+      },
+      
+      // Desktop slice actions
+      setDesktopBackground: (background: string | null) => {
+        set({ desktopBackground: background })
+      },
+      setWiremapEnabled: (enabled: boolean) => {
+        set({ wiremapEnabled: enabled })
+      },
+      setWiremapNodeCount: (count: number) => {
+        set({ wiremapNodeCount: count })
+      },
+      
+      // Media slice actions
+      setCurrentTrack: (track: Track | null) => {
+        set({ currentTrack: track })
+      },
+      setIsPlaying: (playing: boolean) => {
+        set({ isPlaying: playing })
+      },
+      setVolume: (volume: number) => {
+        set({ volume: Math.max(0, Math.min(1, volume)) })
+      },
+      setIsMuted: (muted: boolean) => {
+        set({ isMuted: muted })
+      },
     }),
     {
       name: 'void-desktop-storage',
@@ -404,6 +476,14 @@ export const useVoidStore = create<VoidStore>()(
         pinnedIcons: Array.from(state.pinnedIcons),
         iconUsage: state.iconUsage,
         sortOption: state.sortOption,
+        theme: state.theme,
+        desktopBackground: state.desktopBackground,
+        wiremapEnabled: state.wiremapEnabled,
+        wiremapNodeCount: state.wiremapNodeCount,
+        currentTrack: state.currentTrack,
+        isPlaying: state.isPlaying,
+        volume: state.volume,
+        isMuted: state.isMuted,
         voicePermission: state.voicePermission,
         buddyState: state.buddyState,
       }),

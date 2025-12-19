@@ -59,6 +59,22 @@
 - [Video System](features/VIDEO_SYSTEM.md) - Video messaging
 - [Push Notifications](features/PUSH_NOTIFICATIONS.md) - Notification system
 
+### 🎨 [VOID Desktop System](VOID/)
+
+Complete documentation for the VOID desktop interface system:
+
+- [VOID Overview](VOID/README.md) - System overview and quick start
+- [Architecture](VOID/ARCHITECTURE.md) - System architecture and design
+- [Visual Effects](VOID/VISUAL_EFFECTS.md) - Glassmorphism, animations, wiremap
+- [Media Integration](VOID/MEDIA_INTEGRATION.md) - Spotify, Media Session API
+- [Theme System](VOID/THEME_SYSTEM.md) - Theme switching and color management
+- [Components](VOID/COMPONENTS.md) - Component reference and API
+- [API Reference](VOID/API_REFERENCE.md) - Complete API documentation
+- [Performance](VOID/PERFORMANCE.md) - Performance optimization guide
+- [Integration](VOID/INTEGRATION.md) - Integration guide for developers
+- [Usage](VOID/USAGE.md) - User guide and features
+- [Troubleshooting](VOID/TROUBLESHOOTING.md) - Common issues and solutions
+
 ### 📦 [Archive](archive/)
 
 Historical documentation for reference:
@@ -117,6 +133,7 @@ Historical documentation for reference:
 
 ### December 2025
 
+- 🎨 **VOID Desktop System** - Complete documentation for VOID desktop interface (glassmorphism, 120fps animations, WebGL wiremap, media integration)
 - ✨ **CRM Void Enhancements** - Drag-and-drop for all elements, modernized music player, menu collision detection
 - 🎨 **Modern UI Improvements** - Enhanced menu animations, better visual design
 - 📸 **Mock Job Images** - Automatic image generation for jobs without photos
@@ -227,6 +244,7 @@ Documents follow these naming patterns:
 - [Architecture](./technical/ARCHITECTURE.md)
 - [AI System](./technical/AI_SYSTEM.md)
 - [Deployment](./guides/DEPLOYMENT.md)
+- [VOID Integration](./VOID/INTEGRATION.md) - Integrating VOID desktop system
 
 ### For Product Managers
 
@@ -240,6 +258,7 @@ Documents follow these naming patterns:
 - [Design System](./design/DESIGN_SYSTEM.md)
 - [Theme Implementation](./design/THEME_IMPLEMENTATION.md)
 - [UI Redesign](./design/UI_REDESIGN_COMPLETE.md)
+- [VOID Desktop System](./VOID/README.md) - Visual effects and animations
 
 ### For QA/Testing
 

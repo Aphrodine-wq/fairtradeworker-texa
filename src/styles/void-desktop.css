@@ -28,12 +28,19 @@
   grid-row: span 2;
 }
 
+.void-icon {
+  transition: transform var(--duration-fast, 120ms) var(--ease-standard, cubic-bezier(0.4, 0, 0.2, 1));
+  will-change: transform;
+}
+
 .void-icon:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.15);
+  box-shadow: var(--accent-glow-subtle, 0 0 20px rgba(0, 245, 255, 0.3));
 }
 
 .void-icon.pinned {
-  filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.6));
+  filter: drop-shadow(var(--accent-glow-subtle, 0 0 4px rgba(0, 245, 255, 0.6)));
 }
 
 .void-icon-content {
@@ -42,92 +49,108 @@
   align-items: center;
   gap: 4px;
   padding: 8px;
-  border-radius: 4px;
-  transition: background-color 0.15s;
+  border-radius: var(--radius-sm, 8px);
+  transition: background-color var(--duration-fast, 120ms) var(--ease-standard);
 }
 
 .void-icon-content:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--surface-hover, rgba(20, 20, 20, 0.1));
+}
+
+.void-icon-content:hover svg {
+  color: var(--accent, var(--text-accent)) !important;
 }
 
 .void-icon-label {
   font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
   text-align: center;
   max-width: 64px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--void-text);
+  color: var(--text-secondary, var(--void-text-secondary));
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-/* Window Styles */
+/* Window Styles - Design System Specs */
 .void-window {
   position: absolute;
-  background: var(--void-surface);
-  border: 1px solid var(--void-border);
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: var(--surface, var(--void-surface));
+  border: 1px solid var(--border, var(--void-border));
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--shadow-ambient, 0 8px 32px rgba(0,0,0,0.35));
   overflow: hidden;
-  will-change: transform;
+  will-change: transform, filter, opacity;
   transform: translate3d(0, 0, 0); /* GPU acceleration */
+  min-width: 400px;
+  min-height: 300px;
 }
 
 .void-window.active {
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-hover, 0 12px 48px rgba(0,0,0,0.45));
+  z-index: 31; /* windowsActive layer */
 }
 
 .void-window-titlebar {
   height: 32px;
-  background: var(--void-surface-hover);
-  border-bottom: 1px solid var(--void-border);
+  background: var(--surface-hover, var(--void-surface-hover));
+  border-bottom: 1px solid var(--border, var(--void-border));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 0 16px;
   cursor: move;
   user-select: none;
 }
 
 .void-window-title {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--void-text);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--text-primary, var(--void-text-primary));
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-left: 16px;
 }
 
 .void-window-controls {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
 }
 
 .void-window-button {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: transform var(--duration-micro, 80ms) var(--ease-standard);
+  will-change: transform;
 }
 
 .void-window-button:hover {
-  opacity: 0.8;
+  transform: scale(1.15);
 }
 
 .void-window-button.minimize {
-  background: #fbbf24; /* Yellow */
+  background: var(--warning, #f59e0b); /* Amber 500 */
 }
 
 .void-window-button.maximize {
-  background: #10b981; /* Green */
+  background: var(--success, #10b981); /* Emerald 500 */
 }
 
 .void-window-button.close {
-  background: #ef4444; /* Red */
+  background: var(--error, #ef4444); /* Red 500 */
+}
+
+.void-window-button.close:hover {
+  box-shadow: 0 0 8px var(--error, #ef4444);
 }
 
 /* Resize handles */
@@ -155,8 +178,8 @@
 .void-resize-handle.ne,
 .void-resize-handle.sw,
 .void-resize-handle.se {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   cursor: nwse-resize;
 }
 
@@ -201,8 +224,8 @@
 }
 
 .void-taskbar-button.active {
-  background: var(--void-accent);
-  color: var(--void-bg);
+  background: var(--accent, var(--void-accent));
+  color: var(--bg, var(--void-background));
 }
 
 /* Performance optimizations */
@@ -217,7 +240,7 @@
 /* Snap-to-grid visual feedback */
 .void-snap-indicator {
   position: absolute;
-  border: 1px dashed var(--void-accent);
+  border: 1px dashed var(--accent, var(--void-accent));
   pointer-events: none;
   opacity: 0.5;
 }

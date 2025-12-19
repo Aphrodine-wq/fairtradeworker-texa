@@ -127,16 +127,48 @@ export function VoidWindow({ window }: VoidWindowProps) {
         height: window.maximized ? 'calc(100% - 96px)' : `${window.size.height}px`, // Account for toolbar (48px) + taskbar (48px)
         zIndex: window.zIndex,
       }}
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.9, opacity: 0 }}
-      transition={{ duration: 0.15 }}
+      initial={{ 
+        scale: 0.88, 
+        opacity: 0, 
+        filter: 'blur(12px)',
+        y: 16,
+      }}
+      animate={{ 
+        scale: 1, 
+        opacity: 1,
+        filter: 'blur(0px)',
+        y: 0,
+      }}
+      exit={{ 
+        scale: 0.88, 
+        opacity: 0, 
+        filter: 'blur(12px)',
+        y: -16,
+      }}
+      transition={{ 
+        type: 'spring',
+        damping: 25,
+        stiffness: 350,
+        mass: 0.8,
+        willChange: 'transform, filter, opacity',
+      }}
       onClick={() => focusWindow(window.id)}
       drag={!window.maximized}
       dragMomentum={false}
+      dragElastic={0.1}
       onDragStart={handleDragStart}
       onDrag={handleDrag}
       onDragEnd={handleDragEnd}
+      whileDrag={{
+        scale: 1.05,
+        rotate: 1.5,
+        zIndex: 100,
+        boxShadow: '0 20px 60px rgba(0,0,0,0.5)',
+        transition: {
+          duration: 0.08,
+          ease: 'cubic-bezier(0.2, 0, 0, 1)',
+        },
+      }}
     >
       {/* Title Bar */}
       <div className="void-window-titlebar">
@@ -170,9 +202,16 @@ export function VoidWindow({ window }: VoidWindowProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-auto p-4" style={{ height: 'calc(100% - 32px)' }}>
+      <div 
+        className="flex-1 overflow-auto" 
+        style={{ 
+          height: 'calc(100% - 32px)',
+          padding: '16px',
+          background: 'color-mix(in srgb, var(--surface, var(--void-surface)) 90%, transparent)',
+        }}
+      >
         {window.content || (
-          <div className="text-[var(--void-text-muted)] text-sm">
+          <div style={{ color: 'var(--text-secondary, var(--void-text-secondary))', fontSize: '15px', lineHeight: '22px' }}>
             Window content for {window.menuId || window.title}
           </div>
         )}

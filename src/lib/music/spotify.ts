@@ -284,6 +284,107 @@ export async function setSpotifyVolume(volume: number): Promise<void> {
 }
 
 /**
+ * Update Media Session API metadata
+ */
+export function updateSpotifyMediaSession(track: Track | null, isPlaying: boolean): void {
+  if (!('mediaSession' in navigator) || !track) {
+    return
+  }
+
+  const { mediaSession } = navigator
+
+  mediaSession.metadata = new MediaMetadata({
+    title: track.title,
+    artist: track.artist,
+    album: track.album || '',
+    artwork: track.artwork
+      ? [
+          { src: track.artwork, sizes: '96x96', type: 'image/png' },
+          { src: track.artwork, sizes: '128x128', type: 'image/png' },
+          { src: track.artwork, sizes: '192x192', type: 'image/png' },
+          { src: track.artwork, sizes: '256x256', type: 'image/png' },
+          { src: track.artwork, sizes: '384x384', type: 'image/png' },
+          { src: track.artwork, sizes: '512x512', type: 'image/png' },
+        ]
+      : [],
+  })
+
+  mediaSession.playbackState = isPlaying ? 'playing' : 'paused'
+}
+
+/**
+ * Cache track in IndexedDB (last 10 tracks)
+ */
+const CACHE_SIZE = 10
+const CACHE_DB_NAME = 'spotify-tracks-cache'
+const CACHE_STORE_NAME = 'tracks'
+
+async function cacheTrack(track: Track): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(CACHE_DB_NAME, 1)
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const db = request.result
+      const transaction = db.transaction([CACHE_STORE_NAME], 'readwrite')
+      const store = transaction.objectStore(CACHE_STORE_NAME)
+      
+      // Add new track
+      store.add({ ...track, cachedAt: Date.now() })
+      
+      // Get all tracks and keep only last 10
+      const getAllRequest = store.getAll()
+      getAllRequest.onsuccess = () => {
+        const tracks = getAllRequest.result
+        if (tracks.length > CACHE_SIZE) {
+          // Sort by cachedAt and remove oldest
+          tracks.sort((a, b) => a.cachedAt - b.cachedAt)
+          const toRemove = tracks.slice(0, tracks.length - CACHE_SIZE)
+          toRemove.forEach(t => store.delete(t.id))
+        }
+        resolve()
+      }
+    }
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result
+      if (!db.objectStoreNames.contains(CACHE_STORE_NAME)) {
+        db.createObjectStore(CACHE_STORE_NAME, { keyPath: 'id' })
+      }
+    }
+  })
+}
+
+/**
+ * Get cached tracks from IndexedDB
+ */
+export async function getCachedTracks(): Promise<Track[]> {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(CACHE_DB_NAME, 1)
+    request.onerror = () => reject(request.error)
+    request.onsuccess = () => {
+      const db = request.result
+      if (!db.objectStoreNames.contains(CACHE_STORE_NAME)) {
+        resolve([])
+        return
+      }
+      const transaction = db.transaction([CACHE_STORE_NAME], 'readonly')
+      const store = transaction.objectStore(CACHE_STORE_NAME)
+      const getAllRequest = store.getAll()
+      getAllRequest.onsuccess = () => {
+        const tracks = getAllRequest.result.map(({ cachedAt, ...track }) => track)
+        resolve(tracks)
+      }
+      getAllRequest.onerror = () => resolve([])
+    }
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result
+      if (!db.objectStoreNames.contains(CACHE_STORE_NAME)) {
+        db.createObjectStore(CACHE_STORE_NAME, { keyPath: 'id' })
+      }
+    }
+  })
+}
+
+/**
  * Spotify API client implementation
  */
 export const spotifyAPI: MusicServiceAPI = {
@@ -297,10 +398,19 @@ export const spotifyAPI: MusicServiceAPI = {
     return [] // Spotify doesn't have stations
   },
   async getCurrentlyPlaying() {
-    return await getSpotifyCurrentlyPlaying()
+    const track = await getSpotifyCurrentlyPlaying()
+    if (track) {
+      // Cache track
+      await cacheTrack(track).catch(console.error)
+      // Update Media Session
+      updateSpotifyMediaSession(track, true)
+    }
+    return track
   },
   async playTrack(track) {
     await playSpotifyTrack(track)
+    await cacheTrack(track).catch(console.error)
+    updateSpotifyMediaSession(track, true)
   },
   async playPlaylist(playlist) {
     // Implementation for playing playlist
@@ -311,9 +421,17 @@ export const spotifyAPI: MusicServiceAPI = {
   },
   async pause() {
     await pauseSpotifyPlayback()
+    const track = await getSpotifyCurrentlyPlaying()
+    if (track) {
+      updateSpotifyMediaSession(track, false)
+    }
   },
   async resume() {
     await spotifyRequest('/me/player/play', { method: 'PUT' })
+    const track = await getSpotifyCurrentlyPlaying()
+    if (track) {
+      updateSpotifyMediaSession(track, true)
+    }
   },
   async setVolume(volume) {
     await setSpotifyVolume(volume)
@@ -325,8 +443,18 @@ export const spotifyAPI: MusicServiceAPI = {
   },
   async next() {
     await spotifyRequest('/me/player/next', { method: 'POST' })
+    const track = await getSpotifyCurrentlyPlaying()
+    if (track) {
+      await cacheTrack(track).catch(console.error)
+      updateSpotifyMediaSession(track, true)
+    }
   },
   async previous() {
     await spotifyRequest('/me/player/previous', { method: 'POST' })
+    const track = await getSpotifyCurrentlyPlaying()
+    if (track) {
+      await cacheTrack(track).catch(console.error)
+      updateSpotifyMediaSession(track, true)
+    }
   }
 }

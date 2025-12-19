@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useVoidStore } from '@/lib/void/store'
-import { cn } from '@/lib/utils'
 
 interface VoidBuddyIconProps {
   onExpand: () => void
@@ -35,87 +34,131 @@ export function VoidBuddyIcon({ onExpand }: VoidBuddyIconProps) {
 
   const emotion = buddyState.emotion || 'neutral'
 
+  const isIdle = emotion === 'neutral' && !isHovered
+  const isProcessing = emotion === 'thinking'
+
   return (
     <motion.button
-      className={cn(
-        'w-12 h-12 rounded-full',
-        'bg-[var(--void-surface)] border-2',
-        emotion === 'neutral' && 'border-[var(--void-accent)]',
-        emotion === 'happy' && 'border-[var(--void-success)]',
-        emotion === 'thinking' && 'border-[var(--void-warning)]',
-        emotion === 'excited' && 'border-[var(--void-accent-alt)]',
-        'flex items-center justify-center',
-        'relative cursor-pointer',
-        'transition-all duration-200'
-      )}
+      className="relative w-16 h-16 cursor-pointer select-none"
       onClick={onExpand}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ scale: 1.08 }}
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       animate={{
-        boxShadow: isHovered
-          ? emotion === 'dark'
-            ? '0 0 20px rgba(0,240,255,0.6)'
-            : '0 0 20px rgba(0,102,204,0.5)'
-          : emotion === 'dark'
-          ? '0 0 10px rgba(0,240,255,0.4)'
-          : '0 0 10px rgba(0,102,204,0.3)',
+        // Subtle breathing when idle
+        scale: isIdle ? [1, 1.02, 1] : 1,
+      }}
+      transition={{
+        duration: 3,
+        repeat: isIdle ? Infinity : 0,
+        ease: 'easeInOut',
       }}
       style={{ willChange: 'transform' }}
+      aria-label="Buddy AI Assistant"
     >
-      {/* Eyes */}
-      <div className="flex gap-2 mb-1">
-        <motion.div
-          className="w-2 h-2 rounded-full bg-[var(--void-text)]"
-          animate={{
-            scaleY: isBlinking ? 0.1 : 1,
-          }}
-          transition={{ duration: 0.08 }}
-          style={{ willChange: 'transform' }}
-        />
-        <motion.div
-          className="w-2 h-2 rounded-full bg-[var(--void-text)]"
-          animate={{
-            scaleY: isBlinking ? 0.1 : 1,
-          }}
-          transition={{ duration: 0.08 }}
-          style={{ willChange: 'transform' }}
-        />
-      </div>
-
-      {/* Mouth */}
-      <motion.div
-        className={cn(
-          'border-b-2 border-[var(--void-text)]',
-          emotion === 'happy' && 'border-b-4 rounded-b-full w-4 h-2',
-          emotion === 'thinking' && 'w-3 h-0',
-          emotion === 'excited' && 'border-t-2 rounded-t-full w-4 h-2',
-          emotion === 'neutral' && 'w-3 h-0'
-        )}
-        animate={
-          emotion === 'thinking'
-            ? {
-                x: [-2, 2, -2],
-              }
-            : {}
-        }
-        transition={{
-          duration: 2,
-          repeat: emotion === 'thinking' ? Infinity : 0,
-          ease: 'easeInOut',
+      {/* Glass container */}
+      <div 
+        className="absolute inset-0 rounded-2xl overflow-hidden"
+        style={{
+          background: 'linear-gradient(to bottom right, color-mix(in srgb, var(--surface) 50%, transparent), color-mix(in srgb, var(--surface) 30%, transparent), transparent)',
+          backdropFilter: 'blur(var(--blur-lg, 32px))',
+          WebkitBackdropFilter: 'blur(var(--blur-lg, 32px))',
+          border: '1px solid var(--border)',
         }}
-        style={{ willChange: 'transform' }}
-      />
-
-      {/* Notification badge */}
+      >
+        {/* Animated accent gradient border */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl border-2"
+          style={{ borderColor: 'var(--accent)' }}
+          animate={{
+            opacity: isHovered ? [0.3, 0.6, 0.3] : 0.2,
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+        
+        {/* Tech grid pattern (subtle) */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 2px, var(--accent) 2px, var(--accent) 4px)',
+            backgroundSize: '8px 8px',
+          }}
+        />
+        
+        {/* Face elements */}
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+          {/* Eyes: Professional dots */}
+          <div className="flex gap-3 mb-1.5">
+            <motion.div 
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: isProcessing ? 'var(--accent)' : 'var(--text-primary)' }}
+              animate={{ 
+                scaleY: isBlinking ? 0.1 : 1,
+              }}
+              transition={{ duration: 0.12, ease: 'easeInOut' }}
+            />
+            <motion.div 
+              className="w-2 h-2 rounded-full"
+              style={{ backgroundColor: isProcessing ? 'var(--accent)' : 'var(--text-primary)' }}
+              animate={{ scaleY: isBlinking ? 0.1 : 1 }}
+              transition={{ duration: 0.12, ease: 'easeInOut' }}
+            />
+          </div>
+          
+          {/* Mouth: Minimal line with emotion */}
+          <motion.div
+            className="border-b-2 rounded-full"
+            style={{
+              borderColor: emotion === 'error' ? 'var(--error)' : 'var(--text-primary)',
+              width: emotion === 'happy' ? '12px' : emotion === 'thinking' ? '0' : '8px',
+              borderWidth: emotion === 'happy' ? '3px' : '2px',
+              opacity: emotion === 'thinking' ? 0.5 : 1,
+            }}
+            transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+          />
+          
+          {/* Processing indicator (three dots) */}
+          {isProcessing && (
+            <motion.div
+              className="absolute top-2 right-2 flex gap-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {[0, 1, 2].map(i => (
+                <motion.div
+                  key={i}
+                  className="w-1 h-1 rounded-full"
+                  style={{ backgroundColor: 'var(--accent)' }}
+                  animate={{ scale: [1, 1.5, 1] }}
+                  transition={{ duration: 0.6, delay: i * 0.1, repeat: Infinity }}
+                />
+              ))}
+            </motion.div>
+          )}
+        </div>
+      </div>
+      
+      {/* Status notification dot */}
       {hasNewMessages && (
         <motion.div
-          className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--void-error)] rounded-full border-2 border-[var(--void-surface)]"
-          initial={{ scale: 0 }}
-          animate={{ scale: [0, 1.2, 1] }}
-          transition={{ duration: 0.3 }}
-        />
+          className="absolute -top-1 -right-1 w-3 h-3"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+        >
+          <div 
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: 'var(--accent)' }}
+          />
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: 'var(--accent)' }}
+            animate={{ scale: [1, 1.8, 1], opacity: [0.6, 0, 0.6] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+        </motion.div>
       )}
     </motion.button>
   )
