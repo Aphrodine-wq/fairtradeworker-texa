@@ -241,6 +241,7 @@ export const VoidWindow = memo(function VoidWindow({ window }: VoidWindowProps) 
         width: window.pip ? window.size.width : window.maximized ? window.innerWidth - 48 : window.size.width,
         height: window.pip ? window.size.height : window.maximized ? window.innerHeight - 48 - 48 : window.size.height,
         zIndex: window.pip ? 10000 : window.zIndex, // PiP always on top
+        cursor: isDragging ? 'grabbing' : 'grab',
       }}
       initial={{ 
         scale: 0.88, 
@@ -284,9 +285,6 @@ export const VoidWindow = memo(function VoidWindow({ window }: VoidWindowProps) 
           duration: 0.08,
           ease: 'cubic-bezier(0.2, 0, 0, 1)',
         },
-      }}
-      style={{
-        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {/* Title Bar */}
