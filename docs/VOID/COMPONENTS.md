@@ -6,6 +6,31 @@ Complete reference for all VOID components, their props, usage, and examples.
 
 ## Core Components
 
+### StarWireframe
+
+Simple floating glowing stars background animation.
+
+**Location**: `components/void/StarWireframe.tsx`
+
+**Integration Status**: ✅ Automatically integrated in `VOID.tsx`. Always rendered in background layer.
+
+**Props:** None
+
+**Usage (Automatic):**
+```tsx
+import { VOID } from '@/components/void/VOID'
+
+<VOID user={user} />
+// StarWireframe automatically included
+```
+
+**Features:**
+- 200-350 random stars with varying sizes (2-8px)
+- Random velocities and twinkle effects
+- White glowing stars with radial gradients
+- Stars wrap around screen edges
+- High brightness (0.8-1.2) for visibility on black backgrounds
+
 ### WiremapBackground
 
 WebGL wiremap background component.

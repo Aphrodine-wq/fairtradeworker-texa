@@ -90,25 +90,27 @@ export function VoidBuddyMessages({ buddyPosition }: VoidBuddyMessagesProps) {
     }
   }, [visibleMessages])
 
-  // Calculate position to the right of Buddy
+  // Calculate position UNDERNEATH Buddy
   const getMessagePosition = (index: number) => {
     try {
-      // Position messages to the right of Buddy, offset vertically
-      // Buddy is 128px (w-32) + 20px spacing + extra margin = 220px base offset
-      const baseOffset = 220 // Increased from 180px to prevent overlap
-      const verticalOffset = index * 90 // Stack messages vertically with spacing
+      // Position messages underneath Buddy, centered horizontally
+      // Buddy icon is 128px (w-32), so center messages below it
+      const horizontalOffset = -150 // Center messages (300px / 2 = 150px)
+      const verticalOffset = 180 + (index * 100) // Start 180px below Buddy, stack with 100px spacing
       
       return {
-        left: `${baseOffset}px`,
+        left: `${horizontalOffset}px`,
         top: `${verticalOffset}px`,
         maxWidth: '300px',
+        transform: 'translateX(50%)', // Center horizontally
       }
     } catch (error) {
       // Fallback position if calculation fails
       return {
-        left: '220px',
-        top: `${index * 90}px`,
+        left: '-150px',
+        top: `${180 + (index * 100)}px`,
         maxWidth: '300px',
+        transform: 'translateX(50%)',
       }
     }
   }

@@ -27,26 +27,23 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
     disabled: pinnedIcons.has(icon.id),
   })
 
-  // Advanced visual feedback with physics-based effects
+  // Simple visual feedback (NO MOMENTUM PHYSICS)
   const dragState = isDragging ? dragSystem.getDragState(icon.id) : undefined
-  const momentum = dragState?.momentum
-  const momentumMagnitude = momentum ? Math.sqrt(momentum.x ** 2 + momentum.y ** 2) : 0
   const hasSnapZone = dragState?.snapZone && dragState.snapZone.strength > 0.5
   const hasCollision = !!dragState?.collision
 
-  // Enhanced drag style with physics-based visual feedback
+  // Simple drag style - no momentum effects
   const dragStyle = {
     ...style,
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.85 : 1,
-    scale: isDragging ? (1.15 + momentumMagnitude * 0.001) : 1,
+    opacity: isDragging ? 0.9 : 1,
+    scale: isDragging ? 1.2 : 1,
     zIndex: isDragging ? 1000 : 'auto',
     filter: isDragging 
-      ? `brightness(${1.4 + momentumMagnitude * 0.0001}) drop-shadow(0 ${8 + momentumMagnitude * 0.01}px ${16 + momentumMagnitude * 0.01}px rgba(0, 0, 0, 0.4)) ${hasSnapZone ? 'hue-rotate(180deg)' : ''} ${hasCollision ? 'contrast(1.2)' : ''}`
+      ? `brightness(1.5) drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5)) ${hasSnapZone ? 'hue-rotate(180deg)' : ''} ${hasCollision ? 'contrast(1.2)' : ''}`
       : 'none',
     transition: isDragging ? 'none' : 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
     cursor: isDragging ? 'grabbing' : 'grab',
-    rotate: isDragging && momentum ? `${Math.atan2(momentum.y, momentum.x) * (180 / Math.PI)}deg` : '0deg',
   } as React.CSSProperties
 
   const handleDoubleClick = () => {
@@ -73,11 +70,11 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu }: VoidIconPro
     >
       <div className="void-icon-content">
         <IconComponent 
-          className="w-12 h-12" 
-          weight="regular"
+          className="w-16 h-16" 
+          weight="bold"
           style={{ 
             color: 'var(--text-secondary, var(--void-text-secondary))',
-            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))',
+            filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))',
           }}
         />
         <span 

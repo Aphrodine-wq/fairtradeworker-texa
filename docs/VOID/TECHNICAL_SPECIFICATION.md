@@ -762,7 +762,14 @@ export function use120fps(options: Use120FpsOptions = {}) {
    - Duration: 16ms
    - Easing: `easeOut`
 
-2. **Icon Drag**:
+2. **Icon Drag System** (Advanced, No Momentum):
+   - **Visual Feedback**: Large "DRAGGING" and "DROPPING" text indicators displayed during operations
+   - **Precision**: 1px activation distance for maximum precision
+   - **No Momentum Physics**: Direct placement only - no slingshot effect
+   - **Snap Zones**: Magnetic alignment to nearby icons (20px threshold, 70% strength)
+   - **Collision Detection**: 60px radius collision detection
+   - **Visual Effects**: Icons scale to 1.2x, brightness 1.5x, enhanced drop shadows during drag
+   - **Status Indicators**: Center-screen text overlay showing current drag state
    - Z-Index: Increments to 1000
    - Shadow: `0 → 24px`
    - Rotation: `0 → 2deg`
@@ -1034,6 +1041,43 @@ export function useMediaSession(options: UseMediaSessionOptions): void {
    ```
 
 ---
+
+## Star Background System
+
+### StarWireframe Component
+
+Simple floating glowing stars background animation.
+
+**Location**: `components/void/StarWireframe.tsx`
+
+**Features:**
+- **Star Count**: 200-350 random stars (hella random)
+- **Star Sizes**: 2-8px (much bigger for visibility)
+- **Brightness**: 0.8-1.2 (brighter for black backgrounds)
+- **Velocities**: Random horizontal/vertical movement (0.5px/frame)
+- **Twinkle**: Random twinkle speeds and phases
+- **Glow**: Radial gradients with 6x size glow radius
+- **Wrapping**: Stars wrap around screen edges
+
+**Implementation:**
+```typescript
+interface Star {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  size: number
+  brightness: number
+  twinkleSpeed: number
+  twinklePhase: number
+}
+```
+
+**Rendering:**
+- Canvas-based 2D rendering
+- Radial gradient glow effects
+- Bright white centers with outer glow
+- Continuous animation loop at 60fps
 
 ## WebGL Wiremap System
 
@@ -1348,6 +1392,32 @@ class WiremapRenderer {
 
 ---
 
+## Boot Sequence
+
+### Extended Boot Animation
+
+**Duration**: ~4-5 seconds (extended from ~1.5s)
+
+**Phases:**
+1. **Pre-Boot** (800ms): Session check, capabilities detection, theme loading
+2. **System Init** (1000ms): Store initialization, IndexedDB hydration, asset preloading
+3. **User Load** (1000ms): User profile fetch, window restoration, notifications
+4. **Desktop Ready** (1500ms): Icon rendering, Buddy greeting, service connections
+
+**Visual:**
+- Buddy's face displayed 3x larger and centered
+- Subtle loading dots animation
+- Smooth fade transitions
+
+**Configuration:**
+```typescript
+// src/lib/void/bootSequence.ts
+await new Promise(resolve => setTimeout(resolve, 800))  // Pre-boot
+await new Promise(resolve => setTimeout(resolve, 1000)) // System init
+await new Promise(resolve => setTimeout(resolve, 1000)) // User load
+await new Promise(resolve => setTimeout(resolve, 1500)) // Desktop ready
+```
+
 ## File Structure
 
 ### Complete Directory Tree
@@ -1375,6 +1445,7 @@ src/
 │       └── types.ts                 # Music types
 ├── components/
 │   ├── void/
+│   │   ├── StarWireframe.tsx        # Floating stars background
 │   │   ├── WiremapBackground.tsx    # Wiremap component
 │   │   ├── BackgroundSystem.tsx     # Background system
 │   │   ├── ThemeToggle.tsx          # Theme toggle

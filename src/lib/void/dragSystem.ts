@@ -25,7 +25,7 @@ export interface DragConfig {
   snapStrength: number // 0-1, how strong snap is
   collisionRadius: number // pixels for collision detection
   maxHistorySize: number
-  enableMomentum: boolean
+  enableMomentum: boolean // DISABLED - no momentum physics
   enableSnapZones: boolean
   enableCollisionDetection: boolean
 }
@@ -37,7 +37,7 @@ const DEFAULT_CONFIG: DragConfig = {
   snapStrength: 0.7,
   collisionRadius: 60,
   maxHistorySize: 10,
-  enableMomentum: true,
+  enableMomentum: false, // DISABLED - no slingshot effect
   enableSnapZones: true,
   enableCollisionDetection: true,
 }
@@ -142,11 +142,8 @@ export class AdvancedDragSystem {
     let finalX = state.currentPosition.x
     let finalY = state.currentPosition.y
 
-    // Apply momentum if enabled
-    if (this.config.enableMomentum && state.momentum) {
-      finalX += state.momentum.x * 0.1 // Apply momentum with damping
-      finalY += state.momentum.y * 0.1
-    }
+    // NO MOMENTUM - direct placement only
+    // Removed momentum physics for precise control
 
     // Apply snap zone if detected
     if (state.snapZone && state.snapZone.strength > 0.5) {

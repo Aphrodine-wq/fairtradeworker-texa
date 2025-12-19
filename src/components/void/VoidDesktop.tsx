@@ -16,6 +16,7 @@ export const VoidDesktop = memo(function VoidDesktop() {
   const { icons, iconPositions, pinnedIcons, sortIcons, updateIconPosition, openWindow, setDesktopBackground, createFile } = useVoidStore()
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [dragState, setDragState] = useState<ReturnType<typeof dragSystem.getDragState>>(undefined)
+  const [isDropping, setIsDropping] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Advanced sensor configuration with multiple activation strategies
@@ -99,9 +100,13 @@ export const VoidDesktop = memo(function VoidDesktop() {
     const { active } = event
     const iconId = active.id as string
     
+    // Show "Dropping" state
+    setIsDropping(true)
+    
     if (!containerRef.current || pinnedIcons.has(iconId)) {
       setDraggedId(null)
       setDragState(undefined)
+      setIsDropping(false)
       dragSystem.clearDragState(iconId)
       return
     }
@@ -109,16 +114,17 @@ export const VoidDesktop = memo(function VoidDesktop() {
     const rect = containerRef.current.getBoundingClientRect()
     const gridSize = { width: rect.width, height: rect.height }
     
-    // Get advanced drag result with momentum and snap zones
+    // Get drag result (NO MOMENTUM - direct placement)
     const dragResult = dragSystem.handleDragEnd(event, gridSize)
     
     if (!dragResult) {
       setDraggedId(null)
       setDragState(undefined)
+      setIsDropping(false)
       return
     }
 
-    // Use advanced drag system's final position (includes momentum and snap)
+    // Use final position (no momentum applied)
     const { finalPosition } = dragResult
 
     // Enhanced collision detection with radius
@@ -140,8 +146,12 @@ export const VoidDesktop = memo(function VoidDesktop() {
       }
     }
 
-    setDraggedId(null)
-    setDragState(undefined)
+    // Clear states after a brief delay to show "Dropping" text
+    setTimeout(() => {
+      setDraggedId(null)
+      setDragState(undefined)
+      setIsDropping(false)
+    }, 200)
   }
 
   // Desktop context menu handlers
@@ -280,6 +290,25 @@ export const VoidDesktop = memo(function VoidDesktop() {
       onDragMove={handleDragMove}
       onDragEnd={handleDragEnd}
     >
+      {/* Drag/Drop Status Indicator */}
+      {(draggedId || isDropping) && (
+        <div
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[10000] pointer-events-none"
+          style={{
+            textShadow: '0 4px 12px rgba(0, 0, 0, 0.8), 0 0 24px rgba(255, 255, 255, 0.5)',
+          }}
+        >
+          <div
+            className="text-6xl font-bold text-white"
+            style={{
+              animation: isDropping ? 'pulse 0.3s ease-in-out' : 'none',
+            }}
+          >
+            {isDropping ? 'DROPPING' : 'DRAGGING'}
+          </div>
+        </div>
+      )}
+
       {/* Hidden file input for background upload */}
       <input
         ref={fileInputRef}

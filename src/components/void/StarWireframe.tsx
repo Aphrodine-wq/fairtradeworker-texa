@@ -38,18 +38,18 @@ export function StarWireframe() {
     }
     
     const initStars = () => {
-      const starCount = 150 + Math.floor(Math.random() * 100) // 150-250 stars, hella random
+      const starCount = 200 + Math.floor(Math.random() * 150) // 200-350 stars, hella random
       const stars: Star[] = []
       
       for (let i = 0; i < starCount; i++) {
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3, // Random horizontal velocity
-          vy: (Math.random() - 0.5) * 0.3, // Random vertical velocity
-          size: Math.random() * 4 + 1, // Random size 1-5px
-          brightness: Math.random() * 0.5 + 0.5, // Random brightness 0.5-1.0
-          twinkleSpeed: Math.random() * 0.02 + 0.01, // Random twinkle speed
+          vx: (Math.random() - 0.5) * 0.5, // Increased velocity for visibility
+          vy: (Math.random() - 0.5) * 0.5, // Increased velocity for visibility
+          size: Math.random() * 6 + 2, // Random size 2-8px (MUCH BIGGER)
+          brightness: Math.random() * 0.4 + 0.8, // Random brightness 0.8-1.2 (BRIGHTER)
+          twinkleSpeed: Math.random() * 0.03 + 0.02, // Faster twinkle
           twinklePhase: Math.random() * Math.PI * 2, // Random starting phase
         })
       }
@@ -84,24 +84,25 @@ export function StarWireframe() {
         const twinkle = (Math.sin(star.twinklePhase) + 1) / 2 // 0 to 1
         const currentBrightness = star.brightness * (0.5 + twinkle * 0.5) // Vary brightness
 
-        // Draw glowing star with radial gradient
-        const glowSize = star.size * 4
+        // Draw glowing star with MUCH BRIGHTER radial gradient
+        const glowSize = star.size * 6 // Bigger glow
         const gradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, glowSize)
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${currentBrightness})`)
-        gradient.addColorStop(0.3, `rgba(255, 255, 255, ${currentBrightness * 0.6})`)
-        gradient.addColorStop(0.6, `rgba(255, 255, 255, ${currentBrightness * 0.3})`)
+        gradient.addColorStop(0, `rgba(255, 255, 255, ${Math.min(1, currentBrightness * 1.5)})`) // Brighter center
+        gradient.addColorStop(0.2, `rgba(255, 255, 255, ${currentBrightness * 0.9})`) // Stronger mid
+        gradient.addColorStop(0.5, `rgba(255, 255, 255, ${currentBrightness * 0.6})`)
+        gradient.addColorStop(0.8, `rgba(255, 255, 255, ${currentBrightness * 0.3})`)
         gradient.addColorStop(1, 'rgba(255, 255, 255, 0)')
         
-        // Outer glow
+        // Outer glow - MUCH MORE VISIBLE
         ctx.fillStyle = gradient
         ctx.beginPath()
         ctx.arc(star.x, star.y, glowSize, 0, Math.PI * 2)
         ctx.fill()
         
-        // Bright center
-        ctx.fillStyle = `rgba(255, 255, 255, ${currentBrightness})`
+        // Bright center - WHITE AND BRIGHT
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, currentBrightness * 1.2)})`
         ctx.beginPath()
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
+        ctx.arc(star.x, star.y, star.size * 1.5, 0, Math.PI * 2) // Bigger center
         ctx.fill()
       }
 
