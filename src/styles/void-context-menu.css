@@ -69,7 +69,14 @@
 .void-context-menu-item[data-highlighted] {
   background: rgba(255, 255, 255, 0.08);
   color: var(--accent, #00f5ff);
-  transform: translateX(2px);
+}
+
+/* Only apply transform on devices without reduced motion preference */
+@media (prefers-reduced-motion: no-preference) {
+  .void-context-menu-item:hover,
+  .void-context-menu-item[data-highlighted] {
+    transform: translateX(2px);
+  }
 }
 
 .void-context-menu-item::before {

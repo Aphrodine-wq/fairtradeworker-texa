@@ -91,13 +91,14 @@ export function VoidContextMenu({
   useEffect(() => {
     if (!open) return
 
-    let timeoutId: NodeJS.Timeout
+    let timeoutId: number
+    let throttleTimeoutId: number | undefined
     let lastInteraction = Date.now()
 
     const resetTimer = () => {
       clearTimeout(timeoutId)
       lastInteraction = Date.now()
-      timeoutId = setTimeout(() => {
+      timeoutId = window.setTimeout(() => {
         handleClose()
       }, 5000) // Auto-close after 5 seconds
     }
@@ -113,7 +114,7 @@ export function VoidContextMenu({
         if (Date.now() - lastInteraction > 100) {
           resetTimer()
         }
-        setTimeout(() => {
+        throttleTimeoutId = window.setTimeout(() => {
           isThrottled = false
         }, 100)
       }
@@ -126,6 +127,9 @@ export function VoidContextMenu({
 
     return () => {
       clearTimeout(timeoutId)
+      if (throttleTimeoutId !== undefined) {
+        clearTimeout(throttleTimeoutId)
+      }
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('keydown', handleKeyDown)
     }

@@ -77,7 +77,13 @@
 .void-bottom-nav-item:hover {
   background: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.95);
-  transform: translateY(-2px);
+}
+
+/* Only apply transform on devices without reduced motion preference */
+@media (prefers-reduced-motion: no-preference) {
+  .void-bottom-nav-item:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .void-bottom-nav-item.active {
