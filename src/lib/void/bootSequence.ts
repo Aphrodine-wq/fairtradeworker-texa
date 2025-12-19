@@ -77,8 +77,8 @@ async function phase0PreBoot(onProgress?: (progress: BootProgress) => void): Pro
     onProgress({ phase: 'pre-boot', progress: 100, message: 'Pre-boot complete' })
   }
 
-  // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 800))
+  // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 200))
 }
 
 /**
@@ -107,8 +107,8 @@ async function phase1SystemInit(onProgress?: (progress: BootProgress) => void): 
   if (window.indexedDB) {
     try {
       // IndexedDB hydration happens automatically via Zustand persist
-      // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 1000))
+      // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 600))
     } catch (error) {
       console.warn('[Boot] IndexedDB hydration failed:', error)
     }
@@ -136,8 +136,8 @@ async function phase1SystemInit(onProgress?: (progress: BootProgress) => void): 
     onProgress({ phase: 'system-init', progress: 100, message: 'System ready' })
   }
 
-  // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 600))
 }
 
 /**
@@ -161,8 +161,8 @@ async function phase2UserLoad(
       onProgress({ phase: 'user-load', progress: 25, message: 'Fetching profile...' })
     }
     // User profile should already be loaded by parent component
-    // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 1000))
+    // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 600))
   }
 
   if (onProgress) {
@@ -177,15 +177,15 @@ async function phase2UserLoad(
   }
 
   // Notifications will be loaded when notification system is implemented
-  // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 600))
 
   if (onProgress) {
     onProgress({ phase: 'user-load', progress: 100, message: 'User data loaded' })
   }
 
-  // Extended delay for longer boot animation
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  // Shortened delay for 2.5s total boot animation
+  await new Promise(resolve => setTimeout(resolve, 600))
 }
 
 /**
@@ -225,8 +225,8 @@ async function phase3DesktopReady(
     onProgress({ phase: 'desktop-ready', progress: 100, message: 'Desktop ready' })
   }
 
-  // Extended final delay before fade
-  await new Promise(resolve => setTimeout(resolve, 1500))
+  // Shortened final delay before fade (2.5s total: 200 + 600 + 600 + 600 + 500 = 2500ms)
+  await new Promise(resolve => setTimeout(resolve, 500))
 }
 
 /**

@@ -25,6 +25,7 @@ import { initTheme } from '@/lib/themes'
 import { BackgroundSystem } from './BackgroundSystem'
 import { WiremapBackground } from './WiremapBackground'
 import { StarWireframe } from './StarWireframe'
+import { MediaToolbar } from '@/components/media/MediaToolbar'
 import type { User } from '@/lib/types'
 import '@/styles/void-desktop.css'
 import '@/styles/void-voice.css'
@@ -186,6 +187,11 @@ export function VOID({ user, onNavigate }: VOIDProps) {
         {/* Top Toolbar */}
         <VoidErrorBoundary resetKeys={[user.id]}>
           <VoidToolbar user={user} onNavigate={onNavigate} />
+        </VoidErrorBoundary>
+
+        {/* Music Player */}
+        <VoidErrorBoundary>
+          <MediaToolbar />
         </VoidErrorBoundary>
 
         {/* Desktop */}

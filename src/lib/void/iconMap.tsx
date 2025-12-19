@@ -1,4 +1,6 @@
 import type { ComponentType } from 'react'
+// Using bootstrap-icons package - icons are imported as SVG components
+// For now, keep using Phosphor icons but make them smaller
 import {
   Folder,
   Users,
@@ -26,11 +28,10 @@ import {
   Funnel,
   Flag,
   Video,
-  PlayCircle,
-  FilmStrip,
 } from '@phosphor-icons/react'
 
-export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
+// Icon mapping - using Phosphor icons (smaller size)
+export const ICON_MAP: Record<string, ComponentType<{ className?: string; style?: React.CSSProperties; weight?: string }>> = {
   customers: Users,
   leads: UserPlus,
   pipeline: FlowArrow,
@@ -46,9 +47,9 @@ export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
   marketplace: Storefront,
   settings: Gear,
   'voice-capture': Microphone,
-  // Module icons - Upgraded for 2K resolution
+  // Module icons
   livewire: RadioButton,
-  facelink: Video, // Upgraded to high-res Video icon
+  facelink: Video,
   blueprint: Ruler,
   scope: Target,
   dispatch: Calendar,
@@ -57,8 +58,9 @@ export const ICON_MAP: Record<string, ComponentType<{ className?: string }>> = {
   vault: Lock,
   funnel: Funnel,
   milestones: Flag,
+  folder: Folder,
 }
 
-export function getIconForId(id: string): ComponentType<{ className?: string }> {
+export function getIconForId(id: string): ComponentType<{ className?: string; style?: React.CSSProperties; weight?: string }> {
   return ICON_MAP[id] || Folder
 }

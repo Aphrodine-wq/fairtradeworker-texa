@@ -73,11 +73,11 @@ export function VoidIcon({ icon, style, isDragging, onContextMenu, onDragStart }
     >
       <div className="void-icon-content">
         <IconComponent 
-          className="w-16 h-16" 
-          weight="bold"
+          className="w-8 h-8" 
+          weight="regular"
           style={{ 
             color: 'var(--text-secondary, var(--void-text-secondary))',
-            filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.7))',
+            filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5))',
           }}
         />
         <span 

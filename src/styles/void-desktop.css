@@ -135,6 +135,9 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .void-window-button {
@@ -145,6 +148,12 @@
   cursor: pointer;
   transition: transform var(--duration-micro, 80ms) var(--ease-standard);
   will-change: transform;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
 
 .void-window-button:hover {

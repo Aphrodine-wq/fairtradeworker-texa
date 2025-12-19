@@ -259,12 +259,6 @@ export function VoidWindow({ window }: VoidWindowProps) {
         willChange: 'transform, filter, opacity',
       }}
       onClick={() => focusWindow(window.id)}
-      drag={!window.maximized && !window.pip}
-      dragMomentum={false}
-      dragElastic={0.1}
-      onDragStart={handleDragStart}
-      onDrag={handleDrag}
-      onDragEnd={handleDragEnd}
       whileDrag={{
         scale: 1.08,
         rotate: 2,
@@ -282,48 +276,49 @@ export function VoidWindow({ window }: VoidWindowProps) {
         type="window"
         items={windowMenuItems}
       >
-        <div className="void-window-titlebar">
+        <motion.div 
+          className="void-window-titlebar"
+          drag={!window.maximized && !window.pip}
+          dragMomentum={false}
+          dragElastic={0}
+          onDragStart={handleDragStart}
+          onDrag={handleDrag}
+          onDragEnd={handleDragEnd}
+          style={{ cursor: !window.maximized && !window.pip ? 'move' : 'default' }}
+        >
           <span className="void-window-title" title={sanitizeString(window.title, 200)}>
             {sanitizeString(window.title, 200)}
           </span>
-          <div className="void-window-controls">
-          <button
-            className="void-window-button minimize"
-            onClick={(e) => {
-              e.stopPropagation()
-              minimizeWindow(window.id)
-            }}
-            aria-label="Minimize"
-          />
-          <button
-            className="void-window-button maximize"
-            onClick={(e) => {
-              e.stopPropagation()
-              maximizeWindow(window.id)
-            }}
-            aria-label="Maximize"
-          />
-          <button
-            className="void-window-button pip"
-            onClick={(e) => {
-              e.stopPropagation()
-              togglePip(window.id)
-            }}
-            aria-label="Picture in Picture"
-            title="Picture in Picture"
-          >
-            ⛶
-          </button>
-          <button
-            className="void-window-button close"
-            onClick={(e) => {
-              e.stopPropagation()
-              closeWindow(window.id)
-            }}
-            aria-label="Close"
-          />
-        </div>
-        </div>
+          <div className="void-window-controls" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="void-window-button minimize"
+              onClick={(e) => {
+                e.stopPropagation()
+                minimizeWindow(window.id)
+              }}
+              aria-label="Minimize"
+              title="Minimize"
+            />
+            <button
+              className="void-window-button maximize"
+              onClick={(e) => {
+                e.stopPropagation()
+                maximizeWindow(window.id)
+              }}
+              aria-label="Maximize"
+              title="Maximize"
+            />
+            <button
+              className="void-window-button close"
+              onClick={(e) => {
+                e.stopPropagation()
+                closeWindow(window.id)
+              }}
+              aria-label="Close"
+              title="Close"
+            />
+          </div>
+        </motion.div>
       </VoidContextMenu>
 
       {/* Content */}

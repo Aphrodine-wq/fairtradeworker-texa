@@ -85,18 +85,16 @@ export function VoidSystemTray({ user }: VoidSystemTrayProps) {
           )}
         </button>
 
-        {/* Now Playing */}
-        {currentTrack && (
-          <button
-            className="void-tray-icon void-tray-music"
-            onClick={() => setControlCenterOpen(!controlCenterOpen)}
-            aria-label="Now Playing"
-            title={`${currentTrack.title} - ${currentTrack.artist}`}
-          >
-            <MusicNote weight="regular" className="void-tray-icon-svg" size={24} />
-            {isPlaying && <div className="void-tray-music-pulse" />}
-          </button>
-        )}
+        {/* Now Playing - Always visible */}
+        <button
+          className="void-tray-icon void-tray-music"
+          onClick={() => setControlCenterOpen(!controlCenterOpen)}
+          aria-label="Now Playing"
+          title={currentTrack ? `${currentTrack.title} - ${currentTrack.artist}` : 'Music Player'}
+        >
+          <MusicNote weight="regular" className="void-tray-icon-svg" size={24} />
+          {currentTrack && isPlaying && <div className="void-tray-music-pulse" />}
+        </button>
 
         {/* Connection Status */}
         <div
