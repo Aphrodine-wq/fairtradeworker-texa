@@ -159,10 +159,3 @@
     font-size: 9px;
   }
 }
-
-/* iPhone X/11/12/13/14 safe area adjustments */
-@supports (padding: env(safe-area-inset-bottom)) {
-  .void-bottom-nav {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-}
