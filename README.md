@@ -25,7 +25,9 @@
 
 </div>
 
-> NOTE: The canonical, expanded project overview is now `SuperREADME.md` at the repository root. See [SuperREADME.md](SuperREADME.md) for architecture, developer setup, docs index, and archival policy.
+> NOTE: The canonical, expanded project overview is now `SuperREADME.md` at the repository root. See [SuperREADME.md](SuperREADME.md) for architecture, developer setup, and complete documentation index. For topic-specific documentation, see the [`docs/`](docs/) folder.
+>
+> 📝 **December 2025 Update:** Documentation has been significantly streamlined. See [`docs/ARCHIVE_LIST.md`](docs/ARCHIVE_LIST.md) for consolidation details.
 
 ---
 
