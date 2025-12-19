@@ -1,9 +1,12 @@
 /**
  * Rate Limiting System for FairTradeWorker
  * Client-side rate limiting with Redis-ready server-side implementation
+ * 
+ * Updated for 400k users - Day 1 Launch
  */
 
 import type { User } from './types'
+import { SCALING_CONFIG } from '../../infrastructure/scaling-config'
 
 // ============================================================================
 // Rate Limit Configuration
@@ -14,22 +17,23 @@ export interface RateLimitConfig {
   max: number // Maximum requests per window
 }
 
+// Use configuration from scaling-config.ts
 export const RATE_LIMITS: Record<string, RateLimitConfig> = {
   anonymous: {
-    window: 60 * 1000, // 1 minute
-    max: 30, // 30 requests/minute
+    window: SCALING_CONFIG.RATE_LIMITS.ANONYMOUS.WINDOW_MS,
+    max: SCALING_CONFIG.RATE_LIMITS.ANONYMOUS.MAX_REQUESTS,
   },
   authenticated: {
-    window: 60 * 1000,
-    max: 120, // 120 requests/minute
+    window: SCALING_CONFIG.RATE_LIMITS.AUTHENTICATED.WINDOW_MS,
+    max: SCALING_CONFIG.RATE_LIMITS.AUTHENTICATED.MAX_REQUESTS,
   },
   pro: {
-    window: 60 * 1000,
-    max: 300, // 300 requests/minute
+    window: SCALING_CONFIG.RATE_LIMITS.PRO.WINDOW_MS,
+    max: SCALING_CONFIG.RATE_LIMITS.PRO.MAX_REQUESTS,
   },
   operator: {
-    window: 60 * 1000,
-    max: 500, // 500 requests/minute
+    window: SCALING_CONFIG.RATE_LIMITS.OPERATOR.WINDOW_MS,
+    max: SCALING_CONFIG.RATE_LIMITS.OPERATOR.MAX_REQUESTS,
   },
 }
 
