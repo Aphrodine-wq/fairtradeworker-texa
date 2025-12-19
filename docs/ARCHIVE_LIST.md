@@ -41,8 +41,9 @@ This file lists documentation that is archived, deprecated, or proposed for arch
    - Archived as historical reference
 
 3. **`PERFORMANCE.md`** → `docs/technical/PERFORMANCE.md`
-   - Moved to proper location in docs/ structure
+   - Moved to proper location in docs/ structure (not a duplicate)
    - Performance optimization guide belongs in technical docs
+   - Contains comprehensive performance metrics and best practices
 
 4. **`COMPLETE_SYSTEM_ANALYSIS.md`** → `docs/archive/2025-12-consolidation/`
    - Extensive codebase statistics and business projections
@@ -75,9 +76,9 @@ This file lists documentation that is archived, deprecated, or proposed for arch
    - Archived as completed work
 
 8. **`docs/product/TIERS_1_3_IMPLEMENTATION.md`** → `docs/archive/2025-12-consolidation/`
-   - Completed tier implementation documentation
+   - Completed tier implementation documentation (tiers are implemented)
    - Tiers fully described in PRD.md and PRICING.md
-   - Archived as completed work
+   - Archived as completed work - implementation is live in codebase
 
 9. **`docs/product/PRODUCT_ROADMAP.md`** → `docs/archive/2025-12-consolidation/`
    - Duplicate roadmap (higher-level strategic view)

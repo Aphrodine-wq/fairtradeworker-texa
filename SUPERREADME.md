@@ -3,6 +3,8 @@
 This document is the single, expanded canonical overview for the repository. It consolidates high-level goals, architecture, design systems, deployment instructions, developer workflows, and pointers to topic-specific docs contained in the `docs/` folder.
 
 > 📊 **For detailed codebase statistics and financial projections**, see [`docs/archive/2025-12-consolidation/COMPLETE_SYSTEM_ANALYSIS.md`](docs/archive/2025-12-consolidation/COMPLETE_SYSTEM_ANALYSIS.md)
+>
+> 📚 **For extensive technical specifications and component details**, see the archived [`SUPERREADME_OLD.md`](docs/archive/2025-12-consolidation/SUPERREADME_OLD.md) (4,861 lines of detailed documentation)
 
 ---
 
