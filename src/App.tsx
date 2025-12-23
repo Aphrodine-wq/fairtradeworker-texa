@@ -748,6 +748,24 @@ function App() {
             <BlogPage onNavigate={handleNavigate} />
           </Suspense>
         )
+      case 'contractor-landing':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ContractorLanding onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'homeowner-landing':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <HomeownerLanding onNavigate={handleNavigate} />
+          </Suspense>
+        )
+      case 'directory':
+        return (
+          <Suspense fallback={<LoadingFallback />}>
+            <ContractorDirectory onNavigate={handleNavigate} />
+          </Suspense>
+        )
       case 'pricing':
         return (
           <Suspense fallback={<LoadingFallback />}>

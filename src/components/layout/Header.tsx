@@ -86,6 +86,21 @@ const HeaderComponent = ({ user, onNavigate, onLogout }: HeaderProps) => {
           )}>
             {!user ? (
               <>
+                <div className="hidden lg:flex items-center gap-6 mr-6">
+                  <button onClick={() => onNavigate('contractor-landing')} className="text-sm font-medium hover:text-primary transition-colors">
+                    For Contractors
+                  </button>
+                  <button onClick={() => onNavigate('homeowner-landing')} className="text-sm font-medium hover:text-primary transition-colors">
+                    For Homeowners
+                  </button>
+                  <button onClick={() => onNavigate('directory')} className="text-sm font-medium hover:text-primary transition-colors">
+                    Find a Pro
+                  </button>
+                  <button onClick={() => onNavigate('blog')} className="text-sm font-medium hover:text-primary transition-colors">
+                    Blog
+                  </button>
+                </div>
+                <div className="h-6 w-px bg-gray-200 dark:bg-gray-800 mr-2 hidden lg:block" />
                 <ThemeToggle />
                 <Button 
                   variant="ghost" 

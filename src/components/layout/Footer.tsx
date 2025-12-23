@@ -10,6 +10,8 @@ export function Footer({ onNavigate }: FooterProps) {
   const footerLinks = {
     company: [
       { label: 'About', page: 'about' },
+      { label: 'For Contractors', page: 'contractor-landing' },
+      { label: 'For Homeowners', page: 'homeowner-landing' },
       { label: 'Contact', page: 'contact' },
       { label: 'Careers', page: 'careers' },
     ],
@@ -18,6 +20,7 @@ export function Footer({ onNavigate }: FooterProps) {
       { label: 'Terms of Service', page: 'terms' },
     ],
     resources: [
+      { label: 'Find a Pro', page: 'directory' },
       { label: 'Free Tools', page: 'free-tools' },
       { label: 'Help Center', page: 'help' },
       { label: 'Blog', page: 'blog' },
