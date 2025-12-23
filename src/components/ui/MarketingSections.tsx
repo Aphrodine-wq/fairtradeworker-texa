@@ -11,7 +11,7 @@ import type { User } from "@/lib/types"
 type NavLink = { label: string; href?: string; active?: boolean }
 
 export function GlassCard({ className, ...props }: React.ComponentProps<typeof Card>) {
-  return <Card className={cn("border-0 hover:shadow-xl transition-shadow", className)} {...props} />
+  return <Card className={cn("border-0 shadow-none bg-white/80 dark:bg-gray-900/50 backdrop-blur-sm", className)} {...props} />
 }
 
 export function GlassNav({ children }: { brand?: any; links?: NavLink[]; primaryLabel?: string; onPrimaryClick?: () => void; children?: React.ReactNode }) {
@@ -62,7 +62,7 @@ export function HeroSection({
             {primaryAction && (
               <Button 
                 size="lg"
-                className="px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                className="px-8 py-6 text-lg font-semibold shadow-none transition-all"
                 onClick={primaryAction.onClick}
               >
                 {primaryAction.label}
@@ -302,7 +302,6 @@ export function StatsSection({
             key={stat.label}
             variants={itemVariants}
             custom={idx}
-            whileHover={universalCardHover.hover}
             style={{ willChange: 'transform', transform: 'translateZ(0)' }}
           >
             <GlassCard className="p-6">
@@ -409,8 +408,6 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
               key={feature.title}
               variants={itemVariants}
               custom={idx}
-              whileHover={universalCardHover.hover}
-              whileTap={{ scale: 0.98 }}
               style={{ willChange: 'transform', transform: 'translateZ(0)' }}
             >
               <GlassCard 
@@ -420,14 +417,11 @@ export function FeatureSection({ features, onNavigate }: { features: Feature[]; 
                 )}
                 onClick={handleClick}
               >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                <div
                   className="h-14 w-14 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center mb-4 mx-auto"
                 >
                   <Icon className="text-black dark:text-white text-2xl" />
-                </motion.div>
+                </div>
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">{feature.title}</h3>
                 <p className="mt-1 sm:mt-2 text-gray-500 dark:text-gray-400 text-xs sm:text-sm">{feature.description}</p>
               </GlassCard>
