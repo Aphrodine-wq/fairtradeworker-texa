@@ -53,6 +53,11 @@ export function Footer({ onNavigate }: FooterProps) {
             <p className="mt-4 text-sm font-mono">
               Zero fees. 100% fair.
             </p>
+            <div className="mt-4">
+              <a href="mailto:hello@fairtradeworker.com" className="text-sm font-medium hover:text-[#00FF00] transition-colors">
+                hello@fairtradeworker.com
+              </a>
+            </div>
             <button
               onClick={() => onNavigate && onNavigate('donate')}
               className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#00FF00] text-black rounded-lg shadow-md hover:shadow-lg transition-all text-sm font-semibold hover:bg-[#00DD00]"

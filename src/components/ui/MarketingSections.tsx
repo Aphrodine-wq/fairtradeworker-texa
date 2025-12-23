@@ -22,27 +22,47 @@ export function GlassNav({ children }: { brand?: any; links?: NavLink[]; primary
 export function HeroSection({
   title,
   subtitle,
+  bullets,
   primaryAction,
   secondaryAction,
 }: {
   title: string
   subtitle: string
+  bullets?: string[]
   primaryAction?: { label: string; href?: string; onClick?: () => void }
   secondaryAction?: { label: string; href?: string; onClick?: () => void }
 }) {
   return (
     <div className="mb-12">
-      <GlassCard className="p-8 md:p-12">
-        <div className="text-center space-y-6">
-          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+      <GlassCard className="p-8 md:p-12 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0 opacity-10">
+           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
+           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 text-center space-y-6">
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white sm:text-5xl lg:text-6xl tracking-tight">
             {title}
           </h1>
-          <p className="max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">{subtitle}</p>
+          <p className="max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300 leading-relaxed">{subtitle}</p>
+          
+          {bullets && bullets.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 mt-6 mb-8">
+              {bullets.map((bullet, idx) => (
+                <div key={idx} className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 mr-2" />
+                  {bullet}
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="flex justify-center gap-4 flex-wrap mt-8">
             {primaryAction && (
               <Button 
                 size="lg"
-                className="px-8 py-6 text-lg font-semibold"
+                className="px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105"
                 onClick={primaryAction.onClick}
               >
                 {primaryAction.label}
@@ -64,6 +84,101 @@ export function HeroSection({
     </div>
   )
 }
+
+export function TrustBarSection() {
+  const trustSignals = [
+    { label: "Powered by Stripe", icon: Shield },
+    { label: "Secure & Encrypted", icon: Lock },
+    { label: "100% Contractor Earnings", icon: CurrencyDollar },
+    { label: "Verified Reviews", icon: Star },
+  ]
+
+  return (
+    <div className="mb-12 border-y border-gray-200 dark:border-gray-800 py-8 bg-gray-50/50 dark:bg-gray-900/50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center text-center">
+          {trustSignals.map((item, idx) => (
+            <div key={idx} className="flex flex-col items-center justify-center gap-2 group">
+              <item.icon className="w-8 h-8 text-gray-400 group-hover:text-primary transition-colors" weight="duotone" />
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function TestimonialsSection() {
+  const testimonials = [
+    {
+      name: "Sarah J.",
+      role: "Homeowner",
+      content: "Finally a platform where I can find contractors without the middleman markup. The AI scoping tool saved me hours.",
+      rating: 5,
+    },
+    {
+      name: "Mike T.",
+      role: "General Contractor",
+      content: "I keep 100% of my earnings. That's unheard of. The CRM tools are just a massive bonus.",
+      rating: 5,
+    },
+    {
+      name: "Elena R.",
+      role: "Interior Designer",
+      content: "The invoicing system is a game changer for my small business. Professional and fast.",
+      rating: 5,
+    },
+    {
+      name: "David K.",
+      role: "Homeowner",
+      content: "Transparent pricing and verified pros. FairTradeWorker is now my go-to for all home repairs.",
+      rating: 4,
+    },
+  ]
+
+  return (
+    <div className="mb-16">
+      <div className="text-center mb-10 space-y-2">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Trusted by Homeowners & Pros</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300">Join thousands of satisfied users</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {testimonials.map((t, idx) => (
+          <motion.div
+            key={idx}
+            variants={itemVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            custom={idx}
+            whileHover={{ y: -5 }}
+            className="h-full"
+          >
+            <GlassCard className="p-6 h-full flex flex-col">
+              <div className="flex mb-4 text-yellow-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} weight={i < t.rating ? "fill" : "regular"} size={16} />
+                ))}
+              </div>
+              <p className="text-gray-600 dark:text-gray-300 mb-6 flex-grow italic">"{t.content}"</p>
+              <div className="flex items-center gap-3 mt-auto">
+                <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center font-bold text-gray-500">
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white text-sm">{t.name}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">{t.role}</p>
+                </div>
+              </div>
+            </GlassCard>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 
 export function StatsSection({
   stats,

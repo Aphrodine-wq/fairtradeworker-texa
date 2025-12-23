@@ -6,7 +6,7 @@ import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
-import { HeroSection, FeatureSection, PricingSection, RatingSection } from "@/components/ui/MarketingSections"
+import { HeroSection, FeatureSection, PricingSection, RatingSection, TrustBarSection, TestimonialsSection } from "@/components/ui/MarketingSections"
 import { PostMyJobButton } from "@/components/jobs/PostMyJobButton"
 import { ServiceCategories } from "@/components/jobs/ServiceCategories"
 
@@ -28,10 +28,18 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
       <div className="w-full pt-10 pb-12 px-4 sm:px-6 lg:px-8">
         <HeroSection
           title="Zero-Fee Home Services Marketplace"
-          subtitle="Contractors/Subs keep 100% of earnings. Homeowners post with one simple flat job fee."
+          subtitle="Contractors keep 100% of earnings. Homeowners get fair, transparent prices."
+          bullets={[
+            "Zero platform fees for contractors",
+            "Instant competitive bids for homeowners",
+            "Modern AI tools included",
+            "Full payment security"
+          ]}
           primaryAction={{ label: "Get Started", onClick: () => onNavigate("signup") }}
           secondaryAction={{ label: "Learn More", onClick: () => onNavigate("about") }}
         />
+
+        <TrustBarSection />
 
         <PostMyJobButton onNavigate={onNavigate} />
 
@@ -131,34 +139,9 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
           </Card>
         )}
 
+        <TestimonialsSection />
+
         <PricingSection user={currentUser} onNavigate={onNavigate} />
-        
-        {/* Pricing CTA Section */}
-        <Card className="mb-12 p-8 border-0 hover:shadow-xl transition-shadow text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
-            See our complete pricing plans, feature comparison, and FAQs
-          </p>
-          <Button
-            size="lg"
-            className="h-14 px-8 text-lg font-semibold"
-            onClick={() => onNavigate("pricing")}
-          >
-            View Full Pricing Details
-          </Button>
-          {currentUser && (
-            <Button
-              size="lg"
-              variant="outline"
-              className="h-14 px-8 text-lg font-semibold mt-4"
-              onClick={() => onNavigate("pro-upgrade")}
-            >
-              Upgrade to Pro
-            </Button>
-          )}
-        </Card>
         
         <RatingSection />
       </div>
