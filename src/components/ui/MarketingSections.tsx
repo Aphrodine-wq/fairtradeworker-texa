@@ -180,6 +180,106 @@ export function TestimonialsSection() {
 }
 
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+export function FAQSection() {
+  const faqs = [
+    {
+      question: "Is it really zero fees for contractors?",
+      answer: "Yes. We believe contractors should keep 100% of their hard-earned money. We charge a small, transparent service fee to homeowners instead, or earn revenue through optional premium tools for business management."
+    },
+    {
+      question: "How does the AI Scoping work?",
+      answer: "You simply upload photos or a video of your project. Our AI (Claude) analyzes the visuals to create a detailed scope of work and estimated materials list in minutes, which you can then edit and post."
+    },
+    {
+      question: "Are the contractors verified?",
+      answer: "Absolutely. We verify licenses, insurance, and identity for all 'Pro' contractors on our platform. You can see verification badges on their profiles."
+    },
+    {
+      question: "How are leads assigned?",
+      answer: "We don't sell leads to 50 people. Jobs are matched to the most relevant local contractors based on their skills, rating, and availability. It's a merit-based system, not pay-to-play."
+    }
+  ]
+
+  return (
+    <div className="mb-16 max-w-3xl mx-auto">
+      <div className="text-center mb-10 space-y-2">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300">Common questions about FairTradeWorker</p>
+      </div>
+      <GlassCard className="p-6">
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, idx) => (
+            <AccordionItem key={idx} value={`item-${idx}`}>
+              <AccordionTrigger className="text-left text-lg font-medium">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-600 dark:text-gray-300 text-base">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </GlassCard>
+    </div>
+  )
+}
+
+export function HowItWorksSection() {
+  const steps = [
+    {
+      title: "1. Post Your Job",
+      description: "Upload photos, video, or voice notes. Our AI builds the scope for you.",
+      icon: Megaphone
+    },
+    {
+      title: "2. Get AI Scope",
+      description: "Review the generated budget and materials list instantly.",
+      icon: Brain
+    },
+    {
+      title: "3. Receive Bids",
+      description: "Verified local pros send competitive bids based on your scope.",
+      icon: UsersThree
+    },
+    {
+      title: "4. Hire & Pay",
+      description: "Choose your pro and pay securely via Stripe. Funds are held in escrow.",
+      icon: Shield
+    }
+  ]
+
+  return (
+    <div className="mb-16">
+      <div className="text-center mb-12 space-y-2">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">How It Works</h2>
+        <p className="text-lg text-gray-600 dark:text-gray-300">From to-do list to done in 4 simple steps</p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+        {/* Connector Line (Desktop only) */}
+        <div className="hidden lg:block absolute top-12 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent z-0" />
+        
+        {steps.map((step, idx) => (
+          <div key={idx} className="relative z-10 flex flex-col items-center text-center group">
+            <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-800 shadow-lg border-4 border-gray-50 dark:border-gray-900 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <step.icon size={40} className="text-primary" weight="duotone" />
+            </div>
+            <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+            <p className="text-gray-600 dark:text-gray-400 max-w-[200px]">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function StatsSection({
   stats,
 }: {

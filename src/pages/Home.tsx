@@ -6,7 +6,7 @@ import { LiveStatsBar } from "@/components/viral/LiveStatsBar"
 import type { Job, User } from "@/lib/types"
 import { DEMO_USERS } from "@/lib/demoData"
 import { memo, useMemo } from "react"
-import { HeroSection, FeatureSection, PricingSection, RatingSection, TrustBarSection, TestimonialsSection } from "@/components/ui/MarketingSections"
+import { HeroSection, FeatureSection, PricingSection, RatingSection, TrustBarSection, TestimonialsSection, FAQSection, HowItWorksSection } from "@/components/ui/MarketingSections"
 import { PostMyJobButton } from "@/components/jobs/PostMyJobButton"
 import { ServiceCategories } from "@/components/jobs/ServiceCategories"
 
@@ -46,6 +46,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <ServiceCategories onNavigate={onNavigate} />
 
         <div className="mt-16"></div>
+
+        <HowItWorksSection />
 
         <FeatureSection
           onNavigate={onNavigate}
@@ -142,6 +144,8 @@ export const HomePage = memo(function HomePage({ onNavigate, onDemoLogin }: Home
         <TestimonialsSection />
 
         <PricingSection user={currentUser} onNavigate={onNavigate} />
+
+        <FAQSection />
         
         <RatingSection />
       </div>
