@@ -22,6 +22,7 @@ import {
   Sparkle
 } from "@phosphor-icons/react"
 import { Lightbox } from "@/components/ui/Lightbox"
+import { ReviewRatingSystem } from "@/components/shared/ReviewRatingSystem"
 import { CompletionCard } from "@/components/jobs/CompletionCard"
 import type { Job, Bid, User as UserType, Invoice } from "@/lib/types"
 import { getJobSizeEmoji, getJobSizeLabel } from "@/lib/types"
@@ -57,6 +58,7 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
   const [lightboxImages, setLightboxImages] = useState<string[]>([])
   const [lightboxIndex, setLightboxIndex] = useState(0)
   const [completionCardOpen, setCompletionCardOpen] = useState(false)
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false)
   const [completedJob, setCompletedJob] = useState<Job | null>(null)
 
   const myJobs = (jobs || []).filter(job => job.homeownerId === user.id)
@@ -202,11 +204,18 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
       )
     )
     
-    // Show completion card
+    // Trigger Review Flow First
     setCompletedJob(job)
-    setCompletionCardOpen(true)
+    setReviewDialogOpen(true)
     
-    toast.success("Job marked as complete! Thank you for using FairTradeWorker.")
+    toast.success("Job marked as complete! Please rate your experience.")
+  }
+
+  const handleReviewComplete = () => {
+    setReviewDialogOpen(false)
+    setTimeout(() => {
+      setCompletionCardOpen(true)
+    }, 500)
   }
 
   const sortedBids = (job: Job) => {
@@ -666,6 +675,19 @@ export function MyJobs({ user, onNavigate }: MyJobsProps) {
         onClose={() => setLightboxOpen(false)}
         initialIndex={lightboxIndex}
       />
+
+      {/* Review Dialog */}
+      <Dialog open={reviewDialogOpen} onOpenChange={setReviewDialogOpen}>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-transparent border-0 shadow-none">
+          {completedJob && (
+            <ReviewRatingSystem 
+              user={user} 
+              job={completedJob} 
+              onComplete={handleReviewComplete} 
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Completion Card Dialog */}
       <Dialog open={completionCardOpen} onOpenChange={setCompletionCardOpen}>

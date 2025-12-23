@@ -34,6 +34,7 @@ interface HomeownerDashboardProps {
 export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps) {
   const [jobs, , jobsLoading] = useKV<Job[]>("jobs", [])
   const [invoices, , invoicesLoading] = useKV<Invoice[]>("invoices", [])
+  const [reviews] = useKV<any[]>("reviews", [])
   const [isInitializing, setIsInitializing] = useState(true)
   // Homeowner dashboards don't use glass (free tier)
 
@@ -82,6 +83,11 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
       .filter(inv => inv.status === 'sent' || inv.status === 'viewed')
       .reduce((sum, inv) => sum + inv.total, 0),
     [myInvoices]
+  )
+
+  const pendingReviews = useMemo(() => 
+    completedJobs.filter(job => !reviews.some(r => r.jobId === job.id)),
+    [completedJobs, reviews]
   )
 
   const avgRatingGiven = useMemo(() => {
@@ -299,6 +305,28 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
             </Card>
 
             <div className="space-y-6">
+              {pendingReviews.length > 0 && (
+                <Card className="p-6 border-l-4 border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+                  <div className="flex items-start gap-3">
+                    <Star className="h-5 w-5 text-yellow-600 mt-0.5" weight="fill" />
+                    <div>
+                      <p className="font-semibold text-yellow-900 dark:text-yellow-400">Pending Reviews</p>
+                      <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
+                        You have {pendingReviews.length} completed job{pendingReviews.length > 1 ? 's' : ''} to rate.
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-3 border-yellow-200 hover:bg-yellow-100 text-yellow-900 dark:border-yellow-800 dark:hover:bg-yellow-900/40 dark:text-yellow-100"
+                        onClick={() => onNavigate('my-jobs')}
+                      >
+                        Rate Now
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              )}
+
               <Card className="p-6">
                 <h2 className="text-xl font-semibold mb-4 text-black dark:text-white">Recent Activity</h2>
                 {recentActivity.length === 0 ? (
