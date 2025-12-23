@@ -86,6 +86,22 @@ export function InsuranceCertVerification({ user }: InsuranceCertVerificationPro
 
   return (
     <div className="space-y-6">
+      {/* Unverified Warning State */}
+      {!isPro && verifiedCount === 0 && (
+        <Card className="border-l-4 border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20">
+          <CardContent className="p-4 flex items-start gap-4">
+            <ShieldCheck size={32} className="text-yellow-600 dark:text-yellow-500 flex-shrink-0" weight="duotone" />
+            <div>
+              <h3 className="font-bold text-yellow-900 dark:text-yellow-400 text-lg">Verification Required for Pro Status</h3>
+              <p className="text-yellow-800 dark:text-yellow-300 text-sm mt-1">
+                To unlock the Pro badge and rank higher in search results, you must verify at least one insurance document or license.
+                Verified contractors win 3x more jobs.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       <Card glass={isPro}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

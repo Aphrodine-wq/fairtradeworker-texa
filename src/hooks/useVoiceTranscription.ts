@@ -1,80 +1,135 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { toast } from 'sonner'
 
-export function useVoiceTranscription() {
+export interface VoiceTranscriptionState {
+  transcript: string
+  interimTranscript: string
+  isListening: boolean
+  error: string | null
+  isSupported: boolean
+}
+
+export interface VoiceTranscriptionActions {
+  start: () => void
+  stop: () => void
+  reset: () => void
+  setLanguage: (lang: string) => void
+}
+
+export function useVoiceTranscription(): VoiceTranscriptionState & VoiceTranscriptionActions {
   const [transcript, setTranscript] = useState('')
-  const [confidence, setConfidence] = useState(0)
+  const [interimTranscript, setInterimTranscript] = useState('')
+  const [isListening, setIsListening] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [language, setLanguage] = useState('en-US')
+  const [isSupported, setIsSupported] = useState(false)
+  
   const recognitionRef = useRef<any>(null)
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition
-      recognitionRef.current = new SpeechRecognition()
-      recognitionRef.current.continuous = true
-      recognitionRef.current.interimResults = true
-      recognitionRef.current.lang = language
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+      
+      if (SpeechRecognition) {
+        setIsSupported(true)
+        recognitionRef.current = new SpeechRecognition()
+        recognitionRef.current.continuous = true
+        recognitionRef.current.interimResults = true
+        recognitionRef.current.lang = language
 
-      recognitionRef.current.onresult = (event: any) => {
-        let finalTranscript = ''
-        let interimTranscript = ''
-        let maxConfidence = 0
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const result = event.results[i]
-          const transcript = result[0].transcript
-          const resultConfidence = result[0].confidence || 0
-
-          if (result.isFinal) {
-            finalTranscript += transcript + ' '
-            maxConfidence = Math.max(maxConfidence, resultConfidence)
-          } else {
-            interimTranscript += transcript
-          }
+        recognitionRef.current.onstart = () => {
+          setIsListening(true)
+          setError(null)
         }
 
-        setTranscript(finalTranscript || interimTranscript)
-        setConfidence(maxConfidence || 0.9) // Default to 0.9 if no confidence provided
-      }
+        recognitionRef.current.onend = () => {
+          setIsListening(false)
+        }
 
-      recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error)
+        recognitionRef.current.onresult = (event: any) => {
+          let final = ''
+          let interim = ''
+
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              final += event.results[i][0].transcript + ' '
+            } else {
+              interim += event.results[i][0].transcript
+            }
+          }
+
+          if (final) {
+            setTranscript(prev => prev + final)
+          }
+          setInterimTranscript(interim)
+        }
+
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error)
+          
+          if (event.error === 'not-allowed') {
+            setError('Microphone access denied. Please allow microphone access.')
+            toast.error('Microphone access denied')
+          } else if (event.error === 'no-speech') {
+            // Ignore no-speech errors usually
+          } else {
+            setError(`Error: ${event.error}`)
+          }
+          setIsListening(false)
+        }
+      } else {
+        setIsSupported(false)
+        setError('Speech recognition is not supported in this browser.')
       }
+    }
+  }, []) // Initialize once
+
+  // Update language dynamically
+  useEffect(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.lang = language
     }
   }, [language])
 
-  const start = () => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.start()
-      } catch (e) {
-        // Already started
-      }
-    }
-  }
+  const start = useCallback(() => {
+    if (!recognitionRef.current) return
+    if (isListening) return
 
-  const stop = () => {
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.stop()
-      } catch (e) {
-        // Already stopped
-      }
+    try {
+      setInterimTranscript('')
+      recognitionRef.current.start()
+    } catch (e) {
+      console.error('Failed to start recognition:', e)
     }
-  }
+  }, [isListening])
 
-  const setLang = (lang: string) => {
-    setLanguage(lang)
-    if (recognitionRef.current) {
-      recognitionRef.current.lang = lang
+  const stop = useCallback(() => {
+    if (!recognitionRef.current) return
+    if (!isListening) return
+
+    try {
+      recognitionRef.current.stop()
+    } catch (e) {
+      console.error('Failed to stop recognition:', e)
     }
-  }
+  }, [isListening])
+
+  const reset = useCallback(() => {
+    setTranscript('')
+    setInterimTranscript('')
+    setError(null)
+    stop()
+  }, [stop])
 
   return {
     transcript,
-    confidence,
-    language,
-    setLanguage: setLang,
+    interimTranscript,
+    isListening,
+    error,
+    isSupported,
     start,
     stop,
+    reset,
+    setLanguage
   }
 }

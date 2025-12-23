@@ -152,7 +152,6 @@ export function TestimonialsSection() {
             whileInView="visible"
             viewport={{ once: true }}
             custom={idx}
-            whileHover={{ y: -5 }}
             className="h-full"
           >
             <GlassCard className="p-6 h-full flex flex-col">
@@ -268,7 +267,7 @@ export function HowItWorksSection() {
         
         {steps.map((step, idx) => (
           <div key={idx} className="relative z-10 flex flex-col items-center text-center group">
-            <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-800 shadow-lg border-4 border-gray-50 dark:border-gray-900 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-24 h-24 rounded-full bg-white dark:bg-gray-800 border-4 border-gray-50 dark:border-gray-900 flex items-center justify-center mb-6 transition-transform duration-300">
               <step.icon size={40} className="text-primary" weight="duotone" />
             </div>
             <h3 className="text-xl font-bold mb-3">{step.title}</h3>

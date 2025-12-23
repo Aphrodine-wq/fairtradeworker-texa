@@ -24,6 +24,7 @@ import { useState, useMemo, useEffect } from "react"
 import { GlassNav } from "@/components/ui/MarketingSections"
 import { HomeownerProDashboard } from "@/components/homeowner/HomeownerProDashboard"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { HomeownerOnboarding } from "@/components/ui/OnboardingChecklist"
 
 interface HomeownerDashboardProps {
   user: User
@@ -170,6 +171,8 @@ export function HomeownerDashboard({ user, onNavigate }: HomeownerDashboardProps
             </Button>
           </div>
           </div>
+
+          <HomeownerOnboarding />
 
           {user.isHomeownerPro && (
             <Tabs defaultValue="overview" className="w-full">

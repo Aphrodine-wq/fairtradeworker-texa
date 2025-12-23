@@ -23,12 +23,14 @@ This document is the single, expanded canonical overview for the repository. It 
 - Job bidding and matching
 - Invoice and payment management
 - Pro tools: instant payouts, analytics, automation
+- **NEW:** Guided Onboarding & Verification Gates
 
 **For Homeowners:**
 - Flat $20 platform fee per completed job
 - AI-powered job scoping (60 seconds)
 - Direct contractor communication
 - Transparent bidding process
+- **NEW:** Seasonal Maintenance Clubs
 
 ---
 
@@ -276,6 +278,7 @@ All documentation lives in the [`docs/`](docs/) folder:
 
 ### 🚀 Getting Started
 - [Project Overview](docs/getting-started/PROJECT_OVERVIEW.md)
+- [Strategic User Analysis](docs/STRATEGIC_USER_ANALYSIS.md) - **NEW**
 
 ### 📋 Product
 - [PRD](docs/product/PRD.md) - Product Requirements
@@ -347,7 +350,7 @@ setJobs([...jobs, newJob])
 
 ## 13 — Roadmap & Priorities
 
-### Implementation Status (95% Complete)
+### Implementation Status (98% Complete)
 
 ✅ **Completed:**
 - Core marketplace (job posting, bidding, browsing)
@@ -358,8 +361,10 @@ setJobs([...jobs, newJob])
 - Territory operator system
 - Pro subscription features
 - Comprehensive test coverage
+- **User Onboarding Checklists** (Dec 2025)
+- **Trust & Verification Gates** (Dec 2025)
 
-⏳ **Needs Production Integration (5%):**
+⏳ **Needs Production Integration (2%):**
 - Stripe payment processing (integration-ready)
 - OpenAI GPT-4 Vision + Whisper (integration-ready)
 - Twilio SMS service (integration-ready)
@@ -446,9 +451,9 @@ Proprietary - All rights reserved
 
 ---
 
-**Last Updated:** December 19, 2025  
-**Version:** 2.1.0  
-**Status:** Production-Ready (95% Complete)
+**Last Updated:** December 23, 2025  
+**Version:** 2.2.0  
+**Status:** Production-Ready (98% Complete)
 
 ---
 

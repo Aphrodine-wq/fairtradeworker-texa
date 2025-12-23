@@ -8,6 +8,7 @@ import { SkeletonLoader } from "@/components/ui/SkeletonLoader"
 import type { User, Job, Invoice, Bid } from "@/lib/types"
 import { useState, useMemo, useEffect, memo } from "react"
 import { DashboardCustomizer } from "@/components/dashboard/DashboardCustomizer"
+import { ContractorOnboarding } from "@/components/ui/OnboardingChecklist"
 
 interface ContractorDashboardNewProps {
   user: User
@@ -219,6 +220,13 @@ export const ContractorDashboardNew = memo(function ContractorDashboardNew({ use
               Browse FRESH Jobs
             </Button>
           </div>
+
+          {/* Onboarding Checklist - Critical for New User Activation */}
+          <ContractorOnboarding 
+            onComplete={() => {
+              // Optional: Trigger a celebration or unlock a badge
+            }}
+          />
 
           {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

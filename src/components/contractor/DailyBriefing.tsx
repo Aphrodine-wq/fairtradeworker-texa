@@ -34,16 +34,21 @@ export function DailyBriefing({
   
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">{greeting}!</h2>
-          <p className="text-muted-foreground">Here's your day at a glance</p>
+          <h2 className="text-3xl font-black tracking-tight">{greeting}!</h2>
+          <p className="text-muted-foreground">Let's make today productive.</p>
         </div>
-        <div className="text-right">
-          <p className="text-sm text-muted-foreground">Expected earnings</p>
-          <p className="text-3xl font-bold text-primary">
-            ${expectedEarnings.toLocaleString()}
-          </p>
+        <div className="flex items-center gap-4 bg-muted/30 p-3 rounded-xl border border-border">
+          <div className="text-right">
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-bold">Pipeline</p>
+            <p className="text-2xl font-bold text-primary">
+              ${expectedEarnings.toLocaleString()}
+            </p>
+          </div>
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <CurrencyDollar size={24} className="text-primary" weight="duotone" />
+          </div>
         </div>
       </div>
       
@@ -84,11 +89,17 @@ export function DailyBriefing({
         </div>
         
         {scheduledJobs.length === 0 ? (
-          <Card className="p-6 text-center" glass={isPro}>
-            <p className="text-muted-foreground mb-2">No jobs scheduled today</p>
-            <p className="text-sm text-muted-foreground">
-              Check the Browse Jobs tab to find work
+          <Card className="p-8 text-center border-dashed" glass={isPro}>
+            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+              <CalendarCheck size={32} className="text-muted-foreground opacity-50" />
+            </div>
+            <p className="text-lg font-medium mb-1">Clear Schedule Today</p>
+            <p className="text-sm text-muted-foreground mb-4">
+              Perfect time to catch up on administrative tasks or find new work.
             </p>
+            <button className="text-primary font-semibold hover:underline text-sm">
+              Browse Available Jobs &rarr;
+            </button>
           </Card>
         ) : (
           <div className="space-y-3">

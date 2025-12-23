@@ -1,13 +1,15 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { safeInput } from '@/lib/utils'
-import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle, LinkSimple, Heart } from '@phosphor-icons/react'
+import { Camera, FileText, Download, CircleNotch, WarningCircle, Copy, Image, ArrowsClockwise, CheckCircle, LinkSimple, Heart, Microphone, Stop, Trash } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Slider } from '@/components/ui/slider'
 import { toast } from 'sonner'
 import { revenueConfig } from '@/lib/revenueConfig'
+import { useVoiceTranscription } from '@/hooks/useVoiceTranscription'
 
 interface ProjectInfo {
   name: string
@@ -41,6 +43,28 @@ export function AIPhotoScoper() {
   const [copied, setCopied] = useState(false)
   const [compressionQuality, setCompressionQuality] = useState(80)
   const [compressing, setCompressing] = useState(false)
+  const [notes, setNotes] = useState('')
+  
+  const { 
+    transcript, 
+    interimTranscript, 
+    isListening, 
+    isSupported, 
+    start: startRecording, 
+    stop: stopRecording, 
+    reset: resetRecording 
+  } = useVoiceTranscription()
+
+  const handleStopRecording = () => {
+    stopRecording()
+    if (transcript) {
+      setNotes(prev => {
+        const newNotes = prev ? `${prev}\n${transcript}` : transcript
+        return newNotes
+      })
+      resetRecording()
+    }
+  }
 
   const [uploadErrors, setUploadErrors] = useState<string[]>([])
 
@@ -331,6 +355,7 @@ Project Information:
 - Project Name: ${projectInfo.name}
 - Address: ${projectInfo.address}, ${projectInfo.city}, ${projectInfo.state} ${projectInfo.zip}
 - Number of Photos Provided: ${photos.length}
+${notes ? `- Additional Voice Notes/Instructions: ${notes}` : ''}
 
 Based on a typical construction project with ${photos.length} photos uploaded, create a comprehensive Scope of Services document following this EXACT format:
 
@@ -440,7 +465,7 @@ Generate a complete, professional scope document now.`
           </h1>
           <p className="text-xl text-muted-foreground mb-2">Generate professional scope of services documents for your projects</p>
           <p className="text-sm text-primary font-medium mb-4">Powered by GPT-4o</p>
-          <div className="max-w-2xl mx-auto bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md p-4 shadow-sm">
+          <div className="max-w-2xl mx-auto bg-white dark:bg-black border border-border rounded-md p-4">
             <p className="text-sm text-foreground">
               <strong>Note:</strong> Upload photos to help document your project. The AI will generate a comprehensive preliminary scope template that you can customize based on your specific project details and on-site assessment.
             </p>
@@ -671,7 +696,7 @@ Generate a complete, professional scope document now.`
             </Card>
 
             {photos.length > 0 && (
-              <Card className="border-0 shadow-md hover:shadow-lg bg-white dark:bg-black">
+              <Card className="border border-border bg-white dark:bg-black">
                 <CardHeader>
                   <div className="flex items-center gap-3 pb-3 border-b border-border">
                     <ArrowsClockwise className="w-6 h-6 text-primary" />
@@ -729,7 +754,7 @@ Generate a complete, professional scope document now.`
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md p-3 shadow-sm">
+                      <div className="bg-white dark:bg-black border border-border rounded-md p-3">
                         <p className="text-xs text-blue-900 dark:text-blue-100">
                           <strong>Tip:</strong> Compressing photos reduces upload time and improves processing speed. 
                           Recommended quality: 80% for best balance.
@@ -765,10 +790,87 @@ Generate a complete, professional scope document now.`
               </Card>
             )}
 
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <div className="flex items-center gap-3 pb-3 border-b border-border">
+                  <Microphone className="w-6 h-6 text-primary" />
+                  <CardTitle className="text-2xl">Voice Notes & Instructions</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Record Additional Details</Label>
+                  <div className="flex flex-col gap-3">
+                    {isSupported ? (
+                      <div className="flex gap-2">
+                        {!isListening ? (
+                          <Button
+                            onClick={startRecording}
+                            variant="outline"
+                            className="w-full h-12 border-primary/20 hover:bg-primary/5 hover:text-primary transition-colors"
+                          >
+                            <Microphone className="w-5 h-5 mr-2" />
+                            Start Recording
+                          </Button>
+                        ) : (
+                          <Button
+                            onClick={handleStopRecording}
+                            variant="destructive"
+                            className="w-full h-12 animate-pulse"
+                          >
+                            <Stop className="w-5 h-5 mr-2" />
+                            Stop Recording
+                          </Button>
+                        )}
+                        {notes && (
+                          <Button
+                            onClick={() => setNotes('')}
+                            variant="ghost"
+                            size="icon"
+                            className="h-12 w-12 text-muted-foreground hover:text-destructive"
+                            title="Clear notes"
+                          >
+                            <Trash className="w-5 h-5" />
+                          </Button>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md text-sm text-yellow-800 dark:text-yellow-200">
+                        Voice recording is not supported in this browser. Please type your notes below.
+                      </div>
+                    )}
+
+                    {isListening && (
+                      <div className="bg-primary/5 border border-primary/10 rounded-md p-3 min-h-[60px]">
+                        <div className="flex items-center gap-2 mb-1 text-xs text-primary font-semibold uppercase tracking-wider">
+                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                          Listening...
+                        </div>
+                        <p className="text-foreground/80 italic">
+                          {transcript}
+                          <span className="opacity-50">{interimTranscript}</span>
+                        </p>
+                      </div>
+                    )}
+
+                    <Textarea
+                      placeholder="Type additional notes here or use voice recording..."
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      className="min-h-[120px] resize-y"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Use voice notes to describe specific materials, room dimensions, or special client requests not visible in photos.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             <Button
               onClick={generateScope}
               disabled={loading || photos.length === 0 || !projectInfo.name?.trim() || !projectInfo.address?.trim()}
-              className="w-full h-14 text-lg border-0 shadow-md hover:shadow-lg"
+              className="w-full h-14 text-lg"
               size="lg"
             >
               {loading ? (
@@ -791,7 +893,7 @@ Generate a complete, professional scope document now.`
               </div>
             )}
 
-            <div className="bg-white dark:bg-black border-0 shadow-md hover:shadow-lg rounded-md p-4 shadow-sm">
+            <div className="bg-white dark:bg-black border border-border rounded-md p-4">
               <p className="text-sm text-foreground text-center font-medium">
                 💰 Fast, accurate, and powered by AI
               </p>
