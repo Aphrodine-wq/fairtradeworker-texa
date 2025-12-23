@@ -7,7 +7,7 @@ interface HomeownerLandingProps {
   onNavigate: (page: string) => void
 }
 
-export function HomeownerLanding({ onNavigate }: HomeownerLandingProps) {
+export default function HomeownerLanding({ onNavigate }: HomeownerLandingProps) {
   const features = [
     {
       title: "Fair & Transparent Pricing",

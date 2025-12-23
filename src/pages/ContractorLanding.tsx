@@ -7,7 +7,7 @@ interface ContractorLandingProps {
   onNavigate: (page: string) => void
 }
 
-export function ContractorLanding({ onNavigate }: ContractorLandingProps) {
+export default function ContractorLanding({ onNavigate }: ContractorLandingProps) {
   const features = [
     {
       title: "Keep 100% of Earnings",

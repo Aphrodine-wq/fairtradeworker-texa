@@ -125,6 +125,15 @@ const CareersPage = lazy(() => retryImport(() =>
 const BlogPage = lazy(() => retryImport(() =>
   import("@/pages/Blog").then(m => ({ default: m.BlogPage }))
 ))
+const ContractorLanding = lazy(() => retryImport(() =>
+  import("@/pages/ContractorLanding")
+))
+const HomeownerLanding = lazy(() => retryImport(() =>
+  import("@/pages/HomeownerLanding")
+))
+const ContractorDirectory = lazy(() => retryImport(() =>
+  import("@/pages/ContractorDirectory")
+))
 const PricingPage = lazy(() => retryImport(() =>
   import("@/pages/Pricing").then(m => ({ default: m.PricingPage }))
 ))

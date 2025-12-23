@@ -8,7 +8,7 @@ interface ContractorDirectoryProps {
   onNavigate: (page: string) => void
 }
 
-export function ContractorDirectory({ onNavigate }: ContractorDirectoryProps) {
+export default function ContractorDirectory({ onNavigate }: ContractorDirectoryProps) {
   // Mock data for the directory
   const contractors = [
     { id: 1, name: "Mike's Plumbing", trade: "Plumber", location: "Austin, TX", rating: 4.9, jobs: 124 },
